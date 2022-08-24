@@ -1,6 +1,6 @@
 import { In, IsNull } from "typeorm";
 import config from "@/config/index.js";
-import type { Note, IMentionedRemoteUsers } from "@/models/entities/note.js";
+import type { Note } from "@/models/entities/note.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import { DriveFiles, Notes, Users, Emojis, Polls } from "@/models/index.js";
 import type { Emoji } from "@/models/entities/emoji.js";
@@ -61,32 +61,33 @@ export default async function renderNote(
 
 	const attributedTo = `${config.url}/users/${note.userId}`;
 
-	const mentions = (
-		JSON.parse(note.mentionedRemoteUsers) as IMentionedRemoteUsers
-	).map((x) => x.uri);
-
-	let to: string[] = [];
-	let cc: string[] = [];
-
-	if (note.visibility === "public") {
-		to = ["https://www.w3.org/ns/activitystreams#Public"];
-		cc = [`${attributedTo}/followers`].concat(mentions);
-	} else if (note.visibility === "home") {
-		to = [`${attributedTo}/followers`];
-		cc = ["https://www.w3.org/ns/activitystreams#Public"].concat(mentions);
-	} else if (note.visibility === "followers") {
-		to = [`${attributedTo}/followers`];
-		cc = mentions;
-	} else {
-		to = mentions;
-	}
-
 	const mentionedUsers =
 		note.mentions.length > 0
 			? await Users.findBy({
 					id: In(note.mentions),
 			  })
 			: [];
+
+	const mentionUris = mentionedUsers
+		// only remote users
+		.filter((user) => Users.isRemoteUser(user))
+		.map((user) => user.uri);
+
+	let to: string[] = [];
+	let cc: string[] = [];
+
+	if (note.visibility === "public") {
+		to = ["https://www.w3.org/ns/activitystreams#Public"];
+		cc = [`${attributedTo}/followers`].concat(mentionUris);
+	} else if (note.visibility === "home") {
+		to = [`${attributedTo}/followers`];
+		cc = ["https://www.w3.org/ns/activitystreams#Public"].concat(mentionUris);
+	} else if (note.visibility === "followers") {
+		to = [`${attributedTo}/followers`];
+		cc = mentionUris;
+	} else {
+		to = mentionUris;
+	}
 
 	const hashtagTags = (note.tags || []).map((tag) => renderHashtag(tag));
 	const mentionTags = mentionedUsers.map((u) => renderMention(u));

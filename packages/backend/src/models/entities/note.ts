@@ -172,12 +172,6 @@ export class Note {
 	})
 	public mentions: User["id"][];
 
-	// FIXME: WHAT IS THIS
-	@Column("text", {
-		default: "[]",
-	})
-	public mentionedRemoteUsers: string;
-
 	@Column("varchar", {
 		length: 128,
 		array: true,
@@ -307,10 +301,3 @@ export class Note {
 		}
 	}
 }
-
-export type IMentionedRemoteUsers = {
-	uri: string;
-	url?: string;
-	username: string;
-	host: string;
-}[];
