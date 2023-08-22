@@ -1157,6 +1157,7 @@ addRe: "Add \"re:\" at the beginning of comment in reply to a post with a conten
 confirm: "Confirm"
 importZip: "Import ZIP"
 exportZip: "Export ZIP"
+getQrCode: "Get QR code"
 emojiPackCreator: "Emoji pack creator"
 indexable: "Indexable"
 indexableDescription: "Allow built-in search to show your public posts"
