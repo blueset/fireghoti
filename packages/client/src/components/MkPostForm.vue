@@ -52,6 +52,14 @@
 					></span>
 				</button>
 				<button
+					ref="languageButton"
+					v-tooltip="i18n.ts.language"
+					class="_button language"
+					@click="setLanguage"
+				>
+					<i class="ph-translate ph-bold ph-lg"></i>
+				</button>
+				<button
 					v-tooltip="i18n.ts.previewNoteText"
 					class="_button preview"
 					:class="{ active: showPreview }"
@@ -276,6 +284,9 @@ import { deepClone } from "@/scripts/clone";
 import XCheatSheet from "@/components/MkCheatSheetDialog.vue";
 import preprocess from "@/scripts/preprocess";
 import { vibrate } from "@/scripts/vibrate";
+import { langmap } from "@/scripts/langmap";
+import { MenuItem } from "@/types/menu";
+import detectLanguage from "@/scripts/detect-language";
 
 const modal = inject("modal");
 
@@ -288,6 +299,7 @@ const props = withDefaults(
 		specified?: firefish.entities.User;
 		initialText?: string;
 		initialVisibility?: typeof firefish.noteVisibilities;
+		initialLanguage?: typeof firefish.languages;
 		initialFiles?: firefish.entities.DriveFile[];
 		initialLocalOnly?: boolean;
 		initialVisibleUsers?: firefish.entities.User[];
@@ -315,6 +327,7 @@ const textareaEl = ref<HTMLTextAreaElement | null>(null);
 const cwInputEl = ref<HTMLInputElement | null>(null);
 const hashtagsInputEl = ref<HTMLInputElement | null>(null);
 const visibilityButton = ref<HTMLElement | null>(null);
+const languageButton = ref<HTMLElement | undefined>();
 
 const posting = ref(false);
 const text = ref(props.initialText ?? "");
@@ -339,6 +352,9 @@ const visibility = ref(
 			? defaultStore.state.visibility
 			: defaultStore.state
 					.defaultNoteVisibility) as (typeof firefish.noteVisibilities)[number]),
+);
+const language = ref(
+	props.initialLanguage ?? localStorage.getItem("lang")?.split("-")[0],
 );
 const visibleUsers = ref([]);
 if (props.initialVisibleUsers) {
@@ -560,6 +576,7 @@ function watchForDraft() {
 	watch(files, () => saveDraft(), { deep: true });
 	watch(visibility, () => saveDraft());
 	watch(localOnly, () => saveDraft());
+	watch(language, () => saveDraft());
 }
 
 function checkMissingMention() {
@@ -689,6 +706,39 @@ function setVisibility() {
 		},
 		"closed",
 	);
+}
+
+function setLanguage() {
+	const actions: Array<MenuItem> = [{
+		text: i18n.ts.autoDetect,
+		danger: false,
+		active: false,
+		icon: "ph-magic-wand ph-bold ph-lg",
+		action: () => {
+			language.value = detectLanguage(text.value) ?? language.value;
+		}
+	}, null];
+	if (language.value) actions.push({
+		text: langmap[language.value].nativeName,
+		danger: false,
+		active: true,
+		action: () => {},
+	});
+
+	const langs = Object.keys(langmap);
+	for (const lang of langs) {
+		if (lang === language.value) continue;
+		actions.push({
+			text: langmap[lang].nativeName,
+			danger: false,
+			active: false,
+			action: () => {
+				language.value = lang;
+			},
+		});
+	}
+
+	os.popupMenu(actions, languageButton.value, {});
 }
 
 function pushVisibleUser(user) {
@@ -840,6 +890,7 @@ function saveDraft() {
 			cw: cw.value,
 			visibility: visibility.value,
 			localOnly: localOnly.value,
+			lang: language.value,
 			files: files.value,
 			poll: poll.value,
 		},
@@ -873,6 +924,7 @@ async function post() {
 		channelId: props.channel ? props.channel.id : undefined,
 		poll: poll.value,
 		cw: useCw.value ? cw.value || "" : undefined,
+		lang: language.value,
 		localOnly: localOnly.value,
 		visibility: visibility.value,
 		visibleUserIds:
@@ -1029,6 +1081,7 @@ onMounted(() => {
 				cw.value = draft.data.cw;
 				visibility.value = draft.data.visibility;
 				localOnly.value = draft.data.localOnly;
+				language.value = draft.data.lang;
 				files.value = (draft.data.files || []).filter(
 					(draftFile) => draftFile,
 				);
@@ -1055,6 +1108,7 @@ onMounted(() => {
 			}
 			visibility.value = init.visibility;
 			localOnly.value = init.localOnly;
+			language.value = init.lang;
 			quoteId.value = init.renote ? init.renote.id : null;
 		}
 
@@ -1130,6 +1184,11 @@ onMounted(() => {
 			> .local-only {
 				margin: 0 0 0 12px;
 				opacity: 0.7;
+			}
+
+			> .language {
+				height: 34px;
+				width: 34px;
 			}
 
 			> .preview {
