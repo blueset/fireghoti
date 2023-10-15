@@ -360,10 +360,10 @@ export const langmapNoRegion = Object.assign({}, iso639Langs1, iso639Langs3);
 
 export const iso639Regional = {
 	"zh-hans": {
-		nativeName: "中文简体",
+		nativeName: "中文（简体）",
 	},
 	"zh-hant": {
-		nativeName: "中文繁體",
+		nativeName: "中文（繁體）",
 	},
 	"zh-cn": {
 		nativeName: "中文（中国大陆）",
