@@ -342,9 +342,6 @@ dayX: "{day}"
 monthX: "{month}"
 yearX: "{year}"
 pages: "Halaman"
-integration: "Integrasi"
-connectService: "Sambungkan"
-disconnectService: "Putuskan"
 enableLocalTimeline: "Nyalakan linimasa lokal"
 enableGlobalTimeline: "Nyalakan linimasa global"
 disablingTimelinesInfo: "Admin dan Moderator akan selalu memiliki akses ke semua linimasa
@@ -1269,8 +1266,8 @@ _tutorial:
     {introduction} atau \"Halo dunia!\" yang sederhana."
   step5_1: "Linimasa, linimasa di mana-mana!"
   step5_2: "Servermu memiliki {timelines} lini masa berbeda yang diaktifkan."
-  step5_3: "Lini masa Beranda {icon} adalah tempat di mana kamu bisa melihat postingan
-    dari akun yang kamu ikuti."
+  step5_3: "Lini masa Beranda {icon} adalah tempat kamu bisa melihat postingan dari
+    akun yang kamu ikuti."
   step5_4: "Linimasa Lokal {icon} adalah tempat kamu dapat melihat postingan dari
     siapa pun di server ini."
   step6_1: "Jadi, tempat apa ini?"
