@@ -35,7 +35,6 @@ import renderUpdate from "@/remote/activitypub/renderer/update.js";
 import { deliverToRelays } from "@/services/relay.js";
 // import { deliverQuestionUpdate } from "@/services/note/polls/update.js";
 import { langmap } from "@/misc/langmap.js";
-import detectLanguage from "@/misc/detect-language.js";
 
 export const meta = {
 	tags: ["notes"],
@@ -385,8 +384,6 @@ export default define(meta, paramDef, async (ps, user) => {
 		if (!Object.keys(langmap).includes(ps.lang.toLowerCase()))
 			throw new Error("invalid param");
 		ps.lang = ps.lang.toLowerCase();
-	} else if (ps.text) {
-		ps.lang = detectLanguage(ps.text);
 	} else {
 		ps.lang = null;
 	}

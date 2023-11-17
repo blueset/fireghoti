@@ -68,7 +68,6 @@ import meilisearch from "@/db/meilisearch.js";
 import { redisClient } from "@/db/redis.js";
 import { Mutex } from "redis-semaphore";
 import { langmap } from "@/misc/langmap.js";
-import detectLanguage from "@/misc/detect-language.js";
 
 const mutedWordsCache = new Cache<
 	{ userId: UserProfile["userId"]; mutedWords: UserProfile["mutedWords"] }[]
@@ -284,8 +283,6 @@ export default async (
 			if (!Object.keys(langmap).includes(data.lang.toLowerCase()))
 				throw new Error("invalid param");
 			data.lang = data.lang.toLowerCase();
-		} else if (data.text) {
-			data.lang = detectLanguage(data.text);
 		} else {
 			data.lang = null;
 		}
