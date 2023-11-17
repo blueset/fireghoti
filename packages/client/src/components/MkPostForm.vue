@@ -709,19 +709,28 @@ function setVisibility() {
 }
 
 function setLanguage() {
-	const actions: Array<MenuItem> = [
-		{
-			text: i18n.ts.autoDetect,
-			danger: false,
-			active: false,
-			icon: `${icon("ph-magic-wand")}`,
-			action: () => {
-				language.value = detectLanguage(text.value) ?? language.value;
+	const actions: Array<MenuItem> = [];
+
+	const detectedLanguage = detectLanguage(text.value);
+	if (
+		detectedLanguage !== "" &&
+		detectedLanguage != null &&
+		detectedLanguage !== language.value
+	)
+		actions.push(
+			{
+				text: langmap[detectedLanguage].nativeName,
+				danger: false,
+				active: false,
+				icon: `${icon("ph-list-magnifying-glass")}`,
+				action: () => {
+					language.value = detectedLanguage;
+				},
 			},
-		},
-		null,
-	];
-	if (language.value)
+			null,
+		);
+
+	if (language.value != null)
 		actions.push({
 			text: langmap[language.value].nativeName,
 			danger: false,
