@@ -705,7 +705,7 @@ function setVisibility() {
 
 // example usage:
 // filterLangmapByPrefix("zh") to take
-// "zh", "zh-cn", "zh-tw", "zh-hk", etc. out of the langmap
+// zh, zh-cn, zh-tw, zh-hk, etc. out of the langmap
 function filterLangmapByPrefix(
 	prefix: string,
 ): { langCode: string; nativeName: string }[] {
