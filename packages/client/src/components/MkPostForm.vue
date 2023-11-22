@@ -703,6 +703,19 @@ function setVisibility() {
 	);
 }
 
+// example usage:
+// filterLangmapByKeyPrefix("zh") to take
+// "zh", "zh-cn", "zh-tw", "zh-hk", etc. out of the langmap
+function filterLangmapByKeyPrefix(
+	prefix: string,
+): { langKey: string; nativeName: string }[] {
+	return Object.keys(langmap)
+		.filter((key) => key.startsWith(prefix))
+		.map((key) => {
+			return { langKey: key, nativeName: langmap[key].nativeName };
+		});
+}
+
 function setLanguage() {
 	const actions: Array<MenuItem> = [];
 
@@ -711,19 +724,23 @@ function setLanguage() {
 		detectedLanguage !== "" &&
 		detectedLanguage != null &&
 		detectedLanguage !== language.value
-	)
-		actions.push(
-			{
-				text: langmap[detectedLanguage].nativeName,
+	) {
+		actions.push({
+			type: "label",
+			text: i18n.ts.suggested,
+		});
+		filterLangmapByKeyPrefix(detectedLanguage).forEach((v, i) => {
+			actions.push({
+				text: v.nativeName,
 				danger: false,
 				active: false,
-				icon: `${icon("ph-list-magnifying-glass")}`,
 				action: () => {
-					language.value = detectedLanguage;
+					language.value = v.langKey;
 				},
-			},
-			null,
-		);
+			});
+		});
+		actions.push(null);
+	}
 
 	if (language.value != null)
 		actions.push({
