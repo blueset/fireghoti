@@ -360,7 +360,6 @@ const visibleUsers = ref([]);
 if (props.initialVisibleUsers) {
 	props.initialVisibleUsers.forEach(pushVisibleUser);
 }
-const autocomplete = ref(null);
 const draghover = ref(false);
 const quoteId = ref(null);
 const hasNotSpecifiedMentions = ref(false);
@@ -492,11 +491,11 @@ if (props.reply && props.reply.text != null) {
 			  ? `@${x.username}`
 			  : `@${x.username}@${toASCII(otherHost)}`;
 
-		// 自分は除外
+		// exclude me
 		if ($i.username === x.username && (x.host == null || x.host === host))
 			continue;
 
-		// 重複は除外
+		// remove duplicates
 		if (text.value.includes(`${mention} `)) continue;
 
 		text.value += `${mention} `;
@@ -505,10 +504,10 @@ if (props.reply && props.reply.text != null) {
 
 if (props.channel) {
 	visibility.value = "public";
-	localOnly.value = true; // TODO: チャンネルが連合するようになった折には消す
+	localOnly.value = true; // TODO: Delete this once channels get federated
 }
 
-// 公開以外へのリプライ時は元の公開範囲を引き継ぐ
+// Inherit the original visibility
 if (
 	props.reply &&
 	["home", "followers", "specified"].includes(props.reply.visibility)
@@ -626,10 +625,6 @@ function togglePoll() {
 			expiredAfter: null,
 		};
 	}
-}
-
-function addTag(tag: string) {
-	insertTextAtCursor(textareaEl.value, ` #${tag} `);
 }
 
 function focus() {
@@ -781,6 +776,8 @@ function clear() {
 	quoteId.value = null;
 }
 
+// FIXME: ev.which is deprecated
+// https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/which
 function onKeydown(ev: KeyboardEvent) {
 	if (
 		(ev.which === 10 || ev.which === 13) &&
@@ -817,7 +814,7 @@ async function onPaste(ev: ClipboardEvent) {
 		}
 	}
 
-	const paste = ev.clipboardData.getData("text");
+	const paste = ev.clipboardData?.getData("text") ?? "";
 
 	if (!props.renote && !quoteId.value && paste.startsWith(url + "/notes/")) {
 		ev.preventDefault();
@@ -832,7 +829,7 @@ async function onPaste(ev: ClipboardEvent) {
 			}
 
 			quoteId.value = paste
-				.substr(url.length)
+				.substring(url.length)
 				.match(/^\/notes\/(.+?)\/?$/)[1];
 		});
 	}
