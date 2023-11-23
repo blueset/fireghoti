@@ -354,6 +354,12 @@ export const iso639Langs3 = {
 	tok: {
 		nativeName: "Toki Pona",
 	},
+	yue: {
+		nativeName: "粵語",
+	},
+	nan: {
+		nativeName: "閩南語",
+	},
 };
 
 export const langmapNoRegion = Object.assign({}, iso639Langs1, iso639Langs3);
@@ -364,18 +370,6 @@ export const iso639Regional = {
 	},
 	"zh-hant": {
 		nativeName: "中文（繁體）",
-	},
-	"zh-cn": {
-		nativeName: "中文（中国大陆）",
-	},
-	"zh-hk": {
-		nativeName: "中文（香港）",
-	},
-	"zh-sg": {
-		nativeName: "中文（新加坡）",
-	},
-	"zh-tw": {
-		nativeName: "中文（台灣）",
 	},
 };
 

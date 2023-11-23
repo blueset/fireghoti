@@ -714,17 +714,22 @@ const language = ref<string>(
 		localStorage.getItem("lang")?.split("-")[0],
 );
 
-// example usage:
-// filterLangmapByPrefix("zh") to take
-// zh, zh-cn, zh-tw, zh-hk, etc. out of the langmap
 function filterLangmapByPrefix(
 	prefix: string,
 ): { langCode: string; nativeName: string }[] {
-	return Object.entries(langmap)
+	const to_return = Object.entries(langmap)
 		.filter(([langCode, _]) => langCode.startsWith(prefix))
 		.map(([langCode, v]) => {
 			return { langCode, nativeName: v.nativeName };
 		});
+
+	if (prefix === "zh")
+		to_return = to_return.concat([
+			{ langCode: "yue", nativeName: langmap["yue"].nativeName },
+			{ langCode: "nan", nativeName: langmap["nan"].nativeName },
+		]);
+
+	return to_return;
 }
 
 function setLanguage() {
