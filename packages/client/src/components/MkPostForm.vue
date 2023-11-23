@@ -353,9 +353,7 @@ const visibility = ref(
 			: defaultStore.state
 					.defaultNoteVisibility) as (typeof firefish.noteVisibilities)[number]),
 );
-const language = ref(
-	props.initialLanguage ?? localStorage.getItem("lang")?.split("-")[0],
-);
+
 const visibleUsers = ref([]);
 if (props.initialVisibleUsers) {
 	props.initialVisibleUsers.forEach(pushVisibleUser);
@@ -703,6 +701,12 @@ function setVisibility() {
 	);
 }
 
+const language = ref<string>(
+	props.initialLanguage ??
+		defaultStore.state.recentlyUsedPostLanguages[0] ??
+		localStorage.getItem("lang")?.split("-")[0],
+);
+
 // example usage:
 // filterLangmapByPrefix("zh") to take
 // zh, zh-cn, zh-tw, zh-hk, etc. out of the langmap
@@ -719,12 +723,8 @@ function filterLangmapByPrefix(
 function setLanguage() {
 	const actions: Array<MenuItem> = [];
 
-	const detectedLanguage = detectLanguage(text.value);
-	if (
-		detectedLanguage !== "" &&
-		detectedLanguage != null &&
-		detectedLanguage !== language.value
-	) {
+	const detectedLanguage: string = detectLanguage(text.value) ?? "";
+	if (detectedLanguage !== "" && detectedLanguage !== language.value) {
 		actions.push({
 			type: "label",
 			text: i18n.ts.suggested,
@@ -751,8 +751,28 @@ function setLanguage() {
 		});
 
 	const langs = Object.keys(langmap);
+
+	// Show recently used language first
+	let recentlyUsedLanguagesExist = false;
+	for (const lang of defaultStore.state.recentlyUsedPostLanguages) {
+		if (lang === language.value) continue;
+		if (!langs.includes(lang)) continue;
+		actions.push({
+			text: langmap[lang].nativeName,
+			danger: false,
+			active: false,
+			action: () => {
+				language.value = lang;
+			},
+		});
+		recentlyUsedLanguagesExist = true;
+	}
+	if (recentlyUsedLanguagesExist) actions.push(null);
+
 	for (const lang of langs) {
 		if (lang === language.value) continue;
+		if (defaultStore.state.recentlyUsedPostLanguages.includes(lang))
+			continue;
 		actions.push({
 			text: langmap[lang].nativeName,
 			danger: false,
@@ -1018,6 +1038,20 @@ async function post() {
 			});
 		});
 	vibrate([10, 20, 10, 20, 10, 20, 60]);
+
+	// update recentlyUsedLanguages
+	if (language.value != null) {
+		const languages = Object.keys(langmap);
+		const maxLength = 30;
+
+		defaultStore.state.recentlyUsedPostLanguages = [language.value]
+			.concat(
+				defaultStore.state.recentlyUsedPostLanguages.filter((lang) => {
+					return lang !== language.value && languages.includes(lang);
+				}),
+			)
+			.slice(0, maxLength);
+	}
 }
 
 function cancel() {
