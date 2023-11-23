@@ -1054,7 +1054,7 @@ async function post() {
 	// update recentlyUsedLanguages
 	if (language.value != null) {
 		const languages = Object.keys(langmap);
-		const maxLength = 30;
+		const maxLength = 6;
 
 		defaultStore.state.recentlyUsedPostLanguages = [language.value]
 			.concat(
