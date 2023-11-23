@@ -57,7 +57,14 @@
 					class="_button language"
 					@click="setLanguage"
 				>
-					<i :class="icon('ph-translate')"></i>
+					<i
+						v-if="language === '' || language == null"
+						class="_button"
+						:class="icon('ph-seal-warning')"
+					></i>
+					<p v-else class="_button" style="font-weight: bold">
+						{{ language.split("-")[0] }}
+					</p>
 				</button>
 				<button
 					v-tooltip="i18n.ts.previewNoteText"
