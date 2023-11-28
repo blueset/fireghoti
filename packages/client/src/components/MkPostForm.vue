@@ -708,7 +708,7 @@ function setVisibility() {
 	);
 }
 
-const language = ref<string>(
+const language = ref<string | null>(
 	props.initialLanguage ??
 		defaultStore.state.recentlyUsedPostLanguages[0] ??
 		localStorage.getItem("lang")?.split("-")[0],
@@ -717,7 +717,7 @@ const language = ref<string>(
 function filterLangmapByPrefix(
 	prefix: string,
 ): { langCode: string; nativeName: string }[] {
-	const to_return = Object.entries(langmap)
+	let to_return = Object.entries(langmap)
 		.filter(([langCode, _]) => langCode.startsWith(prefix))
 		.map(([langCode, v]) => {
 			return { langCode, nativeName: v.nativeName };
@@ -780,6 +780,15 @@ function setLanguage() {
 		recentlyUsedLanguagesExist = true;
 	}
 	if (recentlyUsedLanguagesExist) actions.push(null);
+
+	actions.push({
+		text: i18n.ts.noLanguage,
+		danger: false,
+		active: false,
+		action: () => {
+			language.value = null;
+		},
+	});
 
 	for (const lang of langs) {
 		if (lang === language.value) continue;
