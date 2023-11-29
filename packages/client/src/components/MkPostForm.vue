@@ -992,7 +992,7 @@ async function post() {
 		channelId: props.channel ? props.channel.id : undefined,
 		poll: poll.value,
 		cw: useCw.value ? cw.value || "" : undefined,
-		lang: language.value,
+		lang: language.value ? language.value : undefined,
 		localOnly: localOnly.value,
 		visibility: visibility.value,
 		visibleUserIds:

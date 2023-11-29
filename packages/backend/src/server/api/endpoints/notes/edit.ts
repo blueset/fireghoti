@@ -171,7 +171,7 @@ export const paramDef = {
 		text: { type: "string", maxLength: MAX_NOTE_TEXT_LENGTH, nullable: true },
 		lang: {
 			type: "string",
-			enum: [null, ...Object.keys(langmap)],
+			enum: Object.keys(langmap),
 			nullable: true,
 		},
 		cw: { type: "string", nullable: true, maxLength: 250 },
