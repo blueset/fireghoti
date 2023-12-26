@@ -85,8 +85,8 @@ importers:
         specifier: ^1.0.4
         version: 1.0.4
       pnpm:
-        specifier: 8.11.0
-        version: 8.11.0
+        specifier: 8.13.1
+        version: 8.13.1
       start-server-and-test:
         specifier: 2.0.3
         version: 2.0.3
@@ -106,8 +106,8 @@ importers:
         specifier: 5.9.1
         version: 5.9.1
       '@discordapp/twemoji':
-        specifier: 14.1.2
-        version: 14.1.2
+        specifier: ^15.0.2
+        version: 15.0.2
       '@elastic/elasticsearch':
         specifier: 8.10.0
         version: 8.10.0
@@ -135,6 +135,9 @@ importers:
       '@tensorflow/tfjs':
         specifier: ^4.13.0
         version: 4.13.0(seedrandom@3.0.5)
+      '@twemoji/parser':
+        specifier: ^15.0.0
+        version: 15.0.0
       adm-zip:
         specifier: ^0.5.10
         version: 0.5.10
@@ -399,9 +402,6 @@ importers:
       tmp:
         specifier: 0.2.1
         version: 0.2.1
-      twemoji-parser:
-        specifier: 14.0.0
-        version: 14.0.0
       typeorm:
         specifier: 0.3.17
         version: 0.3.17(ioredis@5.3.2)(pg@8.11.3)(ts-node@10.9.1)
@@ -620,9 +620,6 @@ importers:
 
   packages/client:
     devDependencies:
-      '@discordapp/twemoji':
-        specifier: 14.1.2
-        version: 14.1.2
       '@eslint-sets/eslint-config-vue3':
         specifier: ^5.10.0
         version: 5.10.0(@babel/core@7.23.2)(eslint@8.53.0)(prettier@3.1.0)(typescript@5.2.2)
@@ -949,9 +946,6 @@ importers:
       socks-proxy-agent:
         specifier: ^7.0.0
         version: 7.0.0
-      typescript:
-        specifier: 4.9.4
-        version: 4.9.4
       uuid:
         specifier: ^9.0.0
         version: 9.0.0
@@ -1031,6 +1025,9 @@ importers:
       typedoc:
         specifier: ^0.23.24
         version: 0.23.28(typescript@4.9.4)
+      typescript:
+        specifier: 4.9.4
+        version: 4.9.4
 
   packages/sw:
     optionalDependencies:
@@ -1236,7 +1233,7 @@ packages:
     resolution: {integrity: sha512-wGjk9QZVzvknA6yKIUURb8zY3grXCcOZt+/7Wcy8O2uctxhplmUPkOdlgoNhmdVee2c92JXbf1xpMtVNbfoxRw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.22.10
+      '@babel/types': 7.23.0
 
   /@babel/helper-module-imports@7.22.15:
     resolution: {integrity: sha512-0pYVBnDKZO2fnSPCrgM/6WMc7eS20Fbok+0r88fp+YtWVLZrp4CkafFGIp+W0VKw4a22sgebPT99y+FDNMdP4w==}
@@ -1286,13 +1283,13 @@ packages:
     resolution: {integrity: sha512-n0H99E/K+Bika3++WNL17POvo4rKWZ7lZEp1Q+fStVbUi8nxPQEBOlTmCOxW/0JsS56SKKQ+ojAe2pHKJHN35w==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.22.10
+      '@babel/types': 7.23.0
 
   /@babel/helper-split-export-declaration@7.22.6:
     resolution: {integrity: sha512-AsUnxuLhRYsisFiaJwvp1QF+I3KjD5FOxut14q/GzovUe6orHLesW2C7d754kRm53h5gqrz6sFl6sxc4BVtE/g==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.22.10
+      '@babel/types': 7.23.0
 
   /@babel/helper-string-parser@7.22.5:
     resolution: {integrity: sha512-mM4COjgZox8U+JcXQwPijIZLElkgEpO5rsERVDJTc2qfCDfERyob6k5WegS14SX18IIjv+XD+GrqNumY5JRCDw==}
@@ -1301,7 +1298,6 @@ packages:
   /@babel/helper-validator-identifier@7.22.20:
     resolution: {integrity: sha512-Y4OZ+ytlatR8AI+8KZfKuL5urKp7qey08ha31L8b3BwewJAoJamTzyvxPR/5D+KkdJCGPq/+8TukHBlY10FX9A==}
     engines: {node: '>=6.9.0'}
-    dev: true
 
   /@babel/helper-validator-identifier@7.22.5:
     resolution: {integrity: sha512-aJXu+6lErq8ltp+JhkJUfk1MTGyuA4v7f3pA+BJ5HLfNC6nAQ0Cpi9uOquUj8Hehg0aUiHzWQbOVJGao6ztBAQ==}
@@ -1610,7 +1606,6 @@ packages:
       '@babel/helper-string-parser': 7.22.5
       '@babel/helper-validator-identifier': 7.22.20
       to-fast-properties: 2.0.0
-    dev: true
 
   /@bcoe/v8-coverage@0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
@@ -1956,13 +1951,14 @@ packages:
       - web-streams-polyfill
     dev: false
 
-  /@discordapp/twemoji@14.1.2:
-    resolution: {integrity: sha512-Rkuu30/biwy8Zss0r5qfFvQzoQGPTHXzA7Y/MPMkCQqFd0WskoYvjfJRTz0iuZwUpMfrgbM8eakSsptCxmOqog==}
+  /@discordapp/twemoji@15.0.2:
+    resolution: {integrity: sha512-SrWKcv3SrGfrLQ/vfUnA+bAG73Q6Yjys01UuoY5SzUlc9iS03amQ6DxLhzVsjW/aTdgiMQdUatLidD+YPfYMCw==}
     dependencies:
+      '@twemoji/parser': 15.0.0
       fs-extra: 8.1.0
       jsonfile: 5.0.0
-      twemoji-parser: 14.0.0
       universalify: 0.1.2
+    dev: false
 
   /@elastic/elasticsearch@8.10.0:
     resolution: {integrity: sha512-RIEyqz0D18bz/dK+wJltaak+7wKaxDELxuiwOJhuMrvbrBsYDFnEoTdP/TZ0YszHBgnRPGqBDBgH/FHNgHObiQ==}
@@ -3781,6 +3777,10 @@ packages:
     resolution: {integrity: sha512-VtjHPAKJqLJoHHKBDNofzvQB2+ZVxjXU/Gw6INAS9aINLQYVsxfzrQ2s84huCeYWZRTtrr7R0J7XgpZHjNwBCw==}
     engines: {node: '>=14.17'}
     dev: true
+
+  /@twemoji/parser@15.0.0:
+    resolution: {integrity: sha512-lh9515BNsvKSNvyUqbj5yFu83iIDQ77SwVcsN/SnEGawczhsKU6qWuogewN1GweTi5Imo5ToQ9s+nNTf97IXvg==}
+    dev: false
 
   /@types/accepts@1.3.5:
     resolution: {integrity: sha512-jOdnI/3qTpHABjM5cx1Hc0sKsPoYCp+DP/GJRGtDlPd7fiV9oXGGIcjW/ZOxLIvjGz8MA+uMZI9metHlgqbgwQ==}
@@ -9856,6 +9856,7 @@ packages:
       graceful-fs: 4.2.11
       jsonfile: 4.0.0
       universalify: 0.1.2
+    dev: false
 
   /fs-extra@9.1.0:
     resolution: {integrity: sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==}
@@ -12281,6 +12282,7 @@ packages:
     resolution: {integrity: sha512-m6F1R3z8jjlf2imQHS2Qez5sjKWQzbuuhuJ/FKYFRZvPE3PuHcSMVZzfsLhGVOkfd20obL5SWEBew5ShlquNxg==}
     optionalDependencies:
       graceful-fs: 4.2.11
+    dev: false
 
   /jsonfile@5.0.0:
     resolution: {integrity: sha512-NQRZ5CRo74MhMMC3/3r5g2k4fjodJ/wh8MxjFbCViWKFjxrnudWSY5vomh+23ZaXzAS7J3fBZIR2dV6WbmfM0w==}
@@ -12288,6 +12290,7 @@ packages:
       universalify: 0.1.2
     optionalDependencies:
       graceful-fs: 4.2.11
+    dev: false
 
   /jsonfile@6.1.0:
     resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==}
@@ -14681,8 +14684,8 @@ packages:
     engines: {node: '>=14.19.0'}
     dev: false
 
-  /pnpm@8.11.0:
-    resolution: {integrity: sha512-nfh8FsmNsntOBR14fmfyIH7EfoCcywe/e17ErNzRYTNVg5o40LkAFEkj1qcFdwC3TSoMyxVYvrJBZHoSBqmnqw==}
+  /pnpm@8.13.1:
+    resolution: {integrity: sha512-dYvrxpictkYsUTgSmEAZOxDCWN3NsKtD7g753Yd4S8IY1uQctb7qw2K4zjPx+LCAJbWZkzwLzoIFCpo2uEdNQw==}
     engines: {node: '>=16.14'}
     hasBin: true
     dev: true
@@ -17674,6 +17677,7 @@ packages:
     resolution: {integrity: sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg==}
     engines: {node: '>=4.2.0'}
     hasBin: true
+    dev: true
 
   /typescript@5.2.2:
     resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
@@ -17792,6 +17796,7 @@ packages:
   /universalify@0.1.2:
     resolution: {integrity: sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==}
     engines: {node: '>= 4.0.0'}
+    dev: false
 
   /universalify@0.2.0:
     resolution: {integrity: sha512-CJ1QgKmNg3CwvAv/kOFmtnEN05f0D/cn9QntgNOQlQF9dgvVTHj3t+8JPdjqawCHk7V/KA+fbUqzZ9XWhcqPUg==}

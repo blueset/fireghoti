@@ -1,18 +1,18 @@
-import cluster from "node:cluster";
 import * as fs from "node:fs";
-import * as os from "node:os";
-import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { dirname } from "node:path";
+import * as os from "node:os";
+import cluster from "node:cluster";
 import chalk from "chalk";
 import chalkTemplate from "chalk-template";
 import semver from "semver";
 
+import Logger from "@/services/logger.js";
 import loadConfig from "@/config/load.js";
 import type { Config } from "@/config/types.js";
-import { db, initDb } from "@/db/postgre.js";
 import { envOption } from "@/env.js";
 import { showMachineInfo } from "@/misc/show-machine-info.js";
-import Logger from "@/services/logger.js";
+import { db, initDb } from "@/db/postgre.js";
 
 const _filename = fileURLToPath(import.meta.url);
 const _dirname = dirname(_filename);
@@ -148,9 +148,7 @@ function showNodejsVersion(): void {
 
 	nodejsLogger.info(`Version ${process.version} detected.`);
 
-	const minVersion = fs
-		.readFileSync(`${_dirname}/../../../../.node-version`, "utf-8")
-		.trim();
+	const minVersion = "v18.16.0";
 	if (semver.lt(process.version, minVersion)) {
 		nodejsLogger.error(`At least Node.js ${minVersion} required!`);
 		process.exit(1);

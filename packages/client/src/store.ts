@@ -373,6 +373,10 @@ export const defaultStore = markRaw(
 			where: "account",
 			default: [] as string[],
 		},
+		useEmojiCdn: {
+			where: "device",
+			default: true,
+		},
 	}),
 );
 
