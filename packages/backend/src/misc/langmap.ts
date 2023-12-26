@@ -1,4 +1,4 @@
-// TODO: sharedに置いてフロントエンドのと統合したい
+// TODO: sharedに置いてバックエンドのと統合したい
 export const iso639Langs1 = {
 	af: {
 		nativeName: "Afrikaans",
@@ -8,6 +8,7 @@ export const iso639Langs1 = {
 	},
 	ar: {
 		nativeName: "العربية",
+		rtl: true,
 	},
 	ay: {
 		nativeName: "Aymar aru",
@@ -65,6 +66,7 @@ export const iso639Langs1 = {
 	},
 	fa: {
 		nativeName: "فارسی",
+		rtl: true,
 	},
 	ff: {
 		nativeName: "Fulah",
@@ -101,6 +103,7 @@ export const iso639Langs1 = {
 	},
 	he: {
 		nativeName: "עברית‏",
+		rtl: true,
 	},
 	hi: {
 		nativeName: "हिन्दी",
@@ -224,6 +227,7 @@ export const iso639Langs1 = {
 	},
 	ps: {
 		nativeName: "پښتو",
+		rtl: true,
 	},
 	pt: {
 		nativeName: "Português",
@@ -299,6 +303,7 @@ export const iso639Langs1 = {
 	},
 	ur: {
 		nativeName: "اردو",
+		rtl: true,
 	},
 	uz: {
 		nativeName: "O'zbek",
@@ -311,6 +316,7 @@ export const iso639Langs1 = {
 	},
 	yi: {
 		nativeName: "ייִדיש",
+		rtl: true,
 	},
 	zh: {
 		nativeName: "中文",
@@ -354,6 +360,12 @@ export const iso639Langs3 = {
 	tok: {
 		nativeName: "Toki Pona",
 	},
+	yue: {
+		nativeName: "粵語",
+	},
+	nan: {
+		nativeName: "閩南語",
+	},
 };
 
 export const langmapNoRegion = Object.assign({}, iso639Langs1, iso639Langs3);
@@ -364,18 +376,6 @@ export const iso639Regional = {
 	},
 	"zh-hant": {
 		nativeName: "中文（繁體）",
-	},
-	"zh-cn": {
-		nativeName: "中文（中国大陆）",
-	},
-	"zh-hk": {
-		nativeName: "中文（香港）",
-	},
-	"zh-sg": {
-		nativeName: "中文（新加坡）",
-	},
-	"zh-tw": {
-		nativeName: "中文（台灣）",
 	},
 };
 
