@@ -160,7 +160,7 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 
 	if (ps.name !== undefined) updates.name = ps.name;
 	if (ps.description !== undefined) profileUpdates.description = ps.description;
-	if (ps.lang !== undefined) profileUpdates.lang = ps.lang;
+	if (typeof ps.lang === "string") profileUpdates.lang = ps.lang;
 	if (ps.location !== undefined) profileUpdates.location = ps.location;
 	if (ps.birthday !== undefined) profileUpdates.birthday = ps.birthday;
 	if (ps.ffVisibility !== undefined)
