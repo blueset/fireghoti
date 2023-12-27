@@ -118,7 +118,7 @@ export const paramDef = {
 		preventAiLearning: { type: "boolean" },
 		isBot: { type: "boolean" },
 		isCat: { type: "boolean" },
-		speakAsCat: { type: "boolean" },
+		speakAsCat: { type: "boolean", nullable: true },
 		isIndexable: { type: "boolean" },
 		injectFeaturedNote: { type: "boolean" },
 		receiveAnnouncementEmail: { type: "boolean" },
