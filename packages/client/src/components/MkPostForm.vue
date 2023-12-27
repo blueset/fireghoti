@@ -1065,13 +1065,21 @@ async function post() {
 		const languages = Object.keys(langmap);
 		const maxLength = 6;
 
-		defaultStore.state.recentlyUsedPostLanguages = [language.value]
-			.concat(
-				defaultStore.state.recentlyUsedPostLanguages.filter((lang) => {
-					return lang !== language.value && languages.includes(lang);
-				}),
-			)
-			.slice(0, maxLength);
+		defaultStore.set(
+			"recentlyUsedPostLanguages",
+			[language.value]
+				.concat(
+					defaultStore.state.recentlyUsedPostLanguages.filter(
+						(lang) => {
+							return (
+								lang !== language.value &&
+								languages.includes(lang)
+							);
+						},
+					),
+				)
+				.slice(0, maxLength),
+		);
 	}
 }
 
