@@ -229,13 +229,16 @@ function saveFields() {
 	});
 }
 
+const convertEmptyStringToNull = (x) =>
+	x === "" ? null : x == null ? undefined : x;
+
 function save() {
 	os.apiWithDialog("i/update", {
-		name: profile.name ?? undefined,
-		description: profile.description ?? undefined,
-		location: profile.location ?? undefined,
-		birthday: profile.birthday ?? undefined,
-		lang: profile.lang ?? undefined,
+		name: convertEmptyStringToNull(profile.name),
+		description: convertEmptyStringToNull(profile.description),
+		location: convertEmptyStringToNull(profile.location),
+		birthday: convertEmptyStringToNull(profile.birthday),
+		lang: convertEmptyStringToNull(profile.lang),
 		isBot: !!profile.isBot,
 		isCat: !!profile.isCat,
 		speakAsCat: profile.isCat ? !!profile.speakAsCat : undefined,
