@@ -1,12 +1,14 @@
 <template>
 	<div class="cpjygsrt" :class="{ error: error != null, warn: warn != null }">
 		<header>
-			<div class="title"><slot name="header"></slot></div>
 			<div class="buttons">
-				<slot name="func"></slot>
 				<button v-if="removable" class="_button" @click="remove()">
 					<i :class="icon('ph-trash')"></i>
 				</button>
+			</div>
+			<div class="title"><slot name="header"></slot></div>
+			<div class="buttons">
+				<slot name="func"></slot>
 				<div v-if="draggable" class="drag-handle _button">
 					<i :class="icon('ph-list')"></i>
 				</div>
@@ -115,17 +117,19 @@ export default defineComponent({
 	}
 
 	> header {
+		display: flex;
+		padding-top: 0.5em;
+
 		> .title {
 			z-index: 1;
 			margin: 0;
-			padding: 0 16px;
-			line-height: 42px;
 			font-size: 0.9em;
 			font-weight: bold;
 			box-shadow: 0 1px rgba(#000, 0.07);
+			flex: 1;
 
 			> i {
-				margin-right: 6px;
+				margin-inline-end: 6px;
 			}
 
 			&:empty {
@@ -134,16 +138,13 @@ export default defineComponent({
 		}
 
 		> .buttons {
-			position: absolute;
 			z-index: 2;
-			top: 0;
-			right: 0;
 
-			> ._button {
+			> ._button,
+			> :slotted(._button) {
 				padding: 0;
 				width: 42px;
 				font-size: 0.9em;
-				line-height: 42px;
 				text-align: center;
 			}
 
