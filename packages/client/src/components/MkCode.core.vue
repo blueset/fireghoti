@@ -7,8 +7,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from "vue";
-import Prism from "prismjs";
+import { computed, ref } from "vue";
+import Prism, { loadLanguage } from "@/scripts/prism";
 import "prismjs/themes/prism-okaidia.css";
 
 const props = defineProps<{
@@ -17,9 +17,24 @@ const props = defineProps<{
 	inline?: boolean;
 }>();
 
-const prismLang = computed(() =>
-	Prism.languages[props.lang] ? props.lang : "plaintext",
+// fallback to "plaintext" if language not loaded
+const prismLang = ref(
+	props.lang != null && props.lang in Prism.languages
+		? props.lang
+		: "plaintext",
 );
+
+// try to load language asynchronously
+if (props.lang != null && !(props.lang in Prism.languages)) {
+	const { lang } = props;
+	loadLanguage(props.lang).then(
+		// onLoaded
+		() => (prismLang.value = lang),
+		// onError
+		() => {},
+	);
+}
+
 const html = computed(() =>
 	Prism.highlight(
 		props.code,
