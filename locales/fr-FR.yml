@@ -2240,8 +2240,6 @@ renotes: Boosts
 moreUrls: Pages épinglées
 squareCatAvatars: Afficher les avatars carrés pour les comptes avec oreilles de chat
 suggested: Suggéré
-useEmojiCdnDescription: Utiliser Twemoji depuis le CDN JSDelivr au lieu des actifs
-  de ce serveur.
 replaceChatButtonWithAccountButton: Remplacer le bouton de discussion par le bouton
   de changement de compte
 showBigPostButton: Afficher un gros bouton de publication sur le formulaire de publication
@@ -2250,7 +2248,6 @@ moreUrlsDescription: "Saisir les pages que vous voulez épingler au menu d'aide 
 attachedToNotes: Publications avec ce fichier
 showAttachedNotes: Afficher les publications avec ce fichier
 noLanguage: Aucune langue
-useEmojiCdn: Obtenir Twemoji depuis un CDN
 showPreviewByDefault: Afficher l'aperçu dans le formulaire de publication par défaut
 preventMisclick: Protection contre les clics accidentels
 hideFollowButtons: Masquer les boutons d'abonnement dans une position où nous ne pouvons

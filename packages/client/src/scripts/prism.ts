@@ -1,5 +1,6 @@
 import Prism from "prismjs";
 import "prismjs/plugins/autoloader/prism-autoloader.js";
+import { defaultStore } from "@/store";
 
 // TODO
 Prism.plugins.autoloader.languages_path =
@@ -8,6 +9,8 @@ Prism.plugins.autoloader.languages_path =
 const nonExistingLanguagesCache = new Set<string>();
 export const loadLanguage = (lang: string) =>
 	new Promise<void>((resolve, reject) => {
+		// for now
+		if (!defaultStore.state.useEmojiCdn) return reject();
 		// cached non-existing language
 		if (nonExistingLanguagesCache.has(lang)) return reject();
 		// load language with autoloader

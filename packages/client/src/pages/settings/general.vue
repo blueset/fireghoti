@@ -289,9 +289,9 @@
 				i18n.ts.showBigPostButton
 			}}</FormSwitch>
 			<FormSwitch v-model="useEmojiCdn" class="_formBlock"
-				>{{ i18n.ts.useEmojiCdn
+				>{{ i18n.ts.useCdn
 				}}<template #caption>{{
-					i18n.ts.useEmojiCdnDescription
+					i18n.ts.useCdnDescription
 				}}</template></FormSwitch
 			>
 			<FormSwitch

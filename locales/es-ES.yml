@@ -2197,9 +2197,6 @@ _iconSets:
 replies: Respuestas
 renotes: Impulsos
 iconSet: Conjunto de iconos
-useEmojiCdn: Obtenga Twemoji desde un CDN
-useEmojiCdnDescription: Utilice Twemoji desde JSDelivr CDN en lugar de los assetos
-  proporcionados del servidor.
 moreUrlsDescription: 'Ingrese los enlaces de las páginas que desea Fijar en el menú
   de ayuda, ubicado en la esquina inferior izquierda, usando este formato de notación:
   ["Nombre para mostrar": https://su-enlace.com/]'

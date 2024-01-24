@@ -2234,8 +2234,5 @@ moreUrls: Angeheftete Seiten
 iconSet: Icon Satz
 renotes: Boosts
 quotes: Zitate
-useEmojiCdn: Hole Twemoji von einem CDN
-useEmojiCdnDescription: Benutze Twemoji von einem JSDelivr CDN anstelle der servereigenen
-  Assets.
 moreUrlsDescription: "Die Seiten, welche angepinnt werde sollen, im Hilfe-Menü in
   der unteren linken Ecke in folgender Notation angeben:\n\"Anzeigename\": https://example.com/"

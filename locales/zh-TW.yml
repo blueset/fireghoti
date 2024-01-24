@@ -2005,8 +2005,6 @@ _iconSets:
   light: 細線
 showAttachedNotes: 顯示有此附件的貼文
 attachedToNotes: 帶有此附件的貼文
-useEmojiCdn: 使用CDN的Twemoji
-useEmojiCdnDescription: 使用JSDelivr CDN提供的Twemoji，而不使用儲存在伺服器上的檔案。
 moreUrls: 置頂的頁面
 moreUrlsDescription: "請以下列形式輸入欲釘選在左下角幫助選單的頁面，一行一個：\n\"顯示名稱\": https://example.com/"
 showPreviewByDefault: "自動開啟發文介面中的預覽顯示"
