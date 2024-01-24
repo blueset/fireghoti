@@ -148,10 +148,11 @@ cacheRemoteFilesDescription: "Si desactiva esta configuración, los archivos rem
   se cargarán desde el servidor remoto sin usar la caché. Con eso se puede ahorrar
   almacenamiento del servidor, pero eso aumentará el tráfico al no crear miniaturas."
 flagAsBot: "Marcar esta cuenta como automatizada / robot"
-flagAsBotDescription: "En caso de que esta cuenta fuera usada por un programa, active
-  esta opción. Al hacerlo, esta opción servirá para otros desarrolladores para evitar
-  cadenas infinitas de reacciones, y ajustará los sistemas internos de Firefish para
-  que trate a esta cuenta como un bot."
+flagAsBotDescription: "En caso de que esta cuenta fuera usada por un programa automatizado,
+  active esta opción. Al hacerlo, esta opción servirá para notificar otros desarrolladores
+  y evitar cadenas infinitas de reacciones con otras cuentas automatizadas, tambien
+  ayuda ajustar los sistemas internos de Firefish para que trate a esta cuenta como
+  un bot / automatizada."
 flagAsCat: "Esta cuenta es un gato"
 flagAsCatDescription: "Vas a tener orejas de gato y hablar como un gato!"
 flagShowTimelineReplies: "Mostrar respuestas a las notas en la biografía"
@@ -277,7 +278,7 @@ agreeTo: "De acuerdo con {0}"
 tos: "Términos de uso"
 start: "Comenzar"
 home: "Inicio"
-remoteUserCaution: "La información del usuario remoto tal vez esta incompleta."
+remoteUserCaution: "La información del usuario remoto esta incompleta."
 activity: "Actividad"
 images: "Imágenes"
 birthday: "Fecha de nacimiento"
