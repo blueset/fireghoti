@@ -85,8 +85,8 @@ importers:
         specifier: ^1.0.4
         version: 1.0.4
       pnpm:
-        specifier: 8.13.1
-        version: 8.13.1
+        specifier: 8.15.1
+        version: 8.15.1
       start-server-and-test:
         specifier: 2.0.3
         version: 2.0.3
@@ -14684,8 +14684,8 @@ packages:
     engines: {node: '>=14.19.0'}
     dev: false
 
-  /pnpm@8.13.1:
-    resolution: {integrity: sha512-dYvrxpictkYsUTgSmEAZOxDCWN3NsKtD7g753Yd4S8IY1uQctb7qw2K4zjPx+LCAJbWZkzwLzoIFCpo2uEdNQw==}
+  /pnpm@8.15.1:
+    resolution: {integrity: sha512-gxz0xfi4N0r3FSHU0VPbSdcIbeYVwq98tenX64umMN2sRv6kldZD5VLvLmijqpmj5en77oaWcClnUE31xZyycw==}
     engines: {node: '>=16.14'}
     hasBin: true
     dev: true
