@@ -1,9 +1,7 @@
 <div align="center">
-<a href="https://joinfirefish.org/">
-	<img src="./title.svg" alt="Firefish logo" style="border-radius:50%" width="400"/>
-</a>
+<img src="./title.svg" alt="Firefish logo" style="border-radius:50%" width="400"/>
 
-**🌎 **[Firefish](https://joinfirefish.org/)** is an open source, decentralized social media platform that's free forever! 🚀**
+**🌎 Firefish is an open source, decentralized social media platform that's free forever! 🚀**
 
 [![no github badge](https://nogithub.codeberg.page/badge.svg)](https://nogithub.codeberg.page/)
 <!-- [![status badge](https://ci.codeberg.org/api/badges/firefish/firefish/status.svg)](https://ci.codeberg.org/firefish/firefish) -->
@@ -54,31 +52,18 @@
 - If you have the means to, [donations](https://opencollective.com/Firefish) are a great way to keep us going.
 - If you know how to program in TypeScript, Vue, or Rust, read the [contributing](./CONTRIBUTING.md) document.
 - If you know a non-English language, translating Firefish on [Weblate](https://hosted.weblate.org/engage/firefish/) help bring Firefish to more people. No technical experience needed!
-- Want to write/report about us, have any professional inquiries, or just have questions to ask? Contact us [here!](https://joinfirefish.org/contact/)
 
 ### All links
 
-- 🌐 Homepage: <https://joinfirefish.org>
 - 💸 Donations:
   - OpenCollective: <https://opencollective.com/Firefish>
   - Liberapay: <https://liberapay.com/ThatOneCalculator>
   - Donate publicly to get your name on the Patron list!
-- 🚢 Flagship server: <https://firefish.social>
 - 💁 Matrix support room: <https://matrix.to/#/#firefish:matrix.fedibird.com>
-- 📣 Official account: <a href="https://fedi.software/@firefish" rel="me">@firefish</a>
-- 📜 Server list: <https://joinfirefish.org/join>
+- 📣 Official account: <a href="https://info.firefish.dev/@firefish" rel="me">`@firefish@info.firefish.dev`</a>
 - ✍️ Weblate: <https://hosted.weblate.org/engage/firefish/>
-- ️️📬 Contact: <https://joinfirefish.org/contact/>
 
 # 🌠 Getting started
-
-Want to just join a Firefish server? View the list here, pick one, and join:
-
-### https://joinfirefish.org/join
-
----
-
-Want to make your own? Keep reading!
 
 This guide will work for both **starting from scratch** and **migrating from Misskey**.
 
@@ -86,12 +71,12 @@ This guide will work for both **starting from scratch** and **migrating from Mis
 
 If you have access to a server that supports one of the sources below, I recommend you use it! Note that these methods *won't* allow you to migrate from Misskey without manual intervention.
 
-[![Install on Ubuntu](https://pool.jortage.com/voringme/misskey/3b62a443-1b44-45cf-8f9e-f1c588f803ed.png)](https://git.joinfirefish.org/firefish/ubuntu-bash-install)　　[![Install on the Arch User Repository](https://pool.jortage.com/voringme/misskey/ba2a5c07-f078-43f1-8483-2e01acca9c40.png)](https://aur.archlinux.org/packages/firefish)　　[![Install Firefish with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=firefish)
+[![Install on Ubuntu](https://pool.jortage.com/voringme/misskey/3b62a443-1b44-45cf-8f9e-f1c588f803ed.png)](https://firefish.dev/firefish/ubuntu-bash-install)　　[![Install on the Arch User Repository](https://pool.jortage.com/voringme/misskey/ba2a5c07-f078-43f1-8483-2e01acca9c40.png)](https://aur.archlinux.org/packages/firefish)　　[![Install Firefish with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=firefish)
 
 ## 🛳️ Containerization
 
-- [🐳 How to run Firefish with Docker](https://git.joinfirefish.org/firefish/firefish/-/blob/develop/docs/docker.md)
-- [🛞 How to run Firefish with Kubernetes/Helm](https://git.joinfirefish.org/firefish/firefish/-/blob/develop/docs/kubernetes.md)
+- [🐳 How to run Firefish with Docker](https://firefish.dev/firefish/firefish/-/blob/develop/docs/docker.md)
+- [🛞 How to run Firefish with Kubernetes/Helm](https://firefish.dev/firefish/firefish/-/blob/develop/docs/kubernetes.md)
 
 ## 🧑‍💻 Dependencies
 
@@ -127,7 +112,7 @@ If you have access to a server that supports one of the sources below, I recomme
 ## 👀 Get folder ready
 
 ```sh
-git clone https://git.joinfirefish.org/firefish/firefish.git
+git clone https://firefish.dev/firefish/firefish.git
 cd firefish/
 ```
 
@@ -219,7 +204,7 @@ Please don't use ElasticSearch unless you already have an ElasticSearch setup an
 
 ## 🚚 Migrating from Misskey/FoundKey to Firefish
 
-For migrating from Misskey v13, Misskey v12, and FoundKey, read [this document](https://git.joinfirefish.org/firefish/firefish/-/blob/develop/docs/migrate.md).
+For migrating from Misskey v13, Misskey v12, and FoundKey, read [this document](https://firefish.dev/firefish/firefish/-/blob/develop/docs/migrate.md).
 
 ## 🌐 Web proxy
 

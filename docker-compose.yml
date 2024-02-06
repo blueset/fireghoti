@@ -2,9 +2,7 @@ version: "3"
 
 services:
   web:
-    # Choose one of these tags:
-    # stable-amd64, stable-arm64, beta-amd64, beta-arm64
-    image: registry.joinfirefish.org/firefish/firefish:stable-amd64
+    image: registry.firefish.dev/firefish/firefish:latest
     container_name: firefish_web
     restart: unless-stopped
     depends_on:

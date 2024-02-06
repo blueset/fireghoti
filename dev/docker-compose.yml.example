@@ -2,7 +2,7 @@ version: "3"
 
 services:
   web:
-    image: registry.joinfirefish.org/firefish/firefish
+    image: registry.firefish.dev/firefish/firefish
     build: ..
     container_name: firefish_web
     restart: always

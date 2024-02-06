@@ -57,7 +57,7 @@
 					<FormSection>
 						<div class="_formLinks">
 							<FormLink
-								to="https://git.joinfirefish.org/firefish/firefish"
+								to="https://firefish.dev/firefish/firefish"
 								external
 							>
 								<template #icon
@@ -153,7 +153,7 @@
 						</div>
 						<h3>
 							<MkLink
-								url="https://git.joinfirefish.org/firefish/firefish/activity"
+								url="https://firefish.dev/firefish/firefish/activity"
 								>{{ i18n.ts._aboutFirefish.allContributors }}
 							</MkLink>
 						</h3>
