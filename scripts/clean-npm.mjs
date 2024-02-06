@@ -6,16 +6,7 @@ import { execa } from "execa";
 (async () => {
 	const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-	fs.rmSync(join(__dirname, "/../packages/backend/built"), {
-		recursive: true,
-		force: true,
-	});
 	fs.rmSync(join(__dirname, "/../packages/backend/node_modules"), {
-		recursive: true,
-		force: true,
-	});
-
-	fs.rmSync(join(__dirname, "/../packages/backend/native-utils/built"), {
 		recursive: true,
 		force: true,
 	});
@@ -23,17 +14,7 @@ import { execa } from "execa";
 		recursive: true,
 		force: true,
 	});
-
-	fs.rmSync(join(__dirname, "/../packages/client/built"), {
-		recursive: true,
-		force: true,
-	});
 	fs.rmSync(join(__dirname, "/../packages/client/node_modules"), {
-		recursive: true,
-		force: true,
-	});
-
-	fs.rmSync(join(__dirname, "/../packages/sw/built"), {
 		recursive: true,
 		force: true,
 	});
@@ -41,15 +22,7 @@ import { execa } from "execa";
 		recursive: true,
 		force: true,
 	});
-	fs.rmSync(join(__dirname, "/../packages/firefish-js/built"), {
-		recursive: true,
-		force: true,
-	});
 	fs.rmSync(join(__dirname, "/../packages/firefish-js/node_modules"), {
-		recursive: true,
-		force: true,
-	});
-	fs.rmSync(join(__dirname, "/../packages/megalodon/lib"), {
 		recursive: true,
 		force: true,
 	});
@@ -57,8 +30,6 @@ import { execa } from "execa";
 		recursive: true,
 		force: true,
 	});
-
-	fs.rmSync(join(__dirname, "/../built"), { recursive: true, force: true });
 	fs.rmSync(join(__dirname, "/../node_modules"), {
 		recursive: true,
 		force: true,
@@ -66,11 +37,6 @@ import { execa } from "execa";
 
 	execa("pnpm", ["store", "prune"], {
 		cwd: join(__dirname, "/../"),
-		stdio: "inherit",
-	});
-
-	execa("cargo", ["clean"], {
-		cwd: join(__dirname, "/../packages/backend/native-utils"),
 		stdio: "inherit",
 	});
 })();

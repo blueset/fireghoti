@@ -30,9 +30,10 @@
 		"mocha": "pnpm --filter backend run mocha",
 		"test": "pnpm run mocha",
 		"format": "pnpm -r --parallel run format",
-		"clean": "pnpm node ./scripts/clean.mjs",
-		"clean-all": "pnpm node ./scripts/clean-all.mjs",
-		"cleanall": "pnpm run clean-all"
+		"clean": "pnpm node ./scripts/clean-built.mjs",
+		"clean-npm": "pnpm node ./scripts/clean-npm.mjs",
+		"clean-cargo": "pnpm node ./scripts/clean-cargo.mjs",
+		"clean-all": "pnpm run clean && pnpm run clean-cargo && pnpm run clean-npm"
 	},
 	"resolutions": {
 		"chokidar": "^3.3.1"
