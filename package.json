@@ -1,7 +1,6 @@
 {
 	"name": "firefish",
-	"version": "1.0.5-rc",
-	"codename": "aqua",
+	"version": "20240206",
 	"repository": {
 		"type": "git",
 		"url": "https://firefish.dev/firefish/firefish.git"
