@@ -87,7 +87,6 @@ If you have access to a server that supports one of the sources below, I recomme
   - 🍀 Nginx (recommended)
   - 🦦 Caddy
   - 🪶 Apache
-- ⚡ [libvips](https://www.libvips.org/)
 
 ### 😗 Optional dependencies
 

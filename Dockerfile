@@ -3,7 +3,7 @@ FROM node:20-slim as build
 WORKDIR /firefish
 
 # Install compilation dependencies
-RUN apt-get update && apt-get install -y libvips42 python3 git wget curl build-essential
+RUN apt-get update && apt-get install -y python3 git wget curl build-essential
 RUN mkdir -m777 /opt/rust /opt/cargo
 ENV RUSTUP_HOME=/opt/rust CARGO_HOME=/opt/cargo PATH=/opt/cargo/bin:$PATH
 RUN wget --https-only --secure-protocol=TLSv1_2 -O- https://sh.rustup.rs | sh /dev/stdin -y
@@ -52,7 +52,7 @@ FROM node:20-slim
 WORKDIR /firefish
 
 # Install runtime dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends libvips-dev zip unzip tini ffmpeg
+RUN apt-get update && apt-get install -y --no-install-recommends zip unzip tini ffmpeg
 
 COPY . ./
 
