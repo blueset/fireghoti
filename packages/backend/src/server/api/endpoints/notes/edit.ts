@@ -170,7 +170,11 @@ export const paramDef = {
 			},
 		},
 		text: { type: "string", maxLength: MAX_NOTE_TEXT_LENGTH, nullable: true },
-		lang: { type: "string", nullable: true, maxLength: 10 },
+		lang: {
+			type: "string",
+			enum: Object.keys(langmap),
+			nullable: true,
+		},
 		cw: { type: "string", nullable: true, maxLength: 250 },
 		localOnly: { type: "boolean", default: false },
 		noExtractMentions: { type: "boolean", default: false },
@@ -378,11 +382,9 @@ export default define(meta, paramDef, async (ps, user) => {
 	}
 
 	if (ps.lang) {
-		if (!Object.keys(langmap).includes(ps.lang.trim()))
+		if (!Object.keys(langmap).includes(ps.lang.toLowerCase()))
 			throw new Error("invalid param");
-		ps.lang = ps.lang.trim().split("-")[0].split("@")[0];
-	} else if (ps.text) {
-		ps.lang = detectLanguage(ps.text);
+		ps.lang = ps.lang.toLowerCase();
 	} else {
 		ps.lang = null;
 	}

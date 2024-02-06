@@ -369,6 +369,10 @@ export const defaultStore = markRaw(
 				| "ph" // this is ph-regular
 				| "ph-fill",
 		},
+		recentlyUsedPostLanguages: {
+			where: "account",
+			default: [] as string[],
+		},
 		useEmojiCdn: {
 			where: "device",
 			default: true,
