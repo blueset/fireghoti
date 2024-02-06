@@ -85,7 +85,7 @@ If you have access to a server that supports one of the sources below, I recomme
 - 🍱 At least [Redis](https://redis.io/) v7
 - Web Proxy (one of the following)
   - 🍀 Nginx (recommended)
-  - 🦦 Caddy
+  - 🦦 Caddy (recommended)
   - 🪶 Apache
 
 ### 😗 Optional dependencies
