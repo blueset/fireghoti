@@ -118,6 +118,7 @@
 						</div>
 						<MkAvatar
 							class="avatar"
+							:showLightBox="true"
 							:user="user"
 							:disable-preview="true"
 							:show-indicator="true"
