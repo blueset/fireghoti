@@ -315,9 +315,9 @@ const getFeed = async (
 			user,
 			thread,
 			history,
-			!Number.isNaN(noteInTitle),
-			Number.isNaN(noRenotes),
-			Number.isNaN(noReplies),
+			noteInTitle !== undefined,
+			noRenotes === undefined,
+			noReplies === undefined,
 		))
 	);
 };
