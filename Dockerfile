@@ -1,5 +1,5 @@
 ## Install dev and compilation dependencies, build files
-FROM node:20-slim as build
+FROM docker.io/node:20-slim as build
 WORKDIR /firefish
 
 # Install compilation dependencies
@@ -45,7 +45,7 @@ RUN env NODE_ENV=production sh -c "pnpm run --filter '!native-utils' build && pn
 RUN pnpm i --prod --frozen-lockfile
 
 ## Runtime container
-FROM node:20-slim
+FROM docker.io/node:20-slim
 WORKDIR /firefish
 
 # Install runtime dependencies
