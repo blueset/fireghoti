@@ -18,6 +18,26 @@
 			:user="user"
 		/>
 	</span>
+	<span
+		v-else-if="showLightBox"
+		v-user-preview="disablePreview ? undefined : user.id"
+		class="eiwwqkts _noSelect showLightBox"
+		:class="{
+			cat: user.isCat,
+			square: defaultStore.state.squareAvatars,
+		}"
+		:style="{ color }"
+		:title="acct(user)"
+		ref="gallery"
+		@click.stop
+	>
+		<img class="inner avatar" :src="url" decoding="async" />
+		<MkUserOnlineIndicator
+			v-if="showIndicator && user.instance == null"
+			class="indicator"
+			:user="user"
+		/>
+	</span>
 	<MkA
 		v-else
 		v-user-preview="disablePreview ? undefined : user.id"
@@ -42,25 +62,30 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import type * as firefish from "firefish-js";
 import { getStaticImageUrl } from "@/scripts/get-static-image-url";
 import { extractAvgColorFromBlurhash } from "@/scripts/extract-avg-color-from-blurhash";
 import { acct, userPage } from "@/filters/user";
 import MkUserOnlineIndicator from "@/components/MkUserOnlineIndicator.vue";
 import { defaultStore } from "@/store";
+import PhotoSwipeLightbox from "photoswipe/lightbox";
+import PhotoSwipe from "photoswipe";
+import "photoswipe/style.css";
 
 const props = withDefaults(
 	defineProps<{
 		user: firefish.entities.User;
 		target?: string | null;
 		disableLink?: boolean;
+		showLightBox?: boolean;
 		disablePreview?: boolean;
 		showIndicator?: boolean;
 	}>(),
 	{
 		target: null,
 		disableLink: false,
+		showLightBox: false,
 		disablePreview: false,
 		showIndicator: false,
 	},
@@ -91,6 +116,73 @@ watch(
 		immediate: true,
 	},
 );
+
+const gallery = ref(null);
+
+onMounted(() => {
+	const lightbox = new PhotoSwipeLightbox({
+		dataSource: [
+			{
+				src: url,
+				w: 300,
+				h: 300,
+			},
+		],
+		gallery: gallery.value,
+		children: ".avatar",
+		thumbSelector: ".avatar",
+		loop: false,
+		padding:
+			window.innerWidth > 500
+				? {
+						top: 32,
+						bottom: 32,
+						left: 32,
+						right: 32,
+				  }
+				: {
+						top: 0,
+						bottom: 0,
+						left: 0,
+						right: 0,
+				  },
+		imageClickAction: "close",
+		tapAction: "toggle-controls",
+		preloadFirstSlide: false,
+		pswpModule: PhotoSwipe,
+	});
+
+	lightbox.on("itemData", (ev) => {
+		const { itemData } = ev;
+		itemData.src = url.value;
+		itemData.msrc = url.value;
+		const wh = Math.max(
+			300,
+			Math.min(window.innerWidth, window.innerHeight) * 0.7,
+		);
+		itemData.h = wh;
+		itemData.w = wh;
+	});
+
+	lightbox.on("afterInit", () => {
+		history.pushState(null, "", location.href);
+		addEventListener("popstate", close);
+		// This is a workaround. Not sure why, but when clicking to open, it doesn't move focus to the photoswipe. Preventing using esc to close. However when using keyboard to open it already focuses the lightbox fine.
+		lightbox.pswp.element.focus();
+	});
+	lightbox.on("close", () => {
+		removeEventListener("popstate", close);
+		history.back();
+	});
+
+	lightbox.init();
+
+	function close() {
+		removeEventListener("popstate", close);
+		history.forward();
+		lightbox.pswp.close();
+	}
+});
 </script>
 
 <style lang="scss" scoped>
@@ -137,6 +229,10 @@ watch(
 	flex-shrink: 0;
 	border-radius: 100%;
 	line-height: 16px;
+
+	&.showLightBox {
+		cursor: zoom-in;
+	}
 
 	> .inner {
 		position: absolute;
