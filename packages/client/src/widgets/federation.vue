@@ -119,8 +119,8 @@ useInterval(fetch, 1000 * 60, {
 
 function getInstanceIcon(instance): string {
 	return (
-		getProxiedImageUrlNullable(instance.iconUrl, "preview") ??
 		getProxiedImageUrlNullable(instance.faviconUrl, "preview") ??
+		getProxiedImageUrlNullable(instance.iconUrl, "preview") ??
 		"/client-assets/dummy.png"
 	);
 }

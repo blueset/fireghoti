@@ -9,8 +9,8 @@
 			<div :class="$style.iconContainer">
 				<img
 					:src="
-						$instance.iconUrl ||
 						$instance.faviconUrl ||
+						$instance.iconUrl ||
 						'/favicon.ico'
 					"
 					alt="Instance logo"

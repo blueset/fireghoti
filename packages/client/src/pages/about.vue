@@ -209,7 +209,7 @@ withDefaults(
 const stats = ref(null);
 const instanceIcon = ref<HTMLImageElement>();
 let iconClicks = 0;
-const iconSrc = ref(instance.iconUrl || instance.faviconUrl || "/favicon.ico");
+const iconSrc = ref(instance.faviconUrl || instance.iconUrl || "/favicon.ico");
 const instanceIconAnimation = ref("");
 const tabs = ["overview", "emojis", "charts"];
 const tab = ref(tabs[0]);

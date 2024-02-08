@@ -30,7 +30,7 @@ const ticker = ref<HTMLElement | null>(null);
 
 // if no instance data is given, this is for the local instance
 const instance = props.instance ?? {
-	faviconUrl: Instance.iconUrl || Instance.faviconUrl || "/favicon.ico",
+	faviconUrl: Instance.faviconUrl || Instance.iconUrl || "/favicon.ico",
 	name: instanceName,
 	themeColor: (
 		document.querySelector(

@@ -135,7 +135,7 @@
 					></i>
 				</button>
 				<!-- <button v-click-anime v-tooltip.noDelay.right="$instance.name ?? i18n.ts.instance" class="item _button instance" @click="openInstanceMenu">
-				<img :src="$instance.iconUrl || $instance.faviconUrl || '/favicon.ico'" alt="" class="icon"/>
+				<img :src="$instance.faviconUrl || $instance.iconUrl || '/favicon.ico'" alt="" class="icon"/>
 			</button> -->
 				<!-- <button v-click-anime v-tooltip.noDelay.right="`${i18n.ts.account}: @${$i.username}`" class="item _button account" @click="openAccountMenu">
 				<MkAvatar :user="$i" class="account"/><MkAcct class="text" :user="$i"/>
