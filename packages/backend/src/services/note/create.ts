@@ -490,7 +490,7 @@ export default async (
 				const lock = new Mutex(redisClient, "publishedNote");
 				await lock.acquire();
 				try {
-					const published = (await redisClient.get(publishKey)) !== null;
+					const published = (await redisClient.get(publishKey)) != null;
 					if (!published) {
 						await redisClient.set(publishKey, "done", "EX", 30);
 						if (noteToPublish.renoteId) {
@@ -617,13 +617,13 @@ export default async (
 					}
 
 					// 投稿がリプライかつ投稿者がローカルユーザーかつリプライ先の投稿の投稿者がリモートユーザーなら配送
-					if (data.reply && data.reply.userHost !== null) {
+					if (data.reply?.userHost != null) {
 						const u = await Users.findOneBy({ id: data.reply.userId });
 						if (u && Users.isRemoteUser(u)) dm.addDirectRecipe(u);
 					}
 
 					// 投稿がRenoteかつ投稿者がローカルユーザーかつRenote元の投稿の投稿者がリモートユーザーなら配送
-					if (data.renote && data.renote.userHost !== null) {
+					if (data.renote?.userHost != null) {
 						const u = await Users.findOneBy({ id: data.renote.userId });
 						if (u && Users.isRemoteUser(u)) dm.addDirectRecipe(u);
 					}

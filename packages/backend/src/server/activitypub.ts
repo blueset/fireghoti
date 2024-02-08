@@ -127,7 +127,7 @@ router.get("/notes/:note", async (ctx, next) => {
 	}
 
 	// redirect if remote
-	if (note.userHost !== null) {
+	if (note.userHost != null) {
 		if (note.uri == null || isSelfHost(note.userHost)) {
 			ctx.status = 500;
 			return;

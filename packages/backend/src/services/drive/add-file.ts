@@ -51,14 +51,14 @@ function urlPathJoin(
 				url.pathname.endsWith("/") ? url.pathname.slice(0, -1) : url.pathname,
 			);
 			url.pathname = pathParts
-				.filter((x) => x !== null && x.toString().length > 0)
+				.filter((x) => x != null && x.toString().length > 0)
 				.join("/");
 		}
 		return url.toString();
 	}
 	const baseParts = baseOrParts.concat(pathParts ?? []);
 	return baseParts
-		.filter((x) => x !== null && x.toString().length > 0)
+		.filter((x) => x != null && x.toString().length > 0)
 		.join("/");
 }
 
@@ -614,7 +614,7 @@ export async function addFile({
 	file.createdAt = new Date();
 	file.userId = user ? user.id : null;
 	file.userHost = user ? user.host : null;
-	file.folderId = folder !== null ? folder.id : null;
+	file.folderId = folder != null ? folder.id : null;
 	file.comment = comment;
 	file.properties = properties;
 	file.blurhash = info.blurhash || null;
@@ -626,7 +626,7 @@ export async function addFile({
 	file.isSensitive = user
 		? Users.isLocalUser(user) && profile!.alwaysMarkNsfw
 			? true
-			: sensitive !== null && sensitive !== undefined
+			: sensitive != null
 			? sensitive
 			: false
 		: false;
@@ -635,7 +635,7 @@ export async function addFile({
 	if (info.sensitive && instance.setSensitiveFlagAutomatically)
 		file.isSensitive = true;
 
-	if (url !== null) {
+	if (url != null) {
 		file.src = url;
 
 		if (isLink) {
@@ -647,7 +647,7 @@ export async function addFile({
 		}
 	}
 
-	if (uri !== null) {
+	if (uri != null) {
 		file.uri = uri;
 	}
 

@@ -82,7 +82,7 @@ export default define(
 	async (ps, user, _, file, cleanup, ip, headers) => {
 		// Get 'name' parameter
 		let name = ps.name || file.originalname;
-		if (name !== undefined && name !== null) {
+		if (name != null) {
 			name = name.trim();
 			if (name.length === 0) {
 				name = null;

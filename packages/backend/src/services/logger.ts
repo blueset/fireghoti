@@ -115,7 +115,7 @@ export default class Logger {
 
 		console.log(important ? chalk.bold(log) : log);
 
-		if (level === "error" && data !== null) {
+		if (level === "error" && data != null) {
 			console.log(data);
 		}
 

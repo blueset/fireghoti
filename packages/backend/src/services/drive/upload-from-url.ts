@@ -50,7 +50,7 @@ export async function uploadFromUrl({
 
 	// If the comment is same as the name, skip comment
 	// (image.name is passed in when receiving attachment)
-	if (comment !== null && name === comment) {
+	if (comment != null && name === comment) {
 		comment = null;
 	}
 

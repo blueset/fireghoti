@@ -93,7 +93,7 @@ export default define(meta, paramDef, async (ps, user) => {
 				}
 			}
 
-			if (parent.parentId !== null) {
+			if (parent.parentId != null) {
 				if (await checkCircle(parent.parentId)) {
 					throw new ApiError(meta.errors.recursiveNesting);
 				}

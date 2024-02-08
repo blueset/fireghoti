@@ -69,7 +69,7 @@ export async function deleteFileSync(file: DriveFile, isExpired = false) {
 
 async function postProcess(file: DriveFile, isExpired = false) {
 	// リモートファイル期限切れ削除後は直リンクにする
-	if (isExpired && file.userHost !== null && file.uri != null) {
+	if (isExpired && file.userHost != null && file.uri != null) {
 		DriveFiles.update(file.id, {
 			isLink: true,
 			url: file.uri,
@@ -88,7 +88,7 @@ async function postProcess(file: DriveFile, isExpired = false) {
 	// 統計を更新
 	driveChart.update(file, false);
 	perUserDriveChart.update(file, false);
-	if (file.userHost !== null) {
+	if (file.userHost != null) {
 		instanceChart.updateDrive(file, false);
 	}
 }

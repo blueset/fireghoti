@@ -46,7 +46,7 @@ export class Cache<T> {
 
 		for (const [i, key] of keys.entries()) {
 			const val = values[i];
-			if (val !== null) {
+			if (val != null) {
 				map.set(key, decode(val) as T);
 			}
 		}

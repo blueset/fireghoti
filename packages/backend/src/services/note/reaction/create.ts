@@ -151,7 +151,7 @@ export default async (
 	) {
 		const content = renderActivity(await renderLike(record, note));
 		const dm = new DeliverManager(user, content);
-		if (note.userHost !== null) {
+		if (note.userHost != null) {
 			const reactee = await Users.findOneBy({ id: note.userId });
 			dm.addDirectRecipe(reactee as IRemoteUser);
 		}
