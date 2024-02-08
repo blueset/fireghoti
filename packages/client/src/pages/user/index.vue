@@ -96,7 +96,7 @@ const headerTabs = computed(() =>
 								title: i18n.ts.reaction,
 								icon: `${icon("ph-smiley")}`,
 							},
-					  ]
+						]
 					: []),
 				...(user.value.instance == null
 					? [
@@ -115,9 +115,9 @@ const headerTabs = computed(() =>
 								title: i18n.ts.gallery,
 								icon: `${icon("ph-image-square")}`,
 							},
-					  ]
+						]
 					: []),
-		  ]
+			]
 		: null,
 );
 
@@ -136,7 +136,7 @@ definePageMetadata(
 					share: {
 						title: user.value.name,
 					},
-			  }
+				}
 			: null,
 	),
 );

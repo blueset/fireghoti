@@ -74,7 +74,7 @@
 							? notification.reaction.replace(
 									/^:(\w+):$/,
 									':$1@.:',
-							  )
+								)
 							: notification.reaction
 					"
 					:custom-emojis="notification.note.emojis"

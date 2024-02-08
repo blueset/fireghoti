@@ -150,7 +150,7 @@ const calcBg = () => {
 		rawBg.startsWith("var(")
 			? getComputedStyle(document.documentElement).getPropertyValue(
 					rawBg.slice(4, -1),
-			  )
+				)
 			: rawBg,
 	);
 	tinyBg.setAlpha(0.85);

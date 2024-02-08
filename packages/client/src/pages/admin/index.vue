@@ -154,7 +154,7 @@ const menuDef = computed(() => [
 							text: i18n.ts.invite,
 							action: invite,
 						},
-				  ]
+					]
 				: []),
 			...($i.isAdmin
 				? [
@@ -164,7 +164,7 @@ const menuDef = computed(() => [
 							text: i18n.ts.indexPosts,
 							action: indexPosts,
 						},
-				  ]
+					]
 				: []),
 		],
 	},
@@ -307,7 +307,7 @@ const menuDef = computed(() => [
 						},
 					],
 				},
-		  ]
+			]
 		: []),
 ]);
 

@@ -123,7 +123,7 @@ const headerActions = computed(() =>
 						});
 					},
 				},
-		  ]
+			]
 		: null,
 );
 
@@ -133,7 +133,7 @@ definePageMetadata(
 			? {
 					title: clip.value.name,
 					icon: `${icon("ph-paperclip")}`,
-			  }
+				}
 			: null,
 	),
 );

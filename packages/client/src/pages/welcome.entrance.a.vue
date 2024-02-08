@@ -188,7 +188,7 @@ function showMenu(ev) {
 						action: () => {
 							window.open(instance.tosUrl, "_blank");
 						},
-				  }
+					}
 				: null,
 		],
 		ev.currentTarget ?? ev.target,

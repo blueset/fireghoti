@@ -66,7 +66,7 @@ definePageMetadata(
 					subtitle: i18n.ts.followers,
 					userName: user.value,
 					avatar: user.value,
-			  }
+				}
 			: null,
 	),
 );

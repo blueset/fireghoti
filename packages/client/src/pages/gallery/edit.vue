@@ -161,11 +161,11 @@ definePageMetadata(
 			? {
 					title: i18n.ts.edit,
 					icon: `${icon("ph-pencil")}`,
-			  }
+				}
 			: {
 					title: i18n.ts.postToGallery,
 					icon: `${icon("ph-pencil")}`,
-			  },
+				},
 	),
 );
 </script>

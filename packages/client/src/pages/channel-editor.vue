@@ -133,11 +133,11 @@ definePageMetadata(
 			? {
 					title: i18n.ts._channel.edit,
 					icon: `${icon("ph-television")}`,
-			  }
+				}
 			: {
 					title: i18n.ts._channel.create,
 					icon: `${icon("ph-television")}`,
-			  },
+				},
 	),
 );
 </script>

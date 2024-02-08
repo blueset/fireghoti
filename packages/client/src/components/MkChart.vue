@@ -330,7 +330,7 @@ const render = () => {
 									max: "original",
 								},
 							},
-					  }
+						}
 					: undefined,
 				// gradient,
 			},
@@ -473,7 +473,7 @@ const fetchNotesChart = async (type: string): Promise<typeof chartData> => {
 								negate(raw.local.dec),
 								raw.remote.inc,
 								negate(raw.remote.dec),
-						  )
+							)
 						: sum(raw[type].inc, negate(raw[type].dec)),
 				),
 				color: "#888888",
@@ -516,7 +516,7 @@ const fetchNotesChart = async (type: string): Promise<typeof chartData> => {
 						? sum(
 								raw.local.diffs.withFile,
 								raw.remote.diffs.withFile,
-						  )
+							)
 						: raw[type].diffs.withFile,
 				),
 				color: colors.purple,
@@ -569,7 +569,7 @@ const fetchUsersChart = async (total: boolean): Promise<typeof chartData> => {
 								negate(raw.local.dec),
 								raw.remote.inc,
 								negate(raw.remote.dec),
-						  ),
+							),
 				),
 			},
 			{
@@ -926,7 +926,7 @@ const fetchPerUserNotesChart = async (): Promise<typeof chartData> => {
 							data: format(sum(raw.inc, negate(raw.dec))),
 							color: "#888888",
 						},
-				  ]),
+					]),
 			{
 				name: "With file",
 				type: "area",

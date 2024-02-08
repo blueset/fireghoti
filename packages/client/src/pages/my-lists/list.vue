@@ -156,7 +156,7 @@ definePageMetadata(
 			? {
 					title: list.value.name,
 					icon: `${icon("ph-list-bullets")}`,
-			  }
+				}
 			: null,
 	),
 );

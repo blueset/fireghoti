@@ -22,7 +22,7 @@ describe("ユーザー", () => {
 	// エンティティとしてのユーザーを主眼においたテストを記述する
 	// (Userを返すエンドポイントとUserエンティティを書き換えるエンドポイントをテストする)
 
-	const stripUndefined = <T extends { [key: string]: any },>(
+	const stripUndefined = <T extends { [key: string]: any }>(
 		orig: T,
 	): Partial<T> => {
 		return Object.entries({ ...orig })
@@ -224,141 +224,160 @@ describe("ユーザー", () => {
 	let userFollowRequesting: User;
 	let userFollowRequested: User;
 
-	beforeAll(async () => {
-		app = await startServer();
-	}, 1000 * 60 * 2);
+	beforeAll(
+		async () => {
+			app = await startServer();
+		},
+		1000 * 60 * 2,
+	);
 
-	beforeAll(async () => {
-		root = await signup({ username: "root" });
-		alice = await signup({ username: "alice" });
-		aliceNote = (await post(alice, { text: "test" })) as any;
-		alicePage = await page(alice);
-		aliceList = (await api("users/list/create", { name: "aliceList" }, alice))
-			.body;
-		bob = await signup({ username: "bob" });
-		bobNote = (await post(bob, { text: "test" })) as any;
-		carol = await signup({ username: "carol" });
-		dave = await signup({ username: "dave" });
-		ellen = await signup({ username: "ellen" });
-		frank = await signup({ username: "frank" });
+	beforeAll(
+		async () => {
+			root = await signup({ username: "root" });
+			alice = await signup({ username: "alice" });
+			aliceNote = (await post(alice, { text: "test" })) as any;
+			alicePage = await page(alice);
+			aliceList = (await api("users/list/create", { name: "aliceList" }, alice))
+				.body;
+			bob = await signup({ username: "bob" });
+			bobNote = (await post(bob, { text: "test" })) as any;
+			carol = await signup({ username: "carol" });
+			dave = await signup({ username: "dave" });
+			ellen = await signup({ username: "ellen" });
+			frank = await signup({ username: "frank" });
 
-		// @alice -> @replyingへのリプライ。Promise.allで一気に作るとtimeoutしてしまうのでreduceで一つ一つawaitする
-		usersReplying = await [...Array(10)]
-			.map((_, i) => i)
-			.reduce(async (acc, i) => {
-				const u = await signup({ username: `replying${i}` });
-				for (let j = 0; j < 10 - i; j++) {
-					const p = await post(u, { text: `test${j}` });
-					await post(alice, { text: `@${u.username} test${j}`, replyId: p.id });
-				}
+			// @alice -> @replyingへのリプライ。Promise.allで一気に作るとtimeoutしてしまうのでreduceで一つ一つawaitする
+			usersReplying = await [...Array(10)]
+				.map((_, i) => i)
+				.reduce(
+					async (acc, i) => {
+						const u = await signup({ username: `replying${i}` });
+						for (let j = 0; j < 10 - i; j++) {
+							const p = await post(u, { text: `test${j}` });
+							await post(alice, {
+								text: `@${u.username} test${j}`,
+								replyId: p.id,
+							});
+						}
 
-				return (await acc).concat(u);
-			}, Promise.resolve([] as User[]));
+						return (await acc).concat(u);
+					},
+					Promise.resolve([] as User[]),
+				);
 
-		userNoNote = await signup({ username: "userNoNote" });
-		userNotExplorable = await signup({ username: "userNotExplorable" });
-		await post(userNotExplorable, { text: "test" });
-		await api("i/update", { isExplorable: false }, userNotExplorable);
-		userLocking = await signup({ username: "userLocking" });
-		await post(userLocking, { text: "test" });
-		await api("i/update", { isLocked: true }, userLocking);
-		userAdmin = await signup({ username: "userAdmin" });
-		roleAdmin = await role(root, { isAdministrator: true, name: "Admin Role" });
-		await api(
-			"admin/roles/assign",
-			{ userId: userAdmin.id, roleId: roleAdmin.id },
-			root,
-		);
-		userModerator = await signup({ username: "userModerator" });
-		roleModerator = await role(root, {
-			isModerator: true,
-			name: "Moderator Role",
-		});
-		await api(
-			"admin/roles/assign",
-			{ userId: userModerator.id, roleId: roleModerator.id },
-			root,
-		);
-		userRolePublic = await signup({ username: "userRolePublic" });
-		rolePublic = await role(root, { isPublic: true, name: "Public Role" });
-		await api(
-			"admin/roles/assign",
-			{ userId: userRolePublic.id, roleId: rolePublic.id },
-			root,
-		);
-		userRoleBadge = await signup({ username: "userRoleBadge" });
-		roleBadge = await role(root, { asBadge: true, name: "Badge Role" });
-		await api(
-			"admin/roles/assign",
-			{ userId: userRoleBadge.id, roleId: roleBadge.id },
-			root,
-		);
-		userSilenced = await signup({ username: "userSilenced" });
-		await post(userSilenced, { text: "test" });
-		roleSilenced = await role(
-			root,
-			{},
-			{ canPublicNote: { priority: 0, useDefault: false, value: false } },
-		);
-		await api(
-			"admin/roles/assign",
-			{ userId: userSilenced.id, roleId: roleSilenced.id },
-			root,
-		);
-		userSuspended = await signup({ username: "userSuspended" });
-		await post(userSuspended, { text: "test" });
-		await successfulApiCall({
-			endpoint: "i/update",
-			parameters: { description: "#user_testuserSuspended" },
-			user: userSuspended,
-		});
-		await api("admin/suspend-user", { userId: userSuspended.id }, root);
-		userDeletedBySelf = await signup({
-			username: "userDeletedBySelf",
-			password: "userDeletedBySelf",
-		});
-		await post(userDeletedBySelf, { text: "test" });
-		await api(
-			"i/delete-account",
-			{ password: "userDeletedBySelf" },
-			userDeletedBySelf,
-		);
-		userDeletedByAdmin = await signup({ username: "userDeletedByAdmin" });
-		await post(userDeletedByAdmin, { text: "test" });
-		await api("admin/delete-account", { userId: userDeletedByAdmin.id }, root);
-		userFollowingAlice = await signup({ username: "userFollowingAlice" });
-		await post(userFollowingAlice, { text: "test" });
-		await api("following/create", { userId: alice.id }, userFollowingAlice);
-		userFollowedByAlice = await signup({ username: "userFollowedByAlice" });
-		await post(userFollowedByAlice, { text: "test" });
-		await api("following/create", { userId: userFollowedByAlice.id }, alice);
-		userBlockingAlice = await signup({ username: "userBlockingAlice" });
-		await post(userBlockingAlice, { text: "test" });
-		await api("blocking/create", { userId: alice.id }, userBlockingAlice);
-		userBlockedByAlice = await signup({ username: "userBlockedByAlice" });
-		await post(userBlockedByAlice, { text: "test" });
-		await api("blocking/create", { userId: userBlockedByAlice.id }, alice);
-		userMutingAlice = await signup({ username: "userMutingAlice" });
-		await post(userMutingAlice, { text: "test" });
-		await api("mute/create", { userId: alice.id }, userMutingAlice);
-		userMutedByAlice = await signup({ username: "userMutedByAlice" });
-		await post(userMutedByAlice, { text: "test" });
-		await api("mute/create", { userId: userMutedByAlice.id }, alice);
-		userRnMutingAlice = await signup({ username: "userRnMutingAlice" });
-		await post(userRnMutingAlice, { text: "test" });
-		await api("renote-mute/create", { userId: alice.id }, userRnMutingAlice);
-		userRnMutedByAlice = await signup({ username: "userRnMutedByAlice" });
-		await post(userRnMutedByAlice, { text: "test" });
-		await api("renote-mute/create", { userId: userRnMutedByAlice.id }, alice);
-		userFollowRequesting = await signup({ username: "userFollowRequesting" });
-		await post(userFollowRequesting, { text: "test" });
-		userFollowRequested = userLocking;
-		await api(
-			"following/create",
-			{ userId: userFollowRequested.id },
-			userFollowRequesting,
-		);
-	}, 1000 * 60 * 10);
+			userNoNote = await signup({ username: "userNoNote" });
+			userNotExplorable = await signup({ username: "userNotExplorable" });
+			await post(userNotExplorable, { text: "test" });
+			await api("i/update", { isExplorable: false }, userNotExplorable);
+			userLocking = await signup({ username: "userLocking" });
+			await post(userLocking, { text: "test" });
+			await api("i/update", { isLocked: true }, userLocking);
+			userAdmin = await signup({ username: "userAdmin" });
+			roleAdmin = await role(root, {
+				isAdministrator: true,
+				name: "Admin Role",
+			});
+			await api(
+				"admin/roles/assign",
+				{ userId: userAdmin.id, roleId: roleAdmin.id },
+				root,
+			);
+			userModerator = await signup({ username: "userModerator" });
+			roleModerator = await role(root, {
+				isModerator: true,
+				name: "Moderator Role",
+			});
+			await api(
+				"admin/roles/assign",
+				{ userId: userModerator.id, roleId: roleModerator.id },
+				root,
+			);
+			userRolePublic = await signup({ username: "userRolePublic" });
+			rolePublic = await role(root, { isPublic: true, name: "Public Role" });
+			await api(
+				"admin/roles/assign",
+				{ userId: userRolePublic.id, roleId: rolePublic.id },
+				root,
+			);
+			userRoleBadge = await signup({ username: "userRoleBadge" });
+			roleBadge = await role(root, { asBadge: true, name: "Badge Role" });
+			await api(
+				"admin/roles/assign",
+				{ userId: userRoleBadge.id, roleId: roleBadge.id },
+				root,
+			);
+			userSilenced = await signup({ username: "userSilenced" });
+			await post(userSilenced, { text: "test" });
+			roleSilenced = await role(
+				root,
+				{},
+				{ canPublicNote: { priority: 0, useDefault: false, value: false } },
+			);
+			await api(
+				"admin/roles/assign",
+				{ userId: userSilenced.id, roleId: roleSilenced.id },
+				root,
+			);
+			userSuspended = await signup({ username: "userSuspended" });
+			await post(userSuspended, { text: "test" });
+			await successfulApiCall({
+				endpoint: "i/update",
+				parameters: { description: "#user_testuserSuspended" },
+				user: userSuspended,
+			});
+			await api("admin/suspend-user", { userId: userSuspended.id }, root);
+			userDeletedBySelf = await signup({
+				username: "userDeletedBySelf",
+				password: "userDeletedBySelf",
+			});
+			await post(userDeletedBySelf, { text: "test" });
+			await api(
+				"i/delete-account",
+				{ password: "userDeletedBySelf" },
+				userDeletedBySelf,
+			);
+			userDeletedByAdmin = await signup({ username: "userDeletedByAdmin" });
+			await post(userDeletedByAdmin, { text: "test" });
+			await api(
+				"admin/delete-account",
+				{ userId: userDeletedByAdmin.id },
+				root,
+			);
+			userFollowingAlice = await signup({ username: "userFollowingAlice" });
+			await post(userFollowingAlice, { text: "test" });
+			await api("following/create", { userId: alice.id }, userFollowingAlice);
+			userFollowedByAlice = await signup({ username: "userFollowedByAlice" });
+			await post(userFollowedByAlice, { text: "test" });
+			await api("following/create", { userId: userFollowedByAlice.id }, alice);
+			userBlockingAlice = await signup({ username: "userBlockingAlice" });
+			await post(userBlockingAlice, { text: "test" });
+			await api("blocking/create", { userId: alice.id }, userBlockingAlice);
+			userBlockedByAlice = await signup({ username: "userBlockedByAlice" });
+			await post(userBlockedByAlice, { text: "test" });
+			await api("blocking/create", { userId: userBlockedByAlice.id }, alice);
+			userMutingAlice = await signup({ username: "userMutingAlice" });
+			await post(userMutingAlice, { text: "test" });
+			await api("mute/create", { userId: alice.id }, userMutingAlice);
+			userMutedByAlice = await signup({ username: "userMutedByAlice" });
+			await post(userMutedByAlice, { text: "test" });
+			await api("mute/create", { userId: userMutedByAlice.id }, alice);
+			userRnMutingAlice = await signup({ username: "userRnMutingAlice" });
+			await post(userRnMutingAlice, { text: "test" });
+			await api("renote-mute/create", { userId: alice.id }, userRnMutingAlice);
+			userRnMutedByAlice = await signup({ username: "userRnMutedByAlice" });
+			await post(userRnMutedByAlice, { text: "test" });
+			await api("renote-mute/create", { userId: userRnMutedByAlice.id }, alice);
+			userFollowRequesting = await signup({ username: "userFollowRequesting" });
+			await post(userFollowRequesting, { text: "test" });
+			userFollowRequested = userLocking;
+			await api(
+				"following/create",
+				{ userId: userFollowRequested.id },
+				userFollowRequesting,
+			);
+		},
+		1000 * 60 * 10,
+	);
 
 	afterAll(async () => {
 		await app.close();

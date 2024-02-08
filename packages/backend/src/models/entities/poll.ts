@@ -47,7 +47,7 @@ export class Poll {
 		enum: noteVisibilities,
 		comment: "[Denormalized]",
 	})
-	public noteVisibility: typeof noteVisibilities[number];
+	public noteVisibility: (typeof noteVisibilities)[number];
 
 	@Index()
 	@Column({

@@ -44,15 +44,15 @@ type KeyToColumnName<T extends string> = T extends `${infer R1}.${infer R2}`
 	: T;
 
 type Columns<S extends Schema> = {
-	[K in
-		keyof S as `${typeof columnPrefix}${KeyToColumnName<string & K>}`]: number;
+	[K in keyof S as `${typeof columnPrefix}${KeyToColumnName<
+		string & K
+	>}`]: number;
 };
 
 type TempColumnsForUnique<S extends Schema> = {
-	[K in
-		keyof S as `${typeof uniqueTempColumnPrefix}${KeyToColumnName<
-			string & K
-		>}`]: S[K]["uniqueIncrement"] extends true ? string[] : never;
+	[K in keyof S as `${typeof uniqueTempColumnPrefix}${KeyToColumnName<
+		string & K
+	>}`]: S[K]["uniqueIncrement"] extends true ? string[] : never;
 };
 
 type RawRecord<S extends Schema> = {
@@ -186,8 +186,8 @@ export default abstract class Chart<T extends Schema> {
 				v.range === "big"
 					? "bigint"
 					: v.range === "small"
-					? "smallint"
-					: "integer";
+					  ? "smallint"
+					  : "integer";
 			if (v.uniqueIncrement) {
 				columns[uniqueTempColumnPrefix + name] = {
 					type: "varchar",
@@ -244,8 +244,8 @@ export default abstract class Chart<T extends Schema> {
 					span === "hour"
 						? `__chart__${camelToSnake(name)}`
 						: span === "day"
-						? `__chart_day__${camelToSnake(name)}`
-						: (new Error("not happen") as never),
+						  ? `__chart_day__${camelToSnake(name)}`
+						  : (new Error("not happen") as never),
 				columns: {
 					id: {
 						type: "integer",
@@ -325,7 +325,7 @@ export default abstract class Chart<T extends Schema> {
 	private getNewLog(latest: KVs<T> | null): KVs<T> {
 		const log = {} as Record<keyof T, number>;
 		for (const [k, v] of Object.entries(this.schema) as [
-			keyof typeof this["schema"],
+			keyof (typeof this)["schema"],
 			this["schema"][string],
 		][]) {
 			if (v.accumulate && latest) {
@@ -345,8 +345,8 @@ export default abstract class Chart<T extends Schema> {
 			span === "hour"
 				? this.repositoryForHour
 				: span === "day"
-				? this.repositoryForDay
-				: (new Error("not happen") as never);
+				  ? this.repositoryForDay
+				  : (new Error("not happen") as never);
 
 		return repository
 			.findOne({
@@ -375,16 +375,16 @@ export default abstract class Chart<T extends Schema> {
 			span === "hour"
 				? [y, m, d, h]
 				: span === "day"
-				? [y, m, d]
-				: (new Error("not happen") as never),
+				  ? [y, m, d]
+				  : (new Error("not happen") as never),
 		);
 
 		const repository =
 			span === "hour"
 				? this.repositoryForHour
 				: span === "day"
-				? this.repositoryForDay
-				: (new Error("not happen") as never);
+				  ? this.repositoryForDay
+				  : (new Error("not happen") as never);
 
 		// 現在(=今のHour or Day)のログ
 		const currentLog = (await repository.findOneBy({
@@ -793,19 +793,19 @@ export default abstract class Chart<T extends Schema> {
 						"day",
 				  )
 				: span === "hour"
-				? subtractTime(
-						cursor ? dateUTC([y2, m2, d2, h2]) : dateUTC([y, m, d, h]),
-						amount - 1,
-						"hour",
-				  )
-				: (new Error("not happen") as never);
+				  ? subtractTime(
+							cursor ? dateUTC([y2, m2, d2, h2]) : dateUTC([y, m, d, h]),
+							amount - 1,
+							"hour",
+					  )
+				  : (new Error("not happen") as never);
 
 		const repository =
 			span === "hour"
 				? this.repositoryForHour
 				: span === "day"
-				? this.repositoryForDay
-				: (new Error("not happen") as never);
+				  ? this.repositoryForDay
+				  : (new Error("not happen") as never);
 
 		// ログ取得
 		let logs = (await repository.find({
@@ -863,8 +863,8 @@ export default abstract class Chart<T extends Schema> {
 				span === "hour"
 					? subtractTime(dateUTC([y, m, d, h]), i, "hour")
 					: span === "day"
-					? subtractTime(dateUTC([y, m, d]), i, "day")
-					: (new Error("not happen") as never);
+					  ? subtractTime(dateUTC([y, m, d]), i, "day")
+					  : (new Error("not happen") as never);
 
 			const log = logs.find((l) =>
 				isTimeSame(new Date(l.date * 1000), current),

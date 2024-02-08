@@ -198,7 +198,7 @@ function getMenu() {
 							action: () => {
 								swapUpColumn(props.column.id);
 							},
-					  }
+						}
 					: undefined,
 				props.isStacked
 					? {
@@ -207,7 +207,7 @@ function getMenu() {
 							action: () => {
 								swapDownColumn(props.column.id);
 							},
-					  }
+						}
 					: undefined,
 			],
 		},
@@ -225,7 +225,7 @@ function getMenu() {
 					action: () => {
 						popRightColumn(props.column.id);
 					},
-			  }
+				}
 			: undefined,
 		null,
 		{

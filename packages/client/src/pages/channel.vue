@@ -139,7 +139,7 @@ const headerActions = computed(() => [
 					text: i18n.ts.edit,
 					handler: edit,
 				},
-		  ]
+			]
 		: []),
 ]);
 
@@ -151,7 +151,7 @@ definePageMetadata(
 			? {
 					title: channel.value.name,
 					icon: `${icon("ph-television")}`,
-			  }
+				}
 			: null,
 	),
 );
