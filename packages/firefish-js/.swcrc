@@ -10,11 +10,15 @@
 			"legacyDecorator": true,
 			"decoratorMetadata": true
 		},
+		"experimental": {
+			"emitAssertForImportAttributes": true
+		},
 		"target": "es2022"
 	},
 	"minify": false,
 	"module": {
 		"type": "commonjs",
-		"strict": true
+		"strict": true,
+		"resolveFully": true
 	}
 }
