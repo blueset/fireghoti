@@ -215,7 +215,7 @@
 				class="text"
 				style="opacity: 0.7"
 				>{{ i18n.ts.youGotNewFollower }}
-				<div v-if="full">
+				<div v-if="full && !hideFollowButton">
 					<MkFollowButton
 						:user="notification.user"
 						:full="true"
@@ -304,6 +304,7 @@ const props = withDefaults(
 const elRef = ref<HTMLElement>(null);
 const reactionRef = ref(null);
 
+const hideFollowButton = defaultStore.state.hideFollowButtons;
 const showEmojiReactions =
 	defaultStore.state.enableEmojiReactions ||
 	defaultStore.state.showEmojisInReactionNotifications;

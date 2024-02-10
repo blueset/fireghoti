@@ -285,6 +285,16 @@
 			</FormSelect>
 		</FormSection>
 
+		<FormSection>
+			<template #label>{{ i18n.ts.preventMisclick }}</template>
+			<FormSwitch v-model="hideFollowButtons" class="_formBlock"
+				>{{ i18n.ts.hideFollowButtons
+				}}<span class="_beta">{{
+					i18n.ts.originalFeature
+				}}</span></FormSwitch
+			>
+		</FormSection>
+
 		<FormRange
 			v-model="numberOfPageCache"
 			:min="1"
@@ -429,6 +439,9 @@ const showPreviewByDefault = computed(
 );
 const showTimelineReplies = computed(
 	defaultStore.makeGetterSetter("showTimelineReplies"),
+);
+const hideFollowButtons = computed(
+	defaultStore.makeGetterSetter("hideFollowButtons"),
 );
 const detectPostLanguage = computed(
 	defaultStore.makeGetterSetter("detectPostLanguage"),

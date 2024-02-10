@@ -1,3 +1,4 @@
+- add a toggleable setting to hide follow buttons in a misclickable position
 - add a toggleable setting to show preview in posting form by default
 
 # v20240210

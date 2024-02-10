@@ -8,7 +8,7 @@
 		<i :class="icon('ph-dots-three-outline')"></i>
 	</button>
 	<button
-		v-if="isSignedIn && $i.id != user.id"
+		v-if="!hideFollowButton && isSignedIn && $i.id != user.id"
 		v-tooltip="full ? null : `${state} ${user.name || user.username}`"
 		class="kpoogebi _button follow-button"
 		:class="{
@@ -81,6 +81,7 @@ const props = withDefaults(
 		full?: boolean;
 		large?: boolean;
 		hideMenu?: boolean;
+		hideFollowButton?: boolean;
 	}>(),
 	{
 		full: false,
@@ -98,6 +99,8 @@ const hasPendingFollowRequestFromYou = ref(
 );
 const wait = ref(false);
 const connection = stream.useChannel("main");
+
+const hideFollowButton = props.hideFollowButton ?? false;
 
 if (props.user.isFollowing == null) {
 	os.api("users/show", {

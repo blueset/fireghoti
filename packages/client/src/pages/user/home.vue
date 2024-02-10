@@ -400,6 +400,8 @@ import icon from "@/scripts/icon";
 const XPhotos = defineAsyncComponent(() => import("./index.photos.vue"));
 const XActivity = defineAsyncComponent(() => import("./index.activity.vue"));
 
+const hideFollowButton = defaultStore.state.hideFollowButtons;
+
 const emit = defineEmits(["refresh"]);
 const props = withDefaults(
 	defineProps<{
