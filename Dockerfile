@@ -3,7 +3,7 @@ FROM docker.io/node:20-slim as build
 WORKDIR /firefish
 
 # Install compilation dependencies
-RUN apt-get update && DEBIAN_FRONTEND='noninteractive' apt-get install -y --no-install-recommends curl build-essential ca-certificates
+RUN apt-get update && DEBIAN_FRONTEND='noninteractive' apt-get install -y --no-install-recommends curl build-essential ca-certificates python3
 RUN curl --proto '=https' --tlsv1.2 --silent --show-error --fail https://sh.rustup.rs | sh -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 
