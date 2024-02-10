@@ -125,7 +125,7 @@ export class Note {
 	 * specified ... visibleUserIds で指定したユーザーのみ
 	 */
 	@Column("enum", { enum: noteVisibilities })
-	public visibility: (typeof noteVisibilities)[number];
+	public visibility: typeof noteVisibilities[number];
 
 	@Index({ unique: true })
 	@Column("varchar", {

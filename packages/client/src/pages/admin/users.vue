@@ -107,7 +107,7 @@
 									user.updatedAt
 										? `Last posted: ${new Date(
 												user.updatedAt,
-											).toLocaleString()}`
+										  ).toLocaleString()}`
 										: 'Never posted'
 								"
 								class="user"

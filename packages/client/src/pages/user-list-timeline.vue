@@ -73,7 +73,7 @@ const headerActions = computed(() =>
 					text: i18n.ts.settings,
 					handler: settings,
 				},
-			]
+		  ]
 		: [],
 );
 
@@ -85,7 +85,7 @@ definePageMetadata(
 			? {
 					title: list.value.name,
 					icon: `${icon("ph-list-bullets")}`,
-				}
+			  }
 			: null,
 	),
 );

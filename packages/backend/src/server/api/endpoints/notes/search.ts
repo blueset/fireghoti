@@ -293,14 +293,14 @@ export default define(meta, paramDef, async (ps, me) => {
 							},
 					  ]
 					: ps.host !== undefined
-					  ? [
-								{
-									term: {
-										userHost: ps.host,
-									},
+					? [
+							{
+								term: {
+									userHost: ps.host,
 								},
-						  ]
-					  : []
+							},
+					  ]
+					: []
 				: [];
 
 		const result = await es.search({

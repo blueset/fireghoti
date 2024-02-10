@@ -70,7 +70,7 @@ const choseAd = (): Ad | null => {
 			? {
 					...ad,
 					ratio: 0,
-				}
+			  }
 			: ad,
 	);
 

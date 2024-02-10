@@ -206,10 +206,10 @@ const tzAbbrev = computed(
 						Intl.DateTimeFormat()
 							.resolvedOptions()
 							.timeZone.toLowerCase(),
-				)?.abbrev
+			  )?.abbrev
 			: timezones.find(
 					(tz) => tz.name.toLowerCase() === widgetProps.timezone,
-				)?.abbrev) ?? "?",
+			  )?.abbrev) ?? "?",
 );
 
 const tzOffset = computed(() =>

@@ -52,8 +52,8 @@ type IsMeAndIsUserDetailed<
 	? ExpectsMe extends true
 		? Packed<"MeDetailed">
 		: ExpectsMe extends false
-		  ? Packed<"UserDetailedNotMe">
-		  : Packed<"UserDetailed">
+		? Packed<"UserDetailedNotMe">
+		: Packed<"UserDetailed">
 	: Packed<"UserLite">;
 
 const ajv = new Ajv();
@@ -327,8 +327,8 @@ export const UserRepository = db.getRepository(User).extend({
 		return elapsed < USER_ONLINE_THRESHOLD
 			? "online"
 			: elapsed < USER_ACTIVE_THRESHOLD
-			  ? "active"
-			  : "offline";
+			? "active"
+			: "offline";
 	},
 
 	async getAvatarUrl(user: User): Promise<string> {
@@ -421,23 +421,23 @@ export const UserRepository = db.getRepository(User).extend({
 			profile == null
 				? null
 				: profile.ffVisibility === "public" || isMe
-				  ? user.followingCount
-				  : profile.ffVisibility === "followers" &&
-						  relation &&
-						  relation.isFollowing
-					  ? user.followingCount
-					  : null;
+				? user.followingCount
+				: profile.ffVisibility === "followers" &&
+				  relation &&
+				  relation.isFollowing
+				? user.followingCount
+				: null;
 
 		const followersCount =
 			profile == null
 				? null
 				: profile.ffVisibility === "public" || isMe
-				  ? user.followersCount
-				  : profile.ffVisibility === "followers" &&
-						  relation &&
-						  relation.isFollowing
-					  ? user.followersCount
-					  : null;
+				? user.followersCount
+				: profile.ffVisibility === "followers" &&
+				  relation &&
+				  relation.isFollowing
+				? user.followersCount
+				: null;
 
 		const falsy = opts.detail ? false : undefined;
 

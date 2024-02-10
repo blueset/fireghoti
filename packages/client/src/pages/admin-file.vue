@@ -243,7 +243,7 @@ const headerTabs = computed(() => [
 				key: "ip",
 				title: "IP",
 				icon: `${icon("ph-receipt")}`,
-			}
+		  }
 		: null,
 	{
 		key: "raw",

@@ -45,7 +45,7 @@ export default defineComponent({
 					...(this.block.var
 						? {
 								var: unref(this.hpml.vars)[this.block.var],
-							}
+						  }
 						: {}),
 				});
 

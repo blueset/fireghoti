@@ -75,24 +75,24 @@ export class APIClient {
 			? IsCaseMatched<E, P, 0> extends true
 				? GetCaseResult<E, P, 0>
 				: IsCaseMatched<E, P, 1> extends true
-				  ? GetCaseResult<E, P, 1>
-				  : IsCaseMatched<E, P, 2> extends true
-					  ? GetCaseResult<E, P, 2>
-					  : IsCaseMatched<E, P, 3> extends true
-						  ? GetCaseResult<E, P, 3>
-						  : IsCaseMatched<E, P, 4> extends true
-							  ? GetCaseResult<E, P, 4>
-							  : IsCaseMatched<E, P, 5> extends true
-								  ? GetCaseResult<E, P, 5>
-								  : IsCaseMatched<E, P, 6> extends true
-									  ? GetCaseResult<E, P, 6>
-									  : IsCaseMatched<E, P, 7> extends true
-										  ? GetCaseResult<E, P, 7>
-										  : IsCaseMatched<E, P, 8> extends true
-											  ? GetCaseResult<E, P, 8>
-											  : IsCaseMatched<E, P, 9> extends true
-												  ? GetCaseResult<E, P, 9>
-												  : Endpoints[E]["res"]["$switch"]["$default"]
+				? GetCaseResult<E, P, 1>
+				: IsCaseMatched<E, P, 2> extends true
+				? GetCaseResult<E, P, 2>
+				: IsCaseMatched<E, P, 3> extends true
+				? GetCaseResult<E, P, 3>
+				: IsCaseMatched<E, P, 4> extends true
+				? GetCaseResult<E, P, 4>
+				: IsCaseMatched<E, P, 5> extends true
+				? GetCaseResult<E, P, 5>
+				: IsCaseMatched<E, P, 6> extends true
+				? GetCaseResult<E, P, 6>
+				: IsCaseMatched<E, P, 7> extends true
+				? GetCaseResult<E, P, 7>
+				: IsCaseMatched<E, P, 8> extends true
+				? GetCaseResult<E, P, 8>
+				: IsCaseMatched<E, P, 9> extends true
+				? GetCaseResult<E, P, 9>
+				: Endpoints[E]["res"]["$switch"]["$default"]
 			: Endpoints[E]["res"]
 	> {
 		const promise = new Promise((resolve, reject) => {

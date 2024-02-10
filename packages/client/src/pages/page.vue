@@ -319,7 +319,7 @@ definePageMetadata(
 						title: page.value.title || page.value.name,
 						text: page.value.summary,
 					},
-				}
+			  }
 			: null,
 	),
 );

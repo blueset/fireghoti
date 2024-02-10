@@ -492,7 +492,7 @@ export function createIndexAllNotesJob(data = {}) {
 
 export function webhookDeliver(
 	webhook: Webhook,
-	type: (typeof webhookEventTypes)[number],
+	type: typeof webhookEventTypes[number],
 	content: unknown,
 ) {
 	const data = {

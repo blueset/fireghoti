@@ -78,7 +78,7 @@ export class Notification {
 		enum: notificationTypes,
 		comment: "The type of the Notification.",
 	})
-	public type: (typeof notificationTypes)[number];
+	public type: typeof notificationTypes[number];
 
 	/**
 	 * Whether the notification was read.

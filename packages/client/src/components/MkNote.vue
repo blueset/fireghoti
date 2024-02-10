@@ -510,7 +510,7 @@ function onContextmenu(ev: MouseEvent): void {
 									"forcePage",
 								);
 							},
-						}
+					  }
 					: undefined,
 				null,
 				{
@@ -537,7 +537,7 @@ function onContextmenu(ev: MouseEvent): void {
 								appearNote.value.uri ??
 								"",
 							target: "_blank",
-						}
+					  }
 					: undefined,
 			],
 			ev,

@@ -80,9 +80,9 @@ export const PageRepository = db.getRepository(Page).extend({
 				? await DriveFiles.pack(page.eyeCatchingImageId)
 				: null,
 			attachedFiles: DriveFiles.packMany(
-				(await Promise.all(attachedFiles)).filter(
-					(x): x is DriveFile => x != null,
-				),
+				(
+					await Promise.all(attachedFiles)
+				).filter((x): x is DriveFile => x != null),
 			),
 			likedCount: page.likedCount,
 			isLiked: meId

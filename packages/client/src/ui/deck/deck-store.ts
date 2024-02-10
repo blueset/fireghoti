@@ -31,7 +31,7 @@ export interface Column {
 	antennaId?: string;
 	channelId?: string;
 	listId?: string;
-	includingTypes?: (typeof notificationTypes)[number][];
+	includingTypes?: typeof notificationTypes[number][];
 	tl?: "home" | "local" | "social" | "recommended" | "global";
 }
 

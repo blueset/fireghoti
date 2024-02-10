@@ -102,7 +102,7 @@ const prevPagination = {
 			? {
 					userId: appearNote.value.userId,
 					untilId: appearNote.value.id,
-				}
+			  }
 			: null,
 	),
 };
@@ -116,7 +116,7 @@ const nextPagination = {
 			? {
 					userId: appearNote.value.userId,
 					sinceId: appearNote.value.id,
-				}
+			  }
 			: null,
 	),
 };
@@ -192,7 +192,7 @@ definePageMetadata(
 						}),
 						text: appearNote.value.text,
 					},
-				}
+			  }
 			: null,
 	),
 );

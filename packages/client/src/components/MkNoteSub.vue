@@ -428,7 +428,7 @@ function onContextmenu(ev: MouseEvent): void {
 									"forcePage",
 								);
 							},
-						}
+					  }
 					: undefined,
 				null,
 				{
@@ -452,7 +452,7 @@ function onContextmenu(ev: MouseEvent): void {
 							text: i18n.ts.showOnRemote,
 							href: note.value.url ?? note.value.uri ?? "",
 							target: "_blank",
-						}
+					  }
 					: undefined,
 			],
 			ev,

@@ -205,8 +205,8 @@ export async function createNote(
 	note.attachment = Array.isArray(note.attachment)
 		? note.attachment
 		: note.attachment
-		  ? [note.attachment]
-		  : [];
+		? [note.attachment]
+		: [];
 	const files = note.attachment.map(
 		(attach) => (attach.sensitive = note.sensitive),
 	)

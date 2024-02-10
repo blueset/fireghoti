@@ -145,13 +145,13 @@ export default defineComponent({
 									const direction = token.props.args.left
 										? "reverse"
 										: token.props.args.alternate
-										  ? "alternate"
-										  : "normal";
+										? "alternate"
+										: "normal";
 									const anime = token.props.args.x
 										? "mfm-spinX"
 										: token.props.args.y
-										  ? "mfm-spinY"
-										  : "mfm-spin";
+										? "mfm-spinY"
+										: "mfm-spin";
 									const speed = validTime(token.props.args.speed) || "1.5s";
 									const delay = validTime(token.props.args.delay) || "0s";
 									const loop = validNumber(token.props.args.loop) || "infinite";
@@ -200,8 +200,8 @@ export default defineComponent({
 										token.props.args.h && token.props.args.v
 											? "scale(-1, -1)"
 											: token.props.args.v
-											  ? "scaleY(-1)"
-											  : "scaleX(-1)";
+											? "scaleY(-1)"
+											: "scaleX(-1)";
 									style = `transform: ${transform};`;
 									break;
 								}
@@ -236,16 +236,16 @@ export default defineComponent({
 									const family = token.props.args.serif
 										? "serif"
 										: token.props.args.monospace
-										  ? "monospace"
-										  : token.props.args.cursive
-											  ? "cursive"
-											  : token.props.args.fantasy
-												  ? "fantasy"
-												  : token.props.args.emoji
-													  ? "emoji"
-													  : token.props.args.math
-														  ? "math"
-														  : null;
+										? "monospace"
+										: token.props.args.cursive
+										? "cursive"
+										: token.props.args.fantasy
+										? "fantasy"
+										: token.props.args.emoji
+										? "emoji"
+										: token.props.args.math
+										? "math"
+										: null;
 									if (family) style = `font-family: ${family};`;
 									break;
 								}
@@ -262,8 +262,8 @@ export default defineComponent({
 									const rotate = token.props.args.x
 										? "perspective(128px) rotateX"
 										: token.props.args.y
-										  ? "perspective(128px) rotateY"
-										  : "rotate";
+										? "perspective(128px) rotateY"
+										: "rotate";
 									const degrees = parseFloat(token.props.args.deg ?? "90");
 									style = `transform: ${rotate}(${degrees}deg); transform-origin: center center;`;
 									break;

@@ -92,7 +92,7 @@ async function init() {
 						? {
 								username: q.username,
 								host: q.host === null ? undefined : q.host,
-							}
+						  }
 						: q,
 				)
 				.map((q) =>

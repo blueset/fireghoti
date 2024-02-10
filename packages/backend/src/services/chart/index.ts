@@ -42,13 +42,10 @@ const charts = [
 ];
 
 // 20分おきにメモリ情報をDBに書き込み
-setInterval(
-	() => {
-		for (const chart of charts) {
-			chart.save();
-		}
-	},
-	1000 * 60 * 20,
-);
+setInterval(() => {
+	for (const chart of charts) {
+		chart.save();
+	}
+}, 1000 * 60 * 20);
 
 beforeShutdown(() => Promise.all(charts.map((chart) => chart.save())));

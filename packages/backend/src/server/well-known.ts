@@ -114,8 +114,8 @@ router.get(webFingerPath, async (ctx) => {
 						resource.startsWith(`${config.url.toLowerCase()}/@`)
 							? resource.split("/").pop()!
 							: resource.startsWith("acct:")
-							  ? resource.slice("acct:".length)
-							  : resource,
+							? resource.slice("acct:".length)
+							: resource,
 					),
 			  );
 

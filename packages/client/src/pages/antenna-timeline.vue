@@ -83,7 +83,7 @@ const headerActions = computed(() =>
 					text: i18n.ts.settings,
 					handler: settings,
 				},
-			]
+		  ]
 		: [],
 );
 
@@ -95,7 +95,7 @@ definePageMetadata(
 			? {
 					title: antenna.value.name,
 					icon: `${icon("ph-flying-saucer")}`,
-				}
+			  }
 			: null,
 	),
 );

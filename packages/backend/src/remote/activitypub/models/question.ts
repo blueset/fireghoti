@@ -22,8 +22,8 @@ export async function extractPollFromQuestion(
 	const expiresAt = question.endTime
 		? new Date(question.endTime)
 		: question.closed
-		  ? new Date(question.closed)
-		  : null;
+		? new Date(question.closed)
+		: null;
 
 	if (multiple && !question.anyOf) {
 		throw new Error("invalid question");

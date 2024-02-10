@@ -189,7 +189,7 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 		profileUpdates.mutedInstances = ps.mutedInstances;
 	if (ps.mutingNotificationTypes !== undefined)
 		profileUpdates.mutingNotificationTypes =
-			ps.mutingNotificationTypes as (typeof notificationTypes)[number][];
+			ps.mutingNotificationTypes as typeof notificationTypes[number][];
 	if (typeof ps.isLocked === "boolean") updates.isLocked = ps.isLocked;
 	if (typeof ps.isExplorable === "boolean")
 		updates.isExplorable = ps.isExplorable;

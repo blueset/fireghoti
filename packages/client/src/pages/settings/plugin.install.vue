@@ -151,7 +151,7 @@ async function install() {
 						},
 						"closed",
 					);
-				});
+			  });
 
 	installPlugin({
 		id: uuid(),

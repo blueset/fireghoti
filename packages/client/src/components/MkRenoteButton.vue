@@ -211,12 +211,12 @@ const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 								visibility: props.note.visibility,
 								visibleUserIds: props.note.visibleUserIds,
 								localOnly: true,
-							}
+						  }
 						: {
 								renoteId: props.note.id,
 								visibility: props.note.visibility,
 								localOnly: true,
-							},
+						  },
 				);
 				hasRenotedBefore.value = true;
 				const el =

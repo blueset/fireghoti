@@ -51,5 +51,5 @@ export class MutedNote {
 		enum: mutedNoteReasons,
 		comment: "The reason of the MutedNote.",
 	})
-	public reason: (typeof mutedNoteReasons)[number];
+	public reason: typeof mutedNoteReasons[number];
 }

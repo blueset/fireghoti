@@ -31,7 +31,7 @@
 										user.bannerUrl
 											? `url('${getStaticImageUrl(
 													user.bannerUrl,
-												)}')`
+											  )}')`
 											: null,
 								}"
 							></div>

@@ -774,8 +774,8 @@ export async function cropImage(
 type AwaitType<T> = T extends Promise<infer U>
 	? U
 	: T extends (...args: any[]) => Promise<infer V>
-	  ? V
-	  : T;
+	? V
+	: T;
 let openingEmojiPicker: AwaitType<ReturnType<typeof popup>> | null = null,
 	activeTextarea: HTMLTextAreaElement | HTMLInputElement | null = null;
 export async function openEmojiPicker(

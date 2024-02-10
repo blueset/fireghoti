@@ -46,7 +46,7 @@ const customEmoji = computed(() =>
 	isCustom.value
 		? ce.value.find(
 				(x) => x.name === props.emoji.substr(1, props.emoji.length - 2),
-			)
+		  )
 		: null,
 );
 const url = computed(() => {
