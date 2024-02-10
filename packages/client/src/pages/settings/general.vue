@@ -75,6 +75,9 @@
 				class="_formBlock"
 				>{{ i18n.ts.useReactionPickerForContextMenu }}</FormSwitch
 			>
+			<FormSwitch v-model="showPreviewByDefault" class="_formBlock">{{
+				i18n.ts.showPreviewByDefault
+			}}</FormSwitch>
 			<FormSwitch
 				v-if="deviceKind !== 'desktop'"
 				v-model="swipeOnMobile"
@@ -420,6 +423,9 @@ const swipeOnDesktop = computed(
 const swipeOnMobile = computed(defaultStore.makeGetterSetter("swipeOnMobile"));
 const showAdminUpdates = computed(
 	defaultStore.makeGetterSetter("showAdminUpdates"),
+);
+const showPreviewByDefault = computed(
+	defaultStore.makeGetterSetter("showPreviewByDefault"),
 );
 const showTimelineReplies = computed(
 	defaultStore.makeGetterSetter("showTimelineReplies"),

@@ -1160,6 +1160,7 @@ suggested: "Suggested"
 noLanguage: "No language"
 useEmojiCdn: "Get Twemoji from CDN"
 useEmojiCdnDescription: "Use Twemoji from the JSDelivr CDN instead of the server's assets."
+showPreviewByDefault: "Show preview in posting form by default"
 
 _sensitiveMediaDetection:
   description: "Reduces the effort of server moderation through automatically recognizing
