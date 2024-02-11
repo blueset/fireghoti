@@ -206,7 +206,7 @@ if (isAdmin) {
 
 if (defaultStore.state.showAdminUpdates) {
 	os.api("latest-version").then((res) => {
-		const cleanRes = parseInt(res?.tag_name.replace(/[^0-9]/g, ""));
+		const cleanRes = parseInt(res?.latest_version.replace(/[^0-9]/g, ""));
 		const cleanVersion = parseInt(version.replace(/[^0-9]/g, ""));
 		if (cleanRes > cleanVersion) {
 			updateAvailable.value = true;

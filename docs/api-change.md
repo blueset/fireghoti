@@ -2,6 +2,10 @@
 
 Breaking changes are indicated by the :warning: icon.
 
+## Unreleased
+
+- :warning: The field name of the response of `latest-version` has been changed from `tag_name` to `latest_version`.
+
 ## v1.0.5-rc
 
 - `admin/update-meta` can now take `moreUrls` parameter, and response of `admin/meta` now includes `moreUrls`
