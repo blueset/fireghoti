@@ -710,7 +710,7 @@ function getMenu() {
 					action: () => {
 						renameFolder(folder.value);
 					},
-			  }
+				}
 			: undefined,
 		folder.value
 			? {
@@ -721,7 +721,7 @@ function getMenu() {
 							folder.value as firefish.entities.DriveFolder,
 						);
 					},
-			  }
+				}
 			: undefined,
 		{
 			text: i18n.ts.createFolder,

@@ -152,8 +152,8 @@ export const uploadFile = async (user: any, _path?: string): Promise<any> => {
 		_path == null
 			? `${_dirname}/resources/Lenna.jpg`
 			: path.isAbsolute(_path)
-			? _path
-			: `${_dirname}/resources/${_path}`;
+			  ? _path
+			  : `${_dirname}/resources/${_path}`;
 
 	const formData = new FormData() as any;
 	formData.append("i", user.token);

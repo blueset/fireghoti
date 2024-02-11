@@ -20,7 +20,7 @@
 								1 -
 									angleDiff(hAngle, angle) / Math.PI -
 									numbersOpacityFactor,
-						  )
+							)
 				"
 			/>
 		</template>
@@ -49,7 +49,7 @@
 								1 -
 									angleDiff(hAngle, angle) / Math.PI -
 									numbersOpacityFactor,
-						  )
+							)
 				"
 			>
 				{{ i === 0 ? (props.twentyfour ? "24" : "12") : i }}

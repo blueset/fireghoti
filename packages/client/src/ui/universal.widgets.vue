@@ -74,7 +74,7 @@ function updateWidget({ id, data }) {
 				? {
 						...w,
 						data,
-				  }
+					}
 				: w,
 		),
 	);

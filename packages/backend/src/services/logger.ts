@@ -80,16 +80,16 @@ export default class Logger {
 					? chalk.bgRed.white("ERR ")
 					: chalk.red("ERR ")
 				: level === "warning"
-				? chalk.yellow("WARN")
-				: level === "success"
-				? important
-					? chalk.bgGreen.white("DONE")
-					: chalk.green("DONE")
-				: level === "debug"
-				? chalk.gray("VERB")
-				: level === "info"
-				? chalk.blue("INFO")
-				: null;
+				  ? chalk.yellow("WARN")
+				  : level === "success"
+					  ? important
+							? chalk.bgGreen.white("DONE")
+							: chalk.green("DONE")
+					  : level === "debug"
+						  ? chalk.gray("VERB")
+						  : level === "info"
+							  ? chalk.blue("INFO")
+							  : null;
 		const domains = [this.domain]
 			.concat(subDomains)
 			.map((d) =>
@@ -101,14 +101,14 @@ export default class Logger {
 			level === "error"
 				? chalk.red(message)
 				: level === "warning"
-				? chalk.yellow(message)
-				: level === "success"
-				? chalk.green(message)
-				: level === "debug"
-				? chalk.gray(message)
-				: level === "info"
-				? message
-				: null;
+				  ? chalk.yellow(message)
+				  : level === "success"
+					  ? chalk.green(message)
+					  : level === "debug"
+						  ? chalk.gray(message)
+						  : level === "info"
+							  ? message
+							  : null;
 
 		let log = `${l} ${worker}\t[${domains.join(" ")}]\t${m}`;
 		if (envOption.withLogTime) log = `${chalk.gray(time)} ${log}`;
@@ -125,14 +125,14 @@ export default class Logger {
 					level === "error"
 						? this.syslogClient.error
 						: level === "warning"
-						? this.syslogClient.warning
-						: level === "success"
-						? this.syslogClient.info
-						: level === "debug"
-						? this.syslogClient.info
-						: level === "info"
-						? this.syslogClient.info
-						: (null as never);
+						  ? this.syslogClient.warning
+						  : level === "success"
+							  ? this.syslogClient.info
+							  : level === "debug"
+								  ? this.syslogClient.info
+								  : level === "info"
+									  ? this.syslogClient.info
+									  : (null as never);
 
 				send
 					.bind(this.syslogClient)(message)

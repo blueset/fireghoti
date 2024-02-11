@@ -12,7 +12,7 @@
 				? `/my/messaging/group/${message.groupId}`
 				: `/my/messaging/${getAcct(
 						isMe(message) ? message.recipient : message.user,
-				  )}`
+					)}`
 		"
 	>
 		<div class="message _block">
@@ -22,8 +22,8 @@
 					message.groupId
 						? message.user
 						: isMe(message)
-						  ? message.recipient
-						  : message.user
+							? message.recipient
+							: message.user
 				"
 				:show-indicator="true"
 				disable-link

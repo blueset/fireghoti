@@ -99,7 +99,7 @@ export default define(meta, paramDef, async (ps, me) => {
 async function fetchAny(
 	uri: string,
 	me: CacheableLocalUser | null | undefined,
-): Promise<SchemaType<typeof meta["res"]> | null> {
+): Promise<SchemaType<(typeof meta)["res"]> | null> {
 	// Wait if blocked.
 	if (await shouldBlockInstance(extractDbHost(uri))) return null;
 

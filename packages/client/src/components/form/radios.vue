@@ -45,7 +45,7 @@ export default defineComponent({
 								},
 								[label],
 							),
-					  ]
+						]
 					: []),
 				h(
 					"div",
@@ -76,7 +76,7 @@ export default defineComponent({
 								},
 								[caption],
 							),
-					  ]
+						]
 					: []),
 			],
 		);

@@ -61,11 +61,14 @@ export const initializeStreamingServer = (server: http.Server) => {
 		);
 
 		const intervalId = user
-			? setInterval(() => {
-					Users.update(user.id, {
-						lastActiveDate: new Date(),
-					});
-			  }, 1000 * 60 * 5)
+			? setInterval(
+					() => {
+						Users.update(user.id, {
+							lastActiveDate: new Date(),
+						});
+					},
+					1000 * 60 * 5,
+			  )
 			: null;
 		if (user) {
 			Users.update(user.id, {

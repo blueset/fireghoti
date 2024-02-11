@@ -9,7 +9,7 @@ const isSmartphone = !isTablet && /mobile|iphone|android/.test(ua);
 export const deviceKind = defaultStore.state.overridedDeviceKind
 	? defaultStore.state.overridedDeviceKind
 	: isSmartphone
-	? "smartphone"
-	: isTablet
-	? "tablet"
-	: "desktop";
+	  ? "smartphone"
+	  : isTablet
+		  ? "tablet"
+		  : "desktop";

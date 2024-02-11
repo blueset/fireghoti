@@ -429,7 +429,7 @@ export class ColdDeviceStorage {
 
 	public static get<T extends keyof typeof ColdDeviceStorage.default>(
 		key: T,
-	): typeof ColdDeviceStorage.default[T] {
+	): (typeof ColdDeviceStorage.default)[T] {
 		// TODO: indexedDBにする
 		//       ただしその際はnullチェックではなくキー存在チェックにしないとダメ
 		//       (indexedDBはnullを保存できるため、ユーザーが意図してnullを格納した可能性がある)
@@ -443,7 +443,7 @@ export class ColdDeviceStorage {
 
 	public static set<T extends keyof typeof ColdDeviceStorage.default>(
 		key: T,
-		value: typeof ColdDeviceStorage.default[T],
+		value: (typeof ColdDeviceStorage.default)[T],
 	): void {
 		// 呼び出し側のバグ等で undefined が来ることがある
 		// undefined を文字列として localStorage に入れると参照する際の JSON.parse でコケて不具合の元になるため無視

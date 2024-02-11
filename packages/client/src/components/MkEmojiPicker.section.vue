@@ -25,7 +25,7 @@
 							props.skinToneLabels
 								? props.skinToneLabels[
 										props.skinTones.indexOf(skinTone)
-								  ]
+									]
 								: ''
 						"
 					></i>
