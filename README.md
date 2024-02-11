@@ -53,13 +53,11 @@
 - If you know how to program in TypeScript, Vue, or Rust, read the [contributing](./CONTRIBUTING.md) document.
 - If you know a non-English language, translating Firefish on [Weblate](https://hosted.weblate.org/engage/firefish/) help bring Firefish to more people. No technical experience needed!
 
-### All links
+### Links
 
 - 💸 Donations:
   - OpenCollective: <https://opencollective.com/Firefish>
-  - Liberapay: <https://liberapay.com/ThatOneCalculator>
-  - Donate publicly to get your name on the Patron list!
-- 💁 Matrix support room: <https://matrix.to/#/#firefish:matrix.fedibird.com>
+- 💁 Matrix space: <https://matrix.to/#/#firefish-community:nitro.chat>
 - 📣 Official account: <a href="https://info.firefish.dev/@firefish" rel="me">`@firefish@info.firefish.dev`</a>
 - ✍️ Weblate: <https://hosted.weblate.org/engage/firefish/>
 
