@@ -78,21 +78,21 @@ Be willing to comment on the good points and not just the things you want fixed 
   - sea-orm-cli
   - podman
   - podman-compose
-1. Copy the config file
+2. Copy the config file
   ```sh
   cp .config/dev.example.yml .config/default.yml
   ```
-1. Start postgres/redis containers
+3. Start postgres/redis containers
   ```sh
   pnpm run dev:up
   ```
-1. Build Firefish
+4. Build Firefish
   ```sh
   pnpm install
   pnpm run build:debug
   pnpm run migrate
   ```
-1. Start Firefish on your localhost
+5. Start Firefish on your localhost
   ```sh
   pnpm run start
   ```
