@@ -69,6 +69,42 @@ Be willing to comment on the good points and not just the things you want fixed 
 	- Are there any omissions or gaps?
 	- Does it check for anomalies?
 
+## Preparing the development environment
+
+1. Install the following software
+  - nodejs
+  - rustup
+  - cargo
+  - sea-orm-cli
+  - podman
+  - podman-compose
+1. Copy the config file
+  ```sh
+  cp .config/dev.example.yml .config/default.yml
+  ```
+1. Start postgres/redis containers
+  ```sh
+  pnpm run dev:up
+  ```
+1. Build Firefish
+  ```sh
+  pnpm install
+  pnpm run build:debug
+  pnpm run migrate
+  ```
+1. Start Firefish on your localhost
+  ```sh
+  pnpm run start
+  ```
+
+You can use the following commands to initialize the database:
+```sh
+pnpm run dev:init
+pnpm run migrate
+```
+
+Make sure to clear your browser local storage after initializing the dev instance.
+
 ## Deploy (SOON)
 The `/deploy` command by issue comment can be used to deploy the contents of a MR to the preview environment.
 ```

@@ -29,9 +29,6 @@ coverage
 !/.config/helm_values_example.yml
 !/.config/LICENSE
 
-# docker dev config
-/dev/docker-compose.yml
-
 # ESLint
 .eslintcache
 

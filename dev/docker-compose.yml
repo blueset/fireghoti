@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  redis:
+    image: docker.io/redis:7-alpine
+    ports:
+      - "26379:6379"
+  db:
+    image: docker.io/postgres:16-alpine
+    environment:
+      - "POSTGRES_PASSWORD=password"
+      - "POSTGRES_USER=firefish"
+      - "POSTGRES_DB=firefish_db"
+    ports:
+      - "25432:5432"
