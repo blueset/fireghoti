@@ -2,7 +2,7 @@
 
 Breaking changes are indicated by the :warning: icon.
 
-## Unreleased
+## v20240212
 
 - :warning: The field name of the response of `latest-version` has been changed from `tag_name` to `latest_version`.
 

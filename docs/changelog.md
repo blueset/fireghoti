@@ -1,5 +1,6 @@
-# Unreleased
+# v20240212
 
+- refactoring
 - add a toggleable setting to hide follow buttons in a misclickable position
 - add a toggleable setting to show preview in posting form by default
 
