@@ -209,6 +209,7 @@
 									:inline="true"
 									:transparent="false"
 									:full="true"
+									:hide-follow-button="hideFollowButton"
 									class="koudoku"
 									@refresh="emit('refresh')"
 								/>
