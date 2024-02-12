@@ -12,10 +12,6 @@ report.*.json
 # Rust
 packages/backend-rs/target
 
-# Cypress
-cypress/screenshots
-cypress/videos
-
 # Coverage
 coverage
 
@@ -40,5 +36,28 @@ packages/backend/assets/instance.css
 
 # dockerignore custom
 .git
-Dockerfile
+.gitignore
+.gitattributes
+.weblate
+animated.svg
+cliff.toml
 docker-compose.yml
+firefish.apache.conf
+firefish.nginx.conf
+flake.lock
+flake.nix
+title.svg
+/.gitlab
+/chart
+/dev
+/docs
+/scripts
+biome.json
+COPYING
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+Dockerfile
+LICENSE
+Procfile
+README.md
+SECURITY.md
