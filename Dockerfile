@@ -11,8 +11,6 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 COPY packages/backend/native-utils/Cargo.toml packages/backend/native-utils/Cargo.toml
 COPY packages/backend/native-utils/Cargo.lock packages/backend/native-utils/Cargo.lock
 COPY packages/backend/native-utils/src/lib.rs packages/backend/native-utils/src/
-COPY packages/backend/native-utils/migration/Cargo.toml packages/backend/native-utils/migration/Cargo.toml
-COPY packages/backend/native-utils/migration/src/lib.rs packages/backend/native-utils/migration/src/
 
 # Install cargo dependencies
 RUN cargo fetch --locked --manifest-path /firefish/packages/backend/native-utils/Cargo.toml

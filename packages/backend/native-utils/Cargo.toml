@@ -3,9 +3,6 @@ edition = "2021"
 name = "native-utils"
 version = "0.0.0"
 
-[workspace]
-members = ["migration"]
-
 [features]
 default = []
 napi = ["dep:napi", "dep:napi-derive"]

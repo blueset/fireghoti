@@ -7,6 +7,19 @@
     sudo systemctl stop your-firefish-service.service
     ```
 1. Take a backup
+1. Revert database migrations
+    ```sh
+    sudo --user=postgres psql --file=docs/downgrade.sql --dbname=database_name
+    ```
+
+    The database name can be found in `.config/default.yml`.
+    ```yaml
+    db:
+      port: 5432
+      db: database_name  # this one
+      user: firefish
+      pass: password
+    ```
 1. Switch back to the `v20240206` tag
     ```sh
     git switch v20240206
@@ -29,6 +42,18 @@
     # or podman-compose down
     ```
 1. Take a backup
+1. Revert database migrations
+    ```sh
+    docker-compose exec db psql --command="$(cat docs/downgrade.sql)" --user=user_name --dbname=database_name
+    # or docker-compose exec db psql --command="$(cat docs/revert.sql)" --user=user_name --dbname=database_name
+    ```
+
+    The user and database name can be found in `.config/docker.env`.
+    ```env
+    POSTGRES_PASSWORD=password
+    POSTGRES_USER=user_name    # user name
+    POSTGRES_DB=database_name  # database name
+    ```
 1. Change the image tag to `registry.firefish.dev/firefish/firefish:v20240206`
     ```sh
     vim docker-compose.yml
