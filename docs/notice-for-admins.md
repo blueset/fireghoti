@@ -1,6 +1,6 @@
 # v20240213
 
-## For systemd users
+## For systemd/pm2 users
 
 - `packages/backend/native-utils` can be removed.
     - This directory was removed in the repository, but it's not completely removed from your system by `git pull --ff`, because some folders like `packages/backend/native-utils/built` are not tracked by git.
@@ -18,7 +18,7 @@
     git remote set-url origin https://firefish.dev/firefish/firefish.git
     ```
 
-## For systemd users
+## For systemd/pm2 users
 
 - Required Rust version has been bumped from v1.68 to v1.70.
 - `libvips` is no longer required (unless your server os is *BSD), so you may uninstall it from your system. Make sure to execute the following commands after that:
