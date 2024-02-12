@@ -227,6 +227,10 @@
 				class="_formBlock"
 				>{{ i18n.ts.showGapBetweenNotesInTimeline }}</FormSwitch
 			>
+			<FormSwitch v-model="hideFollowButtons" class="_formBlock"
+				>{{ i18n.ts.hideFollowButtons	}}
+				</FormSwitch
+			>
 			<FormSwitch v-model="loadRawImages" class="_formBlock">{{
 				i18n.ts.loadRawImages
 			}}</FormSwitch>
@@ -283,16 +287,6 @@
 				<option value="respect">{{ i18n.ts._nsfw.respect }}</option>
 				<option value="ignore">{{ i18n.ts._nsfw.ignore }}</option>
 			</FormSelect>
-		</FormSection>
-
-		<FormSection>
-			<template #label>{{ i18n.ts.preventMisclick }}</template>
-			<FormSwitch v-model="hideFollowButtons" class="_formBlock"
-				>{{ i18n.ts.hideFollowButtons
-				}}<span class="_beta">{{
-					i18n.ts.originalFeature
-				}}</span></FormSwitch
-			>
 		</FormSection>
 
 		<FormRange
