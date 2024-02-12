@@ -9,6 +9,7 @@
 
 ## For systemd users
 
+- Required Rust version has been bumped from v1.68 to v1.70.
 - `libvips` is no longer required (unless your server os is *BSD), so you may uninstall it from your system. Make sure to execute the following commands after that:
     ```sh
     pnpm clean-npm
