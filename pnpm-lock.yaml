@@ -150,6 +150,9 @@ importers:
       axios:
         specifier: ^1.6.7
         version: 1.6.7
+      backend-rs:
+        specifier: workspace:*
+        version: link:../backend-rs
       bcryptjs:
         specifier: 2.4.3
         version: 2.4.3
@@ -288,9 +291,6 @@ importers:
       multer:
         specifier: 1.4.5-lts.1
         version: 1.4.5-lts.1
-      native-utils:
-        specifier: link:native-utils
-        version: link:native-utils
       nested-property:
         specifier: 4.0.0
         version: 4.0.0
@@ -606,7 +606,7 @@ importers:
         specifier: 8.16.0
         version: 8.16.0
 
-  packages/backend/native-utils:
+  packages/backend-rs:
     devDependencies:
       '@napi-rs/cli':
         specifier: 2.18.0

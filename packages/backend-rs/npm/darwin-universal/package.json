@@ -1,0 +1,15 @@
+{
+  "name": "backend-rs-darwin-universal",
+  "version": "0.0.0",
+  "os": [
+    "darwin"
+  ],
+  "main": "backend-rs.darwin-universal.node",
+  "files": [
+    "backend-rs.darwin-universal.node"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">= 10"
+  }
+}

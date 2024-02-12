@@ -27,7 +27,7 @@ import { convertAttachment } from "./mastodon/converters.js";
 import {
 	convertId,
 	IdConvertType as IdType,
-} from "native-utils/built/index.js";
+} from "backend-rs/built/index.js";
 
 // re-export native rust id conversion (function and enum)
 export { IdType, convertId };

@@ -10,7 +10,7 @@ node_modules
 report.*.json
 
 # Rust
-packages/backend/native-utils/target
+packages/backend-rs/target
 
 # Cypress
 cypress/screenshots

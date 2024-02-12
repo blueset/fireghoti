@@ -3,7 +3,7 @@ import {
 	nativeCreateId,
 	nativeInitIdGenerator,
 	nativeGetTimestamp,
-} from "native-utils/built/index.js";
+} from "backend-rs/built/index.js";
 
 const length = Math.min(Math.max(config.cuid?.length ?? 16, 16), 24);
 const fingerprint = config.cuid?.fingerprint ?? "";

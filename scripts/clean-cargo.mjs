@@ -6,7 +6,7 @@ import { execa } from "execa";
 	const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 	execa("cargo", ["clean"], {
-		cwd: join(__dirname, "/../packages/backend/native-utils"),
+		cwd: join(__dirname, "/../packages/backend-rs"),
 		stdio: "inherit",
 	});
 })();

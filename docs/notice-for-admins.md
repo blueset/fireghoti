@@ -1,3 +1,14 @@
+# Unreleased
+
+## For systemd users
+
+- `packages/backend/native-utils` can be removed.
+    - This directory was removed in the repository, but it's not completely removed from your system by `git pull --ff`, because some folders like `packages/backend/native-utils/built` are not tracked by git.
+
+    ```sh
+    rm --recursive --force packages/backend/native-utils
+    ```
+
 # v20240206
 
 ## For all users
