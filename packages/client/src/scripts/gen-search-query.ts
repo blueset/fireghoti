@@ -1,4 +1,4 @@
-import * as Acct from "firefish-js/built/acct";
+import { acct } from "firefish-js";
 import { host as localHost } from "@/config";
 
 export async function genSearchQuery(v: any, q: string) {
@@ -16,7 +16,7 @@ export async function genSearchQuery(v: any, q: string) {
 				}
 			} else {
 				const user = await v.os
-					.api("users/show", Acct.parse(at))
+					.api("users/show", acct.parse(at))
 					.catch((x) => null);
 				if (user) {
 					userId = user.id;

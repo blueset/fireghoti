@@ -191,7 +191,7 @@
 <script lang="ts" setup>
 import { computed, inject, ref } from "vue";
 import type { Ref } from "vue";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import XNoteHeader from "@/components/MkNoteHeader.vue";
 import MkSubNoteContent from "@/components/MkSubNoteContent.vue";
 import XReactionsViewer from "@/components/MkReactionsViewer.vue";
@@ -221,8 +221,8 @@ const router = useRouter();
 
 const props = withDefaults(
 	defineProps<{
-		note: firefish.entities.Note;
-		conversation?: firefish.entities.Note[];
+		note: entities.Note;
+		conversation?: entities.Note[];
 		parentId?;
 		detailedView?;
 
@@ -262,7 +262,7 @@ const starButton = ref<InstanceType<typeof XStarButton>>();
 const renoteButton = ref<InstanceType<typeof XRenoteButton>>();
 const reactButton = ref<HTMLElement>();
 const appearNote = computed(() =>
-	isRenote ? (note.value.renote as firefish.entities.Note) : note.value,
+	isRenote ? (note.value.renote as entities.Note) : note.value,
 );
 const isDeleted = ref(false);
 const muted = ref(
@@ -275,7 +275,7 @@ const muted = ref(
 );
 const translation = ref(null);
 const translating = ref(false);
-const replies: firefish.entities.Note[] =
+const replies: entities.Note[] =
 	props.conversation
 		?.filter(
 			(item) =>
@@ -369,7 +369,7 @@ function undoReact(note): void {
 	});
 }
 
-const currentClipPage = inject<Ref<firefish.entities.Clip> | null>(
+const currentClipPage = inject<Ref<entities.Clip> | null>(
 	"currentClipPage",
 	null,
 );

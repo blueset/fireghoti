@@ -15,28 +15,23 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	folder?: firefish.entities.DriveFolder;
-	parentFolder: firefish.entities.DriveFolder | null;
+	folder?: entities.DriveFolder;
+	parentFolder: entities.DriveFolder | null;
 }>();
 
 const emit = defineEmits<{
-	(ev: "move", v?: firefish.entities.DriveFolder): void;
-	(
-		ev: "upload",
-		file: File,
-		folder?: firefish.entities.DriveFolder | null,
-	): void;
-	(ev: "removeFile", v: firefish.entities.DriveFile["id"]): void;
-	(ev: "removeFolder", v: firefish.entities.DriveFolder["id"]): void;
+	(ev: "move", v?: entities.DriveFolder): void;
+	(ev: "upload", file: File, folder?: entities.DriveFolder | null): void;
+	(ev: "removeFile", v: entities.DriveFile["id"]): void;
+	(ev: "removeFolder", v: entities.DriveFolder["id"]): void;
 }>();
 
-const hover = ref(false);
 const draghover = ref(false);
 
 function onClick() {

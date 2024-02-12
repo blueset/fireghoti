@@ -1,10 +1,18 @@
+import * as acct from "./acct";
+import type { Acct } from "./acct";
 import { Endpoints } from "./api.types";
-import Stream, { Connection } from "./streaming";
-import { Channels } from "./streaming.types";
-import { Acct } from "./acct";
 import * as consts from "./consts";
+import Stream, { Connection } from "./streaming";
+import * as StreamTypes from "./streaming.types";
 
-export { Endpoints, Stream, Connection as ChannelConnection, Channels, Acct };
+export {
+	Endpoints,
+	Stream,
+	Connection as ChannelConnection,
+	StreamTypes,
+	acct,
+	Acct,
+};
 
 export const permissions = consts.permissions;
 export const notificationTypes = consts.notificationTypes;

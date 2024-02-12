@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import * as Acct from "firefish-js/built/acct";
+import { acct } from "firefish-js";
 import * as os from "@/os";
 import { mainRouter } from "@/router";
 import { i18n } from "@/i18n";
@@ -50,7 +50,7 @@ if (acct.startsWith("https://")) {
 		}
 	});
 } else {
-	promise = os.api("users/show", Acct.parse(acct));
+	promise = os.api("users/show", acct.parse(acct));
 	promise.then((user) => {
 		follow(user);
 	});

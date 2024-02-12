@@ -58,21 +58,21 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
-import type { Instance } from "firefish-js/built/entities";
+import type { entities } from "firefish-js";
 import MkInput from "@/components/form/input.vue";
 import XModalWindow from "@/components/MkModalWindow.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 
 const emit = defineEmits<{
-	(ev: "ok", selected: Instance): void;
+	(ev: "ok", selected: entities.Instance): void;
 	(ev: "cancel"): void;
 	(ev: "closed"): void;
 }>();
 
 const hostname = ref("");
-const instances: Instance[] = ref([]);
-const selected: Instance | null = ref(null);
+const instances = ref<entities.Instance[]>([]);
+const selected = ref<entities.Instance | null>();
 const dialogEl = ref<InstanceType<typeof XModalWindow>>();
 
 let searchOrderLatch = 0;
@@ -97,7 +97,7 @@ const search = () => {
 					id: x.id,
 					host: x.host,
 					iconUrl: x.iconUrl,
-				}) as Instance,
+				}) as entities.Instance,
 		);
 	});
 };

@@ -69,7 +69,7 @@
 <script lang="ts" setup>
 import type { ComputedRef } from "vue";
 import { computed, isRef, onActivated, onDeactivated, ref, watch } from "vue";
-import type * as firefish from "firefish-js";
+import type { Endpoints } from "firefish-js";
 import * as os from "@/os";
 import {
 	getScrollContainer,
@@ -81,14 +81,10 @@ import MkButton from "@/components/MkButton.vue";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 
-export interface Paging<
-	E extends keyof firefish.Endpoints = keyof firefish.Endpoints,
-> {
+export interface Paging<E extends keyof Endpoints = keyof Endpoints> {
 	endpoint: E;
 	limit: number;
-	params?:
-		| firefish.Endpoints[E]["req"]
-		| ComputedRef<firefish.Endpoints[E]["req"]>;
+	params?: Endpoints[E]["req"] | ComputedRef<Endpoints[E]["req"]>;
 
 	/**
 	 * 検索APIのような、ページング不可なエンドポイントを利用する場合

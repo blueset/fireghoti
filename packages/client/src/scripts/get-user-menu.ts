@@ -1,4 +1,4 @@
-import * as Acct from "firefish-js/built/acct";
+import { acct } from "firefish-js";
 import { defineAsyncComponent } from "vue";
 import { i18n } from "@/i18n";
 import copyToClipboard from "@/scripts/copy-to-clipboard";
@@ -284,7 +284,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 					type: "link",
 					icon: `${icon("ph-chats-teardrop")}`,
 					text: i18n.ts.startMessaging,
-					to: `/my/messaging/${Acct.toString(user)}`,
+					to: `/my/messaging/${acct.toString(user)}`,
 			  }
 			: undefined,
 		user.host != null && user.url

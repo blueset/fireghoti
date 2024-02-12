@@ -13,7 +13,7 @@
 					`${file.type}\n${bytes(file.size)}\n${new Date(
 						file.createdAt,
 					).toLocaleString()}\nby ${
-						file.user ? '@' + Acct.toString(file.user) : 'system'
+						file.user ? '@' + acct.toString(file.user) : 'system'
 					}`
 				"
 				:to="`/admin/file/${file.id}`"
@@ -52,13 +52,13 @@
 </template>
 
 <script lang="ts" setup>
-import * as Acct from "firefish-js/built/acct";
+import { acct } from "firefish-js";
 import MkPagination from "@/components/MkPagination.vue";
 import MkDriveFileThumbnail from "@/components/MkDriveFileThumbnail.vue";
 import bytes from "@/filters/bytes";
 import { i18n } from "@/i18n";
 
-const props = defineProps<{
+defineProps<{
 	pagination: any;
 	viewMode: "grid" | "list";
 }>();

@@ -274,7 +274,7 @@
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, watch } from "vue";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import XReactionIcon from "@/components/MkReactionIcon.vue";
 import MkFollowButton from "@/components/MkFollowButton.vue";
 import XReactionTooltip from "@/components/MkReactionTooltip.vue";
@@ -291,7 +291,7 @@ import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
-		notification: firefish.entities.Notification;
+		notification: entities.Notification;
 		withTime?: boolean;
 		full?: boolean;
 	}>(),

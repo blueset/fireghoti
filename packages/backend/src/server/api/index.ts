@@ -23,11 +23,7 @@ import verifyEmail from "./private/verify-email.js";
 import { koaBody } from "koa-body";
 import { convertAttachment } from "./mastodon/converters.js";
 
-// TODO?: should we avoid importing things from built directory?
-import {
-	convertId,
-	IdConvertType as IdType,
-} from "backend-rs/built/index.js";
+import { convertId, IdConvertType as IdType } from "backend-rs";
 
 // re-export native rust id conversion (function and enum)
 export { IdType, convertId };

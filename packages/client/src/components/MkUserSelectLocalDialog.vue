@@ -85,7 +85,7 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import MkInput from "@/components/form/input.vue";
 import FormSplit from "@/components/form/split.vue";
 import XModalWindow from "@/components/MkModalWindow.vue";
@@ -94,15 +94,15 @@ import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 
 const emit = defineEmits<{
-	(ev: "ok", selected: firefish.entities.UserDetailed): void;
+	(ev: "ok", selected: entities.UserDetailed): void;
 	(ev: "cancel"): void;
 	(ev: "closed"): void;
 }>();
 
 const username = ref("");
-const users: firefish.entities.UserDetailed[] = ref([]);
-const recentUsers: firefish.entities.UserDetailed[] = ref([]);
-const selected: firefish.entities.UserDetailed | null = ref(null);
+const users = ref([] as entities.UserDetailed[]);
+const recentUsers = ref([] as entities.UserDetailed[]);
+const selected = ref<entities.UserDetailed | null>(null);
 const dialogEl = ref();
 
 const search = () => {

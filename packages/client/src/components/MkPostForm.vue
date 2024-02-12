@@ -260,12 +260,11 @@ import {
 	watch,
 } from "vue";
 import * as mfm from "mfm-js";
-import type * as firefish from "firefish-js";
 import autosize from "autosize";
 import insertTextAtCursor from "insert-text-at-cursor";
 import { length } from "stringz";
 import { toASCII } from "punycode/";
-import * as Acct from "firefish-js/built/acct";
+import { acct, noteVisibilities, languages, type entities } from "firefish-js";
 import { throttle } from "throttle-debounce";
 import XNoteSimple from "@/components/MkNoteSimple.vue";
 import XNotePreview from "@/components/MkNotePreview.vue";
@@ -299,23 +298,23 @@ const modal = inject("modal");
 
 const props = withDefaults(
 	defineProps<{
-		reply?: firefish.entities.Note;
-		renote?: firefish.entities.Note;
+		reply?: entities.Note;
+		renote?: entities.Note;
 		channel?: any; // TODO
-		mention?: firefish.entities.User;
-		specified?: firefish.entities.User;
+		mention?: entities.User;
+		specified?: entities.User;
 		initialText?: string;
-		initialVisibility?: typeof firefish.noteVisibilities;
-		initialLanguage?: typeof firefish.languages;
-		initialFiles?: firefish.entities.DriveFile[];
+		initialVisibility?: typeof noteVisibilities;
+		initialLanguage?: typeof languages;
+		initialFiles?: entities.DriveFile[];
 		initialLocalOnly?: boolean;
-		initialVisibleUsers?: firefish.entities.User[];
-		initialNote?: firefish.entities.Note;
+		initialVisibleUsers?: entities.User[];
+		initialNote?: entities.Note;
 		instant?: boolean;
 		fixed?: boolean;
 		autofocus?: boolean;
 		showMfmCheatSheet?: boolean;
-		editId?: firefish.entities.Note["id"];
+		editId?: entities.Note["id"];
 	}>(),
 	{
 		initialVisibleUsers: () => [],
@@ -358,7 +357,7 @@ const visibility = ref(
 		((defaultStore.state.rememberNoteVisibility
 			? defaultStore.state.visibility
 			: defaultStore.state
-					.defaultNoteVisibility) as (typeof firefish.noteVisibilities)[number]),
+					.defaultNoteVisibility) as (typeof noteVisibilities)[number]),
 );
 
 const visibleUsers = ref([]);
@@ -1090,7 +1089,7 @@ function cancel() {
 
 function insertMention() {
 	os.selectUser().then((user) => {
-		insertTextAtCursor(textareaEl.value, "@" + Acct.toString(user) + " ");
+		insertTextAtCursor(textareaEl.value, "@" + acct.toString(user) + " ");
 	});
 }
 
@@ -1123,7 +1122,7 @@ function showActions(ev) {
 	);
 }
 
-const postAccount = ref<firefish.entities.UserDetailed | null>(null);
+const postAccount = ref<entities.UserDetailed | null>(null);
 
 function openAccountMenu(ev: MouseEvent) {
 	openAccountMenu_(

@@ -338,7 +338,7 @@
 import { computed, ref, watch } from "vue";
 import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import MkChart from "@/components/MkChart.vue";
 import MkObjectView from "@/components/MkObjectView.vue";
 import FormLink from "@/components/form/link.vue";
@@ -361,11 +361,11 @@ import icon from "@/scripts/icon";
 import "swiper/scss";
 import "swiper/scss/virtual";
 
-type AugmentedInstanceMetadata = firefish.entities.DetailedInstanceMetadata & {
+type AugmentedInstanceMetadata = entities.DetailedInstanceMetadata & {
 	blockedHosts: string[];
 	silencedHosts: string[];
 };
-type AugmentedInstance = firefish.entities.Instance & {
+type AugmentedInstance = entities.Instance & {
 	isBlocked: boolean;
 	isSilenced: boolean;
 };

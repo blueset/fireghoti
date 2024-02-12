@@ -39,7 +39,7 @@
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref } from "vue";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import copyToClipboard from "@/scripts/copy-to-clipboard";
 import MkDriveFileThumbnail from "@/components/MkDriveFileThumbnail.vue";
 import bytes from "@/filters/bytes";
@@ -50,7 +50,7 @@ import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
-		file: firefish.entities.DriveFile;
+		file: entities.DriveFile;
 		isSelected?: boolean;
 		selectMode?: boolean;
 	}>(),
@@ -61,7 +61,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	(ev: "chosen", r: firefish.entities.DriveFile): void;
+	(ev: "chosen", r: entities.DriveFile): void;
 	(ev: "dragstart"): void;
 	(ev: "dragend"): void;
 }>();

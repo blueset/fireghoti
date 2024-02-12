@@ -21,7 +21,7 @@
 							/></span>
 							<span class="sub"
 								><span class="acct _monospace"
-									>@{{ acct(user) }}</span
+									>@{{ acct.toString(user) }}</span
 								></span
 							>
 							<span class="state">
@@ -358,7 +358,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from "vue";
-import type * as firefish from "firefish-js";
+import { acct, type entities } from "firefish-js";
 import MkChart from "@/components/MkChart.vue";
 import MkObjectView from "@/components/MkObjectView.vue";
 import FormTextarea from "@/components/form/textarea.vue";
@@ -374,7 +374,7 @@ import MkFileListForAdmin from "@/components/MkFileListForAdmin.vue";
 import MkInfo from "@/components/MkInfo.vue";
 import * as os from "@/os";
 import { url } from "@/config";
-import { acct, userPage } from "@/filters/user";
+import { userPage } from "@/filters/user";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
 import { isAdmin, isModerator } from "@/reactiveAccount";
@@ -387,7 +387,7 @@ const props = defineProps<{
 
 const tab = ref("overview");
 const chartSrc = ref("per-user-notes");
-const user = ref<null | firefish.entities.UserDetailed>();
+const user = ref<null | entities.UserDetailed>();
 const init = ref<ReturnType<typeof createFetcher>>();
 const info = ref();
 const ips = ref(null);
@@ -661,7 +661,7 @@ const headerTabs = computed(() =>
 
 definePageMetadata(
 	computed(() => ({
-		title: user.value ? acct(user.value) : i18n.ts.userInfo,
+		title: user.value ? acct.toString(user.value) : i18n.ts.userInfo,
 		icon: `${icon("ph-info")}`,
 	})),
 );

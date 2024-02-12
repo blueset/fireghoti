@@ -1,5 +1,5 @@
 import { reactive, ref } from "vue";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import { readAndCompressImage } from "browser-image-resizer";
 import { defaultStore } from "@/store";
 import { apiUrl } from "@/config";
@@ -34,7 +34,7 @@ export function uploadFile(
 	folder?: any,
 	name?: string,
 	keepOriginal: boolean = defaultStore.state.keepOriginalUploading,
-): Promise<firefish.entities.DriveFile> {
+): Promise<entities.DriveFile> {
 	if (folder && typeof folder === "object") folder = folder.id;
 
 	return new Promise((resolve, reject) => {

@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import XWindow from "@/components/MkWindow.vue";
 import MkTextarea from "@/components/form/textarea.vue";
 import MkButton from "@/components/MkButton.vue";
@@ -50,7 +50,7 @@ import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	user: firefish.entities.User;
+	user: entities.User;
 	initialComment?: string;
 }>();
 

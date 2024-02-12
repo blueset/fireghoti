@@ -17,7 +17,7 @@
 				<span class="name">
 					<MkUserName :key="user.id" :user="user" />
 				</span>
-				<span class="username">@{{ acct(user) }}</span>
+				<span class="username">@{{ acct.toString(user) }}</span>
 			</li>
 			<li
 				tabindex="-1"
@@ -95,7 +95,7 @@ import {
 import contains from "@/scripts/contains";
 import { char2filePath } from "@/scripts/twemoji-base";
 import { getStaticImageUrl } from "@/scripts/get-static-image-url";
-import { acct } from "@/filters/user";
+import { acct } from "firefish-js";
 import * as os from "@/os";
 import { MFM_TAGS } from "@/scripts/mfm-tags";
 import { defaultStore } from "@/store";

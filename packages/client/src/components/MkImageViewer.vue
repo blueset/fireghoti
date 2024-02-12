@@ -28,14 +28,14 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import bytes from "@/filters/bytes";
 import number from "@/filters/number";
 import MkModal from "@/components/MkModal.vue";
 
 const props = withDefaults(
 	defineProps<{
-		image: firefish.entities.DriveFile;
+		image: entities.DriveFile;
 	}>(),
 	{},
 );

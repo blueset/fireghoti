@@ -107,7 +107,7 @@
 
 <script lang="ts" setup>
 import { nextTick, onDeactivated, onMounted, ref, shallowRef } from "vue";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import FormRange from "./form/range.vue";
 import { i18n } from "@/i18n";
 import * as os from "@/os";
@@ -116,7 +116,7 @@ import { ChiptuneJsConfig, ChiptuneJsPlayer } from "@/scripts/chiptune2";
 import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	module: firefish.entities.DriveFile;
+	module: entities.DriveFile;
 }>();
 
 interface ModRow {

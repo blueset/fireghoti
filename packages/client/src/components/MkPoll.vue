@@ -53,7 +53,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import { sum } from "@/scripts/array";
 import { pleaseLogin } from "@/scripts/please-login";
 import * as os from "@/os";
@@ -62,7 +62,7 @@ import { useInterval } from "@/scripts/use-interval";
 import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	note: firefish.entities.Note;
+	note: entities.Note;
 	readOnly?: boolean;
 }>();
 

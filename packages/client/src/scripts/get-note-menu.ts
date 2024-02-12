@@ -1,6 +1,6 @@
 import type { Ref } from "vue";
 import { defineAsyncComponent } from "vue";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import { $i, isSignedIn, isModerator } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
@@ -13,12 +13,12 @@ import { getUserMenu } from "@/scripts/get-user-menu";
 import icon from "@/scripts/icon";
 
 export function getNoteMenu(props: {
-	note: firefish.entities.Note;
+	note: entities.Note;
 	menuButton: Ref<HTMLElement | undefined>;
 	translation: Ref<any>;
 	translating: Ref<boolean>;
 	isDeleted: Ref<boolean>;
-	currentClipPage?: Ref<firefish.entities.Clip>;
+	currentClipPage?: Ref<entities.Clip>;
 }) {
 	const isRenote =
 		props.note.renote != null &&
@@ -27,7 +27,7 @@ export function getNoteMenu(props: {
 		props.note.poll == null;
 
 	const appearNote = isRenote
-		? (props.note.renote as firefish.entities.Note)
+		? (props.note.renote as entities.Note)
 		: props.note;
 
 	function del(): void {

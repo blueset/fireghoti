@@ -179,7 +179,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import * as mfm from "mfm-js";
 import * as os from "@/os";
 import XNoteSimple from "@/components/MkNoteSimple.vue";
@@ -197,7 +197,7 @@ import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	note: firefish.entities.Note;
+	note: entities.Note;
 	parentId?;
 	conversation?;
 	detailed?: boolean;

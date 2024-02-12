@@ -5,7 +5,7 @@ import * as http from "node:http";
 import * as path from "node:path";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import * as firefish from "firefish-js";
+import type { endpoints, Entities } from "firefish-js";
 import FormData from "form-data";
 import got from "got";
 import fetch from "node-fetch";
@@ -113,8 +113,8 @@ export const signup = async (params?: any): Promise<any> => {
 
 export const post = async (
 	user: any,
-	params?: firefish.Endpoints["notes/create"]["req"],
-): Promise<firefish.entities.Note> => {
+	params?: Endpoints["notes/create"]["req"],
+): Promise<entities.Note> => {
 	const q = Object.assign(
 		{
 			text: "test",

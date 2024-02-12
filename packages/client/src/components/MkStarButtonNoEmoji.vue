@@ -39,7 +39,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import type { Note } from "firefish-js/built/entities";
+import type { entities } from "firefish-js";
 import Ripple from "@/components/MkRipple.vue";
 import XDetails from "@/components/MkUsersTooltip.vue";
 import { pleaseLogin } from "@/scripts/please-login";
@@ -50,7 +50,7 @@ import { useTooltip } from "@/scripts/use-tooltip";
 import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	note: Note;
+	note: entities.Note;
 	count: number;
 	reacted: boolean;
 }>();

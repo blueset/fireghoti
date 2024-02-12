@@ -1,7 +1,7 @@
 // TODO: なんでもかんでもos.tsに突っ込むのやめたいのでよしなに分割する
 
 import { EventEmitter } from "eventemitter3";
-import * as firefish from "firefish-js";
+import { api as firefishApi, type entities } from "firefish-js";
 import insertTextAtCursor from "insert-text-at-cursor";
 import type { Component, Ref } from "vue";
 import { defineAsyncComponent, markRaw, ref } from "vue";
@@ -16,7 +16,7 @@ import type { MenuItem } from "@/types/menu";
 
 export const pendingApiRequestsCount = ref(0);
 
-const apiClient = new firefish.api.APIClient({
+const apiClient = new firefishApi.APIClient({
 	origin: url,
 });
 
@@ -655,7 +655,7 @@ export async function selectLocalUser() {
 	});
 }
 
-export async function selectInstance(): Promise<firefish.entities.Instance> {
+export async function selectInstance(): Promise<entities.Instance> {
 	return new Promise((resolve, reject) => {
 		popup(
 			defineAsyncComponent({
@@ -745,11 +745,11 @@ export async function pickEmoji(src: HTMLElement | null, opts) {
 }
 
 export async function cropImage(
-	image: firefish.entities.DriveFile,
+	image: entities.DriveFile,
 	options: {
 		aspectRatio: number;
 	},
-): Promise<firefish.entities.DriveFile> {
+): Promise<entities.DriveFile> {
 	return new Promise((resolve, reject) => {
 		popup(
 			defineAsyncComponent({

@@ -125,7 +125,7 @@
 
 <script lang="ts" setup>
 import { nextTick, ref, shallowRef, watch } from "vue";
-import type * as firefish from "firefish-js";
+import type { noteVisibilities } from "firefish-js";
 import MkModal from "@/components/MkModal.vue";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
@@ -134,7 +134,7 @@ const modal = shallowRef<InstanceType<typeof MkModal>>();
 
 const props = withDefaults(
 	defineProps<{
-		currentVisibility: (typeof firefish.noteVisibilities)[number];
+		currentVisibility: (typeof noteVisibilities)[number];
 		currentLocalOnly: boolean;
 		src?: HTMLElement;
 	}>(),
@@ -142,10 +142,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	(
-		ev: "changeVisibility",
-		v: (typeof firefish.noteVisibilities)[number],
-	): void;
+	(ev: "changeVisibility", v: (typeof noteVisibilities)[number]): void;
 	(ev: "changeLocalOnly", v: boolean): void;
 	(ev: "closed"): void;
 }>();
@@ -157,7 +154,7 @@ watch(localOnly, () => {
 	emit("changeLocalOnly", localOnly.value);
 });
 
-function choose(visibility: (typeof firefish.noteVisibilities)[number]): void {
+function choose(visibility: (typeof noteVisibilities)[number]): void {
 	v.value = visibility;
 	emit("changeVisibility", visibility);
 	nextTick(() => {

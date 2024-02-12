@@ -9,11 +9,11 @@
 </template>
 
 <script lang="ts" setup>
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 
-const props = withDefaults(
+withDefaults(
 	defineProps<{
-		user: firefish.entities.User;
+		user: entities.User;
 		nowrap?: boolean;
 	}>(),
 	{

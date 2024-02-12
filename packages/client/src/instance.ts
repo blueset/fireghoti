@@ -1,4 +1,4 @@
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import { computed, reactive } from "vue";
 import { api } from "./os";
 
@@ -7,7 +7,7 @@ import { api } from "./os";
 const instanceData = localStorage.getItem("instance");
 // TODO: instanceをリアクティブにするかは再考の余地あり
 
-export const instance: firefish.entities.DetailedInstanceMetadata = reactive(
+export const instance: entities.DetailedInstanceMetadata = reactive(
 	instanceData
 		? JSON.parse(instanceData)
 		: {

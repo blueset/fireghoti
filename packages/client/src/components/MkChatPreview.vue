@@ -10,7 +10,7 @@
 		:to="
 			message.groupId
 				? `/my/messaging/group/${message.groupId}`
-				: `/my/messaging/${getAcct(
+				: `/my/messaging/${acct.toString(
 						isMe(message) ? message.recipient : message.user,
 					)}`
 		"
@@ -63,14 +63,11 @@
 </template>
 
 <script lang="ts" setup>
-import * as Acct from "firefish-js/built/acct";
 import { i18n } from "@/i18n";
-import { acct } from "@/filters/user";
+import { acct } from "firefish-js";
 import { $i } from "@/reactiveAccount";
 
-const getAcct = Acct.toString;
-
-const props = defineProps<{
+defineProps<{
 	message: Record<string, any>;
 }>();
 

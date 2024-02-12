@@ -13,13 +13,13 @@
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import XNotes from "@/components/MkNotes.vue";
 import MkTab from "@/components/MkTab.vue";
 import { i18n } from "@/i18n";
 
 const props = defineProps<{
-	user: firefish.entities.UserDetailed;
+	user: entities.UserDetailed;
 }>();
 
 const include = ref<string | null>(null);

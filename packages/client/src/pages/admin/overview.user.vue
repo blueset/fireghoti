@@ -9,7 +9,9 @@
 		<div class="body">
 			<span class="name"><MkUserName class="name" :user="user" /></span>
 			<span class="sub"
-				><span class="acct _monospace">@{{ acct(user) }}</span></span
+				><span class="acct _monospace"
+					>@{{ acct.toString(user) }}</span
+				></span
 			>
 		</div>
 		<MkMiniChart v-if="chart" class="chart" :src="chart.inc" />
@@ -19,13 +21,12 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
-import type * as firefish from "firefish-js";
+import { acct, type entities } from "firefish-js";
 import MkMiniChart from "@/components/MkMiniChart.vue";
 import * as os from "@/os";
-import { acct } from "@/filters/user";
 
 const props = defineProps<{
-	user: firefish.entities.User;
+	user: entities.User;
 }>();
 
 const chart = ref(null);

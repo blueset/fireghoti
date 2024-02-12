@@ -28,7 +28,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import MkContainer from "@/components/MkContainer.vue";
 import MkChart from "@/components/MkChart.vue";
 import * as os from "@/os";
@@ -37,7 +37,7 @@ import icon from "@/scripts/icon";
 
 withDefaults(
 	defineProps<{
-		user: firefish.entities.User;
+		user: entities.User;
 		limit?: number;
 	}>(),
 	{

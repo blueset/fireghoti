@@ -188,7 +188,7 @@
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, onMounted, provide, ref } from "vue";
-import * as Acct from "firefish-js/built/acct";
+import { acct } from "firefish-js";
 import type { ComputedRef } from "vue";
 import XCommon from "./_common_/common.vue";
 import type { PageMetadata } from "@/scripts/page-metadata";
@@ -325,7 +325,7 @@ function messagingStart(ev) {
 
 async function startUser(): void {
 	os.selectUser().then((user) => {
-		mainRouter.push(`/my/messaging/${Acct.toString(user)}`);
+		mainRouter.push(`/my/messaging/${acct.toString(user)}`);
 	});
 }
 

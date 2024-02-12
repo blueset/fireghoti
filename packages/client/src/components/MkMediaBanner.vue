@@ -58,7 +58,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import VuePlyr from "vue-plyr";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import { ColdDeviceStorage } from "@/store";
 import "vue-plyr/dist/vue-plyr.css";
 import { i18n } from "@/i18n";
@@ -66,7 +66,7 @@ import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
-		media: firefish.entities.DriveFile;
+		media: entities.DriveFile;
 	}>(),
 	{},
 );

@@ -38,7 +38,7 @@
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref } from "vue";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
@@ -46,7 +46,7 @@ import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
-		folder: firefish.entities.DriveFolder;
+		folder: entities.DriveFolder;
 		isSelected?: boolean;
 		selectMode?: boolean;
 	}>(),
@@ -57,11 +57,11 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	(ev: "chosen", v: firefish.entities.DriveFolder): void;
-	(ev: "move", v: firefish.entities.DriveFolder): void;
-	(ev: "upload", file: File, folder: firefish.entities.DriveFolder);
-	(ev: "removeFile", v: firefish.entities.DriveFile["id"]): void;
-	(ev: "removeFolder", v: firefish.entities.DriveFolder["id"]): void;
+	(ev: "chosen", v: entities.DriveFolder): void;
+	(ev: "move", v: entities.DriveFolder): void;
+	(ev: "upload", file: File, folder: entities.DriveFolder);
+	(ev: "removeFile", v: entities.DriveFile["id"]): void;
+	(ev: "removeFolder", v: entities.DriveFolder["id"]): void;
 	(ev: "dragstart"): void;
 	(ev: "dragend"): void;
 }>();

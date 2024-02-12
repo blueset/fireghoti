@@ -37,7 +37,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import MkButton from "@/components/MkButton.vue";
 import { version } from "@/config";
 import * as os from "@/os";
@@ -56,7 +56,7 @@ withDefaults(
 
 const loaded = ref(false);
 const serverIsDead = ref(false);
-const meta = ref<firefish.entities.LiteInstanceMetadata | null>(null);
+const meta = ref<entities.LiteInstanceMetadata | null>(null);
 
 os.api("meta", {
 	detail: false,

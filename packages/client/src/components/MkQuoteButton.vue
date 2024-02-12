@@ -11,7 +11,7 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import type { Note } from "firefish-js/built/entities";
+import type { entities } from "firefish-js";
 import { pleaseLogin } from "@/scripts/please-login";
 import * as os from "@/os";
 import { $i } from "@/reactiveAccount";
@@ -20,7 +20,7 @@ import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	note: Note;
+	note: entities.Note;
 }>();
 
 const canRenote = computed(

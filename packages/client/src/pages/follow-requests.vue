@@ -38,7 +38,7 @@
 										><MkUserName :user="req.follower"
 									/></MkA>
 									<p class="acct">
-										@{{ acct(req.follower) }}
+										@{{ acct.toString(req.follower) }}
 									</p>
 								</div>
 								<div
@@ -84,7 +84,8 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import MkPagination from "@/components/MkPagination.vue";
-import { acct, userPage } from "@/filters/user";
+import { acct } from "firefish-js";
+import { userPage } from "@/filters/user";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";

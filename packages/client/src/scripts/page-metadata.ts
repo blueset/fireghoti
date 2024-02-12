@@ -1,4 +1,4 @@
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import type { ComputedRef, Ref } from "vue";
 import { inject, isRef, onActivated, onMounted, provide, ref } from "vue";
 
@@ -9,8 +9,8 @@ export interface PageMetadata {
 	title: string;
 	subtitle?: string;
 	icon?: string | null;
-	avatar?: firefish.entities.User | null;
-	userName?: firefish.entities.User | null;
+	avatar?: entities.User | null;
+	userName?: entities.User | null;
 	bg?: string;
 }
 

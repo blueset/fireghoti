@@ -25,13 +25,13 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import MkPagination from "@/components/MkPagination.vue";
 import MkNote from "@/components/MkNote.vue";
 import MkReactionIcon from "@/components/MkReactionIcon.vue";
 
 const props = defineProps<{
-	user: firefish.entities.User;
+	user: entities.User;
 }>();
 
 const pagination = {

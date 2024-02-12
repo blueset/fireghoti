@@ -15,13 +15,13 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import { length } from "stringz";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import { concat } from "@/scripts/array";
 import { i18n } from "@/i18n";
 
 const props = defineProps<{
 	modelValue: boolean;
-	note: firefish.entities.Note;
+	note: entities.Note;
 }>();
 
 const emit = defineEmits<{

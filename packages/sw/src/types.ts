@@ -1,4 +1,4 @@
-import * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 
 export type SwMessageOrderType = "post" | "push";
 
@@ -12,10 +12,10 @@ export type SwMessage = {
 
 // Defined also @/services/push-notification.ts#L7-L14
 type PushNotificationDataSourceMap = {
-	notification: firefish.entities.Notification;
+	notification: entities.Notification;
 	unreadAntennaNote: {
 		antenna: { id: string; name: string };
-		note: firefish.entities.Note;
+		note: entities.Note;
 	};
 	readAllNotifications: undefined;
 	readAllMessagingMessages: undefined;

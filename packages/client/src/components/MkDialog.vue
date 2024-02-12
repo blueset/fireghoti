@@ -203,7 +203,7 @@
 
 <script lang="ts" setup>
 import { computed, onBeforeUnmount, onMounted, ref, shallowRef } from "vue";
-import * as Acct from "firefish-js/built/acct";
+import { acct } from "firefish-js";
 import MkModal from "@/components/MkModal.vue";
 import MkButton from "@/components/MkButton.vue";
 import MkInput from "@/components/form/input.vue";
@@ -387,7 +387,7 @@ async function openSearchFilters(ev) {
 				action: () => {
 					os.selectUser().then((user) => {
 						inputValue.value = appendFilter(
-							"from:@" + Acct.toString(user),
+							"from:@" + acct.toString(user),
 						);
 					});
 				},

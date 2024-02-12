@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import type { DriveFile } from "firefish-js/built/entities";
+import type { entities } from "firefish-js";
 import * as os from "@/os";
 import { stream } from "@/stream";
 import { i18n } from "@/i18n";
@@ -11,7 +11,7 @@ function select(
 	src: any,
 	label: string | null,
 	multiple: boolean,
-): Promise<DriveFile | DriveFile[]> {
+): Promise<entities.DriveFile | entities.DriveFile[]> {
 	return new Promise((res, rej) => {
 		const keepOriginal = ref(defaultStore.state.keepOriginalUploading);
 
@@ -122,13 +122,13 @@ function select(
 export function selectFile(
 	src: any,
 	label: string | null = null,
-): Promise<DriveFile> {
-	return select(src, label, false) as Promise<DriveFile>;
+): Promise<entities.DriveFile> {
+	return select(src, label, false) as Promise<entities.DriveFile>;
 }
 
 export function selectFiles(
 	src: any,
 	label: string | null = null,
-): Promise<DriveFile[]> {
-	return select(src, label, true) as Promise<DriveFile[]>;
+): Promise<entities.DriveFile[]> {
+	return select(src, label, true) as Promise<entities.DriveFile[]>;
 }

@@ -115,7 +115,7 @@
 
 <script lang="ts" setup>
 import { ref, watch } from "vue";
-import * as Acct from "firefish-js/built/acct";
+import { acct } from "firefish-js";
 import MkButton from "@/components/MkButton.vue";
 import MkInput from "@/components/form/input.vue";
 import MkTextarea from "@/components/form/textarea.vue";
@@ -226,7 +226,7 @@ async function deleteAntenna() {
 function addUser() {
 	os.selectUser().then((user) => {
 		users.value = users.value.trim();
-		users.value += `\n@${Acct.toString(user as any)}`;
+		users.value += `\n@${acct.toString(user as any)}`;
 		users.value = users.value.trim();
 	});
 }

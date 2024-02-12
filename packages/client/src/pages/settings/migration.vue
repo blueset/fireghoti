@@ -52,7 +52,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
-import { toString } from "firefish-js/built/acct";
+import { acct } from "firefish-js";
 import FormSection from "@/components/form/section.vue";
 import FormInput from "@/components/form/input.vue";
 import FormButton from "@/components/MkButton.vue";
@@ -73,7 +73,7 @@ async function init() {
 		const aka = await os.api("users/show", { userIds: $i.alsoKnownAs });
 		accountAlias.value =
 			aka && aka.length > 0
-				? aka.map((user) => `@${toString(user)}`)
+				? aka.map((user) => `@${acct.toString(user)}`)
 				: [""];
 	} else {
 		accountAlias.value = [""];

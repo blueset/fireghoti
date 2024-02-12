@@ -1,10 +1,10 @@
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 
 /**
  * 投稿を表す文字列を取得します。
  * @param {*} note (packされた)投稿
  */
-export const getNoteSummary = (note: firefish.entities.Note): string => {
+export const getNoteSummary = (note: entities.Note): string => {
 	/*
 	if (note.deletedAt) {
 		return `(${i18n.ts.deletedNote})`;

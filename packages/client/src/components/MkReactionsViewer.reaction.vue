@@ -23,7 +23,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import type * as firefish from "firefish-js";
+import type { entitites } from "firefish-js";
 import XDetails from "@/components/MkReactionsViewer.details.vue";
 import XReactionIcon from "@/components/MkReactionIcon.vue";
 import * as os from "@/os";
@@ -34,7 +34,7 @@ const props = defineProps<{
 	reaction: string;
 	count: number;
 	isInitial: boolean;
-	note: firefish.entities.Note;
+	note: entities.Note;
 }>();
 
 const emit = defineEmits<{

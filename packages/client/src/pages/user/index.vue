@@ -30,9 +30,7 @@
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref, watch } from "vue";
-import * as Acct from "firefish-js/built/acct";
-import type * as firefish from "firefish-js";
-import { acct as getAcct } from "@/filters/user";
+import { acct, type entities } from "firefish-js";
 import * as os from "@/os";
 import { useRouter } from "@/router";
 import { definePageMetadata } from "@/scripts/page-metadata";
@@ -59,13 +57,13 @@ const props = withDefaults(
 useRouter();
 
 const tab = ref(props.page);
-const user = ref<null | firefish.entities.UserDetailed>(null);
+const user = ref<null | entities.UserDetailed>(null);
 const error = ref(null);
 
 function fetchUser(): void {
 	if (props.acct == null) return;
 	user.value = null;
-	os.api("users/show", Acct.parse(props.acct))
+	os.api("users/show", acct.parse(props.acct))
 		.then((u) => {
 			user.value = u;
 		})
@@ -129,7 +127,7 @@ definePageMetadata(
 					title: user.value.name
 						? `${user.value.name} (@${user.value.username})`
 						: `@${user.value.username}`,
-					subtitle: `@${getAcct(user.value)}`,
+					subtitle: `@${acct.toString(user.value)}`,
 					userName: user.value,
 					avatar: user.value,
 					path: `/@${user.value.username}`,

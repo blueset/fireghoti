@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import type { CustomEmoji } from "firefish-js/built/entities";
+import type { entities } from "firefish-js";
 import { getStaticImageUrl } from "@/scripts/get-static-image-url";
 import { char2filePath } from "@/scripts/twemoji-base";
 import { defaultStore } from "@/store";
@@ -32,7 +32,7 @@ const props = defineProps<{
 	emoji: string;
 	normal?: boolean;
 	noStyle?: boolean;
-	customEmojis?: CustomEmoji[];
+	customEmojis?: entities.CustomEmoji[];
 	isReaction?: boolean;
 }>();
 

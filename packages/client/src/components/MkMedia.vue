@@ -92,7 +92,7 @@
 import { computed, ref, watch } from "vue";
 import VuePlyr from "vue-plyr";
 import "vue-plyr/dist/vue-plyr.css";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import { getStaticImageUrl } from "@/scripts/get-static-image-url";
 import ImgWithBlurhash from "@/components/MkImgWithBlurhash.vue";
 import { defaultStore } from "@/store";
@@ -101,7 +101,7 @@ import * as os from "@/os";
 import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	media: firefish.entities.DriveFile;
+	media: entities.DriveFile;
 	raw?: boolean;
 }>();
 

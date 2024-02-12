@@ -29,8 +29,7 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
-import * as Acct from "firefish-js/built/acct";
-import type * as firefish from "firefish-js";
+import { acct, type entities } from "firefish-js";
 import MkUserInfo from "@/components/MkUserInfo.vue";
 import * as os from "@/os";
 import { defaultStore } from "@/store";
@@ -48,7 +47,7 @@ const emit = defineEmits<{
 }>();
 
 const zIndex = os.claimZIndex("middle");
-const user = ref<firefish.entities.UserDetailed | null>(null);
+const user = ref<entities.UserDetailed | null>(null);
 const top = ref(0);
 const left = ref(0);
 
@@ -57,7 +56,7 @@ onMounted(() => {
 		user.value = props.q;
 	} else {
 		const query = props.q.startsWith("@")
-			? Acct.parse(props.q.slice(1))
+			? acct.parse(props.q.slice(1))
 			: { userId: props.q };
 
 		os.api("users/show", query).then((res) => {

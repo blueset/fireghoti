@@ -29,7 +29,7 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import { getStaticImageUrl } from "@/scripts/get-static-image-url";
 import { notePage } from "@/filters/note";
 import * as os from "@/os";
@@ -40,18 +40,18 @@ import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	user: firefish.entities.UserDetailed;
+	user: entities.UserDetailed;
 }>();
 
 const fetching = ref(true);
 const images = ref<
 	{
-		note: firefish.entities.Note;
-		file: firefish.entities.DriveFile;
+		note: entities.Note;
+		file: entities.DriveFile;
 	}[]
 >([]);
 
-function thumbnail(image: firefish.entities.DriveFile): string {
+function thumbnail(image: entities.DriveFile): string {
 	return defaultStore.state.disableShowingAnimatedImages
 		? getStaticImageUrl(image.thumbnailUrl)
 		: image.thumbnailUrl;

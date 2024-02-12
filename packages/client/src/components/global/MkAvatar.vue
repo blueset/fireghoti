@@ -8,7 +8,7 @@
 			square: defaultStore.state.squareAvatars,
 		}"
 		:style="{ color }"
-		:title="acct(user)"
+		:title="acct.toString(user)"
 		@click="onClick"
 	>
 		<img class="inner" :src="url" decoding="async" />
@@ -27,7 +27,7 @@
 			square: defaultStore.state.squareAvatars,
 		}"
 		:style="{ color }"
-		:title="acct(user)"
+		:title="acct.toString(user)"
 		ref="gallery"
 		@click.stop
 	>
@@ -48,7 +48,7 @@
 		}"
 		:style="{ color }"
 		:to="userPage(user)"
-		:title="acct(user)"
+		:title="acct.toString(user)"
 		:target="target"
 		@click.stop
 	>
@@ -63,10 +63,10 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from "vue";
-import type * as firefish from "firefish-js";
+import { acct, type entities } from "firefish-js";
 import { getStaticImageUrl } from "@/scripts/get-static-image-url";
 import { extractAvgColorFromBlurhash } from "@/scripts/extract-avg-color-from-blurhash";
-import { acct, userPage } from "@/filters/user";
+import { userPage } from "@/filters/user";
 import MkUserOnlineIndicator from "@/components/MkUserOnlineIndicator.vue";
 import { defaultStore } from "@/store";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
@@ -75,7 +75,7 @@ import "photoswipe/style.css";
 
 const props = withDefaults(
 	defineProps<{
-		user: firefish.entities.User;
+		user: entities.User;
 		target?: string | null;
 		disableLink?: boolean;
 		showLightBox?: boolean;

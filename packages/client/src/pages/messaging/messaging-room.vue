@@ -105,8 +105,8 @@ import {
 	ref,
 	watch,
 } from "vue";
-import type * as firefish from "firefish-js";
-import * as Acct from "firefish-js/built/acct";
+import type { entities, Channels, ChannelConnection } from "firefish-js";
+import { acct } from "firefish-js";
 import XMessage from "./messaging-room.message.vue";
 import XForm from "./messaging-room.form.vue";
 import XList from "@/components/MkDateSeparatedList.vue";
@@ -137,12 +137,10 @@ const formEl = ref<InstanceType<typeof XForm>>();
 const pagingComponent = ref<InstanceType<typeof MkPagination>>();
 
 const fetching = ref(true);
-const user = ref<firefish.entities.UserDetailed | null>(null);
-const group = ref<firefish.entities.UserGroup | null>(null);
-const typers = ref<firefish.entities.User[]>([]);
-const connection: firefish.ChannelConnection<
-	firefish.Channels["messaging"]
-> | null = ref(null);
+const user = ref<entities.UserDetailed | null>(null);
+const group = ref<entities.UserGroup | null>(null);
+const typers = ref<entities.User[]>([]);
+const connection: ChannelConnection<Channels["messaging"]> | null = ref(null);
 const showIndicator = ref(false);
 const { animation } = defaultStore.reactiveState;
 
@@ -157,10 +155,10 @@ async function fetch() {
 	fetching.value = true;
 
 	if (props.userAcct) {
-		const acct = Acct.parse(props.userAcct);
+		const account = acct.parse(props.userAcct);
 		user.value = await os.api("users/show", {
-			username: acct.username,
-			host: acct.host || undefined,
+			username: account.username,
+			host: account.host || undefined,
 		});
 		group.value = null;
 

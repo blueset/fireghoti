@@ -91,7 +91,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import MkFollowButton from "@/components/MkFollowButton.vue";
 import XShowMoreButton from "@/components/MkShowMoreButton.vue";
 import MkNumber from "@/components/MkNumber.vue";
@@ -100,7 +100,7 @@ import { i18n } from "@/i18n";
 import { $i, isSignedIn } from "@/reactiveAccount";
 
 const props = defineProps<{
-	user: firefish.entities.UserDetailed;
+	user: entities.UserDetailed;
 	detailed?: boolean;
 }>();
 

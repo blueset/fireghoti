@@ -2,8 +2,6 @@ process.env.NODE_ENV = "test";
 
 import * as assert from "assert";
 import { inspect } from "node:util";
-import { DEFAULT_POLICIES } from "@/core/RoleService.js";
-import type { Packed } from "@/misc/json-schema.js";
 import {
 	signup,
 	post,
@@ -12,10 +10,9 @@ import {
 	startServer,
 	api,
 	successfulApiCall,
-	failedApiCall,
 	uploadFile,
 } from "../utils.js";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import type { INestApplicationContext } from "@nestjs/common";
 
 describe("ユーザー", () => {
@@ -34,16 +31,16 @@ describe("ユーザー", () => {
 	};
 
 	// BUG misskey-jsとjson-schemaと実際に返ってくるデータが全部違う
-	type UserLite = firefish.entities.UserLite & {
+	type UserLite = entities.UserLite & {
 		badgeRoles: any[];
 	};
 
 	type UserDetailedNotMe = UserLite &
-		firefish.entities.UserDetailed & {
+		entities.UserDetailed & {
 			roles: any[];
 		};
 
-	type MeDetailed = UserDetailedNotMe & firefish.entities.MeDetailed;
+	type MeDetailed = UserDetailedNotMe & entities.MeDetailed;
 
 	type User = MeDetailed & { token: string };
 
@@ -183,12 +180,12 @@ describe("ユーザー", () => {
 
 	let root: User;
 	let alice: User;
-	let aliceNote: firefish.entities.Note;
-	let alicePage: firefish.entities.Page;
-	let aliceList: firefish.entities.UserList;
+	let aliceNote: entities.Note;
+	let alicePage: entities.Page;
+	let aliceList: entities.UserList;
 
 	let bob: User;
-	let bobNote: firefish.entities.Note;
+	let bobNote: entities.Note;
 
 	let carol: User;
 	let dave: User;

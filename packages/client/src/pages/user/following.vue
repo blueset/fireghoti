@@ -17,8 +17,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from "vue";
-import * as Acct from "firefish-js/built/acct";
-import type * as firefish from "firefish-js";
+import { acct, type entities } from "firefish-js";
 import XFollowList from "./follow-list.vue";
 import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";
@@ -32,13 +31,13 @@ const props = withDefaults(
 	{},
 );
 
-const user = ref<null | firefish.entities.UserDetailed>(null);
+const user = ref<null | entities.UserDetailed>(null);
 const error = ref(null);
 
 function fetchUser(): void {
 	if (props.acct == null) return;
 	user.value = null;
-	os.api("users/show", Acct.parse(props.acct))
+	os.api("users/show", acct.parse(props.acct))
 		.then((u) => {
 			user.value = u;
 		})

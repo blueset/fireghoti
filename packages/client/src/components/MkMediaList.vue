@@ -41,7 +41,7 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 import PhotoSwipe from "photoswipe";
 import "photoswipe/style.css";
@@ -56,7 +56,7 @@ import {
 } from "@/const";
 
 const props = defineProps<{
-	mediaList: firefish.entities.DriveFile[];
+	mediaList: entities.DriveFile[];
 	raw?: boolean;
 	inDm?: boolean;
 }>();
@@ -184,7 +184,7 @@ onMounted(() => {
 	}
 });
 
-const previewable = (file: firefish.entities.DriveFile): boolean => {
+const previewable = (file: entities.DriveFile): boolean => {
 	if (file.type === "image/svg+xml") return true; // svgのwebpublic/thumbnailはpngなのでtrue
 	// FILE_TYPE_BROWSERSAFEに適合しないものはブラウザで表示するのに不適切
 	if (isModule(file)) return true;
@@ -194,7 +194,7 @@ const previewable = (file: firefish.entities.DriveFile): boolean => {
 	);
 };
 
-const isModule = (file: firefish.entities.DriveFile): boolean => {
+const isModule = (file: entities.DriveFile): boolean => {
 	return (
 		FILE_TYPE_TRACKER_MODULES.includes(file.type) ||
 		FILE_EXT_TRACKER_MODULES.some((ext) => {

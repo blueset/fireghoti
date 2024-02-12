@@ -89,7 +89,7 @@
 
 <script lang="ts" setup>
 import { computed, markRaw, onMounted, onUnmounted, ref, watch } from "vue";
-import * as Acct from "firefish-js/built/acct";
+import { acct } from "firefish-js";
 import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import MkButton from "@/components/MkButton.vue";
@@ -206,7 +206,7 @@ function onRead(ids): void {
 
 async function startUser(): void {
 	os.selectUser().then((user) => {
-		router.push(`/my/messaging/${Acct.toString(user)}`);
+		router.push(`/my/messaging/${acct.toString(user)}`);
 	});
 }
 

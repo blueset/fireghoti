@@ -1,4 +1,4 @@
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 
 export interface Muted {
 	muted: boolean;
@@ -9,7 +9,7 @@ export interface Muted {
 const NotMuted = { muted: false, matched: [] };
 
 function checkLangMute(
-	note: firefish.entities.Note,
+	note: entities.Note,
 	mutedLangs: Array<string | string[]>,
 ): Muted {
 	const mutedLangList = new Set(
@@ -22,7 +22,7 @@ function checkLangMute(
 }
 
 function checkWordMute(
-	note: firefish.entities.Note,
+	note: entities.Note,
 	mutedWords: Array<string | string[]>,
 ): Muted {
 	let text = `${note.cw ?? ""} ${note.text ?? ""}`;

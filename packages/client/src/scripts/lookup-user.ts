@@ -1,4 +1,4 @@
-import * as Acct from "firefish-js/built/acct";
+import { acct } from "firefish-js";
 import { i18n } from "@/i18n";
 import * as os from "@/os";
 
@@ -12,7 +12,7 @@ export async function lookupUser() {
 		os.pageWindow(`/user-info/${user.id}`);
 	};
 
-	const usernamePromise = os.api("users/show", Acct.parse(result));
+	const usernamePromise = os.api("users/show", acct.parse(result));
 	const idPromise = os.api("users/show", { userId: result });
 	let _notFound = false;
 	const notFound = () => {

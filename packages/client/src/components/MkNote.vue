@@ -273,7 +273,7 @@
 <script lang="ts" setup>
 import { computed, inject, onMounted, ref } from "vue";
 import type { Ref } from "vue";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import MkSubNoteContent from "./MkSubNoteContent.vue";
 import MkNoteSub from "@/components/MkNoteSub.vue";
 import XNoteHeader from "@/components/MkNoteHeader.vue";
@@ -306,7 +306,7 @@ import icon from "@/scripts/icon";
 const router = useRouter();
 
 const props = defineProps<{
-	note: firefish.entities.Note;
+	note: entities.Note;
 	pinned?: boolean;
 	detailedView?: boolean;
 	collapsedReply?: boolean;
@@ -351,7 +351,7 @@ const renoteButton = ref<InstanceType<typeof XRenoteButton>>();
 const renoteTime = ref<HTMLElement>();
 const reactButton = ref<HTMLElement>();
 const appearNote = computed(() =>
-	isRenote ? (note.value.renote as firefish.entities.Note) : note.value,
+	isRenote ? (note.value.renote as entities.Note) : note.value,
 );
 const isMyRenote = isSignedIn && $i.id === note.value.userId;
 const showContent = ref(false);
@@ -466,7 +466,7 @@ function undoReact(note): void {
 	});
 }
 
-const currentClipPage = inject<Ref<firefish.entities.Clip> | null>(
+const currentClipPage = inject<Ref<entities.Clip> | null>(
 	"currentClipPage",
 	null,
 );

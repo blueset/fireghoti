@@ -1,5 +1,5 @@
 import { get } from "idb-keyval";
-import * as Acct from "firefish-js/built/acct";
+import { acct } from "firefish-js";
 import type { PushNotificationDataMap } from "@/types";
 import {
 	createEmptyNotification,
@@ -119,7 +119,7 @@ globalThis.addEventListener("push", (ev) => {
 							case "showUser":
 								if ("user" in data.body)
 									client = await swos.openUser(
-										Acct.toString(data.body.user),
+										acct.toString(data.body.user),
 										loginId,
 									);
 								break;
@@ -178,7 +178,7 @@ globalThis.addEventListener("push", (ev) => {
 											client = await swos.openNote(data.body.note.id, loginId);
 										} else if ("user" in data.body) {
 											client = await swos.openUser(
-												Acct.toString(data.body.user),
+												acct.toString(data.body.user),
 												loginId,
 											);
 										}

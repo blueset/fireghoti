@@ -145,7 +145,7 @@ import {
 	ref,
 	watch,
 } from "vue";
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import MkButton from "./MkButton.vue";
 import XNavFolder from "@/components/MkDrive.navFolder.vue";
 import XFolder from "@/components/MkDrive.folder.vue";
@@ -159,7 +159,7 @@ import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
-		initialFolder?: firefish.entities.DriveFolder;
+		initialFolder?: entities.DriveFolder;
 		type?: string;
 		multiple?: boolean;
 		select?: "file" | "folder" | null;
@@ -173,30 +173,27 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	(
-		ev: "selected",
-		v: firefish.entities.DriveFile | firefish.entities.DriveFolder,
-	): void;
+	(ev: "selected", v: entities.DriveFile | entities.DriveFolder): void;
 	(
 		ev: "change-selection",
-		v: firefish.entities.DriveFile[] | firefish.entities.DriveFolder[],
+		v: entities.DriveFile[] | entities.DriveFolder[],
 	): void;
 	(ev: "move-root"): void;
-	(ev: "cd", v: firefish.entities.DriveFolder | null): void;
-	(ev: "open-folder", v: firefish.entities.DriveFolder): void;
+	(ev: "cd", v: entities.DriveFolder | null): void;
+	(ev: "open-folder", v: entities.DriveFolder): void;
 }>();
 
 const loadMoreFiles = ref<InstanceType<typeof MkButton>>();
 const fileInput = ref<HTMLInputElement>();
 
-const folder = ref<firefish.entities.DriveFolder | null>(null);
-const files = ref<firefish.entities.DriveFile[]>([]);
-const folders = ref<firefish.entities.DriveFolder[]>([]);
+const folder = ref<entities.DriveFolder | null>(null);
+const files = ref<entities.DriveFile[]>([]);
+const folders = ref<entities.DriveFolder[]>([]);
 const moreFiles = ref(false);
 const moreFolders = ref(false);
-const hierarchyFolders = ref<firefish.entities.DriveFolder[]>([]);
-const selectedFiles = ref<firefish.entities.DriveFile[]>([]);
-const selectedFolders = ref<firefish.entities.DriveFolder[]>([]);
+const hierarchyFolders = ref<entities.DriveFolder[]>([]);
+const selectedFiles = ref<entities.DriveFile[]>([]);
+const selectedFolders = ref<entities.DriveFolder[]>([]);
 const uploadings = uploads;
 const connection = stream.useChannel("drive");
 const keepOriginal = ref<boolean>(defaultStore.state.keepOriginalUploading); // 外部渡しが多いので$refは使わないほうがよい
@@ -220,11 +217,11 @@ const ilFilesObserver = new IntersectionObserver(
 
 watch(folder, () => emit("cd", folder.value));
 
-function onStreamDriveFileCreated(file: firefish.entities.DriveFile) {
+function onStreamDriveFileCreated(file: entities.DriveFile) {
 	addFile(file, true);
 }
 
-function onStreamDriveFileUpdated(file: firefish.entities.DriveFile) {
+function onStreamDriveFileUpdated(file: entities.DriveFile) {
 	const current = folder.value ? folder.value.id : null;
 	if (current !== file.folderId) {
 		removeFile(file);
@@ -237,15 +234,11 @@ function onStreamDriveFileDeleted(fileId: string) {
 	removeFile(fileId);
 }
 
-function onStreamDriveFolderCreated(
-	createdFolder: firefish.entities.DriveFolder,
-) {
+function onStreamDriveFolderCreated(createdFolder: entities.DriveFolder) {
 	addFolder(createdFolder, true);
 }
 
-function onStreamDriveFolderUpdated(
-	updatedFolder: firefish.entities.DriveFolder,
-) {
+function onStreamDriveFolderUpdated(updatedFolder: entities.DriveFolder) {
 	const current = folder.value ? folder.value.id : null;
 	if (current !== updatedFolder.parentId) {
 		removeFolder(updatedFolder);
@@ -389,7 +382,7 @@ function createFolder() {
 	});
 }
 
-function renameFolder(folderToRename: firefish.entities.DriveFolder) {
+function renameFolder(folderToRename: entities.DriveFolder) {
 	os.inputText({
 		title: i18n.ts.renameFolder,
 		placeholder: i18n.ts.inputNewFolderName,
@@ -406,7 +399,7 @@ function renameFolder(folderToRename: firefish.entities.DriveFolder) {
 	});
 }
 
-function deleteFolder(folderToDelete: firefish.entities.DriveFolder) {
+function deleteFolder(folderToDelete: entities.DriveFolder) {
 	os.api("drive/folders/delete", {
 		folderId: folderToDelete.id,
 	})
@@ -439,10 +432,7 @@ function onChangeFileInput() {
 	}
 }
 
-function upload(
-	file: File,
-	folderToUpload?: firefish.entities.DriveFolder | null,
-) {
+function upload(file: File, folderToUpload?: entities.DriveFolder | null) {
 	uploadFile(
 		file,
 		folderToUpload && typeof folderToUpload === "object"
@@ -455,7 +445,7 @@ function upload(
 	});
 }
 
-function chooseFile(file: firefish.entities.DriveFile) {
+function chooseFile(file: entities.DriveFile) {
 	const isAlreadySelected = selectedFiles.value.some((f) => f.id === file.id);
 	if (props.multiple) {
 		if (isAlreadySelected) {
@@ -476,7 +466,7 @@ function chooseFile(file: firefish.entities.DriveFile) {
 	}
 }
 
-function chooseFolder(folderToChoose: firefish.entities.DriveFolder) {
+function chooseFolder(folderToChoose: entities.DriveFolder) {
 	const isAlreadySelected = selectedFolders.value.some(
 		(f) => f.id === folderToChoose.id,
 	);
@@ -499,7 +489,7 @@ function chooseFolder(folderToChoose: firefish.entities.DriveFolder) {
 	}
 }
 
-function move(target?: firefish.entities.DriveFolder) {
+function move(target?: entities.DriveFolder) {
 	if (!target) {
 		goRoot();
 		return;
@@ -527,10 +517,7 @@ function move(target?: firefish.entities.DriveFolder) {
 	});
 }
 
-function addFolder(
-	folderToAdd: firefish.entities.DriveFolder,
-	unshift = false,
-) {
+function addFolder(folderToAdd: entities.DriveFolder, unshift = false) {
 	const current = folder.value ? folder.value.id : null;
 	if (current !== folderToAdd.parentId) return;
 
@@ -547,7 +534,7 @@ function addFolder(
 	}
 }
 
-function addFile(fileToAdd: firefish.entities.DriveFile, unshift = false) {
+function addFile(fileToAdd: entities.DriveFile, unshift = false) {
 	const current = folder.value ? folder.value.id : null;
 	if (current !== fileToAdd.folderId) return;
 
@@ -564,30 +551,30 @@ function addFile(fileToAdd: firefish.entities.DriveFile, unshift = false) {
 	}
 }
 
-function removeFolder(folderToRemove: firefish.entities.DriveFolder | string) {
+function removeFolder(folderToRemove: entities.DriveFolder | string) {
 	const folderIdToRemove =
 		typeof folderToRemove === "object" ? folderToRemove.id : folderToRemove;
 	folders.value = folders.value.filter((f) => f.id !== folderIdToRemove);
 }
 
-function removeFile(file: firefish.entities.DriveFile | string) {
+function removeFile(file: entities.DriveFile | string) {
 	const fileId = typeof file === "object" ? file.id : file;
 	files.value = files.value.filter((f) => f.id !== fileId);
 }
 
-function appendFile(file: firefish.entities.DriveFile) {
+function appendFile(file: entities.DriveFile) {
 	addFile(file);
 }
 
-function appendFolder(folderToAppend: firefish.entities.DriveFolder) {
+function appendFolder(folderToAppend: entities.DriveFolder) {
 	addFolder(folderToAppend);
 }
 /*
-function prependFile(file: firefish.entities.DriveFile) {
+function prependFile(file: entities.DriveFile) {
 	addFile(file, true);
 }
 
-function prependFolder(folderToPrepend: firefish.entities.DriveFolder) {
+function prependFolder(folderToPrepend: entities.DriveFolder) {
 	addFolder(folderToPrepend, true);
 }
 */
@@ -717,9 +704,7 @@ function getMenu() {
 					text: i18n.ts.deleteFolder,
 					icon: `${icon("ph-trash")}`,
 					action: () => {
-						deleteFolder(
-							folder.value as firefish.entities.DriveFolder,
-						);
+						deleteFolder(folder.value as entities.DriveFolder);
 					},
 				}
 			: undefined,

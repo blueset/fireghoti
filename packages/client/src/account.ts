@@ -1,4 +1,4 @@
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import { defineAsyncComponent } from "vue";
 import { i18n } from "./i18n";
 import { apiUrl } from "@/config";
@@ -10,7 +10,7 @@ import { reloadChannel, unisonReload } from "@/scripts/unison-reload";
 
 // TODO: 他のタブと永続化されたstateを同期
 
-export type Account = firefish.entities.MeDetailed;
+export type Account = entities.MeDetailed;
 
 export async function signout() {
 	waiting();
@@ -149,8 +149,8 @@ export async function openAccountMenu(
 	opts: {
 		includeCurrentAccount?: boolean;
 		withExtraOperation: boolean;
-		active?: firefish.entities.UserDetailed["id"];
-		onChoose?: (account: firefish.entities.UserDetailed) => void;
+		active?: entities.UserDetailed["id"];
+		onChoose?: (account: entities.UserDetailed) => void;
 	},
 	ev: MouseEvent,
 ) {
@@ -182,7 +182,7 @@ export async function openAccountMenu(
 		);
 	}
 
-	async function switchAccount(account: firefish.entities.UserDetailed) {
+	async function switchAccount(account: entities.UserDetailed) {
 		const storedAccounts = await getAccounts();
 		const token = storedAccounts.find((x) => x.id === account.id).token;
 		switchAccountWithToken(token);
@@ -199,7 +199,7 @@ export async function openAccountMenu(
 		userIds: storedAccounts.map((x) => x.id),
 	});
 
-	function createItem(account: firefish.entities.UserDetailed) {
+	function createItem(account: entities.UserDetailed) {
 		return {
 			type: "user",
 			user: account,

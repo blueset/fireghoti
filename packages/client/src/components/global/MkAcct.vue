@@ -10,13 +10,13 @@
 </template>
 
 <script lang="ts" setup>
-import type * as firefish from "firefish-js";
+import type { entities } from "firefish-js";
 import { toUnicode } from "punycode/";
 import { host as hostRaw } from "@/config";
 import { defaultStore } from "@/store";
 
 defineProps<{
-	user: firefish.entities.UserDetailed;
+	user: entities.UserDetailed;
 	detail?: boolean;
 }>();
 
