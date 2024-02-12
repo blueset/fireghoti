@@ -212,7 +212,7 @@ For migrating from Misskey v13, Misskey v12, and FoundKey, read [this document](
 - Run `sudo ln -s ./firefish.nginx.conf ../sites-enabled/firefish.nginx.conf`
 - Run `sudo nginx -t` to validate that the config is valid, then restart the NGINX service.
 
-### 🦦 Caddy
+### 🦦 Caddy (recommended)
 
 - Add the following block to your `Caddyfile`, replacing `example.tld` with your own domain:
 ```caddy
