@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 		recursive: true,
 		force: true,
 	});
-	fs.rmSync(join(__dirname, "/../packages/backend/native-utils/built"), {
+	fs.rmSync(join(__dirname, "/../packages/backend-rs/built"), {
 		recursive: true,
 		force: true,
 	});
