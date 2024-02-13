@@ -47,7 +47,10 @@ FROM docker.io/node:20-slim
 WORKDIR /firefish
 
 # Install runtime dependencies
-RUN apt-get update && DEBIAN_FRONTEND='noninteractive' apt-get install -y --no-install-recommends zip unzip tini ffmpeg
+RUN apt-get update && DEBIAN_FRONTEND='noninteractive' apt-get install -y --no-install-recommends zip unzip tini ffmpeg ca-certificates
+
+RUN echo 'deb https://deb.debian.org/debian experimental main' | tee /etc/apt/sources.list
+RUN apt-get update && DEBIAN_FRONTEND='noninteractive' apt-get --target-release experimental install -y --no-install-recommends libc6
 
 COPY . ./
 
