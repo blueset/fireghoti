@@ -2,6 +2,7 @@
 edition = "2021"
 name = "backend-rs"
 version = "0.0.0"
+rust-version = "1.74"
 
 [features]
 default = []

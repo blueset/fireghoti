@@ -1,3 +1,13 @@
+# Unreleased
+
+## For systemd/pm2 users
+
+- Required Rust version has been bumped from v1.68 to v1.74.
+    ```sh
+    cargo --version  # check version
+    rustup update    # update version
+    ```
+
 # v20240213
 
 ## For systemd/pm2 users
