@@ -2218,3 +2218,8 @@ moreUrlsDescription: "Introdueix les pàgines que vols fixar al menú d'ajuda a 
 useEmojiCdn: Aconsegueix Twemoji des d'un CDN
 useEmojiCdnDescription: Fes servir Twemoji des del CDN de JSDeliver en lloc de fer
   servir el del propi servidor.
+suggested: Suggerit
+noLanguage: Cap idioma definit
+showPreviewByDefault: Per defecte mostrar la previsualització al formulari per publicar
+preventMisclick: Prevenció del clic accidental
+hideFollowButtons: Amagar els botons que estiguin en una posició on no es poden activar
