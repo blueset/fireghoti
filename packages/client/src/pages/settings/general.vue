@@ -228,9 +228,8 @@
 				>{{ i18n.ts.showGapBetweenNotesInTimeline }}</FormSwitch
 			>
 			<FormSwitch v-model="hideFollowButtons" class="_formBlock"
-				>{{ i18n.ts.hideFollowButtons	}}
-				</FormSwitch
-			>
+				>{{ i18n.ts.hideFollowButtons }}
+			</FormSwitch>
 			<FormSwitch v-model="loadRawImages" class="_formBlock">{{
 				i18n.ts.loadRawImages
 			}}</FormSwitch>
