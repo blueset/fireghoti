@@ -73,13 +73,13 @@ export const meta = {
 				type: "string",
 				optional: false,
 				nullable: false,
-				default: "https://git.joinfirefish.org/firefish/firefish",
+				default: "https://firefish.dev/firefish/firefish",
 			},
 			feedbackUrl: {
 				type: "string",
 				optional: false,
 				nullable: false,
-				default: "https://git.joinfirefish.org/firefish/firefish/issues",
+				default: "https://firefish.dev/firefish/firefish/issues",
 			},
 			defaultDarkTheme: {
 				type: "string",

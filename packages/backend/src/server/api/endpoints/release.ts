@@ -18,7 +18,7 @@ export default define(meta, paramDef, async () => {
 	let release;
 
 	await fetch(
-		"https://git.joinfirefish.org/firefish/firefish/-/raw/develop/release.json",
+		"https://firefish.dev/firefish/firefish/-/raw/develop/release.json",
 	)
 		.then((response) => response.json())
 		.then((data) => {

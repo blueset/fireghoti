@@ -391,14 +391,14 @@ export class Meta {
 
 	@Column("varchar", {
 		length: 512,
-		default: "https://git.joinfirefish.org/firefish/firefish",
+		default: "https://firefish.dev/firefish/firefish",
 		nullable: false,
 	})
 	public repositoryUrl: string;
 
 	@Column("varchar", {
 		length: 512,
-		default: "https://git.joinfirefish.org/firefish/firefish/issues/new",
+		default: "https://firefish.dev/firefish/firefish/issues/new",
 		nullable: true,
 	})
 	public feedbackUrl: string | null;

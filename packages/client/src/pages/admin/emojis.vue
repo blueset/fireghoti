@@ -330,7 +330,7 @@ const menu = (ev: MouseEvent) => {
 				text: i18n.ts.emojiPackCreator,
 				action: () => {
 					window.open(
-						"https://git.joinfirefish.org/firefish/emoji-gen",
+						"https://firefish.dev/firefish/emoji-gen",
 						"_blank",
 					);
 				},

@@ -1,8 +1,13 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- firefish-url-move
+UPDATE "meta" SET "repositoryUrl" = 'https://git.joinfirefish.org/firefish/firefish';
+UPDATE "meta" SET "feedbackUrl" = 'https://git.joinfirefish.org/firefish/firefish/issues';
 
 -- remove-native-utils-migration
 CREATE TABLE "seaql_migrations" (
