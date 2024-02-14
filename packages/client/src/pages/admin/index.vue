@@ -41,7 +41,7 @@
 					<MkInfo v-if="updateAvailable" warn class="info"
 						>{{ i18n.ts.updateAvailable }}
 						<a
-							href="https://git.joinfirefish.org/firefish/firefish/releases"
+							href="https://firefish.dev/firefish/firefish/-/releases"
 							target="_bank"
 							class="_link"
 							>{{ i18n.ts.check }}</a

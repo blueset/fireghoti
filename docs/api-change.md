@@ -9,7 +9,7 @@ Breaking changes are indicated by the :warning: icon.
 ## v1.0.5-rc
 
 - `admin/update-meta` can now take `moreUrls` parameter, and response of `admin/meta` now includes `moreUrls`
-  - These URLs are used for the help menu ([related merge request](https://git.joinfirefish.org/firefish/firefish/-/merge_requests/10640))
+  - These URLs are used for the help menu ([related merge request](https://firefish.dev/firefish/firefish/-/merge_requests/10640))
 - :warning: response of `meta` no longer includes the following:
   - `enableTwitterIntegration`
   - `enableGithubIntegration`
