@@ -351,7 +351,8 @@ onBeforeUnmount(() => {
 	}
 
 	> .item {
-		display: block;
+		display: flex;
+		align-items: center;
 		position: relative;
 		padding: 6px 16px;
 		width: 100%;
