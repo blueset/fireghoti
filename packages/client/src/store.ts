@@ -393,6 +393,10 @@ export const defaultStore = markRaw(
 			where: "device",
 			default: true,
 		},
+		replaceWidgetsButtonWithReloadButton: {
+			where: "device",
+			default: false,
+		},
 	}),
 );
 

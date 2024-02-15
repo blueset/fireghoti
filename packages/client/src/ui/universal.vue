@@ -130,6 +130,17 @@
 				</div>
 			</button>
 			<button
+				v-if="replaceWidgetsButtonWithReloadButton"
+				:aria-label="i18n.ts.reload"
+				class="button widget _button"
+				@click="reload"
+			>
+				<div class="button-wrapper">
+					<i class="ph-arrows-clockwise ph-bold ph-lg"></i>
+				</div>
+			</button>
+			<button
+				v-else
 				v-vibrate="5"
 				:aria-label="i18n.t('_deck._columns.widgets')"
 				class="button widget _button"
@@ -245,6 +256,12 @@ const openAccountMenu = (ev: MouseEvent) => {
 		ev,
 		isMobile.value,
 	);
+};
+
+const replaceWidgetsButtonWithReloadButton =
+	defaultStore.state.replaceWidgetsButtonWithReloadButton;
+const reload = () => {
+	window.location.reload();
 };
 
 const buttonAnimIndex = ref(0);

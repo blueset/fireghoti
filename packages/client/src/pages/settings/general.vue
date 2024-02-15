@@ -298,6 +298,11 @@
 				class="_formBlock"
 				>{{ i18n.ts.replaceChatButtonWithAccountButton }}</FormSwitch
 			>
+			<FormSwitch
+				v-model="replaceWidgetsButtonWithReloadButton"
+				class="_formBlock"
+				>{{ i18n.ts.replaceWidgetsButtonWithReloadButton }}</FormSwitch
+			>
 		</FormSection>
 
 		<FormRange
@@ -453,6 +458,9 @@ const hideFollowButtons = computed(
 );
 const replaceChatButtonWithAccountButton = computed(
 	defaultStore.makeGetterSetter("replaceChatButtonWithAccountButton"),
+);
+const replaceWidgetsButtonWithReloadButton = computed(
+	defaultStore.makeGetterSetter("replaceWidgetsButtonWithReloadButton"),
 );
 const detectPostLanguage = computed(
 	defaultStore.makeGetterSetter("detectPostLanguage"),
