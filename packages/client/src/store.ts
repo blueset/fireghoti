@@ -397,6 +397,10 @@ export const defaultStore = markRaw(
 			where: "device",
 			default: false,
 		},
+		searchURL: {
+			where: "device",
+			default: "https://duckduckgo.com/?q=",
+		},
 	}),
 );
 

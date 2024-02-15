@@ -1,3 +1,7 @@
+# Unreleased
+
+- add ability to specify the search engine used in the search bar MFM
+
 # v20240216
 
 - style changes in the web client (a770ef4314e21f17fdce1f19feb3758953b04486 ab39ff5954a392cc6688a02f1723e1702df5e35c 4eefd534d8150e2cd5cf31dddd327edceb5b84dc)

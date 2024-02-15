@@ -2016,3 +2016,5 @@ hideFollowButtons: "誤タップしやすい位置にあるフォローボタン
 forMobile: "携帯端末向け"
 replaceChatButtonWithAccountButton: "チャットのボタンをアカウント切り替えボタンに変更する"
 replaceWidgetsButtonWithReloadButton: "ウィジェットのボタンを再読み込みボタンに変更する"
+searchEngine: "検索のMFMで使用する検索エンジン"
+postSearch: "このサーバーの投稿検索"

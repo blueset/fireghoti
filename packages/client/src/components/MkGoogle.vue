@@ -13,6 +13,7 @@ import { ref } from "vue";
 import { i18n } from "@/i18n";
 import { useRouter } from "@/router";
 import icon from "@/scripts/icon";
+import { defaultStore } from "@/store";
 
 const router = useRouter();
 
@@ -23,7 +24,9 @@ const props = defineProps<{
 const query = ref(props.q);
 
 const search = () => {
-	router.push(`/search?q=${query.value}`);
+	if (defaultStore.state.searchURL === "")
+		router.push(`/search?q=${query.value}`);
+	else window.open(`${defaultStore.state.searchURL}${query.value}`, "_blank");
 };
 </script>
 

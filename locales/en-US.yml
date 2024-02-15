@@ -1167,6 +1167,8 @@ hideFollowButtons: "Hide follow buttons in a misclickable position"
 forMobile: "Mobile"
 replaceChatButtonWithAccountButton: "Replace chat button with account switch button"
 replaceWidgetsButtonWithReloadButton: "Replace widgets button with reload button"
+searchEngine: "Search engine used in search bar MFM"
+postSearch: "Post search on this server"
 
 _sensitiveMediaDetection:
   description: "Reduces the effort of server moderation through automatically recognizing

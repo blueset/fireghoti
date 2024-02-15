@@ -138,6 +138,25 @@
 					{{ i18n.ts._serverDisconnectedBehavior.nothing }}
 				</option>
 			</FormSelect>
+
+			<FormSelect v-model="searchURL" class="_formBlock">
+				<template #label>{{ i18n.ts.searchEngine }}</template>
+				<option value="https://duckduckgo.com/?q=">
+					DuckDuckGo (duckduckgo.com)
+				</option>
+				<option value="https://searxng.site/?q=">
+					SearXNG (searxng.site)
+				</option>
+				<option value="https://araa.extravi.dev/search?q=">
+					Araa (araa.extravi.dev)
+				</option>
+				<option value="https://google.com/search?q=">
+					Google Search (google.com)
+				</option>
+				<option value="">
+					{{ i18n.ts.postSearch }}
+				</option>
+			</FormSelect>
 		</FormSection>
 
 		<FormSection>
@@ -470,6 +489,7 @@ const openServerInfo = computed(
 );
 const iconSet = computed(defaultStore.makeGetterSetter("iconSet"));
 const useEmojiCdn = computed(defaultStore.makeGetterSetter("useEmojiCdn"));
+const searchURL = computed(defaultStore.makeGetterSetter("searchURL"));
 
 // This feature (along with injectPromo) is currently disabled
 // function onChangeInjectFeaturedNote(v) {
