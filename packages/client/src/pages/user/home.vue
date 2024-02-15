@@ -545,8 +545,8 @@ onUnmounted(() => {
 						left: 120px;
 						padding: 4px 8px;
 						color: #fff;
-						background: rgba(0, 0, 0, 0.7);
-						font-size: 0.7em;
+						background: var(--accent);
+						font-size: 1em;
 						border-radius: 6px;
 					}
 
@@ -575,8 +575,8 @@ onUnmounted(() => {
 								left: 4px;
 								padding: 4px 8px;
 								color: #fff;
-								background: rgba(0, 0, 0, 0.6);
-								font-size: 0.7em;
+								background: var(--accent);
+								font-size: 1em;
 								border-radius: 24px;
 							}
 						}
@@ -684,8 +684,8 @@ onUnmounted(() => {
 							left: 4px;
 							padding: 4px 8px;
 							color: #fff;
-							background: rgba(0, 0, 0, 0.6);
-							font-size: 0.7em;
+							background: var(--accent);
+							font-size: 1em;
 							border-radius: 24px;
 						}
 					}
