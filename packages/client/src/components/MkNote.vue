@@ -25,7 +25,7 @@
 			}"
 			@click="noteClick"
 		>
-			<div class="line"></div>
+			<div v-if="!collapsedReply" class="line"></div>
 			<div v-if="appearNote._prId_" class="info">
 				<i :class="icon('ph-megaphone-simple-bold')"></i>
 				{{ i18n.ts.promotion
@@ -745,9 +745,9 @@ defineExpose({
 		> .line {
 			position: relative;
 			z-index: 2;
-			width: var(--avatarSize);
+			width: 0;
 			display: flex;
-			margin-right: 14px;
+			margin-right: 0;
 			margin-top: 0;
 			flex-grow: 0;
 			pointer-events: none;
@@ -1003,7 +1003,7 @@ defineExpose({
 				margin-top: 0px;
 			}
 			> .line {
-				margin-right: 10px;
+				margin-right: 0;
 				&::before {
 					margin-top: 8px;
 				}

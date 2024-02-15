@@ -114,15 +114,12 @@
 				:to="notePage(notification.note)"
 				:title="getNoteSummary(notification.note)"
 			>
-				<span>{{ i18n.ts._notification.reacted }}: </span>
-				<i class="ph-quotes ph-fill ph-lg"></i>
 				<Mfm
 					:text="getNoteSummary(notification.note)"
 					:plain="true"
 					:nowrap="!full"
 					:custom-emojis="notification.note.emojis"
 				/>
-				<i class="ph-quotes ph-fill"></i>
 			</MkA>
 			<MkA
 				v-if="notification.type === 'renote'"
@@ -130,15 +127,12 @@
 				:to="notePage(notification.note)"
 				:title="getNoteSummary(notification.note.renote)"
 			>
-				<span>{{ i18n.ts._notification.renoted }}: </span>
-				<i class="ph-quotes ph-fill ph-lg"></i>
 				<Mfm
 					:text="getNoteSummary(notification.note.renote)"
 					:plain="true"
 					:nowrap="!full"
 					:custom-emojis="notification.note.renote.emojis"
 				/>
-				<i class="ph-quotes ph-fill"></i>
 			</MkA>
 			<MkA
 				v-if="notification.type === 'reply'"
@@ -185,15 +179,12 @@
 				:to="notePage(notification.note)"
 				:title="getNoteSummary(notification.note)"
 			>
-				<span>{{ i18n.ts._notification.voted }}: </span>
-				<i class="ph-quotes ph-fill ph-lg"></i>
 				<Mfm
 					:text="getNoteSummary(notification.note)"
 					:plain="true"
 					:nowrap="!full"
 					:custom-emojis="notification.note.emojis"
 				/>
-				<i class="ph-quotes ph-fill"></i>
 			</MkA>
 			<MkA
 				v-if="notification.type === 'pollEnded'"
@@ -201,14 +192,12 @@
 				:to="notePage(notification.note)"
 				:title="getNoteSummary(notification.note)"
 			>
-				<i class="ph-quotes ph-fill"></i>
 				<Mfm
 					:text="getNoteSummary(notification.note)"
 					:plain="true"
 					:nowrap="!full"
 					:custom-emojis="notification.note.emojis"
 				/>
-				<i class="ph-quotes ph-fill"></i>
 			</MkA>
 			<span
 				v-if="notification.type === 'follow'"
@@ -517,10 +506,6 @@ useTooltip(reactionRef, (showing) => {
 			-webkit-box-orient: vertical;
 			overflow: hidden;
 			text-overflow: ellipsis;
-
-			> span:first-child {
-				opacity: 0.7;
-			}
 
 			> i {
 				vertical-align: super;
