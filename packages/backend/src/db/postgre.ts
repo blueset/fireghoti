@@ -191,7 +191,7 @@ export const db = new DataSource({
 	password: config.db.pass,
 	database: config.db.db,
 	extra: {
-		statement_timeout: 1000 * 10,
+		statement_timeout: 1000 * 30,
 		...config.db.extra,
 	},
 	synchronize: process.env.NODE_ENV === "test",
