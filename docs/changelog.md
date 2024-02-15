@@ -1,7 +1,8 @@
-# Unreleased
+# v20240215
 
 - separate settings for displaying rounded avatars for cat and non-cat accounts
 - add a toggleable setting to replace the chat button with account menu on mobile
+- reduce the size of the container image (!10667)
 
 # v20240214
 
