@@ -95,6 +95,17 @@
 				</div>
 			</button>
 			<button
+				v-if="replaceChatButtonWithAccountButton"
+				:aria-label="i18n.t('accounts')"
+				class="button messaging _button"
+				@click="openAccountMenu"
+			>
+				<div class="button-wrapper">
+					<i class="ph-users ph-bold ph-lg"></i>
+				</div>
+			</button>
+			<button
+				v-else
 				v-vibrate="5"
 				:aria-label="i18n.t('messaging')"
 				class="button messaging _button"
@@ -199,6 +210,7 @@ import * as os from "@/os";
 import { defaultStore } from "@/store";
 import { navbarItemDef } from "@/navbar";
 import { i18n } from "@/i18n";
+import { openAccountMenu as openAccountMenuImpl } from "@/account";
 import { $i } from "@/reactiveAccount";
 import { mainRouter } from "@/router";
 import { provideMetadataReceiver } from "@/scripts/page-metadata";
@@ -222,6 +234,18 @@ window.addEventListener("resize", () => {
 	isMobile.value =
 		deviceKind === "smartphone" || window.innerWidth <= MOBILE_THRESHOLD;
 });
+
+const replaceChatButtonWithAccountButton =
+	defaultStore.state.replaceChatButtonWithAccountButton;
+const openAccountMenu = (ev: MouseEvent) => {
+	openAccountMenuImpl(
+		{
+			withExtraOperation: true,
+		},
+		ev,
+		isMobile.value,
+	);
+};
 
 const buttonAnimIndex = ref(0);
 const drawerMenuShowing = ref(false);

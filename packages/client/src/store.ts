@@ -389,6 +389,10 @@ export const defaultStore = markRaw(
 			where: "device",
 			default: true,
 		},
+		replaceChatButtonWithAccountButton: {
+			where: "device",
+			default: true,
+		},
 	}),
 );
 

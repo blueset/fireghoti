@@ -1164,6 +1164,8 @@ useEmojiCdnDescription: "Use Twemoji from the JSDelivr CDN instead of the server
 showPreviewByDefault: "Show preview in posting form by default"
 preventMisclick: "Accidental click prevention"
 hideFollowButtons: "Hide follow buttons in a misclickable position"
+forMobile: "Mobile"
+replaceChatButtonWithAccountButton: "Replace chat button with account switch button"
 
 _sensitiveMediaDetection:
   description: "Reduces the effort of server moderation through automatically recognizing

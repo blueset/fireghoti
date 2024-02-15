@@ -291,6 +291,15 @@
 			</FormSelect>
 		</FormSection>
 
+		<FormSection>
+			<template #label>{{ i18n.ts.forMobile }}</template>
+			<FormSwitch
+				v-model="replaceChatButtonWithAccountButton"
+				class="_formBlock"
+				>{{ i18n.ts.replaceChatButtonWithAccountButton }}</FormSwitch
+			>
+		</FormSection>
+
 		<FormRange
 			v-model="numberOfPageCache"
 			:min="1"
@@ -441,6 +450,9 @@ const showTimelineReplies = computed(
 );
 const hideFollowButtons = computed(
 	defaultStore.makeGetterSetter("hideFollowButtons"),
+);
+const replaceChatButtonWithAccountButton = computed(
+	defaultStore.makeGetterSetter("replaceChatButtonWithAccountButton"),
 );
 const detectPostLanguage = computed(
 	defaultStore.makeGetterSetter("detectPostLanguage"),
