@@ -1,4 +1,4 @@
-# 🐳 Running a Firefish server with Docker
+# Running a Firefish server with Docker
 
 ## Pre-built docker container
 [registry.firefish.dev/firefish/firefish](https://firefish.dev/firefish/firefish/container_registry)

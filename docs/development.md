@@ -1,4 +1,4 @@
-# 🌎 Firefish Developer Docs
+# Firefish Developer Docs
 
 ## Nix Dev Environment
 The Firefish repo comes with a Nix-based shell environment to help make development as easy as possible!

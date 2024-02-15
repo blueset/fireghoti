@@ -1,4 +1,4 @@
-# 🚚 Migrating from Misskey/FoundKey to Firefish
+# Migrating from Misskey/FoundKey to Firefish
 
 All the guides below assume you're starting in the root of the repo directory.
 

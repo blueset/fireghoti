@@ -1,4 +1,4 @@
-# 📦 Packages
+# Packages
 
 This directory contains all of the packages Firefish uses.
 
