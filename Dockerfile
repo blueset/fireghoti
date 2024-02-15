@@ -33,11 +33,12 @@ RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm install -
 COPY packages/backend-rs packages/backend-rs/
 
 # Compile backend-rs
-RUN pnpm run --filter backend-rs build
+RUN NODE_ENV='production' pnpm run --filter backend-rs build
 
 # Copy in the rest of the files to compile
 COPY . ./
-RUN env NODE_ENV=production sh -c "pnpm run --filter '!backend-rs' build && pnpm run gulp"
+RUN NODE_ENV='production' pnpm run --filter firefish-js build
+RUN NODE_ENV='production' pnpm run --recursive --parallel --filter '!backend-rs' --filter '!firefish-js' build && pnpm run gulp
 
 # Trim down the dependencies to only those for production
 RUN find . -path '*/node_modules/*' -delete && pnpm install --prod --frozen-lockfile
