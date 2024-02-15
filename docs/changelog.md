@@ -5,6 +5,8 @@
 - the "Hide NSFW media" config is now per device and per account
 - increase the max number of pinned posts from 5 to 15
 - change the second tab on the notifications page from "unread" to "reactions"
+- add ability to show a huge post button on the posting form
+	- joke feature, inspired by https://mstdn.poyo.me/@prime/110668364208741253
 
 # v20240216
 

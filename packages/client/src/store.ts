@@ -401,6 +401,10 @@ export const defaultStore = markRaw(
 			where: "device",
 			default: "https://duckduckgo.com/?q=",
 		},
+		showBigPostButton: {
+			where: "device",
+			default: false,
+		},
 	}),
 );
 

@@ -2018,3 +2018,4 @@ replaceChatButtonWithAccountButton: "チャットのボタンをアカウント�
 replaceWidgetsButtonWithReloadButton: "ウィジェットのボタンを再読み込みボタンに変更する"
 searchEngine: "検索のMFMで使用する検索エンジン"
 postSearch: "このサーバーの投稿検索"
+showBigPostButton: "投稿ボタンを巨大にする"

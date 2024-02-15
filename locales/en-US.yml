@@ -1169,6 +1169,7 @@ replaceChatButtonWithAccountButton: "Replace chat button with account switch but
 replaceWidgetsButtonWithReloadButton: "Replace widgets button with reload button"
 searchEngine: "Search engine used in search bar MFM"
 postSearch: "Post search on this server"
+showBigPostButton: "Show a huge post button on the posting form" 
 
 _sensitiveMediaDetection:
   description: "Reduces the effort of server moderation through automatically recognizing

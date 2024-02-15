@@ -75,6 +75,7 @@
 					<i :class="icon('ph-binoculars')"></i>
 				</button>
 				<button
+					v-if="!showBigPostButton"
 					class="submit _buttonGradate"
 					:disabled="!canPost"
 					data-cy-open-post-form-submit
@@ -237,6 +238,25 @@
 				>
 					<i :class="icon('ph-question')"></i>
 				</button>
+				<div v-if="showBigPostButton">
+					<button
+						class="submit bigPostButton"
+						:disabled="!canPost"
+						data-cy-open-post-form-submit
+						@click="post"
+					>
+						{{ submitText
+						}}<i
+							:class="
+								reply
+									? 'ph-arrow-u-up-left ph-bold ph-lg'
+									: renote
+										? 'ph-quotes ph-bold ph-lg'
+										: 'ph-paper-plane-tilt ph-bold ph-lg'
+							"
+						></i>
+					</button>
+				</div>
 			</footer>
 			<datalist id="hashtags">
 				<option
@@ -334,6 +354,8 @@ const cwInputEl = ref<HTMLInputElement | null>(null);
 const hashtagsInputEl = ref<HTMLInputElement | null>(null);
 const visibilityButton = ref<HTMLElement | null>(null);
 const languageButton = ref<HTMLElement | undefined>();
+
+const showBigPostButton = defaultStore.state.showBigPostButton;
 
 const posting = ref(false);
 const text = ref(props.initialText ?? "");
@@ -1508,5 +1530,42 @@ onMounted(() => {
 			}
 		}
 	}
+}
+
+.bigPostButton {
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	display: block ruby;
+	padding: 3%;
+	margin: 0 auto;
+	border: none;
+	cursor: pointer;
+	color: inherit;
+	touch-action: manipulation;
+	-webkit-tap-highlight-color: transparent;
+	font-size: 3em;
+	font-family: inherit;
+	text-decoration: none;
+	width: 100%;
+	border-radius: 10px;
+	user-select: none;
+	-webkit-user-select: none;
+	-webkit-touch-callout: none;
+	color: var(--fgOnAccent);
+	background: linear-gradient(
+		90deg,
+		var(--buttonGradateA),
+		var(--buttonGradateB)
+	);
+
+	> .ph-lg {
+		vertical-align: -0.125em;
+		margin-left: 12px;
+	}
+}
+
+.bigPostButton:disabled {
+	opacity: 0.7;
 }
 </style>

@@ -279,6 +279,9 @@
 			<FormSwitch v-model="showFixedPostForm" class="_formBlock">{{
 				i18n.ts.showFixedPostForm
 			}}</FormSwitch>
+			<FormSwitch v-model="showBigPostButton" class="_formBlock">{{
+				i18n.ts.showBigPostButton
+			}}</FormSwitch>
 			<FormSwitch v-model="useEmojiCdn" class="_formBlock"
 				>{{ i18n.ts.useEmojiCdn
 				}}<template #caption>{{
@@ -490,6 +493,9 @@ const openServerInfo = computed(
 const iconSet = computed(defaultStore.makeGetterSetter("iconSet"));
 const useEmojiCdn = computed(defaultStore.makeGetterSetter("useEmojiCdn"));
 const searchURL = computed(defaultStore.makeGetterSetter("searchURL"));
+const showBigPostButton = computed(
+	defaultStore.makeGetterSetter("showBigPostButton"),
+);
 
 // This feature (along with injectPromo) is currently disabled
 // function onChangeInjectFeaturedNote(v) {
