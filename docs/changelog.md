@@ -1,3 +1,7 @@
+# Unreleased
+
+- clicking the "like" button now sends the actual emoji reaction (star, good, heart, etc.) instead of an empty "like"
+
 # v20240215
 
 - separate settings for displaying rounded avatars for cat and non-cat accounts
