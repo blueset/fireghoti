@@ -3,6 +3,7 @@
 - add ability to specify the search engine used in the search bar MFM
 - remove auto NSFW media detection
 - the "Hide NSFW media" config is now per device and per account
+- increase the max number of pinned posts from 5 to 15
 
 # v20240216
 
