@@ -56,7 +56,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		isIndexable: profile.isIndexable,
 		preventAiLearning: profile.preventAiLearning,
 		alwaysMarkNsfw: profile.alwaysMarkNsfw,
-		autoSensitive: profile.autoSensitive,
 		carefulBot: profile.carefulBot,
 		injectFeaturedNote: profile.injectFeaturedNote,
 		receiveAnnouncementEmail: profile.receiveAnnouncementEmail,

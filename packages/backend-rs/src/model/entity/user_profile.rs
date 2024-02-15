@@ -66,8 +66,6 @@ pub struct Model {
     pub public_reactions: bool,
     #[sea_orm(column_name = "ffVisibility")]
     pub ff_visibility: UserProfileFfvisibilityEnum,
-    #[sea_orm(column_name = "autoSensitive")]
-    pub auto_sensitive: bool,
     #[sea_orm(column_name = "moderationNote")]
     pub moderation_note: String,
     #[sea_orm(column_name = "preventAiLearning")]

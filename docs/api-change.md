@@ -2,6 +2,28 @@
 
 Breaking changes are indicated by the :warning: icon.
 
+## Unreleased
+
+- :warning: Since the auto NSFW media detection has been removed, these endpoints are affected:
+  - `admin/meta`
+    - These parameter(s) are removed from the response field:
+      - `sensitiveMediaDetection`
+      - `sensitiveMediaDetectionSensitivity`
+      - `setSensitiveFlagAutomatically`
+      - `enableSensitiveMediaDetectionForVideos`
+  - `admin/update-meta`
+    - These parameter(s) are removed from the request field:
+      - `sensitiveMediaDetection`
+      - `sensitiveMediaDetectionSensitivity`
+      - `setSensitiveFlagAutomatically`
+      - `enableSensitiveMediaDetectionForVideos`
+  - `admin/show-user`
+    - These parameter(s) are removed from the response field:
+      - `autoSensitive`
+  - `i/update`
+    - These parameter(s) are removed from the request field:
+      - `autoSensitive`
+
 ## v20240212
 
 - :warning: The field name of the response of `latest-version` has been changed from `tag_name` to `latest_version`.

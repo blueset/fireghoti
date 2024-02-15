@@ -460,7 +460,7 @@ export const paramDef = {
 	required: [],
 } as const;
 
-export default define(meta, paramDef, async (ps, me) => {
+export default define(meta, paramDef, async () => {
 	const instance = await fetchMeta(true);
 
 	return {
@@ -518,12 +518,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		secureMode: instance.secureMode,
 		hcaptchaSecretKey: instance.hcaptchaSecretKey,
 		recaptchaSecretKey: instance.recaptchaSecretKey,
-		sensitiveMediaDetection: instance.sensitiveMediaDetection,
-		sensitiveMediaDetectionSensitivity:
-			instance.sensitiveMediaDetectionSensitivity,
-		setSensitiveFlagAutomatically: instance.setSensitiveFlagAutomatically,
-		enableSensitiveMediaDetectionForVideos:
-			instance.enableSensitiveMediaDetectionForVideos,
 		proxyAccountId: instance.proxyAccountId,
 		summalyProxy: instance.summalyProxy,
 		email: instance.email,

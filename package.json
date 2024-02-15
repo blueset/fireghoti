@@ -34,14 +34,10 @@
 		"clean-cargo": "pnpm node ./scripts/clean-cargo.mjs",
 		"clean-all": "pnpm run clean && pnpm run clean-cargo && pnpm run clean-npm"
 	},
-	"resolutions": {
-		"chokidar": "^3.3.1"
-	},
 	"dependencies": {
 		"@bull-board/api": "5.14.1",
 		"@bull-board/ui": "5.14.1",
 		"@napi-rs/cli": "^2.18.0",
-		"@tensorflow/tfjs": "^4.17.0",
 		"js-yaml": "4.1.0",
 		"seedrandom": "^3.0.5"
 	},

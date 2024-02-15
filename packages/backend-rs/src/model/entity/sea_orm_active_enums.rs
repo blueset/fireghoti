@@ -22,40 +22,6 @@ pub enum AntennaSrcEnum {
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
-    enum_name = "meta_sensitivemediadetection_enum"
-)]
-pub enum MetaSensitivemediadetectionEnum {
-    #[sea_orm(string_value = "all")]
-    All,
-    #[sea_orm(string_value = "local")]
-    Local,
-    #[sea_orm(string_value = "none")]
-    None,
-    #[sea_orm(string_value = "remote")]
-    Remote,
-}
-#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
-#[sea_orm(
-    rs_type = "String",
-    db_type = "Enum",
-    enum_name = "meta_sensitivemediadetectionsensitivity_enum"
-)]
-pub enum MetaSensitivemediadetectionsensitivityEnum {
-    #[sea_orm(string_value = "high")]
-    High,
-    #[sea_orm(string_value = "low")]
-    Low,
-    #[sea_orm(string_value = "medium")]
-    Medium,
-    #[sea_orm(string_value = "veryHigh")]
-    VeryHigh,
-    #[sea_orm(string_value = "veryLow")]
-    VeryLow,
-}
-#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
-#[sea_orm(
-    rs_type = "String",
-    db_type = "Enum",
     enum_name = "muted_note_reason_enum"
 )]
 pub enum MutedNoteReasonEnum {
