@@ -236,6 +236,9 @@
 			<FormSwitch v-model="squareAvatars" class="_formBlock">{{
 				i18n.ts.squareAvatars
 			}}</FormSwitch>
+			<FormSwitch v-model="squareCatAvatars" class="_formBlock">{{
+				i18n.ts.squareCatAvatars
+			}}</FormSwitch>
 			<FormSwitch v-model="seperateRenoteQuote" class="_formBlock">{{
 				i18n.ts.seperateRenoteQuote
 			}}</FormSwitch>
@@ -419,6 +422,9 @@ const seperateRenoteQuote = computed(
 	defaultStore.makeGetterSetter("seperateRenoteQuote"),
 );
 const squareAvatars = computed(defaultStore.makeGetterSetter("squareAvatars"));
+const squareCatAvatars = computed(
+	defaultStore.makeGetterSetter("squareCatAvatars"),
+);
 const showUpdates = computed(defaultStore.makeGetterSetter("showUpdates"));
 const swipeOnDesktop = computed(
 	defaultStore.makeGetterSetter("swipeOnDesktop"),

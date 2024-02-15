@@ -1,3 +1,7 @@
+# Unreleased
+
+- separate settings for displaying rounded avatars for cat and non-cat accounts
+
 # v20240214
 
 - fix container images

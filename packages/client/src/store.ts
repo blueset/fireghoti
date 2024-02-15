@@ -292,6 +292,10 @@ export const defaultStore = markRaw(
 			where: "device",
 			default: true,
 		},
+		squareCatAvatars: {
+			where: "device",
+			default: false,
+		},
 		postFormWithHashtags: {
 			where: "device",
 			default: false,

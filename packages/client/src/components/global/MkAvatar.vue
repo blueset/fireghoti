@@ -24,7 +24,9 @@
 		class="eiwwqkts _noSelect showLightBox"
 		:class="{
 			cat: user.isCat,
-			square: defaultStore.state.squareAvatars,
+			square: user.isCat
+				? defaultStore.state.squareCatAvatars
+				: defaultStore.state.squareAvatars,
 		}"
 		:style="{ color }"
 		:title="acct.toString(user)"
@@ -44,7 +46,9 @@
 		class="eiwwqkts _noSelect"
 		:class="{
 			cat: user.isCat,
-			square: defaultStore.state.squareAvatars,
+			square: user.isCat
+				? defaultStore.state.squareCatAvatars
+				: defaultStore.state.squareAvatars,
 		}"
 		:style="{ color }"
 		:to="userPage(user)"
