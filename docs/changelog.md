@@ -2,6 +2,7 @@
 
 - add ability to specify the search engine used in the search bar MFM
 - remove auto NSFW media detection
+- the "Hide NSFW media" config is now per device and per account
 
 # v20240216
 

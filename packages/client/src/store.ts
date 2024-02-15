@@ -173,7 +173,7 @@ export const defaultStore = markRaw(
 			default: true,
 		},
 		nsfw: {
-			where: "device",
+			where: "deviceAccount",
 			default: "respect" as "respect" | "force" | "ignore",
 		},
 		animation: {
