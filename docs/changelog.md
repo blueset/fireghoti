@@ -4,6 +4,7 @@
 - remove auto NSFW media detection
 - the "Hide NSFW media" config is now per device and per account
 - increase the max number of pinned posts from 5 to 15
+- change the second tab on the notifications page from "unread" to "reactions"
 
 # v20240216
 

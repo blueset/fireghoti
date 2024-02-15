@@ -35,8 +35,8 @@
 				<swiper-slide>
 					<XNotifications
 						class="notifications"
-						:include-types="includeTypes"
-						:unread-only="true"
+						:include-types="['reaction']"
+						:unread-only="false"
 					/>
 				</swiper-slide>
 				<swiper-slide>
@@ -66,7 +66,7 @@ import icon from "@/scripts/icon";
 import "swiper/scss";
 import "swiper/scss/virtual";
 
-const tabs = ["all", "unread", "mentions", "directNotes"];
+const tabs = ["all", "reactions", "mentions", "directNotes"];
 const tab = ref(tabs[0]);
 watch(tab, () => syncSlide(tabs.indexOf(tab.value)));
 
@@ -149,9 +149,9 @@ const headerTabs = computed(() => [
 		icon: `${icon("ph-bell")}`,
 	},
 	{
-		key: "unread",
-		title: i18n.ts.unread,
-		icon: `${icon("ph-circle-wavy-warning")}`,
+		key: "reactions",
+		title: i18n.ts.reaction,
+		icon: `${icon("ph-smiley")}`,
 	},
 	{
 		key: "mentions",
