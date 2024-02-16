@@ -23,6 +23,7 @@ Breaking changes are indicated by the :warning: icon.
   - `i/update`
     - These parameter(s) are removed from the request field:
       - `autoSensitive`
+- `/api/emojis` endpoint has been added.
 
 ## v20240212
 

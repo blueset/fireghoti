@@ -8,6 +8,8 @@
 - add ability to show a huge post button on the posting form
 	- joke feature, inspired by https://mstdn.poyo.me/@prime/110668364208741253
 - bug fix
+- add `/api/emojis` endpoint (compatible with Misskey v13) for better experiences with Misskey clients
+	- This does not mean we will continue to maintain API compatibility with Misskey. Instead, we plan to improve the compatibility with the Mastodon API.
 
 # v20240216
 
