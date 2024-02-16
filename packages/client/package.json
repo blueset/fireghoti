@@ -1,6 +1,7 @@
 {
 	"name": "client",
 	"private": true,
+	"type": "module",
 	"scripts": {
 		"watch": "pnpm vite build --watch --mode development",
 		"build": "pnpm vite build",

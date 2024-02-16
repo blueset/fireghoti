@@ -1,6 +1,7 @@
 {
 	"name": "sw",
 	"private": true,
+	"type": "module",
 	"scripts": {
 		"build": "pnpm vite build --emptyOutDir",
 		"build:debug": "pnpm run build",

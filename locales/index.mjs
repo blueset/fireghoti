@@ -2,8 +2,14 @@
  * Languages Loader
  */
 
-const fs = require("fs");
-const yaml = require("js-yaml");
+import fs from "node:fs";
+import yaml from "js-yaml";
+
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 const languages = [];
 const languages_custom = [];
 
@@ -66,16 +72,17 @@ const locales_custom = languages_custom.reduce(
 );
 Object.assign(locales, locales_custom);
 
-module.exports = Object.entries(locales).reduce(
+export default Object.entries(locales).reduce(
 	(a, [k, v]) => (
 		(a[k] = (() => {
 			const [lang] = k.split("-");
-			return k === "en-US" ? v :
-				merge(
-					locales["en-US"],
-					locales[`${lang}-${primaries[lang]}`] || {},
-					v,
-				);
+			return k === "en-US"
+				? v
+				: merge(
+						locales["en-US"],
+						locales[`${lang}-${primaries[lang]}`] || {},
+						v,
+					);
 		})()),
 		a
 	),

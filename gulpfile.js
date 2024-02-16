@@ -8,7 +8,6 @@ const replace = require("gulp-replace");
 const terser = require("gulp-terser");
 const cssnano = require("gulp-cssnano");
 
-const locales = require("./locales");
 const meta = require("./package.json");
 
 gulp.task("copy:backend:views", () =>
@@ -29,8 +28,9 @@ gulp.task("copy:client:fonts", () =>
 		.pipe(gulp.dest("./built/_client_dist_/fonts/")),
 );
 
-gulp.task("copy:client:locales", (cb) => {
+gulp.task("copy:client:locales", async (cb) => {
 	fs.mkdirSync("./built/_client_dist_/locales", { recursive: true });
+	const { default: locales } = await import("./locales/index.mjs");
 
 	const v = { _version_: meta.version };
 
@@ -45,7 +45,9 @@ gulp.task("copy:client:locales", (cb) => {
 	cb();
 });
 
-gulp.task("build:backend:script", () => {
+gulp.task("build:backend:script", async () => {
+	const { default: locales } = await import("./locales/index.mjs");
+
 	return gulp
 		.src([
 			"./packages/backend/src/server/web/boot.js",
