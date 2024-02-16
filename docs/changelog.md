@@ -7,6 +7,7 @@
 - change the second tab on the notifications page from "unread" to "reactions"
 - add ability to show a huge post button on the posting form
 	- joke feature, inspired by https://mstdn.poyo.me/@prime/110668364208741253
+- bug fix
 
 # v20240216
 

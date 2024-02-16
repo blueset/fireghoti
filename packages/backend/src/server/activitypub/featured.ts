@@ -36,7 +36,7 @@ export default async (ctx: Router.RouterContext) => {
 	const pinnedNotes = (
 		await Promise.all(
 			pinning.map((pinnedNote) =>
-				this.notesRepository.findOneByOrFail({ id: pinnedNote.noteId }),
+				Notes.findOneByOrFail({ id: pinnedNote.noteId }),
 			),
 		)
 	).filter(
