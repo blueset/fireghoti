@@ -25,6 +25,7 @@ import {
 	Pages,
 	Channels,
 	Clips,
+	Emojis,
 	GalleryPosts,
 } from "@/models/index.js";
 import * as Acct from "@/misc/acct.js";
@@ -110,6 +111,43 @@ app.use(async (ctx, next) => {
 
 // Init router
 const router = new Router();
+
+router.get<{ Params: { path: string } }>("/emoji/:path(.*)", async (ctx) => {
+	const path = ctx.params.path;
+
+	ctx.set("Cache-Control", "public, max-age=86400");
+
+	if (!path.match(/^[a-zA-Z0-9\-_@\.]+?\.webp$/)) {
+		ctx.throw(400, "Bad Request");
+		return;
+	}
+
+	const name = path.split("@")[0].replace(/\.webp$/i, "");
+	const host = path.split("@")[1]?.replace(/\.webp$/i, "");
+
+	const emoji = await Emojis.findOneBy({
+		host: host == null || host === "." ? IsNull() : host,
+		name: name,
+	});
+
+	ctx.set(
+		"Content-Security-Policy",
+		"default-src 'none'; style-src 'unsafe-inline'",
+	);
+
+	if (emoji == null) {
+		ctx.throw(404, "Emoji not found");
+		return;
+	}
+
+	let url = new URL(`${config.mediaProxy || config.url + "/proxy"}/emoji.webp`);
+	// || emoji.originalUrl してるのは後方互換性のため
+	url.searchParams.append("url", emoji.publicUrl || emoji.originalUrl);
+	url.searchParams.append("emoji", "1");
+	if ("static" in ctx.query) url.searchParams.append("static", "1");
+
+	return ctx.redirect(url.toString());
+});
 
 //#region static assets
 
