@@ -1,7 +1,9 @@
----
 _lang_: "Slovenčina"
 headlineFirefish: "Sieť prepojená poznámkami"
-introFirefish: "Vitajte! Firefish je otvorená a decentralizovaná mikroblogovacia služba.\n\"Poznámkami\" môžete zdieľať svoje myšlienky so všetkými okolo. 📡\nPomocou \"reakcií\" môžete rýchlo vyjadri svoje pocity o každého poznámkach. 👍\nPoďte objavovať svet! 🚀"
+introFirefish: "Vitajte! Firefish je otvorená a decentralizovaná mikroblogovacia služba.\n\
+  \"Poznámkami\" môžete zdieľať svoje myšlienky so všetkými okolo. 📡\nPomocou \"reakcií\"\
+  \ môžete rýchlo vyjadri svoje pocity o každého poznámkach. 👍\nPoďte objavovať svet!
+  🚀"
 monthAndDay: "{day}. {month}."
 search: "Hľadať"
 notifications: "Oznámenia"
@@ -44,7 +46,8 @@ copyContent: "Kopírovať obsah"
 copyLink: "Kopírovať odkaz"
 delete: "Odstrániť"
 deleteAndEdit: "Odstrániť a upraviť"
-deleteAndEditConfirm: "Naozaj chcete odstrániť túto poznámku a upraviť ju? Stratíte tým všetky reakcie a odpovede na ňu."
+deleteAndEditConfirm: "Naozaj chcete odstrániť túto poznámku a upraviť ju? Stratíte
+  tým všetky reakcie a odpovede na ňu."
 addToList: "Pridať do zoznamu"
 sendMessage: "Odoslať správu"
 copyUsername: "Kopírovať meno používateľa"
@@ -64,9 +67,11 @@ import: "Importovať"
 export: "Exportovať"
 files: "Súbor/y"
 download: "Stiahnuť"
-driveFileDeleteConfirm: "Naozaj chcete odstrániť súbor \"{name}\"? Poznámky s týmto súborom sa odstránia tiež."
+driveFileDeleteConfirm: "Naozaj chcete odstrániť súbor \"{name}\"? Poznámky s týmto
+  súborom sa odstránia tiež."
 unfollowConfirm: "Naozaj už nechcete sledovať {name}?"
-exportRequested: "Vyžiadali ste export. Môže to chvíľu trvať. Po skončení pribudne na vašom disku."
+exportRequested: "Vyžiadali ste export. Môže to chvíľu trvať. Po skončení pribudne
+  na vašom disku."
 importRequested: "Požiadali ste o export. Môže to chvíľu trvať."
 lists: "Zoznamy"
 noLists: "Nemáte žiadne zoznamy"
@@ -81,7 +86,8 @@ error: "Chyba"
 somethingHappened: "Ups. Niečo sa nepodarilo."
 retry: "Opakovať"
 pageLoadError: "Nepodarilo sa načítať stránku"
-pageLoadErrorDescription: "Toto môže byť spôsobené problémami so sieťou alebo cachou prehliadača. Skúste vyčistiť cache a potom skúsiť znova po chvíli."
+pageLoadErrorDescription: "Toto môže byť spôsobené problémami so sieťou alebo cachou
+  prehliadača. Skúste vyčistiť cache a potom skúsiť znova po chvíli."
 serverIsDead: "Tento server nereaguje. Prosím chvíľu počkajte a skúste znova."
 youShouldUpgradeClient: "Na pozretie tejto stránky prosím obnovte svojho klienta."
 enterListName: "Zadajte názov zoznamu"
@@ -108,7 +114,8 @@ sensitive: "NSFW"
 add: "Pridať"
 reaction: "Reakcie"
 reactionSetting: "Reakcie zobrazené vo výbere reakcií"
-reactionSettingDescription2: "Ťahaním preusporiadate, kliknutím odstránite, Stlačením \"+\" pridáte"
+reactionSettingDescription2: "Ťahaním preusporiadate, kliknutím odstránite, Stlačením
+  \"+\" pridáte"
 rememberNoteVisibility: "Zapamätať nastavenia viditeľnosti poznámky"
 attachCancel: "Odstrániť prílohu"
 markAsSensitive: "Označiť ako NSFW"
@@ -137,13 +144,18 @@ emojiUrl: "URL obrázku"
 addEmoji: "Pridať emoji"
 settingGuide: "Odporúčané nastavenia"
 cacheRemoteFiles: "Cachovanie vzdialených súborov"
-cacheRemoteFilesDescription: "Zakázanie tohoto nastavenia spôsobí, že vzdialené súbory budú odkazované priamo, namiesto ukladania do cache. Ušetrí sa tak miesto na serveri, ale zvýši sa dátový tok, pretože sa negenerujú miniatúry."
+cacheRemoteFilesDescription: "Zakázanie tohoto nastavenia spôsobí, že vzdialené súbory
+  budú odkazované priamo, namiesto ukladania do cache. Ušetrí sa tak miesto na serveri,
+  ale zvýši sa dátový tok, pretože sa negenerujú miniatúry."
 flagAsBot: "Tento účet je bot"
-flagAsBotDescription: "Ak je tento účet ovládaný programom, zaškrtnite túto voľbu. Ostatní uvidia, že je to bot a zabráni nekonečným interakciám s ďalšími botmi a upraví interné systémy Firefish, aby ho považoval za bota."
+flagAsBotDescription: "Ak je tento účet ovládaný programom, zaškrtnite túto voľbu.
+  Ostatní uvidia, že je to bot a zabráni nekonečným interakciám s ďalšími botmi a
+  upraví interné systémy Firefish, aby ho považoval za bota."
 flagAsCat: "Tento účet je mačka"
 flagAsCatDescription: "Zvoľte túto voľbu, aby bol tento účet označený ako mačka."
 flagShowTimelineReplies: "Zobraziť odpovede na poznámky v časovej osi"
-flagShowTimelineRepliesDescription: "Keď je zapnuté, na časovej osi sa zobrazia odpovede k poznámkam používateľov okrem samotných poznámok."
+flagShowTimelineRepliesDescription: "Keď je zapnuté, na časovej osi sa zobrazia odpovede
+  k poznámkam používateľov okrem samotných poznámok."
 autoAcceptFollowed: "Automaticky prijať sledovanie od účtov, ktoré sledujete"
 addAccount: "Pridať účet"
 loginFailed: "Prihlásenie sa nepodarilo."
@@ -156,7 +168,10 @@ searchWith: "Hľadať: {q}"
 youHaveNoLists: "Nemáte žiadne zoznamy"
 followConfirm: "Naozaj chcete sledovať {name}?"
 proxyAccount: "Proxy účet"
-proxyAccountDescription: "Proxy účet je účet, ktorý za určitých podmienok sleduje používateľov na diaľku vaším menom. Napríklad keď používateľ zaradí vzdialeného používateľa do zoznamu, pokiaľ nikto nesleduje používateľa na zozname, aktivita nebude doručená na server, takže namiesto toho bude používateľa sledova proxy účet."
+proxyAccountDescription: "Proxy účet je účet, ktorý za určitých podmienok sleduje
+  používateľov na diaľku vaším menom. Napríklad keď používateľ zaradí vzdialeného
+  používateľa do zoznamu, pokiaľ nikto nesleduje používateľa na zozname, aktivita
+  nebude doručená na server, takže namiesto toho bude používateľa sledova proxy účet."
 host: "Host"
 selectUser: "Vyberte používateľa"
 recipient: "Prijímateľ"
@@ -186,11 +201,13 @@ instanceInfo: "Informácie o serveri"
 statistics: "Štatistiky"
 clearQueue: "Vyčistiť frontu"
 clearQueueConfirmTitle: "Naozaj chcete zrušiť všetky úlohy vo fronte?"
-clearQueueConfirmText: "Všetky nedoručené poznámky čakajúce vo fronte nebudú federované. Zvyčajne táto operácia nie je potrebná."
+clearQueueConfirmText: "Všetky nedoručené poznámky čakajúce vo fronte nebudú federované.
+  Zvyčajne táto operácia nie je potrebná."
 clearCachedFiles: "Vyprázdniť cache"
 clearCachedFilesConfirm: "Naozaj chcete odstrániť všetky nacachované vzdialené súbory?"
 blockedInstances: "Blokované servery"
-blockedInstancesDescription: "Zoznam blokovaných serverov na riadkoch. Blokované servery nebudú môcť komunikovať s týmto serverom."
+blockedInstancesDescription: "Zoznam blokovaných serverov na riadkoch. Blokované servery
+  nebudú môcť komunikovať s týmto serverom."
 muteAndBlock: "Umlčania a blokácie"
 mutedUsers: "Umlčaní používatelia"
 blockedUsers: "Blokovaní používatelia"
@@ -239,7 +256,8 @@ saved: "Uložené"
 messaging: "Chat"
 upload: "Nahrať súbor"
 keepOriginalUploading: "Zachovať pôvodný obrázok"
-keepOriginalUploadingDescription: "Uloží pôvodný obrázok ako je. Ak je vypnuté, verzia pre web sa vygeneruje pri nahratí."
+keepOriginalUploadingDescription: "Uloží pôvodný obrázok ako je. Ak je vypnuté, verzia
+  pre web sa vygeneruje pri nahratí."
 fromDrive: "Z disku"
 fromUrl: "Z URL"
 uploadFromUrl: "Nahrať z URL adresy"
@@ -255,7 +273,8 @@ agreeTo: "Súhlasím s {0}"
 tos: "Podmienky používania"
 start: "Začať"
 home: "Domov"
-remoteUserCaution: "Tieto informácie nemusia byť aktuálne, keďže používateľ je na vzdialenom serveri."
+remoteUserCaution: "Tieto informácie nemusia byť aktuálne, keďže používateľ je na
+  vzdialenom serveri."
 activity: "Aktivita"
 images: "Obrázky"
 birthday: "Dátum narodenia"
@@ -288,7 +307,8 @@ unableToDelete: "Nedá sa odstrániť"
 inputNewFileName: "Zadajte nový názov"
 inputNewDescription: "Zadajte nový popis"
 inputNewFolderName: "Zadajte nový názov priečinka"
-circularReferenceFolder: "Cieľový priečinok je podpriečinkom priečinka, ktorý chcete presunúť."
+circularReferenceFolder: "Cieľový priečinok je podpriečinkom priečinka, ktorý chcete
+  presunúť."
 hasChildFilesOrFolders: "Nemôžete odstrániť priečinok sú súbormi."
 copyUrl: "Kopírovať URL"
 rename: "Premenovať"
@@ -319,7 +339,8 @@ yearX: "{year}"
 pages: "Stránky"
 enableLocalTimeline: "Povoliť lokálnu časovú os"
 enableGlobalTimeline: "Povoliť globálnu časovú os"
-disablingTimelinesInfo: "Administrátori a moderátori majú vždy prístup ku všetkým časovým osiam, aj keď sú vypnuté."
+disablingTimelinesInfo: "Administrátori a moderátori majú vždy prístup ku všetkým
+  časovým osiam, aj keď sú vypnuté."
 registration: "Registrácia"
 enableRegistration: "Povoliť registráciu nových používateľov"
 invite: "Pozvať"
@@ -331,9 +352,11 @@ bannerUrl: "URL obrázku bannera"
 backgroundImageUrl: "URL obrázku pozadia"
 basicInfo: "Základné informácie"
 pinnedUsers: "Pripnutí používatelia"
-pinnedUsersDescription: "Zoznam mien používateľov oddelených riadkami, ktorý budú pripnutí v záložke \"Objavovať\"."
+pinnedUsersDescription: "Zoznam mien používateľov oddelených riadkami, ktorý budú
+  pripnutí v záložke \"Objavovať\"."
 pinnedPages: "Pripnuté stránky"
-pinnedPagesDescription: "Na každý riadok zadajte cesty stránok, ktoré chcete pripnúť na vrch stránky tohoto servera."
+pinnedPagesDescription: "Na každý riadok zadajte cesty stránok, ktoré chcete pripnúť
+  na vrch stránky tohoto servera."
 pinnedClipId: "ID pripnutého klipu"
 pinnedNotes: "Pripnuté poznámky"
 hcaptcha: "hCaptcha"
@@ -344,14 +367,17 @@ recaptcha: "reCAPTCHA"
 enableRecaptcha: "Zapnúť ReCAPTCHA"
 recaptchaSiteKey: "Site key"
 recaptchaSecretKey: "Secret key"
-avoidMultiCaptchaConfirm: "Použitie viacerých Captcha systémov môže sposobiť problémy. Chcete radšej vypnúť ostatné Captcha systémy? Môžete ich povoliť viaceré stlačení Zrušiť."
+avoidMultiCaptchaConfirm: "Použitie viacerých Captcha systémov môže sposobiť problémy.
+  Chcete radšej vypnúť ostatné Captcha systémy? Môžete ich povoliť viaceré stlačení
+  Zrušiť."
 antennas: "Antény"
 manageAntennas: "Spravovať antény"
 name: "Názov"
 antennaSource: "Zdroj antény"
 antennaKeywords: "Počúvané kľúčové slová"
 antennaExcludeKeywords: "Vylúčené kľúčové slová"
-antennaKeywordsDescription: "Oddeľte medzerami pre podmienku AND alebo novými riadkami pre podmienku OR."
+antennaKeywordsDescription: "Oddeľte medzerami pre podmienku AND alebo novými riadkami
+  pre podmienku OR."
 notifyAntenna: "Upozorniť na nové poznámky"
 withFileAntenna: "Len poznámky so súbormi"
 enableServiceworker: "Povoliť Service Worker"
@@ -480,15 +506,19 @@ showFeaturedNotesInTimeline: "Zobraziť významné poznámky v časovej osi"
 objectStorage: "Objektové úložisko"
 useObjectStorage: "Použiť objektové úložisko"
 objectStorageBaseUrl: "Základná URL"
-objectStorageBaseUrlDesc: "URL použitá ako referencia. Zadajte URL svojho CDN alebo Proxy ak niektoré používate. S3: 'https://<bucket>.s3.amazonaws.com', GCS: 'https://storage.googleapis.com/<bucket>' atď."
+objectStorageBaseUrlDesc: "URL použitá ako referencia. Zadajte URL svojho CDN alebo
+  Proxy ak niektoré používate. S3: 'https://<bucket>.s3.amazonaws.com', GCS: 'https://storage.googleapis.com/<bucket>'
+  atď."
 objectStorageBucket: "Bucket"
 objectStorageBucketDesc: "Prosím zadajte názov bucketu od svojho poskytovateľa."
 objectStoragePrefix: "Prefix"
 objectStoragePrefixDesc: "Súbory budú ukladané do priečinkov pod týmto prefixom."
 objectStorageEndpoint: "Endpoint"
-objectStorageEndpointDesc: "Nechajte prázdne ak používate AWS S3, inak zadajte endpoint ako \"<host>\" alebo \"<host>:<port>\". Záleží to od služby, ktorú používate."
+objectStorageEndpointDesc: "Nechajte prázdne ak používate AWS S3, inak zadajte endpoint
+  ako \"<host>\" alebo \"<host>:<port>\". Záleží to od služby, ktorú používate."
 objectStorageRegion: "Región"
-objectStorageRegionDesc: "Zadajte región ako 'xx-east-1'. Ak vaša služba nerozlišuje regióny, nechajte prázdne alebo zadajte 'us-east-1'."
+objectStorageRegionDesc: "Zadajte región ako 'xx-east-1'. Ak vaša služba nerozlišuje
+  regióny, nechajte prázdne alebo zadajte 'us-east-1'."
 objectStorageUseSSL: "Použiť SSL"
 objectStorageUseSSLDesc: "Vypnite to ak nechcete použiť HTTPS na API spojenia."
 objectStorageUseProxy: "Pripájať cez Proxy"
@@ -520,7 +550,8 @@ sort: "Zoradiť"
 ascendingOrder: "Vzostupne"
 descendingOrder: "Zostupne"
 scratchpad: "Zápisník"
-scratchpadDescription: "Zápisník poskytuje prostredia pre experimenty s AiScriptom. Môžete písať, spúšťať a skúšať vysledky pri interakcii s Firefish."
+scratchpadDescription: "Zápisník poskytuje prostredia pre experimenty s AiScriptom.
+  Môžete písať, spúšťať a skúšať vysledky pri interakcii s Firefish."
 output: "Výstup"
 script: "Skript"
 disablePagesScript: "Vypnúť AiScript na stránkach"
@@ -528,11 +559,14 @@ updateRemoteUser: "Aktualizovať informácie o vzdialenom účte"
 deleteAllFiles: "Odstrániť všetky súbory"
 deleteAllFilesConfirm: "Naozaj chcete odstrániť všetky súbory"
 removeAllFollowing: "Zrušiť sledovani všetkých používateľov"
-removeAllFollowingDescription: "Týmto zrušíte sledovanie všetkých používateľov z {host}. Spustite to prosím, keď server napríklad už neexistuje."
+removeAllFollowingDescription: "Týmto zrušíte sledovanie všetkých používateľov z {host}.
+  Spustite to prosím, keď server napríklad už neexistuje."
 userSuspended: "Tento používateľ je zmrazený."
 userSilenced: "Tento používateľ je umlčaný."
 yourAccountSuspendedTitle: "Tento účet je zmrazený"
-yourAccountSuspendedDescription: "Tento účet bol zmrazený, lebo porušoval zmluvné podmienky. Kontaktujte administrátora ak chcete viac podrobností. Prosím nevytvárajte nový účet."
+yourAccountSuspendedDescription: "Tento účet bol zmrazený, lebo porušoval zmluvné
+  podmienky. Kontaktujte administrátora ak chcete viac podrobností. Prosím nevytvárajte
+  nový účet."
 menu: "Menu"
 divider: "Oddeľovač"
 addItem: "Pridať položku"
@@ -572,12 +606,14 @@ permission: "Oprávnenia"
 enableAll: "Povoliť všetko"
 disableAll: "Vypnúť všetko"
 tokenRequested: "Povoliť prístup k účtu"
-pluginTokenRequestedDescription: "Tento plugin bude môcť používať oprávnenia nastavené tu."
+pluginTokenRequestedDescription: "Tento plugin bude môcť používať oprávnenia nastavené
+  tu."
 notificationType: "Typ oznámenia"
 edit: "Upraviť"
 emailServer: "Email server"
 enableEmail: "Zapnúť email"
-emailConfigInfo: "Používa sa na overenie emaily pri registrácii alebo pri zabudnutí hesla"
+emailConfigInfo: "Používa sa na overenie emaily pri registrácii alebo pri zabudnutí
+  hesla"
 email: "Email"
 emailAddress: "Emailová adresa"
 smtpConfig: "Nastavenia SMTP servera"
@@ -607,10 +643,12 @@ create: "Vytvoriť"
 notificationSetting: "Nastavenia oznámení"
 notificationSettingDesc: "Vyberte typ oznámení na zobrazenie"
 useGlobalSetting: "Použiť globálne nastavenie"
-useGlobalSettingDesc: "Ak je zapnuté, použijú sa oznámenia vášho účtu. Ak je vypnuté, použijú sa jednotlivé nastavenia."
+useGlobalSettingDesc: "Ak je zapnuté, použijú sa oznámenia vášho účtu. Ak je vypnuté,
+  použijú sa jednotlivé nastavenia."
 other: "Ostatní"
 regenerateLoginToken: "Pregenerovať prihlasovací token"
-regenerateLoginTokenDescription: "Pregeneruje token interne používaný počas prihlásenia. Normálne toto netreba robiť. Ak sa pregeneruje, všetky zariadenia sa odhlásia."
+regenerateLoginTokenDescription: "Pregeneruje token interne používaný počas prihlásenia.
+  Normálne toto netreba robiť. Ak sa pregeneruje, všetky zariadenia sa odhlásia."
 setMultipleBySeparatingWithSpace: "Viaceré položky oddeľte medzerami."
 fileIdOrUrl: "ID alebo URL súboru"
 behavior: "Správanie"
@@ -618,13 +656,15 @@ sample: "Ukážka"
 abuseReports: "Nahlásenia"
 reportAbuse: "Nahlásiť"
 reportAbuseOf: "Nahlásiť {name}"
-fillAbuseReportDescription: "Prosím vyplňte podrobnosti nahlásenia. Ak sa týka konkrétnej poznámky, prosím napíšte jej URL."
+fillAbuseReportDescription: "Prosím vyplňte podrobnosti nahlásenia. Ak sa týka konkrétnej
+  poznámky, prosím napíšte jej URL."
 abuseReported: "Vaše nahlásenie je odoslané. Veľmi pekne ďakujeme."
 reporter: "Nahlásil"
 reporteeOrigin: "Pôvod nahláseného"
 reporterOrigin: "Pôvod nahlasovača"
 forwardReport: "Preposlať nahlásenie na server"
-forwardReportIsAnonymous: "Namiesto vášho účtu bude zobrazený anonymný systémový účet na vzdialenom serveri ako autor nahlásenia."
+forwardReportIsAnonymous: "Namiesto vášho účtu bude zobrazený anonymný systémový účet
+  na vzdialenom serveri ako autor nahlásenia."
 send: "Poslať"
 abuseMarkAsResolved: "Označiť nahlásenia ako vyriešené"
 openInNewTab: "Otvoriť v novom tabe"
@@ -642,9 +682,11 @@ createNew: "Vytvoriť nový"
 optional: "Voliteľné"
 createNewClip: "Vytvoriť nový klip"
 unclip: "Odopnúť"
-confirmToUnclipAlreadyClippedNote: "Táto poznámka je už pripnutá ako \"{name}\". Naozaj ju chcete odopnúť?"
+confirmToUnclipAlreadyClippedNote: "Táto poznámka je už pripnutá ako \"{name}\". Naozaj
+  ju chcete odopnúť?"
 public: "Verejné"
-i18nInfo: "Firefish je prekladaný do rôznych jazykov dobrovoľníkmi. Pomôcť môžete na {link}."
+i18nInfo: "Firefish je prekladaný do rôznych jazykov dobrovoľníkmi. Pomôcť môžete
+  na {link}."
 manageAccessTokens: "Spravovať prístupové tokeny"
 accountInfo: "Informácie o účte"
 notesCount: "Počet poznámok"
@@ -663,12 +705,15 @@ no: "Nie"
 driveFilesCount: "Počet súborov na disku"
 driveUsage: "Využité miesto na disku"
 noCrawle: "Odmietať indexovanie crawlerov"
-noCrawleDescription: "Požiadať vyhľadávače, aby neindexovali váš profil, poznámky, stránky, atď."
-lockedAccountInfo: "Pokým nenastavíte viditeľnosť poznámok na \"Len pre sledujúcich\", vaše príspevky bude vidieť hocikto, aj keď vyžadujete manuálne potvrdenie sledovania."
+noCrawleDescription: "Požiadať vyhľadávače, aby neindexovali váš profil, poznámky,
+  stránky, atď."
+lockedAccountInfo: "Pokým nenastavíte viditeľnosť poznámok na \"Len pre sledujúcich\"\
+  , vaše príspevky bude vidieť hocikto, aj keď vyžadujete manuálne potvrdenie sledovania."
 alwaysMarkSensitive: "Predvolene označovať ako NSFW"
 loadRawImages: "Načítať originálne obrázky namiesto miniatúr"
 disableShowingAnimatedImages: "Neprehrávať animované obrázky"
-verificationEmailSent: "Odoslali sme overovací email. Overenie dokončíte kliknutím na odkaz v emaili."
+verificationEmailSent: "Odoslali sme overovací email. Overenie dokončíte kliknutím
+  na odkaz v emaili."
 notSet: "Nenastavené"
 emailVerified: "Email overený"
 noteFavoritesCount: "Počet obľúbených poznámok"
@@ -680,14 +725,16 @@ clips: "Klip"
 experimentalFeatures: "Experimentálne funkcie"
 developer: "Vývojár"
 makeExplorable: "Spraviť účet viditeľný v \"Objavovať\""
-makeExplorableDescription: "Ak toto vypnete, váš účet sa nezobrazí v sekcii \"Objavovat\"."
+makeExplorableDescription: "Ak toto vypnete, váš účet sa nezobrazí v sekcii \"Objavovat\"\
+  ."
 showGapBetweenNotesInTimeline: "Zobraziť medzeru medzi príspevkami časovej osi."
 duplicate: "Duplikovať"
 left: "Naľavo"
 center: "Stred"
 wide: "Široko"
 narrow: "Úzko"
-reloadToApplySetting: "Toto nastavenia sa prejaví až po obnovení stránky. Obnoviť teraz?"
+reloadToApplySetting: "Toto nastavenia sa prejaví až po obnovení stránky. Obnoviť
+  teraz?"
 needReloadToApply: "Toto nastavenie sa prejaví až po obnovení stránky."
 showTitlebar: "Zobraziť riadok s nadpisom"
 clearCache: "Vyprázdniť cache"
@@ -695,7 +742,9 @@ onlineUsersCount: "{n} používateľov je online"
 nUsers: "{n} používateľov"
 nNotes: "{n} poznámok"
 sendErrorReports: "Poslať nahlásenie chyby"
-sendErrorReportsDescription: "Keď je zapnuté, v prípade problému sa odošlú podrobné informácie o chybe do Firefish. Pomôžete tak zvýšiť kvalitu Firefish.\nTieto informácie zahŕňajú verziu vášho OS, použitý prehliadač, históriu aktivít, atď."
+sendErrorReportsDescription: "Keď je zapnuté, v prípade problému sa odošlú podrobné
+  informácie o chybe do Firefish. Pomôžete tak zvýšiť kvalitu Firefish.\nTieto informácie
+  zahŕňajú verziu vášho OS, použitý prehliadač, históriu aktivít, atď."
 myTheme: "Moja téma"
 backgroundColor: "Pozadie"
 accentColor: "Akcent"
@@ -734,14 +783,17 @@ unlikeConfirm: "Naozaj odstrániť váš like?"
 fullView: "Plný pohľad"
 quitFullView: "Zavrieť plný pohľad"
 addDescription: "Pridať popis"
-userPagePinTip: "Tu môžete zobraziť poznámky zvolením \"Pripnúť na profil\" z menu jednotlivých poznámok."
-notSpecifiedMentionWarning: "Táto poznámka obsahuje spomenutých používateľov, ktorí nie sú medzi adresátmi."
+userPagePinTip: "Tu môžete zobraziť poznámky zvolením \"Pripnúť na profil\" z menu
+  jednotlivých poznámok."
+notSpecifiedMentionWarning: "Táto poznámka obsahuje spomenutých používateľov, ktorí
+  nie sú medzi adresátmi."
 info: "Informácie"
 userInfo: "Informácie o používateľovi"
 unknown: "Neznáme"
 onlineStatus: "Online status"
 hideOnlineStatus: "Skryť online status"
-hideOnlineStatusDescription: "Skrytie vášho online statusu zníži pohodlnosť niektorých funkcií ako napríklad vyhľadávanie."
+hideOnlineStatusDescription: "Skrytie vášho online statusu zníži pohodlnosť niektorých
+  funkcií ako napríklad vyhľadávanie."
 online: "Online"
 active: "Aktívny"
 offline: "Offline"
@@ -776,7 +828,8 @@ emailNotConfiguredWarning: "Nie je nastavená emailová adresa."
 ratio: "Pomer"
 previewNoteText: "Zobraziť náhľad"
 customCss: "Vlastné CSS"
-customCssWarn: "Toto nastavenie by sa malo používať iba ak viete čo robíte. Zadanie nesprávnych hodnôt môže spôsobiť nenormálne správanie klienta."
+customCssWarn: "Toto nastavenie by sa malo používať iba ak viete čo robíte. Zadanie
+  nesprávnych hodnôt môže spôsobiť nenormálne správanie klienta."
 global: "Globálne"
 squareAvatars: "Zobrazovať štvorcové avatary"
 sent: "Poslať"
@@ -791,7 +844,9 @@ whatIsNew: "Čo je nové?"
 translate: "Preložiť"
 translatedFrom: "Preložené z {x}"
 accountDeletionInProgress: "Odstraňovanie účtu prebieha"
-usernameInfo: "Meno, ktoré odlišuje váš účet od ostatných na tomto serveri. Môžete použiť abecedu (a~z, A~Z), čísla (0~9) alebo podtržník (_). Používateľské mená sa nedajú neskôr zmeniť."
+usernameInfo: "Meno, ktoré odlišuje váš účet od ostatných na tomto serveri. Môžete
+  použiť abecedu (a~z, A~Z), čísla (0~9) alebo podtržník (_). Používateľské mená sa
+  nedajú neskôr zmeniť."
 aiChanMode: "Ai režim"
 keepCw: "Nechať varovania obsahu"
 pubSub: "Pub/Sub účty"
@@ -807,7 +862,8 @@ filter: "Filter"
 controlPanel: "Ovládací panel"
 manageAccounts: "Správa účtov"
 makeReactionsPublic: "Reakcie sú verejné"
-makeReactionsPublicDescription: "Toto spraví všetky vaše minulé reakcie viditeľné verejnosti."
+makeReactionsPublicDescription: "Toto spraví všetky vaše minulé reakcie viditeľné
+  verejnosti."
 classic: "Klasika"
 muteThread: "Ztíšiť vlákno"
 unmuteThread: "Zrušiť stíšenie vlákna"
@@ -874,23 +930,33 @@ sensitiveMediaDetection: "Detekcia citlivých médií."
 localOnly: "Iba lokálne"
 remoteOnly: "Len vzdialené"
 failedToUpload: "Nahrávanie zlyhalo"
-cannotUploadBecauseInappropriate: "Nemožno nahrať, pretože pravdepodobne obsahuje nevhodný obsah."
+cannotUploadBecauseInappropriate: "Nemožno nahrať, pretože pravdepodobne obsahuje
+  nevhodný obsah."
 cannotUploadBecauseNoFreeSpace: "Nemožno nahrať kvôli nedostatku voľného úložiska."
 beta: "Beta"
 enableAutoSensitive: "Automatická detekcia NSFW"
-enableAutoSensitiveDescription: "Ak je zapnuté, príznak NSFW sa na médiách automaticky nastaví pomocou strojového učenia. Aj keď je táto funkcia vypnutá, v niektorých prípadoch sa môže nastaviť automaticky."
-activeEmailValidationDescription: "Dôkladnejšie overí e-mailovú adresu používateľa tým, že zistí, či ide o vyradenú e-mailovú adresu a či sa s ňou dá skutočne komunikovať. Ak nie je začiarknuté, e-mailová adresa sa kontroluje len ako text."
+enableAutoSensitiveDescription: "Ak je zapnuté, príznak NSFW sa na médiách automaticky
+  nastaví pomocou strojového učenia. Aj keď je táto funkcia vypnutá, v niektorých
+  prípadoch sa môže nastaviť automaticky."
+activeEmailValidationDescription: "Dôkladnejšie overí e-mailovú adresu používateľa
+  tým, že zistí, či ide o vyradenú e-mailovú adresu a či sa s ňou dá skutočne komunikovať.
+  Ak nie je začiarknuté, e-mailová adresa sa kontroluje len ako text."
 navbar: "Navigačný panel"
 account: "Účty"
 move: "Pohyb"
 _sensitiveMediaDetection:
-  description: "Strojové učenie sa použije na automatickú detekciu citlivých médií na účely ich moderovania. Mierne sa zvýši zaťaženie servera."
+  description: "Strojové učenie sa použije na automatickú detekciu citlivých médií
+    na účely ich moderovania. Mierne sa zvýši zaťaženie servera."
   sensitivity: "Citlivosť detekcie"
-  sensitivityDescription: "Nižšia citlivosť znižuje počet falošne pozitívnych výsledkov (false positives). Vyššia citlivosť znižuje počet falošne negatívnych výsledkov (false negatives)."
+  sensitivityDescription: "Nižšia citlivosť znižuje počet falošne pozitívnych výsledkov
+    (false positives). Vyššia citlivosť znižuje počet falošne negatívnych výsledkov
+    (false negatives)."
   setSensitiveFlagAutomatically: "Nastaviť príznak NSFW"
-  setSensitiveFlagAutomaticallyDescription: "Aj keď je toto nastavenie vypnuté, výsledok rozhodnutia je interne uložený."
+  setSensitiveFlagAutomaticallyDescription: "Aj keď je toto nastavenie vypnuté, výsledok
+    rozhodnutia je interne uložený."
   analyzeVideos: "Zapnúť analýzu videa"
-  analyzeVideosDescription: "Okrem obrázkov zapne detekciu aj pre videá. Zaťaženie servera sa mierne zvýši."
+  analyzeVideosDescription: "Okrem obrázkov zapne detekciu aj pre videá. Zaťaženie
+    servera sa mierne zvýši."
 _emailUnavailable:
   used: "Táto emailová adresa sa už používa"
   format: "Formát emailovej adresy je nesprávny"
@@ -904,11 +970,14 @@ _ffVisibility:
 _signup:
   almostThere: "Skoro na konci"
   emailAddressInfo: "Prosím zadajte svoju emailovú adresu!"
-  emailSent: "Na vašu emailovú adresu ({email}) sme odoslali email. Vytvorenie účtu dokončíte kliknutím na odkaz v emaili."
+  emailSent: "Na vašu emailovú adresu ({email}) sme odoslali email. Vytvorenie účtu
+    dokončíte kliknutím na odkaz v emaili."
 _accountDelete:
   accountDelete: "Odstrániť účet"
-  mayTakeTime: "Keďže odstránenie účtu je náročný proces, môže to nejaký čas trvať. Záleží koľko obsahu ste vytvorili a koľko súborov ste nahrali."
-  sendEmail: "Po odstránení účtu vám pošleme email na emailovú adresu zadanú pri registrácii tohoto účtu."
+  mayTakeTime: "Keďže odstránenie účtu je náročný proces, môže to nejaký čas trvať.
+    Záleží koľko obsahu ste vytvorili a koľko súborov ste nahrali."
+  sendEmail: "Po odstránení účtu vám pošleme email na emailovú adresu zadanú pri registrácii
+    tohoto účtu."
   requestAccountDelete: "Požiadať o zmazanie účtu"
   started: "Odstraňovanie začalo."
   inProgress: "Odstraňovanie prebieha"
@@ -916,9 +985,11 @@ _ad:
   back: "Späť"
   reduceFrequencyOfThisAd: "Túto reklamu zobrazovať menej"
 _forgotPassword:
-  enterEmail: "Zadajte emailovú adresu, ktorú ste použili pri registrácii. Pošleme vám na ňu odkaz, cez ktorý si môžete obnoviť heslo."
+  enterEmail: "Zadajte emailovú adresu, ktorú ste použili pri registrácii. Pošleme
+    vám na ňu odkaz, cez ktorý si môžete obnoviť heslo."
   ifNoEmail: "Ak ste pri registrácii nepoužili email, prosím kontaktujte administrátora."
-  contactAdmin: "Tento server nepodporuje používanie emailových adries, prosím kontaktuje administrátor, ktorý vám resetuje heslo."
+  contactAdmin: "Tento server nepodporuje používanie emailových adries, prosím kontaktuje
+    administrátor, ktorý vám resetuje heslo."
 _gallery:
   my: "Moja galéria"
   liked: "Obľúbené príspevky"
@@ -942,11 +1013,13 @@ _preferencesBackups:
   inputName: "Názov zálohy"
   cannotSave: "Nedá sa uložiť"
   nameAlreadyExists: "Záloha s názvom \"{name}\" už existuje. Zadajte iný názov."
-  applyConfirm: "Chcete použiť zálohu '{name}' na aktuálne zariadenie? Aktuálne nastavenia zariadenia sa stratia."
+  applyConfirm: "Chcete použiť zálohu '{name}' na aktuálne zariadenie? Aktuálne nastavenia
+    zariadenia sa stratia."
   saveConfirm: "Chcete prepísať {name}?"
   deleteConfirm: "Naozaj chcete odstrániť \"{name}\"?"
   renameConfirm: "Chcete zmeniť \"{old}\" na \"{new}\"?"
-  noBackups: "Nie je k dispozícii žiadna záloha. \"Uložiť novú\" umožňuje uložiť aktuálnu konfiguráciu zariadenia na server."
+  noBackups: "Nie je k dispozícii žiadna záloha. \"Uložiť novú\" umožňuje uložiť aktuálnu
+    konfiguráciu zariadenia na server."
   createdAt: "Dátum vytvorenia: {date} {time}"
   updatedAt: "Dátum úpravy: {date} {time}"
   cannotLoad: "Nedá sa nahrať"
@@ -964,7 +1037,8 @@ _aboutFirefish:
   source: "Zdrojový kód"
   translation: "Preložiť Firefish"
   donate: "Podporiť Firefish"
-  morePatrons: "Takisto oceňujeme podporu mnoých ďalších, ktorí tu nie sú uvedení. Ďakujeme! 🥰"
+  morePatrons: "Takisto oceňujeme podporu mnoých ďalších, ktorí tu nie sú uvedení.
+    Ďakujeme! 🥰"
   patrons: "Prispievatelia"
 _nsfw:
   respect: "Skryť NSFW médiá"
@@ -972,7 +1046,8 @@ _nsfw:
   force: "Skryť všetky médiá"
 _mfm:
   cheatSheet: "MFM Cheatsheet"
-  intro: "MFM je Firefish exkluzívny značkovací jazyk, ktorý sa dá používať na viacerých miestach. Tu môžete vidieť zoznam všetkej dostupnej MFM syntaxe."
+  intro: "MFM je Firefish exkluzívny značkovací jazyk, ktorý sa dá používať na viacerých
+    miestach. Tu môžete vidieť zoznam všetkej dostupnej MFM syntaxe."
   dummy: "Firefish rozširuje svet Fediverza"
   mention: "Zmienka"
   mentionDescription: "Používateľa spomeniete použítím zavináča a mena používateľa"
@@ -999,7 +1074,8 @@ _mfm:
   quote: "Citovať"
   quoteDescription: "Zobrazí obsah ako citát."
   emoji: "Vlastné emoji"
-  emojiDescription: "Pridaním dvojbodiek pred a za názov vlastnej emoji, sa dá zobraziť vlastná emoji."
+  emojiDescription: "Pridaním dvojbodiek pred a za názov vlastnej emoji, sa dá zobraziť
+    vlastná emoji."
   search: "Hľadať"
   searchDescription: "Zobrazí vyhľadávacie pole so zadaným textom."
   flip: "Preklopiť"
@@ -1025,7 +1101,8 @@ _mfm:
   x4: "Neuveriteľne veľký"
   x4Description: "Zobrazí obsah ešte viac veľký než veľmi veľký."
   blur: "Rozmazanie"
-  blurDescription: "Týmto efektom môže byť obsah rozmazaný. Zaostrí sa keď ned neho príde kurzor."
+  blurDescription: "Týmto efektom môže byť obsah rozmazaný. Zaostrí sa keď ned neho
+    príde kurzor."
   font: "Písmo"
   fontDescription: "Nastaví písmo, ktorým sa zobrazí text."
   rainbow: "Dúha"
@@ -1061,15 +1138,19 @@ _menuDisplay:
   hide: "Skryť"
 _wordMute:
   muteWords: "Umlčané slová"
-  muteWordsDescription: "Medzerami oddeľte pre podmienku AND a novými riadkami pre podmienku OR."
+  muteWordsDescription: "Medzerami oddeľte pre podmienku AND a novými riadkami pre
+    podmienku OR."
   muteWordsDescription2: "Regulárne výrazy sa použijú keď použijete okolo lomítka."
   softDescription: "Skryje poznámky z časovej osi, ktoré spĺňajú podmienky."
-  hardDescription: "Zabráni poznámky spĺňajúce množinu podmienok, aby boli pridané do časovej osi. Navyše tieto poznámky nepribudnú v časovej osi ani keď sa podmienky zmenia."
+  hardDescription: "Zabráni poznámky spĺňajúce množinu podmienok, aby boli pridané
+    do časovej osi. Navyše tieto poznámky nepribudnú v časovej osi ani keď sa podmienky
+    zmenia."
   soft: "Mäkké"
   hard: "Tvrdé"
   mutedNotes: "Umlčané poznámky"
 _instanceMute:
-  instanceMuteDescription: "Toto umlčí všetky poznámky/preposlania zo zoznamu serverov, vrátane tých, na ktoré používatelia odpovedajú z umlčaného servera."
+  instanceMuteDescription: "Toto umlčí všetky poznámky/preposlania zo zoznamu serverov,
+    vrátane tých, na ktoré používatelia odpovedajú z umlčaného servera."
   instanceMuteDescription2: "Oddeľte novými riadkami"
   title: "Skryje poznámky z uvedených serverov."
   heading: "Zoznam umlčaných inštancií"
@@ -1175,32 +1256,46 @@ _tutorial:
   step1_1: "Welcome!"
   step1_2: "Let's get you set up. You'll be up and running in no time!"
   step2_1: "First, please fill out your profile."
-  step2_2: "Providing some information about who you are will make it easier for others to tell if they want to see your notes or follow you."
+  step2_2: "Providing some information about who you are will make it easier for others
+    to tell if they want to see your notes or follow you."
   step3_1: "Now time to follow some people!"
-  step3_2: "Your home and social timelines are based off of who you follow, so try following a couple accounts to get started.\nClick the plus circle on the top right of a profile to follow them."
+  step3_2: "Your home and social timelines are based off of who you follow, so try
+    following a couple accounts to get started.\nClick the plus circle on the top
+    right of a profile to follow them."
   step4_1: "Let's get you out there."
-  step4_2: "For your first post, some people like to made a {introduction} post or a simple \"Hello world!\""
+  step4_2: "For your first post, some people like to made a {introduction} post or
+    a simple \"Hello world!\""
   step5_1: "Timelines, timelines everywhere!"
   step5_2: "Your instance has {timelines} different timelines enabled."
   step5_3: "The Home {icon} timeline is where you can see posts from your followers."
-  step5_4: "The Local {icon} timeline is where you can see posts from everyone else on this instance."
-  step5_5: "The Recommended {icon} timeline is where you can see posts from instances the admins recommend."
-  step5_6: "The Social {icon} timeline is where you can see posts from friends of your followers."
-  step5_7: "The Global {icon} timeline is where you can see posts from every other connected instance."
+  step5_4: "The Local {icon} timeline is where you can see posts from everyone else
+    on this instance."
+  step5_5: "The Recommended {icon} timeline is where you can see posts from instances
+    the admins recommend."
+  step5_6: "The Social {icon} timeline is where you can see posts from friends of
+    your followers."
+  step5_7: "The Global {icon} timeline is where you can see posts from every other
+    connected instance."
   step6_1: "So, what is this place?"
-  step6_2: "Well, you didn't just join Firefish. You joined a portal to the Fediverse, an interconnected network of thousands of servers, called \"instances\"."
-  step6_3: "Each server works in different ways, and not all servers run Firefish. This one does though! It's a bit complicated, but you'll get the hang of it in no time."
+  step6_2: "Well, you didn't just join Firefish. You joined a portal to the Fediverse,
+    an interconnected network of thousands of servers, called \"instances\"."
+  step6_3: "Each server works in different ways, and not all servers run Firefish.
+    This one does though! It's a bit complicated, but you'll get the hang of it in
+    no time."
   step6_4: "Now go, explore, and have fun!"
 _2fa:
   alreadyRegistered: "Už ste zaregistrovali 2-faktorové autentifikačné zariadenie."
   registerTOTP: "Registrovať nové zariadenie"
   registerSecurityKey: "Registrovať bezpečnostný kľúč"
-  step1: "Najprv si nainštalujte autentifikačnú aplikáciu (napríklad {a} alebo {b}) na svoje zariadenie."
+  step1: "Najprv si nainštalujte autentifikačnú aplikáciu (napríklad {a} alebo {b})
+    na svoje zariadenie."
   step2: "Potom, naskenujte QR kód zobrazený na obrazovke."
   step2Url: "Do aplikácie zadajte nasledujúcu URL adresu:"
   step3: "Nastavenie dokončíte zadaním tokenu z vašej aplikácie."
   step4: "Od teraz, všetky ďalšie prihlásenia budú vyžadovať prihlasovací token."
-  securityKeyInfo: "Okrem odtlačku prsta alebo PIN autentifikácie si môžete nastaviť autentifikáciu cez hardvérový bezpečnostný kľúč podporujúci FIDO2 a tak ešte viac zabezpečiť svoj účet."
+  securityKeyInfo: "Okrem odtlačku prsta alebo PIN autentifikácie si môžete nastaviť
+    autentifikáciu cez hardvérový bezpečnostný kľúč podporujúci FIDO2 a tak ešte viac
+    zabezpečiť svoj účet."
 _permissions:
   "read:account": "Vidieť informácie o vašom účte"
   "write:account": "Upraviť informácie o vašom účte"
@@ -1334,7 +1429,9 @@ _profile:
   youCanIncludeHashtags: "Vo svojom bio môžete mať aj hashtagy."
   metadata: "Dodatočné informácie"
   metadataEdit: "Upraviť dodatočné informácie"
-  metadataDescription: "Vo svojom profile môžete uviesť až štyri dodatočné informačné polia. Dodate lahko oznako {a} ali oznako {l} z {rel}, da preverite povezavo v svojem profile!"
+  metadataDescription: "Vo svojom profile môžete uviesť až štyri dodatočné informačné
+    polia. Dodate lahko oznako {a} ali oznako {l} z {rel}, da preverite povezavo v
+    svojem profile!"
   metadataLabel: "Popisok"
   metadataContent: "Obsah"
   changeAvatar: "Zmeniť avatara"
@@ -1655,7 +1752,8 @@ _pages:
       _for:
         arg1: "Počet opakovaní"
         arg2: "Akcia"
-    typeError: "Slot {slot} akceptuje hodnoty typu \"{expect}\", ale dodaná hodnota je typu \"{actual}\"!"
+    typeError: "Slot {slot} akceptuje hodnoty typu \"{expect}\", ale dodaná hodnota
+      je typu \"{actual}\"!"
     thereIsEmptySlot: "Slot {slot} je prázdny!"
     types:
       string: "Text"
@@ -1719,8 +1817,10 @@ _deck:
   newProfile: "Nový profil"
   deleteProfile: "Odstrániť profil"
   introduction: "Kombinujte stĺpce a vytvorte si svoje vlastné rozhranie!"
-  introduction2: "Stlačením tlačidla + v pravej časti obrazovky môžete kedykoľvek pridať stĺpce."
-  widgetsIntroduction: "V ponuke stĺpca vyberte možnosť \"Upraviť widget\" a pridajte widget"
+  introduction2: "Stlačením tlačidla + v pravej časti obrazovky môžete kedykoľvek
+    pridať stĺpce."
+  widgetsIntroduction: "V ponuke stĺpca vyberte možnosť \"Upraviť widget\" a pridajte
+    widget"
   _columns:
     main: "Hlavný"
     widgets: "Widgety"
