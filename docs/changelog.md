@@ -1,4 +1,4 @@
-# Unreleased
+# v20240217
 
 - Add ability to specify the search engine used in the search bar MFM
 - Remove auto NSFW media detection

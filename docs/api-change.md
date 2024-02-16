@@ -2,7 +2,7 @@
 
 Breaking changes are indicated by the :warning: icon.
 
-## Unreleased
+## v20240217
 
 - :warning: Since the auto NSFW media detection has been removed, these endpoints are affected:
   - `admin/meta`
