@@ -55,8 +55,8 @@ attachCancel: Poista liite
 enterFileName: Anna tiedostonimi
 mute: Hiljennä
 unmute: Poista hiljennys
-headlineFirefish: Avoimen lähdekoodin, hajautettu sosiaalisen median alusta, joka on
-  ikuisesti ilmainen! 🚀
+headlineFirefish: Avoimen lähdekoodin, hajautettu sosiaalisen median alusta, joka
+  on ikuisesti ilmainen! 🚀
 monthAndDay: '{day}/{month}'
 deleteAndEditConfirm: Oletko varma, että haluat poistaa tämän lähetyksen ja muokata
   sitä? Menetät kaikki reaktiot, buustaukset ja vastaukset lähetyksestäsi.
@@ -214,8 +214,8 @@ perDay: Päivässä
 version: Versio
 statistics: Tilastot
 clearQueueConfirmTitle: Oletko varma, että haluat tyhjentää jonon?
-introFirefish: Tervetuloa! Firefish on avoimen lähdekoodin, hajautettu sosiaalisen median
-  alusta, joka on ikuisesti ilmainen! 🚀
+introFirefish: Tervetuloa! Firefish on avoimen lähdekoodin, hajautettu sosiaalisen
+  median alusta, joka on ikuisesti ilmainen! 🚀
 clearQueueConfirmText: Mitkään välittämättömät lähetykset, jotka ovat jonossa, eivät
   federoidu. Yleensä tätä toimintoa ei tarvita.
 blockedInstancesDescription: Lista instanssien isäntänimistä, jotka haluat estää.
@@ -511,10 +511,10 @@ accountSettings: Tilin asetukset
 objectStorage: Objektitallennus
 useObjectStorage: Käytä objektitallennusta
 objectStorageBaseUrl: Perus URL-linkki
-objectStorageBaseUrlDesc: "Viitteenä käytetty URL-linkki. Määritä CDN:n tai välityspalvelimen\
-  \ URL-linkki, jos käytät kumpaakin.\nKäytä S3:lle 'https://<bucket>.s3.amazonaws.com'\
-  \ ja GCS:lle tai vastaaville palveluille 'https://storage.googleapis.com/<bucket>'\
-  \ jne."
+objectStorageBaseUrlDesc: "Viitteenä käytetty URL-linkki. Määritä CDN:n tai välityspalvelimen
+  URL-linkki, jos käytät kumpaakin.\nKäytä S3:lle 'https://<bucket>.s3.amazonaws.com'
+  ja GCS:lle tai vastaaville palveluille 'https://storage.googleapis.com/<bucket>'
+  jne."
 objectStorageBucket: Kauha
 newNoteRecived: Uusia viestejä
 smtpPort: Portti
@@ -801,10 +801,10 @@ i18nInfo: Vapaaehtoiset kääntävät Firefishta eri kielille. Voit auttaa osoit
   {link}.
 lockedAccountInfo: Ellet aseta postauksen näkyvyydeksi "Vain seuraajille", postauksesi
   näkyvät kaikille, vaikka vaatisitkin seuraajilta manuaalista hyväksyntää.
-sendErrorReportsDescription: "Kun tämä on päällä, yksityiskohtaiset virhetiedot jaetaan\
-  \ Firefishn kanssa ongelman ilmetessä, mikä auttaa parantamaan Firefishn laatua.\n\
-  Näihin tietoihin sisältyy esimerkiksi käyttöjärjestelmäversio, käyttämäsi selain,\
-  \ toimintasi Firefishssä jne."
+sendErrorReportsDescription: "Kun tämä on päällä, yksityiskohtaiset virhetiedot jaetaan
+  Firefishn kanssa ongelman ilmetessä, mikä auttaa parantamaan Firefishn laatua.\n
+  Näihin tietoihin sisältyy esimerkiksi käyttöjärjestelmäversio, käyttämäsi selain,
+  toimintasi Firefishssä jne."
 createdAt: Luotu
 youAreRunningUpToDateClient: Käytössäsi on asiakasohjelman uusin versio.
 needReloadToApply: Uudelleenlataus vaaditaan, jotta tämä näkyy.
