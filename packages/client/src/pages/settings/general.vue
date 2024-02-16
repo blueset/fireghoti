@@ -150,6 +150,12 @@
 				<option value="https://araa.extravi.dev/search?q=">
 					Araa (araa.extravi.dev)
 				</option>
+				<option value="https://websurfx.pp.ua/search?q=">
+					Websurfx (websurfx.pp.ua)
+				</option>
+				<option value="https://stract.com/search?q=">
+					Stract (stract.com)
+				</option>
 				<option value="https://google.com/search?q=">
 					Google Search (google.com)
 				</option>
