@@ -73,7 +73,7 @@ exportRequested: "Has sol·licitat una exportació. Això pot trigar una estona.
 importRequested: "Has sol·licitat una importació. Això pot trigar una estona."
 lists: "Llistes"
 noLists: "No teniu cap llista"
-note: "Publicació"
+note: "Publicar"
 notes: "Publicacions"
 following: "Seguint"
 followers: "Seguidors"
@@ -386,7 +386,7 @@ _cw:
   chars: '{count} caràcters'
 _visibility:
   followers: "Seguidors"
-  publicDescription: La teva publicació serà visible per a totes les línies de temps
+  publicDescription: La teva publicació serà visible en totes les línies de temps
     públiques
   localOnly: Només Local
   specified: Directe
@@ -1086,7 +1086,7 @@ text: Text
 enable: Activar
 next: Següent
 retype: Torna a entrar
-noteOf: Publicació de {user}
+noteOf: Publicat per {user}
 inviteToGroup: Invitar a un grup
 quoteAttached: Cita
 quoteQuestion: Adjuntar com a cita?
@@ -2078,7 +2078,7 @@ _relayStatus:
   accepted: Acceptat
   rejected: Rebutjat
 deleted: Eliminat
-editNote: Edita la publicació
+editNote: Editar la publicació
 edited: 'Editat a {date} {time}'
 findOtherInstance: Cercar un altre servidor
 signupsDisabled: Actualment, les inscripcions en aquest servidor estan desactivades,
