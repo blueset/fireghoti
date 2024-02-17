@@ -1,6 +1,6 @@
 {
 	"name": "firefish",
-	"version": "20240217",
+	"version": "20240217-1",
 	"repository": {
 		"type": "git",
 		"url": "https://firefish.dev/firefish/firefish.git"

@@ -1,4 +1,12 @@
-# v20240217
+# Changelog
+
+Critical security updates are indicated by the :warning: icon.
+
+## :warning: v20240217-1
+
+- Fix a [security issue](https://github.com/misskey-dev/misskey/security/advisories/GHSA-qqrm-9grj-6v32)
+
+## v20240217
 
 - Add ability to specify the search engine used in the search bar MFM
 - Remove auto NSFW media detection
@@ -11,45 +19,45 @@
 - Add `/api/emojis` endpoint (compatible with Misskey v13) for better experiences with Misskey clients
 	- This does not mean we will continue to maintain API compatibility with Misskey. Instead, we plan to improve the compatibility with the Mastodon API.
 
-# v20240216
+## v20240216
 
 - Style changes in the web client (a770ef4314e21f17fdce1f19feb3758953b04486 ab39ff5954a392cc6688a02f1723e1702df5e35c 4eefd534d8150e2cd5cf31dddd327edceb5b84dc)
 - Clicking the "like" button now sends the actual emoji reaction (star, good, heart, etc.) instead of an empty "like"
 
-# v20240215
+## v20240215
 
 - Separate settings for displaying rounded avatars for cat and non-cat accounts
 - Add a toggleable setting to replace the chat button with account menu on mobile
 - Reduce the size of the container image (!10667)
 
-# v20240214
+## v20240214
 
 - Fix container images
 
-# v20240213
+## v20240213
 
 - Bug fix
 - Refactoring
 
-# v20240212
+## v20240212
 
 - Refactoring
 - Add a toggleable setting to hide follow buttons in a misclickable position
 - Add a toggleable setting to show preview in posting form by default
 
-# v20240210
+## v20240210
 
 - Security update (cf5b42a160ae8a4d94bf3dcea04ce12935ca4f76)
 - Refactoring
 
-# v20240208
+## v20240208
 
 - Bug fix (!10654 !10665)
 - Enlarge profile picture by clicking it (!10659)
 - Support Pleroma chat (!10660)
 - [Add documentation about downgrading](./docs/downgrade.md)
 
-# v20240206
+## v20240206
 
 - Many bug fixes
 - Per-post language selector (!10616)
