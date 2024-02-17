@@ -161,7 +161,17 @@ export default async function (ctx: Koa.Context) {
 
 	// When doing a conditional request, we MUST return a "Cache-Control" header
 	// if a normal 200 response would have included.
-	ctx.set("Cache-Control", "max-age=31536000, immutable");
+	if (contentType === "application/octet-stream") {
+		ctx.vary("Accept");
+		ctx.set("Cache-Control", "private, max-age=0, must-revalidate");
+
+		if (ctx.header.accept?.match(/activity\+json|ld\+json/)) {
+			ctx.status = 400;
+			return;
+		}
+	} else {
+		ctx.set("Cache-Control", "max-age=2592000, s-maxage=172800, immutable");
+	}
 
 	if (ctx.fresh) {
 		ctx.status = 304;
