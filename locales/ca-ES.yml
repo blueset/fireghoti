@@ -1641,7 +1641,7 @@ postToGallery: Crea una publicació nova a la galeria
 secureMode: Mode segur (Recuperació Autoritzada)
 customCssWarn: Aquesta configuració només s'ha d'utilitzar si sabeu què fa. La introducció
   de valors indeguts pot provocar que el client deixi de funcionar amb normalitat.
-squareAvatars: Mostra avatars quadrats
+squareAvatars: Mostrar avatars quadrats
 secureModeInfo: Quan es faci una solicitut d'altres servidors no contestar sense una
   prova.
 privateModeInfo: Quan està activat, només els servidors a la llista es poden federar
@@ -2223,3 +2223,11 @@ noLanguage: Cap idioma definit
 showPreviewByDefault: Per defecte mostrar la previsualització al formulari per publicar
 preventMisclick: Prevenció del clic accidental
 hideFollowButtons: Amagar els botons que estiguin en una posició on no es poden activar
+forMobile: Mòbil
+squareCatAvatars: Mostrar avatars quadrats per a comptes de gats
+replaceChatButtonWithAccountButton: Canviar el botó de xats amb el botó de canvi de
+  compte
+replaceWidgetsButtonWithReloadButton: Canviar el botó de ginys amb el botó de recarregar
+searchEngine: Motor de cerca fet servir anla barra MFM
+postSearch: Posar els resultats en aquest servidor
+showBigPostButton: Mostrar un botó gegant al formulari de publicació
