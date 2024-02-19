@@ -56,13 +56,13 @@ reply: "Répondre"
 loadMore: "Charger plus"
 showMore: "Afficher plus"
 showLess: "Fermer"
-youGotNewFollower: "Vous suit"
+youGotNewFollower: "vous suit"
 receiveFollowRequest: "Demande d’abonnement reçue"
 followRequestAccepted: "La demande d’abonnement a été acceptée"
 mention: "Mentionner"
 mentions: "Mentions"
 directNotes: "Messages directs"
-importAndExport: "Import et export"
+importAndExport: "Importation et exportation"
 import: "Importer"
 export: "Exporter"
 files: "Fichiers"
@@ -72,7 +72,8 @@ driveFileDeleteConfirm: "Êtes-vous sûr·e de vouloir supprimer le fichier \"{n
 unfollowConfirm: "Désirez-vous vous désabonner de {name} ?"
 exportRequested: "Vous avez demandé une exportation. L’opération pourrait prendre
   un peu de temps. Une fois terminée, le fichier résultant sera ajouté au Drive."
-importRequested: "Vous avez initié un import. Cela pourrait prendre un peu de temps."
+importRequested: "Vous avez initié une importation. Cela pourrait prendre un peu de
+  temps."
 lists: "Listes"
 noLists: "Vous n’avez aucune liste"
 note: "Publier"
@@ -150,11 +151,12 @@ cacheRemoteFilesDescription: "Lorsque cette option est désactivée, les fichier
   sont chargés directement depuis le serveur distant. La désactiver diminuera certes
   l’utilisation de l’espace de stockage local mais augmentera le trafic réseau puisque
   les miniatures ne seront plus générées."
-flagAsBot: "Ce compte est un robot"
+flagAsBot: "Ce compte est automatisé"
 flagAsBotDescription: "Si ce compte est géré de manière automatisée, choisissez cette
   option. Si elle est activée, elle agira comme un marqueur pour les autres développeurs
-  afin d'éviter des chaînes d'interaction sans fin avec d'autres robots et d'ajuster
-  les systèmes internes de Firefish pour traiter ce compte comme un robot."
+  afin d'éviter des chaînes d'interaction sans fin avec d'autres comptes automatisés
+  et d'ajuster les systèmes internes de Firefish pour traiter ce compte comme étant
+  automatisé."
 flagAsCat: "Ce compte est un chat"
 flagAsCatDescription: "Vous aurez des oreilles de chat et parlerez comme un chat !"
 flagShowTimelineReplies: "Afficher les réponses dans le fil"
@@ -277,8 +279,8 @@ agreeTo: "J’accepte {0}"
 tos: "les conditions d’utilisation"
 start: "Commencer"
 home: "Principal"
-remoteUserCaution: "Les informations de ce compte risqueraient d’être incomplètes
-  du fait que l’utilisateur·rice provient d’une instance distante."
+remoteUserCaution: "Les informations de ce compte risquent d'être incomplètes du fait
+  que l’utilisateur·rice provient d’une instance distante."
 activity: "Activité"
 images: "Images"
 birthday: "Date de naissance"
@@ -623,8 +625,8 @@ permission: "Autorisations"
 enableAll: "Tout activer"
 disableAll: "Tout désactiver"
 tokenRequested: "Autoriser l'accès au compte"
-pluginTokenRequestedDescription: "Ce plugin pourra utiliser les autorisations définies
-  ici."
+pluginTokenRequestedDescription: "Cette extension pourra utiliser les autorisations
+  définies ici."
 notificationType: "Type de notifications"
 edit: "Editer"
 emailServer: "Serveur mail"
@@ -643,7 +645,7 @@ emptyToDisableSmtpAuth: "Laisser le nom d’utilisateur et le mot de passe vides
 smtpSecure: "Utiliser SSL/TLS implicitement dans les connexions SMTP"
 smtpSecureInfo: "Désactiver cette option lorsque STARTTLS est utilisé"
 testEmail: "Tester la distribution de courriel"
-wordMute: "Filtre de mots et langages"
+wordMute: "Filtre de mots et de langues"
 regexpError: "Erreur d’expression régulière"
 instanceMute: "Serveur masqué"
 userSaysSomething: "{name} a dit quelque chose"
@@ -851,7 +853,7 @@ customCssWarn: "Utilisez cette fonctionnalité uniquement si vous savez exacteme
   ce que vous faites. Une configuration inadaptée peut empêcher le client de s'exécuter
   normalement."
 global: "Global"
-squareAvatars: "Avatars carrés"
+squareAvatars: "Afficher les avatars carrés pour les comptes sans oreilles de chat"
 sent: "Envoyer"
 received: "Reçu"
 searchResult: "Résultats de la recherche"
@@ -979,9 +981,9 @@ _email:
   _receiveFollowRequest:
     title: "Vous avez reçu une demande de suivi"
 _plugin:
-  install: "Installation de plugin"
-  installWarn: "N’installez que des extensions provenant de sources de confiance."
-  manage: "Gestion des plugins"
+  install: "Installation des extensions"
+  installWarn: "N’installez que des extensions provenant de sources fiables."
+  manage: "Gestion des extensions"
 _registry:
   scope: "Portée"
   key: "Clé"
@@ -1143,11 +1145,11 @@ _wordMute:
   soft: "Doux"
   hard: "Strict"
   mutedNotes: "Publications masquées"
-  muteLangsDescription2: Utiliser les code de langage (i.e en, fr, ja, zh).
-  lang: Langage
+  muteLangsDescription2: Utiliser les codes de langue (i.e en, fr, ja, zh).
+  lang: Langue
   langDescription: Cacher du fil de publication les publications qui correspondent
     à ces langues.
-  muteLangs: Langages filtrés
+  muteLangs: Langues filtrées
   muteLangsDescription: Séparer avec des espaces ou des retours à la ligne pour une
     condition OU (OR).
 _instanceMute:
@@ -1828,7 +1830,7 @@ _notification:
   youWereFollowed: "Vous suit"
   youReceivedFollowRequest: "Vous avez reçu une demande d’abonnement"
   yourFollowRequestAccepted: "Votre demande d’abonnement a été accepté"
-  youWereInvitedToGroup: "Invité·e au groupe"
+  youWereInvitedToGroup: "{userName} vous a invité à un groupe"
   pollEnded: "Les résultats du sondage sont disponibles"
   emptyPushNotificationMessage: "Les notifications push ont été mises à jour"
   _types:
@@ -2158,7 +2160,7 @@ enableServerMachineStats: Activer les statistiques matérielles du serveur
 enableIdenticonGeneration: Activer la génération d’Identicon
 reactionPickerSkinTone: Couleur de peau des emojis préférée
 verifiedLink: Lien vérifié
-isBot: Ce compte est un bot
+isBot: Ce compte est automatisé
 isLocked: Ce compte nécessite une approbation pour être suivi
 origin: Origine
 showPopup: Notifier les utilisateurs avec un popup
@@ -2215,14 +2217,14 @@ confirm: Confirmer
 importZip: Importer ZIP
 exportZip: Exporter ZIP
 emojiPackCreator: Créateur de pack d’émoji
-detectPostLanguage: Détecte automatiquement le langage et affiche un bouton de traduction
-  pour les langues étrangères
+detectPostLanguage: Détecter automatiquement la langue et afficher un bouton de traduction
+  pour les publications en langues étrangères
 indexableDescription: Permettre à la recherche interne d’afficher vos publications
   publiques
 openServerInfo: Afficher les informations du serveur en cliquant sur le bandeau de
   serveur d’une publication
 indexable: Indexable
-languageForTranslation: Langage post-traduction
+languageForTranslation: Langue de traduction
 vibrate: Jouer les vibrations
 clickToShowPatterns: Cliquer pour montrer les patrons de modules
 iconSet: Jeu d'icônes
@@ -2236,3 +2238,26 @@ reactions: Réactions
 replies: Réponses
 quotes: Citations
 renotes: Boosts
+moreUrls: Pages épinglées
+squareCatAvatars: Afficher les avatars carrés pour les comptes avec oreilles de chat
+suggested: Suggéré
+useEmojiCdnDescription: Utiliser Twemoji depuis le CDN JSDelivr au lieu des actifs
+  de ce serveur.
+replaceChatButtonWithAccountButton: Remplacer le bouton de discussion par le bouton
+  de changement de compte
+showBigPostButton: Afficher un gros bouton de publication sur le formulaire de publication
+moreUrlsDescription: "Saisir les pages que vous voulez épingler au menu d'aide dans
+  le coin inférieur gauche en utilisant cette notation :\n\"Nom d'affichage\" : https://exemple.com/"
+attachedToNotes: Publications avec ce fichier
+showAttachedNotes: Afficher les publications avec ce fichier
+noLanguage: Aucune langue
+useEmojiCdn: Obtenir Twemoji depuis un CDN
+showPreviewByDefault: Afficher l'aperçu dans le formulaire de publication par défaut
+preventMisclick: Protection contre les clics accidentels
+hideFollowButtons: Masquer les boutons de suivi dans une position où nous ne pouvons
+  pas cliquer
+forMobile: Mobile
+replaceWidgetsButtonWithReloadButton: Remplacer le bouton des widgets par le bouton
+  de rechargement
+searchEngine: Moteur de recherche utilisé dans la barre de recherche MFM
+postSearch: Recherche de publication sur ce serveur
