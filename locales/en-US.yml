@@ -1174,6 +1174,8 @@ emojiModPerm: "Custom emoji management permission"
 emojiModPermDescription: "Add: Allow this user to add new custom emojis and to set tag/category/license to newly added custom emojis.\nAdd and Edit: \"Add\" Permission + Allow this user to edit the name/category/tag/license of the existing custom emojis.\nAllow All: \"Add and Edit\" Permission + Allow this user to delete existing custom emojis."
 private: "Private"
 privateDescription: "Make visible for you only"
+makePrivate: "Make private"
+makePrivateConfirm: "This operation will send a deletion request to remote servers and change the visibility to private. Proceed?"
 
 _emojiModPerm:
   unauthorized: "None"

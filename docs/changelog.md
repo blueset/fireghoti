@@ -8,6 +8,7 @@ Critical security updates are indicated by the :warning: icon.
 - Fix a bug that made impossible to update user profiles under some conditions
 - Add "private" (only me) post visibility
 	- It's just a paraphrase of DMs without recipients
+	- You can also convert your existing public posts to private posts
 
 ## :warning: v20240217-1
 

@@ -10,6 +10,7 @@ Breaking changes are indicated by the :warning: icon.
 	- `full`: `mod` permission + delete existing custom emojis
 - Emoji moderators are able to access to the endpoints under `admin/emoji/`
 - Removed `lang` from the response of `i` and the request parameter of `i/update`.
+- Added `notes/make-private` endpoint.
 
 ## v20240217
 

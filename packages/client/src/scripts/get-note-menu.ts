@@ -73,6 +73,19 @@ export function getNoteMenu(props: {
 		});
 	}
 
+	function makePrivate(): void {
+		os.confirm({
+			type: "warning",
+			text: i18n.ts.makePrivateConfirm,
+		}).then(async ({ canceled }) => {
+			if (canceled) return;
+
+			await os.api("notes/make-private", {
+				noteId: appearNote.id,
+			});
+		});
+	}
+
 	function toggleFavorite(favorite: boolean): void {
 		os.apiWithDialog(
 			favorite ? "notes/favorites/create" : "notes/favorites/delete",
@@ -435,6 +448,18 @@ export function getNoteMenu(props: {
 						text: i18n.ts.edit,
 						accent: true,
 						action: edit,
+				  }
+				: undefined,
+			isAppearAuthor &&
+			!(
+				appearNote.visibility === "specified" &&
+				appearNote.visibleUserIds.length === 0
+			)
+				? {
+						icon: `${icon("ph-eye-slash")}`,
+						text: i18n.ts.makePrivate,
+						danger: true,
+						action: makePrivate,
 				  }
 				: undefined,
 			isAppearAuthor

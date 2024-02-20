@@ -80,17 +80,22 @@ export function useNoteCapture(props: {
 			}
 
 			case "updated": {
-				const editedNote = await os.api("notes/show", {
-					noteId: id,
-				});
+				try {
+					const editedNote = await os.api("notes/show", {
+						noteId: id,
+					});
 
-				const keys = new Set<string>();
-				Object.keys(editedNote)
-					.concat(Object.keys(note.value))
-					.forEach((key) => keys.add(key));
-				keys.forEach((key) => {
-					note.value[key] = editedNote[key];
-				});
+					const keys = new Set<string>();
+					Object.keys(editedNote)
+						.concat(Object.keys(note.value))
+						.forEach((key) => keys.add(key));
+					keys.forEach((key) => {
+						note.value[key] = editedNote[key];
+					});
+				} catch {
+					// delete the note if failing to get the edited note
+					props.isDeletedRef.value = true;
+				}
 				break;
 			}
 		}
