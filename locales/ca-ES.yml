@@ -2231,3 +2231,14 @@ replaceWidgetsButtonWithReloadButton: Canviar el botó de ginys amb el botó de 
 searchEngine: Motor de cerca fet servir anla barra MFM
 postSearch: Posar els resultats en aquest servidor
 showBigPostButton: Mostrar un botó gegant al formulari de publicació
+_emojiModPerm:
+  unauthorized: Res
+  add: Afegir
+  mod: Afegir i Editar
+  full: Permet Tot
+emojiModPerm: Gestió de permisos específics per a emojis
+emojiModPermDescription: "Afegir: Permet a aquest usuari afegir nous emojis i fixar
+  etiqueta/categoria/llicència als emojis personalitzats afegits nous.\nAfegir i Editar:
+  Permisos de \"Afegir\" + Permet a aquest usuari editar el nom/categoria/etiqueta/llicència
+  dels emojis personalitzats existents.\nPermet tot: Permisos de \"Afegir i Editar\"\
+  \ + Permet a aquest usuari esborrar els emojis personalitzats existents."
