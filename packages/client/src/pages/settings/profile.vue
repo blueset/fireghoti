@@ -74,13 +74,6 @@
 			<template #prefix><i :class="icon('ph-cake')"></i></template>
 		</FormInput>
 
-		<FormSelect v-model="profile.lang" class="_formBlock">
-			<template #label>{{ i18n.ts.language }}</template>
-			<option v-for="x in Object.keys(langmap)" :key="x" :value="x">
-				{{ langmap[x].nativeName }}
-			</option>
-		</FormSelect>
-
 		<FormSlot class="_formBlock">
 			<FormFolder>
 				<template #icon><i :class="icon('ph-table')"></i></template>
@@ -163,7 +156,6 @@ import MkButton from "@/components/MkButton.vue";
 import FormInput from "@/components/form/input.vue";
 import FormTextarea from "@/components/form/textarea.vue";
 import FormSwitch from "@/components/form/switch.vue";
-import FormSelect from "@/components/form/select.vue";
 import FormSplit from "@/components/form/split.vue";
 import FormFolder from "@/components/form/folder.vue";
 import FormSlot from "@/components/form/slot.vue";
@@ -171,7 +163,6 @@ import { selectFile } from "@/scripts/select-file";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { $i } from "@/reactiveAccount";
-import { langmap } from "@/scripts/langmap";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { host } from "@/config";
 import icon from "@/scripts/icon";
@@ -181,7 +172,6 @@ const profile = reactive({
 	description: $i?.description,
 	location: $i?.location,
 	birthday: $i?.birthday,
-	lang: $i?.lang,
 	isBot: $i?.isBot,
 	isCat: $i?.isCat,
 	speakAsCat: $i?.speakAsCat,
@@ -238,7 +228,6 @@ function save() {
 		description: convertEmptyStringToNull(profile.description),
 		location: convertEmptyStringToNull(profile.location),
 		birthday: convertEmptyStringToNull(profile.birthday),
-		lang: convertEmptyStringToNull(profile.lang),
 		isBot: !!profile.isBot,
 		isCat: !!profile.isCat,
 		speakAsCat: profile.isCat ? !!profile.speakAsCat : undefined,

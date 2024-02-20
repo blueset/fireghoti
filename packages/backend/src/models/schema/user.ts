@@ -204,12 +204,6 @@ export const packedUserDetailedNotMeOnlySchema = {
 			optional: false,
 			example: "2018-03-12",
 		},
-		lang: {
-			type: "string",
-			nullable: true,
-			optional: false,
-			example: "ja-JP",
-		},
 		fields: {
 			type: "array",
 			nullable: false,

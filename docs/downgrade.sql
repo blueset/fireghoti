@@ -1,11 +1,15 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+		'DropUserProfileLanguage1708452631156',
 		'EmojiModerator1692825433698',
     'RemoveNsfwDetection1705848938166',
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- drop-user-profile-language
+ALTER TABLE "user_profile" ADD COLUMN "lang" character varying(32);
 
 -- emoji-moderator
 ALTER TABLE "user" DROP COLUMN "emojiModPerm";

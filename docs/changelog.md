@@ -5,6 +5,7 @@ Critical security updates are indicated by the :warning: icon.
 ## Unreleased
 
 - Add the ability to give regular (non-moderator) users permission to manage custom emojis
+- Fix a bug that made impossible to update user profiles under some conditions
 
 ## :warning: v20240217-1
 

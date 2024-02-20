@@ -9,6 +9,7 @@ Breaking changes are indicated by the :warning: icon.
 	- `mod`: `add` permission + edit the name/category/tag/license of the existing custom emojis
 	- `full`: `mod` permission + delete existing custom emojis
 - Emoji moderators are able to access to the endpoints under `admin/emoji/`
+- Removed `lang` from the response of `i` and the request parameter of `i/update`.
 
 ## v20240217
 

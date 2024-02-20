@@ -11,7 +11,6 @@ import type { User } from "@/models/entities/user.js";
 import type { UserProfile } from "@/models/entities/user-profile.js";
 import { notificationTypes } from "@/types.js";
 import { normalizeForSearch } from "@/misc/normalize-for-search.js";
-import { langmap } from "@/misc/langmap.js";
 import { verifyLink } from "@/services/fetch-rel-me.js";
 import { ApiError } from "@/server/api/error.js";
 import define from "@/server/api/define.js";
@@ -88,11 +87,6 @@ export const paramDef = {
 		description: { ...Users.descriptionSchema, nullable: true },
 		location: { ...Users.locationSchema, nullable: true },
 		birthday: { ...Users.birthdaySchema, nullable: true },
-		lang: {
-			type: "string",
-			enum: Object.keys(langmap),
-			nullable: true,
-		},
 		avatarId: { type: "string", format: "misskey:id", nullable: true },
 		bannerId: { type: "string", format: "misskey:id", nullable: true },
 		fields: {
@@ -159,7 +153,6 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 
 	if (ps.name !== undefined) updates.name = ps.name;
 	if (ps.description !== undefined) profileUpdates.description = ps.description;
-	if (typeof ps.lang === "string") profileUpdates.lang = ps.lang;
 	if (ps.location !== undefined) profileUpdates.location = ps.location;
 	if (ps.birthday !== undefined) profileUpdates.birthday = ps.birthday;
 	if (ps.ffVisibility !== undefined)
