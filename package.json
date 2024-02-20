@@ -32,7 +32,8 @@
 		"clean": "pnpm node ./scripts/clean-built.mjs",
 		"clean-npm": "pnpm node ./scripts/clean-npm.mjs",
 		"clean-cargo": "pnpm node ./scripts/clean-cargo.mjs",
-		"clean-all": "pnpm run clean && pnpm run clean-cargo && pnpm run clean-npm"
+		"clean-all": "pnpm run clean && pnpm run clean-cargo && pnpm run clean-npm",
+		"entities": "pnpm node ./scripts/regenerate-sea-orm-entities.mjs"
 	},
 	"dependencies": {
 		"@bull-board/api": "5.14.1",
