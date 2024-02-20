@@ -818,7 +818,7 @@ ratio: "Rapporto"
 previewNoteText: "Anteprima del testo"
 customCss: "CSS personalizzato"
 global: "Globale"
-squareAvatars: "Mostra l'avatar quadrato"
+squareAvatars: "Mostra avatar quadrati per gli account tranne che per i gatti"
 sent: "Inviato"
 received: "Ricevuto"
 searchResult: "Risultati della ricerca"
@@ -2187,3 +2187,16 @@ moreUrlsDescription: "Inserisci con questo formato le pagine che vuoi aggiungere
   menu di aiuto nell'angolo in basso a sinistra:\n\"Nome link\": https://example.com/"
 useEmojiCdn: Scarica Twemoji da CDN
 useEmojiCdnDescription: Usa Twemoji dalla CDN di JSDelivr invece che dal server locale.
+noLanguage: Nessuna lingua
+showPreviewByDefault: Mostra sempre l'anteprima del messaggio
+replaceWidgetsButtonWithReloadButton: Sostituisci il bottone dei widget con quello
+  di reload
+squareCatAvatars: Mostra avatar quadrati per gli account di gatti
+searchEngine: Motore della barra di ricerca MFM
+hideFollowButtons: Nascondi i bottoni di follow se in posizioni cliccabili per errore
+preventMisclick: Protezione dai click accidentali
+forMobile: Mobile
+replaceChatButtonWithAccountButton: Sostituisci il bottone chat con quello di cambio
+  account
+postSearch: Ricerca dei post su questo server
+showBigPostButton: Mostra un bottone grande per inviare i post
