@@ -1,10 +1,15 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+		'EmojiModerator1692825433698',
     'RemoveNsfwDetection1705848938166',
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- emoji-moderator
+ALTER TABLE "user" DROP COLUMN "emojiModPerm";
+DROP TYPE "public"."user_emojimodperm_enum";
 
 -- remove-nsfw-detection
 ALTER TABLE "user_profile" ADD "autoSensitive" boolean NOT NULL DEFAULT false;

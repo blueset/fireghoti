@@ -449,6 +449,7 @@ export const UserRepository = db.getRepository(User).extend({
 			avatarUrl: this.getAvatarUrlSync(user),
 			avatarBlurhash: user.avatar?.blurhash || null,
 			avatarColor: null, // 後方互換性のため
+			emojiModPerm: user.emojiModPerm ?? "unauthorized",
 			isAdmin: user.isAdmin || falsy,
 			isModerator: user.isModerator || falsy,
 			isBot: user.isBot || falsy,

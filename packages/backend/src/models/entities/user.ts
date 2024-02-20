@@ -178,6 +178,17 @@ export class User {
 	})
 	public isModerator: boolean;
 
+	// unauthorized: no permission
+	//          add: add custom emojis to the server
+	//          mod: add permission + modify {category, tags, license} of existing custom emojis
+	//         full: mod permission + {rename, delete} existing custom emojis
+	@Column({
+		type: "enum",
+		enum: ["unauthorized", "add", "mod", "full"],
+		default: "unauthorized",
+	})
+	public emojiModPerm: "unauthorized" | "add" | "mod" | "full";
+
 	@Index()
 	@Column("boolean", {
 		default: true,

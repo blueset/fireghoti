@@ -3,12 +3,13 @@ import { Emojis } from "@/models/index.js";
 import { toPuny } from "@/misc/convert-host.js";
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
 import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
+import { ApiError } from "@/server/api/error.js";
 
 export const meta = {
-	tags: ["admin"],
+	tags: ["admin", "emoji"],
 
 	requireCredential: true,
-	requireModerator: true,
+	requireModerator: false,
 
 	res: {
 		type: "array",
@@ -74,6 +75,14 @@ export const meta = {
 			},
 		},
 	},
+
+	errors: {
+		accessDenied: {
+			message: "Access denied.",
+			code: "ACCESS_DENIED",
+			id: "fe8d7103-0ea8-4ec3-814d-f8b401dc69e9",
+		},
+	},
 } as const;
 
 export const paramDef = {
@@ -93,7 +102,11 @@ export const paramDef = {
 	required: [],
 } as const;
 
-export default define(meta, paramDef, async (ps) => {
+export default define(meta, paramDef, async (ps, me) => {
+	// require emoji "add" permission
+	if (!(me.isAdmin || me.isModerator || me.emojiModPerm !== "unauthorized"))
+		throw new ApiError(meta.errors.accessDenied);
+
 	const q = makePaginationQuery(
 		Emojis.createQueryBuilder("emoji"),
 		ps.sinceId,

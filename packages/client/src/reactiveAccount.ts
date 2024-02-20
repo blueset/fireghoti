@@ -10,4 +10,5 @@ export const $i = accountData
 
 export const isSignedIn = $i != null;
 export const isModerator = $i != null && ($i.isModerator || $i.isAdmin);
-export const isAdmin = $i != null && $i.isAdmin;
+export const isEmojiMod = isModerator || $i?.emojiModPerm !== "unauthorized";
+export const isAdmin = $i?.isAdmin;

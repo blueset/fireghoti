@@ -2,6 +2,10 @@
 
 Critical security updates are indicated by the :warning: icon.
 
+## Unreleased
+
+- Add the ability to give regular (non-moderator) users permission to manage custom emojis
+
 ## :warning: v20240217-1
 
 - Fix a [security issue](https://github.com/misskey-dev/misskey/security/advisories/GHSA-qqrm-9grj-6v32)

@@ -80,6 +80,17 @@
 					<i :class="icon('ph-door icon ph-fw')"></i
 					><span class="text">{{ i18n.ts.controlPanel }}</span>
 				</MkA>
+				<MkA
+					v-else-if="$i.emojiModPerm !== 'unauthorized'"
+					v-click-anime
+					v-tooltip.noDelay.right="i18n.ts.customEmojis"
+					class="item _button"
+					active-class="active"
+					to="/admin/emojis"
+				>
+					<i class="icon ph-smiley ph-bold ph-fw ph-lg"></i
+					><span class="text">{{ i18n.ts.customEmojis }}</span>
+				</MkA>
 				<button v-click-anime class="item _button" @click="more">
 					<i :class="icon('ph-dots-three-outline icon ph-fw')"></i
 					><span class="text">{{ i18n.ts.more }}</span>

@@ -2,6 +2,14 @@
 
 Breaking changes are indicated by the :warning: icon.
 
+## Unreleased
+
+- Added `admin/set-emoji-moderator` endpoint, where moderators can give these permissions to regular users:
+	- `add`: Add new custom emojis, set tag/category/license to newly added custom emojis
+	- `mod`: `add` permission + edit the name/category/tag/license of the existing custom emojis
+	- `full`: `mod` permission + delete existing custom emojis
+- Emoji moderators are able to access to the endpoints under `admin/emoji/`
+
 ## v20240217
 
 - :warning: Since the auto NSFW media detection has been removed, these endpoints are affected:

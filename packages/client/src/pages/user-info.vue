@@ -178,6 +178,29 @@
 					</FormSection>
 				</div>
 				<div v-else-if="tab === 'moderation'" class="_formRoot">
+					<FormSelect
+						v-model="emojiModPerm"
+						class="_formBlock"
+						@update:modelValue="setEmojiMod"
+					>
+						<template #label>{{ i18n.ts.emojiModPerm }}</template>
+						<option value="unauthorized">
+							{{ i18n.ts._emojiModPerm.unauthorized }}
+						</option>
+						<option value="add">
+							{{ i18n.ts._emojiModPerm.add }}
+						</option>
+						<option value="mod">
+							{{ i18n.ts._emojiModPerm.mod }}
+						</option>
+						<option value="full">
+							{{ i18n.ts._emojiModPerm.full }}
+						</option>
+					</FormSelect>
+					<MkInfo class="_formBlock">{{
+						i18n.ts.emojiModPermDescription
+					}}</MkInfo>
+
 					<FormSwitch
 						v-if="
 							user.host == null &&
@@ -368,6 +391,7 @@ import FormSection from "@/components/form/section.vue";
 import FormButton from "@/components/MkButton.vue";
 import FormInput from "@/components/form/input.vue";
 import FormFolder from "@/components/form/folder.vue";
+import FormSelect from "@/components/form/select.vue";
 import MkKeyValue from "@/components/MkKeyValue.vue";
 import FormSuspense from "@/components/form/suspense.vue";
 import MkFileListForAdmin from "@/components/MkFileListForAdmin.vue";
@@ -393,6 +417,7 @@ const info = ref();
 const ips = ref(null);
 const ap = ref(null);
 const moderator = ref(false);
+const emojiModPerm = ref<"unauthorized" | "add" | "mod" | "full">();
 const silenced = ref(false);
 const suspended = ref(false);
 const driveCapacityOverrideMb = ref<number | null>(0);
@@ -425,6 +450,7 @@ function createFetcher() {
 				info.value = _info;
 				ips.value = _ips;
 				moderator.value = info.value.isModerator;
+				emojiModPerm.value = info.value.emojiModPerm;
 				silenced.value = info.value.isSilenced;
 				suspended.value = info.value.isSuspended;
 				driveCapacityOverrideMb.value =
@@ -506,6 +532,14 @@ async function toggleSuspend(v) {
 async function toggleModerator(v) {
 	await os.api(v ? "admin/moderators/add" : "admin/moderators/remove", {
 		userId: user.value.id,
+	});
+	await refreshUser();
+}
+
+async function setEmojiMod() {
+	await os.api("admin/set-emoji-moderator", {
+		userId: user.value.id,
+		emojiModPerm: emojiModPerm.value,
 	});
 	await refreshUser();
 }

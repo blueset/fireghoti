@@ -9,16 +9,21 @@ import { db } from "@/db/postgre.js";
 import { getEmojiSize } from "@/misc/emoji-meta.js";
 
 export const meta = {
-	tags: ["admin"],
+	tags: ["admin", "emoji"],
 
 	requireCredential: true,
-	requireModerator: true,
+	requireModerator: false,
 
 	errors: {
 		noSuchEmoji: {
 			message: "No such emoji.",
 			code: "NO_SUCH_EMOJI",
 			id: "e2785b66-dca3-4087-9cac-b93c541cc425",
+		},
+		accessDenied: {
+			message: "Access denied.",
+			code: "ACCESS_DENIED",
+			id: "fe8d7103-0ea8-4ec3-814d-f8b401dc69e9",
 		},
 	},
 
@@ -46,6 +51,12 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, me) => {
+	// require emoji "mod" permission
+	if (
+		!(me.isAdmin || me.isModerator || ["mod", "full"].includes(me.emojiModPerm))
+	)
+		throw new ApiError(meta.errors.accessDenied);
+
 	const emoji = await Emojis.findOneBy({ id: ps.emojiId });
 
 	if (emoji == null) {
