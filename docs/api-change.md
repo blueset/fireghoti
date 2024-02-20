@@ -2,7 +2,7 @@
 
 Breaking changes are indicated by the :warning: icon.
 
-## Unreleased
+## v20240221
 
 - Added `admin/set-emoji-moderator` endpoint, where moderators can give these permissions to regular users:
 	- `add`: Add new custom emojis, set tag/category/license to newly added custom emojis
