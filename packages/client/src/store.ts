@@ -122,7 +122,12 @@ export const defaultStore = markRaw(
 		},
 		visibility: {
 			where: "deviceAccount",
-			default: "public" as "public" | "home" | "followers" | "specified",
+			default: "public" as
+				| "public"
+				| "home"
+				| "followers"
+				| "specified"
+				| "private",
 		},
 		localOnly: {
 			where: "deviceAccount",

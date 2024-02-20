@@ -84,6 +84,25 @@
 					}}</span>
 				</div>
 			</button>
+			<button
+				key="private"
+				class="_button"
+				:class="[$style.item, { [$style.active]: v === 'private' }]"
+				data-index="5"
+				@click="choose('private')"
+			>
+				<div :class="$style.icon">
+					<i :class="icon('ph-eye-slash')"></i>
+				</div>
+				<div :class="$style.body">
+					<span :class="$style.itemTitle">{{
+						i18n.ts._visibility.private
+					}}</span>
+					<span :class="$style.itemDescription">{{
+						i18n.ts._visibility.privateDescription
+					}}</span>
+				</div>
+			</button>
 			<div :class="$style.divider"></div>
 			<button
 				key="localOnly"
@@ -154,7 +173,9 @@ watch(localOnly, () => {
 	emit("changeLocalOnly", localOnly.value);
 });
 
-function choose(visibility: (typeof noteVisibilities)[number]): void {
+function choose(
+	visibility: (typeof noteVisibilities)[number] | "private",
+): void {
 	v.value = visibility;
 	emit("changeVisibility", visibility);
 	nextTick(() => {

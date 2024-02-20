@@ -1995,3 +1995,5 @@ languageForTranslation: 帖子翻译语言
 vibrate: 播放振动
 openServerInfo: 点击帖子上的服务器滚动条时显示服务器信息
 clickToShowPatterns: 点击显示模块模式
+private: "秘密"
+privateDescription: "仅你可见"

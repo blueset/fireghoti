@@ -113,6 +113,11 @@
 					#suffix
 					>{{ i18n.ts._visibility.specified }}</template
 				>
+				<template
+					v-else-if="defaultNoteVisibility === 'private'"
+					#suffix
+					>{{ i18n.ts._visibility.private }}</template
+				>
 
 				<FormSelect v-model="defaultNoteVisibility" class="_formBlock">
 					<option value="public">
@@ -124,6 +129,9 @@
 					</option>
 					<option value="specified">
 						{{ i18n.ts._visibility.specified }}
+					</option>
+					<option value="private">
+						{{ i18n.ts._visibility.private }}
 					</option>
 				</FormSelect>
 				<FormSwitch v-model="defaultNoteLocalOnly" class="_formBlock">{{

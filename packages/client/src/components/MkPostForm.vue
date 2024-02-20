@@ -50,6 +50,9 @@
 					<span v-if="visibility === 'specified'"
 						><i :class="icon('ph-envelope-simple-open')"></i
 					></span>
+					<span v-if="visibility === 'private'"
+						><i :class="icon('ph-eye-slash')"></i
+					></span>
 				</button>
 				<button
 					ref="languageButton"
@@ -557,6 +560,8 @@ if (
 			}).then((users) => {
 				users.forEach(pushVisibleUser);
 			});
+		} else {
+			visibility.value = "private";
 		}
 
 		if (props.reply.userId !== $i.id) {
@@ -1015,11 +1020,14 @@ async function post() {
 		cw: useCw.value ? cw.value || "" : undefined,
 		lang: language.value ? language.value : undefined,
 		localOnly: localOnly.value,
-		visibility: visibility.value,
+		visibility:
+			visibility.value === "private" ? "specified" : visibility.value,
 		visibleUserIds:
-			visibility.value === "specified"
-				? visibleUsers.value.map((u) => u.id)
-				: undefined,
+			visibility.value === "private"
+				? []
+				: visibility.value === "specified"
+					? visibleUsers.value.map((u) => u.id)
+					: undefined,
 	};
 
 	if (withHashtags.value && hashtags.value && hashtags.value.trim() !== "") {

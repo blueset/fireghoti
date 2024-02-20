@@ -6,6 +6,8 @@ Critical security updates are indicated by the :warning: icon.
 
 - Add the ability to give regular (non-moderator) users permission to manage custom emojis
 - Fix a bug that made impossible to update user profiles under some conditions
+- Add "private" (only me) post visibility
+	- It's just a paraphrase of DMs without recipients
 
 ## :warning: v20240217-1
 

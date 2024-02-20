@@ -2012,3 +2012,5 @@ moreUrlsDescription: "請以下列形式輸入欲釘選在左下角幫助選單�
 showPreviewByDefault: "自動開啟發文介面中的預覽顯示"
 preventMisclick: "預防誤觸"
 hideFollowButtons: "隱藏會誤觸的追隨按鈕"
+private: "祕密"
+privateDescription: "僅你可見"

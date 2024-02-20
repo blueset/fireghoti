@@ -11,9 +11,19 @@
 			:class="icon('ph-lock')"
 		></i>
 		<i
-			v-else-if="note.visibility === 'specified'"
+			v-else-if="
+				note.visibility === 'specified' &&
+				note.visibleUserIds != null &&
+				note.visibleUserIds.length > 0
+			"
 			ref="specified"
 			:class="icon('ph-envelope-simple-open')"
+		></i>
+		<i
+			v-else-if="note.visibility === 'specified'"
+			v-tooltip="i18n.ts._visibility.private"
+			ref="specified"
+			:class="icon('ph-eye-slash')"
 		></i>
 	</span>
 	<span v-if="note.localOnly" :class="$style.localOnly"
@@ -42,7 +52,11 @@ const props = defineProps<{
 
 const specified = ref<HTMLElement>();
 
-if (props.note.visibility === "specified") {
+if (
+	props.note.visibility === "specified" &&
+	props.note.visibleUserIds != null &&
+	props.note.visibleUserIds.length > 0
+) {
 	useTooltip(specified, async (showing) => {
 		const users = await os.api("users/show", {
 			userIds: props.note.visibleUserIds,

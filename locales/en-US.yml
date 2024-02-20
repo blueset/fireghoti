@@ -1172,12 +1172,14 @@ postSearch: "Post search on this server"
 showBigPostButton: "Show a huge post button on the posting form" 
 emojiModPerm: "Custom emoji management permission"
 emojiModPermDescription: "Add: Allow this user to add new custom emojis and to set tag/category/license to newly added custom emojis.\nAdd and Edit: \"Add\" Permission + Allow this user to edit the name/category/tag/license of the existing custom emojis.\nAllow All: \"Add and Edit\" Permission + Allow this user to delete existing custom emojis."
+private: "Private"
+privateDescription: "Make visible for you only"
+
 _emojiModPerm:
   unauthorized: "None"
   add: "Add"
   mod: "Add and Edit"
   full: "Allow All"
-
 _sensitiveMediaDetection:
   description: "Reduces the effort of server moderation through automatically recognizing
     NSFW media via Machine Learning. This will slightly increase the load on the server."

@@ -2026,3 +2026,5 @@ _emojiModPerm:
   add: "追加"
   mod: "追加と変更"
   full: "全て許可"
+private: "秘密"
+privateDescription: "あなた以外には非公開"
