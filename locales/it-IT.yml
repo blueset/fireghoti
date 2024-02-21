@@ -2200,3 +2200,19 @@ replaceChatButtonWithAccountButton: Sostituisci il bottone chat con quello di ca
   account
 postSearch: Ricerca dei post su questo server
 showBigPostButton: Mostra un bottone grande per inviare i post
+emojiModPerm: Permessi per la gestione delle emoji
+_emojiModPerm:
+  unauthorized: Nessuno
+  full: Permetti tutto
+  add: Aggiungi
+  mod: Aggiungi e modifica
+private: Privato
+privateDescription: Rendi visibile solo per te
+makePrivate: Rendi privato
+emojiModPermDescription: "Aggiungi: Permette all'utente di aggiungere emoji personalizzate
+  con la possibilità di impostare tag/categoria/licenza.\nAggiungi e modifica: Come
+  \"Aggiungi\", ma in più permette di modificare nome/tag/categoria/licenza delle
+  emoji personalizzate esistenti.\nPermetti tutto: Come \"Aggiungi e modifica\", ma
+  in più permette di rimuovere le emoji personalizzate."
+makePrivateConfirm: Questa operazione invierà ai server remoti un richiesta di rimozione
+  e cambierà la visibilità a "Privato". Confermi?
