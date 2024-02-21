@@ -48,7 +48,9 @@ export async function importMastoPost(
 	job.progress(60);
 	let text;
 	try {
-		text = isRenote ? undefined : htmlToMfm(post.object.content, post.object.tag);
+		text = isRenote
+			? undefined
+			: htmlToMfm(post.object.content, post.object.tag);
 	} catch (e) {
 		throw e;
 	}
@@ -76,7 +78,9 @@ export async function importMastoPost(
 		}
 	}
 	let note = await Notes.findOneBy({
-		createdAt: isRenote ? new Date(post.published) : new Date(post.object.published),
+		createdAt: isRenote
+			? new Date(post.published)
+			: new Date(post.object.published),
 		text: text,
 		userId: user.id,
 	});
@@ -97,13 +101,15 @@ export async function importMastoPost(
 	}
 	if (!note) {
 		note = await create(user, {
-			createdAt: isRenote ? new Date(post.published) : new Date(post.object.published),
+			createdAt: isRenote
+				? new Date(post.published)
+				: new Date(post.object.published),
 			files: files.length == 0 ? undefined : files,
 			poll: undefined,
 			text: text || undefined,
 			reply,
 			renote,
-			cw: (!isRenote && post.object.sensitive) ? post.object.summary : undefined,
+			cw: !isRenote && post.object.sensitive ? post.object.summary : undefined,
 			localOnly: false,
 			visibility: "hiddenpublic",
 			visibleUsers: [],
