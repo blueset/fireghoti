@@ -22,7 +22,6 @@ if (accounts) {
 }
 // #endregion
 
-import { compareVersions } from "compare-versions";
 import {
 	computed,
 	createApp,
@@ -251,11 +250,23 @@ function checkForSplash() {
 		// テーマリビルドするため
 		localStorage.removeItem("theme");
 
+		const isUpdated = (prevVersion: string, currentVersion: string) => {
+			const p = prevVersion.split("-");
+			const c = currentVersion.split("-");
+
+			if (p[0] < c[0]) return true;
+			if (p[0] === c[0] && p[1] == null && c[1] != null) return true;
+			if (p[0] === c[0] && p[1] != null && c[1] != null && p[1] < c[1])
+				return true;
+
+			return false;
+		};
+
 		try {
 			// 変なバージョン文字列来るとcompareVersionsでエラーになるため
 			if (
 				lastVersion != null &&
-				compareVersions(version, lastVersion) === 1 &&
+				isUpdated(lastVersion, version) &&
 				defaultStore.state.showUpdates
 			) {
 				// ログインしてる場合だけ
