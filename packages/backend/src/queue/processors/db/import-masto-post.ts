@@ -23,10 +23,16 @@ export async function importMastoPost(
 		return;
 	}
 	const post = job.data.post;
+	const isRenote = post.type === "Announce";
 	let reply: Note | null = null;
+	let renote: Note | null = null;
 	job.progress(20);
-	if (post.object.inReplyTo != null) {
+	if (!isRenote && post.object.inReplyTo != null) {
 		reply = await resolveNote(post.object.inReplyTo);
+	}
+	// renote also need resolve original note
+	if (isRenote) {
+		renote = await resolveNote(post.object);
 	}
 	job.progress(40);
 	if (post.directMessage) {
@@ -42,17 +48,17 @@ export async function importMastoPost(
 	job.progress(60);
 	let text;
 	try {
-		text = htmlToMfm(post.object.content, post.object.tag);
+		text = isRenote ? undefined : htmlToMfm(post.object.content, post.object.tag);
 	} catch (e) {
 		throw e;
 	}
 	job.progress(80);
 
-	let files: DriveFile[] = (post.object.attachment || [])
+	let files: DriveFile[] = (post.object?.attachment || [])
 		.map((x: any) => x?.driveFile)
 		.filter((x: any) => x);
 
-	if (files.length == 0) {
+	if (!isRenote && files.length == 0) {
 		const urls = post.object.attachment
 			.map((x: any) => x.url)
 			.filter((x: String) => x.startsWith("http"));
@@ -70,7 +76,7 @@ export async function importMastoPost(
 		}
 	}
 	let note = await Notes.findOneBy({
-		createdAt: new Date(post.object.published),
+		createdAt: isRenote ? new Date(post.published) : new Date(post.object.published),
 		text: text,
 		userId: user.id,
 	});
@@ -91,13 +97,13 @@ export async function importMastoPost(
 	}
 	if (!note) {
 		note = await create(user, {
-			createdAt: new Date(post.object.published),
+			createdAt: isRenote ? new Date(post.published) : new Date(post.object.published),
 			files: files.length == 0 ? undefined : files,
 			poll: undefined,
 			text: text || undefined,
 			reply,
-			renote: null,
-			cw: post.object.sensitive ? post.object.summary : undefined,
+			renote,
+			cw: (!isRenote && post.object.sensitive) ? post.object.summary : undefined,
 			localOnly: false,
 			visibility: "hiddenpublic",
 			visibleUsers: [],
