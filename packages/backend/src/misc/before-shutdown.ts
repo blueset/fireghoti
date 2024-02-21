@@ -1,7 +1,5 @@
 // https://gist.github.com/nfantone/1eaa803772025df69d07f4dbf5df7e58
-
-"use strict";
-const inspect = require("node:util");
+import { inspect } from "node:util";
 
 /**
  * @callback BeforeShutdownListener
