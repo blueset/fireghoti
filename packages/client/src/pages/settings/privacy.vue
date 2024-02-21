@@ -116,7 +116,7 @@
 				<template
 					v-else-if="defaultNoteVisibility === 'private'"
 					#suffix
-					>{{ i18n.ts._visibility.private }}</template
+					>{{ i18n.ts.private }}</template
 				>
 
 				<FormSelect v-model="defaultNoteVisibility" class="_formBlock">
@@ -131,7 +131,7 @@
 						{{ i18n.ts._visibility.specified }}
 					</option>
 					<option value="private">
-						{{ i18n.ts._visibility.private }}
+						{{ i18n.ts.private }}
 					</option>
 				</FormSelect>
 				<FormSwitch v-model="defaultNoteLocalOnly" class="_formBlock">{{

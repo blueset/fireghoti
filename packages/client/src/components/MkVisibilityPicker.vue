@@ -96,10 +96,10 @@
 				</div>
 				<div :class="$style.body">
 					<span :class="$style.itemTitle">{{
-						i18n.ts._visibility.private
+						i18n.ts.private
 					}}</span>
 					<span :class="$style.itemDescription">{{
-						i18n.ts._visibility.privateDescription
+						i18n.ts.privateDescription
 					}}</span>
 				</div>
 			</button>
