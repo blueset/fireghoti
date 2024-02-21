@@ -2242,3 +2242,8 @@ emojiModPermDescription: "Afegir: Permet a aquest usuari afegir nous emojis i fi
   Permisos de \"Afegir\" + Permet a aquest usuari editar el nom/categoria/etiqueta/llicència
   dels emojis personalitzats existents.\nPermet tot: Permisos de \"Afegir i Editar\"\
   \ + Permet a aquest usuari esborrar els emojis personalitzats existents."
+private: Privat
+makePrivate: Fer privat
+makePrivateConfirm: Aquesta operació enviarà una sol·licitud d'eliminació als servidors
+  remots i canviarà la visibilitat a privat. Continuar?
+privateDescription: Visible només per a tu
