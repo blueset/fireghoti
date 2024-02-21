@@ -2,6 +2,8 @@ import Router from "@koa/router";
 import { getClient } from "../ApiMastodonCompatibleService.js";
 import { IdType, convertId } from "@/server/api/index.js";
 import { convertFilter } from "../converters.js";
+import { apiLogger } from "@/server/api/logger.js";
+import { inspect } from "node:util";
 
 export function apiFilterMastodon(router: Router): void {
 	router.get("/v1/filters", async (ctx) => {
@@ -13,7 +15,7 @@ export function apiFilterMastodon(router: Router): void {
 			const data = await client.getFilters();
 			ctx.body = data.data.map((filter) => convertFilter(filter));
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -30,7 +32,7 @@ export function apiFilterMastodon(router: Router): void {
 			);
 			ctx.body = convertFilter(data.data);
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -45,7 +47,7 @@ export function apiFilterMastodon(router: Router): void {
 			const data = await client.createFilter(body.phrase, body.context, body);
 			ctx.body = convertFilter(data.data);
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -64,7 +66,7 @@ export function apiFilterMastodon(router: Router): void {
 			);
 			ctx.body = convertFilter(data.data);
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -81,7 +83,7 @@ export function apiFilterMastodon(router: Router): void {
 			);
 			ctx.body = data.data;
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}

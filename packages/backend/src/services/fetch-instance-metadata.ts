@@ -7,6 +7,7 @@ import type { Instance } from "@/models/entities/instance.js";
 import { Instances } from "@/models/index.js";
 import { getFetchInstanceMetadataLock } from "@/misc/app-lock.js";
 import Logger from "@/services/logger.js";
+import { inspect } from "node:util";
 
 const logger = new Logger("metadata", "cyan");
 
@@ -77,7 +78,9 @@ export async function fetchInstanceMetadata(
 
 		logger.succ(`Successfuly updated metadata of ${instance.host}`);
 	} catch (e) {
-		logger.error(`Failed to update metadata of ${instance.host}: ${e}`);
+		logger.error(
+			`Failed to update metadata of ${instance.host}:\n${inspect(e)}`,
+		);
 	} finally {
 		await lock.release();
 	}
@@ -111,7 +114,7 @@ async function fetchNodeinfo(instance: Instance): Promise<NodeInfo> {
 			if (e.statusCode === 404) {
 				throw new Error("No nodeinfo provided");
 			} else {
-				throw new Error(e.statusCode || e.message);
+				throw new Error(inspect(e));
 			}
 		})) as Record<string, unknown>;
 
@@ -137,14 +140,16 @@ async function fetchNodeinfo(instance: Instance): Promise<NodeInfo> {
 		}
 
 		const info = await getJson(link.href).catch((e) => {
-			throw new Error(e.statusCode || e.message);
+			throw new Error(inspect(e));
 		});
 
 		logger.succ(`Successfuly fetched nodeinfo of ${instance.host}`);
 
 		return info as NodeInfo;
 	} catch (e) {
-		logger.error(`Failed to fetch nodeinfo of ${instance.host}: ${e.message}`);
+		logger.error(
+			`Failed to fetch nodeinfo of ${instance.host}:\n${inspect(e)}`,
+		);
 
 		throw e;
 	}

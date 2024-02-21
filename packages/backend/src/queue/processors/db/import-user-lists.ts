@@ -15,6 +15,7 @@ import {
 import { genId } from "@/misc/gen-id.js";
 import type { DbUserImportJobData } from "@/queue/types.js";
 import { IsNull } from "typeorm";
+import { inspect } from "node:util";
 
 const logger = queueLogger.createSubLogger("import-user-lists");
 
@@ -87,7 +88,7 @@ export async function importUserLists(
 
 			pushUserToUserList(target, list!);
 		} catch (e) {
-			logger.warn(`Error in line:${linenum} ${e}`);
+			logger.warn(`Error in line ${linenum}:\n${inspect(e)}`);
 		}
 	}
 

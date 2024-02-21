@@ -3,6 +3,8 @@ import { Users, Followings } from "@/models/index.js";
 import type { ILocalUser, IRemoteUser, User } from "@/models/entities/user.js";
 import { deliver } from "@/queue/index.js";
 import { skippedInstances } from "@/misc/skipped-instances.js";
+import { apLogger } from "./logger";
+import { inspect } from "node:util";
 
 //#region types
 interface IRecipe {
@@ -131,8 +133,7 @@ export default class DeliverManager {
 					host: new URL(inbox).host,
 				});
 			} catch (error) {
-				console.error(error);
-				console.error(`Invalid Inbox ${inbox}`);
+				apLogger.error(`Invalid Inbox ${inbox}:\n${inspect(error)}`);
 			}
 		}
 

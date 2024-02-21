@@ -47,6 +47,7 @@ import Resolver from "../resolver.js";
 import { extractApHashtags } from "./tag.js";
 import { resolveNote, extractEmojis } from "./note.js";
 import { resolveImage } from "./image.js";
+import { inspect } from "node:util";
 
 const logger = apLogger;
 
@@ -349,7 +350,7 @@ export async function createPerson(
 				throw new Error("already registered");
 			}
 		} else {
-			logger.error(e instanceof Error ? e : new Error(e as string));
+			logger.error(inspect(e));
 			throw e;
 		}
 	}
@@ -389,7 +390,7 @@ export async function createPerson(
 
 	//#region Get custom emoji
 	const emojis = await extractEmojis(person.tag || [], host).catch((e) => {
-		logger.info(`extractEmojis: ${e}`);
+		logger.info(`extractEmojis:\n${inspect(e)}`);
 		return [] as Emoji[];
 	});
 
@@ -400,7 +401,9 @@ export async function createPerson(
 	});
 	//#endregion
 
-	await updateFeatured(user!.id, resolver).catch((err) => logger.error(err));
+	await updateFeatured(user!.id, resolver).catch((err) =>
+		logger.error(inspect(err)),
+	);
 
 	return user!;
 }
@@ -451,7 +454,7 @@ export async function updatePerson(
 
 	// Custom pictogram acquisition
 	const emojis = await extractEmojis(person.tag || [], user.host).catch((e) => {
-		logger.info(`extractEmojis: ${e}`);
+		logger.info(`extractEmojis:\n${inspect(e)}`);
 		return [] as Emoji[];
 	});
 
@@ -617,7 +620,9 @@ export async function updatePerson(
 		},
 	);
 
-	await updateFeatured(user.id, resolver).catch((err) => logger.error(err));
+	await updateFeatured(user.id, resolver).catch((err) =>
+		logger.error(inspect(err)),
+	);
 }
 
 /**

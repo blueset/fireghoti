@@ -9,6 +9,7 @@ import { Users, DriveFiles } from "@/models/index.js";
 import type { DbUserImportJobData } from "@/queue/types.js";
 import { queueLogger } from "../../logger.js";
 import type Bull from "bull";
+import { inspect } from "node:util";
 
 const logger = queueLogger.createSubLogger("import-following");
 
@@ -68,7 +69,7 @@ export async function importFollowing(
 
 				follow(user, target);
 			} catch (e) {
-				logger.warn(`Error in line:${linenum} ${e}`);
+				logger.warn(`Error in line ${linenum}:\n${inspect(e)}`);
 			}
 		}
 	} else {
@@ -106,7 +107,7 @@ export async function importFollowing(
 
 				follow(user, target);
 			} catch (e) {
-				logger.warn(`Error in line:${linenum} ${e}`);
+				logger.warn(`Error in line ${linenum}:\n${inspect(e)}`);
 			}
 		}
 	}

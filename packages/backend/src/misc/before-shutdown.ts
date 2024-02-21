@@ -1,6 +1,7 @@
 // https://gist.github.com/nfantone/1eaa803772025df69d07f4dbf5df7e58
 
 "use strict";
+const inspect = require("node:util");
 
 /**
  * @callback BeforeShutdownListener
@@ -71,9 +72,7 @@ async function shutdownHandler(signalOrEvent: string) {
 		} catch (err) {
 			if (err instanceof Error) {
 				console.warn(
-					`A shutdown handler failed before completing with: ${
-						err.message || err
-					}`,
+					`A shutdown handler failed before completing with:\n${inspect(err)}`,
 				);
 			}
 		}

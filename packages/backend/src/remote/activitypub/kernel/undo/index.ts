@@ -15,6 +15,7 @@ import undoAccept from "./accept.js";
 import { undoAnnounce } from "./announce.js";
 import Resolver from "../../resolver.js";
 import { apLogger } from "../../logger.js";
+import { inspect } from "node:util";
 
 const logger = apLogger;
 
@@ -33,7 +34,7 @@ export default async (
 	const resolver = new Resolver();
 
 	const object = await resolver.resolve(activity.object).catch((e) => {
-		logger.error(`Resolution failed: ${e}`);
+		logger.error(`Resolution failed:\n${inspect(e)}`);
 		throw e;
 	});
 

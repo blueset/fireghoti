@@ -1,5 +1,7 @@
 import Router from "@koa/router";
 import { getClient } from "../ApiMastodonCompatibleService.js";
+import { apiLogger } from "@/server/api/logger.js";
+import { inspect } from "node:util";
 
 const readScope = [
 	"read:account",
@@ -70,7 +72,7 @@ export function apiAuthMastodon(router: Router): void {
 			console.log(returns);
 			ctx.body = returns;
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}

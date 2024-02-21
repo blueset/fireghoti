@@ -3,6 +3,9 @@ import { convertId, IdType } from "@/server/api/index.js";
 import { getClient } from "../ApiMastodonCompatibleService.js";
 import { convertTimelinesArgsId } from "./timeline.js";
 import { convertNotification } from "../converters.js";
+import { apiLogger } from "@/server/api/logger.js";
+import { inspect } from "node:util";
+
 function toLimitToInt(q: any) {
 	if (q.limit) if (typeof q.limit === "string") q.limit = parseInt(q.limit, 10);
 	return q;
@@ -30,7 +33,7 @@ export function apiNotificationsMastodon(router: Router): void {
 			});
 			ctx.body = ret;
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -55,7 +58,7 @@ export function apiNotificationsMastodon(router: Router): void {
 				data.type = "favourite";
 			}
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -70,7 +73,7 @@ export function apiNotificationsMastodon(router: Router): void {
 			const data = await client.dismissNotifications();
 			ctx.body = data.data;
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -87,7 +90,7 @@ export function apiNotificationsMastodon(router: Router): void {
 			);
 			ctx.body = data.data;
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}

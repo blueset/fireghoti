@@ -8,6 +8,7 @@ import {
 	createImportCkPostJob,
 	createImportMastoPostJob,
 } from "@/queue/index.js";
+import { inspect } from "node:util";
 
 const logger = queueLogger.createSubLogger("import-posts");
 
@@ -44,7 +45,7 @@ export async function importPosts(
 			}
 		} catch (e) {
 			// handle error
-			logger.warn(`Failed reading Mastodon archive: ${e}`);
+			logger.warn(`Failed to read Mastodon archive:\n${inspect(e)}`);
 		}
 		logger.succ("Mastodon archive imported");
 		done();
@@ -69,7 +70,7 @@ export async function importPosts(
 		}
 	} catch (e) {
 		// handle error
-		logger.warn(`Error reading: ${e}`);
+		logger.warn(`Error occured while reading:\n${inspect(e)}`);
 	}
 
 	logger.succ("Imported");

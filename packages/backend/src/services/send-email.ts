@@ -2,6 +2,7 @@ import * as nodemailer from "nodemailer";
 import { fetchMeta } from "@/misc/fetch-meta.js";
 import Logger from "@/services/logger.js";
 import config from "@/config/index.js";
+import { inspect } from "node:util";
 
 export const logger = new Logger("email");
 
@@ -67,7 +68,7 @@ export async function sendEmail(
 
 		logger.info(`Message sent: ${info.messageId}`);
 	} catch (err) {
-		logger.error(err as Error);
+		logger.error(inspect(err));
 		throw err;
 	}
 }

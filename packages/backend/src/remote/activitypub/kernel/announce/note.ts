@@ -11,6 +11,7 @@ import { parseAudience } from "../../audience.js";
 import { StatusError } from "@/misc/fetch.js";
 import { Notes } from "@/models/index.js";
 import { shouldBlockInstance } from "@/misc/should-block-instance.js";
+import { inspect } from "node:util";
 
 const logger = apLogger;
 
@@ -53,9 +54,7 @@ export default async function (
 					return;
 				}
 
-				logger.warn(
-					`Error in announce target ${targetUri} - ${e.statusCode || e}`,
-				);
+				logger.warn(`Error in announce target ${targetUri}:\n${inspect(e)}`);
 			}
 			throw e;
 		}

@@ -11,6 +11,7 @@ import { createTemp, createTempDir } from "@/misc/create-temp.js";
 import { downloadUrl } from "@/misc/download-url.js";
 import config from "@/config/index.js";
 import { IsNull } from "typeorm";
+import { inspect } from "node:util";
 
 const logger = queueLogger.createSubLogger("export-custom-emojis");
 
@@ -76,7 +77,7 @@ export async function exportCustomEmojis(
 			downloaded = true;
 		} catch (e) {
 			// TODO: 何度か再試行
-			logger.error(e instanceof Error ? e : new Error(e as string));
+			logger.error(inspect(e));
 		}
 
 		if (!downloaded) {

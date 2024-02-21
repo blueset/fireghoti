@@ -33,6 +33,7 @@ import { convertSharpToWebp } from "./image-processor.js";
 import { driveLogger } from "./logger.js";
 import { GenerateVideoThumbnail } from "./generate-video-thumbnail.js";
 import { deleteFile } from "./delete-file.js";
+import { inspect } from "node:util";
 
 const logger = driveLogger.createSubLogger("register", "yellow");
 
@@ -234,7 +235,7 @@ export async function generateAlts(
 				thumbnail,
 			};
 		} catch (err) {
-			logger.warn(`GenerateVideoThumbnail failed: ${err}`);
+			logger.warn(`GenerateVideoThumbnail failed:\n${inspect(err)}`);
 			return {
 				webpublic: null,
 				thumbnail: null,
@@ -289,7 +290,7 @@ export async function generateAlts(
 			metadata.height <= 2048
 		);
 	} catch (err) {
-		logger.warn(`sharp failed: ${err}`);
+		logger.warn(`sharp failed:\n${inspect(err)}`);
 		return {
 			webpublic: null,
 			thumbnail: null,
@@ -315,7 +316,7 @@ export async function generateAlts(
 				logger.debug("web image not created (not an required image)");
 			}
 		} catch (err) {
-			logger.warn("web image not created (an error occured)", err as Error);
+			logger.warn(`web image not created (an error occured):\n${inspect(err)}`);
 		}
 	} else {
 		if (satisfyWebpublic)
@@ -342,7 +343,7 @@ export async function generateAlts(
 			logger.debug("thumbnail not created (not an required file)");
 		}
 	} catch (err) {
-		logger.warn("thumbnail not created (an error occured)", err as Error);
+		logger.warn(`thumbnail not created (an error occured):\n${inspect(err)}`);
 	}
 	// #endregion thumbnail
 
@@ -629,7 +630,7 @@ export async function addFile({
 					userId: user ? user.id : IsNull(),
 				})) as DriveFile;
 			} else {
-				logger.error(err as Error);
+				logger.error(inspect(err));
 				throw err;
 			}
 		}

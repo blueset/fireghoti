@@ -23,6 +23,7 @@ import type { CacheableRemoteUser } from "@/models/entities/user.js";
 import type { UserPublickey } from "@/models/entities/user-publickey.js";
 import { shouldBlockInstance } from "@/misc/should-block-instance.js";
 import { verifySignature } from "@/remote/activitypub/check-fetch.js";
+import { inspect } from "node:util";
 
 const logger = new Logger("inbox");
 
@@ -78,9 +79,7 @@ export default async (job: Bull.Job<InboxJobData>): Promise<string> => {
 				if (e.isClientError) {
 					return `skip: Ignored deleted actors on both ends ${activity.actor} - ${e.statusCode}`;
 				}
-				throw new Error(
-					`Error in actor ${activity.actor} - ${e.statusCode || e}`,
-				);
+				throw new Error(`Error in actor ${activity.actor}\n${inspect(e)}`);
 			}
 		}
 	}

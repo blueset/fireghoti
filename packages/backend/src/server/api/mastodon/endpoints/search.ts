@@ -4,6 +4,8 @@ import axios from "axios";
 import { Converter } from "megalodon";
 import { convertTimelinesArgsId, limitToInt } from "./timeline.js";
 import { convertAccount, convertStatus } from "../converters.js";
+import { apiLogger } from "@/server/api/logger.js";
+import { inspect } from "node:util";
 
 export function apiSearchMastodon(router: Router): void {
 	router.get("/v1/search", async (ctx) => {
@@ -17,7 +19,7 @@ export function apiSearchMastodon(router: Router): void {
 			const data = await client.search(query.q, type, query);
 			ctx.body = data.data;
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -50,7 +52,7 @@ export function apiSearchMastodon(router: Router): void {
 				hashtags: tags?.data?.hashtags ?? [],
 			};
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -66,7 +68,7 @@ export function apiSearchMastodon(router: Router): void {
 			);
 			ctx.body = data.map((status) => convertStatus(status));
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -89,7 +91,7 @@ export function apiSearchMastodon(router: Router): void {
 			console.log(data);
 			ctx.body = data;
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -109,8 +111,7 @@ async function getHighlight(
 		const data: MisskeyEntity.Note[] = api.data;
 		return data.map((note) => new Converter(BASE_URL).note(note, domain));
 	} catch (e: any) {
-		console.log(e);
-		console.log(e.response.data);
+		apiLogger.info(inspect(e));
 		return [];
 	}
 }
@@ -131,7 +132,7 @@ async function getFeaturedUser(
 			state: "alive",
 		});
 		const data: MisskeyEntity.UserDetail[] = api.data;
-		console.log(data);
+		apiLogger.info(inspect(data));
 		return data.map((u) => {
 			return {
 				source: "past_interactions",
@@ -139,8 +140,7 @@ async function getFeaturedUser(
 			};
 		});
 	} catch (e: any) {
-		console.log(e);
-		console.log(e.response.data);
+		apiLogger.info(inspect(e));
 		return [];
 	}
 }

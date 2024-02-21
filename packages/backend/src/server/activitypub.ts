@@ -58,7 +58,7 @@ function inbox(ctx: Router.RouterContext) {
 			headers: ["(request-target)", "digest", "host", "date"],
 		});
 	} catch (e) {
-		serverLogger.warn(`inbox: signature parse error: ${inspect(e)}`);
+		serverLogger.warn(`inbox: signature parse error:\n${inspect(e)}`);
 		ctx.status = 401;
 
 		if (e instanceof Error) {

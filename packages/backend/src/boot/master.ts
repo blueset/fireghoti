@@ -13,6 +13,7 @@ import type { Config } from "@/config/types.js";
 import { envOption } from "@/env.js";
 import { showMachineInfo } from "@/misc/show-machine-info.js";
 import { db, initDb } from "@/db/postgre.js";
+import { inspect } from "node:util";
 
 const _filename = fileURLToPath(import.meta.url);
 const _dirname = dirname(_filename);
@@ -100,7 +101,7 @@ export async function masterMain() {
 		await connectDb();
 	} catch (e) {
 		bootLogger.error(
-			`Fatal error occurred during initialization: ${e}`,
+			`Fatal error occurred during initialization:\n${inspect(e)}`,
 			null,
 			true,
 		);
@@ -182,15 +183,15 @@ async function connectDb(): Promise<void> {
 
 	// Try to connect to DB
 	try {
-		dbLogger.info("Connecting...");
+		dbLogger.info("Connecting to the database...");
 		await initDb();
 		const v = await db
 			.query("SHOW server_version")
 			.then((x) => x[0].server_version);
 		dbLogger.succ(`Connected: v${v}`);
 	} catch (e) {
-		dbLogger.error("Cannot connect", null, true);
-		dbLogger.error(e);
+		dbLogger.error("Failed to connect to the database", null, true);
+		dbLogger.error(inspect(e));
 		process.exit(1);
 	}
 }

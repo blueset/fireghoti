@@ -8,6 +8,8 @@ import {
 	convertStatus,
 } from "../converters.js";
 import { convertId, IdType } from "@/server/api/index.js";
+import { apiLogger } from "@/server/api/logger.js";
+import { inspect } from "node:util";
 
 export function limitToInt(q: ParsedUrlQuery) {
 	let object: any = q;
@@ -71,8 +73,7 @@ export function apiTimelineMastodon(router: Router): void {
 					  );
 			ctx.body = data.data.map((status) => convertStatus(status));
 		} catch (e: any) {
-			console.error(e);
-			console.error(e.response.data);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -90,8 +91,7 @@ export function apiTimelineMastodon(router: Router): void {
 				);
 				ctx.body = data.data.map((status) => convertStatus(status));
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -107,8 +107,7 @@ export function apiTimelineMastodon(router: Router): void {
 			);
 			ctx.body = data.data.map((status) => convertStatus(status));
 		} catch (e: any) {
-			console.error(e);
-			console.error(e.response.data);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -126,8 +125,7 @@ export function apiTimelineMastodon(router: Router): void {
 				);
 				ctx.body = data.data.map((status) => convertStatus(status));
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -145,8 +143,7 @@ export function apiTimelineMastodon(router: Router): void {
 				convertConversation(conversation),
 			);
 		} catch (e: any) {
-			console.error(e);
-			console.error(e.response.data);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -159,8 +156,7 @@ export function apiTimelineMastodon(router: Router): void {
 			const data = await client.getLists();
 			ctx.body = data.data.map((list) => convertList(list));
 		} catch (e: any) {
-			console.error(e);
-			console.error(e.response.data);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -177,8 +173,7 @@ export function apiTimelineMastodon(router: Router): void {
 				);
 				ctx.body = convertList(data.data);
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -192,8 +187,7 @@ export function apiTimelineMastodon(router: Router): void {
 			const data = await client.createList((ctx.request.body as any).title);
 			ctx.body = convertList(data.data);
 		} catch (e: any) {
-			console.error(e);
-			console.error(e.response.data);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -211,8 +205,7 @@ export function apiTimelineMastodon(router: Router): void {
 				);
 				ctx.body = convertList(data.data);
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -230,8 +223,7 @@ export function apiTimelineMastodon(router: Router): void {
 				);
 				ctx.body = data.data;
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -250,8 +242,7 @@ export function apiTimelineMastodon(router: Router): void {
 				);
 				ctx.body = data.data.map((account) => convertAccount(account));
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -272,8 +263,7 @@ export function apiTimelineMastodon(router: Router): void {
 				);
 				ctx.body = data.data;
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -294,8 +284,7 @@ export function apiTimelineMastodon(router: Router): void {
 				);
 				ctx.body = data.data;
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}

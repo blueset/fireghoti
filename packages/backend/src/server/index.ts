@@ -33,6 +33,7 @@ import { initializeStreamingServer } from "./api/streaming.js";
 import { koaBody } from "koa-body";
 import removeTrailingSlash from "koa-remove-trailing-slashes";
 import { v4 as uuid } from "uuid";
+import { inspect } from "node:util";
 
 export const serverLogger = new Logger("server", "gray", false);
 
@@ -194,10 +195,10 @@ mastoRouter.post("/oauth/token", async (ctx) => {
 			scope: body.scope || "read write follow push",
 			created_at: Math.floor(new Date().getTime() / 1000),
 		};
-		console.log("token-response", ret);
+		serverLogger.info("token-response", ret);
 		ctx.body = ret;
 	} catch (err: any) {
-		console.error(err);
+		serverLogger.error(inspect(err));
 		ctx.status = 401;
 		ctx.body = err.response.data;
 	}

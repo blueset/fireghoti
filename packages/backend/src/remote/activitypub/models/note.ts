@@ -50,6 +50,7 @@ import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
 import { truncate } from "@/misc/truncate.js";
 import { type Size, getEmojiSize } from "@/misc/emoji-meta.js";
 import { langmap } from "@/misc/langmap.js";
+import { inspect } from "node:util";
 
 const logger = apLogger;
 
@@ -242,9 +243,7 @@ export async function createNote(
 						}
 					}
 
-					logger.warn(
-						`Error in inReplyTo ${note.inReplyTo} - ${e.statusCode || e}`,
-					);
+					logger.warn(`Error in inReplyTo ${note.inReplyTo}:\n${inspect(e)}`);
 					throw e;
 				})
 		: null;
@@ -359,7 +358,7 @@ export async function createNote(
 	}
 
 	const emojis = await extractEmojis(note.tag || [], actor.host).catch((e) => {
-		logger.info(`extractEmojis: ${e}`);
+		logger.info(`extractEmojis:\n${inspect(e)}`);
 		return [] as Emoji[];
 	});
 

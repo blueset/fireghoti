@@ -16,6 +16,8 @@ import {
 import { convertId, IdType } from "@/server/api/index.js";
 import { Users } from "@/models/index.js";
 import { IsNull } from "typeorm";
+import { apiLogger } from "../logger.js";
+import { inspect } from "node:util";
 
 export function getClient(
 	BASE_URL: string,
@@ -45,7 +47,7 @@ export function apiMastodonCompatible(router: Router): void {
 			const data = await client.getInstanceCustomEmojis();
 			ctx.body = data.data;
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -73,7 +75,7 @@ export function apiMastodonCompatible(router: Router): void {
 					: convertAccount((await client.getAccount(admin.id)).data);
 			ctx.body = await getInstance(data.data, contact);
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -89,7 +91,7 @@ export function apiMastodonCompatible(router: Router): void {
 				convertAnnouncement(announcement),
 			);
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -107,7 +109,7 @@ export function apiMastodonCompatible(router: Router): void {
 				);
 				ctx.body = data.data;
 			} catch (e: any) {
-				console.error(e);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -123,7 +125,7 @@ export function apiMastodonCompatible(router: Router): void {
 			const data = await client.getFilters();
 			ctx.body = data.data.map((filter) => convertFilter(filter));
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -138,7 +140,7 @@ export function apiMastodonCompatible(router: Router): void {
 			const data = await client.getInstanceTrends();
 			ctx.body = data.data;
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -153,7 +155,7 @@ export function apiMastodonCompatible(router: Router): void {
 			const data = await client.getPreferences();
 			ctx.body = data.data;
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}

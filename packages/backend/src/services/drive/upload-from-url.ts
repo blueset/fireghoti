@@ -7,6 +7,7 @@ import type { DriveFile } from "@/models/entities/drive-file.js";
 import { DriveFiles } from "@/models/index.js";
 import { driveLogger } from "./logger.js";
 import { addFile } from "./add-file.js";
+import { inspect } from "node:util";
 
 const logger = driveLogger.createSubLogger("downloader");
 
@@ -78,10 +79,7 @@ export async function uploadFromUrl({
 		logger.succ(`Got: ${driveFile.id}`);
 		return driveFile!;
 	} catch (e) {
-		logger.error(`Failed to create drive file: ${e}`, {
-			url: url,
-			e: e,
-		});
+		logger.error(`Failed to create drive file:\n${inspect(e)}`);
 		throw e;
 	} finally {
 		cleanup();

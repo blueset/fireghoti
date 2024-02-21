@@ -4,6 +4,7 @@ import Xev from "xev";
 
 import Logger from "@/services/logger.js";
 import { envOption } from "../env.js";
+import { inspect } from "node:util";
 
 // for typeorm
 import "reflect-metadata";
@@ -82,7 +83,7 @@ if (!envOption.quiet) {
 // Display detail of uncaught exception
 process.on("uncaughtException", (err) => {
 	try {
-		logger.error(err);
+		logger.error(inspect(err));
 	} catch {}
 });
 

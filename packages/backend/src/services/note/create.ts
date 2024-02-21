@@ -68,6 +68,10 @@ import meilisearch from "@/db/meilisearch.js";
 import { redisClient } from "@/db/redis.js";
 import { Mutex } from "redis-semaphore";
 import { langmap } from "@/misc/langmap.js";
+import Logger from "@/services/logger.js";
+import { inspect } from "node:util";
+
+const logger = new Logger("create-note");
 
 const mutedWordsCache = new Cache<
 	{ userId: UserProfile["userId"]; mutedWords: UserProfile["mutedWords"] }[]
@@ -814,7 +818,7 @@ async function insertNote(
 			throw err;
 		}
 
-		console.error(e);
+		logger.error(inspect(e));
 
 		throw e;
 	}

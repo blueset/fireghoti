@@ -10,6 +10,7 @@ import type { DbUserImportJobData } from "@/queue/types.js";
 import type { User } from "@/models/entities/user.js";
 import { genId } from "@/misc/gen-id.js";
 import { IsNull } from "typeorm";
+import { inspect } from "node:util";
 
 const logger = queueLogger.createSubLogger("import-muting");
 
@@ -71,7 +72,7 @@ export async function importMuting(
 
 			await mute(user, target);
 		} catch (e) {
-			logger.warn(`Error in line:${linenum} ${e}`);
+			logger.warn(`Error in line ${linenum}: ${inspect(e)}`);
 		}
 	}
 

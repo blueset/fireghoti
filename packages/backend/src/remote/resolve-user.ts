@@ -8,6 +8,7 @@ import { toPuny } from "@/misc/convert-host.js";
 import webFinger from "./webfinger.js";
 import { createPerson, updatePerson } from "./activitypub/models/person.js";
 import { remoteLogger } from "./logger.js";
+import { inspect } from "node:util";
 
 const logger = remoteLogger.createSubLogger("resolve-user");
 
@@ -118,9 +119,7 @@ async function resolveSelf(acctLower: string) {
 	logger.info(`WebFinger for ${chalk.yellow(acctLower)}`);
 	const finger = await webFinger(acctLower).catch((e) => {
 		logger.error(
-			`Failed to WebFinger for ${chalk.yellow(acctLower)}: ${
-				e.statusCode || e.message
-			}`,
+			`Failed to WebFinger for ${chalk.yellow(acctLower)}:\n${inspect(e)}`,
 		);
 		throw new Error(
 			`Failed to WebFinger for ${acctLower}: ${e.statusCode || e.message}`,

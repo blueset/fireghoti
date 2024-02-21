@@ -8,6 +8,7 @@ import * as tar from "tar-stream";
 import gunzip from "gunzip-maybe";
 import decompress from "decompress";
 import * as Path from "node:path";
+import { inspect } from "node:util";
 
 const logger = new Logger("process-masto-notes");
 
@@ -103,7 +104,7 @@ function unzipZip(fn: string, dir: string) {
 function unzipTarGz(fn: string, dir: string) {
 	return new Promise(async (resolve, reject) => {
 		const onErr = (err: any) => {
-			logger.error(`pipe broken: ${err}`);
+			logger.error(`pipe broken:\n${inspect(err)}`);
 			reject();
 		};
 		try {
@@ -120,7 +121,7 @@ function unzipTarGz(fn: string, dir: string) {
 						.on("error", onErr);
 					next();
 				} catch (e) {
-					logger.error(`create dir error:${e}`);
+					logger.error(`create dir error:\n${inspect(e)}`);
 					reject();
 				}
 			});
@@ -136,7 +137,7 @@ function unzipTarGz(fn: string, dir: string) {
 				.pipe(extract)
 				.on("error", onErr);
 		} catch (e) {
-			logger.error(`unzipTarGz error: ${e}`);
+			logger.error(`unzipTarGz error:\n${inspect(e)}`);
 			reject();
 		}
 	});

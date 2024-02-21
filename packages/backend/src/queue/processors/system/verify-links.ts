@@ -4,6 +4,7 @@ import { UserProfiles } from "@/models/index.js";
 import { Not } from "typeorm";
 import { queueLogger } from "../../logger.js";
 import { verifyLink } from "@/services/fetch-rel-me.js";
+import { inspect } from "node:util";
 
 const logger = queueLogger.createSubLogger("verify-links");
 
@@ -32,7 +33,7 @@ export async function verifyLinks(
 					fields: user.fields,
 				});
 			} catch (e) {
-				logger.error(`Failed to update user ${user.userId} ${e}`);
+				logger.error(`Failed to update user ${user.userId}:\n${inspect(e)}`);
 				done(e);
 			}
 		}

@@ -16,6 +16,7 @@ import { GenerateVideoThumbnail } from "@/services/drive/generate-video-thumbnai
 import { StatusError } from "@/misc/fetch.js";
 import { ByteRangeReadable } from "./byte-range-readable.js";
 import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
+import { inspect } from "node:util";
 
 const _filename = fileURLToPath(import.meta.url);
 const _dirname = dirname(_filename);
@@ -106,7 +107,7 @@ export default async function (ctx: Koa.Context) {
 				);
 				ctx.set("Cache-Control", "max-age=31536000, immutable");
 			} catch (e) {
-				serverLogger.error(`${e}`);
+				serverLogger.error(`${inspect(e)}`);
 
 				if (e instanceof StatusError && e.isClientError) {
 					ctx.status = e.statusCode;

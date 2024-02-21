@@ -7,6 +7,7 @@ import probeImageSize from "probe-image-size";
 import isSvg from "is-svg";
 import sharp from "sharp";
 import { encode } from "blurhash";
+import { inspect } from "node:util";
 
 const pipeline = util.promisify(stream.pipeline);
 
@@ -65,7 +66,7 @@ export async function getFileInfo(path: string): Promise<FileInfo> {
 		].includes(type.mime)
 	) {
 		const imageSize = await detectImageSize(path).catch((e) => {
-			warnings.push(`detectImageSize failed: ${e}`);
+			warnings.push(`detectImageSize failed:\n${inspect(e)}`);
 			return undefined;
 		});
 
@@ -102,7 +103,7 @@ export async function getFileInfo(path: string): Promise<FileInfo> {
 		].includes(type.mime)
 	) {
 		blurhash = await getBlurhash(path).catch((e) => {
-			warnings.push(`getBlurhash failed: ${e}`);
+			warnings.push(`getBlurhash failed:\n${inspect(e)}`);
 			return undefined;
 		});
 	}

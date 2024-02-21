@@ -7,6 +7,7 @@ import { MINUTE } from "@/const.js";
 import define from "@/server/api/define.js";
 import { apiLogger } from "@/server/api/logger.js";
 import { ApiError } from "@/server/api/error.js";
+import { inspect } from "node:util";
 
 export const meta = {
 	tags: ["drive"],
@@ -112,9 +113,8 @@ export default define(
 			});
 			return await DriveFiles.pack(driveFile, { self: true });
 		} catch (e) {
-			if (e instanceof Error || typeof e === "string") {
-				apiLogger.error(e);
-			}
+			if (typeof e === "string") apiLogger.error(e);
+			if (e instanceof Error) apiLogger.error(inspect(e));
 			if (e instanceof IdentifiableError) {
 				if (e.id === "282f77bf-5816-4f72-9264-aa14d8261a21")
 					throw new ApiError(meta.errors.inappropriate);

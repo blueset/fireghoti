@@ -4,6 +4,7 @@ import { Emojis } from "@/models/index.js";
 
 import { queueLogger } from "../../logger.js";
 import { getEmojiSize } from "@/misc/emoji-meta.js";
+import { inspect } from "node:util";
 
 const logger = queueLogger.createSubLogger("local-emoji-size");
 
@@ -27,7 +28,7 @@ export async function setLocalEmojiSizes(
 			});
 		} catch (e) {
 			logger.error(
-				`Unable to set emoji size (${i + 1}/${emojis.length}): ${e}`,
+				`Unable to set emoji size (${i + 1}/${emojis.length}):\n${inspect(e)}`,
 			);
 			/* skip if any error happens */
 		} finally {

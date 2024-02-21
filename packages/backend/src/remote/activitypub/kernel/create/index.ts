@@ -5,6 +5,7 @@ import type { ICreate } from "../../type.js";
 import { getApId, isPost, getApType } from "../../type.js";
 import { apLogger } from "../../logger.js";
 import { toArray, concat, unique } from "@/prelude/array.js";
+import { inspect } from "node:util";
 
 const logger = apLogger;
 
@@ -39,7 +40,7 @@ export default async (
 	const resolver = new Resolver();
 
 	const object = await resolver.resolve(activity.object).catch((e) => {
-		logger.error(`Resolution failed: ${e}`);
+		logger.error(`Resolution failed:\n${inspect(e)}`);
 		throw e;
 	});
 

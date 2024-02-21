@@ -9,6 +9,7 @@ import { Users, DriveFiles } from "@/models/index.js";
 import type { DbUserImportJobData } from "@/queue/types.js";
 import block from "@/services/blocking/create.js";
 import { IsNull } from "typeorm";
+import { inspect } from "node:util";
 
 const logger = queueLogger.createSubLogger("import-blocking");
 
@@ -70,7 +71,7 @@ export async function importBlocking(
 
 			await block(user, target);
 		} catch (e) {
-			logger.warn(`Error in line:${linenum} ${e}`);
+			logger.warn(`Error in line ${linenum}:\n${inspect(e)}`);
 		}
 	}
 

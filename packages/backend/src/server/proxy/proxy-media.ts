@@ -12,6 +12,7 @@ import { StatusError } from "@/misc/fetch.js";
 import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
 import { serverLogger } from "../index.js";
 import { isMimeImage } from "@/misc/is-mime-image.js";
+import { inspect } from "node:util";
 
 export async function proxyMedia(ctx: Koa.Context) {
 	let url = "url" in ctx.query ? ctx.query.url : `https://${ctx.params.url}`;
@@ -130,7 +131,7 @@ export async function proxyMedia(ctx: Koa.Context) {
 		ctx.set("Cache-Control", "max-age=31536000, immutable");
 		ctx.body = image.data;
 	} catch (e) {
-		serverLogger.error(`${e}`);
+		serverLogger.error(`${inspect(e)}`);
 
 		if (e instanceof StatusError && (e.statusCode === 302 || e.isClientError)) {
 			ctx.status = e.statusCode;

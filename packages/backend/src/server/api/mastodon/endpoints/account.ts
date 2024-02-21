@@ -9,6 +9,8 @@ import {
 	convertRelationship,
 	convertStatus,
 } from "../converters.js";
+import { apiLogger } from "../../logger.js";
+import { inspect } from "node:util";
 
 const relationshipModel = {
 	id: "",
@@ -52,8 +54,7 @@ export function apiAccountMastodon(router: Router): void {
 			console.log(acct);
 			ctx.body = acct;
 		} catch (e: any) {
-			console.error(e);
-			console.error(e.response.data);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -68,8 +69,7 @@ export function apiAccountMastodon(router: Router): void {
 			);
 			ctx.body = convertAccount(data.data);
 		} catch (e: any) {
-			console.error(e);
-			console.error(e.response.data);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -85,8 +85,7 @@ export function apiAccountMastodon(router: Router): void {
 			);
 			ctx.body = convertAccount(data.data.accounts[0]);
 		} catch (e: any) {
-			console.error(e);
-			console.error(e.response.data);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -119,10 +118,9 @@ export function apiAccountMastodon(router: Router): void {
 				convertRelationship(relationship),
 			);
 		} catch (e: any) {
-			console.error(e);
+			apiLogger.error(inspect(e));
 			let data = e.response.data;
 			data.users = users;
-			console.error(data);
 			ctx.status = 401;
 			ctx.body = data;
 		}
@@ -136,8 +134,7 @@ export function apiAccountMastodon(router: Router): void {
 			const data = await client.getAccount(calcId);
 			ctx.body = convertAccount(data.data);
 		} catch (e: any) {
-			console.error(e);
-			console.error(e.response.data);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -155,8 +152,7 @@ export function apiAccountMastodon(router: Router): void {
 				);
 				ctx.body = data.data.map((status) => convertStatus(status));
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -174,8 +170,7 @@ export function apiAccountMastodon(router: Router): void {
 				);
 				ctx.body = data.data.map((tag) => convertFeaturedTag(tag));
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -194,8 +189,7 @@ export function apiAccountMastodon(router: Router): void {
 				);
 				ctx.body = data.data.map((account) => convertAccount(account));
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -214,8 +208,7 @@ export function apiAccountMastodon(router: Router): void {
 				);
 				ctx.body = data.data.map((account) => convertAccount(account));
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -233,8 +226,7 @@ export function apiAccountMastodon(router: Router): void {
 				);
 				ctx.body = data.data.map((list) => convertList(list));
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -254,8 +246,7 @@ export function apiAccountMastodon(router: Router): void {
 				acct.following = true;
 				ctx.body = acct;
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -275,8 +266,7 @@ export function apiAccountMastodon(router: Router): void {
 				acct.following = false;
 				ctx.body = acct;
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -294,8 +284,7 @@ export function apiAccountMastodon(router: Router): void {
 				);
 				ctx.body = convertRelationship(data.data);
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -313,8 +302,7 @@ export function apiAccountMastodon(router: Router): void {
 				);
 				ctx.body = convertRelationship(data.data);
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -333,8 +321,7 @@ export function apiAccountMastodon(router: Router): void {
 				);
 				ctx.body = convertRelationship(data.data);
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -352,8 +339,7 @@ export function apiAccountMastodon(router: Router): void {
 				);
 				ctx.body = convertRelationship(data.data);
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -367,8 +353,7 @@ export function apiAccountMastodon(router: Router): void {
 			const data = await client.getFeaturedTags();
 			ctx.body = data.data.map((tag) => convertFeaturedTag(tag));
 		} catch (e: any) {
-			console.error(e);
-			console.error(e.response.data);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -381,8 +366,7 @@ export function apiAccountMastodon(router: Router): void {
 			const data = await client.getFollowedTags();
 			ctx.body = data.data;
 		} catch (e: any) {
-			console.error(e);
-			console.error(e.response.data);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -397,8 +381,7 @@ export function apiAccountMastodon(router: Router): void {
 			);
 			ctx.body = data.data.map((status) => convertStatus(status));
 		} catch (e: any) {
-			console.error(e);
-			console.error(e.response.data);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -413,8 +396,7 @@ export function apiAccountMastodon(router: Router): void {
 			);
 			ctx.body = data.data.map((status) => convertStatus(status));
 		} catch (e: any) {
-			console.error(e);
-			console.error(e.response.data);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -429,8 +411,7 @@ export function apiAccountMastodon(router: Router): void {
 			);
 			ctx.body = data.data.map((account) => convertAccount(account));
 		} catch (e: any) {
-			console.error(e);
-			console.error(e.response.data);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -445,8 +426,7 @@ export function apiAccountMastodon(router: Router): void {
 			);
 			ctx.body = data.data.map((account) => convertAccount(account));
 		} catch (e: any) {
-			console.error(e);
-			console.error(e.response.data);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -461,8 +441,7 @@ export function apiAccountMastodon(router: Router): void {
 			);
 			ctx.body = data.data.map((account) => convertAccount(account));
 		} catch (e: any) {
-			console.error(e);
-			console.error(e.response.data);
+			apiLogger.error(inspect(e));
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -479,8 +458,7 @@ export function apiAccountMastodon(router: Router): void {
 				);
 				ctx.body = convertRelationship(data.data);
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}
@@ -498,8 +476,7 @@ export function apiAccountMastodon(router: Router): void {
 				);
 				ctx.body = convertRelationship(data.data);
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				apiLogger.error(inspect(e));
 				ctx.status = 401;
 				ctx.body = e.response.data;
 			}

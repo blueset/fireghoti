@@ -13,6 +13,7 @@ import { Followings, Users } from "@/models/index.js";
 import config from "@/config/index.js";
 import { publishMainStream } from "@/services/stream.js";
 import { parse } from "@/misc/acct.js";
+import { inspect } from "node:util";
 
 export const meta = {
 	tags: ["users"],
@@ -99,7 +100,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	if (!host) throw new ApiError(meta.errors.notRemote);
 
 	const moveTo: User = await resolveUser(username, host).catch((e) => {
-		apiLogger.warn(`failed to resolve remote user: ${e}`);
+		apiLogger.warn(`failed to resolve remote user:\n${inspect(e)}`);
 		throw new ApiError(meta.errors.noSuchMoveTarget);
 	});
 	let fromUrl: string | null = user.uri;

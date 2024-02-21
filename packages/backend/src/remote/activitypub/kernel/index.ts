@@ -40,6 +40,7 @@ import move from "./move/index.js";
 import type { IObject, IActivity } from "../type.js";
 import { extractDbHost } from "@/misc/convert-host.js";
 import { shouldBlockInstance } from "@/misc/should-block-instance.js";
+import { inspect } from "node:util";
 
 export async function performActivity(
 	actor: CacheableRemoteUser,
@@ -54,9 +55,7 @@ export async function performActivity(
 			try {
 				await performOneActivity(actor, act);
 			} catch (err) {
-				if (err instanceof Error || typeof err === "string") {
-					apLogger.error(err);
-				}
+				apLogger.error(inspect(err));
 			}
 		}
 	} else {
@@ -90,9 +89,9 @@ async function performOneActivity(
 	} else if (isReject(activity)) {
 		await reject(actor, activity);
 	} else if (isAdd(activity)) {
-		await add(actor, activity).catch((err) => apLogger.error(err));
+		await add(actor, activity).catch((err) => apLogger.error(inspect(err)));
 	} else if (isRemove(activity)) {
-		await remove(actor, activity).catch((err) => apLogger.error(err));
+		await remove(actor, activity).catch((err) => apLogger.error(inspect(err)));
 	} else if (isAnnounce(activity)) {
 		await announce(actor, activity);
 	} else if (isLike(activity)) {

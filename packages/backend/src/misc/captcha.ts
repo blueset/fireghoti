@@ -2,6 +2,7 @@ import fetch from "node-fetch";
 import { URLSearchParams } from "node:url";
 import { getAgentByUrl } from "@/misc/fetch.js";
 import config from "@/config/index.js";
+import { inspect } from "node:util";
 
 export async function verifyRecaptcha(secret: string, response: string) {
 	const result = await getCaptchaResponse(
@@ -9,7 +10,7 @@ export async function verifyRecaptcha(secret: string, response: string) {
 		secret,
 		response,
 	).catch((e) => {
-		throw new Error(`recaptcha-request-failed: ${e.message}`);
+		throw new Error(`recaptcha-request-failed:\n${inspect(e)}`);
 	});
 
 	if (result.success !== true) {
@@ -26,7 +27,7 @@ export async function verifyHcaptcha(secret: string, response: string) {
 		secret,
 		response,
 	).catch((e) => {
-		throw new Error(`hcaptcha-request-failed: ${e.message}`);
+		throw new Error(`hcaptcha-request-failed:\n${inspect(e)}`);
 	});
 
 	if (result.success !== true) {
@@ -62,7 +63,7 @@ async function getCaptchaResponse(
 		//timeout: 10 * 1000,
 		agent: getAgentByUrl,
 	}).catch((e) => {
-		throw new Error(`${e.message || e}`);
+		throw new Error(`${inspect(e)}`);
 	});
 
 	if (!res.ok) {

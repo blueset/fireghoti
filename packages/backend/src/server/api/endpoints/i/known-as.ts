@@ -9,6 +9,7 @@ import { apiLogger } from "@/server/api/logger.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { parse } from "@/misc/acct.js";
+import { inspect } from "node:util";
 
 export const meta = {
 	tags: ["users"],
@@ -74,7 +75,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		const { username, host } = parse(line);
 
 		const aka = await resolveUser(username, host).catch((e) => {
-			apiLogger.warn(`failed to resolve remote user: ${e}`);
+			apiLogger.warn(`failed to resolve remote user:\n${inspect(e)}`);
 			throw new ApiError(meta.errors.noSuchUser);
 		});
 

@@ -5,6 +5,7 @@ import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
 import Logger from "@/services/logger.js";
 import { Cache } from "./cache.js";
 import { redisClient } from "@/db/redis.js";
+import { inspect } from "node:util";
 
 export type Size = {
 	width: number;
@@ -44,7 +45,7 @@ export async function getEmojiSize(url: string): Promise<Size> {
 		}
 		return { width, height };
 	} catch (e) {
-		throw new Error(`Unable to retrieve metadata: ${e}`);
+		throw new Error(`Unable to retrieve metadata:\n${inspect(e)}`);
 	}
 }
 

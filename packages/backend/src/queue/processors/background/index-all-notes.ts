@@ -7,6 +7,7 @@ import { MoreThan } from "typeorm";
 import { index } from "@/services/note/create.js";
 import { Note } from "@/models/entities/note.js";
 import meilisearch from "@/db/meilisearch.js";
+import { inspect } from "node:util";
 
 const logger = queueLogger.createSubLogger("index-all-notes");
 
@@ -43,7 +44,7 @@ export default async function indexAllNotes(
 				relations: ["user"],
 			});
 		} catch (e: any) {
-			logger.error(`Failed to query notes ${e}`);
+			logger.error(`Failed to query notes:\n${inspect(e)}`);
 			done(e);
 			break;
 		}

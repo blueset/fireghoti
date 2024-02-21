@@ -5,6 +5,7 @@ import { apLogger } from "../../logger.js";
 import { updateNote } from "../../models/note.js";
 import Resolver from "../../resolver.js";
 import { updatePerson } from "../../models/person.js";
+import { inspect } from "node:util";
 
 /**
  * Handler for the Update activity
@@ -22,7 +23,7 @@ export default async (
 	const resolver = new Resolver();
 
 	const object = await resolver.resolve(activity.object).catch((e) => {
-		apLogger.error(`Resolution failed: ${e}`);
+		apLogger.error(`Resolution failed:\n${inspect(e)}`);
 		throw e;
 	});
 

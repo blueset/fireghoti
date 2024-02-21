@@ -9,6 +9,7 @@ import { sendEmail } from "@/services/send-email.js";
 import { genId } from "@/misc/gen-id.js";
 import { validateEmailForAccount } from "@/services/validate-email-for-account.js";
 import { hashPassword } from "@/misc/password.js";
+import { inspect } from "node:util";
 
 export default async (ctx: Koa.Context) => {
 	const body = ctx.request.body;

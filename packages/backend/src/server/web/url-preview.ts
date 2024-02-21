@@ -5,6 +5,7 @@ import Logger from "@/services/logger.js";
 import config from "@/config/index.js";
 import { query } from "@/prelude/url.js";
 import { getJson } from "@/misc/fetch.js";
+import { inspect } from "node:util";
 
 const logger = new Logger("url-preview");
 
@@ -69,7 +70,7 @@ export const urlPreviewHandler = async (ctx: Koa.Context) => {
 
 		ctx.body = summary;
 	} catch (err) {
-		logger.warn(`Failed to get preview of ${url}: ${err}`);
+		logger.warn(`Failed to get preview of ${url}:\n${inspect(err)}`);
 		ctx.status = 200;
 		ctx.set("Cache-Control", "max-age=86400, immutable");
 		ctx.body = "{}";
