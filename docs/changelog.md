@@ -2,6 +2,10 @@
 
 Critical security updates are indicated by the :warning: icon.
 
+## v20240221-1
+
+- Fix a bug
+
 ## v20240221
 
 - Add the ability to give regular (non-moderator) users permission to manage custom emojis
