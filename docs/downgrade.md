@@ -45,7 +45,7 @@
 1. Revert database migrations
     ```sh
     docker-compose exec db psql --command="$(cat docs/downgrade.sql)" --user=user_name --dbname=database_name
-    # or docker-compose exec db psql --command="$(cat docs/revert.sql)" --user=user_name --dbname=database_name
+    # or podman-compose exec db psql --command="$(cat docs/revert.sql)" --user=user_name --dbname=database_name
     ```
 
     The user and database name can be found in `.config/docker.env`.
