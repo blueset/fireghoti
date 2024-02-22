@@ -1,3 +1,20 @@
+# Unreleased
+
+## For Docker/Podman users
+
+- The bug where `custom` directory was not working has (finally) been fixed. Please add the `custom` directory to `volumes` in your `docker-compose.yml`:
+    ```yaml
+    services:
+      web:
+        image: registry.firefish.dev/firefish/firefish:latest
+        # and so on ...
+
+        volumes:
+          - ./custom:/firefish/custom:ro  # <- Please add this line
+          - ./files:/firefish/files
+          - ./.config:/firefish/.config:ro
+    ```
+
 # v20240222
 
 ## For Docker/Podman users

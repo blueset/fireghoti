@@ -74,4 +74,4 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 ENV NODE_ENV=production
 VOLUME "/firefish/files"
 ENTRYPOINT [ "/usr/bin/tini", "--" ]
-CMD [ "pnpm", "run", "migrateandstart" ]
+CMD [ "pnpm", "run", "start:container" ]
