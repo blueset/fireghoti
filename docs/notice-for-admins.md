@@ -7,7 +7,7 @@
     - If you want to update the repository (`git pull --ff`), please take the following steps to keep your `docker-compose.yml`:
         1. Backup (make a copy) your `docker-compose.yml`
             ```sh
-            cp docker-compose.yml /tmp/my-docker-compose.yml
+            cp docker-compose.yml /tmp/my-docker-compose.yml  # or somewhere else
             ```
         2. Restore the original `docker-compose.yml` so it doesn't conflict with the upstream changes
             ```sh
@@ -20,7 +20,7 @@
             ```
         4. Bring back your `docker-compose.yml`
             ```sh
-            mv /tmp/my/docker-compose.yml docker-compose.yml
+            mv /tmp/my-docker-compose.yml docker-compose.yml
             ```
     - If any modifications are needed to `docker-compose.yml` in the future, we will provide a notice.
     - Also, PostgreSQL v12.2 (`docker.io/postgres:12.2-alpine`) has been used in this compose file, but we highly recommend that you upgrade it to a newer version (e.g., `docker.io/postgres:16-alpine`).
