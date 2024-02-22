@@ -23,6 +23,8 @@
             mv /tmp/my/docker-compose.yml docker-compose.yml
             ```
     - If any modifications are needed to `docker-compose.yml` in the future, we will provide a notice.
+    - Also, PostgreSQL v12.2 (`docker.io/postgres:12.2-alpine`) has been used in this compose file, but we highly recommend that you upgrade it to a newer version (e.g., `docker.io/postgres:16-alpine`).
+        - Note: some manual (painful) operations are needed to upgrade the PostgreSQL major version, so please be careful when performing upgrades: <https://github.com/docker-library/postgres/issues/37>
 
 # v20240214
 
