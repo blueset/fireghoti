@@ -8,15 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@bull-board/api':
-        specifier: 5.14.1
-        version: 5.14.1(@bull-board/ui@5.14.1)
-      '@bull-board/ui':
-        specifier: 5.14.1
-        version: 5.14.1
-      '@napi-rs/cli':
-        specifier: ^2.18.0
-        version: 2.18.0
       gulp:
         specifier: 4.0.2
         version: 4.0.2
@@ -35,9 +26,6 @@ importers:
       js-yaml:
         specifier: 4.1.0
         version: 4.1.0
-      seedrandom:
-        specifier: ^3.0.5
-        version: 3.0.5
     devDependencies:
       '@biomejs/biome':
         specifier: 1.5.3
@@ -63,18 +51,9 @@ importers:
       '@types/node':
         specifier: 20.11.19
         version: 20.11.19
-      add:
-        specifier: 2.0.6
-        version: 2.0.6
-      cross-env:
-        specifier: 7.0.3
-        version: 7.0.3
       execa:
         specifier: 8.0.1
         version: 8.0.1
-      install-peers:
-        specifier: ^1.0.4
-        version: 1.0.4
       pnpm:
         specifier: 8.15.3
         version: 8.15.3
@@ -3281,6 +3260,7 @@ packages:
     resolution: {integrity: sha512-lfSRT7cs3iC4L+kv9suGYQEezn5Nii7Kpu+THsYVI0tA1Vh59LH45p4QADaD7hvIkmOz79eEGtoKQ9nAkAPkzA==}
     engines: {node: '>= 10'}
     hasBin: true
+    dev: true
 
   /@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1:
     resolution: {integrity: sha512-54/JRvkLIzzDWshCWfuhadfrfZVPiElY8Fcgmg1HroEly/EDSszzhBAsarCux+D/kOslTRquNzuyGSmUSTTHGg==}
@@ -5125,10 +5105,6 @@ packages:
     resolution: {integrity: sha512-Y9rRfJG5jcKOE0CLisYbojUjIrIEE7AGMzA/Sm4BslANhbS+cDMpgBdcPT91oJ7OuJ9hYJBx59RjbhxVnrF8Xg==}
     engines: {node: '>=0.4.0'}
     hasBin: true
-    dev: true
-
-  /add@2.0.6:
-    resolution: {integrity: sha512-j5QzrmsokwWWp6kUcJQySpbG+xfOBqqKnup3OIk1pz+kB/80SLorZ9V8zHFLO92Lcd+hbvq8bT+zOGoPkmBV0Q==}
     dev: true
 
   /adm-zip@0.5.10:
@@ -9031,12 +9007,6 @@ packages:
       pify: 2.3.0
     dev: true
 
-  /executioner@2.0.1:
-    resolution: {integrity: sha512-idZAlKsxEZASjaIqP4PQ1txyS1bOcDwWCHy/8p5oMmLGV0XNCQPD6WWAOwJCUVsWItWzAN2BEash5N78PliaIw==}
-    dependencies:
-      mixly: 1.0.0
-    dev: true
-
   /exit@0.1.2:
     resolution: {integrity: sha512-Zk/eNKV2zbjpKzrsQ+n1G6poVbErQxJ0LBOJXaKZ1EViLzH+hrLu9cdXI4zw9dBQJslwBEpbQ2P1oS7nDxs6jQ==}
     engines: {node: '>= 0.8.0'}
@@ -9616,11 +9586,6 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
-
-  /fulcon@1.0.2:
-    resolution: {integrity: sha512-vYwUBqbdo9XK0NmN7cFmURmy2T1YHpEsTCbxGO3aErxx6a0Z/HkWXcqcPkk7yOuJ74mSAHGWGBSBBd6v3GKebA==}
-    engines: {node: '>= 0.10'}
-    dev: true
 
   /function-bind@1.1.1:
     resolution: {integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==}
@@ -10467,13 +10432,6 @@ packages:
     resolution: {integrity: sha512-gZHC7f/cJgXz7MXlHFBxPVMsvIbev1OQN1uKQYKVJDydGNm9oYf9JstbU4Atnh/eSvk41WtEovoRm+8IF686xg==}
     hasBin: true
     dev: false
-
-  /install-peers@1.0.4:
-    resolution: {integrity: sha512-0POFG2zRn/rt0uO1tUekCDhq6t6l3HDjxR42+Hcbjmj75Gv4yuqEfMe63HC76piO1lsctAp/cQW+Ny+i/SxTlg==}
-    requiresBuild: true
-    dependencies:
-      executioner: 2.0.1
-    dev: true
 
   /internal-slot@1.0.5:
     resolution: {integrity: sha512-Y+R5hJrzs52QCG2laLn4udYVnxsfny9CpOhNhUvk/SSSVyF6T27FzRbF0sroPidSu3X8oEAkOn2K804mjpt6UQ==}
@@ -12842,13 +12800,6 @@ packages:
       for-in: 1.0.2
       is-extendable: 1.0.1
     dev: false
-
-  /mixly@1.0.0:
-    resolution: {integrity: sha512-ks+xIMVeIDwuYK4LnOMXTfmiEI8oo3tFNFirpHd60C4r2H0wMwKN5/qHCrFBKFK+BYx2Gp7qs+evUJw7QO9D2w==}
-    engines: {node: '>= 0.10'}
-    dependencies:
-      fulcon: 1.0.2
-    dev: true
 
   /mkdirp@0.5.6:
     resolution: {integrity: sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==}
@@ -15227,6 +15178,7 @@ packages:
 
   /seedrandom@3.0.5:
     resolution: {integrity: sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==}
+    dev: true
 
   /seek-bzip@1.0.6:
     resolution: {integrity: sha512-e1QtP3YL5tWww8uKaOCQ18UxIT2laNBXHjV/S2WYCiK4udiv8lkG89KRIoCjUagnAmCBurjF4zEVX2ByBbnCjQ==}
