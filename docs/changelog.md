@@ -2,7 +2,7 @@
 
 Critical security updates are indicated by the :warning: icon.
 
-## Unreleased
+## v20240222
 
 - Enhance Mastodon post import feature (!10652)
 - Minor style change in the web client
