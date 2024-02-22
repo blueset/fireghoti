@@ -2275,3 +2275,8 @@ emojiModPermDescription: "Ajouter : Autoriser cet utilisateur à ajouter de no
   utilisateur à modifier le nom/la catégorie/le mot-dièse/la licence des émojis personnalisés
   existants.\nAutoriser tout : « Ajouter + Modifier » + Autoriser cet utilisateur
   à suppimer des émojis personalisés existants."
+makePrivate: Rendre privé
+privateDescription: Rendre visible uniquement pour vous
+private: Privé
+makePrivateConfirm: Cette opération enverra une demande de suppression aux serveurs
+  distants et changera la visibilité au privé. Voulez-vous continuer ?
