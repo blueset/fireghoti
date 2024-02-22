@@ -42,6 +42,7 @@ packages/backend/assets/instance.css
 animated.svg
 cliff.toml
 docker-compose.yml
+docker-compose.example.yml
 firefish.apache.conf
 firefish.nginx.conf
 flake.lock

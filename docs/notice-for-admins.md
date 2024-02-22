@@ -1,3 +1,29 @@
+# Unreleased
+
+## For Docker/Podman users
+
+- You only need to pull the new container image (`docker/podman pull`) to upgrade your server, so we assume that many of you don't update the code (`git pull --ff`), but it's still worth noting here that we have renamed `docker-compose.yml` to `docker-compose.example.yml` in the repository, and `docker-compose.yml` is now set to be untracked by git.
+    - Since `docker-compose.yml` may be edited by users (e.g., change port number, add reverse proxy), it shouldn't have been tracked by git in the first place.
+    - If you want to update the repository (`git pull --ff`), please take the following steps to keep your `docker-compose.yml`:
+        1. Backup (make a copy) your `docker-compose.yml`
+            ```sh
+            cp docker-compose.yml /tmp/my-docker-compose.yml
+            ```
+        2. Restore the original `docker-compose.yml` so it doesn't conflict with the upstream changes
+            ```sh
+            git checkout -- docker-compose.yml
+            ```
+        3. Pull the new code
+            ```sh
+            git switch main
+            git pull --ff
+            ```
+        4. Bring back your `docker-compose.yml`
+            ```sh
+            mv /tmp/my/docker-compose.yml docker-compose.yml
+            ```
+    - If any modifications are needed to `docker-compose.yml` in the future, we will provide a notice.
+
 # v20240214
 
 ## For systemd/pm2 users

@@ -5,18 +5,21 @@
 
 ## `docker-compose`
 
-There is a `docker-compose.yml` in the root of the project that you can use to build the container from source
+There are example config files that you can use to build the container from source
 
+- docker-compose.example.yml (**compose file**)
 - .config/docker_example.env (**db config settings**)
 - .config/default.yml (**firefish server settings**)
 
 ## Configuring
 
-Rename the files:
+Copy the files:
 
-`cp .config/example.yml .config/default.yml`
-
-`cp .config/docker_example.env .config/docker.env`
+```sh
+cp docker-compose.example.yml docker-compose.yml
+cp .config/example.yml .config/default.yml
+cp .config/docker_example.env .config/docker.env
+```
 
 then edit them according to your environment.
 You can configure `docker.env` with anything you like, but you will have to pay attention to the `default.yml` file:
@@ -37,12 +40,3 @@ Copy `docker-compose.yml` and the `config/` to a directory, then run the **docke
 NOTE: This will take some time to come fully online, even after download and extracting the container images, and it may emit some error messages before completing successfully. Specifically, the `db` container needs to initialize and so isn't available to the `web` container right away. Only once the `db` container comes online does the `web` container start building and initializing the firefish tables.
 
 Once the server is up you can use a web browser to access the web interface at `http://serverip:3000` (where `serverip` is the IP of the server you are running the firefish server on).
-
-## Docker for development
-
-```sh
-cd dev/
-docker-compose build
-docker-compose run --rm web pnpm run init
-docker-compose up -d
-```
