@@ -47,7 +47,7 @@ copyLink: "Copier le lien"
 delete: "Supprimer"
 deleteAndEdit: "Supprimer et réécrire"
 deleteAndEditConfirm: "Êtes-vous sûr·e de vouloir supprimer cette publication et la
-  reformuler ? Vous perdrez toutes les réactions, boosts et réponses liées."
+  reformuler ? Vous perdrez toutes les réactions, boosts et réponses liées."
 addToList: "Ajouter à une liste"
 sendMessage: "Envoyer un message"
 copyUsername: "Copier le nom d'utilisateur·rice"
@@ -56,7 +56,7 @@ reply: "Répondre"
 loadMore: "Charger plus"
 showMore: "Afficher plus"
 showLess: "Fermer"
-youGotNewFollower: "vous a abonné"
+youGotNewFollower: "s'est abonné à vous"
 receiveFollowRequest: "Demande d'abonnement reçue"
 followRequestAccepted: "La demande d'abonnement a été acceptée"
 mention: "Mentionner"
@@ -67,9 +67,9 @@ import: "Importer"
 export: "Exporter"
 files: "Fichiers"
 download: "Télécharger"
-driveFileDeleteConfirm: "Êtes-vous sûr·e de vouloir supprimer le fichier \"{name}\"\
-  \ ? Il sera retiré de toutes les publications qui le contiennent comme pièce-jointe."
-unfollowConfirm: "Désirez-vous vous désabonner de {name} ?"
+driveFileDeleteConfirm: "Êtes-vous sûr·e de vouloir supprimer le fichier « {name} » ?
+  Il sera retiré de toutes les publications qui le contiennent comme pièce-jointe."
+unfollowConfirm: "Désirez-vous vous désabonner de {name} ?"
 exportRequested: "Vous avez demandé une exportation. L'opération pourrait prendre
   un peu de temps. Une fois terminée, le fichier résultant sera ajouté au Drive."
 importRequested: "Vous avez initié une importation. Cela pourrait prendre un peu de
@@ -80,7 +80,7 @@ note: "Publier"
 notes: "Publications"
 following: "Abonnements"
 followers: "Abonné·e·s"
-followsYou: "Vous suit"
+followsYou: "S'abonne à vous"
 createList: "Créer une liste"
 manageLists: "Gérer les listes"
 error: "Erreur"
@@ -118,7 +118,7 @@ add: "Ajouter"
 reaction: "Réaction"
 reactionSetting: "Réactions à afficher dans le sélecteur de réactions"
 reactionSettingDescription2: "Déplacer pour réorganiser, cliquer pour effacer, utiliser
-  « + » pour ajouter."
+  « + » pour ajouter."
 rememberNoteVisibility: "Se souvenir des paramètres de visibilité des publications"
 attachCancel: "Supprimer le fichier attaché"
 markAsSensitive: "Marquer comme sensible (NSFW)"
@@ -130,10 +130,10 @@ block: "Bloquer"
 unblock: "Débloquer"
 suspend: "Suspendre"
 unsuspend: "Annuler la suspension"
-blockConfirm: "Êtes-vous sûr·e de vouloir bloquer ce compte ?"
-unblockConfirm: "Êtes-vous sûr·e de vouloir débloquer ce compte ?"
-suspendConfirm: "Êtes-vous sûr·e de vouloir suspendre ce compte ?"
-unsuspendConfirm: "Êtes-vous sûr·e de vouloir annuler la suspension de ce compte ?"
+blockConfirm: "Êtes-vous sûr·e de vouloir bloquer ce compte ?"
+unblockConfirm: "Êtes-vous sûr·e de vouloir débloquer ce compte ?"
+suspendConfirm: "Êtes-vous sûr·e de vouloir suspendre ce compte ?"
+unsuspendConfirm: "Êtes-vous sûr·e de vouloir annuler la suspension de ce compte ?"
 selectList: "Sélectionner une liste"
 selectAntenna: "Sélectionner une antenne"
 selectWidget: "Sélectionner un widget"
@@ -160,8 +160,8 @@ flagAsBotDescription: "Si ce compte est géré de manière automatisée, choisis
 flagAsCat: "Ce compte est un chat"
 flagAsCatDescription: "Vous aurez des oreilles de chat et parlerez comme un chat !"
 flagShowTimelineReplies: "Afficher les réponses dans le fil"
-autoAcceptFollowed: "Accepter automatiquement les demandes d'abonnement venant d'utilisateur·rice·s
-  que vous suivez"
+autoAcceptFollowed: "Accepter automatiquement les demandes d'abonnement venant d'utilisateurs
+  auxquels vous êtes abonné"
 addAccount: "Ajouter un compte"
 loginFailed: "Échec de la connexion"
 showOnRemote: "Ouvrir la page d'origine"
@@ -171,14 +171,14 @@ setWallpaper: "Définir le fond d'écran"
 removeWallpaper: "Supprimer le fond d'écran"
 searchWith: "Recherche : {q}"
 youHaveNoLists: "Vous n'avez aucune liste"
-followConfirm: "Êtes-vous sûr·e de vouloir suivre {name} ?"
+followConfirm: "Êtes-vous sûr·e de vouloir vous abonner à {name} ?"
 proxyAccount: "Compte proxy"
 proxyAccountDescription: "Un compte proxy se comporte, dans certaines conditions,
   comme un·e abonné·e distant·e pour les utilisateur·rice·s d'autres serveurs. Par
   exemple, quand un·e utilisateur·rice local ajoute un·e utilisateur·rice distant·e
   à une liste, ses publications ne seront pas visibles sur le serveur si personne
-  ne suit cet·te utilisateur·rice. Le compte proxy va donc suivre cet·te utilisateur·rice
-  pour que ses publications soient acheminées."
+  n'est abonné à cet·te utilisateur·rice. Le compte proxy va donc s'abonner à cet·te
+  utilisateur·rice pour que ses publications soient acheminées."
 host: "Serveur distant"
 selectUser: "Sélectionner un·e utilisateur·rice"
 recipient: "Destinataire"
@@ -212,7 +212,7 @@ clearQueueConfirmText: "Les publications non distribuées ne seront pas délivr�
   Normalement, vous n'avez pas besoin d'effectuer cette opération."
 clearCachedFiles: "Vider le cache"
 clearCachedFilesConfirm: "Êtes-vous sûr·e de vouloir vider tout le cache de fichiers
-  distants ?"
+  distants ?"
 blockedInstances: "Serveurs bloqués"
 blockedInstancesDescription: "Listez les serveurs que vous désirez bloquer, un par
   ligne. Ces serveurs ne seront plus en capacité d'interagir avec votre serveur."
@@ -221,7 +221,7 @@ mutedUsers: "Utilisateur·rice·s en sourdine"
 blockedUsers: "Utilisateur·rice·s bloqué·e·s"
 noUsers: "Il n'y a pas d'utilisateur·rice·s"
 editProfile: "Modifier votre profil"
-noteDeleteConfirm: "Êtes-vous sûr·e de vouloir supprimer cette publication ?"
+noteDeleteConfirm: "Êtes-vous sûr·e de vouloir supprimer cette publication ?"
 pinLimitExceeded: "Vous ne pouvez pas épingler plus de publications"
 intro: "L'installation de Firefish est terminée ! Veuillez créer un compte administrateur."
 done: "Terminé"
@@ -256,9 +256,9 @@ announcements: "Annonces"
 imageUrl: "URL de l'image"
 remove: "Supprimer"
 removed: "Supprimé"
-removeAreYouSure: "Êtes-vous sûr·e de vouloir supprimer \"{x}\" ?"
-deleteAreYouSure: "Êtes-vous sûr·e de vouloir supprimer \"{x}\" ?"
-resetAreYouSure: "Voulez-vous réinitialiser ?"
+removeAreYouSure: "Êtes-vous sûr·e de vouloir supprimer « {x} » ?"
+deleteAreYouSure: "Êtes-vous sûr·e de vouloir supprimer « {x} » ?"
+resetAreYouSure: "Voulez-vous réinitialiser ?"
 saved: "Enregistré"
 messaging: "Discuter"
 upload: "Téléverser"
@@ -325,7 +325,7 @@ whenServerDisconnected: "Lorsque la connexion au serveur est perdue"
 disconnectedFromServer: "Déconnecté·e du serveur"
 reload: "Rafraîchir"
 doNothing: "Ignorer"
-reloadConfirm: "Voulez-vous recharger le fil ?"
+reloadConfirm: "Voulez-vous recharger le fil ?"
 watch: "Surveiller"
 unwatch: "Ne plus surveiller"
 accept: "Autoriser"
@@ -359,7 +359,7 @@ backgroundImageUrl: "URL de l'image d'arrière-plan"
 basicInfo: "Informations basiques"
 pinnedUsers: "Utilisateur·rice épinglé·e"
 pinnedUsersDescription: "Listez les utilisateur·rice·s que vous souhaitez voir épinglé·e·s
-  sur la page \"Découvrir\", un·e par ligne."
+  sur la page « Découvrir », un·e par ligne."
 pinnedPages: "Pages épinglées"
 pinnedPagesDescription: "Inscrivez le chemin des Pages que vous souhaitez épingler
   en haut de la page du serveur. Séparez les d'un retour à la ligne."
@@ -386,7 +386,7 @@ antennaKeywordsDescription: "Séparer avec des espaces pour la condition AND. S�
   avec un saut de ligne pour une condition OR."
 notifyAntenna: "Je souhaite recevoir les notifications des nouvelles publications"
 withFileAntenna: "Publications ayant des pièces-jointes uniquement"
-enableServiceworker: "Activer ServiceWorker"
+enableServiceworker: "Activer les notifications poussées pour votre navigateur"
 antennaUsersDescription: "Saisissez un seul nom d'utilisateur·rice par ligne"
 caseSensitive: "Sensible à la casse"
 withReplies: "Inclure les réponses"
@@ -397,7 +397,7 @@ silence: "Mettre en sourdine"
 silenceConfirm: "Êtes-vous sûr·e de vouloir mettre l'utilisateur·rice en sourdine ?"
 unsilence: "Annuler la sourdine"
 unsilenceConfirm: "Êtes-vous sûr·e de vouloir annuler la mise en sourdine de cet·te
-  utilisateur·rice ?"
+  utilisateur·rice ?"
 popularUsers: "Utilisateur·rice·s populaires"
 recentlyUpdatedUsers: "Utilisateur·rice·s actif·ve·s récemment"
 recentlyRegisteredUsers: "Utilisateur·rice·s récemment inscrit·e·s"
@@ -420,7 +420,7 @@ lastUsed: "Dernier utilisé"
 unregister: "Se désinscrire"
 passwordLessLogin: "Se connecter sans mot de passe"
 resetPassword: "Réinitialiser le mot de passe"
-newPasswordIs: "Votre nouveau mot de passe est \"{password}\""
+newPasswordIs: "Votre nouveau mot de passe est « {password} »"
 reduceUiAnimation: "Réduire les animations dans l'interface"
 share: "Partager"
 notFound: "Non trouvé"
@@ -452,7 +452,7 @@ retype: "Confirmation"
 noteOf: "Publications de {user}"
 inviteToGroup: "Inviter dans un groupe"
 quoteAttached: "Avec citation"
-quoteQuestion: "Souhaitez-vous ajouter une citation ?"
+quoteQuestion: "Souhaitez-vous ajouter une citation ?"
 noMessagesYet: "Pas encore de discussion"
 newMessageExists: "Vous avez un nouveau message"
 onlyOneFileCanBeAttached: "Vous ne pouvez joindre qu'un seul fichier au message"
@@ -538,7 +538,7 @@ objectStorageUseSSLDesc: "Désactivez cette option si vous n'utilisez pas HTTPS 
 objectStorageUseProxy: "Se connecter via proxy"
 objectStorageUseProxyDesc: "Désactivez cette option si vous n'utilisez pas de proxy
   pour la connexion API"
-objectStorageSetPublicRead: "Régler sur « public » lors de l'envoi"
+objectStorageSetPublicRead: "Régler sur « public » lors de l'envoi"
 serverLogs: "Journal du serveur"
 deleteAll: "Supprimer tout"
 showFixedPostForm: "Afficher le formulaire de publication en haut du fil d'actualité"
@@ -573,7 +573,7 @@ script: "Script"
 disablePagesScript: "Désactiver AiScript sur les Pages"
 updateRemoteUser: "Mettre à jour les informations de l'utilisateur·rice distant·e"
 deleteAllFiles: "Supprimer tous les fichiers"
-deleteAllFilesConfirm: "Êtes-vous sûr·e de vouloir supprimer tous les fichiers ?"
+deleteAllFilesConfirm: "Êtes-vous sûr·e de vouloir supprimer tous les fichiers ?"
 removeAllFollowing: "Retenir tous les abonnements"
 removeAllFollowingDescription: "Se désabonner de tous les comptes de {host}. Veuillez
   lancer cette action uniquement si le serveur n'existe plus."
@@ -591,7 +591,7 @@ relays: "Relais"
 addRelay: "Ajouter un relais"
 inboxUrl: "URL de boîte de récéption"
 addedRelays: "Relais ajoutés"
-serviceworkerInfo: "Devrait être activé pour les notifications push."
+serviceworkerInfo: "Devrait être activé pour les notifications poussées."
 deletedNote: "Publication supprimée"
 invisibleNote: "Publication invisible"
 enableInfiniteScroll: "Activer le défilement infini"
@@ -606,8 +606,7 @@ description: "Description"
 describeFile: "Ajouter une description"
 enterFileDescription: "Saisissez une description"
 author: "Auteur·rice"
-leaveConfirm: "Vous avez des modifications non-sauvegardées. Voulez-vous les ignorer
-  ?"
+leaveConfirm: "Vous avez des modifications non-sauvegardées. Voulez-vous les ignorer ?"
 manage: "Gestion"
 plugins: "Extensions"
 deck: "Deck"
@@ -711,7 +710,7 @@ repliesCount: "Nombre de réponses envoyées"
 renotesCount: "Nombre de boosts que vous avez envoyé"
 repliedCount: "Nombre de réponses reçues"
 renotedCount: "Nombre de vos publications boostées"
-followingCount: "Nombre de comptes suivis"
+followingCount: "Mes abonnements"
 followersCount: "Nombre d'abonnés"
 sentReactionsCount: "Nombre de réactions envoyées"
 receivedReactionsCount: "Nombre de réactions reçues"
@@ -742,9 +741,9 @@ useSystemFont: "Utiliser la police par défaut du système"
 clips: "Clips"
 experimentalFeatures: "Fonctionnalités expérimentales"
 developer: "Développeur"
-makeExplorable: "Rendre le compte visible sur la page \"Découvrir\""
+makeExplorable: "Rendre le compte visible sur la page « Découvrir »"
 makeExplorableDescription: "Si vous désactivez cette option, votre compte n'apparaîtra
-  pas sur la page \"Découvrir\"."
+  pas sur la page « Découvrir »."
 showGapBetweenNotesInTimeline: "Afficher un écart entre les publications du fil d'actualité"
 duplicate: "Duliquer"
 left: "Gauche"
@@ -752,7 +751,7 @@ center: "Centrer"
 wide: "Large"
 narrow: "Condensé"
 reloadToApplySetting: "Vos paramètres seront appliqués lorsque vous rechargerez la
-  page. Souhaitez-vous recharger ?"
+  page. Souhaitez-vous recharger ?"
 needReloadToApply: "Ce paramètre s'appliquera après un rechargement."
 showTitlebar: "Afficher la barre de titre"
 clearCache: "Vider le cache"
@@ -774,8 +773,8 @@ advanced: "Avancé"
 value: "Valeur"
 createdAt: "Date de création"
 updatedAt: "Mis à jour le"
-saveConfirm: "Voulez-vous sauvegarder les modifications ?"
-deleteConfirm: "Confirmez-vous la suppression ?"
+saveConfirm: "Voulez-vous sauvegarder les modifications ?"
+deleteConfirm: "Confirmez-vous la suppression ?"
 invalidValue: "Cette valeur est invalide."
 registry: "Registre"
 closeAccount: "Fermer le compte"
@@ -799,12 +798,12 @@ showingPastTimeline: "Un fil âgé est affiché"
 clear: "Effacer"
 markAllAsRead: "Tout marquer comme lu"
 goBack: "Retour"
-unlikeConfirm: "Êtes-vous sûr·e de ne plus vouloir aimer cette publication ?"
+unlikeConfirm: "Êtes-vous sûr·e de ne plus vouloir aimer cette publication ?"
 fullView: "Plein écran"
 quitFullView: "Quitter le plein écran"
 addDescription: "Ajouter une description"
 userPagePinTip: "Vous pouvez afficher des publications ici en sélectionnant l'option
-  « Épingler au profil » dans le menu de chaque publication."
+  « Épingler au profil » dans le menu de chaque publication."
 notSpecifiedMentionWarning: "Vous avez mentionné des utilisateur·rice·s qui ne font
   pas partie de la liste des destinataires"
 info: "Informations"
@@ -890,15 +889,15 @@ classic: "Centré"
 muteThread: "Masquer cette discussion"
 unmuteThread: "Ne plus masquer le fil"
 ffVisibility: "Visibilité des abonnés/abonnements"
-ffVisibilityDescription: "Permet de configurer qui peut voir les personnes que tu
-  suis et les personnes qui te suivent."
+ffVisibilityDescription: "Permet de configurer qui peut voir vos abonnements et vos
+  abonnés."
 continueThread: "Continuer le fil"
-deleteAccountConfirm: "Ce compte sera définitivement supprimé. Êtes vous certain ?"
+deleteAccountConfirm: "Ce compte sera définitivement supprimé. Êtes vous certain ?"
 incorrectPassword: "Le mot de passe est incorrect."
-voteConfirm: "Confirmez-vous votre vote pour « {choice} » ?"
+voteConfirm: "Confirmez-vous votre vote pour « {choice} » ?"
 hide: "Masquer"
 leaveGroup: "Quitter le groupe"
-leaveGroupConfirm: "Êtes vous sûr de vouloir quitter \"{name}\" ?"
+leaveGroupConfirm: "Êtes vous sûr de vouloir quitter « {name} » ?"
 useDrawerReactionPickerForMobile: "Afficher le sélecteur de réactions en tant que
   panneau sur mobile"
 welcomeBackWithName: "Heureux de vous revoir, {name}"
@@ -923,7 +922,7 @@ oneDay: "1 jour"
 oneWeek: "1 semaine"
 rateLimitExceeded: "Limite de taux dépassée"
 cropImage: "Recadrer l'image"
-cropImageAsk: "Voulez-vous recadrer cette image ?"
+cropImageAsk: "Voulez-vous recadrer cette image ?"
 file: "Fichier"
 reverse: "Inverser"
 colored: "Coloré"
@@ -979,7 +978,7 @@ _email:
   _follow:
     title: "Vous avez un nouvel abonné"
   _receiveFollowRequest:
-    title: "Vous avez reçu une demande de suivi"
+    title: "Vous avez reçu une demande d'abonnement"
 _plugin:
   install: "Installation des extensions"
   installWarn: "N'installez que des extensions provenant de sources fiables."
@@ -1004,7 +1003,7 @@ _aboutFirefish:
   pleaseDonateToFirefish: Merci de considérer de faire un don pour soutenir le développement
     de Firefish.
   sponsors: Sponsors Firefish
-  donateTitle: Firefish vous plaît ?
+  donateTitle: Firefish vous plaît ?
   pleaseDonateToHost: Également, veuillez envisager de faire un don à votre serveur
     d'accueil, {host}, pour contribuer à couvrir ses frais de fonctionnement.
   donateHost: Faire un don à {host}
@@ -1056,7 +1055,7 @@ _mfm:
   jelly: "Animation (Gelée)"
   jellyDescription: "Donne une animation d'étirement comme de la gelée."
   tada: "Animation (Tada)"
-  tadaDescription: "Donne une animation qui donne une impression de \"Tada !\"."
+  tadaDescription: "Donne une animation qui donne une impression de « Tada ! »."
   jump: "Animation (Saut)"
   jumpDescription: "Donne une animation qui saute."
   bounce: "Animation (Rebond)"
@@ -1189,8 +1188,7 @@ _theme:
   inputConstantName: "Insérez un nom de constante"
   importInfo: "Vous pouvez importer un thème vers l'éditeur de thèmes en saisissant
     son code ici"
-  deleteConstantConfirm: "Êtes-vous sûr·e de vouloir supprimer la constante {const}
-    ?"
+  deleteConstantConfirm: "Êtes-vous sûr·e de vouloir supprimer la constante {const} ?"
   keys:
     accent: "Accentuation"
     bg: "Arrière-plan"
@@ -1264,14 +1262,14 @@ _tutorial:
   step1_2: "On va vous installer. Vous serez opérationnel en un rien de temps !"
   step2_1: "Tout d'abord, remplissez votre profil."
   step2_2: "En fournissant quelques informations sur qui vous êtes, il sera plus facile
-    pour les autres de savoir s'ils veulent voir vos publcations ou vous suivre."
-  step3_1: "Maintenant il est temps de suivre des gens !"
-  step3_2: "Vos fil d'actualité Principal et Social sont basés sur les personnes que
-    vous suivez, alors essayez de suivre quelques comptes pour commencer.\nCliquez
-    sur le cercle plus en haut à droite d'un profil pour le suivre."
+    pour les autres de savoir s'ils veulent voir vos publcations ou s'abonner à vous."
+  step3_1: "Maintenant il est temps de vous abonner à des gens !"
+  step3_2: "Vos fils d'actualités Principal et Social sont basés sur les personnes
+    que vous êtes abonné, alors essayez de vous abonner à quelques comptes pour commencer.\n
+    Cliquez sur le cercle « plus » en haut à droite d'un profil pour vous abonner."
   step4_1: "On y va."
   step4_2: "Pour votre première publication, certaines personnes aiment faire une
-    {introduction} ou un simple 'Bonjour tout le monde !'"
+    {introduction} ou un simple « Bonjour tout le monde ! »"
   step5_1: "Des fils, des fils d'actualité partout !"
   step5_2: "Votre serveur a {timelines} fils différents activés."
   step5_3: "Le fil {icon} Principal est l'endroit où vous pouvez voir les publications
@@ -1283,10 +1281,10 @@ _tutorial:
     des serveurs recommandés par vos administrateurs."
   step5_7: "Le fil {icon} Global est l'endroit où vous pouvez voir les publications
     de tout les autres serveurs connectés."
-  step6_1: "Alors quel est cet endroit ?"
+  step6_1: "Alors quel est cet endroit ?"
   step6_2: "Eh bien, vous ne venez pas de rejoindre Firefish. Vous avez rejoint un
     portail vers le Fediverse, un réseau interconnecté de milliers de serveurs, appelés
-    \"instances\"."
+    « instances »."
   step6_3: "Chaque serveur fonctionne différemment, et tous les serveurs n'utilisent
     pas Firefish. Cependant, celui-ci le fait ! C'est un peu délicat, mais vous aurez
     le coup de main en un rien de temps."
@@ -1317,7 +1315,7 @@ _2fa:
   whyTOTPOnlyRenew: L'application d'authentification ne peut pas être supprimée tant
     qu'une clé de sécurité est enregistrée.
   securityKeyName: Entrez un nom de clé
-  removeKeyConfirm: Voulez-vous vraiment supprimer la clé {name} ?
+  removeKeyConfirm: Voulez-vous vraiment supprimer la clé {name} ?
   renewTOTP: Reconfigurer l'application d'authentification
   renewTOTPConfirm: Cela entraînera l'arrêt de fonctionnement des codes de vérification
     provenant de votre application précédente
@@ -1339,7 +1337,7 @@ _permissions:
   "read:favorites": "Afficher les favoris"
   "write:favorites": "Gérer les favoris"
   "read:following": "Voir les informations de vos abonnements"
-  "write:following": "Abonnements/Se désabonner"
+  "write:following": "S'abonner ou se désabonner d'autres comptes"
   "read:messaging": "Voir vos discussions"
   "write:messaging": "Gérer les discussions"
   "read:mutes": "Voir les comptes masqués"
@@ -1363,9 +1361,9 @@ _permissions:
   "read:gallery-likes": "Voir vos favoris de la galerie"
   "write:gallery-likes": "Gérer vos favoris de la galerie"
 _auth:
-  shareAccess: "Autoriser \"{name}\" à accéder à votre compte ?"
+  shareAccess: "Autoriser « {name} » à accéder à votre compte ?"
   shareAccessAsk: "Voulez-vous vraiment autoriser cette application à accéder à votre
-    compte ?"
+    compte ?"
   permissionAsk: "Cette application nécessite les autorisations suivantes :"
   pleaseGoBack: "Veuillez retourner à l'application"
   callback: "Retour vers l'application"
@@ -1374,8 +1372,7 @@ _auth:
   allPermissions: Accès complet au compte
 _antennaSources:
   all: "Toutes les publications"
-  homeTimeline: "Publications provenant des utilisateur·rice·s auxquel·les je suis
-    abonné"
+  homeTimeline: "Publications provenant de vos abonnements"
   users: "Publications venant de la part d'utilisateur·rice·s précis"
   userList: "Publications venant d'une liste spécifique"
   userGroup: "Publications venant d'utilisateur·rice·s du groupe spécifié"
@@ -1461,10 +1458,10 @@ _postForm:
   quotePlaceholder: "Citez cette publication…"
   channelPlaceholder: "Publier sur une chaîne…"
   _placeholders:
-    a: "Quoi de neuf ?"
-    b: "Il s'est passé quelque chose ?"
+    a: "Quoi de neuf ?"
+    b: "Il s'est passé quelque chose ?"
     c: "Qu'avez-vous en tête ?"
-    d: "Désirez-vous publier quelques mots ?"
+    d: "Désirez-vous publier quelques mots ?"
     e: "Commencez à écrire…"
     f: "En attente de vos écrits…"
 _profile:
@@ -1803,7 +1800,7 @@ _pages:
       _for:
         arg1: "Compter"
         arg2: "Action"
-    typeError: "Le slot {slot} accepte \"{expect}\" mais a \"{actual}\" !"
+    typeError: "Le slot {slot} accepte « {expect} » mais a « {actual} » !"
     thereIsEmptySlot: "Slot {slot} est vide !"
     types:
       string: "Texte"
@@ -1828,15 +1825,15 @@ _notification:
   youGotPoll: "{name} a participé à votre sondage"
   youGotMessagingMessageFromUser: "{name} vous envoyé un message"
   youGotMessagingMessageFromGroup: "Un message a été envoyé au groupe {name}"
-  youWereFollowed: "Vous suit"
+  youWereFollowed: "s'est abonné à vous"
   youReceivedFollowRequest: "Vous avez reçu une demande d'abonnement"
   yourFollowRequestAccepted: "Votre demande d'abonnement a été accepté"
   youWereInvitedToGroup: "{userName} vous a invité à un groupe"
   pollEnded: "Les résultats du sondage sont disponibles"
-  emptyPushNotificationMessage: "Les notifications push ont été mises à jour"
+  emptyPushNotificationMessage: "Les notifications poussées ont été mises à jour"
   _types:
     all: "Toutes"
-    follow: "Nouvel·le abonné·e"
+    follow: "Nouveaux abonnés"
     mention: "Mentions"
     reply: "Réponses"
     renote: "Boosts"
@@ -1849,7 +1846,7 @@ _notification:
     app: "Notifications provenant des apps"
     pollEnded: Fin du sondage
   _actions:
-    followBack: "Suivre"
+    followBack: "s'est abonné à vous"
     reply: "Répondre"
     renote: "Boosts"
   reacted: a réagit à votre publication
@@ -1883,7 +1880,7 @@ _deck:
   renameProfile: Renommer l'espace de travail
   configureColumn: Paramètres de colonne
   deleteProfile: Supprimer l'espace de travail
-  widgetsIntroduction: Sélectionner "Modifier les widgets" dans le menu de la colonne
+  widgetsIntroduction: Sélectionner « Modifier les widgets » dans le menu de la colonne
     et ajouter un widget.
   nameAlreadyExists: Ce nom d'espace de travail existe déjà.
   newProfile: Nouvel espace de travail
@@ -1893,8 +1890,8 @@ manageGroups: Gérer les groupes
 moderation: Modération
 disableDrawer: Ne pas utiliser de menus déroulants
 preferencesBackups: Sauvegarde des préférences
-confirmToUnclipAlreadyClippedNote: Cette publication fait déjà partie du clip "{name}".
-  Voudriez-vous plutôt le supprimer du clip ?
+confirmToUnclipAlreadyClippedNote: Cette publication fait déjà partie du clip « {name} ».
+  Voudriez-vous plutôt le supprimer du clip ?
 instanceSecurity: Sécurité du serveur
 recommended: Recommandé
 recentNDays: Les derniers {n} jours
@@ -1903,7 +1900,7 @@ check: Vérifier
 thereIsUnresolvedAbuseReportWarning: Il y a des signalements non résolus.
 numberOfPageCacheDescription: Augmenter ce nombre augmentera le confort des utilisateur⋅rice⋅s
   mais augmentera la charge de travail du serveur, plus de mémoire sera utilisée.
-logoutConfirm: Confirmer la déconnexion ?
+logoutConfirm: Confirmer la déconnexion ?
 lastActiveDate: Dernière utilisation le
 cannotUploadBecauseNoFreeSpace: Mise en ligne échouée faute de place sur le Drive.
 remoteOnly: Distant seulement
@@ -1964,23 +1961,23 @@ adminCustomCssWarn: Ce paramètre ne devrait être utilisé que si vous savez ce
 swipeOnDesktop: Permettre le style de balayage de fenêtre de mobile sur PC
 moveFromLabel: 'Compte depuis lequel vous migrez :'
 migrationConfirm: "Êtes-vous absolument certain⋅e que vous voulez migrer votre compte
-  vers {account} ? Une fois fait, vous ne pourrez pas revenir en arrière, et vous
+  vers {account} ? Une fois fait, vous ne pourrez pas revenir en arrière, et vous
   ne pourrez plus utiliser le compte actuel normalement à nouveau.\nAussi, assurez-vous
   d'avoir configuré le compte actuel comme le compte depuis lequel vous migrez."
 _preferencesBackups:
   updatedAt: 'Mis à jour le : {date} {time}'
   cannotLoad: Le chargement a échoué
   invalidFile: Format de fichier invalide
-  saveConfirm: Enregistrer la sauvegarde sous le nom {name} ?
-  deleteConfirm: Supprimer la sauvegarde {name} ?
-  nameAlreadyExists: Une sauvegarde nommée "{name}" existe déjà. Merci d'entrer un
-    autre nom.
-  applyConfirm: Voulez-vous vraiment appliquer la sauvegarde "{name} à cet appareil
-    ? Les réglages existants de cet appareil seront écrasés.
+  saveConfirm: Enregistrer la sauvegarde sous le nom {name} ?
+  deleteConfirm: Supprimer la sauvegarde {name} ?
+  nameAlreadyExists: Une sauvegarde nommée « {name} » existe déjà. Merci d'entrer
+    un autre nom.
+  applyConfirm: Voulez-vous vraiment appliquer la sauvegarde « {name} » à cet appareil ?
+    Les réglages existants de cet appareil seront écrasés.
   noBackups: Aucune sauvegarde n'existe. Vous pouvez sauvegarder les paramètres de
-    votre client sur ce serveur en utilisant "Créer une nouvelle sauvegarde".
+    votre client sur ce serveur en utilisant « Créer une nouvelle sauvegarde ».
   createdAt: 'Crée le : {date} {time}'
-  renameConfirm: Renommer la sauvegarde "{old}" en "{new}" ?
+  renameConfirm: Renommer la sauvegarde « {old} » en « {new} » ?
   list: Sauvegardes créées
   saveNew: Faire une nouvelle sauvegarde
   loadFile: Charger depuis le fichier
@@ -2016,7 +2013,7 @@ noThankYou: Non merci
 addInstance: Ajouter un serveur
 renoteMute: Masquer les boosts
 flagSpeakAsCat: Parler comme un chat
-flagSpeakAsCatDescription: Vos messages seront "nyanifiés" en mode chat
+flagSpeakAsCatDescription: Vos messages seront « nyanifiés » en mode chat
 hiddenTags: Hashtags cachés
 hiddenTagsDescription: "Lister les hashtags (sans le #) que vous souhaitez cacher
   de Tendances et Découvrir. Les hashtags cachés sont toujours découvrables par d'autres
@@ -2026,14 +2023,14 @@ userSaysSomethingReason: '{name} a dit {reason}'
 breakFollowConfirm: Êtes vous sûr de vouloir retirer l'abonné ?
 recommendedInstancesDescription: Serveurs recommandés séparés par une nouvelle ligne
   pour apparaître dans le fil recommandé.
-sendPushNotificationReadMessage: Supprimer les notifications push une fois que les
-  notifications ou messages concernés ont été lus
-sendPushNotificationReadMessageCaption: Une notification contenant le texte "{emptyPushNotificationMessage}"
+sendPushNotificationReadMessage: Supprimer les notifications poussées une fois que
+  les notifications ou messages concernés ont été lus
+sendPushNotificationReadMessageCaption: Une notification contenant le texte « {emptyPushNotificationMessage} »
   sera affichée pendant un court instant. Cela peut augmenter la consommation de batterie
   de votre appareil.
 splash: Écran d'Accueil
 pushNotificationNotSupported: Votre navigateur ou serveur ne supporte pas les notifications
-  push
+  poussées
 customMOTDDescription: Messages personnalisé pour le message du jour (sur l'écran
   d'accueil), séparés par des retours à la ligne, affichés au hasard à chaque (re)chargement
   de page.
@@ -2042,7 +2039,7 @@ customSplashIconsDescription: URLs pour les icônes personnalisées de l'écran 
   séparés par des retours à la ligne, qui seront affichées aléatoirement à chaque
   (re)chargement de page. Assurez-vous que les images sont sur des URL statiques,
   de préférence toutes de taille 192x192.
-updateAvailable: Une mise à jour est peut-être disponible !
+updateAvailable: Une mise à jour peut être disponible !
 accountMoved: "L'utilisateur·rice a migré vers un nouveau compte :"
 enableEmojiReactions: Activer les réactions par émojis
 showEmojisInReactionNotifications: Montrer les émojis dans les notifications de réactions
@@ -2064,10 +2061,10 @@ cannotUploadBecauseInappropriate: Ce fichier n'a pas pu être mis en ligne, car 
 beta: Beta
 navbar: Barre de navigation
 shuffle: Mélanger
-pushNotification: Notifications push
-subscribePushNotification: Activer les notifications push
-unsubscribePushNotification: Désactiver les notifications push
-pushNotificationAlreadySubscribed: Notifications push déjà activées
+pushNotification: Notifications poussées
+subscribePushNotification: Activer les notifications possées
+unsubscribePushNotification: Désactiver les notifications poussées
+pushNotificationAlreadySubscribed: Notifications poussées déjà activées
 logoImageUrl: URL de l'image du logo
 moveToLabel: 'Compte vers lequel vous migrez :'
 moveFrom: Migrer vers ce compte depuis un ancien compte
@@ -2137,9 +2134,9 @@ older: ancien
 newer: récent
 accessibility: Accessibilité
 silencedInstancesDescription: Listez les noms de domaine de serveurs que vous voulez
-  masquer. Les comptes des serveurs listés seront traités comme "Masqués", ne pourront
+  masquer. Les comptes des serveurs listés seront traités comme « Masqués », ne pourront
   faire que des demandes d'abonnement, et ne pourront pas mentionner les comptes locaux
-  si non-suivis. Cela n'affectera en rien les serveurs bloqués.
+  si non-abonnés. Cela n'affectera en rien les serveurs bloqués.
 antennasDesc: "Les Antennes affichent de nouvelles publications selon les critères
   que vous indiqués.\nElles peuvent être consultées depuis la page des fils."
 image: Image
@@ -2163,7 +2160,7 @@ enableIdenticonGeneration: Activer la génération d'Identicon
 reactionPickerSkinTone: Couleur de peau des émojis préférée
 verifiedLink: Lien vérifié
 isBot: Ce compte est automatisé
-isLocked: Ce compte nécessite une approbation pour être suivi
+isLocked: Ce compte nécessite une approbation pour être abonné
 origin: Origine
 showPopup: Notifier les utilisateurs avec un popup
 showWithSparkles: Afficher avec des paillettes
@@ -2176,8 +2173,8 @@ removeRecipient: Retirer le destinataire
 removeMember: Retirer un membre
 preventAiLearningDescription: Demandez aux modèles d'IA de tiers de ne pas étudier
   le contenu que vous téléchargez, tel que les publications et les images.
-noGraze: Veuillez désactiver l'extension de navigateur "Graze for Mastodon", car elle
-  interfère avec Firefish.
+noGraze: Veuillez désactiver l'extension de navigateur « Graze for Mastodon », car
+  elle interfère avec Firefish.
 silencedWarning: Cette page s'affiche car ces utilisateurs proviennent de serveurs
   que votre administrateur a réduits au silence/masqué, il se peut donc qu'ils soient
   de potentiels spams.
@@ -2209,11 +2206,11 @@ objectStorageS3ForcePathStyleDesc: Activez cette option pour construire les URL 
 delete2fa: Désativer A2F
 deletePasskeys: Supprimer les clés d'accès
 delete2faConfirm: Cela supprimera de manière irréversible la double authentification
-  sur ce compte. Souhaitez-vous continuer ?
+  sur ce compte. Souhaitez-vous continuer ?
 inputNotMatch: L'entrée ne correspond pas
 deletePasskeysConfirm: Cela supprimera de manière irréversible toutes les clés d'accès
-  et les clés de sécurité sur ce compte. Souhaitez-vous continuer ?
-addRe: Ajouter "re:" au début d'un avertissement de contenu (CW) en réponse à une
+  et les clés de sécurité sur ce compte. Souhaitez-vous continuer ?
+addRe: Ajouter « re: » au début d'un avertissement de contenu (CW) en réponse à une
   publication avec un avertissement de contenu
 confirm: Confirmer
 importZip: Importer ZIP
@@ -2249,14 +2246,14 @@ replaceChatButtonWithAccountButton: Remplacer le bouton de discussion par le bou
   de changement de compte
 showBigPostButton: Afficher un gros bouton de publication sur le formulaire de publication
 moreUrlsDescription: "Saisir les pages que vous voulez épingler au menu d'aide dans
-  le coin inférieur gauche en utilisant cette notation :\n\"Nom d'affichage\" : https://exemple.com/"
+  le coin inférieur gauche en utilisant cette notation :\n« Nom d'affichage » : https://exemple.com/"
 attachedToNotes: Publications avec ce fichier
 showAttachedNotes: Afficher les publications avec ce fichier
 noLanguage: Aucune langue
 useEmojiCdn: Obtenir Twemoji depuis un CDN
 showPreviewByDefault: Afficher l'aperçu dans le formulaire de publication par défaut
 preventMisclick: Protection contre les clics accidentels
-hideFollowButtons: Masquer les boutons de suivi dans une position où nous ne pouvons
+hideFollowButtons: Masquer les boutons d'abonnement dans une position où nous ne pouvons
   pas cliquer
 forMobile: Mobile
 replaceWidgetsButtonWithReloadButton: Remplacer le bouton des widgets par le bouton
