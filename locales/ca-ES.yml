@@ -4,7 +4,7 @@ headlineFirefish: "Una xarxa social de codi obert, descentralitzada i gratuïta 
 introFirefish: "Benvinguts! Firefish és una plataforma social de codi obert, descentralitzada
   i gratuïta per a sempre! 🚀"
 monthAndDay: "{day}/{month}"
-search: "Cercar"
+search: "Cerca"
 notifications: "Notificacions"
 username: "Nom d'usuari"
 password: "Contrasenya"
@@ -12,7 +12,7 @@ forgotPassword: "Contrasenya oblidada"
 fetchingAsApObject: "Cercant en el Fediverse"
 ok: "D'acord"
 gotIt: "Ho he entès!"
-cancel: "Cancel·lar"
+cancel: "Cancel·la"
 enterUsername: "Introdueix el teu nom d'usuari"
 renotedBy: "Impulsat per {user}"
 noNotes: "Cap publicació"
@@ -27,13 +27,13 @@ timeline: "Línia de temps"
 noAccountDescription: "Aquest usuari encara no ha escrit la seva biografia."
 login: "Inicia sessió"
 loggingIn: "Iniciant sessió"
-logout: "Tancar la sessió"
+logout: "Tanca la sessió"
 signup: "Registra'm"
 uploading: "S'està pujant…"
-save: "Desar"
+save: "Desa"
 users: "Usuaris"
 addUser: "Afegeix un usuari"
-favorite: "Afegeix als marcadors"
+favorite: "Afegeix a les adreces d'interès"
 favorites: "Adreces d'interès"
 unfavorite: "Eliminar de les adreces d'interès"
 favorited: "Afegit a les adreces d'interès."
@@ -41,16 +41,16 @@ alreadyFavorited: "Ja es troba a les adreces d'interès."
 cantFavorite: "No s'ha pogut afegir a les adreces d'interès."
 pin: "Fixar al perfil"
 unpin: "Deixa de fixar al perfil"
-copyContent: "Copiar el contingut"
-copyLink: "Copiar l'enllaç"
-delete: "Eliminar"
-deleteAndEdit: "Eliminar i editar"
+copyContent: "Copia el contingut"
+copyLink: "Copia l'enllaç"
+delete: "Elimina"
+deleteAndEdit: "Elimina i edita"
 deleteAndEditConfirm: "Segur que vols eliminar la publicació i editar-la? Perdràs
   totes les reaccions, impulsos i respostes."
 addToList: "Afegeix a la llista"
-sendMessage: "Enviar un missatge"
-copyUsername: "Copiar el nom d'usuari"
-searchUser: "Cercar un usuari"
+sendMessage: "Envia un missatge"
+copyUsername: "Copia el nom d'usuari"
+searchUser: "Cerca un usuari"
 reply: "Respon"
 loadMore: "Carrega'n més"
 showMore: "Mostra'n més"
@@ -60,11 +60,11 @@ followRequestAccepted: "Sol·licitud de seguiment acceptada"
 mention: "Menció"
 mentions: "Mencions"
 directNotes: "Missatges directes"
-importAndExport: "Importar/exportar dades"
-import: "Importar"
-export: "Exportar"
+importAndExport: "Importa/exporta dades"
+import: "Importa"
+export: "Exporta"
 files: "Fitxers"
-download: "Baixar"
+download: "Baixa"
 driveFileDeleteConfirm: "Segur que vols eliminar el fitxer «{name}»? S'eliminarà de
   totes les notes que el continguin com a fitxer adjunt."
 unfollowConfirm: "Segur que vols deixar de seguir a {name}?"
@@ -73,7 +73,7 @@ exportRequested: "Has demanat exportar dades. Això pot trigar una estona. S'afe
 importRequested: "Has demanat importar dades. Això pot trigar una estona."
 lists: "Llistes"
 noLists: "No tens cap llista"
-note: "Publicar"
+note: "Publica"
 notes: "Publicacions"
 following: "Seguint"
 followers: "Seguidors"
@@ -84,7 +84,7 @@ error: "Error"
 somethingHappened: "S'ha produït un error"
 retry: "Torna-ho a intentar"
 pageLoadError: "S'ha produït un error en carregar la pàgina."
-pageLoadErrorDescription: "Això normalment es deu a errors de xarxa o a la memòria
+pageLoadErrorDescription: "Això normalment es degut a errors de xarxa o a la memòria
   cau del navegador. Prova d'esborrar la memòria cau i torna-ho a provar després d'esperar
   una estona."
 serverIsDead: "Aquest servidor no respon. Espera una estona i torna-ho a provar."
@@ -97,17 +97,17 @@ defaultNoteVisibility: "Visibilitat per defecte"
 follow: "Segueix"
 followRequest: "Sol·licitud de Seguiment"
 followRequests: "Sol·licituds de seguiment"
-unfollow: "Deixar de seguir"
+unfollow: "Deixa de seguir"
 followRequestPending: "Sol·licituds de seguiment pendents"
 enterEmoji: "Introdueix un emoji"
-renote: "Impulsar"
-unrenote: "Anul·lar l'impuls"
+renote: "Impulsa"
+unrenote: "Anul·la l'impuls"
 renoted: "Impulsat."
 cantRenote: "Aquesta publicació no pot ser impulsada."
 cantReRenote: "Un impuls no es pot impulsar."
-quote: "Citar"
+quote: "Cita"
 pinnedNote: "Publicació fixada"
-pinned: "Fixar al perfil"
+pinned: "Fixa al perfil"
 you: "Tu"
 clickToShow: "Fes clic per mostrar"
 sensitive: "NSFW"
@@ -116,15 +116,15 @@ reaction: "Reacció"
 reactionSetting: "Reaccions per mostrar al selector de reaccions"
 reactionSettingDescription2: "Arrossega per reordenar, fes clic per suprimir, prem
   \"+\" per afegir."
-rememberNoteVisibility: "Recordar la configuració de visibilitat de les publicacions"
-attachCancel: "Eliminar el fitxer adjunt"
-markAsSensitive: "Marcar com a NSFW"
-unmarkAsSensitive: "Desmarcar com a NSFW"
+rememberNoteVisibility: "Recorda la configuració de visibilitat de les publicacions"
+attachCancel: "Elimina el fitxer adjunt"
+markAsSensitive: "Marca com a NSFW"
+unmarkAsSensitive: "Desmarca com a NSFW"
 enterFileName: "Introdueix un nom de fitxer"
-mute: "Silenciar"
+mute: "Silencia"
 unmute: "Deixar de silenciar"
-block: "Bloquejar"
-unblock: "Desbloquejar"
+block: "Bloqueja"
+unblock: "Desbloqueja"
 suspend: "Suspèn"
 unsuspend: "Treu la suspensió"
 instances: "Servidors"
@@ -783,35 +783,35 @@ blockConfirm: Segur que vols bloquejar aquest compte?
 unsuspendConfirm: Segur que vols treure la suspensió d'aquest compte?
 unblockConfirm: Segur que vols treure el bloqueig d'aquest compte?
 suspendConfirm: Segur que vols suspendre aquest compte?
-selectList: Seleccionar una llista
-selectAntenna: Seleccionar una antena
-selectWidget: Seleccionar un giny
-editWidgets: Editar els ginys
+selectList: Selecciona una llista
+selectAntenna: Selecciona una antena
+selectWidget: Selecciona un giny
+editWidgets: Edita els ginys
 editWidgetsExit: Fet
 customEmojis: Emojis personalitzats
 cacheRemoteFilesDescription: Quan aquesta opció està desactivada, els fitxers remots
   es carreguen directament del servidor remot. Desactivar-la farà que baixi l'ús d'emmagatzematge,
   però incrementa el tràfic, perquè les miniatures no es generaran.
-flagAsBot: Marcar aquest compte com automatitzat
+flagAsBot: Marca aquest compte com automatitzat
 flagAsBotDescription: Activa aquesta opció si aquest compte és controlat per un programa.
   Si s'activa, això actuarà com una bandera per a altres desenvolupadors i ajuda a
   prevenir cadenes de interaccions infinites amb altres comptes automatitzats a més
   d'ajustar els sistemes interns de Firefish per tractar aquest compte com automatitzat.
 flagAsCat: Ets un gat? 🐱
-flagShowTimelineReplies: Mostrar respostes a la línia de temps
+flagShowTimelineReplies: Mostra respostes a la línia de temps
 flagAsCatDescription: Guanyaràs unes orelles de gat i parlares com un gat!
 flagShowTimelineRepliesDescription: Si s'activa, es mostraran les respostes d'usuaris
   a publicacions d'altres usuaris.
 general: General
-autoAcceptFollowed: Aprovar automàticament les peticions de seguiment d'usuaris que
+autoAcceptFollowed: Aprova automàticament les peticions de seguiment d'usuaris que
   segueixes
 accountMoved: "L'usuari s'ha mogut a un compte nou:"
 addAccount: Afegeix un compte
 loginFailed: No s'ha pogut iniciar sessió
 showOnRemote: Obre la pàgina original
 wallpaper: Fons de pantalla
-setWallpaper: Estableix fons de pantalla
-removeWallpaper: Eliminar el fons de pantalla
+setWallpaper: Estableix un fons de pantalla
+removeWallpaper: Elimina el fons de pantalla
 followConfirm: Segur que vols seguir a {name}?
 proxyAccount: Compte proxy
 proxyAccountDescription: Un compte proxy es un compte que actua com un seguidor remot
@@ -850,7 +850,7 @@ default: Per defecte
 intro: La instal·lació de Firefish ha acabat! Crea un compte d'usuari d'administració.
 processing: S'està processant
 noCustomEmojis: No hi ha cap emoji
-noJobs: No hi ha cap feina
+noJobs: No hi ha res a la cua de feines
 federating: Federant
 blocked: Bloquejat
 subscribing: Subscrivint
@@ -869,7 +869,7 @@ lookup: Cerca
 attachFile: Afegeix un fitxer
 currentPassword: Contrasenya actual
 newPassword: Nova contrasenya
-announcements: Anuncis
+announcements: Avisos
 imageUrl: URL de la imatge
 removed: S'ha eliminat correctament
 removeAreYouSure: Segur que vols eliminar «{x}»?
@@ -886,7 +886,7 @@ fromDrive: Des del Disc
 uploadFromUrl: Puja des d'una adreça URL
 uploadFromUrlDescription: Adreça URL del fitxer que vols pujar
 uploadFromUrlRequested: Pujada demanada
-noMoreHistory: No hi ha més historial
+noMoreHistory: No hi ha res més a l'historial
 tos: Condicions d'ús
 start: Comença
 startMessaging: Comença una conversa
@@ -922,7 +922,7 @@ addFile: Afegeix un fitxer
 emptyDrive: El teu Disc és buit
 emptyFolder: Aquesta carpeta és buida
 unableToDelete: No es pot eliminar
-inputNewFileName: Escriu un nou nom per al fitxer
+inputNewFileName: Escriu un nom nou per al fitxer
 inputNewDescription: Escriu una descripció nova
 circularReferenceFolder: La carpeta de destí és una subcarpeta de la carpeta que vols
   moure.
@@ -933,7 +933,7 @@ reload: Torna a carregar
 avatar: Avatar
 banner: Bàner
 doNothing: Ignora
-reloadConfirm: Vols tornar a carregar la línea temporal?
+reloadConfirm: Vols tornar a carregar la línia de temps?
 watch: Veure
 maintainerName: Administrador
 maintainerEmail: Correu electrònic de l'administrador
@@ -948,13 +948,13 @@ driveCapacityPerRemoteAccount: Capacitat del Disc per usuari remot
 inMb: En megabytes
 iconUrl: Adreça URL de la icona
 enableRegistration: Activa el registre d'usuaris nous
-invite: Convidar
+invite: Convida
 driveCapacityPerLocalAccount: Capacitat del Disc per usuari local
-bannerUrl: Adreça URL del banner
+bannerUrl: Adreça URL del bàner
 backgroundImageUrl: Adreça URL del fons de pantalla
 basicInfo: Informació bàsica
 pinnedPages: Pàgines fixades
-pinnedUsersDescription: Llista de noms d'usuaris per fixar a la pestanya "Explorar"
+pinnedUsersDescription: Llista de noms d'usuaris per fixar a la pestanya "Explora"
   Un nom per línea.
 pinnedPagesDescription: Introdueix la ruta a les pàgines que vols fixar a la página
   principal d'aquest servidor, una ruta per línea.
@@ -966,18 +966,18 @@ recaptcha: reCAPTCHA
 enableGlobalTimeline: Activa la línia de temps global
 disablingTimelinesInfo: Els Administradors i Moderadors sempre tenen accés a totes
   les líneas temporals, inclòs si hi són desactivades.
-showLess: Tancar
+showLess: Tanca
 clearQueue: Esborra la cua
 uploadFromUrlMayTakeTime: Pot trigar un temps fins que la pujada es completi.
 noThankYou: No, gràcies
 addInstance: Afegeix un servidor
-emoji: Emojis
-emojis: Emojis
+emoji: Emoji
+emojis: Emoji
 emojiName: Nom del emoji
 emojiUrl: URL de l'emoji
 addEmoji: Afegeix
 settingGuide: Configuració recomenada
-searchWith: 'Cercar: {q}'
+searchWith: 'Cerca: {q}'
 youHaveNoLists: No tens cap llista
 flagSpeakAsCat: Parla com un gat
 selectInstance: Selecciona un servidor
@@ -1007,13 +1007,13 @@ avoidMultiCaptchaConfirm: Fent servir diferents sistemes de Captcha pot causar i
   entre ells. Vols desactivar els altres sistemes que es troben activats? Si vols
   deixar-los activats fes clic a cancelar.
 antennas: Antenes
-enableEmojiReactions: Activar reaccions amb emojis
+enableEmojiReactions: Activa reaccions amb emojis
 blockThisInstance: Bloqueja aquest servidor
 registration: Registra't
 showEmojisInReactionNotifications: Mostrar els emojis a les notificacions de les reaccions
-renoteMute: Silenciar els impulsos
+renoteMute: Silencia els impulsos
 renoteUnmute: Treu el silenci als impulsos
-cacheRemoteFiles: Desar fitxers remots a la memòria cau
+cacheRemoteFiles: Desa fitxers remots a la memòria cau
 federation: Federació
 registeredAt: Registrat a
 latestRequestSentAt: Última petició enviada
@@ -1021,7 +1021,7 @@ latestRequestReceivedAt: Última petició rebuda
 charts: Gràfics
 perHour: Per hora
 perDay: Per dia
-stopActivityDelivery: Parar d'enviar activitats
+stopActivityDelivery: Para d'enviar activitats
 operations: Operacions
 explore: Explora
 messageRead: Llegit
@@ -1029,15 +1029,15 @@ images: Imatges
 birthday: Aniversari
 yearsOld: '{age} anys'
 copyUrl: Copia l'adreça URL
-rename: Renombrar
+rename: Renombra
 unwatch: Deixa de veure
 accept: Accepta
 reject: Rebutja
 yearX: '{year}'
 pages: Pàgines
-enableLocalTimeline: Activa la línea de temps local
-enableRecommendedTimeline: Activa la línea de temps de recomanacions
-pinnedClipId: ID del clip que vols fixar
+enableLocalTimeline: Activa la línia de temps local
+enableRecommendedTimeline: Activa la línia de temps de recomanacions
+pinnedClipId: ID del retall que vols fixar
 hcaptcha: hCaptcha
 manageAntennas: Gestiona les Antenes
 name: Nom
@@ -1046,7 +1046,7 @@ silence: Posa en silenci
 withFiles: Amb fitxers
 popularUsers: Usuaris populars
 exploreUsersCount: Hi han {count} usuaris
-exploreFediverse: Explora el Fesiverse
+exploreFediverse: Explora el Fediverse
 popularTags: Etiquetes populars
 about: Sobre
 recentlyUpdatedUsers: Usuaris actius fa poc
@@ -1054,10 +1054,10 @@ recentlyRegisteredUsers: Usuaris registrats fa poc
 recentlyDiscoveredUsers: Nous usuaris descoberts
 administrator: Administrador
 token: Token
-registerSecurityKey: Registreu una clau de seguretat
-securityKeyName: Nom clau
+registerSecurityKey: Registra una clau de seguretat
+securityKeyName: Nom de la clau
 lastUsed: Feta servir per última vegada
-unregister: Anul·lar el registre
+unregister: Anul·lar el registra
 passwordLessLogin: Identificació sense contrasenya
 share: Comparteix
 notFound: No s'ha trobat
@@ -1065,13 +1065,13 @@ newPasswordIs: La nova contrasenya és "{password}"
 notFoundDescription: No es pot trobar cap pàgina que correspongui a aquesta adreça
   URL.
 uploadFolder: Carpeta per defecte per pujar arxius
-cacheClear: Netejar la memòria cau
+cacheClear: Neteja la memòria cau
 markAsReadAllNotifications: Marca totes les notificacions com llegides
 markAsReadAllUnreadNotes: Marca totes les publicacions com a llegides
 markAsReadAllTalkMessages: Marca tots els missatges com llegits
 help: Ajuda
 inputMessageHere: Escriu aquí el missatge
-close: Tancar
+close: Tanca
 group: Grup
 groups: Grups
 createGroup: Crea un grup
@@ -1079,17 +1079,17 @@ ownedGroups: Grups que et pertanyen
 joinedGroups: Grups als que t'has unit
 groupName: Nom del grup
 members: Membres
-transfer: Transferir
+transfer: Transfereix
 messagingWithUser: Conversa privada
 title: Títol
 text: Text
-enable: Activar
+enable: Activa
 next: Següent
 retype: Torna a entrar
 noteOf: Publicat per {user}
-inviteToGroup: Invitar a un grup
+inviteToGroup: Invita a un grup
 quoteAttached: Cita
-quoteQuestion: Adjuntar com a cita?
+quoteQuestion: Adjunta com a cita?
 noMessagesYet: Encara no hi han missatges
 signinRequired: Si us plau registrat o inicia sessió per continuar
 invitations: Invitacions
@@ -1102,7 +1102,7 @@ tooLong: Massa llarg
 weakPassword: Contrasenya amb seguretat feble
 strongPassword: Contrasenya amb seguretat forta
 passwordMatched: Coincidències
-signinWith: Inicieu sessió com {x}
+signinWith: Inicia sessió com {x}
 signinFailed: No es pot iniciar sessió. El nom d'usuari o la contrasenya són incorrectes.
 or: O
 language: Idioma
@@ -1118,8 +1118,8 @@ doing: Processant...
 category: Categoría
 existingAccount: El compte ja existeix
 regenerate: Regenerar
-docSource: Font d'aquest document
-createAccount: Crear compte
+docSource: Codi font d'aquest document
+createAccount: Crea un compte
 fontSize: Mida del text
 noFollowRequests: No tens cap sol·licitud de seguiment per aprovar
 openImageInNewTab: Obre les imatges en una pestanya nova
@@ -1193,7 +1193,7 @@ reduceUiAnimation: Redueix les animacions de la UI
 messagingWithGroup: Conversa en grup
 invites: Invitacions
 unavailable: No disponible
-newMessageExists: Tens nous missatges
+newMessageExists: Tens missatges nous
 onlyOneFileCanBeAttached: Només pots adjuntar un fitxer per missatge
 normalPassword: Contrasenya amb seguretat mitjana
 passwordNotMatched: No hi han coincidències
@@ -1207,25 +1207,25 @@ large: Gran
 notificationSetting: Preferències de notificacions
 makeActive: Activar
 notificationSettingDesc: Tria el tipus de notificació que es veure.
-notifyAntenna: Notificar publicacions noves
+notifyAntenna: Notifica publicacions noves
 withFileAntenna: Només publicacions amb fitxers
-enableServiceworker: Activa les notificacions push per al teu navegador
+enableServiceworker: Activa les notificacions push al teu navegador
 antennaUsersDescription: Escriu un nom d'usuari per línea
-antennaInstancesDescription: Escriu la adreça d'un servidor per línea
+antennaInstancesDescription: Escriu l'adreça d'un servidor per línea
 tags: Etiquetes
 antennaSource: Font de la antena
 antennaKeywords: Paraules claus a escoltar
 antennaExcludeKeywords: Paraules clau a excluir
 antennaKeywordsDescription: Separades amb espais per fer una condició AND i amb una
   línea nova per fer una condició OR.
-caseSensitive: Sensible a majúscules i minúscules
+caseSensitive: Diferència majúscules i minúscules
 withReplies: Inclou respostes
-connectedTo: Aquest(s) compte(s) estan connectats
-silenceConfirm: Segur que vols posa en silenci aquest usuari?
+connectedTo: Aquest(s) compte(s) estan conectats
+silenceConfirm: Segur que vols posar en silenci aquest usuari?
 unsilence: Desfés posar en silenci
 unsilenceConfirm: Segur que vols treure el silenci a aquest usuari?
 aboutFirefish: Sobre Firefish
-twoStepAuthentication: Autentificació de dos factors
+twoStepAuthentication: Autentificació de doble factor
 moderator: Moderador
 moderation: Moderació
 available: Disponible
@@ -2078,7 +2078,7 @@ _relayStatus:
   accepted: Acceptat
   rejected: Rebutjat
 deleted: Eliminat
-editNote: Editar la publicació
+editNote: Edita la publicació
 edited: 'Editat el {date} {time}'
 findOtherInstance: Cercar un altre servidor
 signupsDisabled: Actualment, les inscripcions en aquest servidor estan desactivades,
@@ -2119,12 +2119,12 @@ expandOnNoteClick: Obre la publicació amb un clic
 expandOnNoteClickDesc: Si està desactivat, encara pots obrir les publicacions al menú
   del botó dret o fent clic a la marca de temps.
 channelFederationWarn: Els canals encara no es federen amb altres servidors
-searchPlaceholder: Cercar a Firefish
+searchPlaceholder: Cerca a Firefish
 listsDesc: Les llistes et permeten crear línies de temps amb usuaris específics. Es
   pot accedir des de la pàgina de línies de temps.
 clipsDesc: Els clips són com marcadors categoritzats que es poden compartir. Podeu
   crear clips des del menú de publicacions individuals.
-selectChannel: Seleccionar un canal
+selectChannel: Selecciona un canal
 isLocked: Aquest compte té les següents aprovacions
 isPatron: Mecenes de Firefish
 isBot: Aquest es un compte automatitzat
@@ -2145,7 +2145,7 @@ _dialog:
   charactersExceeded: "S'han superat el màxim de caràcters! Actual: {current}/Límit:
     {max}"
   charactersBelow: 'No hi ha caràcters suficients! Corrent: {current}/Limit: {min}'
-removeReaction: Eliminar la teva reacció
+removeReaction: Elimina la teva reacció
 reactionPickerSkinTone: To de pell d'emoji preferit
 alt: ALT
 _skinTones:
@@ -2206,7 +2206,7 @@ _iconSets:
   bold: Negreta
   duotone: Bitó
   light: Prims
-showAttachedNotes: Mostrar publicacions que contenen aquest fitxer
+showAttachedNotes: Mostra publicacions que contenen aquest fitxer
 reactions: Reaccions
 attachedToNotes: Publicacions que contenen aquest fitxer
 replies: Respostes
