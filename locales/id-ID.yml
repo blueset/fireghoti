@@ -2198,3 +2198,33 @@ moreUrlsDescription: "Masukkan halaman yang ingin kamu sematkan ke menu bantuan 
   pojok kiri bawah dengan notasi ini:\n\"Nama tampilan\": https://contoh.com/"
 useEmojiCdn: Dapatkan Twemoji dari CDN
 useEmojiCdnDescription: Gunakan Twemoji dari JSDelv CDN bukan dari aset server.
+squareCatAvatars: Tampilkan avatar kotak untuk akun kucing
+emojiModPerm: Perizinan pengelolaan emoji kustom
+emojiModPermDescription: "Tambah: Perbolehkan pengguna ini untuk menambahkan emoji
+  kustom baru dan menetapkan tag/kategori/lisensi untuk semua emoji kustom yang telah
+  ditambahkan.\nTambah dan Sunting: Perizinan \"Tambah\" + Perbolehkan pengguna ini
+  untuk menyunting nama/kategori/tag/lisensi emoji kustom yang sudah ada.\nPerbolehkan
+  Semua: Perizinan \"Tambah dan Sunting\" + Perbolehkan pengguna ini untuk menghapus
+  semua emoji kustom yang sudah ada."
+private: Privat
+privateDescription: Buat terlihat pada kamu sendiri
+makePrivate: Buat privat
+makePrivateConfirm: Tindakan ini akan mengirim permintaan penghapusan ke server jarak
+  jauh dan mengubah keterlihatannya ke privat. Lanjutkan?
+_emojiModPerm:
+  unauthorized: Tidak ada
+  add: Tambah
+  mod: Tambah dan Sunting
+  full: Perbolehkan Semua
+suggested: Disarankan
+noLanguage: Tidak ada bahasa
+preventMisclick: Pencegahan pengeklikan tidak sengaja
+hideFollowButtons: Sembunyikan tombol ikuti dalam posisi yang tidak dapat diklik secara
+  tidak sengaja
+forMobile: Ponsel
+replaceChatButtonWithAccountButton: Ganti tombol percakapan dengan tombol ganti akun
+replaceWidgetsButtonWithReloadButton: Ganti tombol widget dengan tombol muat ulang
+searchEngine: Mesin pencarian yang digunakan dalam bilah pencarian MFM
+postSearch: Pencarian kiriman di server ini
+showBigPostButton: Tampilkan tombol kirim besar di formulir kiriman
+showPreviewByDefault: Tampilkan pratinjau dalam formulir kiriman secara bawaan
