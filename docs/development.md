@@ -40,7 +40,7 @@ delete `flake.lock`, or better, run `nix flake update --extra-experimental-featu
 after that, run `direnv rebuild`
 
 if there are any errors, you might have to change `flake.nix`
-(because the available options can change between versions - consider getting support in [the matrix channel](https://matrix.to/#/#firefish:matrix.fedibird.com))
+(because the available options can change between versions - consider getting support in [the matrix channel](https://matrix.to/#/#firefish-community:nitro.chat))
 
 ### after changing a node version
 in my case, i had to change the node version from 19, to 18

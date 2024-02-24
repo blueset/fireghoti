@@ -1,5 +1,5 @@
 <!-- 💖 Thanks for taking the time to fill out this bug report!
-💁 Having trouble with deployment? [Ask the support chat.](https://matrix.to/#/%23firefish:matrix.fedibird.com)
+💁 Having trouble with deployment? [Ask the support chat.](https://matrix.to/#/#firefish-community:nitro.chat)
 🔒 Found a security vulnerability? [Please disclose it responsibly.](https://firefish.dev/firefish/firefish/-/blob/develop/SECURITY.md)
 🤝 By submitting this feature request, you agree to follow our [Contribution Guidelines.](https://firefish.dev/firefish/firefish/-/blob/develop/CONTRIBUTING.md) -->
 
