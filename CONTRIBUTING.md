@@ -17,7 +17,7 @@ Before creating an issue, please check the following:
 - To avoid duplication, please search for similar issues before creating a new issue.
 - Do not use Issues to ask questions or troubleshooting.
 	- Issues should only be used to feature requests, suggestions, and bug tracking.
-	- Please ask questions or troubleshooting in the [Matrix room](https://matrix.to/#/#firefish:matrix.fedibird.com).
+	- Please ask questions or troubleshooting in the [Matrix room](https://matrix.to/#/#firefish-community:nitro.chat).
 
 > **Warning**
 > Do not close issues that are about to be resolved. It should remain open until a commit that actually resolves it is merged.
