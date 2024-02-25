@@ -2,6 +2,11 @@
 
 Critical security updates are indicated by the :warning: icon.
 
+## v20240225
+
+- Fix bugs
+- Add syntax highlighting in MFM code blocks in various programming languages
+
 ## v20240222
 
 - Enhance Mastodon post import feature (!10652)
