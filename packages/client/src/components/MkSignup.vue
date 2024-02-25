@@ -482,9 +482,10 @@ function onSubmit(): void {
 		})
 		.catch(() => {
 			submitting.value = false;
-			hcaptcha.value.reset?.();
-			recaptcha.value.reset?.();
+			hcaptcha.value?.reset?.();
+			recaptcha.value?.reset?.();
 
+			// Todo: API should return reason let frontend display
 			os.alert({
 				type: "error",
 				text: i18n.ts.somethingHappened,
