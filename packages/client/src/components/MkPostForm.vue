@@ -1233,6 +1233,7 @@ onMounted(() => {
 		}
 
 		nextTick(() => watchForDraft());
+		nextTick(() => autosize.update(textareaEl.value));
 	});
 });
 </script>
