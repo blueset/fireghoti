@@ -355,9 +355,9 @@ onMounted(async () => {
 	definePageMetadata(_meta);
 	await fetch();
 	_meta.title = `${i18n.ts.messaging} · ${
-		group.value != null 
-			? group.value.name 
-			: (user.value?.name || user.value?.username)
+		group.value != null
+			? group.value.name
+			: user.value?.name || user.value?.username
 	}`;
 });
 
