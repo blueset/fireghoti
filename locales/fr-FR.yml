@@ -2274,3 +2274,6 @@ privateDescription: Rendre visible uniquement pour vous
 private: Privé
 makePrivateConfirm: Cette opération enverra une demande de suppression aux serveurs
   distants et changera la visibilité au privé. Voulez-vous continuer ?
+useCdn: Obtenir des actifs à partir d'un réseau de diffusion de contenu
+useCdnDescription: Obtenir des actifs, tels que Twemoji, à partir du réseau de diffusion
+  de contenu « JSDelivr » au lieu de ce serveur.
