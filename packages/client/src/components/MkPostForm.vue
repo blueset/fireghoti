@@ -1081,6 +1081,7 @@ async function post() {
 				}
 				posting.value = false;
 				postAccount.value = null;
+				nextTick(() => autosize.update(textareaEl.value));
 			});
 		})
 		.catch((err) => {
