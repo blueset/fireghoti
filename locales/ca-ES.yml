@@ -1117,7 +1117,7 @@ disableAnimatedMfm: Desactiva les animacions amb MFM
 doing: Processant...
 category: Categoría
 existingAccount: El compte ja existeix
-regenerate: Regenerar
+regenerate: Regenera
 docSource: Codi font d'aquest document
 createAccount: Crea un compte
 fontSize: Mida del text
@@ -1128,7 +1128,7 @@ local: Local
 remote: Remot
 total: Total
 weekOverWeekChanges: Canvis d'ençà la passada setmana
-dayOverDayChanges: Canvis d'ençà ahir
+dayOverDayChanges: Canvis des d'ahir
 appearance: Aparença
 clientSettings: Configuració del client
 accountSettings: Configuració del compte
@@ -1137,9 +1137,9 @@ promote: Promoure
 numberOfDays: Nombre de dies
 objectStorageBaseUrl: Adreça URL base
 hideThisNote: Amaga aquesta publicació
-showFeaturedNotesInTimeline: Mostra les publicacions destacades a les línees de temps
+showFeaturedNotesInTimeline: Mostra les publicacions destacades a les línies de temps
 objectStorage: Emmagatzematge d'objectes
-useObjectStorage: Fes servir l'emmagatzema d'objectes
+useObjectStorage: Fes servir l'emmagatzematge d'objectes
 expandTweet: Amplia el tuit
 themeEditor: Editor de temes
 description: Descripció
@@ -1234,7 +1234,7 @@ nUsersMentioned: Esmentat per {n} usuari(s)
 securityKey: Clau de seguretat
 resetPassword: Restablir contrasenya
 describeFile: Afegeix una descripció
-enterFileDescription: Entra una descripció
+enterFileDescription: Escriu una descripció
 author: Autor
 disableAll: Desactiva tots
 userSaysSomethingReason: '{name} va dir {reason}'
@@ -1252,7 +1252,7 @@ relays: Relés
 addRelay: Afegeix un Relé
 inboxUrl: Adreça de la safata d'entrada
 addedRelays: Relés afegits
-serviceworkerInfo: Ha de estar activat per les notificacions push.
+serviceworkerInfo: Ha de estar activat per les notificacions emergents.
 poll: Enquesta
 deletedNote: Publicació esborrada
 disablePlayer: Tancar el reproductor de vídeo
@@ -1280,7 +1280,7 @@ yourAccountSuspendedDescription: Aquest compte ha sigut suspès per no seguir el
   de servei d'aquest servidor o quelcom similar. Contacte amb l'administrador si vols
   conèixer la raó amb més detall. Si us plau no facis un compte nou.
 invisibleNote: Publicació oculta
-enableInfiniteScroll: Carregar més de forma automàtica
+enableInfiniteScroll: Carrega més de forma automàtica
 fillAbuseReportDescription: Si us plau omple els detalls sobre aquest informe. Si
   es sobre una publicació en concret, si us plau, inclou l'adreça URL.
 forwardReportIsAnonymous: Com a informador el servidor remot no veure el teu compte,
@@ -1626,10 +1626,10 @@ silencedInstancesDescription: Llista amb els noms dels servidors que vols silenc
   fer sol·licituds de seguiments, i no poden mencionar comptes locals si no les segueixen.
   Això no afectarà els servidors bloquejats.
 objectStorageEndpointDesc: Deixa això buit si fas servir AWS, S3, d'una altre manera
-  específica un "endpoint" com a '<host>' o '<host>:<port>', depend del proveïdor
-  que facis servir.
+  específica un extrem com a '<host>' o '<host>:<port>', dependrà del proveïdor que
+  facis servir.
 objectStorageRegionDesc: Especifica una regió com a 'xx-east-1'. Si el teu proveïdor
-  no distingeix entre regions, deixa això en buit o pots escriure 'us-east-1'.
+  no distingeix entre regions, deixa això buit o pots escriure 'us-east-1'.
 userPagePinTip: Pots mostrar publicacions aquí escollint "Fixar al perfil" dintre
   del menú de cada publicació.
 userInfo: Informació d'usuari
@@ -1673,14 +1673,14 @@ newNoteRecived: Hi han publicacions noves
 sounds: Sons
 listen: Escoltar
 none: Res
-showInPage: Mostrar a la página
-popout: Apareixa
+showInPage: Mostrar a la pàgina
+popout: Apareix
 volume: Volum
 objectStorageUseSSLDesc: Desactiva això si no fas servir HTTPS per les connexions
   API
 objectStorageUseProxy: Connectar-se mitjançant un Proxy
 objectStorageUseProxyDesc: Desactiva això si no faràs servir un servidor Proxy per
-  conexions amb l'API
+  connexions amb l'API
 objectStorageSetPublicRead: Fixar com a "public-read" al pujar
 serverLogs: Registres del servidor
 deleteAll: Esborrar tot
@@ -2175,8 +2175,8 @@ _feeds:
   jsonFeed: Feed JSON
   copyFeed: Copiar feed
 origin: Origen
-objectStorageS3ForcePathStyle: Feu servir rutes URLs per a endpoints
-objectStorageS3ForcePathStyleDesc: Activeu aquesta opció per crear URL per endpoints
+objectStorageS3ForcePathStyle: Feu servir rutes URLs per als extrems
+objectStorageS3ForcePathStyleDesc: Activeu aquesta opció per crear URL per extrems
   en el format "s3.amazonaws.com/<bucket>/" sobre "<bucket>.s3.amazonaws.com".
 deletePasskeys: Suprimeix les contrasenyes
 deletePasskeysConfirm: Això suprimirà de manera irreversible totes les contrasenyes
