@@ -844,7 +844,7 @@ customCss: "CSS khusus"
 customCssWarn: "Pengaturan ini seharusnya digunakan jika kamu tahu cara kerjanya.
   Memasukkan nilai yang tidak tepat dapat menyebabkan klien tidak berfungsi semestinya."
 global: "Global"
-squareAvatars: "Tampilkan avatar sebagai persegi"
+squareAvatars: "Tampilkan avatar sebagai persegi untuk akun non-kucing"
 sent: "Kirim"
 received: "Diterima"
 searchResult: "Hasil Penelusuran"
@@ -2226,3 +2226,6 @@ searchEngine: Mesin pencarian yang digunakan dalam bilah pencarian MFM
 postSearch: Pencarian kiriman di server ini
 showBigPostButton: Tampilkan tombol kirim besar di formulir kiriman
 showPreviewByDefault: Tampilkan pratinjau dalam formulir kiriman secara bawaan
+useCdn: Dapatkan aset dari CDN
+useCdnDescription: Muat aset statis seperti Twemoji dari CDN JSDelivr daripada server
+  Firefish ini.
