@@ -81,6 +81,7 @@
 					v-if="!showBigPostButton"
 					class="submit _buttonGradate"
 					:disabled="!canPost"
+					v-tooltip="submitText"
 					data-cy-open-post-form-submit
 					@click="post"
 				>
@@ -245,6 +246,7 @@
 					<button
 						class="submit bigPostButton"
 						:disabled="!canPost"
+						v-tooltip="submitText"
 						data-cy-open-post-form-submit
 						@click="post"
 					>
