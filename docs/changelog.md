@@ -2,6 +2,11 @@
 
 Critical security updates are indicated by the :warning: icon.
 
+## Unreleased
+
+- Fix bugs (!10675 !10676 !10679)
+- Remove charts generation to improve performance (#10611)
+
 ## v20240225
 
 - Fix bugs
