@@ -64,7 +64,7 @@
 									><i :class="icon('ph-code')"></i
 								></template>
 								{{ i18n.ts._aboutFirefish.source }}
-								<template #suffix>GitLab</template>
+								<template #suffix>Source Code</template>
 							</FormLink>
 							<FormLink
 								to="https://hosted.weblate.org/engage/firefish/"
@@ -78,54 +78,7 @@
 							</FormLink>
 						</div>
 					</FormSection>
-					<FormSection>
-						<template #label>{{
-							i18n.ts._aboutFirefish.contributors
-						}}</template>
-						<div class="_formLinks">
-							<FormLink to="/@kainoa@firefish.social"
-								><Mfm
-									:text="'$[sparkle @dev@post.naskya.net] (Main developer)'"
-							/></FormLink>
-						</div>
-					<FormSection>
-						<h3
-							style="
-								font-weight: 700;
-								margin: 1.5em 0 16px;
-								font-size: 1em;
-							"
-						>
-							{{ i18n.ts._aboutFirefish.misskeyContributors }}
-						</h3>
-						<div class="_formLinks">
-							<FormLink to="/@syuilo@misskey.io"
-								><Mfm :text="'@syuilo@misskey.io'"
-							/></FormLink>
-							<FormLink to="/@aqz@p1.a9z.dev"
-								><Mfm :text="'@aqz@p1.a9z.dev'"
-							/></FormLink>
-							<FormLink to="/@ac@misskey.cloud"
-								><Mfm :text="'@ac@misskey.cloud'"
-							/></FormLink>
-							<FormLink to="/@rinsuki@mstdn.rinsuki.net"
-								><Mfm :text="'@rinsuki@mstdn.rinsuki.net'"
-							/></FormLink>
-							<FormLink to="/@mei23@misskey.m544.net"
-								><Mfm :text="'@mei23@misskey.m544.net'"
-							/></FormLink>
-							<FormLink to="/@robflop@misskey.io"
-								><Mfm :text="'@robflop@misskey.io'"
-							/></FormLink>
-						</div>
-						<h3>
-							<MkLink
-								url="https://firefish.dev/firefish/firefish/activity"
-								>{{ i18n.ts._aboutFirefish.allContributors }}
-							</MkLink>
-						</h3>
-					</FormSection>
-					</div>
+				</div>
 			</MkSpacer>
 		</div>
 	</MkStickyContainer>
@@ -137,8 +90,6 @@ import { version } from "@/config";
 import FormLink from "@/components/form/link.vue";
 import FormSection from "@/components/form/section.vue";
 import MkButton from "@/components/MkButton.vue";
-import MkLink from "@/components/MkLink.vue";
-import MkSparkle from "@/components/MkSparkle.vue";
 import { physics } from "@/scripts/physics";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
