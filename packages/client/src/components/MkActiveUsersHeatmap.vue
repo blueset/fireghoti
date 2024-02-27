@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, ref, shallowRef, watch } from "vue";
+import { nextTick, onMounted, ref, shallowRef } from "vue";
 import { Chart } from "chart.js";
 import * as os from "@/os";
 import { defaultStore } from "@/store";
@@ -18,12 +18,8 @@ import { initChart } from "@/scripts/init-chart";
 
 initChart();
 
-const props = defineProps<{
-	src: string;
-}>();
-
-const rootEl = shallowRef<HTMLDivElement>(null);
-const chartEl = shallowRef<HTMLCanvasElement>(null);
+const rootEl = shallowRef<HTMLDivElement>();
+const chartEl = shallowRef<HTMLCanvasElement>();
 const now = new Date();
 let chartInstance: Chart | null = null;
 const fetching = ref(true);
@@ -202,14 +198,6 @@ async function renderActiveUsersChart() {
 		},
 	});
 }
-
-watch(
-	() => props.src,
-	() => {
-		fetching.value = true;
-		renderActiveUsersChart();
-	},
-);
 
 onMounted(async () => {
 	renderActiveUsersChart();
