@@ -41,7 +41,9 @@
 				/></span>
 				<span class="username"
 					>@{{
-						acct(isMe(message) ? message.recipient : message.user)
+						acct.toString(
+							isMe(message) ? message.recipient : message.user,
+						)
 					}}</span
 				>
 				<MkTime :time="message.createdAt" class="time" />
