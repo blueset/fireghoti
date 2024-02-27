@@ -486,7 +486,7 @@ export const UserRepository = db.getRepository(User).extend({
 						url: profile!.url,
 						uri: user.uri,
 						movedToUri: user.movedToUri
-							? await this.userFromURI(user.movedToUri)
+							? await this.userFromURI(user.movedToUri).catch(() => user.movedToUri)
 							: null,
 						alsoKnownAs: user.alsoKnownAs,
 						createdAt: user.createdAt.toISOString(),
