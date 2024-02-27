@@ -2,7 +2,7 @@
 
 Breaking changes are indicated by the :warning: icon.
 
-## Unreleased
+## v20240228
 
 - :warning: The following endpoints are removed:
 	- `charts/ap-request`

@@ -2,9 +2,10 @@
 
 Critical security updates are indicated by the :warning: icon.
 
-## Unreleased
+## v20240228
 
-- Fix bugs (!10675 !10676 !10679)
+- Update "About Firefish" page (!10673)
+- Fix bugs (!10675 !10676 !10678 !10679)
 - Remove charts generation to improve performance (#10611)
 
 ## v20240225
