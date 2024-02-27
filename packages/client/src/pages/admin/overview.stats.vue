@@ -16,11 +16,6 @@
 								:value="stats.originalUsersCount"
 								style="margin-right: 0.5em"
 							/>
-							<MkNumberDiff
-								v-tooltip="i18n.ts.dayOverDayChanges"
-								class="diff"
-								:value="usersComparedToThePrevDay"
-							></MkNumberDiff>
 						</div>
 						<div class="label">{{ i18n.ts.users }}</div>
 					</div>
@@ -35,11 +30,6 @@
 								:value="stats.originalNotesCount"
 								style="margin-right: 0.5em"
 							/>
-							<MkNumberDiff
-								v-tooltip="i18n.ts.dayOverDayChanges"
-								class="diff"
-								:value="notesComparedToThePrevDay"
-							></MkNumberDiff>
 						</div>
 						<div class="label">{{ i18n.ts.notes }}</div>
 					</div>
@@ -96,15 +86,12 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import * as os from "@/os";
-import MkNumberDiff from "@/components/MkNumberDiff.vue";
 import MkNumber from "@/components/MkNumber.vue";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
 
 const stats = ref(null);
-const usersComparedToThePrevDay = ref<number>();
-const notesComparedToThePrevDay = ref<number>();
 const onlineUsersCount = ref(0);
 const emojiCount = ref(0);
 const fetching = ref(true);
@@ -116,16 +103,6 @@ onMounted(async () => {
 	]);
 	stats.value = _stats;
 	onlineUsersCount.value = _onlineUsersCount;
-
-	os.apiGet("charts/users", { limit: 2, span: "day" }).then((chart) => {
-		usersComparedToThePrevDay.value =
-			stats.value.originalUsersCount - chart.local.total[1];
-	});
-
-	os.apiGet("charts/notes", { limit: 2, span: "day" }).then((chart) => {
-		notesComparedToThePrevDay.value =
-			stats.value.originalNotesCount - chart.local.total[1];
-	});
 
 	os.api("meta", { detail: false }).then((meta) => {
 		emojiCount.value = meta.emojis.length;

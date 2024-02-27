@@ -17,40 +17,6 @@
 					<div class="subTitle">Top 10</div>
 				</div>
 			</div>
-			<div v-if="!fetching" class="items">
-				<div class="item _panel sub">
-					<div class="icon">
-						<i :class="icon('ph-download ph-xl', false)"></i>
-					</div>
-					<div class="body">
-						<div class="value">
-							{{ number(federationSubActive) }}
-							<MkNumberDiff
-								v-tooltip="i18n.ts.dayOverDayChanges"
-								class="diff"
-								:value="federationSubActiveDiff"
-							></MkNumberDiff>
-						</div>
-						<div class="label">Sub</div>
-					</div>
-				</div>
-				<div class="item _panel pub">
-					<div class="icon">
-						<i :class="icon('ph-upload ph-xl', false)"></i>
-					</div>
-					<div class="body">
-						<div class="value">
-							{{ number(federationPubActive) }}
-							<MkNumberDiff
-								v-tooltip="i18n.ts.dayOverDayChanges"
-								class="diff"
-								:value="federationPubActiveDiff"
-							></MkNumberDiff>
-						</div>
-						<div class="label">Pub</div>
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
 </template>
@@ -59,32 +25,15 @@
 import { onMounted, ref } from "vue";
 import XPie from "./overview.pie.vue";
 import * as os from "@/os";
-import number from "@/filters/number";
-import MkNumberDiff from "@/components/MkNumberDiff.vue";
-import { i18n } from "@/i18n";
 import { useChartTooltip } from "@/scripts/use-chart-tooltip";
-import icon from "@/scripts/icon";
 
 const topSubInstancesForPie = ref<any>(null);
 const topPubInstancesForPie = ref<any>(null);
-const federationPubActive = ref<number | null>(null);
-const federationPubActiveDiff = ref<number | null>(null);
-const federationSubActive = ref<number | null>(null);
-const federationSubActiveDiff = ref<number | null>(null);
 const fetching = ref(true);
 
 useChartTooltip();
 
 onMounted(async () => {
-	const chart = await os.apiGet("charts/federation", {
-		limit: 2,
-		span: "day",
-	});
-	federationPubActive.value = chart.pubActive[0];
-	federationPubActiveDiff.value = chart.pubActive[0] - chart.pubActive[1];
-	federationSubActive.value = chart.subActive[0];
-	federationSubActiveDiff.value = chart.subActive[0] - chart.subActive[1];
-
 	os.apiGet("federation/stats", { limit: 10 }).then((res) => {
 		topSubInstancesForPie.value = res.topSubInstances
 			.map((x) => ({

@@ -21,7 +21,6 @@
 				></span
 			>
 		</div>
-		<MkMiniChart v-if="chartValues" class="chart" :src="chartValues" />
 	</MkA>
 </template>
 
@@ -29,35 +28,17 @@
 import { ref } from "vue";
 
 import { acct, type entities } from "firefish-js";
-import MkMiniChart from "@/components/MkMiniChart.vue";
-import * as os from "@/os";
 import { userPage } from "@/filters/user";
 
 const props = withDefaults(
 	defineProps<{
 		user: entities.User;
-		withChart?: boolean;
 		showAboutPage?: boolean;
 	}>(),
 	{
-		withChart: true,
 		showAboutPage: false,
 	},
 );
-
-const chartValues = ref<number[] | null>(null);
-
-if (props.withChart) {
-	os.apiGet("charts/user/notes", {
-		userId: props.user.id,
-		limit: 16 + 1,
-		span: "day",
-	}).then((res) => {
-		// 今日のぶんの値はまだ途中の値であり、それも含めると大抵の場合前日よりも下降しているようなグラフになってしまうため今日は弾く
-		res.inc.splice(0, 1);
-		chartValues.value = res.inc;
-	});
-}
 </script>
 
 <style lang="scss" module>

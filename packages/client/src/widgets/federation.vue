@@ -37,10 +37,6 @@
 							{{ instance.softwareVersion }}
 						</p>
 					</div>
-					<MkMiniChart
-						class="chart"
-						:src="charts[i].requests.received"
-					/>
 				</div>
 			</transition-group>
 		</div>
@@ -53,7 +49,6 @@ import type { Widget, WidgetComponentExpose } from "./widget";
 import { useWidgetPropsManager } from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
 import MkContainer from "@/components/MkContainer.vue";
-import MkMiniChart from "@/components/MkMiniChart.vue";
 import * as os from "@/os";
 import { useInterval } from "@/scripts/use-interval";
 import { i18n } from "@/i18n";
@@ -90,7 +85,6 @@ const { widgetProps, configure } = useWidgetPropsManager(
 );
 
 const instances = ref([]);
-const charts = ref([]);
 const fetching = ref(true);
 
 const fetch = async () => {
@@ -98,17 +92,7 @@ const fetch = async () => {
 		sort: "+lastCommunicatedAt",
 		limit: 5,
 	});
-	const fetchedCharts = await Promise.all(
-		fetchedInstances.map((i) =>
-			os.apiGet("charts/instance", {
-				host: i.host,
-				limit: 16,
-				span: "hour",
-			}),
-		),
-	);
 	instances.value = fetchedInstances;
-	charts.value = fetchedCharts;
 	fetching.value = false;
 };
 

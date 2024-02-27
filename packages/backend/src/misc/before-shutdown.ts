@@ -5,6 +5,7 @@ import { inspect } from "node:util";
  * @callback BeforeShutdownListener
  * @param {string} [signalOrEvent] The exit signal or event name received on the process.
  */
+type BeforeShutdownListener = (signalOrEvent: string) => PromiseLike<void>;
 
 /**
  * System signals the app will listen to initiate shutdown.
@@ -23,7 +24,7 @@ const SHUTDOWN_TIMEOUT = 15000;
  * down the process.
  * @type {BeforeShutdownListener[]}
  */
-const shutdownListeners: ((signalOrEvent: string) => void)[] = [];
+const shutdownListeners: BeforeShutdownListener[] = [];
 
 /**
  * Listen for signals and execute given `fn` function once.
@@ -86,7 +87,9 @@ async function shutdownHandler(signalOrEvent: string) {
  * @param {BeforeShutdownListener} listener The shutdown listener to register.
  * @returns {BeforeShutdownListener} Echoes back the supplied `listener`.
  */
-export function beforeShutdown(listener: () => void) {
+export function beforeShutdown(
+	listener: BeforeShutdownListener,
+): BeforeShutdownListener {
 	shutdownListeners.push(listener);
 	return listener;
 }

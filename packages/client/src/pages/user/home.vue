@@ -347,11 +347,6 @@
 					>
 					<template v-if="narrow">
 						<XPhotos :key="user.id" :user="user" />
-						<!-- <XActivity
-							:key="user.id"
-							:user="user"
-							style="margin-top: var(--margin)"
-						/> -->
 					</template>
 				</div>
 				<div>
@@ -360,11 +355,6 @@
 			</div>
 			<div v-if="!narrow" class="sub">
 				<XPhotos :key="user.id" :user="user" />
-				<XActivity
-					:key="user.id"
-					:user="user"
-					style="margin-top: var(--margin)"
-				/>
 			</div>
 		</div>
 	</MkSpacer>
@@ -399,7 +389,6 @@ import { host } from "@/config";
 import icon from "@/scripts/icon";
 
 const XPhotos = defineAsyncComponent(() => import("./index.photos.vue"));
-const XActivity = defineAsyncComponent(() => import("./index.activity.vue"));
 
 const hideFollowButton = defaultStore.state.hideFollowButtons;
 

@@ -115,7 +115,6 @@
 			v-if="tab === 'renotes' && renotes"
 			:key="item.user.id"
 			:user="item.user"
-			:with-chart="false"
 		/>
 		<!-- </MkPagination> -->
 		<MkLoading v-else-if="tab === 'renotes' && note.renoteCount > 0" />

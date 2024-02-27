@@ -23,12 +23,7 @@
 				}}</span>
 			</button>
 		</div>
-		<MkUserCardMini
-			v-for="user in users"
-			:key="user.id"
-			:user="user"
-			:with-chart="false"
-		/>
+		<MkUserCardMini v-for="user in users" :key="user.id" :user="user" />
 	</div>
 	<div v-else>
 		<MkLoading />

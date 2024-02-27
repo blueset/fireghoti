@@ -2,6 +2,21 @@
 
 Breaking changes are indicated by the :warning: icon.
 
+## Unreleased
+
+- :warning: The following endpoints are removed:
+	- `charts/ap-request`
+	- `charts/drive`
+	- `charts/federation`
+	- `charts/hashtag`
+	- `charts/instance`
+	- `charts/notes`
+	- `charts/user/drive`
+	- `charts/user/following`
+	- `charts/user/notes`
+	- `charts/user/reactions`
+	- `charts/users`
+
 ## v20240221
 
 - Added `admin/set-emoji-moderator` endpoint, where moderators can give these permissions to regular users:

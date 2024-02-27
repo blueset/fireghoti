@@ -1,29 +1,11 @@
 <template>
 	<div class="_panel" :class="$style.root">
-		<MkSelect v-model="src" style="margin: 0 0 12px 0" small>
-			<option value="notes">Posts</option>
-			<option value="active-users">Active users</option>
-			<option value="ap-requests-inbox-received">
-				Fediverse Requests: inboxReceived
-			</option>
-			<option value="ap-requests-deliver-succeeded">
-				Fediverse Requests: deliverSucceeded
-			</option>
-			<option value="ap-requests-deliver-failed">
-				Fediverse Requests: deliverFailed
-			</option>
-		</MkSelect>
-		<MkHeatmap :src="src" />
+		<MkActiveUsersHeatmap />
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
-
-import MkHeatmap from "@/components/MkHeatmap.vue";
-import MkSelect from "@/components/form/select.vue";
-
-const src = ref("notes");
+import MkActiveUsersHeatmap from "@/components/MkActiveUsersHeatmap.vue";
 </script>
 
 <style lang="scss" module>

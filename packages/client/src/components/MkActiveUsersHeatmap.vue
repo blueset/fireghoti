@@ -15,7 +15,6 @@ import { defaultStore } from "@/store";
 import { useChartTooltip } from "@/scripts/use-chart-tooltip";
 import { alpha } from "@/scripts/color";
 import { initChart } from "@/scripts/init-chart";
-import { $i } from "@/reactiveAccount";
 
 initChart();
 
@@ -26,20 +25,15 @@ const props = defineProps<{
 const rootEl = shallowRef<HTMLDivElement>(null);
 const chartEl = shallowRef<HTMLCanvasElement>(null);
 const now = new Date();
-let chartInstance: Chart = null,
-	fetching = ref(true);
+let chartInstance: Chart | null = null;
+const fetching = ref(true);
 
 const { handler: externalTooltipHandler } = useChartTooltip({
 	position: "middle",
 });
 
-const addArrays = (arr1: number[], arr2: number[], arr3: number[]) =>
-	arr1.length === arr2.length && arr2.length === arr3.length
-		? arr1.map((val, i) => val + arr2[i] + arr3[i])
-		: null;
-
-async function renderChart() {
-	if (chartInstance) {
+async function renderActiveUsersChart() {
+	if (chartInstance != null) {
 		chartInstance.destroy();
 	}
 
@@ -72,46 +66,11 @@ async function renderChart() {
 		});
 	};
 
-	let values;
-
-	if (props.src === "active-users") {
-		const raw = await os.api("charts/active-users", {
-			limit: chartLimit,
-			span: "day",
-		});
-		values = raw.readWrite;
-	} else if (props.src === "notes") {
-		const raw = await os.api("charts/notes", {
-			limit: chartLimit,
-			span: "day",
-		});
-		values = raw.local.inc;
-	} else if (props.src === "ap-requests-inbox-received") {
-		const raw = await os.api("charts/ap-request", {
-			limit: chartLimit,
-			span: "day",
-		});
-		values = raw.inboxReceived;
-	} else if (props.src === "ap-requests-deliver-succeeded") {
-		const raw = await os.api("charts/ap-request", {
-			limit: chartLimit,
-			span: "day",
-		});
-		values = raw.deliverSucceeded;
-	} else if (props.src === "ap-requests-deliver-failed") {
-		const raw = await os.api("charts/ap-request", {
-			limit: chartLimit,
-			span: "day",
-		});
-		values = raw.deliverFailed;
-	} else if (props.src === "my-notes") {
-		const raw = await os.api("charts/user/notes", {
-			limit: chartLimit,
-			span: "day",
-			userId: $i.id,
-		});
-		values = addArrays(raw.diffs.normal, raw.diffs.reply, raw.diffs.renote);
-	}
+	const activeUsers = await os.api("charts/active-users", {
+		limit: chartLimit,
+		span: "day",
+	});
+	const values = activeUsers.readWrite;
 
 	fetching.value = false;
 
@@ -248,11 +207,11 @@ watch(
 	() => props.src,
 	() => {
 		fetching.value = true;
-		renderChart();
+		renderActiveUsersChart();
 	},
 );
 
 onMounted(async () => {
-	renderChart();
+	renderActiveUsersChart();
 });
 </script>

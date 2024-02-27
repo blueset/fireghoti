@@ -330,44 +330,6 @@
 						</FormInput>
 					</FormSection>
 				</div>
-				<div v-else-if="tab === 'chart'" class="_formRoot">
-					<div class="cmhjzshm">
-						<div class="selects">
-							<MkSelect
-								v-model="chartSrc"
-								style="margin: 0 10px 0 0; flex: 1"
-							>
-								<option value="per-user-notes">
-									{{ i18n.ts.notes }}
-								</option>
-							</MkSelect>
-						</div>
-						<div class="charts">
-							<div class="label">
-								{{ i18n.t("recentNHours", { n: 90 }) }}
-							</div>
-							<MkChart
-								class="chart"
-								:src="chartSrc"
-								span="hour"
-								:limit="90"
-								:args="{ user, withoutAll: true }"
-								:detailed="true"
-							></MkChart>
-							<div class="label">
-								{{ i18n.t("recentNDays", { n: 90 }) }}
-							</div>
-							<MkChart
-								class="chart"
-								:src="chartSrc"
-								span="day"
-								:limit="90"
-								:args="{ user, withoutAll: true }"
-								:detailed="true"
-							></MkChart>
-						</div>
-					</div>
-				</div>
 				<div v-else-if="tab === 'raw'" class="_formRoot">
 					<MkObjectView v-if="info && isAdmin" tall :value="info">
 					</MkObjectView>
@@ -382,7 +344,6 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from "vue";
 import { acct, type entities } from "firefish-js";
-import MkChart from "@/components/MkChart.vue";
 import MkObjectView from "@/components/MkObjectView.vue";
 import FormTextarea from "@/components/form/textarea.vue";
 import FormSwitch from "@/components/form/switch.vue";
@@ -410,7 +371,6 @@ const props = defineProps<{
 }>();
 
 const tab = ref("overview");
-const chartSrc = ref("per-user-notes");
 const user = ref<null | entities.UserDetailed>();
 const init = ref<ReturnType<typeof createFetcher>>();
 const info = ref();
@@ -681,11 +641,6 @@ const headerTabs = computed(() =>
 				}
 			: null,
 		{
-			key: "chart",
-			title: i18n.ts.charts,
-			icon: `${icon("ph-chart-bar")}`,
-		},
-		{
 			key: "raw",
 			title: "Raw",
 			icon: `${icon("ph-code")}`,
@@ -769,20 +724,6 @@ definePageMetadata(
 				color: var(--success);
 				border-color: var(--success);
 			}
-		}
-	}
-}
-
-.cmhjzshm {
-	> .selects {
-		display: flex;
-		margin: 0 0 16px 0;
-	}
-
-	> .charts {
-		> .label {
-			margin-bottom: 12px;
-			font-weight: bold;
 		}
 	}
 }

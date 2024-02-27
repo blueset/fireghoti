@@ -14,30 +14,14 @@
 				></span
 			>
 		</div>
-		<MkMiniChart v-if="chart" class="chart" :src="chart.inc" />
 	</MkA>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
-
 import { acct, type entities } from "firefish-js";
-import MkMiniChart from "@/components/MkMiniChart.vue";
-import * as os from "@/os";
-
-const props = defineProps<{
+defineProps<{
 	user: entities.User;
 }>();
-
-const chart = ref(null);
-
-os.apiGet("charts/user/notes", {
-	userId: props.user.id,
-	limit: 16,
-	span: "day",
-}).then((res) => {
-	chart.value = res;
-});
 </script>
 
 <style lang="scss" module>

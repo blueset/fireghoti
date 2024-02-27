@@ -9,10 +9,6 @@
 			<MkFolder class="item">
 				<template #header>Active users</template>
 				<XActiveUsers />
-			</MkFolder>
-
-			<MkFolder class="item">
-				<template #header>Heatmap</template>
 				<XHeatmap />
 			</MkFolder>
 
@@ -29,11 +25,6 @@
 			<MkFolder class="item">
 				<template #header>Instances</template>
 				<XInstances />
-			</MkFolder>
-
-			<MkFolder class="item">
-				<template #header>Fediverse Requests</template>
-				<XApRequests />
 			</MkFolder>
 
 			<MkFolder class="item">
@@ -71,7 +62,6 @@ import {
 import XFederation from "./overview.federation.vue";
 import XInstances from "./overview.instances.vue";
 import XQueue from "./overview.queue.vue";
-import XApRequests from "./overview.ap-requests.vue";
 import XUsers from "./overview.users.vue";
 import XActiveUsers from "./overview.active-users.vue";
 import XStats from "./overview.stats.vue";
@@ -89,10 +79,6 @@ const rootEl = shallowRef<HTMLElement>();
 const serverInfo = ref<any>(null);
 const topSubInstancesForPie = ref<any>(null);
 const topPubInstancesForPie = ref<any>(null);
-const federationPubActive = ref<number | null>(null);
-const federationPubActiveDiff = ref<number | null>(null);
-const federationSubActive = ref<number | null>(null);
-const federationSubActiveDiff = ref<number | null>(null);
 const newUsers = ref(null);
 const activeInstances = shallowRef(null);
 const queueStatsConnection = markRaw(stream.useChannel("queueStats"));
@@ -107,13 +93,6 @@ onMounted(async () => {
 
 	magicGrid.listen();
 	*/
-
-	os.apiGet("charts/federation", { limit: 2, span: "day" }).then((chart) => {
-		federationPubActive.value = chart.pubActive[0];
-		federationPubActiveDiff.value = chart.pubActive[0] - chart.pubActive[1];
-		federationSubActive.value = chart.subActive[0];
-		federationSubActiveDiff.value = chart.subActive[0] - chart.subActive[1];
-	});
 
 	os.apiGet("federation/stats", { limit: 10 }).then((res) => {
 		topSubInstancesForPie.value = res.topSubInstances

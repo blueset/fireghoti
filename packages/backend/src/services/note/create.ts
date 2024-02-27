@@ -39,12 +39,7 @@ import type { App } from "@/models/entities/app.js";
 import { Not, In } from "typeorm";
 import type { User, ILocalUser, IRemoteUser } from "@/models/entities/user.js";
 import { genId } from "@/misc/gen-id.js";
-import {
-	notesChart,
-	perUserNotesChart,
-	activeUsersChart,
-	instanceChart,
-} from "@/services/chart/index.js";
+import { activeUsersChart } from "@/services/chart/index.js";
 import type { IPoll } from "@/models/entities/poll.js";
 import { Poll } from "@/models/entities/poll.js";
 import { createNotification } from "@/services/create-notification.js";
@@ -350,15 +345,10 @@ export default async (
 
 		res(note);
 
-		// 統計を更新
-		notesChart.update(note, true, user.isBot);
-		perUserNotesChart.update(user, note, true, user.isBot);
-
 		// Register host
 		if (Users.isRemoteUser(user)) {
 			registerOrFetchInstanceDoc(user.host).then((i) => {
 				Instances.increment({ id: i.id }, "notesCount", 1);
-				instanceChart.updateNote(i.host, note, true);
 			});
 		}
 

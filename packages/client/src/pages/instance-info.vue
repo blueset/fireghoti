@@ -223,79 +223,6 @@
 				</swiper-slide>
 				<swiper-slide>
 					<div class="_formRoot">
-						<div class="cmhjzshl">
-							<div class="selects">
-								<MkSelect
-									v-model="chartSrc"
-									style="margin: 0 10px 0 0; flex: 1"
-								>
-									<option value="instance-requests">
-										{{ i18n.ts._instanceCharts.requests }}
-									</option>
-									<option value="instance-users">
-										{{ i18n.ts._instanceCharts.users }}
-									</option>
-									<option value="instance-users-total">
-										{{ i18n.ts._instanceCharts.usersTotal }}
-									</option>
-									<option value="instance-notes">
-										{{ i18n.ts._instanceCharts.notes }}
-									</option>
-									<option value="instance-notes-total">
-										{{ i18n.ts._instanceCharts.notesTotal }}
-									</option>
-									<option value="instance-ff">
-										{{ i18n.ts._instanceCharts.ff }}
-									</option>
-									<option value="instance-ff-total">
-										{{ i18n.ts._instanceCharts.ffTotal }}
-									</option>
-									<option value="instance-drive-usage">
-										{{ i18n.ts._instanceCharts.cacheSize }}
-									</option>
-									<option value="instance-drive-usage-total">
-										{{
-											i18n.ts._instanceCharts
-												.cacheSizeTotal
-										}}
-									</option>
-									<option value="instance-drive-files">
-										{{ i18n.ts._instanceCharts.files }}
-									</option>
-									<option value="instance-drive-files-total">
-										{{ i18n.ts._instanceCharts.filesTotal }}
-									</option>
-								</MkSelect>
-							</div>
-							<div class="charts">
-								<div class="label">
-									{{ i18n.t("recentNHours", { n: 90 }) }}
-								</div>
-								<MkChart
-									class="chart"
-									:src="chartSrc"
-									span="hour"
-									:limit="90"
-									:args="{ host: host }"
-									:detailed="true"
-								></MkChart>
-								<div class="label">
-									{{ i18n.t("recentNDays", { n: 90 }) }}
-								</div>
-								<MkChart
-									class="chart"
-									:src="chartSrc"
-									span="day"
-									:limit="90"
-									:args="{ host: host }"
-									:detailed="true"
-								></MkChart>
-							</div>
-						</div>
-					</div>
-				</swiper-slide>
-				<swiper-slide>
-					<div class="_formRoot">
 						<MkPagination
 							v-slot="{ items }"
 							:pagination="usersPagination"
@@ -339,7 +266,6 @@ import { computed, ref, watch } from "vue";
 import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import type { entities } from "firefish-js";
-import MkChart from "@/components/MkChart.vue";
 import MkObjectView from "@/components/MkObjectView.vue";
 import FormLink from "@/components/form/link.vue";
 import MkLink from "@/components/MkLink.vue";
@@ -375,17 +301,16 @@ const props = defineProps<{
 }>();
 
 const tabs = ["overview"];
-if (isAdmin) tabs.push("chart", "users", "raw");
+if (isAdmin) tabs.push("users", "raw");
 const tab = ref(tabs[0]);
 watch(tab, () => syncSlide(tabs.indexOf(tab.value)));
 
-const chartSrc = ref("instance-requests");
 const meta = ref<AugmentedInstanceMetadata | null>(null);
 const instance = ref<AugmentedInstance | null>(null);
 const suspended = ref(false);
 const isBlocked = ref(false);
 const isSilenced = ref(false);
-const faviconUrl = ref(null);
+const faviconUrl = ref<string | null>(null);
 
 const usersPagination = {
 	endpoint: isAdmin ? "admin/show-users" : ("users" as const),
@@ -487,11 +412,6 @@ const theTabs = [
 if (isAdmin) {
 	theTabs.push(
 		{
-			key: "chart",
-			title: i18n.ts.charts,
-			icon: `${icon("ph-chart-bar")}`,
-		},
-		{
 			key: "users",
 			title: i18n.ts.users,
 			icon: `${icon("ph-users")}`,
@@ -548,13 +468,6 @@ function syncSlide(index) {
 	> .selects {
 		display: flex;
 		margin: 0 0 16px 0;
-	}
-
-	> .charts {
-		> .label {
-			margin-bottom: 12px;
-			font-weight: bold;
-		}
 	}
 }
 </style>
