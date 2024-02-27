@@ -43,7 +43,7 @@
 					</div>
 					<div class="_formBlock" style="text-align: center">
 						{{ i18n.ts._aboutFirefish.about }}<br /><a
-							href="https://joinfirefish.org/"
+							href="https://firefish.dev/"
 							target="_blank"
 							class="_link"
 							>{{ i18n.ts.learnMore }}</a
@@ -67,16 +67,6 @@
 								<template #suffix>GitLab</template>
 							</FormLink>
 							<FormLink
-								to="https://opencollective.com/firefish"
-								external
-							>
-								<template #icon
-									><i :class="icon('ph-money')"></i
-								></template>
-								{{ i18n.ts._aboutFirefish.donate }}
-								<template #suffix>Donate</template>
-							</FormLink>
-							<FormLink
 								to="https://hosted.weblate.org/engage/firefish/"
 								external
 							>
@@ -95,33 +85,10 @@
 						<div class="_formLinks">
 							<FormLink to="/@kainoa@firefish.social"
 								><Mfm
-									:text="'$[sparkle @kainoa@firefish.social] (Main developer)'"
-							/></FormLink>
-							<FormLink to="/@freeplay@firefish.social"
-								><Mfm
-									:text="'@freeplay@firefish.social (UI/UX)'"
-							/></FormLink>
-							<FormLink to="/@namekuji@firefish.social"
-								><Mfm
-									:text="'@namekuji@firefish.social (Backend)'"
-							/></FormLink>
-							<FormLink to="/@dev@post.naskya.net"
-								><Mfm
-									:text="'@dev@post.naskya.net (Fullstack)'"
-							/></FormLink>
-							<FormLink to="/@panos@firefish.social"
-								><Mfm
-									:text="'@panos@firefish.social (Project coordinator)'"
-							/></FormLink>
-							<FormLink to="/@blackspike@mastodon.cloud"
-								><Mfm
-									:text="'@blackspike@mastodon.cloud (Logo design)'"
-							/></FormLink>
-							<FormLink to="/@magi@minazukey.uk"
-								><Mfm
-									:text="'@magi@minazukey.uk (Error images)'"
+									:text="'$[sparkle @dev@post.naskya.net] (Main developer)'"
 							/></FormLink>
 						</div>
+					<FormSection>
 						<h3
 							style="
 								font-weight: 700;
@@ -158,49 +125,7 @@
 							</MkLink>
 						</h3>
 					</FormSection>
-					<FormSection>
-						<template #label
-							><Mfm
-								:text="`$[x2 $[jelly ❤] ${i18n.ts._aboutFirefish.sponsors}]`"
-							/>
-						</template>
-						<MkSparkle>
-							<span
-								v-for="sponsor in sponsors"
-								:key="sponsor"
-								style="
-									margin-bottom: 0.5rem;
-									margin-right: 0.5rem;
-									font-size: 1.7rem;
-								"
-							>
-								<Mfm :text="`${sponsor}`" />
-							</span>
-						</MkSparkle>
-					</FormSection>
-					<FormSection>
-						<template #label
-							><Mfm text="$[jelly ❤]" />
-							{{ i18n.ts._aboutFirefish.patrons }}</template
-						>
-						<p>
-							{{ i18n.ts._aboutFirefish.patronsList }}
-						</p>
-						<MkSparkle>
-							<span
-								v-for="patron in patrons"
-								:key="patron"
-								style="
-									margin-bottom: 0.5rem;
-									margin-right: 0.5rem;
-								"
-							>
-								<Mfm :text="`${patron}`" />
-							</span>
-						</MkSparkle>
-						<p>{{ i18n.ts._aboutFirefish.morePatrons }}</p>
-					</FormSection>
-				</div>
+					</div>
 			</MkSpacer>
 		</div>
 	</MkStickyContainer>
@@ -220,14 +145,6 @@ import { defaultStore } from "@/store";
 import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
-
-let patrons = [],
-	sponsors = [];
-const patronsResp = await os.api("patrons", { forceUpdate: true });
-patrons = patronsResp.patrons;
-sponsors = patronsResp.sponsors;
-
-patrons = patrons.filter((patron) => !sponsors.includes(patron));
 
 let easterEggReady = false;
 const easterEggEmojis = ref([]);
