@@ -44,5 +44,5 @@
 	"compileOnSave": false,
 	"include": [
 		"./src/**/*.ts"
-	],
+	]
 }

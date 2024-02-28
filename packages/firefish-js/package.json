@@ -7,9 +7,10 @@
 	"types": "./built/index.d.ts",
 	"license": "MIT",
 	"scripts": {
-		"build": "pnpm swc src -d built -D",
+		"build": "pnpm swc src --out-dir built --source-maps false --copy-files --strip-leading-paths",
 		"build:types": "pnpm tsc --emitDeclarationOnly",
-		"build:debug": "pnpm swc src -d built -s -D",
+		"build:debug": "pnpm swc src --out-dir built --source-maps true --copy-files --strip-leading-paths",
+		"watch": "pnpm swc src --out-dir built --source-maps true --copy-files --strip-leading-paths --watch",
 		"lint": "pnpm biome check --apply src",
 		"format": "pnpm biome format --write src",
 		"jest": "jest --coverage --detectOpenHandles",
@@ -20,18 +21,18 @@
 		"url": "https://firefish.dev/firefish/firefish.git"
 	},
 	"devDependencies": {
-		"@swc/cli": "0.1.65",
+		"@swc/cli": "0.3.10",
 		"@swc/core": "1.4.2",
 		"@swc/types": "^0.1.5",
 		"@types/jest": "^29.5.12",
-		"@types/node": "20.11.19",
+		"@types/node": "20.11.21",
 		"jest": "^29.7.0",
 		"jest-fetch-mock": "^3.0.3",
 		"jest-websocket-mock": "^2.5.0",
 		"mock-socket": "^9.3.1",
 		"ts-jest": "^29.1.2",
 		"ts-node": "10.9.2",
-		"tsd": "^0.30.5",
+		"tsd": "^0.30.7",
 		"typescript": "5.3.3"
 	},
 	"files": [
