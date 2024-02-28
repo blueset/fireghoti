@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'FixNoteUrlIndex1709129810501',
     'RemoveCharts1709047957489',
     'DropUserProfileLanguage1708452631156',
     'EmojiModerator1692825433698',
