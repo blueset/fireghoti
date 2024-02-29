@@ -191,8 +191,6 @@ function validate(profile: unknown): void {
 		throw new Error("Unnecessary properties exist");
 
 	if (!profile.name) throw new Error("Missing required prop: name");
-	if (!profile.misskeyVersion)
-		throw new Error("Missing required prop: misskeyVersion");
 
 	// Check if createdAt and updatedAt is Date
 	// https://zenn.dev/lollipop_onl/articles/eoz-judge-js-invalid-date
