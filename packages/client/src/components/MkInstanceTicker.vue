@@ -1,7 +1,9 @@
 <template>
 	<div
 		ref="ticker"
-		v-tooltip="capitalize(instance.softwareName)"
+		v-tooltip="
+			`${capitalize(instance.softwareName)} ${instance.softwareVersion ?? ''}`
+		"
 		class="hpaizdrt"
 		:style="bg"
 	>
@@ -13,7 +15,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
-import { instanceName } from "@/config";
+import { instanceName, version } from "@/config";
 import { instance as Instance } from "@/instance";
 import { getProxiedImageUrlNullable } from "@/scripts/media-proxy";
 
@@ -23,6 +25,7 @@ const props = defineProps<{
 		name: string;
 		themeColor?: string;
 		softwareName?: string;
+		softwareVersion?: string;
 	};
 }>();
 
@@ -38,6 +41,7 @@ const instance = props.instance ?? {
 		) as HTMLMetaElement
 	)?.content,
 	softwareName: Instance.softwareName ?? "Firefish",
+	softwareVersion: version,
 };
 
 const commonNames = new Map<string, string>([
