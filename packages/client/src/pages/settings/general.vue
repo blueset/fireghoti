@@ -166,23 +166,6 @@
 			<FormSwitch v-model="enableTimelineStreaming" class="_formBlock">{{
 				i18n.ts.enableTimelineStreaming
 			}}</FormSwitch>
-			<FormSwitch v-model="enablePullToRefresh" class="_formBlock">{{
-				i18n.ts.enablePullToRefresh
-			}}</FormSwitch>
-			<FormRange
-				v-if="enablePullToRefresh"
-				v-model="pullToRefreshThreshold"
-				:min="100"
-				:max="300"
-				:step="10"
-				easing
-				class="_formBlock"
-			>
-				<template #label>{{ i18n.ts.pullToRefreshThreshold }}</template>
-				<template #caption>{{
-					i18n.ts.pullToRefreshThreshold
-				}}</template>
-			</FormRange>
 		</FormSection>
 
 		<FormSection>
@@ -351,6 +334,20 @@
 				class="_formBlock"
 				>{{ i18n.ts.replaceWidgetsButtonWithReloadButton }}</FormSwitch
 			>
+			<FormSwitch v-model="enablePullToRefresh" class="_formBlock">{{
+				i18n.ts.enablePullToRefresh
+			}}</FormSwitch>
+			<FormRange
+				v-if="enablePullToRefresh"
+				v-model="pullToRefreshThreshold"
+				:min="100"
+				:max="300"
+				:step="10"
+				easing
+				class="_formBlock"
+			>
+				<template #label>{{ i18n.ts.pullToRefreshThreshold }}</template>
+			</FormRange>
 		</FormSection>
 
 		<FormRange
