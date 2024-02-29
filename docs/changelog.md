@@ -5,6 +5,8 @@ Critical security updates are indicated by the :warning: icon.
 ## Unreleased
 
 - Add ability to hide replies from certain users in timelines
+- Admins are now allowed to migrate their account
+	- This was requested by personal server admins
 
 ## v20240229
 
