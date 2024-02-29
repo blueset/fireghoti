@@ -1176,6 +1176,12 @@ private: "Private"
 privateDescription: "Make visible for you only"
 makePrivate: "Make private"
 makePrivateConfirm: "This operation will send a deletion request to remote servers and change the visibility to private. Proceed?"
+enablePullToRefresh: "Enable \"Pull down to refresh\""
+pullToRefreshThreshold: "Pull distance for reloading"
+pullDownToReload: "Pull down to reload"
+releaseToReload: "Release to reload"
+reloading: "Reloading"
+enableTimelineStreaming: "Update timelines automatically"
 
 _emojiModPerm:
   unauthorized: "None"

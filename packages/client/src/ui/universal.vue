@@ -676,7 +676,7 @@ console.log(mainRouter.currentRoute.value.name);
 		padding: var(--margin);
 		box-sizing: border-box;
 		overflow: auto;
-		overscroll-behavior: contain;
+		overscroll-behavior: none;
 		background: var(--bg);
 	}
 

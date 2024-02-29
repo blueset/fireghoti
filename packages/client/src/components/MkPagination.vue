@@ -115,6 +115,7 @@ const props = withDefaults(
 
 const emit = defineEmits<{
 	(ev: "queue", count: number): void;
+	(ev: "status", error: boolean): void;
 }>();
 
 interface Item {
@@ -185,12 +186,12 @@ const init = async (): Promise<void> => {
 		);
 };
 
-const reload = (): void => {
+const reload = (): Promise<void> => {
 	items.value = [];
-	init();
+	return init();
 };
 
-const refresh = async (): void => {
+const refresh = async (): Promise<void> => {
 	const params = props.pagination.params
 		? isRef(props.pagination.params)
 			? props.pagination.params.value
@@ -445,6 +446,11 @@ watch(
 	},
 	{ deep: true },
 );
+
+watch(error, (n, o) => {
+	if (n === o) return;
+	emit("status", n);
+});
 
 init();
 

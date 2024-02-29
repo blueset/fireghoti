@@ -13,30 +13,48 @@
 		<button
 			class="_buttonPrimary _shadow"
 			:class="{ instant: !defaultStore.state.animation }"
-			@click="tlComponent.scrollTop()"
+			@click="tlComponent?.scrollTop()"
 		>
 			{{ i18n.ts.newNoteRecived }}
 			<i :class="icon('ph-arrow-up', false)"></i>
 		</button>
 	</div>
+	<MkPullToRefresh
+		v-if="defaultStore.state.enablePullToRefresh"
+		ref="pullToRefreshComponent"
+		:refresher="() => reloadTimeline()"
+	>
+		<XNotes
+			ref="tlComponent"
+			:no-gap="!defaultStore.state.showGapBetweenNotesInTimeline"
+			:pagination="pagination"
+			@queue="(x) => (queue = x)"
+			@status="pullToRefreshComponent?.setDisabled($event)"
+		/>
+	</MkPullToRefresh>
 	<XNotes
+		v-else
 		ref="tlComponent"
 		:no-gap="!defaultStore.state.showGapBetweenNotesInTimeline"
 		:pagination="pagination"
 		@queue="(x) => (queue = x)"
+		@status="pullToRefreshComponent?.setDisabled($event)"
 	/>
 </template>
 
 <script lang="ts" setup>
 import { computed, onUnmounted, provide, ref } from "vue";
+import MkPullToRefresh from "@/components/MkPullToRefresh.vue";
 import XNotes from "@/components/MkNotes.vue";
 import MkInfo from "@/components/MkInfo.vue";
-import { stream } from "@/stream";
+import { useStream } from "@/stream";
 import * as sound from "@/scripts/sound";
 import { $i, isSignedIn } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
+import type { Paging } from "@/components/MkPagination.vue";
+import type { Endpoints } from "firefish-js";
 
 const props = defineProps<{
 	src: string;
@@ -47,22 +65,24 @@ const props = defineProps<{
 	fileId?: string;
 }>();
 
-const queue = ref(0);
-
 const emit = defineEmits<{
 	(ev: "note"): void;
 	(ev: "queue", count: number): void;
 }>();
 
-provide(
-	"inChannel",
-	computed(() => props.src === "channel"),
-);
+const tlComponent = ref<InstanceType<typeof XNotes>>();
+const pullToRefreshComponent = ref<InstanceType<typeof MkPullToRefresh>>();
 
-const tlComponent: InstanceType<typeof XNotes> = ref();
+let endpoint = ""; // keyof Endpoints
+let query, connection, connection2;
+let tlHint: string;
+let tlHintClosed: boolean;
+let tlNotesCount = 0;
+const queue = ref(0);
 
 const prepend = (note) => {
-	tlComponent.value.pagingComponent?.prepend(note);
+	tlNotesCount++;
+	tlComponent.value?.pagingComponent?.prepend(note);
 
 	emit("note");
 
@@ -71,45 +91,16 @@ const prepend = (note) => {
 	}
 };
 
-const onUserAdded = () => {
-	tlComponent.value.pagingComponent?.reload();
-};
-
-const onUserRemoved = () => {
-	tlComponent.value.pagingComponent?.reload();
-};
-
-const onChangeFollowing = () => {
-	if (!tlComponent.value.pagingComponent?.backed) {
-		tlComponent.value.pagingComponent?.reload();
-	}
-};
-
-let endpoint, query, connection, connection2, tlHint, tlHintClosed;
-
 if (props.src === "antenna") {
 	endpoint = "antennas/notes";
 	query = {
 		antennaId: props.antenna,
 	};
-	connection = stream.useChannel("antenna", {
-		antennaId: props.antenna,
-	});
-	connection.on("note", prepend);
 } else if (props.src === "home") {
 	endpoint = "notes/timeline";
 	query = {
 		withReplies: defaultStore.state.showTimelineReplies,
 	};
-	connection = stream.useChannel("homeTimeline", {
-		withReplies: defaultStore.state.showTimelineReplies,
-	});
-	connection.on("note", prepend);
-
-	connection2 = stream.useChannel("main");
-	connection2.on("follow", onChangeFollowing);
-	connection2.on("unfollow", onChangeFollowing);
-
 	tlHint = i18n.ts._tutorial.step5_3;
 	tlHintClosed = defaultStore.state.tlHomeHintClosed;
 } else if (props.src === "local") {
@@ -117,11 +108,6 @@ if (props.src === "antenna") {
 	query = {
 		withReplies: defaultStore.state.showTimelineReplies,
 	};
-	connection = stream.useChannel("localTimeline", {
-		withReplies: defaultStore.state.showTimelineReplies,
-	});
-	connection.on("note", prepend);
-
 	tlHint = i18n.ts._tutorial.step5_4;
 	tlHintClosed = defaultStore.state.tlLocalHintClosed;
 } else if (props.src === "recommended") {
@@ -129,11 +115,6 @@ if (props.src === "antenna") {
 	query = {
 		withReplies: defaultStore.state.showTimelineReplies,
 	};
-	connection = stream.useChannel("recommendedTimeline", {
-		withReplies: defaultStore.state.showTimelineReplies,
-	});
-	connection.on("note", prepend);
-
 	tlHint = i18n.ts._tutorial.step5_6;
 	tlHintClosed = defaultStore.state.tlRecommendedHintClosed;
 } else if (props.src === "social") {
@@ -141,11 +122,6 @@ if (props.src === "antenna") {
 	query = {
 		withReplies: defaultStore.state.showTimelineReplies,
 	};
-	connection = stream.useChannel("hybridTimeline", {
-		withReplies: defaultStore.state.showTimelineReplies,
-	});
-	connection.on("note", prepend);
-
 	tlHint = i18n.ts._tutorial.step5_5;
 	tlHintClosed = defaultStore.state.tlSocialHintClosed;
 } else if (props.src === "global") {
@@ -153,55 +129,88 @@ if (props.src === "antenna") {
 	query = {
 		withReplies: defaultStore.state.showTimelineReplies,
 	};
-	connection = stream.useChannel("globalTimeline", {
-		withReplies: defaultStore.state.showTimelineReplies,
-	});
-	connection.on("note", prepend);
-
 	tlHint = i18n.ts._tutorial.step5_7;
 	tlHintClosed = defaultStore.state.tlGlobalHintClosed;
 } else if (props.src === "mentions") {
 	endpoint = "notes/mentions";
-	connection = stream.useChannel("main");
-	connection.on("mention", prepend);
 } else if (props.src === "directs") {
 	endpoint = "notes/mentions";
 	query = {
 		visibility: "specified",
 	};
-	const onNote = (note) => {
-		if (note.visibility === "specified") {
-			prepend(note);
-		}
-	};
-	connection = stream.useChannel("main");
-	connection.on("mention", onNote);
 } else if (props.src === "list") {
 	endpoint = "notes/user-list-timeline";
 	query = {
 		listId: props.list,
 	};
-	connection = stream.useChannel("userList", {
-		listId: props.list,
-	});
-	connection.on("note", prepend);
-	connection.on("userAdded", onUserAdded);
-	connection.on("userRemoved", onUserRemoved);
 } else if (props.src === "channel") {
 	endpoint = "channels/timeline";
 	query = {
 		channelId: props.channel,
 	};
-	connection = stream.useChannel("channel", {
-		channelId: props.channel,
-	});
-	connection.on("note", prepend);
 } else if (props.src === "file") {
 	endpoint = "drive/files/attached-notes";
 	query = {
 		fileId: props.fileId,
 	};
 }
+
+const stream = useStream();
+
+function connectChannel() {
+	if (props.src === "antenna") {
+		connection = stream.useChannel("antenna", {
+			antennaId: props.antenna!,
+		});
+	} else if (props.src === "home") {
+		connection = stream.useChannel("homeTimeline", {
+			withReplies: defaultStore.state.showTimelineReplies,
+		});
+		connection2 = stream.useChannel("main");
+	} else if (props.src === "local") {
+		connection = stream.useChannel("localTimeline", {
+			withReplies: defaultStore.state.showTimelineReplies,
+		});
+	} else if (props.src === "recommended") {
+		connection = stream.useChannel("recommendedTimeline", {
+			withReplies: defaultStore.state.showTimelineReplies,
+		});
+	} else if (props.src === "social") {
+		connection = stream.useChannel("hybridTimeline", {
+			withReplies: defaultStore.state.showTimelineReplies,
+		});
+	} else if (props.src === "global") {
+		connection = stream.useChannel("globalTimeline", {
+			withReplies: defaultStore.state.showTimelineReplies,
+		});
+	} else if (props.src === "mentions") {
+		connection = stream.useChannel("main");
+		connection.on("mention", prepend);
+	} else if (props.src === "directs") {
+		const onNote = (note) => {
+			if (note.visibility === "specified") {
+				prepend(note);
+			}
+		};
+		connection = stream.useChannel("main");
+		connection.on("mention", onNote);
+	} else if (props.src === "list") {
+		connection = stream.useChannel("userList", {
+			listId: props.list,
+		});
+	} else if (props.src === "channel") {
+		connection = stream.useChannel("channel", {
+			channelId: props.channel,
+		});
+	}
+	if (props.src !== "directs" && props.src !== "mentions")
+		connection.on("note", prepend);
+}
+
+provide(
+	"inChannel",
+	computed(() => props.src === "channel"),
+);
 
 function closeHint() {
 	switch (props.src) {
@@ -223,15 +232,32 @@ function closeHint() {
 	}
 }
 
-const pagination = {
-	endpoint,
+if (defaultStore.state.enableTimelineStreaming) {
+	connectChannel();
+	onUnmounted(() => {
+		connection.dispose();
+		if (connection2) connection2.dispose();
+	});
+}
+
+function reloadTimeline() {
+	return new Promise<void>((res) => {
+		tlNotesCount = 0;
+		tlComponent.value?.pagingComponent?.reload().then(() => {
+			res();
+		});
+	});
+}
+
+const pagination: Paging = {
+	endpoint: endpoint as keyof Endpoints,
 	limit: 10,
 	params: query,
 };
 
 onUnmounted(() => {
 	connection.dispose();
-	if (connection2) connection2.dispose();
+	if (connection2 != null) connection2.dispose();
 });
 
 /* TODO
@@ -240,6 +266,10 @@ const timetravel = (date?: Date) => {
 	this.$refs.tl.reload();
 };
 */
+
+defineExpose({
+	reloadTimeline,
+});
 </script>
 <style lang="scss" scoped>
 @keyframes slideUp {

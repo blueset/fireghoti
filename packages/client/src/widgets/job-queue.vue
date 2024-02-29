@@ -127,7 +127,7 @@ import { onUnmounted, reactive } from "vue";
 import type { Widget, WidgetComponentExpose } from "./widget";
 import { useWidgetPropsManager } from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
-import { stream } from "@/stream";
+import { useStream } from "@/stream";
 import number from "@/filters/number";
 import * as sound from "@/scripts/sound";
 import { deepClone } from "@/scripts/clone";
@@ -161,6 +161,7 @@ const { widgetProps, configure } = useWidgetPropsManager(
 	emit,
 );
 
+const stream = useStream();
 const connection = stream.useChannel("queueStats");
 const current = reactive({
 	inbox: {

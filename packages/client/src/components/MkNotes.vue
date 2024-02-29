@@ -1,5 +1,9 @@
 <template>
-	<MkPagination ref="pagingComponent" :pagination="pagination">
+	<MkPagination
+		ref="pagingComponent"
+		:pagination="pagination"
+		:disable-auto-load="disableAutoLoad"
+	>
 		<template #empty>
 			<div class="_fullinfo">
 				<img
@@ -48,6 +52,7 @@ const tlEl = ref<HTMLElement>();
 defineProps<{
 	pagination: Paging;
 	noGap?: boolean;
+	disableAutoLoad?: boolean;
 }>();
 
 const pagingComponent = ref<InstanceType<typeof MkPagination>>();

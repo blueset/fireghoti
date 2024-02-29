@@ -19,13 +19,14 @@
 
 <script lang="ts" setup>
 import { onUnmounted, ref } from "vue";
-import { stream } from "@/stream";
+import { useStream, isReloading } from "@/stream";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 
 const hasDisconnected = ref(false);
 
 function onDisconnected() {
+	if (isReloading) return;
 	hasDisconnected.value = true;
 }
 
@@ -37,6 +38,7 @@ function reload() {
 	location.reload();
 }
 
+const stream = useStream();
 stream.on("_disconnected_", onDisconnected);
 
 onUnmounted(() => {

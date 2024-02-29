@@ -1,7 +1,7 @@
 import type { Ref } from "vue";
 import { onUnmounted } from "vue";
 import type { entities } from "firefish-js";
-import { stream } from "@/stream";
+import { useStream } from "@/stream";
 import { $i, isSignedIn } from "@/reactiveAccount";
 import * as os from "@/os";
 
@@ -11,7 +11,7 @@ export function useNoteCapture(props: {
 	isDeletedRef: Ref<boolean>;
 }) {
 	const note = props.note;
-	const connection = isSignedIn ? stream : null;
+	const connection = isSignedIn ? useStream() : null;
 
 	async function onStreamNoteUpdated(noteData): Promise<void> {
 		const { type, id, body } = noteData;

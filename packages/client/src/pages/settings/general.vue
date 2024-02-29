@@ -163,6 +163,26 @@
 					{{ i18n.ts.postSearch }}
 				</option>
 			</FormSelect>
+			<FormSwitch v-model="enableTimelineStreaming" class="_formBlock">{{
+				i18n.ts.enableTimelineStreaming
+			}}</FormSwitch>
+			<FormSwitch v-model="enablePullToRefresh" class="_formBlock">{{
+				i18n.ts.enablePullToRefresh
+			}}</FormSwitch>
+			<FormRange
+				v-if="enablePullToRefresh"
+				v-model="pullToRefreshThreshold"
+				:min="100"
+				:max="300"
+				:step="10"
+				easing
+				class="_formBlock"
+			>
+				<template #label>{{ i18n.ts.pullToRefreshThreshold }}</template>
+				<template #caption>{{
+					i18n.ts.pullToRefreshThreshold
+				}}</template>
+			</FormRange>
 		</FormSection>
 
 		<FormSection>
@@ -502,6 +522,15 @@ const searchURL = computed(defaultStore.makeGetterSetter("searchURL"));
 const showBigPostButton = computed(
 	defaultStore.makeGetterSetter("showBigPostButton"),
 );
+const enableTimelineStreaming = computed(
+	defaultStore.makeGetterSetter("enableTimelineStreaming"),
+);
+const enablePullToRefresh = computed(
+	defaultStore.makeGetterSetter("enablePullToRefresh"),
+);
+const pullToRefreshThreshold = computed(
+	defaultStore.makeGetterSetter("pullToRefreshThreshold"),
+);
 
 // This feature (along with injectPromo) is currently disabled
 // function onChangeInjectFeaturedNote(v) {
@@ -567,6 +596,9 @@ watch(
 		expandOnNoteClick,
 		iconSet,
 		useEmojiCdn,
+		enableTimelineStreaming,
+		enablePullToRefresh,
+		pullToRefreshThreshold,
 	],
 	async () => {
 		await reloadAsk();

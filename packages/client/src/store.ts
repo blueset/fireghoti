@@ -410,6 +410,18 @@ export const defaultStore = markRaw(
 			where: "device",
 			default: false,
 		},
+		enableTimelineStreaming: {
+			where: "deviceAccount",
+			default: true,
+		},
+		enablePullToRefresh: {
+			where: "deviceAccount",
+			default: true,
+		},
+		pullToRefreshThreshold: {
+			where: "device",
+			default: 150,
+		},
 	}),
 );
 

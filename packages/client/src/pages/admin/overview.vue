@@ -69,11 +69,13 @@ import XModerators from "./overview.moderators.vue";
 import XHeatmap from "./overview.heatmap.vue";
 // import XMetrics from "./overview.metrics.vue";
 import * as os from "@/os";
-import { stream } from "@/stream";
+import { useStream } from "@/stream";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import MkFolder from "@/components/MkFolder.vue";
 import icon from "@/scripts/icon";
+
+const stream = useStream();
 
 const rootEl = shallowRef<HTMLElement>();
 const serverInfo = ref<any>(null);

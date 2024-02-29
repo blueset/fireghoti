@@ -96,7 +96,7 @@ import MkButton from "@/components/MkButton.vue";
 import MkChatPreview from "@/components/MkChatPreview.vue";
 import MkPagination from "@/components/MkPagination.vue";
 import * as os from "@/os";
-import { stream } from "@/stream";
+import { useStream } from "@/stream";
 import { useRouter } from "@/router";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
@@ -107,6 +107,7 @@ import icon from "@/scripts/icon";
 import "swiper/scss";
 import "swiper/scss/virtual";
 
+const stream = useStream();
 const router = useRouter();
 
 const messages = ref([]);

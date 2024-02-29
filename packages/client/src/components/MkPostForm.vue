@@ -301,7 +301,7 @@ import { extractMentions } from "@/scripts/extract-mentions";
 import { formatTimeString } from "@/scripts/format-time-string";
 import { Autocomplete } from "@/scripts/autocomplete";
 import * as os from "@/os";
-import { stream } from "@/stream";
+import { useStream } from "@/stream";
 import { selectFiles } from "@/scripts/select-file";
 import { defaultStore, notePostInterruptors, postFormActions } from "@/store";
 import MkInfo from "@/components/MkInfo.vue";
@@ -353,6 +353,8 @@ const emit = defineEmits<{
 	(ev: "cancel"): void;
 	(ev: "esc"): void;
 }>();
+
+const stream = useStream();
 
 const textareaEl = ref<HTMLTextAreaElement | null>(null);
 const cwInputEl = ref<HTMLInputElement | null>(null);

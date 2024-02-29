@@ -3,7 +3,7 @@
 import type { Ref } from "vue";
 import { onUnmounted, ref, watch } from "vue";
 import { api } from "./os";
-import { stream } from "./stream";
+import { useStream } from "./stream";
 import { $i, isSignedIn } from "@/reactiveAccount";
 
 type StateDef = Record<
@@ -16,6 +16,7 @@ type StateDef = Record<
 
 type ArrayElement<A> = A extends readonly (infer T)[] ? T : never;
 
+const stream = useStream();
 const connection = isSignedIn && stream.useChannel("main");
 
 export class Storage<T extends StateDef> {

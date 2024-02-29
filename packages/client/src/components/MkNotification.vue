@@ -272,7 +272,7 @@ import { notePage } from "@/filters/note";
 import { userPage } from "@/filters/user";
 import { i18n } from "@/i18n";
 import * as os from "@/os";
-import { stream } from "@/stream";
+import { useStream } from "@/stream";
 import { useTooltip } from "@/scripts/use-tooltip";
 import { defaultStore } from "@/store";
 import { instance } from "@/instance";
@@ -289,6 +289,8 @@ const props = withDefaults(
 		full: false,
 	},
 );
+
+const stream = useStream();
 
 const elRef = ref<HTMLElement>(null);
 const reactionRef = ref(null);

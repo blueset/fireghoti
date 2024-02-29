@@ -55,10 +55,12 @@
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import XPie from "../../widgets/server-metric/pie.vue";
 import bytes from "@/filters/bytes";
-import { stream } from "@/stream";
+import { useStream } from "@/stream";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
+
+const stream = useStream();
 
 const meta = await os.api("server-info", {});
 const serverStats = await os.api("stats");

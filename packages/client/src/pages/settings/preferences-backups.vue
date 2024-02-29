@@ -64,13 +64,14 @@ import MkInfo from "@/components/MkInfo.vue";
 import * as os from "@/os";
 import { ColdDeviceStorage, defaultStore } from "@/store";
 import { unisonReload } from "@/scripts/unison-reload";
-import { stream } from "@/stream";
+import { useStream } from "@/stream";
 import { isSignedIn } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { host, version } from "@/config";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
 
+const stream = useStream();
 useCssModule();
 
 const defaultStoreSaveKeys: (keyof (typeof defaultStore)["state"])[] = [
@@ -120,6 +121,9 @@ const defaultStoreSaveKeys: (keyof (typeof defaultStore)["state"])[] = [
 	"detectPostLanguage",
 	"openServerInfo",
 	"iconSet",
+	"enableTimelineStreaming",
+	"enablePullToRefresh",
+	"pullToRefreshThreshold",
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 	"lightTheme",

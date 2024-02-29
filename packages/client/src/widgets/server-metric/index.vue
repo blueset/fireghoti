@@ -70,7 +70,7 @@ import XMeili from "./meilisearch.vue";
 import MkContainer from "@/components/MkContainer.vue";
 import type { GetFormResultType } from "@/scripts/form";
 import * as os from "@/os";
-import { stream } from "@/stream";
+import { useStream } from "@/stream";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
 import icon from "@/scripts/icon";
@@ -126,6 +126,7 @@ const toggleView = () => {
 	save();
 };
 
+const stream = useStream();
 const connection = stream.useChannel("serverStats");
 onUnmounted(() => {
 	connection.dispose();

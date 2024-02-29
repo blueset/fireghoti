@@ -60,7 +60,7 @@ import { Autocomplete } from "@/scripts/autocomplete";
 import { formatTimeString } from "@/scripts/format-time-string";
 import { selectFile } from "@/scripts/select-file";
 import * as os from "@/os";
-import { stream } from "@/stream";
+import { useStream } from "@/stream";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { uploadFile } from "@/scripts/upload";
@@ -70,6 +70,8 @@ const props = defineProps<{
 	user?: entities.UserDetailed | null;
 	group?: entities.UserGroup | null;
 }>();
+
+const stream = useStream();
 
 const textEl = ref<HTMLTextAreaElement>();
 const fileEl = ref<HTMLInputElement>();

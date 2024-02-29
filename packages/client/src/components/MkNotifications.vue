@@ -53,7 +53,7 @@ import MkPagination from "@/components/MkPagination.vue";
 import XNotification from "@/components/MkNotification.vue";
 import XList from "@/components/MkDateSeparatedList.vue";
 import XNote from "@/components/MkNote.vue";
-import { stream } from "@/stream";
+import { useStream } from "@/stream";
 import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 
@@ -61,6 +61,8 @@ const props = defineProps<{
 	includeTypes?: (typeof notificationTypes)[number][];
 	unreadOnly?: boolean;
 }>();
+
+const stream = useStream();
 
 const pagingComponent = ref<InstanceType<typeof MkPagination>>();
 
@@ -87,7 +89,7 @@ const onNotification = (notification) => {
 	}
 
 	if (!isMuted) {
-		pagingComponent.value.prepend({
+		pagingComponent.value?.prepend({
 			...notification,
 			isRead: document.visibilityState === "visible",
 		});

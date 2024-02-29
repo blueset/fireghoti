@@ -997,6 +997,12 @@ detectPostLanguage: "投稿の言語を自動検出し、外国語の投稿に�
 iconSet: "アイコンのスタイル"
 useCdn: "CDNのアセットを利用する"
 useCdnDescription: "このFirefishサーバーからではなくJSDelivr CDNからTwiemojiなどのアセットを読み込みます。"
+enablePullToRefresh: "「下に引っ張って再読み込み」を有効にする"
+pullToRefreshThreshold: "再読み込みするために引っ張る距離"
+pullDownToReload: "下に引っ張って再読み込み"
+releaseToReload: "離して再読み込み"
+reloading: "読み込み中"
+enableTimelineStreaming: "タイムラインを自動で更新する"
 
 _sensitiveMediaDetection:
   description: "機械学習を使って自動でセンシティブなメディアを検出し、モデレーションに役立てられます。サーバーの負荷が少し増えます。"

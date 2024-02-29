@@ -30,7 +30,7 @@ import { onUnmounted, ref } from "vue";
 import type { Widget, WidgetComponentExpose } from "./widget";
 import { useWidgetPropsManager } from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
-import { stream } from "@/stream";
+import { useStream } from "@/stream";
 import { getStaticImageUrl } from "@/scripts/get-static-image-url";
 import * as os from "@/os";
 import MkContainer from "@/components/MkContainer.vue";
@@ -66,6 +66,7 @@ const { widgetProps, configure } = useWidgetPropsManager(
 	emit,
 );
 
+const stream = useStream();
 const connection = stream.useChannel("main");
 const images = ref([]);
 const fetching = ref(true);

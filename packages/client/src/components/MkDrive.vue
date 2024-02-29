@@ -151,7 +151,7 @@ import XNavFolder from "@/components/MkDrive.navFolder.vue";
 import XFolder from "@/components/MkDrive.folder.vue";
 import XFile from "@/components/MkDrive.file.vue";
 import * as os from "@/os";
-import { stream } from "@/stream";
+import { useStream } from "@/stream";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { uploadFile, uploads } from "@/scripts/upload";
@@ -182,6 +182,8 @@ const emit = defineEmits<{
 	(ev: "cd", v: entities.DriveFolder | null): void;
 	(ev: "open-folder", v: entities.DriveFolder): void;
 }>();
+
+const stream = useStream();
 
 const loadMoreFiles = ref<InstanceType<typeof MkButton>>();
 const fileInput = ref<HTMLInputElement>();

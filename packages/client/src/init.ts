@@ -52,7 +52,7 @@ import * as sound from "@/scripts/sound";
 import { applyTheme } from "@/scripts/theme";
 import { reloadChannel } from "@/scripts/unison-reload";
 import { ColdDeviceStorage, defaultStore } from "@/store";
-import { stream } from "@/stream";
+import { useStream, isReloading } from "@/stream";
 import widgets from "@/widgets";
 
 function checkForSplash() {
@@ -399,7 +399,10 @@ function checkForSplash() {
 	);
 
 	let reloadDialogShowing = false;
+	const stream = useStream();
+
 	stream.on("_disconnected_", async () => {
+		if (isReloading) return;
 		if (defaultStore.state.serverDisconnectedBehavior === "reload") {
 			location.reload();
 		} else if (defaultStore.state.serverDisconnectedBehavior === "dialog") {

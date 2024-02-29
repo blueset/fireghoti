@@ -118,7 +118,7 @@ import {
 	scrollToBottom,
 } from "@/scripts/scroll";
 import * as os from "@/os";
-import { stream } from "@/stream";
+import { useStream } from "@/stream";
 import * as sound from "@/scripts/sound";
 import { vibrate } from "@/scripts/vibrate";
 import { i18n } from "@/i18n";
@@ -131,6 +131,8 @@ const props = defineProps<{
 	userAcct?: string;
 	groupId?: string;
 }>();
+
+const stream = useStream();
 
 const rootEl = ref<HTMLDivElement>();
 const formEl = ref<InstanceType<typeof XForm>>();

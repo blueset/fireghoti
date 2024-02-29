@@ -1,11 +1,13 @@
 import { ref } from "vue";
 import type { entities } from "firefish-js";
 import * as os from "@/os";
-import { stream } from "@/stream";
+import { useStream } from "@/stream";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import { uploadFile } from "@/scripts/upload";
 import icon from "@/scripts/icon";
+
+const stream = useStream();
 
 function select(
 	src: any,

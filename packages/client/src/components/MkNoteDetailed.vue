@@ -185,13 +185,15 @@ import { i18n } from "@/i18n";
 import { getNoteMenu } from "@/scripts/get-note-menu";
 import { useNoteCapture } from "@/scripts/use-note-capture";
 import { deepClone } from "@/scripts/clone";
-import { stream } from "@/stream";
+import { useStream } from "@/stream";
 // import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	note: entities.Note;
 	pinned?: boolean;
 }>();
+
+const stream = useStream();
 
 const tab = ref("replies");
 

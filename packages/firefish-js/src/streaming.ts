@@ -50,7 +50,7 @@ type StreamEvents = {
  * Firefish stream connection
  */
 export default class Stream extends EventEmitter<StreamEvents> {
-	private stream: ReconnectingWebsocket;
+	public stream: ReconnectingWebsocket;
 	public state: "initializing" | "reconnecting" | "connected" = "initializing";
 	private sharedConnectionPools: Pool[] = [];
 	private sharedConnections: SharedConnection[] = [];

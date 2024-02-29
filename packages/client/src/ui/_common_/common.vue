@@ -23,7 +23,9 @@ import { popup, popups } from "@/os";
 import { uploads } from "@/scripts/upload";
 import * as sound from "@/scripts/sound";
 import { $i, isSignedIn } from "@/reactiveAccount";
-import { stream } from "@/stream";
+import { useStream } from "@/stream";
+
+const stream = useStream();
 
 const XStreamIndicator = defineAsyncComponent(
 	() => import("./stream-indicator.vue"),
