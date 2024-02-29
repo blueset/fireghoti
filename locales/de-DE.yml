@@ -1402,23 +1402,14 @@ _2fa:
     deinem Gerät auch Anmeldung mit Hilfe eines FIDO2-kompatiblen Hardware-Sicherheitsschlüssels
     einrichten."
   step3Title: Gib deinen Authentifizierungscode ein
-  renewTOTPOk: Neu konfigurieren
   securityKeyNotSupported: Dein Browser unterstützt Hardware-Security-Keys nicht.
   chromePasskeyNotSupported: Chrome Passkeys werden momentan nicht unterstützt.
-  renewTOTP: Konfiguriere deine Authenticator App neu
-  renewTOTPCancel: Abbrechen
   tapSecurityKey: Bitte folge den Anweisungen deines Browsers, um einen Hardware-Security-Key
     oder einen Passkey zu registrieren
   removeKey: Entferne deinen Hardware-Security-Key
   removeKeyConfirm: Möchtest du wirklich deinen Key mit der Bezeichnung {name} löschen?
-  renewTOTPConfirm: Das wird dazu führen, dass du Verifizierungscodes deiner vorherigen
-    Authenticator App nicht mehr nutzen kannst
-  whyTOTPOnlyRenew: Die Authentificator App kann nicht entfernt werden, solange ein
-    Hardware-Security-Key registriert ist.
   step2Click: Ein Klick auf diesen QR-Code erlaubt es dir eine 2FA-Methode zu deinem
     Security Key oder deiner Authenticator App hinzuzufügen.
-  registerTOTPBeforeKey: Bitte registriere eine Authentificator App, um einen Hardware-Security-Key
-    oder einen Passkey zu nutzen.
   securityKeyName: Gib einen Namen für den Key ein
   token: 2FA Token
 _permissions:

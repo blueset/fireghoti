@@ -335,20 +335,11 @@ _2fa:
   securityKeyName: Introduïu un nom de clau
   removeKey: Suprimeix la clau de seguretat
   removeKeyConfirm: Vols suprimir la clau {name}?
-  renewTOTP: Tornar a configurar l'aplicació d'autenticació
-  renewTOTPOk: Reconfigurar
-  renewTOTPCancel: Cancel·lar
   step2Click: Fer clic en aquest codi QR us permetrà registrar 2FA a la vostra clau
     de seguretat o aplicació d'autenticació del telèfon.
   securityKeyNotSupported: El vostre navegador no admet claus de seguretat.
-  registerTOTPBeforeKey: Configureu una aplicació d'autenticació per registrar una
-    clau de seguretat o de passi.
   tapSecurityKey: Si us plau, seguiu el vostre navegador per registrar la clau de
     seguretat o d'accés
-  renewTOTPConfirm: Això farà que els codis de verificació de l'aplicació anterior
-    deixin de funcionar
-  whyTOTPOnlyRenew: L’aplicació d’autenticació no es pot eliminar sempre que es hi
-    hagi una clau de seguretat registrada.
   token: Token 2FA
 _widgets:
   notifications: "Notificacions"

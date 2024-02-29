@@ -1342,24 +1342,16 @@ _2fa:
   securityKeyInfo: "Bên cạnh xác minh bằng vân tay hoặc mã PIN, bạn cũng có thể thiết
     lập xác minh thông qua khóa bảo mật phần cứng hỗ trợ FIDO2 để bảo mật hơn nữa
     cho tài khoản của mình."
-  registerTOTPBeforeKey: Vui lòng thiết lập một ứng dụng xác thực để đăng ký khóa
-    bảo mật hoặc mật khẩu.
   tapSecurityKey: Vui lòng theo dõi trình duyệt của bạn để đăng ký mã bảo mật hoặc
     mã khóa
-  renewTOTPConfirm: Điều này sẽ khiến mã xác minh từ ứng dụng trước của bạn ngừng
-    hoạt động
   securityKeyName: Nhập tên mã khóa
   step3Title: Nhập mã xác thực
   chromePasskeyNotSupported: Mật khẩu Chrome hiện không được hỗ trợ.
   removeKeyConfirm: Thực sự xóa khóa {name}?
-  whyTOTPOnlyRenew: Không thể xóa ứng dụng xác thực miễn là đã đăng ký khóa bảo mật.
-  renewTOTPOk: Cấu hình lại
-  renewTOTPCancel: Hủy bỏ
   removeKey: Xóa khóa bảo mật
   step2Click: Nhấn vào mã QR này sẽ cho phép bạn đăng ký 2FA cho khóa bảo mật hoặc
     ứng dụng xác thực điện thoại của bạn.
   securityKeyNotSupported: Trình duyệt của bạn không hỗ trợ khóa bảo mật.
-  renewTOTP: Định cấu hình lại ứng dụng xác thực
   token: 2FA Token
 _permissions:
   "read:account": "Xem thông tin tài khoản của bạn"

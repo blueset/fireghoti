@@ -1258,12 +1258,7 @@ _2fa:
   step3: "输入您的应用提供的令牌以完成设置。"
   step4: "从现在开始，任何登录操作都将要求您提供这样一个登录令牌。"
   securityKeyInfo: "除了指纹或 PIN 身份验证外，您还可以通过支持 FIDO2 的硬件安全密钥设置身份验证，以进一步保护您的账号。"
-  renewTOTPOk: 重新配置
-  renewTOTPCancel: 取消
   token: 2FA 令牌
-  renewTOTP: 重新配置身份验证器应用
-  registerTOTPBeforeKey: 请先设置认证器应用以注册安全或通行密钥。
-  renewTOTPConfirm: 这将导致您之前应用中的验证码失效
   step3Title: 输入验证码
   step2Click: 点击此二维码将允许您在安全密钥或手机身份验证器应用中注册 2FA。
   securityKeyNotSupported: 您的浏览器不支持安全密钥。
@@ -1272,7 +1267,6 @@ _2fa:
   tapSecurityKey: 请按照您的浏览器的指示注册安全或通行密钥
   removeKey: 移除安全密钥
   removeKeyConfirm: 真的要删除 {name} 密钥吗？
-  whyTOTPOnlyRenew: 只要注册了安全密钥，就无法删除身份验证器应用。
 _permissions:
   "read:account": "查看账号信息"
   "write:account": "更改账号信息"

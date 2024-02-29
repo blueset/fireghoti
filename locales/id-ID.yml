@@ -1300,8 +1300,6 @@ _2fa:
   securityKeyInfo: "Kamu dapat memasang otentikasi WebAuthN untuk mengamankan proses
     login lebih lanjut dengan tidak hanya perangkat keras kunci keamanan yang mendukung
     FIDO2, namun juga sidik jari atau otentikasi PIN pada perangkatmu."
-  renewTOTPConfirm: Ini akan menyebabkan kode verifikasi dari aplikasimu sebelumnya
-    berhenti bekerja
   token: Token 2FA
   chromePasskeyNotSupported: Kunci pas Chrome saat ini tidak didukung.
   securityKeyName: Masukkan nama kunci
@@ -1310,15 +1308,9 @@ _2fa:
     keamanan atau apl ontentikasi ponsel.
   step3Title: Masukkan kode otentikasi
   securityKeyNotSupported: Perambanmu tidak mendukung kunci keamanan.
-  renewTOTPOk: Konfigurasi ulang
-  renewTOTPCancel: Batal
-  registerTOTPBeforeKey: Silakan atur apl otentikator untuk mendaftarkan kunci keamanan
-    atau kunci pas.
   tapSecurityKey: Silakan ikuti perambanmu untuk mendaftarkan kunci keamanan atau
     kunci pas
   removeKeyConfirm: Yakin menghapus kunci {name}?
-  whyTOTPOnlyRenew: Apl otentikator tidak dapat dihapus selama kunci keamanan didaftarkan.
-  renewTOTP: Konfigurasi ulang apl otentikator
 _permissions:
   "read:account": "Lihat informasi akun"
   "write:account": "Sunting informasi akun"
