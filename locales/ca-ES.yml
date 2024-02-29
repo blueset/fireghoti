@@ -1113,8 +1113,8 @@ docSource: Codi font d'aquest document
 createAccount: Crea un compte
 fontSize: Mida del text
 noFollowRequests: No tens cap sol·licitud de seguiment per aprovar
-openImageInNewTab: Obre les imatges en una pestanya nova
-dashboard: Panell
+openImageInNewTab: Obre les imatges a una pestanya nova
+dashboard: Tauler
 local: Local
 remote: Remot
 total: Total
@@ -1138,12 +1138,12 @@ leaveConfirm: Hi han canvis que no s'han desat. Els vols descartar?
 manage: Administració
 plugins: Afegits
 preferencesBackups: Preferències de còpies de seguretat
-undeck: Treure el Taulell
+undeck: Sortir del taulell
 useBlurEffectForModal: Fes servir efectes de difuminació en les finestres modals
 useFullReactionPicker: Fes servir el selector de reaccions a tamany complert
 deck: Taulell
 width: Amplada
-generateAccessToken: Genera un token d'accés
+generateAccessToken: Genera una clau d'accés
 medium: Mitja
 small: Petit
 permission: Permisos
@@ -1159,7 +1159,7 @@ smtpConfig: Configuració del servidor SMTP
 smtpHost: Host
 enableEmail: Activa la distribució de correu electrònic
 smtpPort: Port
-emailConfigInfo: Fet servir per confirmar les adreçats de correu electrònic al registrar-se
+emailConfigInfo: Fet servir per confirmar les adreces de correu electrònic al registrar-se
   o si s'oblida la contrasenya
 email: Correu electrònic
 smtpSecure: Fes servir SSL/TLS implícit per connectar-se per SMTP
@@ -1175,11 +1175,11 @@ userSaysSomething: '{name} va dir alguna cosa'
 instanceMute: Silenciar servidor
 logs: Registres
 copy: Copiar
-delayed: Retardat
+delayed: Posposat
 metrics: Mètriques
 overview: Vista general
 database: Base de dades
-regenerateLoginToken: Regenera el token d'inici de sessió
+regenerateLoginToken: Regenera la clau d'inici de sessió
 reduceUiAnimation: Redueix les animacions de la UI
 messagingWithGroup: Conversa en grup
 invites: Invitacions
@@ -1197,7 +1197,7 @@ height: Alçada
 large: Gran
 notificationSetting: Preferències de notificacions
 makeActive: Activar
-notificationSettingDesc: Tria el tipus de notificació que es veure.
+notificationSettingDesc: Tria el tipus de notificació que es mostrarà.
 notifyAntenna: Notifica publicacions noves
 withFileAntenna: Només publicacions amb fitxers
 enableServiceworker: Activa les notificacions push al teu navegador
@@ -1232,9 +1232,9 @@ userSaysSomethingReason: '{name} va dir {reason}'
 display: Visualització
 channel: Canals
 create: Crear
-useGlobalSetting: Fes servir els ajusts globals
-useGlobalSettingDesc: Si s'activa, es faran servir els ajusts de notificacions del
-  teu compte. Si es desactiva , es poden fer configuracions individuals.
+useGlobalSetting: Fes servir els ajustos globals
+useGlobalSettingDesc: Si s'activa, es faran servir els ajustos de notificacions del
+  teu compte. Si es desactiva, es poden fer configuracions individuals.
 other: Altres
 menu: Menú
 addItem: Afegeix un element
@@ -1249,9 +1249,9 @@ deletedNote: Publicació esborrada
 disablePlayer: Tancar el reproductor de vídeo
 fileIdOrUrl: ID o adreça URL del fitxer
 behavior: Comportament
-regenerateLoginTokenDescription: Regenera el token que es fa servir de manera interna
-  durant l'inici de sessió. Normalment això no és necessari. Si es torna a genera
-  el token, es tancarà la sessió a tots els dispositius.
+regenerateLoginTokenDescription: Regenera la clau que es fa servir de manera interna
+  durant l'inici de sessió. Normalment això no és necessari. Si la clau és torna a
+  generar, es tancarà la sessió a tots els dispositius.
 setMultipleBySeparatingWithSpace: Separa diferents entrades amb espais.
 reportAbuseOf: Informa d'un abús de {name}
 sample: Exemple
@@ -1260,7 +1260,7 @@ reportAbuse: Informe
 reporter: Informador
 reporterOrigin: Origen informador
 forwardReport: Envia l'informe a un servidor remot
-abuseReported: El teu informe ha sigut enviat. Moltes gràcies.
+abuseReported: El teu informe s'ha enviat. Moltes gràcies.
 reporteeOrigin: Origen de l'informe
 send: Enviar
 abuseMarkAsResolved: Marcar l'informe com a resolt
@@ -1287,8 +1287,8 @@ waitingFor: Esperant a {x}
 random: Aleatori
 system: Sistema
 switchUi: Interfície d'usuari
-createNewClip: Crear un clip nou
-unclip: Treure clip
+createNewClip: Crea un retall nou
+unclip: Desfés el retall
 public: Públic
 renotesCount: Nombre d'impulsos fets
 sentReactionsCount: Nombre de reaccions fetes
@@ -1480,7 +1480,7 @@ objectStorageUseSSL: Fes servir SSL
 yourAccountSuspendedTitle: Aquest compte està suspès
 i18nInfo: Firefish està sent traduït a diversos idiomes per voluntaris. Pots ajudar
   {link}.
-manageAccessTokens: Administrar tokens d'accés
+manageAccessTokens: Administrar claus d'accés
 accountInfo: Informació del compte
 pageLikedCount: Nombre de m'agrada rebuts a Pàgines
 center: Centre
@@ -1607,8 +1607,8 @@ unlikeConfirm: Vols treure el teu m'agrada?
 fullView: Vista complerta
 desktop: Escritori
 notesCount: Nombre de publicacions
-confirmToUnclipAlreadyClippedNote: Aquesta publicació ja és al clip "{name}". La vols
-  treure d'aquest clip?
+confirmToUnclipAlreadyClippedNote: Aquesta publicació ja la tens als retalls "{name}".
+  La vols treure d'aquest retall?
 driveFilesCount: Nombre de fitxers al Disk
 silencedInstances: Servidors silenciats
 silenceThisInstance: Silencia el servidor
@@ -2235,3 +2235,6 @@ makePrivate: Fer privat
 makePrivateConfirm: Aquesta operació enviarà una sol·licitud d'eliminació als servidors
   remots i canviarà la visibilitat a privat. Continuar?
 privateDescription: Visible només per a tu
+useCdn: Aconsegueix els recursos des de el CDN
+useCdnDescription: Carrega alguns dels recursos estàtics com ara Twemoji des de el
+  CDN de JSDeliver en comptes de carregar-los des d'aquest servidor Firefish.
