@@ -2,6 +2,12 @@
 
 Critical security updates are indicated by the :warning: icon.
 
+## Unreleased
+
+- Add ability to pull-down-to-refresh timelines in PWA
+- Make passkey/security key independent of TOTP (!10670)
+- Fix bugs
+
 ## v20240228
 
 - Update "About Firefish" page (!10673)
