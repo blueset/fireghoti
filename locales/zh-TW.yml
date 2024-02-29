@@ -1254,18 +1254,12 @@ _2fa:
   step3: "輸入您的App提供的權杖以完成設定。"
   step4: "從現在開始，任何登入操作都將要求您提供權杖。"
   securityKeyInfo: "您可以設定使用支援FIDO2的硬體安全鎖、終端設備的指纹認證或者PIN碼來登入。"
-  renewTOTPCancel: 取消
   removeKey: 移除安全金鑰
   removeKeyConfirm: 真的要刪掉 {name} 嗎？
-  renewTOTP: 重新配置身份驗證器應用程式
   chromePasskeyNotSupported: 目前不支持 Chrome 密鑰。
-  whyTOTPOnlyRenew: 只要註冊了安全金鑰，就無法刪除身份驗證器應用程式。
-  renewTOTPConfirm: 這將導致您之前的身分驗證器應用程式停止工作
   securityKeyName: 取一個金鑰的名字
   tapSecurityKey: 請按照您的瀏覽器註冊安全金鑰或密碼
   token: 兩步驟驗證金鑰
-  registerTOTPBeforeKey: 請設置身份驗證器應用程式以註冊安全金鑰或密碼。
-  renewTOTPOk: 重新配置
   step3Title: 輸入驗證碼
   securityKeyNotSupported: 您使用的瀏覧器不支援安全金鑰(Security key)。
   step2Click: 點擊此二維條碼以註冊2FA至你的安全密鑰或手機的Authenticator應用程式。

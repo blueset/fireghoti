@@ -14,17 +14,7 @@
 				<template #caption>{{ i18n.ts.totpDescription }}</template>
 				<div v-if="$i.twoFactorEnabled" class="_gaps_s">
 					<div v-text="i18n.ts._2fa.alreadyRegistered" />
-					<template v-if="$i.securityKeysList.length > 0">
-						<MkButton @click="renewTOTP"
-							><i
-								:class="icon('ph-shield-check')"
-								style="margin-right: 0.5rem"
-							></i
-							>{{ i18n.ts._2fa.renewTOTP }}</MkButton
-						>
-						<MkInfo>{{ i18n.ts._2fa.whyTOTPOnlyRenew }}</MkInfo>
-					</template>
-					<MkButton v-else @click="unregisterTOTP"
+					<MkButton @click="unregisterTOTP"
 						><i
 							:class="icon('ph-shield-slash')"
 							style="margin-right: 0.5rem"
@@ -54,13 +44,6 @@
 
 					<MkInfo v-if="!supportsCredentials" warn>
 						{{ i18n.ts._2fa.securityKeyNotSupported }}
-					</MkInfo>
-
-					<MkInfo
-						v-else-if="supportsCredentials && !$i.twoFactorEnabled"
-						warn
-					>
-						{{ i18n.ts._2fa.registerTOTPBeforeKey }}
 					</MkInfo>
 
 					<template v-else>
@@ -199,19 +182,6 @@ function unregisterTOTP() {
 				text: error,
 			});
 		});
-	});
-}
-
-function renewTOTP() {
-	os.confirm({
-		type: "question",
-		title: i18n.ts._2fa.renewTOTP,
-		text: i18n.ts._2fa.renewTOTPConfirm,
-		okText: i18n.ts._2fa.renewTOTPOk,
-		cancelText: i18n.ts._2fa.renewTOTPCancel,
-	}).then(({ canceled }) => {
-		if (canceled) return;
-		registerTOTP();
 	});
 }
 

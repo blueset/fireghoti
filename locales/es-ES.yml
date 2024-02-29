@@ -1381,21 +1381,12 @@ _2fa:
   chromePasskeyNotSupported: Contraseñas de Chrome no están soportadas.
   removeKeyConfirm: ¿Realmente deseas borrar la clave {name}?
   step3Title: Ingresa un código de autorización
-  renewTOTP: Reconfigurar la aplicación autorizadora
-  whyTOTPOnlyRenew: La aplicación autorizadora no puede ser quitada mientras la clave
-    de seguridad siga registrada.
-  renewTOTPConfirm: Esto causará que los códigos de verificación de la aplicación
-    anterior dejen de funcionar
-  renewTOTPOk: Reconfigurar
   securityKeyNotSupported: Tu navegador no soporta claves de seguridad.
   step2Click: Presionar este código QR te permitirá registrar la autorización 2FA
     a tu clave de seguridad o aplicación autorizadora.
-  registerTOTPBeforeKey: Por favor configura una aplicación autorizadora para registrar
-    una clave de seguridad o de paso.
   securityKeyName: Ingresa el nombre de la clave
   tapSecurityKey: Por favor, espera al navegador para registrar la clave de seguridad
     o de paso
-  renewTOTPCancel: Cancelar
   token: Token 2FA
   removeKey: Quitar clave de seguridad
 _permissions:

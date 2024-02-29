@@ -47,8 +47,9 @@ export default define(meta, paramDef, async (ps, user) => {
 	});
 
 	if (keyCount === 0) {
-		await UserProfiles.update(me.id, {
+		await UserProfiles.update(user.id, {
 			usePasswordLessLogin: false,
+			securityKeysAvailable: false,
 		});
 	}
 

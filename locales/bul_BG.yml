@@ -417,8 +417,6 @@ audio: Звук
 removeQuote: Премахни цитат
 _sfx:
   notification: Известия
-_2fa:
-  renewTOTPCancel: Отмяна
 _permissions:
   "read:favorites": Виж списъка си с отметки
   "write:favorites": Редактирай списъка си с отметки

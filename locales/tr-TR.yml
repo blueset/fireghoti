@@ -1325,18 +1325,13 @@ noGraze: Firefish ile çakıştığı için lütfen "Graze for Mastodon" tarayı
   devre dışı bırakın.
 isBot: Bu hesap bir bottur
 _2fa:
-  renewTOTPOk: Yeniden Yapılandır
   registerTOTP: Doğrulayıcı uygulamasını kaydedin
-  renewTOTPCancel: İptal Et
-  renewTOTPConfirm: Bu, önceki uygulamanızdaki doğrulama kodlarının çalışmamasına
-    neden olur
   alreadyRegistered: Zaten bir 2 faktörlü kimlik doğrulama cihazını kaydettiniz.
   chromePasskeyNotSupported: Chrome geçiş anahtarları şu anda desteklenmemektedir.
   registerSecurityKey: Bir güvenlik veya geçiş anahtarı kaydedin
   securityKeyName: Bir anahtar adı girin
   removeKey: Güvenlik anahtarını kaldır
   removeKeyConfirm: '{name} anahtarı gerçekten silinsin mi?'
-  renewTOTP: Kimlik doğrulayıcı uygulamasını yeniden yapılandırın
   token: 2FA Tokeni
   step1: Öncelikle, cihazınıza bir kimlik doğrulama uygulaması ({a} veya {b} gibi)
     yükleyin.
@@ -1354,10 +1349,6 @@ _2fa:
     aracılığıyla kimlik doğrulama ayarlayabilirsiniz.
   tapSecurityKey: Güvenlik veya geçiş anahtarını kaydetmek için lütfen tarayıcınızı
     takip edin
-  registerTOTPBeforeKey: Bir güvenlik veya geçiş anahtarı kaydetmek için lütfen bir
-    kimlik doğrulama uygulaması kurun.
-  whyTOTPOnlyRenew: Kimlik doğrulayıcı uygulaması, bir güvenlik anahtarı kaydedildiği
-    sürece kaldırılamaz.
 _poll:
   voted: Oylandı
   deadlineTime: Zaman

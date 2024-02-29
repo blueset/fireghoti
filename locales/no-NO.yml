@@ -1677,18 +1677,12 @@ _2fa:
   step3: Oppgi en engangskode for å fullføre oppsettet.
   step1: Først, installer en app for engangskoder (slik som {a} eller {b}) på en enhet.
   step3Title: Skriv inn en autentiseringskode
-  renewTOTPCancel: Avbryt
   securityKeyName: Oppgi et nøkkelnavn
-  renewTOTPOk: Rekonfigurer
   registerSecurityKey: Registrer en sikkerhetsnøkkel
   step2: Deretter kan du scanne QR-koden som vises på skjermen.
   registerTOTP: Registrer engangskode-app
   removeKeyConfirm: Sikker på at du vil slette nøkkelen {name}?
-  registerTOTPBeforeKey: Sett opp en autentiserings-app for å registrere en sikkerhetsnøkkel.
   chromePasskeyNotSupported: Passkeys i Chrome er foreløpig ikke støttet.
-  renewTOTPConfirm: Dette vil føre til at kodene fra den forrige appen din vil slutte
-    å virke
-  renewTOTP: Rekonfigurer autentiserings-app
   securityKeyNotSupported: Nettleseren din tillater ikke sikkerhetsnøkler.
   step2Click: Når du klikker på QR-koden kan du registrere den som en tofaktor-pålogging
     på en sikkerhetsnøkkel eller engangskode-app.

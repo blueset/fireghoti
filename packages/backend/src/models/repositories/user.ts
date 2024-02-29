@@ -526,11 +526,9 @@ export const UserRepository = db.getRepository(User).extend({
 						ffVisibility: profile!.ffVisibility,
 						twoFactorEnabled: profile!.twoFactorEnabled,
 						usePasswordLessLogin: profile!.usePasswordLessLogin,
-						securityKeys: profile!.twoFactorEnabled
-							? UserSecurityKeys.countBy({
-									userId: user.id,
-							  }).then((result) => result >= 1)
-							: false,
+						securityKeys: UserSecurityKeys.countBy({
+							userId: user.id,
+						}).then((result) => result >= 1),
 				  }
 				: {}),
 
@@ -576,18 +574,16 @@ export const UserRepository = db.getRepository(User).extend({
 				? {
 						email: profile!.email,
 						emailVerified: profile!.emailVerified,
-						securityKeysList: profile!.twoFactorEnabled
-							? UserSecurityKeys.find({
-									where: {
-										userId: user.id,
-									},
-									select: {
-										id: true,
-										name: true,
-										lastUsed: true,
-									},
-							  })
-							: [],
+						securityKeysList: UserSecurityKeys.find({
+							where: {
+								userId: user.id,
+							},
+							select: {
+								id: true,
+								name: true,
+								lastUsed: true,
+							},
+						}),
 				  }
 				: {}),
 

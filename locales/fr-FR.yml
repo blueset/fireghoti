@@ -1312,19 +1312,10 @@ _2fa:
   step2Click: En cliquant sur ce QR code, vous pourrez enregistrer l'authentification
     à deux facteurs (2FA) sur votre clé de sécurité ou votre application d'authentification
     sur téléphone.
-  whyTOTPOnlyRenew: L'application d'authentification ne peut pas être supprimée tant
-    qu'une clé de sécurité est enregistrée.
   securityKeyName: Entrez un nom de clé
   removeKeyConfirm: Voulez-vous vraiment supprimer la clé {name} ?
-  renewTOTP: Reconfigurer l'application d'authentification
-  renewTOTPConfirm: Cela entraînera l'arrêt de fonctionnement des codes de vérification
-    provenant de votre application précédente
-  renewTOTPOk: Reconfigurer
   securityKeyNotSupported: Votre navigateur ne prend pas en charge les clés de sécurité.
   removeKey: Supprimer la clé de sécurité
-  renewTOTPCancel: Annuler
-  registerTOTPBeforeKey: Veuillez configurer une application d'authentification pour
-    enregistrer une clé de sécurité ou un mot de passe.
   tapSecurityKey: Veuillez suivre les instructions de votre navigateur pour enregistrer
     la clé de sécurité ou le mot de passe
 _permissions:

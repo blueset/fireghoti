@@ -116,7 +116,7 @@ export default async (ctx: Koa.Context) => {
 		);
 	}
 
-	if (!profile.twoFactorEnabled) {
+	if (!profile.twoFactorEnabled && !profile.securityKeysAvailable) {
 		if (same) {
 			signin(ctx, user);
 			return;
@@ -128,7 +128,7 @@ export default async (ctx: Koa.Context) => {
 		}
 	}
 
-	if (token) {
+	if (token && profile.twoFactorEnabled) {
 		if (!same) {
 			await fail(403, {
 				id: "932c904e-9460-45b7-9ce6-7ed33be7eb2c",

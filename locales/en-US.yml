@@ -1586,8 +1586,6 @@ _2fa:
   step3: "Enter the token provided by your app to finish setup."
   step4: "From now on, any future login attempts will ask for such a login token."
   securityKeyNotSupported: "Your browser does not support security keys."
-  registerTOTPBeforeKey: "Please set up an authenticator app to register a security
-    or pass key."
   securityKeyInfo: "Besides fingerprint or PIN authentication, you can also setup
     authentication via hardware security keys that support FIDO2 to further secure
     your account."
@@ -1597,13 +1595,6 @@ _2fa:
   tapSecurityKey: "Please follow your browser to register the security or pass key"
   removeKey: "Remove security key"
   removeKeyConfirm: "Really delete the {name} key?"
-  whyTOTPOnlyRenew: "The authenticator app cannot be removed as long as a security
-    key is registered."
-  renewTOTP: "Reconfigure authenticator app"
-  renewTOTPConfirm: "This will cause verification codes from your previous app to
-    stop working"
-  renewTOTPOk: "Reconfigure"
-  renewTOTPCancel: "Cancel"
   token: "2FA Token"
 _permissions:
   "read:account": "View your account information"

@@ -1220,7 +1220,6 @@ _tutorial:
 _2fa:
   registerTOTP: "Aggiungi app di autenticazione"
   securityKeyName: Scegli un nome per la chiave
-  renewTOTPOk: Riconfigura
   step2: Poi, scansiona il QR code mostrato a schermo.
   securityKeyInfo: Oltre alle impronte digitali o al PIN, puoi anche autenticarti
     con chiavi di sicurezza hardware che supportano FIDO2 per rendere il tuo account
@@ -1230,19 +1229,12 @@ _2fa:
     fattori (2FA).
   step3: Inserisci il token fornito dalla tua app per terminare.
   step4: Da ora in poi i futuri tentativi di login necessiteranno del token.
-  registerTOTPBeforeKey: Prima installa una app di autenticazione o registra una chiave
-    di sicurezza o una pass key.
   token: Token 2FA
-  whyTOTPOnlyRenew: La app di autenticazione non può essere rimossa finché la chiave
-    di sicurezza è registrata.
   step2Click: Cliccando sul QR code potrai registrare la 2FA nella tua chiave di sicurezza
     o nella app di autenticazione dello smartphone.
   step2Url: 'Puoi anche chiamare questo URL se sei su desktop:'
   securityKeyNotSupported: Il tuo browser non supporta le chiavi di sicurezza.
   chromePasskeyNotSupported: Le passkey di Chrome non sono supportate.
-  renewTOTPConfirm: I codici di verifica già impostati in precedenza smetteranno di
-    funzionare
-  renewTOTP: Riconfigura la app di autenticazione
   registerSecurityKey: Registra una chiave di sicurezza o pass key
   step1: Prima di tutto, installa una app di autenticazione (tipo {a} o {b}) sul tuo
     device.
@@ -1250,7 +1242,6 @@ _2fa:
     sicurezza o la pass key
   removeKey: Rimuovi la chiave di sicurezza
   removeKeyConfirm: Confermi la rimozione della chiave {name} ?
-  renewTOTPCancel: Annulla
 _permissions:
   "read:account": "Visualizzare le informazioni dell'account"
   "write:account": "Modificare le informazioni dell'account"
