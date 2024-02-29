@@ -1,11 +1,13 @@
-export function nyaize(text: string, lang?: string): string {
+export function nyaify(text: string, lang?: string): string {
 	text = text
 		// ja-JP
 		.replaceAll("な", "にゃ")
 		.replaceAll("ナ", "ニャ")
 		.replaceAll("ﾅ", "ﾆｬ")
 		// en-US
-		.replace(/(?<=n)a/gi, (x) => (x === "A" ? "YA" : "ya"))
+		.replaceAll("na", "nya")
+		.replaceAll("Na", "Nya")
+		.replaceAll("NA", "NYA")
 		.replace(/(?<=morn)ing/gi, (x) => (x === "ING" ? "YAN" : "yan"))
 		.replace(/(?<=every)one/gi, (x) => (x === "ONE" ? "NYAN" : "nyan"))
 		.replace(/non(?=[bcdfghjklmnpqrstvwxyz])/gi, (x) =>

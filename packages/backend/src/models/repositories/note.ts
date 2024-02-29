@@ -12,7 +12,7 @@ import {
 	Channels,
 } from "../index.js";
 import type { Packed } from "@/misc/schema.js";
-import { nyaize } from "@/misc/nyaize.js";
+import { nyaify } from "@/misc/nyaify.js";
 import { awaitAll } from "@/prelude/await-all.js";
 import { convertReactions, decodeReaction } from "@/misc/reaction-lib.js";
 import type { NoteReaction } from "@/models/entities/note-reaction.js";
@@ -262,19 +262,19 @@ export const NoteRepository = db.getRepository(Note).extend({
 
 		if (packed.user.isCat && packed.user.speakAsCat && packed.text) {
 			const tokens = packed.text ? mfm.parse(packed.text) : [];
-			function nyaizeNode(node: mfm.MfmNode) {
+			function nyaifyNode(node: mfm.MfmNode) {
 				if (node.type === "quote") return;
 				if (node.type === "text")
-					node.props.text = nyaize(node.props.text, packed.lang);
+					node.props.text = nyaify(node.props.text, packed.lang);
 
 				if (node.children) {
 					for (const child of node.children) {
-						nyaizeNode(child);
+						nyaifyNode(child);
 					}
 				}
 			}
 
-			for (const node of tokens) nyaizeNode(node);
+			for (const node of tokens) nyaifyNode(node);
 
 			packed.text = mfm.toString(tokens);
 		}
