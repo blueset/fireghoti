@@ -885,14 +885,17 @@ async function createMentionedEvents(
 	nm: NotificationManager,
 ) {
 	for (const u of mentionedUsers.filter((u) => Users.isLocalUser(u))) {
-		const threadMuted = await NoteThreadMutings.findOneBy({
+		const isWordMuted = await MutedNotes.existsBy({
 			userId: u.id,
-			threadId: note.threadId || note.id,
+			noteId: note.id,
 		});
+		if (isWordMuted) continue;
 
-		if (threadMuted) {
-			continue;
-		}
+		const isThreadMuted = await NoteThreadMutings.existsBy({
+			userId: u.id,
+			threadId: note.threadId ?? note.id,
+		});
+		if (isThreadMuted) continue;
 
 		// note with "specified" visibility might not be visible to mentioned users
 		try {
