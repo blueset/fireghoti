@@ -17,6 +17,7 @@ import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import { shouldBlockInstance } from "@/misc/should-block-instance.js";
 import { apLogger } from "@/remote/activitypub/logger.js";
+import { In, IsNull, Not } from "typeorm";
 
 export default class Resolver {
 	private history: Set<string>;
@@ -138,7 +139,7 @@ export default class Resolver {
 				return Notes.findOneByOrFail({ id: parsed.id }).then((note) => {
 					if (parsed.rest === "activity") {
 						// this refers to the create activity and not the note itself
-						return renderActivity(renderCreate(renderNote(note)));
+						return renderActivity(renderCreate(renderNote(note), note));
 					} else {
 						return renderNote(note);
 					}
@@ -160,15 +161,34 @@ export default class Resolver {
 					(reaction) => renderActivity(renderLike(reaction, { uri: null })),
 				);
 			case "follows":
-				// rest should be <followee id>
-				if (parsed.rest == null || !/^\w+$/.test(parsed.rest))
-					throw new Error("resolveLocal: invalid follow URI");
+				// if rest is a <followee id>
+				if (parsed.rest != null && /^\w+$/.test(parsed.rest)) {
+					return Promise.all(
+						[parsed.id, parsed.rest].map((id) => Users.findOneByOrFail({ id })),
+					).then(([follower, followee]) =>
+						renderActivity(renderFollow(follower, followee, url)),
+					);
+				}
 
-				return Promise.all(
-					[parsed.id, parsed.rest].map((id) => Users.findOneByOrFail({ id })),
-				).then(([follower, followee]) =>
-					renderActivity(renderFollow(follower, followee, url)),
-				);
+				// Another situation is there is only requestId, then obtained object from database.
+				const followRequest = FollowRequests.findOneBy({
+					id: parsed.id,
+				});
+				if (followRequest == null) {
+					throw new Error("resolveLocal: invalid follow URI");
+				}
+				const follower = Users.findOneBy({
+					id: followRequest.followerId,
+					host: IsNull(),
+				});
+				const followee = Users.findOneBy({
+					id: followRequest.followeeId,
+					host: Not(IsNull()),
+				});
+				if (follower == null || followee == null) {
+					throw new Error("resolveLocal: invalid follow URI");
+				}
+				return renderActivity(renderFollow(follower, followee, url));
 			default:
 				throw new Error(`resolveLocal: type ${type} unhandled`);
 		}
