@@ -2238,3 +2238,9 @@ privateDescription: Visible només per a tu
 useCdn: Aconsegueix els recursos des de el CDN
 useCdnDescription: Carrega alguns dels recursos estàtics com ara Twemoji des de el
   CDN de JSDeliver en comptes de carregar-los des d'aquest servidor Firefish.
+releaseToReload: Deixa anar per actualitzar
+reloading: Actualitzant
+enableTimelineStreaming: Actualitza les línies de temps automàticament
+enablePullToRefresh: Activa "Baixa per actualitzar"
+pullDownToReload: Baixa per actualitzar
+pullToRefreshThreshold: Distancia de baixada per actualitzar
