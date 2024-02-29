@@ -8,6 +8,9 @@ Breaking changes are indicated by the :warning: icon.
 	- `reply-mute/create`
 	- `reply-mute/delete`
 	- `reply-mute/list`
+- :warning: The following (horrible) endpoints are removed:
+	- `admin/vacuum`
+	- `reset-db`
 
 ## v20240228
 

@@ -64,7 +64,6 @@ import * as ep___admin_suspendUser from "./endpoints/admin/suspend-user.js";
 import * as ep___admin_unsilenceUser from "./endpoints/admin/unsilence-user.js";
 import * as ep___admin_unsuspendUser from "./endpoints/admin/unsuspend-user.js";
 import * as ep___admin_updateMeta from "./endpoints/admin/update-meta.js";
-import * as ep___admin_vacuum from "./endpoints/admin/vacuum.js";
 import * as ep___admin_deleteAccount from "./endpoints/admin/delete-account.js";
 import * as ep___admin_delete2fa from "./endpoints/admin/delete-2fa.js";
 import * as ep___admin_deletePasskeys from "./endpoints/admin/delete-passkeys.js";
@@ -290,7 +289,6 @@ import * as ep___patrons from "./endpoints/patrons.js";
 import * as ep___release from "./endpoints/release.js";
 import * as ep___promo_read from "./endpoints/promo/read.js";
 import * as ep___requestResetPassword from "./endpoints/request-reset-password.js";
-import * as ep___resetDb from "./endpoints/reset-db.js";
 import * as ep___resetPassword from "./endpoints/reset-password.js";
 import * as ep___serverInfo from "./endpoints/server-info.js";
 import * as ep___stats from "./endpoints/stats.js";
@@ -414,7 +412,6 @@ const eps = [
 	["admin/unsilence-user", ep___admin_unsilenceUser],
 	["admin/unsuspend-user", ep___admin_unsuspendUser],
 	["admin/update-meta", ep___admin_updateMeta],
-	["admin/vacuum", ep___admin_vacuum],
 	["admin/delete-account", ep___admin_deleteAccount],
 	["admin/delete-2fa", ep___admin_delete2fa],
 	["admin/delete-passkeys", ep___admin_deletePasskeys],
@@ -641,7 +638,6 @@ const eps = [
 	["release", ep___release],
 	["promo/read", ep___promo_read],
 	["request-reset-password", ep___requestResetPassword],
-	["reset-db", ep___resetDb],
 	["reset-password", ep___resetPassword],
 	["server-info", ep___serverInfo],
 	["stats", ep___stats],

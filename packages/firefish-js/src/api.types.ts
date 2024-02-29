@@ -89,7 +89,6 @@ export type Endpoints = {
 	"admin/unsilence-user": { req: TODO; res: TODO };
 	"admin/unsuspend-user": { req: TODO; res: TODO };
 	"admin/update-meta": { req: TODO; res: TODO };
-	"admin/vacuum": { req: TODO; res: TODO };
 	"admin/accounts/create": { req: TODO; res: TODO };
 	"admin/ad/create": { req: TODO; res: TODO };
 	"admin/ad/delete": { req: { id: Ad["id"] }; res: null };
