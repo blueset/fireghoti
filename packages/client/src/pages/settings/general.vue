@@ -393,7 +393,7 @@ import icon from "@/scripts/icon";
 const lang = ref(localStorage.getItem("lang"));
 const translateLang = ref(localStorage.getItem("translateLang"));
 const fontSize = ref(localStorage.getItem("fontSize"));
-const useSystemFont = ref(localStorage.getItem("useSystemFont") != null);
+const useSystemFont = ref(localStorage.getItem("useSystemFont") !== "f");
 
 async function reloadAsk() {
 	const { canceled } = await os.confirm({
@@ -563,7 +563,7 @@ watch(useSystemFont, () => {
 	if (useSystemFont.value) {
 		localStorage.setItem("useSystemFont", "t");
 	} else {
-		localStorage.removeItem("useSystemFont");
+		localStorage.setItem("useSystemFont", "f");
 	}
 });
 

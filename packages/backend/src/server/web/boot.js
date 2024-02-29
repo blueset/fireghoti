@@ -114,7 +114,7 @@
 		document.documentElement.classList.add("useCJKFont");
 	}
 
-	const useSystemFont = localStorage.getItem("useSystemFont");
+	const useSystemFont = localStorage.getItem("useSystemFont") !== "f";
 	if (useSystemFont) {
 		document.documentElement.classList.add("useSystemFont");
 	}

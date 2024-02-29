@@ -7,6 +7,12 @@ Critical security updates are indicated by the :warning: icon.
 - Add ability to hide replies from certain users in timelines
 - Admins are now allowed to migrate their account
 	- This was requested by personal server admins
+- Change default client settings (you can restore the previous settings)
+	- Use system's font
+		- For acceccibility reasons (related discussion: <https://github.com/misskey-dev/misskey/issues/10192>)
+	- Disable vibrations
+	- Don't show gaps between posts in timelines
+	- Show the instance ticker on local posts
 
 ## v20240229
 

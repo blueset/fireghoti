@@ -162,7 +162,7 @@ interface Profile {
 		hot: Record<keyof typeof defaultStoreSaveKeys, unknown>;
 		cold: Record<keyof typeof coldDeviceStorageSaveKeys, unknown>;
 		fontSize: string | null;
-		useSystemFont: "t" | null;
+		useSystemFont: "t" | "f" | null;
 		wallpaper: string | null;
 	};
 }
@@ -226,7 +226,7 @@ function getSettings(): Profile["settings"] {
 		hot,
 		cold,
 		fontSize: localStorage.getItem("fontSize"),
-		useSystemFont: localStorage.getItem("useSystemFont") as "t" | null,
+		useSystemFont: localStorage.getItem("useSystemFont") as "t" | "f" | null,
 		wallpaper: localStorage.getItem("wallpaper"),
 	};
 }
