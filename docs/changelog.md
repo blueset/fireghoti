@@ -2,7 +2,7 @@
 
 Critical security updates are indicated by the :warning: icon.
 
-## Unreleased
+## v20240229
 
 - Add ability to pull-down-to-refresh timelines in PWA
 - Make passkey/security key independent of TOTP (!10670)
