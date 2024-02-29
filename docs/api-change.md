@@ -2,6 +2,13 @@
 
 Breaking changes are indicated by the :warning: icon.
 
+## Unreleased
+
+- The following endpoints are added:
+	- `reply-mute/create`
+	- `reply-mute/delete`
+	- `reply-mute/list`
+
 ## v20240228
 
 - :warning: The following endpoints are removed:

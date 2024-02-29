@@ -2,6 +2,10 @@
 
 Critical security updates are indicated by the :warning: icon.
 
+## Unreleased
+
+- Add ability to hide replies from certain users in timelines
+
 ## v20240229
 
 - Add ability to pull-down-to-refresh timelines in PWA

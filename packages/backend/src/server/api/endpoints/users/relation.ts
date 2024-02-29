@@ -62,6 +62,11 @@ export const meta = {
 						optional: false,
 						nullable: false,
 					},
+					isReplyMuted: {
+						type: "boolean",
+						optional: false,
+						nullable: false,
+					},
 				},
 			},
 			{
@@ -113,6 +118,11 @@ export const meta = {
 							nullable: false,
 						},
 						isRenoteMuted: {
+							type: "boolean",
+							optional: false,
+							nullable: false,
+						},
+						isReplyMuted: {
 							type: "boolean",
 							optional: false,
 							nullable: false,

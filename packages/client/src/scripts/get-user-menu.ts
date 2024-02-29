@@ -127,6 +127,17 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		});
 	}
 
+	async function toggleReplyMute(): Promise<void> {
+		os.apiWithDialog(
+			user.isReplyMuted ? "reply-mute/delete" : "reply-mute/create",
+			{
+				userId: user.id,
+			},
+		).then(() => {
+			user.isReplyMuted = !user.isReplyMuted;
+		});
+	}
+
 	async function toggleBlock(): Promise<void> {
 		if (
 			!(await getConfirmed(
@@ -311,9 +322,16 @@ export function getUserMenu(user, router: Router = mainRouter) {
 			: undefined,
 		null,
 		{
-			icon: user.isRenoteMuted ? "ph-eye ph-lg" : "ph-eye-slash ph-lg",
+			icon: user.isRenoteMuted
+				? `${icon("ph-eye")}`
+				: `${icon("ph-eye-slash")}`,
 			text: user.isRenoteMuted ? i18n.ts.renoteUnmute : i18n.ts.renoteMute,
 			action: toggleRenoteMute,
+		},
+		{
+			icon: user.isReplyMuted ? `${icon("ph-eye")}` : `${icon("ph-eye-slash")}`,
+			text: user.isReplyMuted ? i18n.ts.replyUnmute : i18n.ts.replyMute,
+			action: toggleReplyMute,
 		},
 	] as any;
 

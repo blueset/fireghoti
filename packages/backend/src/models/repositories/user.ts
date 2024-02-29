@@ -26,6 +26,7 @@ import {
 	MessagingMessages,
 	Mutings,
 	RenoteMutings,
+	ReplyMutings,
 	Notes,
 	NoteUnreads,
 	Notifications,
@@ -173,6 +174,13 @@ export const UserRepository = db.getRepository(User).extend({
 				take: 1,
 			}).then((n) => n > 0),
 			isRenoteMuted: RenoteMutings.count({
+				where: {
+					muterId: me,
+					muteeId: target,
+				},
+				take: 1,
+			}).then((n) => n > 0),
+			isReplyMuted: ReplyMutings.count({
 				where: {
 					muterId: me,
 					muteeId: target,
@@ -598,6 +606,7 @@ export const UserRepository = db.getRepository(User).extend({
 						isBlocked: relation.isBlocked,
 						isMuted: relation.isMuted,
 						isRenoteMuted: relation.isRenoteMuted,
+						isReplyMuted: relation.isReplyMuted,
 				  }
 				: {}),
 		} as Promiseable<Packed<"User">> as Promiseable<

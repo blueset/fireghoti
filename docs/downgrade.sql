@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'AddReplyMuting1704851359889',
     'FixNoteUrlIndex1709129810501',
     'RemoveCharts1709047957489',
     'DropUserProfileLanguage1708452631156',
@@ -9,6 +10,9 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- reply-muting
+DROP TABLE "reply_muting";
 
 -- remove-charts
 CREATE TABLE public.__chart__ap_request (

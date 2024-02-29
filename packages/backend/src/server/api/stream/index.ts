@@ -8,6 +8,7 @@ import {
 	Followings,
 	Mutings,
 	RenoteMutings,
+	ReplyMutings,
 	UserProfiles,
 	ChannelFollowings,
 	Blockings,
@@ -39,6 +40,7 @@ export default class Connection {
 	public following: Set<User["id"]> = new Set();
 	public muting: Set<User["id"]> = new Set();
 	public renoteMuting: Set<User["id"]> = new Set();
+	public replyMuting: Set<User["id"]> = new Set();
 	public blocking: Set<User["id"]> = new Set(); // "被"blocking
 	public followingChannels: Set<ChannelModel["id"]> = new Set();
 	public token?: AccessToken;
@@ -83,6 +85,7 @@ export default class Connection {
 			this.updateFollowing();
 			this.updateMuting();
 			this.updateRenoteMuting();
+			this.updateReplyMuting();
 			this.updateBlocking();
 			this.updateFollowingChannels();
 			this.updateUserProfile();
@@ -117,6 +120,7 @@ export default class Connection {
 				break;
 
 			// TODO: renote mute events
+			// TODO: reply mute events
 			// TODO: block events
 
 			case "followChannel":
@@ -564,6 +568,17 @@ export default class Connection {
 		});
 
 		this.renoteMuting = new Set<string>(renoteMutings.map((x) => x.muteeId));
+	}
+
+	private async updateReplyMuting() {
+		const replyMutings = await ReplyMutings.find({
+			where: {
+				muterId: this.user?.id,
+			},
+			select: ["muteeId"],
+		});
+
+		this.replyMuting = new Set<string>(replyMutings.map((x) => x.muteeId));
 	}
 
 	private async updateBlocking() {

@@ -339,6 +339,11 @@ export const packedUserDetailedNotMeOnlySchema = {
 			nullable: false,
 			optional: true,
 		},
+		isReplyMuted: {
+			type: "boolean",
+			nullable: false,
+			optional: true,
+		},
 		//#endregion
 	},
 } as const;

@@ -230,6 +230,9 @@ import * as ep___mute_list from "./endpoints/mute/list.js";
 import * as ep___renote_mute_create from "./endpoints/renote-mute/create.js";
 import * as ep___renote_mute_delete from "./endpoints/renote-mute/delete.js";
 import * as ep___renote_mute_list from "./endpoints/renote-mute/list.js";
+import * as ep___reply_mute_create from "./endpoints/reply-mute/create.js";
+import * as ep___reply_mute_delete from "./endpoints/reply-mute/delete.js";
+import * as ep___reply_mute_list from "./endpoints/reply-mute/list.js";
 import * as ep___my_apps from "./endpoints/my/apps.js";
 import * as ep___notes from "./endpoints/notes.js";
 import * as ep___notes_children from "./endpoints/notes/children.js";
@@ -628,6 +631,9 @@ const eps = [
 	["renote-mute/create", ep___renote_mute_create],
 	["renote-mute/delete", ep___renote_mute_delete],
 	["renote-mute/list", ep___renote_mute_list],
+	["reply-mute/create", ep___reply_mute_create],
+	["reply-mute/delete", ep___reply_mute_delete],
+	["reply-mute/list", ep___reply_mute_list],
 	["custom-motd", ep___customMOTD],
 	["custom-splash-icons", ep___customSplashIcons],
 	["latest-version", ep___latestVersion],

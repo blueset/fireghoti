@@ -36,6 +36,7 @@ export default class extends Channel {
 
 				if (note.renote && !note.text && this.renoteMuting.has(note.userId))
 					return;
+				if (note.replyId != null && this.replyMuting.has(note.userId)) return;
 
 				this.connection.cacheNote(note);
 

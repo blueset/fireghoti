@@ -60,6 +60,7 @@ export default class extends Channel {
 		if (isUserRelated(note, this.blocking)) return;
 
 		if (note.renote && !note.text && this.renoteMuting.has(note.userId)) return;
+		if (note.replyId != null && this.replyMuting.has(note.userId)) return;
 
 		this.send("note", note);
 	}
