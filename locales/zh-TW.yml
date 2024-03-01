@@ -1123,6 +1123,7 @@ _wordMute:
   langDescription: 將指定語言的貼文從時間軸中隱藏。
   muteLangs: 被靜音的語言
   muteLangsDescription: OR條件以空格或換行進行分隔。
+  mutePatterns: 靜音表達式
 _instanceMute:
   instanceMuteDescription: "將設定的伺服器的所有貼文及轉發靜音。對被靜音伺服器的使用者的回覆也將被靜音。"
   instanceMuteDescription2: "設定時以換行進行分隔"
@@ -2003,3 +2004,46 @@ private: "祕密"
 privateDescription: "僅你可見"
 makePrivate: "設為祕密"
 makePrivateConfirm: "此操作將向遠端伺服器發送刪除請求，並將貼文的公開範圍設為「祕密」。是否繼續？"
+squareCatAvatars: 貓模式賬號顯示圓形頭像
+showBigPostButton: 在發帖表單上顯示一個巨大的發帖按鈕
+emojiModPerm: 自訂表情符號管理許可權
+emojiModPermDescription: "添加：允許該使用者添加新的自定義表情符號，併為新添加的自定義表情符號設置標籤/類別/授權。\n添加和編輯：在 \"\
+  添加\" 權限的基礎上，允許該使用者編輯現有自定義表情符號的名稱/類別/標籤/授權。\n全部允許：在 \"添加和編輯\" 權限的基礎上，允許該使用者刪除現有的自定義表情符號。"
+_emojiModPerm:
+  full: 全部允許
+  unauthorized: 未授權
+  add: 添加
+  mod: 添加和編輯
+replyMute: 靜音回覆貼文
+useCdn: 從 CDN 獲取資源
+useCdnDescription: 從 JSDelivr CDN（而不是 Firefish 伺服器）載入一些靜態資源，例如 Twemoji。
+replyUnmute: 解除回覆貼文
+suggested: 建議
+noLanguage: 無語言
+forMobile: 行動裝置
+replaceChatButtonWithAccountButton: 將聊天按鈕替換為帳戶切換按鈕
+replaceWidgetsButtonWithReloadButton: 將小部件按鈕替換為重新載入按鈕
+postSearch: 在此伺服器上搜索帖子
+searchWords: 要搜尋的詞 / ID 或者要查找的 URL
+searchEngine: 搜索欄 MFM 中使用的搜尋引擎
+enablePullToRefresh: 啟用 “下拉重新載入”
+pullToRefreshThreshold: 觸發下拉重新載入所需的距離
+pullDownToReload: 下拉重新載入
+releaseToReload: 釋放重新載入
+reloading: 重新載入中
+enableTimelineStreaming: 自動更新時間軸
+searchUsers: 發行者（選擇）
+searchRange: 發表於（選擇）
+searchPostsWithFiles: 只帶有檔的帖子
+searchCwAndAlt: 包括內容警告和檔描述
+publishTimelines: 為訪客發佈時間軸
+publishTimelinesDescription: 如果啟用，在使用者登出時本地和全域時間線也會顯示在 {url} 上。
+searchWordsDescription: "要搜尋帖子，請輸入搜尋詞。 交集搜索用空格分隔單詞，並集搜索單詞之間用 OR 分隔。\n例如 '早上 晚上' 將查找包含
+  '早上' 和 '晚上' 的帖子，而 '早上 OR 晚上' 將查找包含 '早上' 或 '晚上' （以及同時包含兩者）的帖子。\n您還可以組合交集/並集條件，例如
+  '（早上 OR 晚上） 困了' 。\n\n如果您想轉到特定的用戶頁面或帖子頁面，請在此欄位中輸入 ID 或 URL，然後點擊 「查找」 按鈕。 點擊「搜尋」 按鈕搜尋字面包含
+  ID/URL 的帖子。"
+searchUsersDescription: "要搜尋特定使用者/伺服器的帖子，請輸入ID（@user@example.com，或 @user 對於本地使用者）或域名（example.com）。\n
+  \n如果您輸入 'me' （不帶引號），您的所有帖子（包括不公開的帖子、僅限關注者的帖子、直接帖子和秘密帖子）都會被搜索。\n\n如果您輸入 'local' （不帶引號），結果將被過濾以僅包含來自該伺服器的帖子。"
+searchRangeDescription: "如果您要過濾時間段，請按以下格式輸入：20220615-20231031\n\n如果您省略年份（例如 0105-0106
+  或 20231105-0110），它將被解釋為當前年份。\n\n您還可以省略開始日期或結束日期。 例如 -0102 將過濾搜尋結果以僅顯示今年 1 月 2 日之前發佈的帖子，而
+  20231026- 將過濾結果以僅顯示 2023 年 10 月 26 日之後發佈的帖子。"
