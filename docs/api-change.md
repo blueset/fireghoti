@@ -4,6 +4,7 @@ Breaking changes are indicated by the :warning: icon.
 
 ## Unreleased
 
+- Added `following/requests/sent` endpoint for added Sent Following Requests List Feature.
 - The following endpoints are added:
 	- `reply-mute/create`
 	- `reply-mute/delete`

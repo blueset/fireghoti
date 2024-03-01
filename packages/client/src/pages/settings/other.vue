@@ -4,6 +4,10 @@
 			i18n.ts.accountInfo
 		}}</FormLink>
 
+		<FormLink to="/my/follow-requests/sent" class="_formBlock">{{
+			i18n.ts.sentFollowRequests
+		}}</FormLink>
+
 		<FormLink to="/registry" class="_formBlock"
 			><template #icon><i :class="icon('ph-gear-six')"></i></template
 			>{{ i18n.ts.registry }}</FormLink

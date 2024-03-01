@@ -588,6 +588,11 @@ export const routes = [
 		loginRequired: true,
 	},
 	{
+		path: "/my/follow-requests/sent",
+		component: page(() => import("./pages/follow-requests-sent.vue")),
+		loginRequired: true,
+	},
+	{
 		path: "/my/lists/:listId",
 		component: page(() => import("./pages/my-lists/list.vue")),
 		loginRequired: true,
