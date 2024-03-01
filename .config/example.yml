@@ -167,6 +167,17 @@ reservedUsernames: [
 # IP address family used for outgoing request (ipv4, ipv6 or dual)
 #outgoingAddressFamily: ipv4
 
+# Log Option
+# Production env: ['error', 'success', 'warning', 'info']
+# Debug/Test env or Troubleshooting: ['error', 'success', 'warning', 'debug' ,'info']
+# Production env which storage space or IO is tight: ['error', 'warning']
+logLevel: [
+  'error',
+  'success',
+  'warning',
+  'info'
+]
+
 # Syslog option
 #syslog:
 #  host: localhost

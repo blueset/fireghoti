@@ -89,6 +89,8 @@ export type Source = {
 	deliverJobMaxAttempts?: number;
 	inboxJobMaxAttempts?: number;
 
+	logLevel?: string[];
+
 	syslog: {
 		host: string;
 		port: number;
