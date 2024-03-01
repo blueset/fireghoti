@@ -380,3 +380,4 @@ export const iso639Regional = {
 };
 
 export const langmap = Object.assign({}, langmapNoRegion, iso639Regional);
+export type PostLanguage = keyof typeof langmap;
