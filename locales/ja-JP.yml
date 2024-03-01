@@ -974,10 +974,6 @@ migrationConfirm: "本当にこのアカウントを {account} に引っ越し�
   この操作を行う前に引っ越し先のアカウントでエイリアスを作成する必要があります。エイリアスが作成されているか、必ず確認してください。"
 defaultReaction: "リモートとローカルの投稿に対するデフォルトの絵文字リアクション"
 license: "ライセンス"
-indexPosts: "投稿をインデックス"
-indexFrom: "この投稿ID以降をインデックスする"
-indexFromDescription: "空白で全ての投稿を指定します"
-indexNotice: "インデックスを開始しました。完了まで時間がかかる場合があるため、少なくとも1時間はサーバーを再起動しないでください。"
 customKaTeXMacro: "カスタムKaTeXマクロ"
 customKaTeXMacroDescription: "数式入力を楽にするためのマクロを設定しましょう！記法はLaTeXにおけるコマンドの定義と同様に \\newcommand{\\
   name}{content} または \\newcommand{\\add}[2]{#1 + #2} のように記述します。後者の例では \\add{3}{foo}
@@ -1453,10 +1449,7 @@ _widgets:
   userList: "ユーザーリスト"
   _userList:
     chooseList: "リストを選択"
-  meiliStatus: サーバーステータス
   serverInfo: サーバー情報
-  meiliSize: インデックスサイズ
-  meiliIndexCount: インデックス済みの投稿
 _cw:
   hide: "隠す"
   show: "もっと見る"

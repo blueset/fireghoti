@@ -1324,9 +1324,6 @@ _widgets:
   instanceCloud: Cloud del server
   unixClock: Orologio UNIX
   serverInfo: Informazioni sul server
-  meiliIndexCount: Post indicizzati
-  meiliStatus: Stato del server
-  meiliSize: Dimensione indice
   userList: Elenco utenti
 _cw:
   hide: "Nascondi"
@@ -1838,9 +1835,7 @@ customSplashIconsDescription: Elenco degli URL di icone personalizzate da mostra
   le immagini siano su un URL statico, preferibilmente di dimensioni 192x192.
 swipeOnDesktop: Permetti lo swipe su desktop simile alla versione mobile
 logoImageUrl: URL del logo
-indexFrom: Indicizza dal post ID
 customKaTeXMacro: Macro KaTeX personalizzate
-indexPosts: Crea indice dei post
 signupsDisabled: Le iscrizioni su questo server al momento non sono possibili, ma
   puoi sempre iscriverti su un altro server! Se invece hai un codice di invito per
   questo server, inseriscilo qua sotto.
@@ -1919,9 +1914,6 @@ lastActiveDate: Ultimo utilizzo
 enterSendsMessage: Premi "Invio" nei messaggi per inviare (altrimenti è "Ctrl + Invio")
 customMOTD: Messaggi di caricamento personalizzati (splash screen)
 replayTutorial: Ripeti il tutorial
-indexFromDescription: Lascia vuoto per indicizzare tutti i post
-indexNotice: Creazione indice in corso. Sarà necessario del tempo, fai attenzione
-  a non riavviare il server per almeno un'ora.
 enableCustomKaTeXMacro: Abilita le macro KaTeX personalizzate
 preventAiLearningDescription: Richiedi ai bot di intelligenza artificiale di terze
   parti di non studiare e acquisire il contenuto che carichi, come post e immagini.

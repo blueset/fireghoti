@@ -939,7 +939,6 @@ allowedInstancesDescription: Tjenernavn for tjenere som skal hvitelistes. En per
   (Vil bare bli brukt i privat modus).
 previewNoteText: Forhåndsvisning
 recentNDays: Siste {n} dager
-indexPosts: Indekser poster
 objectStorageUseProxy: Koble til gjennom en mellomtjener
 objectStorageUseProxyDesc: Skru av dette dersom du ikke vil bruke mellomtjenere for
   API-oppkoblinger
@@ -1185,10 +1184,6 @@ moveFromDescription: Dette vil sette opp et alias for din gamle kontoen slik at 
   kan flytte fra den gamle kontoen til denne. Gjør dette FØR du flytter fra den gamle
   kontoen. Skriv inn den gamle kontoen på formen @person@server.com
 defaultReaction: Standard emoji-reaksjon for utgående og innkommende poster
-indexFrom: Indekser poster fra post-id og fremover
-indexNotice: Indekserer. Dette vil sannsynligvis ta litt tid, ikke restart tjeneren
-  før det har gått minst en time.
-indexFromDescription: La stå tom for å indeksere alle poster
 customKaTeXMacroDescription: 'Sett opp makroer for å skrive matematiske uttrykk enkelt.
   Notasjonen følger LaTeX-kommandoer og er skrevet som \newcommand{\ navn}{uttrykk}
   eller \newcommand{\navn}{antall argumenter}{uttrykk}. For eksempel vil \newcommand{\add}{2}{#1
@@ -1628,14 +1623,12 @@ _antennaSources:
   instances: Poster fra alle brukerne på denne tjeneren
 _widgets:
   timeline: Tidslinje
-  meiliSize: Indeks-størrelse
   instanceCloud: Tjenersky
   onlineUsers: Påloggede brukere
   clock: Klokke
   userList: Brukerliste
   rss: RSS-leser
   serverMetric: Tjenermetrikker
-  meiliIndexCount: Indekserte poster
   button: Knapp
   unixClock: Unix-klokke
   calendar: Kalender
@@ -1647,7 +1640,6 @@ _widgets:
   photos: Bilder
   rssTicker: RSS-rulletekst
   aiscript: AiScript-konsoll
-  meiliStatus: Tjenerstatus
   memo: Notatlapp
   notifications: Varsler
   postForm: Ny post

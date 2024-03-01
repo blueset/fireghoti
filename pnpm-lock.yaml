@@ -75,9 +75,6 @@ importers:
       '@discordapp/twemoji':
         specifier: ^15.0.2
         version: 15.0.2
-      '@elastic/elasticsearch':
-        specifier: 8.12.2
-        version: 8.12.2
       '@koa/cors':
         specifier: 5.0.0
         version: 5.0.0
@@ -243,9 +240,6 @@ importers:
       megalodon:
         specifier: workspace:*
         version: link:../megalodon
-      meilisearch:
-        specifier: 0.37.0
-        version: 0.37.0
       mfm-js:
         specifier: 0.24.0
         version: 0.24.0
@@ -336,9 +330,6 @@ importers:
       sharp:
         specifier: 0.33.2
         version: 0.33.2
-      sonic-channel:
-        specifier: ^1.3.1
-        version: 1.3.1
       stringz:
         specifier: 2.1.0
         version: 2.1.0
@@ -1887,30 +1878,6 @@ packages:
       fs-extra: 8.1.0
       jsonfile: 5.0.0
       universalify: 0.1.2
-    dev: false
-
-  /@elastic/elasticsearch@8.12.2:
-    resolution: {integrity: sha512-04NvH3LIgcv1Uwguorfw2WwzC9Lhfsqs9f0L6uq6MrCw0lqe/HOQ6E8vJ6EkHAA15iEfbhtxOtenbZVVcE+mAQ==}
-    engines: {node: '>=18'}
-    dependencies:
-      '@elastic/transport': 8.4.1
-      tslib: 2.6.2
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /@elastic/transport@8.4.1:
-    resolution: {integrity: sha512-/SXVuVnuU5b4dq8OFY4izG+dmGla185PcoqgK6+AJMpmOeY1QYVNbWtCwvSvoAANN5D/wV+EBU8+x7Vf9EphbA==}
-    engines: {node: '>=16'}
-    dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
-      hpagent: 1.2.0
-      ms: 2.1.3
-      secure-json-parse: 2.7.0
-      tslib: 2.6.2
-      undici: 5.23.0
-    transitivePeerDependencies:
-      - supports-color
     dev: false
 
   /@emnapi/runtime@0.45.0:
@@ -7182,6 +7149,7 @@ packages:
       node-fetch: 2.6.12
     transitivePeerDependencies:
       - encoding
+    dev: true
 
   /cross-spawn@5.1.0:
     resolution: {integrity: sha512-pTgQJ5KC0d2hcY8eyL1IzlBPYjTkyH72XRZPnLyKus2mBfNjQs3klqbJU2VILqZryAZUt9JOb3h/mWMy23/f5A==}
@@ -12529,14 +12497,6 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
-  /meilisearch@0.37.0:
-    resolution: {integrity: sha512-LdbK6JmRghCawrmWKJSEQF0OiE82md+YqJGE/U2JcCD8ROwlhTx0KM6NX4rQt0u0VpV0QZVG9umYiu3CSSIJAQ==}
-    dependencies:
-      cross-fetch: 3.1.8
-    transitivePeerDependencies:
-      - encoding
-    dev: false
-
   /memoize@10.0.0:
     resolution: {integrity: sha512-H6cBLgsi6vMWOcCpvVCdFFnl3kerEXbrYh9q+lY6VXvQSmM6CkmV08VOwT+WE2tzIEqRPFfAq3fm4v/UIW6mSA==}
     engines: {node: '>=18'}
@@ -15181,10 +15141,6 @@ packages:
       ajv-keywords: 3.5.2(ajv@6.12.6)
     dev: true
 
-  /secure-json-parse@2.7.0:
-    resolution: {integrity: sha512-6aU+Rwsezw7VR8/nyvKTx8QpWH9FrcYiXXlqC4z5d5XQBDRqtbfsRjnwGyqbi3gddNtWHuEk9OANUotL26qKUw==}
-    dev: false
-
   /seedrandom@2.4.2:
     resolution: {integrity: sha512-uQ72txMoObtuJooiBLSVs5Yu2e9d/lHQz0boaqHjW8runXB9vR8nFtaZV54wYii613N0C8ZqTBLsfwDhAdpvqQ==}
     dev: false
@@ -15460,11 +15416,6 @@ packages:
     dependencies:
       ip: 2.0.0
       smart-buffer: 4.2.0
-    dev: false
-
-  /sonic-channel@1.3.1:
-    resolution: {integrity: sha512-+K4IZVFE7Tf2DB4EFZ23xo7a/+gJaiOHhFzXVZpzkX6Rs/rvf4YbSxnEGdYw8mrTcjtpG+jLVQEhP8sNTtN5VA==}
-    engines: {node: '>= 6.0.0'}
     dev: false
 
   /sort-keys-length@1.0.1:

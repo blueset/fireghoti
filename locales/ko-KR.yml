@@ -1331,10 +1331,7 @@ _widgets:
   serverInfo: 서버 정보
   _userList:
     chooseList: 리스트 선택
-  meiliStatus: 서버 정보
   userList: 유저 목록
-  meiliSize: 인덱스 크기
-  meiliIndexCount: 인덱싱 완료된 게시물
   rssTicker: RSS Ticker
 _cw:
   hide: "숨기기"
@@ -1840,7 +1837,6 @@ customSplashIconsDescription: 유저가 페이지를 로딩/새로고침할 때 
   이미지는 되도록 정적 URL으로 구성하고, 192x192 해상도로 조정하여 주십시오.
 moveFromDescription: '이전 계정에 대한 별칭을 작성하여, 이 계정으로 옮길 수 있도록 합니다. 반드시 계정을 이전하기 전에 수행해야
   합니다. 이전 계정을 다음과 같은 형식으로 입력하여 주십시오: @person@server.com'
-indexFromDescription: 빈 칸으로 두면 모든 게시물을 인덱싱합니다
 customKaTeXMacroDescription: 'KaTeX 매크로를 지정하여 수식을 더욱 편리하게 입력하세요! LaTeX의 커맨드 정의와 동일하게
   \newcommand{\ 이름}{내용} 또는 \newcommand{\이름}[인수 갯수]{내용} 와 같이 입력하십시오. 예를 들어 \newcommand{\add}[2]{#1
   + #2} 와 같이 정의한 경우 \add{3}{foo} 를 입력하면 3 + foo 으로 치환됩니다.매크로의 이름을 감싸는 중괄호를 소괄호() 또는
@@ -1895,7 +1891,6 @@ accessibility: 접근성
 userSaysSomethingReasonReply: '{name} 님이 {reason} 을 포함하는 게시물에 답글했습니다'
 userSaysSomethingReasonRenote: '{name} 님이 {reason} 을 포함하는 게시물을 부스트했습니다'
 breakFollowConfirm: 팔로워를 해제하시겠습니까?
-indexFrom: 이 게시물 ID부터 인덱싱하기
 noThankYou: 괜찮습니다
 hiddenTags: 숨길 해시태그
 image: 이미지
@@ -1927,8 +1922,6 @@ removeMember: 멤버를 삭제
 license: 라이선스
 migrationConfirm: "정말로 이 계정을 {account}로 이사하시겠습니까? 한 번 이사하면, 현재 이 계정은 두 번 다시 사용할 수
   없게 됩니다.\n또한, 이사 갈 계정에 현재 사용 중인 계정의 별칭을 올바르게 작성하였는지 다시 한 번 확인하십시오."
-indexPosts: 게시물을 인덱싱
-indexNotice: 인덱싱을 시작했습니다. 이 작업은 시간이 많이 소요되므로, 최소 1시간 이내에 서버를 재시작하지 마십시오.
 noteId: 게시물 ID
 signupsDisabled: 현재 이 서버에서는 신규 등록을 받고 있지 않습니다. 초대 코드를 가지고 계신 경우 아래 칸에 입력해 주십시오. 초대
   코드를 가지고 있지 않더라도, 신규 등록이 열려 있는 다른 서버에 등록하실 수 있습니다!

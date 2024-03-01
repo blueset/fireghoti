@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'Pgroonga1698420787202',
     'ChangeDefaultConfigs1709251460718',
     'AddReplyMuting1704851359889',
     'FixNoteUrlIndex1709129810501',
@@ -11,6 +12,12 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- pgroonga
+DROP INDEX "IDX_f27f5d88941e57442be75ba9c8";
+DROP INDEX "IDX_065d4d8f3b5adb4a08841eae3c";
+DROP INDEX "IDX_fcb770976ff8240af5799e3ffc";
+DROP EXTENSION pgroonga CASCADE;
 
 -- change-default-configs
 ALTER TABLE "user_profile" ALTER COLUMN "noCrawle" SET DEFAULT false;

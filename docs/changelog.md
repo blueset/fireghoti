@@ -2,6 +2,10 @@
 
 Critical security updates are indicated by the :warning: icon.
 
+## Unreleased
+
+- Introduce new full-text search engine
+
 ## v20240301
 
 - Add a page (`/my/follow-requests/sent`) to check your follow requests that haven't been approved

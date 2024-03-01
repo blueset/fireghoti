@@ -2,6 +2,10 @@
 
 Breaking changes are indicated by the :warning: icon.
 
+## Unreleased
+
+- `admin/search/index-all` is removed since posts are now indexed automatically.
+
 ## v20240301
 
 - With the addition of new features, the following endpoints are added:

@@ -1349,9 +1349,6 @@ _widgets:
   userList: 使用者列表
   _userList:
     chooseList: 選擇一個清單
-  meiliIndexCount: 編入索引的帖子
-  meiliStatus: 伺服器狀態
-  meiliSize: 索引大小
 _cw:
   hide: "隱藏"
   show: "瀏覽更多"
@@ -1879,8 +1876,6 @@ pushNotificationNotSupported: 你的瀏覽器或伺服器不支援推送通知
 accessibility: 輔助功能
 userSaysSomethingReasonReply: '{name} 回覆了包含 {reason} 的貼文'
 hiddenTags: 隱藏主題標籤
-indexPosts: 索引貼文
-indexNotice: 現在開始索引。 這可能需要一段時間，請不要在一個小時內重啟你的伺服器。
 deleted: 已刪除
 editNote: 編輯貼文
 edited: '於 {date} {time} 編輯'
@@ -1925,10 +1920,8 @@ sendModMail: 發送審核通知
 enableIdenticonGeneration: 啟用Identicon生成
 enableServerMachineStats: 啟用伺服器硬體統計資訊
 reactionPickerSkinTone: 首選表情符號膚色
-indexFromDescription: 留空以索引每個貼文
 preventAiLearning: 防止 AI 機器人抓取
 preventAiLearningDescription: 請求第三方 AI 語言模型不要研究您上傳的內容，例如貼文和圖像。
-indexFrom: 建立此貼文ID以後的索引
 isLocked: 該帳戶已獲得以下批准
 isModerator: 板主
 isAdmin: 管理員

@@ -1474,9 +1474,6 @@ _widgets:
   _userList:
     chooseList: Seleccione una lista
   serverInfo: Información del servidor
-  meiliStatus: Estado del servidor
-  meiliSize: Tamaño del índice
-  meiliIndexCount: Publicaciones indizadas
 _cw:
   hide: "Ocultar"
   show: "Ver más"
@@ -2123,13 +2120,10 @@ moveFromDescription: 'Esto pondrá un alias en tu cuenta antigua para así poder
   ingresa la etiqueta de la cuenta con el formato siguiente: @persona@servidor.tld'
 defaultReaction: Emoji por defecto para reaccionar a las publicaciones entrantes y
   salientes
-indexFromDescription: Deja en blanco para indizar todas las publicaciones
 deletePasskeys: Borrar claves de paso
 deletePasskeysConfirm: Esto borrará irreversiblemente todas las claves de paso y de
   seguridad en esta cuenta, ¿Proceder?
 inputNotMatch: Las entradas no coinciden
-indexFrom: Indizar desde la ID de la publicación en adelante
-indexPosts: Indizar publicaciones
 isModerator: Moderador
 isAdmin: Administrador
 isPatron: Mecenas de Firefish
@@ -2139,8 +2133,6 @@ migrationConfirm: "¿Estás absolutamente seguro de que quieres migrar a tu cuen
   {account}? Una vez hecho esto, no podrás revertir el cambio, ni tampoco usar tu
   cuenta normalmente.\nTambién, asegúrate de que has configurado ésta cuenta como
   la cuenta desde la cual estás migrando."
-indexNotice: Indizando ahora. Esto puede llevar bastante tiempo, por favor, no reinicies
-  el servidor por lo menos hasta dentro de una hora.
 customKaTeXMacro: Macros KaTeX personalizadas
 customKaTeXMacroDescription: '¡Configura macros para escribir expresiones matemáticas
   fácilmente! La notación es conforme la las definiciones de comandos LaTeX y puede

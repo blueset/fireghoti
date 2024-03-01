@@ -1,6 +1,4 @@
 import * as mfm from "mfm-js";
-import es from "@/db/elasticsearch.js";
-import sonic from "@/db/sonic.js";
 import {
 	publishMainStream,
 	publishNotesStream,
@@ -59,7 +57,6 @@ import type { UserProfile } from "@/models/entities/user-profile.js";
 import { db } from "@/db/postgre.js";
 import { getActiveWebhooks } from "@/misc/webhook-cache.js";
 import { shouldSilenceInstance } from "@/misc/should-block-instance.js";
-import meilisearch from "@/db/meilisearch.js";
 import { redisClient } from "@/db/redis.js";
 import { Mutex } from "redis-semaphore";
 import { langmap } from "@/misc/langmap.js";
@@ -166,7 +163,6 @@ export default async (
 		createdAt: User["createdAt"];
 		isBot: User["isBot"];
 		inbox?: User["inbox"];
-		isIndexable?: User["isIndexable"];
 	},
 	data: Option,
 	silent = false,
@@ -654,11 +650,6 @@ export default async (
 				}
 			});
 		}
-
-		// Register to search database
-		if (user.isIndexable) {
-			await index(note, false);
-		}
 	});
 
 async function renderNoteOrRenoteActivity(data: Option, note: Note) {
@@ -811,40 +802,6 @@ async function insertNote(
 		logger.error(inspect(e));
 
 		throw e;
-	}
-}
-
-export async function index(note: Note, reindexing: boolean): Promise<void> {
-	if (!note.text || note.visibility !== "public") return;
-
-	if (config.elasticsearch && es) {
-		es.index({
-			index: config.elasticsearch.index || "misskey_note",
-			id: note.id.toString(),
-			body: {
-				text: normalizeForSearch(note.text),
-				userId: note.userId,
-				userHost: note.userHost,
-			},
-		});
-	}
-
-	if (sonic) {
-		await sonic.ingest.push(
-			sonic.collection,
-			sonic.bucket,
-			JSON.stringify({
-				id: note.id,
-				userId: note.userId,
-				userHost: note.userHost,
-				channelId: note.channelId,
-			}),
-			note.text,
-		);
-	}
-
-	if (meilisearch && !reindexing) {
-		await meilisearch.ingestNote(note);
 	}
 }
 

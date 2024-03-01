@@ -1400,10 +1400,7 @@ _widgets:
   _userList:
     chooseList: Sélectionner une liste
   unixClock: Horloge UNIX
-  meiliIndexCount: Publications indexées
   serverInfo: Info serveur
-  meiliStatus: État du serveur
-  meiliSize: Taille de l'index
   instanceCloud: Nuage de serveurs
   rssTicker: Bandeau RSS
 _cw:
@@ -2061,9 +2058,6 @@ moveToLabel: 'Compte vers lequel vous migrez :'
 moveFrom: Migrer vers ce compte depuis un ancien compte
 defaultReaction: Émoji de réaction par défaut pour les publications entrantes et sortantes
 license: Licence
-indexPosts: Indexer les publications
-indexNotice: Indexation en cours. Cela prendra certainement du temps, veuillez ne
-  pas redémarrer votre serveur pour au moins une heure.
 customKaTeXMacro: Macros KaTeX personnalisées
 enableCustomKaTeXMacro: Activer les macros KaTeX personnalisées
 noteId: ID des publications
@@ -2110,7 +2104,6 @@ expandOnNoteClick: Ouvrir la publications en cliquant
 preventAiLearning: Empêcher le récupération de données par des IA
 listsDesc: Les listes vous laissent créer des fils personnalisés avec des utilisateur·rice·s
   spécifié·e·s. Elles sont accessibles depuis la page des fils.
-indexFromDescription: Laisser vide pour indexer toutes les publications
 _feeds:
   jsonFeed: flux JSON
   atom: Atom
@@ -2120,7 +2113,6 @@ alt: ALT
 swipeOnMobile: Permettre le balayage entre les pages
 expandOnNoteClickDesc: Si désactivé, vous pourrez toujours ouvrir les publications
   dans le menu du clic droit et en cliquant sur l'horodatage.
-indexFrom: Indexer à partir de l'ID des publications
 older: ancien
 newer: récent
 accessibility: Accessibilité

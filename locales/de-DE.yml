@@ -1500,9 +1500,6 @@ _widgets:
     chooseList: Wählen Sie eine Liste aus
   userList: Benutzerliste
   serverInfo: Server-Infos
-  meiliStatus: Server-Status
-  meiliSize: Indexgröße
-  meiliIndexCount: Indexierte Beiträge
 _cw:
   hide: "Verbergen"
   show: "Inhalt anzeigen"
@@ -2083,7 +2080,6 @@ preventAiLearning: KI gestütztes bot-scraping unterdrücken
 preventAiLearningDescription: Fordern Sie KI-Sprachmodelle von Drittanbietern auf,
   die von Ihnen hochgeladenen Inhalte, wie z. B. Beiträge und Bilder, nicht zu untersuchen.
 license: Lizenz
-indexPosts: Gelistete Beiträge
 migrationConfirm: "Sind Sie absolut sicher, dass Sie Ihr Nutzerkonto zu diesem {account}
   umziehen möchten? Sobald Sie dies bestätigt haben, kann dies nicht mehr rückgängig
   gemacht werden und Ihr Nutzerkonto kann nicht mehr von ihnen genutzt werden.\nStellen
@@ -2111,9 +2107,6 @@ _experiments:
     kann es zu Verlangsamungen beim Laden während des Imports kommen.
 noGraze: Bitte deaktivieren Sie die Browsererweiterung "Graze for Mastodon", da sie
   die Funktion von Firefish stört.
-indexFrom: Indexieren ab Beitragskennung aufwärts
-indexNotice: Wird jetzt indexiert. Dies wird wahrscheinlich eine Weile dauern, bitte
-  starten Sie Ihren Server für mindestens eine Stunde nicht neu.
 customKaTeXMacroDescription: "Richten Sie Makros ein, um mathematische Ausdrücke einfach
   zu schreiben! Die Notation entspricht den LaTeX-Befehlsdefinitionen und wird als
   \\newcommand{\\name}{content} oder \\newcommand{\\name}[number of arguments]{content}
@@ -2132,7 +2125,6 @@ expandOnNoteClick: Beitrag bei Klick öffnen
 image: Bild
 video: Video
 audio: Audio
-indexFromDescription: Leer lassen, um jeden Beitrag zu indexieren
 _filters:
   fromUser: Von Benutzer
   notesAfter: Beiträge nach

@@ -158,7 +158,6 @@ _widgets:
   activity: Aktivite
   digitalClock: Dijital Saat
   unixClock: UNIX Saati
-  meiliIndexCount: Indexlenmiş gönderiler
   calendar: Takvim
   trends: Popüler
   memo: Yapışkan Notlar
@@ -166,13 +165,11 @@ _widgets:
   federation: Federasyon
   instanceCloud: Sunucu Bulutu
   postForm: Gönderi Formu
-  meiliSize: Index boyutu
   slideshow: Slayt Gösterisi
   button: Düğme
   clock: Saat
   rss: RSS Okuyucu
   serverInfo: Sunucu Bilgisi
-  meiliStatus: Sunucu Durumu
   jobQueue: İş Sırası
   serverMetric: Sunucu Bilgileri
 _profile:
@@ -473,7 +470,6 @@ activeEmailValidationDescription: Tek kullanımlık adreslerin kontrol edilmesi 
   sağlar. İşaretlenmediğinde, yalnızca e-postanın biçimi doğrulanır.
 move: Taşı
 defaultReaction: Giden ve gelen gönderiler için varsayılan emoji tepkisi
-indexPosts: Dizin Gönderileri
 youGotNewFollower: takip etti
 receiveFollowRequest: Takip isteği alındı
 followRequestAccepted: Takip isteği onaylandı
@@ -1084,7 +1080,6 @@ check: Kontrol Et
 driveCapOverrideLabel: Bu kullanıcı için drive kapasitesini değiştirin
 numberOfPageCache: Önbelleğe alınan sayfa sayısı
 license: Lisans
-indexFrom: Post ID'den itibaren dizin
 xl: XL
 notificationSetting: Bildirim ayarları
 fillAbuseReportDescription: Lütfen bu raporla ilgili ayrıntıları doldurun. Belirli
@@ -1159,9 +1154,6 @@ migrationConfirm: "Hesabınızı {account} hesabına taşımak istediğinizden k
   emin misiniz? Bunu yaptığınızda, geri alamazsınız ve hesabınızı bir daha normal
   şekilde kullanamazsınız.\nAyrıca, lütfen bu cari hesabı, taşındığınız hesap olarak
   ayarladığınızdan emin olun."
-indexFromDescription: Her gönderiyi dizine eklemek için boş bırakın
-indexNotice: Şimdi indeksleniyor. Bu muhtemelen biraz zaman alacaktır, lütfen sunucunuzu
-  en az bir saat yeniden başlatmayın.
 customKaTeXMacro: Özel KaTeX makroları
 directNotes: Özel Mesajlar
 import: İçeri Aktar

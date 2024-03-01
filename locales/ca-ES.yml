@@ -1831,11 +1831,6 @@ pushNotificationAlreadySubscribed: Les notificacions push ja estan activades
 pushNotificationNotSupported: El vostre navegador o servidor no admet notificacions
   push
 license: Llicència
-indexPosts: Índex de publicacions
-indexFrom: Índex a partir de l'ID de Publicacions
-indexFromDescription: Deixeu en blanc per indexar cada publicació
-indexNotice: Ara indexant. Això probablement trigarà una estona, si us plau, no reinicieu
-  el servidor durant almenys una hora.
 _instanceTicker:
   none: No mostrar mai
   remote: Mostra per a usuaris remots

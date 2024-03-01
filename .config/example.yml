@@ -85,28 +85,6 @@ redis:
   #prefix: example-prefix
   #db: 1
 
-# Please configure either MeiliSearch *or* Sonic.
-# If both MeiliSearch and Sonic configurations are present, MeiliSearch will take precedence.
-
-#   ┌───────────────────────────┐
-#───┘ MeiliSearch configuration └─────────────────────────────────────
-#meilisearch:
-#  host: meilisearch
-#  port: 7700
-#  ssl: false
-#  apiKey:
-
-#   ┌─────────────────────┐
-#───┘ Sonic configuration └─────────────────────────────────────
-
-#sonic:
-#  host: localhost
-#  port: 1491
-#  auth: SecretPassword
-#  collection: notes
-#  bucket: default
-
-
 #   ┌───────────────┐
 #───┘ ID generation └───────────────────────────────────────────
 

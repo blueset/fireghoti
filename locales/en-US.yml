@@ -1092,11 +1092,6 @@ migrationConfirm: "Are you absolutely sure you want to migrate your account to {
   as the account you're moving from."
 defaultReaction: "Default emoji reaction for outgoing and incoming posts"
 license: "License"
-indexPosts: "Index Posts"
-indexFrom: "Index from Post ID onwards"
-indexFromDescription: "Leave blank to index every post"
-indexNotice: "Now indexing. This will probably take a while, please don't restart
-  your server for at least an hour."
 customKaTeXMacro: "Custom KaTeX macros"
 customKaTeXMacroDescription: "Set up macros to write mathematical expressions easily!
   The notation conforms to the LaTeX command definitions and is written as \\newcommand{\\
@@ -1690,9 +1685,6 @@ _widgets:
   serverInfo: "Server Info"
   _userList:
     chooseList: "Select a list"
-  meiliStatus: "Server Status"
-  meiliSize: "Index size"
-  meiliIndexCount: "Indexed posts"
 
 _cw:
   hide: "Hide"

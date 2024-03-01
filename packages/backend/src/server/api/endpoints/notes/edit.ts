@@ -1,5 +1,4 @@
 import { In } from "typeorm";
-import { index } from "@/services/note/create.js";
 import type { IRemoteUser, User } from "@/models/entities/user.js";
 import {
 	Users,
@@ -626,8 +625,6 @@ export default define(meta, paramDef, async (ps, user) => {
 	}
 
 	if (publishing && user.isIndexable) {
-		index(note, true);
-
 		// Publish update event for the updated note details
 		publishNoteStream(note.id, "updated", {
 			updatedAt: update.updatedAt,

@@ -1437,9 +1437,6 @@ _widgets:
   userList: Danh sách người dùng
   _userList:
     chooseList: Chọn một danh sách
-  meiliSize: Kích cỡ chỉ mục
-  meiliIndexCount: Tút đã lập chỉ mục
-  meiliStatus: Trạng thái máy chủ
   serverInfo: Thông tin máy chủ
 _cw:
   hide: "Ẩn"
@@ -2048,8 +2045,6 @@ hiddenTagsDescription: 'Liệt kê các hashtag (không có #) mà bạn muốn 
 noInstances: Không có máy chủ nào
 manageGroups: Quản lý nhóm
 accessibility: Khả năng tiếp cận
-indexNotice: Đang lập chỉ mục. Quá trình này có thể mất một lúc, vui lòng không khởi
-  động lại máy chủ của bạn sau ít nhất một giờ.
 breakFollowConfirm: Bạn có chắc muốn xóa người theo dõi?
 caption: Caption tự động
 objectStorageS3ForcePathStyle: Sử dụng URL điểm cuối dựa trên đường dẫn
@@ -2069,7 +2064,6 @@ updateAvailable: Có bản cập nhật mới!
 swipeOnDesktop: Cho phép vuốt kiểu điện thoại trên máy tính
 moveFromLabel: 'Tài khoản cũ của bạn:'
 defaultReaction: Biểu cảm mặc định cho những tút đã đăng và sắp đăng
-indexFromDescription: Để trống để lập chỉ mục toàn bộ
 donationLink: Liên kết tới trang tài trợ
 deletePasskeys: Xóa passkey
 delete2faConfirm: Thao tác này sẽ xóa 2FA trên tài khoản này một cách không thể phục
@@ -2086,8 +2080,6 @@ audio: Âm thanh
 selectInstance: Chọn máy chủ
 userSaysSomethingReason: '{name} cho biết {reason}'
 pushNotification: Thông báo đẩy
-indexPosts: Chỉ mục tút
-indexFrom: Chỉ mục từ Post ID
 customKaTeXMacro: Tùy chỉnh macro KaTeX
 license: Giấy phép
 cw: Nội dung ẩn

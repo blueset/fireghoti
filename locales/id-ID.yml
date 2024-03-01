@@ -1390,14 +1390,11 @@ _widgets:
   aiscript: "Konsol AiScript"
   aichan: "Ai"
   rssTicker: Telegraf RSS
-  meiliIndexCount: Postingan yang terindeks
   userList: Daftar Pengguna
   instanceCloud: Server Awan
   unixClock: Jam UNIX
-  meiliSize: Ukuran indeks
   _userList:
     chooseList: Pilih daftar
-  meiliStatus: Status Server
   serverInfo: Info Server
 _cw:
   hide: "Sembunyikan"
@@ -1984,8 +1981,6 @@ speed: Kecepatan
 slow: Pelan
 remoteOnly: Jarak jauh saja
 moveFrom: Dari akun lama pindahkan ke akun ini
-indexNotice: Sedang mengindeks. Ini memerlukan beberapa waktu, mohon jangan mulai
-  ulang server setidaknya satu jam.
 sendPushNotificationReadMessage: Hapus pemberitahuan dorong saat pemberitahuan atau
   pesan relevan sudah dibaca
 moveAccountDescription: Proses ini permanen. Pastikan kamu sudah mengatur alias dari
@@ -2010,7 +2005,6 @@ showAds: Tampilkan spanduk komunitas
 enterSendsMessage: Tekan Enter pada Pesan untuk mengirim pesan (matikan dengan Ctrl
   + Enter)
 showAdminUpdates: Indikasi versi Firefish baru tersedia (hanya admin)
-indexFrom: Indeks dari Post ID berikutnya
 noteId: ID Postingan
 findOtherInstance: Cari server lain
 caption: Deskripsi itomatis
@@ -2022,7 +2016,6 @@ moveFromDescription: Ini akan mengatur alias akun lamamu jadi kamu dapat pindah 
   akun tersebut ke akun sekarang. Lakukan ini SEBELUM memindahkan akun lama. Silakan
   masukkan tag akun dengan format seperti @orang@server.com
 defaultReaction: Reaksi emoji bawaan untuk postingan keluar dan masuk
-indexPosts: Indeks Postingan
 preventAiLearning: Cegah scraping bot AI
 customKaTeXMacro: Makro KaTeX khusus
 sendPushNotificationReadMessageCaption: Pemberitahuan yang berisi teks "{emptyPushNotificationMessage}"
@@ -2052,7 +2045,6 @@ migrationConfirm: "Kamu sangat yakin ingin memindahkan akunmu ke {account}? Seka
   lagi secara normal. \nDan juga, harap pastikan kamu sudah mengatur akun sekarang
   sebagai akun yang dipindahkan."
 license: Lisensi
-indexFromDescription: Kosongkan untuk mengindeks setiap postingan
 noGraze: Harap nonaktifkan ekstensi peramban "Graze for Mastodon", karena akan menganggu
   Firefish.
 silencedWarning: Halaman ini tampil karena pengguna ini datang dari server yang dibisukan
