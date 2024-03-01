@@ -57,7 +57,11 @@ export default class Logger {
 		store = true,
 	): void {
 		if (envOption.quiet) return;
-		if (!(typeof config.logLevel === "undefined") && !config.logLevel.includes(level)) return;
+		if (
+			!(typeof config.logLevel === "undefined") &&
+			!config.logLevel.includes(level)
+		)
+			return;
 		if (!this.store) store = false;
 		if (level === "debug") store = false;
 
@@ -189,7 +193,11 @@ export default class Logger {
 	): void {
 		// Used for debugging (information necessary for developers but unnecessary for users)
 		// Fixed if statement is ignored when logLevel includes debug
-		if (config.logLevel?.includes("debug") || process.env.NODE_ENV !== "production" || envOption.verbose) {
+		if (
+			config.logLevel?.includes("debug") ||
+			process.env.NODE_ENV !== "production" ||
+			envOption.verbose
+		) {
 			this.log("debug", message, data, important);
 		}
 	}
