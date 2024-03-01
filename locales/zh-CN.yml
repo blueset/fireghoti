@@ -146,9 +146,9 @@ addEmoji: "添加表情符号"
 settingGuide: "推荐配置"
 cacheRemoteFiles: "缓存远程文件"
 cacheRemoteFilesDescription: "当禁用此设定时远程文件将直接从远程服务器载入。禁用后会减小储存空间需求，但是会增加流量，因为缩略图不会被生成。"
-flagAsBot: "这是一个机器人账号"
-flagAsBotDescription: "如果此账号由程序控制，请启用此项。启用后，此标志可以帮助其它开发人员防止机器人之间产生无限互动的行为，并让 Firefish
-  的内部系统将此账号识别为机器人。"
+flagAsBot: "标记此账号为自动化账号"
+flagAsBotDescription: "如果此账号由程序控制，请启用此项。启用后，此标志可以帮助其它开发人员防止自动化账号之间产生无限互动的行为，并让 Firefish
+  的内部系统将此账号识别为自动化账号。"
 flagAsCat: "将这个账号设定为一只猫😺"
 flagAsCatDescription: "您会长出猫耳朵并像猫一样说话！"
 flagShowTimelineReplies: "在时间线上显示帖子的回复"
@@ -264,7 +264,7 @@ agreeTo: "我同意 {0}"
 tos: "服务条款"
 start: "开始"
 home: "首页"
-remoteUserCaution: "由于此用户来自其它服务器，显示的信息可能不完整。"
+remoteUserCaution: "由于此用户来自其它服务器，显示的信息不完整。"
 activity: "活动"
 images: "图片"
 birthday: "生日"
@@ -904,9 +904,9 @@ account: "账号"
 move: "迁移"
 customKaTeXMacro: "自定义 KaTeX 宏"
 customKaTeXMacroDescription: "使用宏来轻松的输入数学表达式吧！宏的用法与 LaTeX 中的命令定义相同。您可以使用 \\newcommand{\\
-  name}{content} 或 \\newcommand{\\name}[number of arguments]{content} 来输入数学表达式。举个例子，\\
-  newcommand{\\add}[2]{#1 + #2} 会将 \\add{3}{foo} 展开为 3 + foo。此外，宏名称外的花括号 {} 可以被替换为圆括号
-  () 和方括号 []，这会影响用于参数的括号。每行只能够定义一个宏，无法在中间换行，且无效的行将被忽略。只支持简单字符串替换功能，不支持高级语法，如条件分支等。"
+  name}{content} 或 \\newcommand{\\name}[number of arguments]{content} 来输入数学表达式。举个例子，
+  \\newcommand{\\add}[2]{#1 + #2} 会将 \\add{3}{foo} 展开为 3 + foo 。此外，宏名称外的花括号 {} 可以被替换为圆括号
+  () 和方括号 [] ，这会影响用于参数的括号。每行只能够定义一个宏，您无法在中间换行。无效的行将被忽略。只支持简单字符串替换功能，不支持高级语法，如条件分支等。"
 enableCustomKaTeXMacro: "启用自定义 KaTeX 宏"
 _sensitiveMediaDetection:
   description: "可以使用机器学习技术自动检测敏感媒体，以便进行审核。服务器负载将略微增加。"
@@ -1400,7 +1400,7 @@ _postForm:
     b: "发生了什么？"
     c: "您有什么想法？"
     d: "您想要发布些什么吗？"
-    e: "请写下来吧"
+    e: "请写下来吧..."
     f: "等待您的发布..."
 _profile:
   name: "昵称"
@@ -1916,7 +1916,7 @@ moveFromDescription: 这将为您的旧账号设置一个别名，以便您可�
   的账号标签
 signupsDisabled: 该服务器目前关闭注册，但您随时可以在另一台服务器上注册！如果您有该服务器的邀请码，请在下面输入。
 silencedWarning: 显示这个页面是因为这些用户来自您的管理员设置的禁言服务器，所以他们有可能是垃圾信息。
-isBot: 这个账号是一个机器人
+isBot: 这个账号是一个自动化账号
 moveAccountDescription: 这个过程是不可逆的。在迁移之前，请确保您已在新账号上为当前账号设置了别名。请输入格式如 @person@server.com
   账号标签
 moveFromLabel: 您要迁移出的旧账号：
@@ -1986,3 +1986,44 @@ openServerInfo: 点击帖子上的服务器滚动条时显示服务器信息
 clickToShowPatterns: 点击显示模块模式
 private: "秘密"
 privateDescription: "仅你可见"
+_iconSets:
+  regular: 标准
+  duotone: 双色
+  fill: 填满
+  bold: 加粗
+  light: 减细
+emojiModPerm: 自定义表情符号管理权限
+squareCatAvatars: 猫模式账号显示圆形头像
+makePrivate: 设为私有
+makePrivateConfirm: 此操作将向远程服务器发送删除请求并将可见性更改为私有。是否继续？
+_emojiModPerm:
+  add: 添加
+  mod: 添加和编辑
+  unauthorized: 未授权
+  full: 全部允许
+moreUrls: 置顶页面
+enablePullToRefresh: 启用 “下拉刷新”
+pullToRefreshThreshold: 触发下拉刷新所需的距离
+pullDownToReload: 下拉刷新
+releaseToReload: 释放刷新
+reloading: 刷新中
+attachedToNotes: 带有此附件的帖子
+showAttachedNotes: 显示有此附件的帖子
+iconSet: 图标样式
+moreUrlsDescription: "请您使用以下形式输入要固定到左下角帮助菜单的页面，每行一个：\n\"显示名称\": https://example.com/"
+useCdn: 从 CDN 获取资源
+useCdnDescription: 从 JSDelivr CDN（而不是 Firefish 服务器）加载一些静态资源，例如 Twemoji。
+showBigPostButton: 在发帖表单上显示一个巨大的发帖按钮
+suggested: 建议
+noLanguage: 无语言
+showPreviewByDefault: 默认以发布形式显示预览
+preventMisclick: 预防误触
+hideFollowButtons: 隐藏会误触的关注按钮
+forMobile: 移动设备
+replaceChatButtonWithAccountButton: 将聊天按钮替换为帐户切换按钮
+replaceWidgetsButtonWithReloadButton: 将小部件按钮替换为重新加载按钮
+searchEngine: 搜索栏 MFM 中使用的搜索引擎
+postSearch: 在此服务器上搜索帖子
+enableTimelineStreaming: 自动更新时间线
+emojiModPermDescription: "添加：允许该用户添加新的自定义表情符号，并为新添加的自定义表情符号设置标签/类别/授权。\n添加和编辑：在 “添加”
+  权限的基础上，允许该用户编辑现有自定义表情符号的名称/类别/标签/授权。\n全部允许：在 “添加和编辑” 权限的基础上，允许该用户删除现有的自定义表情符号。"
