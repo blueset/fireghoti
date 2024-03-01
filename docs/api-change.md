@@ -4,11 +4,13 @@ Breaking changes are indicated by the :warning: icon.
 
 ## Unreleased
 
-- Added `following/requests/sent` endpoint for added Sent Following Requests List Feature.
-- The following endpoints are added:
-	- `reply-mute/create`
-	- `reply-mute/delete`
-	- `reply-mute/list`
+- With the addition of new features, the following endpoints are added:
+	- check your follow requests that haven't been approved
+		- `following/requests/sent`
+	- per-user reply mutes
+		- `reply-mute/create`
+		- `reply-mute/delete`
+		- `reply-mute/list`
 - :warning: The following (horrible) endpoints are removed:
 	- `admin/vacuum`
 	- `reset-db`

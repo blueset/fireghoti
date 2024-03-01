@@ -1,3 +1,9 @@
+# Unreleased
+
+## For all users
+
+A new setting item has been added to control the log levels, so please consider updating your `.config/default.yml`. ([example settings](https://firefish.dev/firefish/firefish/-/blob/e7689fb302a0eed192b9515162258a39800f838a/.config/example.yml#L170-179))
+
 # v20240225
 
 ## For Docker/Podman users
