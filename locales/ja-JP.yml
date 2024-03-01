@@ -1220,7 +1220,8 @@ _menuDisplay:
   hide: "隠す"
 _wordMute:
   muteWords: "ミュートするワード"
-  muteLangs: "ミュートされた言語"
+  mutePatterns: "ミュートするパターン"
+  muteLangs: "ミュートする言語"
   muteWordsDescription: "スペースで区切るとAND指定になり、改行で区切るとOR指定になります。"
   muteWordsDescription2: "キーワードをスラッシュで囲むと正規表現になります。"
   muteLangsDescription: "OR 条件の場合はスペースまたは改行で区切ります。"

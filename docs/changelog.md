@@ -5,6 +5,7 @@ Critical security updates are indicated by the :warning: icon.
 ## Unreleased
 
 - Introduce new full-text search engine and post search filters
+- Refactoring
 
 ## v20240301
 

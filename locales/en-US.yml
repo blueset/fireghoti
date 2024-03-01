@@ -1429,6 +1429,7 @@ _menuDisplay:
   hide: "Hide"
 _wordMute:
   muteWords: "Muted words"
+  mutePatterns: "Muted patterns"
   muteLangs: "Muted Languages"
   muteWordsDescription: "Separate with spaces for an AND condition or with line breaks
     for an OR condition."

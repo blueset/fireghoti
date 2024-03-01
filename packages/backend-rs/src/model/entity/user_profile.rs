@@ -71,6 +71,8 @@ pub struct Model {
     pub prevent_ai_learning: bool,
     #[sea_orm(column_name = "isIndexable")]
     pub is_indexable: bool,
+    #[sea_orm(column_name = "mutedPatterns")]
+    pub muted_patterns: Vec<String>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

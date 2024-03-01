@@ -60,6 +60,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		injectFeaturedNote: profile.injectFeaturedNote,
 		receiveAnnouncementEmail: profile.receiveAnnouncementEmail,
 		mutedWords: profile.mutedWords,
+		mutedPatterns: profile.mutedPatterns,
 		mutedInstances: profile.mutedInstances,
 		mutingNotificationTypes: profile.mutingNotificationTypes,
 		isModerator: user.isModerator,

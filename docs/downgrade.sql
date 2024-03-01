@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'SeparateHardMuteWordsAndPatterns1706413792769',
     'IndexAltTextAndCw1708872574733',
     'Pgroonga1698420787202',
     'ChangeDefaultConfigs1709251460718',
@@ -13,6 +14,10 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- separate-hard-mute-words-and-patterns
+UPDATE "user_profile" SET "mutedWords" = "mutedWords" || array_to_json("mutedPatterns")::jsonb;
+ALTER TABLE "user_profile" DROP "mutedPatterns";
 
 -- index-alt-text-and-cw
 DROP INDEX "IDX_f4f7b93d05958527300d79ac82";

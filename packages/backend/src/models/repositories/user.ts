@@ -544,13 +544,13 @@ export const UserRepository = db.getRepository(User).extend({
 				? {
 						avatarId: user.avatarId,
 						bannerId: user.bannerId,
-						injectFeaturedNote: profile!.injectFeaturedNote,
-						receiveAnnouncementEmail: profile!.receiveAnnouncementEmail,
-						alwaysMarkNsfw: profile!.alwaysMarkNsfw,
-						carefulBot: profile!.carefulBot,
-						autoAcceptFollowed: profile!.autoAcceptFollowed,
-						noCrawle: profile!.noCrawle,
-						preventAiLearning: profile!.preventAiLearning,
+						injectFeaturedNote: profile?.injectFeaturedNote,
+						receiveAnnouncementEmail: profile?.receiveAnnouncementEmail,
+						alwaysMarkNsfw: profile?.alwaysMarkNsfw,
+						carefulBot: profile?.carefulBot,
+						autoAcceptFollowed: profile?.autoAcceptFollowed,
+						noCrawle: profile?.noCrawle,
+						preventAiLearning: profile?.preventAiLearning,
 						isExplorable: user.isExplorable,
 						isDeleted: user.isDeleted,
 						hideOnlineStatus: user.hideOnlineStatus,
@@ -571,17 +571,18 @@ export const UserRepository = db.getRepository(User).extend({
 						hasUnreadNotification: this.getHasUnreadNotification(user.id),
 						hasPendingReceivedFollowRequest:
 							this.getHasPendingReceivedFollowRequest(user.id),
-						mutedWords: profile!.mutedWords,
-						mutedInstances: profile!.mutedInstances,
-						mutingNotificationTypes: profile!.mutingNotificationTypes,
-						emailNotificationTypes: profile!.emailNotificationTypes,
+						mutedWords: profile?.mutedWords,
+						mutedPatterns: profile?.mutedPatterns,
+						mutedInstances: profile?.mutedInstances,
+						mutingNotificationTypes: profile?.mutingNotificationTypes,
+						emailNotificationTypes: profile?.emailNotificationTypes,
 				  }
 				: {}),
 
 			...(opts.includeSecrets
 				? {
-						email: profile!.email,
-						emailVerified: profile!.emailVerified,
+						email: profile?.email,
+						emailVerified: profile?.emailVerified,
 						securityKeysList: UserSecurityKeys.find({
 							where: {
 								userId: user.id,

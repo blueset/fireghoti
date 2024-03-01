@@ -217,6 +217,12 @@ export class UserProfile {
 	})
 	public mutedWords: string[][];
 
+	@Column("text", {
+		array: true,
+		nullable: false,
+	})
+	public mutedPatterns: string[];
+
 	@Column("jsonb", {
 		default: [],
 		comment: "List of instances muted by the user.",

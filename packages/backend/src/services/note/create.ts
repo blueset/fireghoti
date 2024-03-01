@@ -65,9 +65,13 @@ import { inspect } from "node:util";
 
 const logger = new Logger("create-note");
 
-const mutedWordsCache = new Cache<
-	{ userId: UserProfile["userId"]; mutedWords: UserProfile["mutedWords"] }[]
->("mutedWords", 60 * 5);
+const hardMutesCache = new Cache<
+	{
+		userId: UserProfile["userId"];
+		mutedWords: UserProfile["mutedWords"];
+		mutedPatterns: UserProfile["mutedPatterns"];
+	}[]
+>("hardMutes", 60 * 5);
 
 type NotificationType = "reply" | "renote" | "quote" | "mention";
 
@@ -357,27 +361,30 @@ export default async (
 		incNotesCountOfUser(user);
 
 		// Word mute
-		mutedWordsCache
+		hardMutesCache
 			.fetch(null, () =>
 				UserProfiles.find({
 					where: {
 						enableWordMute: true,
 					},
-					select: ["userId", "mutedWords"],
+					select: ["userId", "mutedWords", "mutedPatterns"],
 				}),
 			)
 			.then((us) => {
 				for (const u of us) {
-					getWordHardMute(data, u.userId, u.mutedWords).then((shouldMute) => {
-						if (shouldMute) {
-							MutedNotes.insert({
-								id: genId(),
-								userId: u.userId,
-								noteId: note.id,
-								reason: "word",
-							});
-						}
-					});
+					if (u.userId === user.id) return;
+					getWordHardMute(note, u.mutedWords, u.mutedPatterns).then(
+						(shouldMute: boolean) => {
+							if (shouldMute) {
+								MutedNotes.insert({
+									id: genId(),
+									userId: u.userId,
+									noteId: note.id,
+									reason: "word",
+								});
+							}
+						},
+					);
 				}
 			});
 

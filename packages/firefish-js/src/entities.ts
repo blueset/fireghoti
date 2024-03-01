@@ -107,6 +107,7 @@ export type MeDetailed = UserDetailed & {
 	isDeleted: boolean;
 	isExplorable: boolean;
 	mutedWords: string[][];
+	mutedPatterns: string[];
 	mutingNotificationTypes: string[];
 	noCrawle: boolean;
 	preventAiLearning: boolean;

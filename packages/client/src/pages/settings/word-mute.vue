@@ -36,11 +36,15 @@
 				>
 				<FormTextarea v-model="hardMutedWords" class="_formBlock">
 					<span>{{ i18n.ts._wordMute.muteWords }}</span>
-					<template #caption
-						>{{ i18n.ts._wordMute.muteWordsDescription }}<br />{{
-							i18n.ts._wordMute.muteWordsDescription2
-						}}</template
-					>
+					<template #caption>{{
+						i18n.ts._wordMute.muteWordsDescription
+					}}</template>
+				</FormTextarea>
+				<FormTextarea v-model="hardMutedPatterns" class="_formBlock">
+					<span>{{ i18n.ts._wordMute.mutePatterns }}</span>
+					<template #caption>{{
+						i18n.ts._wordMute.muteWordsDescription2
+					}}</template>
 				</FormTextarea>
 				<MkKeyValue
 					v-if="hardWordMutedNotesCount != null"
@@ -90,6 +94,7 @@ const tab = ref("soft");
 const softMutedWords = ref(render(defaultStore.state.mutedWords));
 const softMutedLangs = ref(render(defaultStore.state.mutedLangs));
 const hardMutedWords = ref(render($i!.mutedWords));
+const hardMutedPatterns = ref($i!.mutedPatterns.join("\n"));
 const hardWordMutedNotesCount = ref(null);
 const changed = ref(false);
 
@@ -109,8 +114,12 @@ watch(hardMutedWords, () => {
 	changed.value = true;
 });
 
+watch(hardMutedPatterns, () => {
+	changed.value = true;
+});
+
 async function save() {
-	const parseMutes = (mutes, tab) => {
+	const parseSoftMutes = (mutes, tab) => {
 		// split into lines, remove empty lines and unnecessary whitespace
 		const lines = mutes
 			.trim()
@@ -151,11 +160,80 @@ async function save() {
 		return lines;
 	};
 
-	let softMutes, softMLangs, hardMutes;
+	const parseMutedWords = (mutes) => {
+		// split into lines, remove empty lines and unnecessary whitespace
+		return mutes
+			.trim()
+			.split("\n")
+			.map((line) => line.trim())
+			.filter((line) => line !== "")
+			.map((line) => line.split(" "))
+			.filter((line) => line.length > 0);
+	};
+
+	const parseMutedPatterns = (mutes, tab) => {
+		// split into lines, remove empty lines and unnecessary whitespace
+		const lines = mutes
+			.trim()
+			.split("\n")
+			.map((line) => line.trim())
+			.filter((line) => line !== "");
+
+		// check each line if it is a RegExp or not
+		for (let i = 0; i < lines.length; i++) {
+			const line = lines[i];
+			const regexp = line.match(/^\/(.+)\/(.*)$/);
+			if (regexp) {
+				// check that the RegExp is valid
+				try {
+					new RegExp(regexp[1], regexp[2]);
+					// note that regex lines will not be split by spaces!
+				} catch (err: any) {
+					// invalid syntax: do not save, do not reset changed flag
+					os.alert({
+						type: "error",
+						title: i18n.ts.regexpError,
+						text:
+							i18n.t("regexpErrorDescription", {
+								tab,
+								line: i + 1,
+							}) +
+							"\n" +
+							err.toString(),
+					});
+					// re-throw error so these invalid settings are not saved
+					throw err;
+				}
+			} else {
+				// invalid syntax: do not save, do not reset changed flag
+				os.alert({
+					type: "error",
+					title: i18n.ts.regexpError,
+					text: i18n.t("regexpErrorDescription", {
+						tab,
+						line: i + 1,
+					}),
+				});
+				// re-throw error so these invalid settings are not saved
+				throw new Error("Invalid regular expression");
+			}
+		}
+
+		return lines;
+	};
+
+	let softMutes, softMLangs, hardMWords, hardMPatterns;
 	try {
-		softMutes = parseMutes(softMutedWords.value, i18n.ts._wordMute.soft);
-		softMLangs = parseMutes(softMutedLangs.value, i18n.ts._wordMute.lang);
-		hardMutes = parseMutes(hardMutedWords.value, i18n.ts._wordMute.hard);
+		softMutes = parseSoftMutes(
+			softMutedWords.value,
+			i18n.ts._wordMute.soft,
+		);
+		softMLangs = parseMutedWords(softMutedLangs.value);
+		hardMWords = parseMutedWords(hardMutedWords.value);
+		hardMPatterns = parseMutedPatterns(
+			hardMutedPatterns.value,
+			i18n.ts._wordMute.hard,
+		);
 	} catch (err) {
 		// already displayed error message in parseMutes
 		return;
@@ -164,7 +242,8 @@ async function save() {
 	defaultStore.set("mutedWords", softMutes);
 	defaultStore.set("mutedLangs", softMLangs);
 	await os.api("i/update", {
-		mutedWords: hardMutes,
+		mutedWords: hardMWords,
+		mutedPatterns: hardMPatterns,
 	});
 
 	changed.value = false;

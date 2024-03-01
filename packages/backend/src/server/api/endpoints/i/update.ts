@@ -120,6 +120,7 @@ export const paramDef = {
 		ffVisibility: { type: "string", enum: ["public", "followers", "private"] },
 		pinnedPageId: { type: "string", format: "misskey:id", nullable: true },
 		mutedWords: { type: "array" },
+		mutedPatterns: { type: "array", items: { type: "string" } },
 		mutedInstances: {
 			type: "array",
 			items: {
@@ -159,23 +160,52 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 		profileUpdates.ffVisibility = ps.ffVisibility;
 	if (ps.avatarId !== undefined) updates.avatarId = ps.avatarId;
 	if (ps.bannerId !== undefined) updates.bannerId = ps.bannerId;
+	if (ps.mutedPatterns !== undefined) {
+		for (const item of ps.mutedPatterns) {
+			const regexp = item.match(/^\/(.+)\/(.*)$/);
+			if (!regexp) throw new ApiError(meta.errors.invalidRegexp);
+
+			try {
+				new RegExp(regexp[1], regexp[2]);
+			} catch (err) {
+				throw new ApiError(meta.errors.invalidRegexp);
+			}
+
+			profileUpdates.mutedPatterns = profileUpdates.mutedPatterns ?? [];
+			profileUpdates.mutedPatterns.push(item);
+		}
+	}
 	if (ps.mutedWords !== undefined) {
-		// validate regular expression syntax
-		ps.mutedWords
-			.filter((x) => !Array.isArray(x))
-			.forEach((x) => {
-				const regexp = x.match(/^\/(.+)\/(.*)$/);
-				if (!regexp) throw new ApiError(meta.errors.invalidRegexp);
+		// for backward compatibility
+		for (const item of ps.mutedWords) {
+			if (Array.isArray(item)) continue;
 
-				try {
-					new RE2(regexp[1], regexp[2]);
-				} catch (err) {
-					throw new ApiError(meta.errors.invalidRegexp);
-				}
-			});
+			const regexp = item.match(/^\/(.+)\/(.*)$/);
+			if (!regexp) throw new ApiError(meta.errors.invalidRegexp);
 
-		profileUpdates.mutedWords = ps.mutedWords;
-		profileUpdates.enableWordMute = ps.mutedWords.length > 0;
+			try {
+				new RegExp(regexp[1], regexp[2]);
+			} catch (err) {
+				throw new ApiError(meta.errors.invalidRegexp);
+			}
+
+			profileUpdates.mutedPatterns = profileUpdates.mutedPatterns ?? [];
+			profileUpdates.mutedPatterns.push(item);
+		}
+
+		profileUpdates.mutedWords = ps.mutedWords.filter((item) =>
+			Array.isArray(item),
+		);
+	}
+	if (
+		profileUpdates.mutedWords !== undefined ||
+		profileUpdates.mutedPatterns !== undefined
+	) {
+		profileUpdates.enableWordMute =
+			(profileUpdates.mutedWords != null &&
+				profileUpdates.mutedWords.length > 0) ||
+			(profileUpdates.mutedPatterns != null &&
+				profileUpdates.mutedPatterns.length > 0);
 	}
 	if (ps.mutedInstances !== undefined)
 		profileUpdates.mutedInstances = ps.mutedInstances;

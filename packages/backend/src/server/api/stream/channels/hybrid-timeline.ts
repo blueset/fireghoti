@@ -85,7 +85,12 @@ export default class extends Channel {
 		// そのためレコードが存在するかのチェックでは不十分なので、改めてgetWordHardMuteを呼んでいる
 		if (
 			this.userProfile &&
-			(await getWordHardMute(note, this.user?.id, this.userProfile.mutedWords))
+			this.user?.id !== note.userId &&
+			(await getWordHardMute(
+				note,
+				this.userProfile.mutedWords,
+				this.userProfile.mutedPatterns,
+			))
 		)
 			return;
 
