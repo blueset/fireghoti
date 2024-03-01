@@ -43,6 +43,7 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
+import moment from "moment";
 import XNotes from "@/components/MkNotes.vue";
 import XUserList from "@/components/MkUserList.vue";
 import { i18n } from "@/i18n";
@@ -50,19 +51,37 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import { defaultStore } from "@/store";
 import { deviceKind } from "@/scripts/device-kind";
 import icon from "@/scripts/icon";
+import { $i } from "@/reactiveAccount";
 import "swiper/scss";
 import "swiper/scss/virtual";
+import { api } from "@/os";
 
 const props = defineProps<{
-	query: string;
+	query?: string;
+	user?: string;
+	host?: string;
+	since?: string;
+	until?: string;
 	channel?: string;
+	withFiles: "0" | "1";
+	searchCwAndAlt: "0" | "1";
 }>();
+
+const userId = props.user == null ? undefined : await getUserId(props.user);
 
 const notesPagination = {
 	endpoint: "notes/search" as const,
 	limit: 10,
 	params: computed(() => ({
-		query: props.query,
+		query: props.query ?? undefined,
+		userId,
+		host: props.host == null ? undefined : getHost(props.host),
+		sinceDate:
+			props.since == null ? undefined : getUnixTime(props.since, false),
+		untilDate:
+			props.until == null ? undefined : getUnixTime(props.until, true),
+		withFiles: props.withFiles === "1",
+		searchCwAndAlt: props.searchCwAndAlt === "1",
 		channelId: props.channel,
 	})),
 };
@@ -75,6 +94,27 @@ const usersPagination = {
 		origin: "combined",
 	})),
 };
+
+async function getUserId(user: string): Promise<string> {
+	if (user === "me") return $i!.id;
+
+	const split = (user.startsWith("@") ? user.slice(1) : user).split("@");
+	const username = split[0];
+	const host = split.length === 1 ? undefined : split[1];
+
+	return (await api("users/show", { username, host })).id;
+}
+
+function getHost(host: string): string | null {
+	if (host === "local") return null;
+	return host;
+}
+
+function getUnixTime(date: string, nextDay: boolean): number {
+	return moment(date, date.length === 4 ? "MMDD" : "YYYYMMDD")
+		.add(nextDay ? 1 : 0, "days")
+		.valueOf();
+}
 
 const tabs = ["notes", "users"];
 const tab = ref(tabs[0]);

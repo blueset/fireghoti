@@ -4,7 +4,12 @@ Breaking changes are indicated by the :warning: icon.
 
 ## Unreleased
 
-- `admin/search/index-all` is removed since posts are now indexed automatically.
+- :warning: `admin/search/index-all` is removed since posts are now indexed automatically.
+- New optional parameters are added to `notes/search` endpoint:
+	- `sinceDate`
+	- `untilDate`
+	- `withFiles`
+	- `searchCwAndAlt`
 
 ## v20240301
 

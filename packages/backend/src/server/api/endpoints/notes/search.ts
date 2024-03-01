@@ -1,3 +1,4 @@
+import { Brackets } from "typeorm";
 import { Notes } from "@/models/index.js";
 import { Note } from "@/models/entities/note.js";
 import define from "@/server/api/define.js";
@@ -34,6 +35,8 @@ export const paramDef = {
 		query: { type: "string" },
 		sinceId: { type: "string", format: "misskey:id" },
 		untilId: { type: "string", format: "misskey:id" },
+		sinceDate: { type: "number", nullable: true },
+		untilDate: { type: "number", nullable: true },
 		limit: { type: "integer", minimum: 1, maximum: 100, default: 10 },
 		offset: { type: "integer", default: 0 },
 		host: {
@@ -47,6 +50,8 @@ export const paramDef = {
 			nullable: true,
 			default: null,
 		},
+		withFiles: { type: "boolean", nullable: true },
+		searchCwAndAlt: { type: "boolean", nullable: true },
 		channelId: {
 			type: "string",
 			format: "misskey:id",
@@ -68,6 +73,8 @@ export default define(meta, paramDef, async (ps, me) => {
 		Notes.createQueryBuilder("note"),
 		ps.sinceId,
 		ps.untilId,
+		ps.sinceDate ?? undefined,
+		ps.untilDate ?? undefined,
 	);
 
 	if (ps.userId != null) {
@@ -80,11 +87,57 @@ export default define(meta, paramDef, async (ps, me) => {
 		});
 	}
 
+	if (ps.query != null) {
+		const q = sqlLikeEscape(ps.query);
+
+		if (ps.searchCwAndAlt) {
+			query.andWhere(
+				new Brackets((qb) => {
+					qb.where("note.text &@~ :q", { q })
+						.orWhere("note.cw &@~ :q", { q })
+						.orWhere(
+							`EXISTS (
+								SELECT FROM "drive_file"
+								WHERE
+									comment &@~ :q
+								AND
+									drive_file."id" = ANY(note."fileIds")
+							)`,
+							{ q },
+						);
+				}),
+			);
+		} else {
+			query.andWhere("note.text &@~ :q", { q });
+		}
+	}
+
+	query.innerJoinAndSelect("note.user", "user");
+
+	// "from: me": search all (public, home, followers, specified) my posts
+	//  otherwise: search public indexable posts only
+	if (ps.userId == null || ps.userId !== me?.id) {
+		query
+			.andWhere("note.visibility = 'public'")
+			.andWhere("user.isIndexable = TRUE");
+	}
+
+	if (ps.userId != null) {
+		query.andWhere("note.userId = :userId", { userId: ps.userId });
+	}
+
+	if (ps.host === null) {
+		query.andWhere("note.userHost IS NULL");
+	}
+	if (ps.host != null) {
+		query.andWhere("note.userHost = :userHost", { userHost: ps.host });
+	}
+
+	if (ps.withFiles === true) {
+		query.andWhere("note.fileIds != '{}'");
+	}
+
 	query
-		.andWhere("note.text &@~ :q", { q: `${sqlLikeEscape(ps.query)}` })
-		.andWhere("note.visibility = 'public'")
-		.innerJoinAndSelect("note.user", "user")
-		.andWhere("user.isIndexable = TRUE")
 		.leftJoinAndSelect("user.avatar", "avatar")
 		.leftJoinAndSelect("user.banner", "banner")
 		.leftJoinAndSelect("note.reply", "reply")

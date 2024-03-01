@@ -306,7 +306,13 @@ export const routes = [
 		component: page(() => import("./pages/search.vue")),
 		query: {
 			q: "query",
+			user: "user",
+			host: "host",
+			since: "since",
+			until: "until",
+			withFiles: "withFiles",
 			channel: "channel",
+			detailed: "searchCwAndAlt",
 		},
 	},
 	{

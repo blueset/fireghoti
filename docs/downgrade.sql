@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'IndexAltTextAndCw1708872574733',
     'Pgroonga1698420787202',
     'ChangeDefaultConfigs1709251460718',
     'AddReplyMuting1704851359889',
@@ -12,6 +13,10 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- index-alt-text-and-cw
+DROP INDEX "IDX_f4f7b93d05958527300d79ac82";
+DROP INDEX "IDX_8e3bbbeb3df04d1a8105da4c8f";
 
 -- pgroonga
 DROP INDEX "IDX_f27f5d88941e57442be75ba9c8";
