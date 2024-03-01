@@ -1189,6 +1189,8 @@ searchRange: "Posted within (optional)"
 searchRangeDescription: "If you want to filter the time period, enter it in this format: 20220615-20231031\n\nIf you leave out the year (like 0105-0106 or 20231105-0110), it's interpreted as the current year.\n\nYou can also omit either the start or end date. For example, -0102 will filter the search results to show only posts made before 2 January this year, and 20231026- will filter the results to show only posts made after 26 October 2023."
 searchPostsWithFiles: "Only posts with files"
 searchCwAndAlt: "Include content warnings and file descriptions"
+publishTimelines: "Publish timelines for visitors"
+publishTimelinesDescription: "If enabled, the Local and Global timeline will be shown on {url} even when signed out."
 
 _emojiModPerm:
   unauthorized: "None"

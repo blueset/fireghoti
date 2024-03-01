@@ -17,6 +17,7 @@ export const paramDef = {
 		disableLocalTimeline: { type: "boolean", nullable: true },
 		disableRecommendedTimeline: { type: "boolean", nullable: true },
 		disableGlobalTimeline: { type: "boolean", nullable: true },
+		enableGuestTimeline: { type: "boolean", nullable: true },
 		defaultReaction: { type: "string", nullable: true },
 		recommendedInstances: {
 			type: "array",
@@ -204,6 +205,10 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (typeof ps.disableGlobalTimeline === "boolean") {
 		set.disableGlobalTimeline = ps.disableGlobalTimeline;
+	}
+
+	if (typeof ps.enableGuestTimeline === "boolean") {
+		set.enableGuestTimeline = ps.enableGuestTimeline;
 	}
 
 	if (typeof ps.defaultReaction === "string") {

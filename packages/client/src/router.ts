@@ -639,6 +639,12 @@ export const routes = [
 		loginRequired: true,
 	},
 	{
+		path: "/timeline",
+		// TODO: show not-found page if meta.enableGuestTimeline is false
+		//       (currently it shows nothing if guest timelines are unavailable)
+		component: page(() => import("./pages/timeline.vue")),
+	},
+	{
 		path: "/timeline/list/:listId",
 		component: page(() => import("./pages/user-list-timeline.vue")),
 		loginRequired: true,

@@ -61,6 +61,11 @@ export class Meta {
 	})
 	public disableGlobalTimeline: boolean;
 
+	@Column("boolean", {
+		default: false,
+	})
+	public enableGuestTimeline: boolean;
+
 	@Column("varchar", {
 		length: 256,
 		default: "⭐",

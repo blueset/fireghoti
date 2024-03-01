@@ -75,7 +75,7 @@ import * as os from "@/os";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
-import { $i, isSignedIn, isModerator } from "@/reactiveAccount";
+import { isModerator, isSignedIn } from "@/reactiveAccount";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { deviceKind } from "@/scripts/device-kind";
 import icon from "@/scripts/icon";
@@ -86,6 +86,7 @@ if (isSignedIn && defaultStore.reactiveState.tutorial.value !== -1) {
 	os.popup(XTutorial, {}, {}, "closed");
 }
 
+const isHomeTimelineAvailable = isSignedIn;
 const isLocalTimelineAvailable =
 	(!instance.disableLocalTimeline &&
 		(isSignedIn || instance.enableGuestTimeline)) ||
@@ -101,16 +102,19 @@ const keymap = {
 	t: focus,
 };
 
-const timelines = ["home"];
+const timelines = [];
 
-if (isLocalTimelineAvailable) {
-	timelines.push("local");
+if (isHomeTimelineAvailable) {
+	timelines.push("home");
 }
-if (isLocalTimelineAvailable) {
+if (isSocialTimelineAvailable) {
 	timelines.push("social");
 }
 if (isRecommendedTimelineAvailable) {
 	timelines.push("recommended");
+}
+if (isLocalTimelineAvailable) {
+	timelines.push("local");
 }
 if (isGlobalTimelineAvailable) {
 	timelines.push("global");
@@ -130,17 +134,21 @@ window.addEventListener("resize", () => {
 const tlComponent = ref<InstanceType<typeof XTimeline>>();
 const rootEl = ref<HTMLElement>();
 
+const timelineIndex = (timeline: string): number => {
+	const index = timelines.indexOf(timeline);
+	return index === -1 ? 0 : index;
+};
+
 const src = computed({
 	get: () => defaultStore.reactiveState.tl.value.src,
 	set: (x) => {
 		saveSrc(x);
-		syncSlide(timelines.indexOf(x));
+		syncSlide(timelineIndex(x));
 	},
 });
 
-const lists = os.api("users/lists/list");
 async function chooseList(ev: MouseEvent) {
-	await lists.then((res) => {
+	await os.api("users/lists/list").then((res) => {
 		const items = [
 			{
 				type: "link" as const,
@@ -160,9 +168,8 @@ async function chooseList(ev: MouseEvent) {
 	});
 }
 
-const antennas = os.api("antennas/list");
 async function chooseAntenna(ev: MouseEvent) {
-	await antennas.then((res) => {
+	await os.api("antennas/list").then((res) => {
 		const items = [
 			{
 				type: "link" as const,
@@ -197,46 +204,44 @@ function focus(): void {
 	tlComponent.value.focus();
 }
 
-const headerActions = computed(() => [
-	{
-		icon: `${icon("ph-list-bullets")}`,
-		title: i18n.ts.lists,
-		text: i18n.ts.lists,
-		iconOnly: true,
-		handler: chooseList,
-	},
-	{
-		icon: `${icon("ph-flying-saucer")}`,
-		title: i18n.ts.antennas,
-		text: i18n.ts.antennas,
-		iconOnly: true,
-		handler: chooseAntenna,
-	} /* **TODO: fix timetravel** {
+const headerActions = computed(() =>
+	isSignedIn
+		? [
+				{
+					icon: `${icon("ph-list-bullets")}`,
+					title: i18n.ts.lists,
+					text: i18n.ts.lists,
+					iconOnly: true,
+					handler: chooseList,
+				},
+				{
+					icon: `${icon("ph-flying-saucer")}`,
+					title: i18n.ts.antennas,
+					text: i18n.ts.antennas,
+					iconOnly: true,
+					handler: chooseAntenna,
+				} /* **TODO: fix timetravel** {
 	icon: `${icon('ph-calendar-blank')}`,
 	title: i18n.ts.jumpToSpecifiedDate,
 	iconOnly: true,
 	handler: timetravel,
 } */,
-]);
+			]
+		: [],
+);
 
 const headerTabs = computed(() => [
-	{
-		key: "home",
-		title: i18n.ts._timelines.home,
-		icon: `${icon("ph-house")}`,
-		iconOnly: true,
-	},
-	...(isLocalTimelineAvailable
+	...(isHomeTimelineAvailable
 		? [
 				{
-					key: "local",
-					title: i18n.ts._timelines.local,
-					icon: `${icon("ph-users")}`,
+					key: "home",
+					title: i18n.ts._timelines.home,
+					icon: `${icon("ph-house")}`,
 					iconOnly: true,
 				},
 			]
 		: []),
-	...(isLocalTimelineAvailable
+	...(isSocialTimelineAvailable
 		? [
 				{
 					key: "social",
@@ -252,6 +257,16 @@ const headerTabs = computed(() => [
 					key: "recommended",
 					title: i18n.ts._timelines.recommended,
 					icon: `${icon("ph-thumbs-up")}`,
+					iconOnly: true,
+				},
+			]
+		: []),
+	...(isLocalTimelineAvailable
+		? [
+				{
+					key: "local",
+					title: i18n.ts._timelines.local,
+					icon: `${icon("ph-users")}`,
 					iconOnly: true,
 				},
 			]
@@ -288,7 +303,7 @@ let swiperRef: any = null;
 
 function setSwiperRef(swiper) {
 	swiperRef = swiper;
-	syncSlide(timelines.indexOf(src.value));
+	syncSlide(timelineIndex(src.value));
 }
 
 function onSlideChange() {
@@ -300,7 +315,7 @@ function syncSlide(index) {
 }
 
 onMounted(() => {
-	syncSlide(timelines.indexOf(swiperRef.activeIndex));
+	syncSlide(timelineIndex(swiperRef.activeIndex));
 });
 </script>
 

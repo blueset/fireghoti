@@ -10,6 +10,7 @@ Breaking changes are indicated by the :warning: icon.
 	- `untilDate`
 	- `withFiles`
 	- `searchCwAndAlt`
+- Added `enableGuestTimeline` field to the response of `meta` and `admin/meta`, and the request of `admin/update-meta` (optional).
 
 ## v20240301
 

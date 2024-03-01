@@ -1,6 +1,6 @@
 <template>
 	<MkInfo
-		v-if="tlHint && !tlHintClosed"
+		v-if="tlHint && !tlHintClosed && isSignedIn"
 		:closeable="true"
 		class="_gap"
 		@close="closeHint"

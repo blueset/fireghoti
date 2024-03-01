@@ -22,6 +22,8 @@ export default class extends Channel {
 				return;
 		}
 
+		if (!meta.enableGuestTimeline && this.user == null) return;
+
 		this.withReplies = params != null ? !!params.withReplies : true;
 
 		// Subscribe events
