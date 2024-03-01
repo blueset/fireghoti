@@ -24,6 +24,7 @@ Critical security updates are indicated by the :warning: icon.
 	- Set reaction history to public
 - Change default server settings (existing servers are not affected)
 	- Disable new user registration
+- Fix bugs
 
 ## v20240229
 

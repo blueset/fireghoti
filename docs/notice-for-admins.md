@@ -1,6 +1,6 @@
 # Unreleased
 
-The full-text search engine in Firefish has been changed to [PGroonga](https://pgroonga.github.io/). This is no longer an optional feature, so please enable PGroonga on your system. If you are using Sonic, Meilisearch, or Elasticsearch, you can also uninstall it from your system and remove the settings from `.config/default.yml`.
+The full-text search engine used in Firefish has been changed to [PGroonga](https://pgroonga.github.io/). This is no longer an optional feature, so please enable PGroonga on your system. If you are using Sonic, Meilisearch, or Elasticsearch, you can also uninstall it from your system and remove the settings from `.config/default.yml`.
 
 ## For systemd/pm2 users
 
@@ -33,7 +33,7 @@ There are official installation instructions for many operating systems on <http
 2. Install PGroonga
     ```sh
     # Please replace "16" with your PostgreSQL major version
-		sudo apt install postgresql-16-pgdg-pgroonga
+    sudo apt install postgresql-16-pgdg-pgroonga
     ```
 
 #### Arch Linux
