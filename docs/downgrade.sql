@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'ChangeDefaultConfigs1709251460718',
     'AddReplyMuting1704851359889',
     'FixNoteUrlIndex1709129810501',
     'RemoveCharts1709047957489',
@@ -10,6 +11,11 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- change-default-configs
+ALTER TABLE "user_profile" ALTER COLUMN "noCrawle" SET DEFAULT false;
+ALTER TABLE "user_profile" ALTER COLUMN "publicReactions" SET DEFAULT false;
+ALTER TABLE "meta" ALTER COLUMN "disableRegistration" SET DEFAULT false;
 
 -- reply-muting
 DROP TABLE "reply_muting";

@@ -13,6 +13,11 @@ Critical security updates are indicated by the :warning: icon.
 	- Disable vibrations
 	- Don't show gaps between posts in timelines
 	- Show the instance ticker on local posts
+- Change default user settings (existing users are not affected)
+	- Reject crawler indexing
+	- Set reaction history to public
+- Change default server settings (existing servers are not affected)
+	- Disable new user registration
 
 ## v20240229
 
