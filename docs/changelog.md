@@ -2,7 +2,7 @@
 
 Critical security updates are indicated by the :warning: icon.
 
-## Unreleased
+## v20240301
 
 - Add a page (`/my/follow-requests/sent`) to check your follow requests that haven't been approved
 - Add ability to hide replies from certain users in timelines

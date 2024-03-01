@@ -2,7 +2,7 @@
 
 Breaking changes are indicated by the :warning: icon.
 
-## Unreleased
+## v20240301
 
 - With the addition of new features, the following endpoints are added:
 	- check your follow requests that haven't been approved
