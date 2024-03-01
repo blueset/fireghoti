@@ -10,7 +10,7 @@ Critical security updates are indicated by the :warning: icon.
 	- This was requested by personal server admins
 - Change default client settings (you can restore the previous settings)
 	- Use system's font
-		- For acceccibility reasons (related discussion: <https://github.com/misskey-dev/misskey/issues/10192>)
+		- This is for accessibility reasons (related discussion: <https://github.com/misskey-dev/misskey/issues/10192>)
 	- Disable vibrations
 	- Don't show gaps between posts in timelines
 	- Show the instance ticker on local posts
