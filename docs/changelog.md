@@ -6,6 +6,7 @@ Critical security updates are indicated by the :warning: icon.
 
 - Introduce new full-text search engine and post search filters
 - Refactoring
+- Show unlisted posts from following users in antennas (similar to [Fedibird](https://github.com/fedibird/mastodon/tree/fedibird) and [kmyblue](https://github.com/kmycode/mastodon), unlisted posts from people you don't follow won't be shown)
 
 ## v20240301
 

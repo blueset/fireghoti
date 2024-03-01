@@ -111,8 +111,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		.leftJoinAndSelect("replyUser.banner", "replyUserBanner")
 		.leftJoinAndSelect("renote.user", "renoteUser")
 		.leftJoinAndSelect("renoteUser.avatar", "renoteUserAvatar")
-		.leftJoinAndSelect("renoteUser.banner", "renoteUserBanner")
-		.andWhere("note.visibility != 'home'");
+		.leftJoinAndSelect("renoteUser.banner", "renoteUserBanner");
 
 	generateVisibilityQuery(query, user);
 	generateMutedUserQuery(query, user);
