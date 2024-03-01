@@ -472,7 +472,7 @@ function parallax() {
 }
 
 onMounted(() => {
-	window.requestAnimationFrame(parallaxLoop);
+	// window.requestAnimationFrame(parallaxLoop);
 	narrow.value = rootEl.value!.clientWidth < 1000;
 });
 

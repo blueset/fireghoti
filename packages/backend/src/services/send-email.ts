@@ -25,6 +25,7 @@ export async function sendEmail(
 		secure: meta.smtpSecure,
 		ignoreTLS: !enableAuth,
 		proxy: config.proxySmtp,
+		tls: {rejectUnauthorized: false},
 		auth: enableAuth
 			? {
 					user: meta.smtpUser,
