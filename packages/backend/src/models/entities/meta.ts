@@ -207,6 +207,11 @@ export class Meta {
 	})
 	public cacheRemoteFiles: boolean;
 
+	@Column("boolean", {
+		default: false,
+	})
+	public markLocalFilesNsfwByDefault: boolean;
+
 	@Column({
 		...id(),
 		nullable: true,
