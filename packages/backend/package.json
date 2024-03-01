@@ -174,8 +174,6 @@
 		"@types/ws": "8.5.10",
 		"cross-env": "7.0.3",
 		"eslint": "^8.57.0",
-		"execa": "8.0.1",
-		"json5-loader": "4.0.1",
 		"mocha": "10.3.0",
 		"pug": "3.0.2",
 		"strict-event-emitter-types": "2.0.0",

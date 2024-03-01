@@ -33,7 +33,6 @@
 		"@types/tinycolor2": "1.4.6",
 		"@types/uuid": "9.0.8",
 		"@vitejs/plugin-vue": "5.0.4",
-		"@vue/compiler-sfc": "3.4.21",
 		"@vue/runtime-core": "3.4.21",
 		"autobind-decorator": "2.4.0",
 		"autosize": "6.0.1",
