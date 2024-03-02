@@ -6,6 +6,7 @@
 		:author="author"
 		:custom-emojis="customEmojis"
 		:is-note="isNote"
+		:lang="lang"
 		class="mfm-object"
 		:class="{
 			nowrap,
@@ -28,6 +29,7 @@ const props = withDefaults(
 		customEmojis?: any;
 		isNote?: boolean;
 		advancedMfm: boolean;
+		lang?: string;
 	}>(),
 	{
 		plain: false,

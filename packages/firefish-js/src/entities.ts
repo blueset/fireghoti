@@ -150,6 +150,7 @@ export type Note = {
 	fileIds: DriveFile["id"][];
 	visibility: "public" | "home" | "followers" | "specified";
 	visibleUserIds?: User["id"][];
+	lang?: string;
 	localOnly?: boolean;
 	channel?: Channel["id"];
 	myReaction?: string;

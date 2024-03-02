@@ -118,6 +118,7 @@
 					:text="getNoteSummary(notification.note)"
 					:plain="true"
 					:nowrap="!full"
+					:lang="notification.note.lang"
 					:custom-emojis="notification.note.emojis"
 				/>
 			</MkA>
@@ -131,6 +132,7 @@
 					:text="getNoteSummary(notification.note.renote)"
 					:plain="true"
 					:nowrap="!full"
+					:lang="notification.note.lang"
 					:custom-emojis="notification.note.renote.emojis"
 				/>
 			</MkA>
@@ -144,6 +146,7 @@
 					:text="getNoteSummary(notification.note)"
 					:plain="true"
 					:nowrap="!full"
+					:lang="notification.note.lang"
 					:custom-emojis="notification.note.emojis"
 				/>
 			</MkA>
@@ -157,6 +160,7 @@
 					:text="getNoteSummary(notification.note)"
 					:plain="true"
 					:nowrap="!full"
+					:lang="notification.note.lang"
 					:custom-emojis="notification.note.emojis"
 				/>
 			</MkA>
@@ -170,6 +174,7 @@
 					:text="getNoteSummary(notification.note)"
 					:plain="true"
 					:nowrap="!full"
+					:lang="notification.note.lang"
 					:custom-emojis="notification.note.emojis"
 				/>
 			</MkA>
@@ -183,6 +188,7 @@
 					:text="getNoteSummary(notification.note)"
 					:plain="true"
 					:nowrap="!full"
+					:lang="notification.note.lang"
 					:custom-emojis="notification.note.emojis"
 				/>
 			</MkA>
@@ -196,6 +202,7 @@
 					:text="getNoteSummary(notification.note)"
 					:plain="true"
 					:nowrap="!full"
+					:lang="notification.note.lang"
 					:custom-emojis="notification.note.emojis"
 				/>
 			</MkA>
