@@ -21,7 +21,7 @@ const TIME_2000: i64 = 946_684_800_000;
 const TIMESTAMP_LENGTH: u16 = 8;
 
 /// Initializes Cuid2 generator. Must be called before any [create_id].
-pub fn init_id<'a>(length: u16, fingerprint: &'a str) {
+pub fn init_id(length: u16, fingerprint: &str) {
     FINGERPRINT.get_or_init(move || format!("{}{}", fingerprint, cuid2::create_id()));
     GENERATOR.get_or_init(move || {
         cuid2::CuidConstructor::new()

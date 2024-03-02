@@ -105,7 +105,7 @@ import {
 	ref,
 	watch,
 } from "vue";
-import type { entities, Channels, ChannelConnection } from "firefish-js";
+import type { ChannelConnection, Channels, entities } from "firefish-js";
 import { acct } from "firefish-js";
 import XMessage from "./messaging-room.message.vue";
 import XForm from "./messaging-room.form.vue";

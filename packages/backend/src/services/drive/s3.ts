@@ -7,10 +7,10 @@ import { inspect } from "node:util";
 export function getS3(meta: Meta) {
 	const u =
 		meta.objectStorageEndpoint != null
-			? `${meta.objectStorageUseSSL ? "https://" : "http://"}${
+			? `${meta.objectStorageUseSsl ? "https://" : "http://"}${
 					meta.objectStorageEndpoint
 			  }`
-			: `${meta.objectStorageUseSSL ? "https://" : "http://"}example.net`;
+			: `${meta.objectStorageUseSsl ? "https://" : "http://"}example.net`;
 
 	try {
 		return new S3({
@@ -18,7 +18,7 @@ export function getS3(meta: Meta) {
 			accessKeyId: meta.objectStorageAccessKey!,
 			secretAccessKey: meta.objectStorageSecretKey!,
 			region: meta.objectStorageRegion || undefined,
-			sslEnabled: meta.objectStorageUseSSL,
+			sslEnabled: meta.objectStorageUseSsl,
 			s3ForcePathStyle: !meta.objectStorageEndpoint // AWS with endPoint omitted
 				? false
 				: meta.objectStorageS3ForcePathStyle,

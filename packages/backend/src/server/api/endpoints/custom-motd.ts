@@ -28,6 +28,6 @@ export const paramDef = {
 
 export default define(meta, paramDef, async () => {
 	const meta = await fetchMeta();
-	const motd = await Promise.all(meta.customMOTD.map((x) => x));
+	const motd = await Promise.all(meta.customMotd.map((x) => x));
 	return motd;
 });

@@ -5,8 +5,8 @@ let cache: Meta;
 
 export function metaToPugArgs(meta: Meta): object {
 	let motd = ["Loading..."];
-	if (meta.customMOTD.length > 0) {
-		motd = meta.customMOTD;
+	if (meta.customMotd.length > 0) {
+		motd = meta.customMotd;
 	}
 	let splashIconUrl = meta.iconUrl;
 	if (meta.customSplashIcons.length > 0) {

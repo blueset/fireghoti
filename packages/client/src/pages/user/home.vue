@@ -118,7 +118,7 @@
 						</div>
 						<MkAvatar
 							class="avatar"
-							:showLightBox="true"
+							:show-light-box="true"
 							:user="user"
 							:disable-preview="true"
 							:show-indicator="true"
@@ -384,7 +384,7 @@ import { userPage } from "@/filters/user";
 import { defaultStore } from "@/store";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
-import { $i, isSignedIn, isModerator } from "@/reactiveAccount";
+import { $i, isModerator, isSignedIn } from "@/reactiveAccount";
 import { host } from "@/config";
 import icon from "@/scripts/icon";
 

@@ -168,6 +168,7 @@ import { i18n } from "@/i18n";
 import { instance } from "@/instance";
 import { version } from "@/config";
 import icon from "@/scripts/icon";
+import { compareFirefishVersions } from "@/scripts/compare-versions";
 
 const isEmpty = (x: string | null) => x == null || x === "";
 
@@ -217,11 +218,8 @@ if (isAdmin) {
 
 if (defaultStore.state.showAdminUpdates) {
 	os.api("latest-version").then((res) => {
-		const cleanRes = parseInt(res?.latest_version.replace(/[^0-9]/g, ""));
-		const cleanVersion = parseInt(version.replace(/[^0-9]/g, ""));
-		if (cleanRes > cleanVersion) {
-			updateAvailable.value = true;
-		}
+		updateAvailable.value =
+			compareFirefishVersions(version, res?.latest_version) === 1;
 	});
 }
 

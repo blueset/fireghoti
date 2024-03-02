@@ -100,7 +100,7 @@ async function save(
 
 		const baseUrl = new URL(
 			meta.objectStorageBaseUrl ?? `/${meta.objectStorageBucket}`,
-			`${meta.objectStorageUseSSL ? "https" : "http"}://${
+			`${meta.objectStorageUseSsl ? "https" : "http"}://${
 				meta.objectStorageEndpoint
 			}${meta.objectStoragePort ? `:${meta.objectStoragePort}` : ""}`,
 		);

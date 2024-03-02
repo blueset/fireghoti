@@ -98,7 +98,7 @@ export class Meta {
 		array: true,
 		default: "{}",
 	})
-	public customMOTD: string[];
+	public customMotd: string[];
 
 	@Column("varchar", {
 		length: 256,
@@ -359,7 +359,7 @@ export class Meta {
 		length: 512,
 		nullable: true,
 	})
-	public ToSUrl: string | null;
+	public tosUrl: string | null;
 
 	@Column("jsonb", {
 		default: [],
@@ -448,7 +448,7 @@ export class Meta {
 	@Column("boolean", {
 		default: true,
 	})
-	public objectStorageUseSSL: boolean;
+	public objectStorageUseSsl: boolean;
 
 	@Column("boolean", {
 		default: true,
