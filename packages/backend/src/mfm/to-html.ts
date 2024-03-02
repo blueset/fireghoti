@@ -8,6 +8,7 @@ export function toHtml(
 	nodes: mfm.MfmNode[] | null,
 	mentionedRemoteUsers: IMentionedRemoteUsers = [],
 ) {
+	console.trace("toHtml", nodes, mentionedRemoteUsers);
 	if (nodes == null) {
 		return null;
 	}

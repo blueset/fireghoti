@@ -197,9 +197,13 @@ export const packedNoteSchema = {
 			optional: true,
 			nullable: false,
 		},
-
 		myReaction: {
 			type: "object",
+			optional: true,
+			nullable: true,
+		},
+		mentionedRemoteUsers: {
+			type: "string",
 			optional: true,
 			nullable: true,
 		},
