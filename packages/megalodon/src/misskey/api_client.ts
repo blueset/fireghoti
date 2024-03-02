@@ -90,8 +90,6 @@ namespace MisskeyAPI {
 
 		// FIXME: Properly render MFM instead of just escaping HTML characters.
 		escapeMFM = (text: string, note?: Entity.Note): string => {
-			console.trace("Escape MFM note:", typeof note, "mfmConverter:", this.mfmConverter, text);
-			console.log("outcome:", this.mfmConverter?.(text, note));
 			return this.mfmConverter?.(text, note) ??
 			text
 				.replace(/&/g, "&amp;")
@@ -473,6 +471,7 @@ namespace MisskeyAPI {
 				case MisskeyNotificationType.Reaction:
 					return NotificationType.Reaction;
 				case MisskeyNotificationType.PollEnded:
+				case MisskeyNotificationType.PollVote:
 					return NotificationType.Poll;
 				case MisskeyNotificationType.ReceiveFollowRequest:
 					return NotificationType.FollowRequest;
