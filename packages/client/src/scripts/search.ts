@@ -48,6 +48,10 @@ export async function search() {
 			mainRouter.push(`/${result.query}`);
 			return;
 		}
+		if (result.query.includes("@")) {
+			mainRouter.push(`/@${result.query}`);
+			return;
+		}
 		if (result.query.startsWith("https://")) {
 			const promise = api("ap/show", {
 				uri: result.query,
