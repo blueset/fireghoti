@@ -30,6 +30,8 @@ import { Converter } from "megalodon";
 import { getClient } from "@/server/api/mastodon/ApiMastodonCompatibleService.js";
 import { apiLogger } from "@/server/api/logger.js";
 import { inspect } from "node:util";
+import { toHtml } from "@/mfm/to-html.js";
+import * as mfm from "mfm-js";
 
 /**
  * Main stream connection
@@ -401,7 +403,7 @@ export default class Connection {
 					JSON.stringify({
 						stream: [payload.id],
 						event: "update",
-						payload: JSON.stringify(Converter.note(payload.body, this.host)),
+						payload: JSON.stringify(new Converter('', (s: string) => toHtml(mfm.parse(s))).note(payload.body, this.host)),
 					}),
 				);
 				this.onSubscribeNote({

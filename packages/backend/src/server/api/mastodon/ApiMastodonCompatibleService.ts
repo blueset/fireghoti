@@ -18,6 +18,9 @@ import { Users } from "@/models/index.js";
 import { IsNull } from "typeorm";
 import { apiLogger } from "../logger.js";
 import { inspect } from "node:util";
+import noteToHtml from "@/remote/activitypub/misc/get-note-html.js";
+import * as mfm from "mfm-js";
+import { toHtml } from "@/mfm/to-html.js";
 
 export function getClient(
 	BASE_URL: string,
@@ -26,7 +29,7 @@ export function getClient(
 	const accessTokenArr = authorization?.split(" ") ?? [null];
 	const accessToken = accessTokenArr[accessTokenArr.length - 1];
 	const generator = (megalodon as any).default;
-	const client = generator(BASE_URL, accessToken) as MegalodonInterface;
+	const client = generator(BASE_URL, accessToken, null, false, (s, t) => t ? noteToHtml(t) : toHtml(mfm.parse(s))) as MegalodonInterface;
 	return client;
 }
 

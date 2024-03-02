@@ -83,6 +83,7 @@ export function toHtml(
 			a.href = `${config.url}/tags/${node.props.hashtag}`;
 			a.textContent = `#${node.props.hashtag}`;
 			a.setAttribute("rel", "tag");
+			a.className = "hashtag";
 			return a;
 		},
 

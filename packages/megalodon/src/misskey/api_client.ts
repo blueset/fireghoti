@@ -49,6 +49,7 @@ namespace MisskeyAPI {
 		private baseUrl: string;
 		private instanceHost: string;
 		private plcUrl: string;
+		private mfmConverter?: (mfm: string, note?: Entity.Note) => string;
 		private modelOfAcct = {
 			id: "1",
 			username: "none",
@@ -75,10 +76,11 @@ namespace MisskeyAPI {
 			moved: null,
 		};
 
-		constructor(baseUrl: string) {
+		constructor(baseUrl: string, mfmConverter?: (mfm: string, note?: Entity.Note) => string) {
 			this.baseUrl = baseUrl;
 			this.instanceHost = baseUrl.substring(baseUrl.indexOf("//") + 2);
 			this.plcUrl = `${baseUrl}/static-assets/transparent.png`;
+			this.mfmConverter = mfmConverter;
 			this.modelOfAcct.url = this.plcUrl;
 			this.modelOfAcct.avatar = this.plcUrl;
 			this.modelOfAcct.avatar_static = this.plcUrl;
@@ -87,7 +89,10 @@ namespace MisskeyAPI {
 		}
 
 		// FIXME: Properly render MFM instead of just escaping HTML characters.
-		escapeMFM = (text: string): string =>
+		escapeMFM = (text: string, note?: Entity.Note): string => {
+			console.trace("Escape MFM note:", typeof note, "mfmConverter:", this.mfmConverter, text);
+			console.log("outcome:", this.mfmConverter?.(text, note));
+			return this.mfmConverter?.(text, note) ??
 			text
 				.replace(/&/g, "&amp;")
 				.replace(/</g, "&lt;")
@@ -101,7 +106,8 @@ namespace MisskeyAPI {
 					if (match.match(/^.+\.\w{0,2}$/)) return match;
 					return `<a href="${match.startsWith("http") ? '' : 'https://'}${match}" rel="noopener noreferrer">${match}</a>`;
 				})
-				.replace(/(^|\B)#(?![0-9_]+\b)([\w_]+)(\b|\r)/gu, '<a href="/tags/$2" class="hashtag" rel="noopener noreferrer">#$2</a>');
+				.replace(/(^|\B)#(?![0-9_]+\b)([\w_]+)(\b|\r)/gu, '<a href="/tags/$2" class="hashtag" rel="noopener noreferrer">#$2</a>')
+			};
 
 		emoji = (e: Entity.Emoji): MegalodonEntity.Emoji => {
 			return {
@@ -324,7 +330,7 @@ namespace MisskeyAPI {
 				in_reply_to_id: n.replyId,
 				in_reply_to_account_id: n.reply?.userId ?? null,
 				reblog: n.renote && !n.text ? this.note(n.renote, host) : null,
-				content: n.text ? this.escapeMFM(n.text) : "",
+				content: n.text ? this.escapeMFM(n.text, n) : "",
 				plain_content: n.text ? n.text : null,
 				created_at: n.createdAt,
 				// Remove reaction emojis with names containing @ from the emojis list.

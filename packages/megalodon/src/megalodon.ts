@@ -1519,6 +1519,7 @@ export const detector = async (
  * @param accessToken access token from OAuth2 authorization
  * @param userAgent UserAgent is specified in header on request.
  * @param proxyConfig Proxy setting, or set false if don't use proxy.
+ * @param mfmConverter Misskey-flavored Markdown to HTML converter
  * @return Client instance for each SNS you specified.
  */
 const generator = (
@@ -1526,7 +1527,8 @@ const generator = (
 	accessToken: string | null = null,
 	userAgent: string | null = null,
 	proxyConfig: ProxyConfig | false = false,
+	mfmConverter: ((mfm: string, note?: MisskeyEntity.Note) => string) | undefined = undefined,
 ): MegalodonInterface =>
-	new Misskey(baseUrl, accessToken, userAgent, proxyConfig);
+	new Misskey(baseUrl, accessToken, userAgent, proxyConfig, mfmConverter);
 
 export default generator;

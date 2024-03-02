@@ -6,6 +6,9 @@ import { convertTimelinesArgsId, limitToInt } from "./timeline.js";
 import { convertAccount, convertStatus } from "../converters.js";
 import { apiLogger } from "@/server/api/logger.js";
 import { inspect } from "node:util";
+import noteToHtml from "@/remote/activitypub/misc/get-note-html.js";
+import * as mfm from "mfm-js";
+import { toHtml } from "@/mfm/to-html.js";
 
 export function apiSearchMastodon(router: Router): void {
 	router.get("/v1/search", async (ctx) => {
@@ -109,7 +112,7 @@ async function getHighlight(
 			i: accessToken,
 		});
 		const data: MisskeyEntity.Note[] = api.data;
-		return data.map((note) => new Converter(BASE_URL).note(note, domain));
+		return data.map((note) => new Converter(BASE_URL, (s, t) => t ? noteToHtml(t) : toHtml(mfm.parse(s))).note(note, domain));
 	} catch (e: any) {
 		apiLogger.info(inspect(e));
 		return [];

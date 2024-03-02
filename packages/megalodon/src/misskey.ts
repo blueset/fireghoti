@@ -17,6 +17,7 @@ import {
 import MegalodonEntity from "@/entity";
 import fs from "node:fs";
 import MisskeyNotificationType from "./misskey/notification";
+import type MisskeyEntity from "./misskey/entity";
 
 type AccountCache = {
 	locks: AsyncLock;
@@ -40,6 +41,7 @@ export default class Misskey implements MegalodonInterface {
 		accessToken: string | null = null,
 		userAgent: string | null = DEFAULT_UA,
 		proxyConfig: ProxyConfig | false = false,
+		mfmConverter: ((mfm: string, note?: MisskeyEntity.Note) => string) | undefined = undefined,
 	) {
 		let token = "";
 		if (accessToken) {
@@ -49,7 +51,8 @@ export default class Misskey implements MegalodonInterface {
 		if (userAgent) {
 			agent = userAgent;
 		}
-		this.converter = new MisskeyAPI.Converter(baseUrl);
+		console.trace("Misskey init mfmConverter:", mfmConverter);
+		this.converter = new MisskeyAPI.Converter(baseUrl, mfmConverter);
 		this.client = new MisskeyAPI.Client(
 			baseUrl,
 			token,
@@ -1513,6 +1516,10 @@ export default class Misskey implements MegalodonInterface {
 
 		if (status.quote != null)
 			status.quote = await this.addMentionsToStatus(status.quote, cache);
+
+		if (status.content.includes('class="u-url mention"')) {
+			return status;
+		}
 
 		const idx = status.account.acct.indexOf("@");
 		const origin = idx < 0 ? null : status.account.acct.substring(idx + 1);
