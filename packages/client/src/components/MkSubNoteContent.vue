@@ -30,6 +30,7 @@
 			class="text"
 			:text="note.cw"
 			:author="note.user"
+			:lang="note.lang"
 			:i="$i"
 			:custom-emojis="note.emojis"
 		/>
@@ -103,6 +104,7 @@
 					:text="note.text"
 					:author="note.user"
 					:i="$i"
+					:lang="note.lang"
 					:custom-emojis="note.emojis"
 				/>
 				<MkA

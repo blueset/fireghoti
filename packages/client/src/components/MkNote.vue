@@ -81,6 +81,7 @@
 					:text="getNoteSummary(appearNote.reply)"
 					:plain="true"
 					:nowrap="true"
+					:lang="appearNote.reply.lang"
 					:custom-emojis="note.emojis"
 				/>
 			</div>
@@ -127,6 +128,7 @@
 								:text="translation.text"
 								:author="appearNote.user"
 								:i="$i"
+								:lang="targetLang"
 								:custom-emojis="appearNote.emojis"
 							/>
 						</div>
@@ -370,15 +372,12 @@ const enableEmojiReactions = defaultStore.state.enableEmojiReactions;
 const expandOnNoteClick = defaultStore.state.expandOnNoteClick;
 const lang = localStorage.getItem("lang");
 const translateLang = localStorage.getItem("translateLang");
+const targetLang = (translateLang || lang || navigator.language)?.slice(0, 2);
 
 const isForeignLanguage: boolean =
 	defaultStore.state.detectPostLanguage &&
 	appearNote.value.text != null &&
 	(() => {
-		const targetLang = (translateLang || lang || navigator.language)?.slice(
-			0,
-			2,
-		);
 		const postLang = detectLanguage(appearNote.value.text);
 		return postLang !== "" && postLang !== targetLang;
 	})();
