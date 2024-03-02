@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'RenameMetaColumns1705944717480',
     'SeparateHardMuteWordsAndPatterns1706413792769',
     'IndexAltTextAndCw1708872574733',
     'Pgroonga1698420787202',
@@ -14,6 +15,11 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- rename-meta-columns
+ALTER TABLE "meta" RENAME COLUMN "tosUrl" TO "ToSUrl";
+ALTER TABLE "meta" RENAME COLUMN "objectStorageUseSsl" TO "objectStorageUseSSL";
+ALTER TABLE "meta" RENAME COLUMN "customMotd" TO "customMOTD";
 
 -- separate-hard-mute-words-and-patterns
 UPDATE "user_profile" SET "mutedWords" = "mutedWords" || array_to_json("mutedPatterns")::jsonb;

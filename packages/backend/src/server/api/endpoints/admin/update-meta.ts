@@ -220,7 +220,7 @@ export default define(meta, paramDef, async (ps, me) => {
 	}
 
 	if (Array.isArray(ps.customMOTD)) {
-		set.customMOTD = ps.customMOTD.filter(Boolean);
+		set.customMotd = ps.customMOTD.filter(Boolean);
 	}
 
 	if (Array.isArray(ps.customSplashIcons)) {
@@ -431,7 +431,7 @@ export default define(meta, paramDef, async (ps, me) => {
 	}
 
 	if (ps.tosUrl !== undefined) {
-		set.ToSUrl = ps.tosUrl;
+		set.tosUrl = ps.tosUrl;
 	}
 
 	if (ps.moreUrls !== undefined) {
@@ -487,7 +487,7 @@ export default define(meta, paramDef, async (ps, me) => {
 	}
 
 	if (ps.objectStorageUseSSL !== undefined) {
-		set.objectStorageUseSSL = ps.objectStorageUseSSL;
+		set.objectStorageUseSsl = ps.objectStorageUseSSL;
 	}
 
 	if (ps.objectStorageUseProxy !== undefined) {

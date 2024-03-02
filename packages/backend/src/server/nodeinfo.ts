@@ -74,7 +74,7 @@ const nodeinfo2 = async () => {
 				email: meta.maintainerEmail,
 			},
 			langs: meta.langs,
-			tosUrl: meta.ToSUrl,
+			tosUrl: meta.tosUrl,
 			repositoryUrl: meta.repositoryUrl,
 			feedbackUrl: meta.feedbackUrl,
 			disableRegistration: meta.disableRegistration,

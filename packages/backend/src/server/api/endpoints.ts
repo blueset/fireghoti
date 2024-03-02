@@ -282,7 +282,7 @@ import * as ep___pages_update from "./endpoints/pages/update.js";
 import * as ep___ping from "./endpoints/ping.js";
 import * as ep___recommendedInstances from "./endpoints/recommended-instances.js";
 import * as ep___pinnedUsers from "./endpoints/pinned-users.js";
-import * as ep___customMOTD from "./endpoints/custom-motd.js";
+import * as ep___customMotd from "./endpoints/custom-motd.js";
 import * as ep___customSplashIcons from "./endpoints/custom-splash-icons.js";
 import * as ep___latestVersion from "./endpoints/latest-version.js";
 import * as ep___patrons from "./endpoints/patrons.js";
@@ -631,7 +631,7 @@ const eps = [
 	["reply-mute/create", ep___reply_mute_create],
 	["reply-mute/delete", ep___reply_mute_delete],
 	["reply-mute/list", ep___reply_mute_list],
-	["custom-motd", ep___customMOTD],
+	["custom-motd", ep___customMotd],
 	["custom-splash-icons", ep___customSplashIcons],
 	["latest-version", ep___latestVersion],
 	["patrons", ep___patrons],
