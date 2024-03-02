@@ -54,6 +54,7 @@ import { reloadChannel } from "@/scripts/unison-reload";
 import { ColdDeviceStorage, defaultStore } from "@/store";
 import { useStream, isReloading } from "@/stream";
 import widgets from "@/widgets";
+import { compareFirefishVersions } from "@/scripts/compare-versions";
 
 function checkForSplash() {
 	const splash = document.getElementById("splash");
@@ -250,23 +251,11 @@ function checkForSplash() {
 		// テーマリビルドするため
 		localStorage.removeItem("theme");
 
-		const isUpdated = (prevVersion: string, currentVersion: string) => {
-			const p = prevVersion.split("-");
-			const c = currentVersion.split("-");
-
-			if (p[0] < c[0]) return true;
-			if (p[0] === c[0] && p[1] == null && c[1] != null) return true;
-			if (p[0] === c[0] && p[1] != null && c[1] != null && p[1] < c[1])
-				return true;
-
-			return false;
-		};
-
 		try {
 			// 変なバージョン文字列来るとcompareVersionsでエラーになるため
 			if (
 				lastVersion != null &&
-				isUpdated(lastVersion, version) &&
+				compareFirefishVersions(lastVersion, version) === 1 &&
 				defaultStore.state.showUpdates
 			) {
 				// ログインしてる場合だけ
