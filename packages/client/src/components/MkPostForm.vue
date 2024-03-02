@@ -181,8 +181,18 @@
 				@changeSensitive="updateFileSensitive"
 				@changeName="updateFileName"
 			/>
-			<XPollEditor v-if="poll" v-model="poll" :lang="language ?? undefined" @destroyed="poll = null" />
-			<XNotePreview v-if="showPreview" class="preview" :lang="language ?? undefined" :text="text" />
+			<XPollEditor
+				v-if="poll"
+				v-model="poll"
+				:lang="language ?? undefined"
+				@destroyed="poll = null"
+			/>
+			<XNotePreview
+				v-if="showPreview"
+				class="preview"
+				:lang="language ?? undefined"
+				:text="text"
+			/>
 			<footer>
 				<button
 					v-tooltip="i18n.ts.attachFile"
