@@ -39,7 +39,7 @@ export function apiNotificationsMastodon(router: Router): void {
 		}
 	});
 
-	router.get("/v1/notification/:id", async (ctx) => {
+	router.get("/v1/notifications/:id", async (ctx) => {
 		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
 		const accessTokens = ctx.request.headers.authorization;
 		const client = getClient(BASE_URL, accessTokens);
@@ -88,6 +88,64 @@ export function apiNotificationsMastodon(router: Router): void {
 			const data = await client.dismissNotification(
 				convertId(ctx.params.id, IdType.FirefishId),
 			);
+			ctx.body = data.data;
+		} catch (e: any) {
+			apiLogger.error(inspect(e));
+			ctx.status = 401;
+			ctx.body = e.response.data;
+		}
+	});
+
+	router.get("/v1/push/subscription", async (ctx) => {
+		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
+		const accessTokens = ctx.request.headers.authorization;
+		const client = getClient(BASE_URL, accessTokens);
+		try {
+			const data = await client.getPushSubscription();
+			ctx.body = data.data;
+		} catch (e: any) {
+			apiLogger.error(inspect(e));
+			ctx.status = 401;
+			ctx.body = e.response.data;
+		}
+	});
+
+	router.post("/v1/push/subscription", async (ctx) => {
+		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
+		const accessTokens = ctx.request.headers.authorization;
+		const client = getClient(BASE_URL, accessTokens);
+		const body: any = ctx.request.body;
+		try {
+			const data = await client.subscribePushNotification(body.subscription, body.data);
+			ctx.body = data.data;
+		} catch (e: any) {
+			apiLogger.error(inspect(e));
+			ctx.status = 401;
+			ctx.body = e.response.data;
+		}
+	});
+
+	router.put("/v1/push/subscription", async (ctx) => {
+		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
+		const accessTokens = ctx.request.headers.authorization;
+		const client = getClient(BASE_URL, accessTokens);
+		const body: any = ctx.request.body;
+		try {
+			const data = await client.updatePushSubscription(body.data);
+			ctx.body = data.data;
+		} catch (e: any) {
+			apiLogger.error(inspect(e), e.response.data);
+			ctx.status = 401;
+			ctx.body = e.response.data;
+		}
+	});
+
+	router.delete("/v1/push/subscription", async (ctx) => {
+		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
+		const accessTokens = ctx.request.headers.authorization;
+		const client = getClient(BASE_URL, accessTokens);
+		try {
+			const data = await client.deletePushSubscription();
 			ctx.body = data.data;
 		} catch (e: any) {
 			apiLogger.error(inspect(e));

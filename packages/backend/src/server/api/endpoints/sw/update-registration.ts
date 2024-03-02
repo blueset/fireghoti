@@ -1,3 +1,4 @@
+import { fetchMeta } from "@/misc/fetch-meta.js";
 import { SwSubscriptions } from "@/models/index.js";
 import define from "@/server/api/define.js";
 
@@ -12,17 +13,20 @@ export const meta = {
 export const paramDef = {
 	type: "object",
 	properties: {
-		endpoint: { type: "string" },
+		endpoint: { type: "string", default: null },
 		sendReadMessage: { type: "boolean" },
 	},
-	required: ["endpoint"],
+	required: [],
 } as const;
 
-export default define(meta, paramDef, async (ps, me) => {
-	const swSubscription = await SwSubscriptions.findOneBy({
+export default define(meta, paramDef, async (ps, me, token) => {
+	const swSubscription = ps.endpoint ? await SwSubscriptions.findOneBy({
 		userId: me.id,
 		endpoint: ps.endpoint,
-	});
+	}) : token ? await SwSubscriptions.findOneBy({
+		userId: me.id,
+		appAccessTokenId: token.id,
+	}) : null;
 
 	if (swSubscription === null) {
 		throw new Error("No such registration");
@@ -36,9 +40,12 @@ export default define(meta, paramDef, async (ps, me) => {
 		sendReadMessage: swSubscription.sendReadMessage,
 	});
 
+	const instance = await fetchMeta(true);
+
 	return {
 		userId: swSubscription.userId,
 		endpoint: swSubscription.endpoint,
 		sendReadMessage: swSubscription.sendReadMessage,
+		key: instance.swPublicKey,
 	};
 });

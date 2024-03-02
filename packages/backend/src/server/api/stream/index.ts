@@ -438,7 +438,7 @@ export default class Connection {
 				}
 			} else if (payload.type === "unreadNotification") {
 				if (payload.id === "user") {
-					const body = Converter.notification(payload.body, this.host);
+					const body = new Converter('', (s: string) => toHtml(mfm.parse(s))).notification(payload.body, this.host);
 					if (body.type === "reaction") body.type = "favourite";
 					this.wsConnection.send(
 						JSON.stringify({

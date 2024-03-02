@@ -12,14 +12,21 @@ export const meta = {
 export const paramDef = {
 	type: "object",
 	properties: {
-		endpoint: { type: "string" },
+		endpoint: { type: "string", default: null },
 	},
-	required: ["endpoint"],
+	required: [],
 } as const;
 
-export default define(meta, paramDef, async (ps, me) => {
-	await SwSubscriptions.delete({
-		...(me ? { userId: me.id } : {}),
-		endpoint: ps.endpoint,
-	});
+export default define(meta, paramDef, async (ps, me, token) => {
+	if (ps.endpoint) {
+		await SwSubscriptions.delete({
+			...(me ? { userId: me.id } : {}),
+			endpoint: ps.endpoint,
+		});
+	} else if (token) {
+		await SwSubscriptions.delete({
+			...(me ? { userId: me.id } : {}),
+			appAccessTokenId: token.id,
+		});
+	}
 });

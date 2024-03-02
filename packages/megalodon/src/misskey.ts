@@ -18,6 +18,7 @@ import MegalodonEntity from "@/entity";
 import fs from "node:fs";
 import MisskeyNotificationType from "./misskey/notification";
 import type MisskeyEntity from "./misskey/entity";
+import { asyncIterator } from "core-js/fn/symbol";
 
 type AccountCache = {
 	locks: AsyncLock;
@@ -2883,10 +2884,26 @@ export default class Misskey implements MegalodonInterface {
 	public async getNotification(
 		_id: string,
 	): Promise<Response<Entity.Notification>> {
-		return new Promise((_, reject) => {
-			const err = new NoImplementedError("misskey does not support");
-			reject(err);
-		});
+		// Get one notification after it, then get one notification before the new one to get the original.
+		const cache = this.getFreshAccountCache();
+		const res = await this.client
+			.post<Array<MisskeyAPI.Entity.Notification>>(
+				"/api/i/notifications",
+				{ limit: 1, untilId: _id },
+			);
+		const noteId = res.data[0].id;
+		const res2 = await this.client.post<Array<MisskeyAPI.Entity.Notification>>(
+				"/api/i/notifications",
+				{ limit: 1, sinceId: noteId },
+			);
+		return {
+			...res2,
+			data: await this.notificationWithDetails(
+				res.data[0],
+				this.baseUrlToHost(this.baseUrl),
+				cache,
+			),
+		};
 	}
 
 	/**
@@ -2966,7 +2983,7 @@ export default class Misskey implements MegalodonInterface {
 			endpoint: string,
 			sendReadMessage: boolean,
 			key: string,
-		}>("/api/sw/show-registration").then(res => ({
+		}>("/api/sw/show-registration", {endpoint: ""}).then(res => ({
 			...res,
 			data: {
 				id: res.data.endpoint,
@@ -3002,7 +3019,8 @@ export default class Misskey implements MegalodonInterface {
 			sendReadMessage: boolean,
 			key: string,
 		}>("/api/sw/update-registration", {
-			sendReadMessage: false
+			sendReadMessage: false,
+			endpoint: "",
 		}).then(res => ({
 			...res,
 			data: {
@@ -3025,7 +3043,7 @@ export default class Misskey implements MegalodonInterface {
 	 * DELETE /api/v1/push/subscription
 	 */
 	public async deletePushSubscription(): Promise<Response<{}>> {
-		return this.client.post<{}>("/api/sw/unregister", {}).then(res => ({
+		return this.client.post<{}>("/api/sw/unregister", {endpoint: ""}).then(res => ({
 			...res,
 			data: {}
 		}));

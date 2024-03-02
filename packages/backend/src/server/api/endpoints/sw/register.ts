@@ -52,11 +52,12 @@ export const paramDef = {
 		auth: { type: "string" },
 		publickey: { type: "string" },
 		sendReadMessage: { type: "boolean", default: false },
+		isMastodon: { type: "boolean", default: false },
 	},
 	required: ["endpoint", "auth", "publickey"],
 } as const;
 
-export default define(meta, paramDef, async (ps, me) => {
+export default define(meta, paramDef, async (ps, me, token) => {
 	const subscription = await SwSubscriptions.findOneBy({
 		userId: me.id,
 		endpoint: ps.endpoint,
@@ -77,6 +78,17 @@ export default define(meta, paramDef, async (ps, me) => {
 		};
 	}
 
+	if (ps.isMastodon && token == null) {
+		throw new Error("Mastodon app access token is required");
+	}
+
+	if (ps.isMastodon && token) {
+		await SwSubscriptions.delete({
+			userId: me.id,
+			appAccessTokenId: token.id,
+		});
+	}
+
 	await SwSubscriptions.insert({
 		id: genId(),
 		createdAt: new Date(),
@@ -85,6 +97,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		auth: ps.auth,
 		publickey: ps.publickey,
 		sendReadMessage: ps.sendReadMessage,
+		appAccessTokenId: ps.isMastodon && token ? token.id : undefined,
 	});
 
 	return {

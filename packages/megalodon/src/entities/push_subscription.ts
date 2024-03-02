@@ -5,6 +5,7 @@ namespace Entity {
 		mention: boolean;
 		reblog: boolean;
 		poll: boolean;
+		status?: boolean;
 	};
 
 	export type PushSubscription = {
