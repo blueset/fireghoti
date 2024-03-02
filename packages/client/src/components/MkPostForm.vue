@@ -79,9 +79,9 @@
 				</button>
 				<button
 					v-if="!showBigPostButton"
+					v-tooltip="submitText"
 					class="submit _buttonGradate"
 					:disabled="!canPost"
-					v-tooltip="submitText"
 					data-cy-open-post-form-submit
 					@click="post"
 				>
@@ -244,9 +244,9 @@
 				</button>
 				<div v-if="showBigPostButton">
 					<button
+						v-tooltip="submitText"
 						class="submit bigPostButton"
 						:disabled="!canPost"
-						v-tooltip="submitText"
 						data-cy-open-post-form-submit
 						@click="post"
 					>
@@ -289,7 +289,8 @@ import autosize from "autosize";
 import insertTextAtCursor from "insert-text-at-cursor";
 import { length } from "stringz";
 import { toASCII } from "punycode/";
-import { acct, noteVisibilities, languages, type entities } from "firefish-js";
+import { acct } from "firefish-js";
+import type { entities, languages, noteVisibilities } from "firefish-js";
 import { throttle } from "throttle-debounce";
 import XNoteSimple from "@/components/MkNoteSimple.vue";
 import XNotePreview from "@/components/MkNotePreview.vue";
@@ -315,7 +316,7 @@ import XCheatSheet from "@/components/MkCheatSheetDialog.vue";
 import preprocess from "@/scripts/preprocess";
 import { vibrate } from "@/scripts/vibrate";
 import { langmap } from "@/scripts/langmap";
-import { MenuItem } from "@/types/menu";
+import type { MenuItem } from "@/types/menu";
 import detectLanguage from "@/scripts/detect-language";
 import icon from "@/scripts/icon";
 
@@ -755,8 +756,8 @@ function filterLangmapByPrefix(
 
 	if (prefix === "zh")
 		to_return = to_return.concat([
-			{ langCode: "yue", nativeName: langmap["yue"].nativeName },
-			{ langCode: "nan", nativeName: langmap["nan"].nativeName },
+			{ langCode: "yue", nativeName: langmap.yue.nativeName },
+			{ langCode: "nan", nativeName: langmap.nan.nativeName },
 		]);
 
 	return to_return;

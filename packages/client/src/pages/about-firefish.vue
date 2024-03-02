@@ -92,7 +92,7 @@ import FormSection from "@/components/form/section.vue";
 import MkButton from "@/components/MkButton.vue";
 import { physics } from "@/scripts/physics";
 import { i18n } from "@/i18n";
-import { defaultStore, defaultReactions } from "@/store";
+import { defaultReactions, defaultStore } from "@/store";
 import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";

@@ -167,7 +167,7 @@
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, onUpdated, ref } from "vue";
-import type { entities, StreamTypes } from "firefish-js";
+import type { StreamTypes, entities } from "firefish-js";
 import MkTab from "@/components/MkTab.vue";
 import MkNote from "@/components/MkNote.vue";
 import MkNoteSub from "@/components/MkNoteSub.vue";

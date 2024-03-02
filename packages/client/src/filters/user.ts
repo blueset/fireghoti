@@ -1,4 +1,5 @@
-import { acct, type Acct, type entities } from "firefish-js";
+import { acct } from "firefish-js";
+import type { Acct, entities } from "firefish-js";
 import { url } from "@/config";
 
 export const userName = (user: entities.User) => {

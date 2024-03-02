@@ -44,6 +44,7 @@
 
 <script lang="ts" setup>
 import { computed, onUnmounted, provide, ref } from "vue";
+import type { Endpoints } from "firefish-js";
 import MkPullToRefresh from "@/components/MkPullToRefresh.vue";
 import XNotes from "@/components/MkNotes.vue";
 import MkInfo from "@/components/MkInfo.vue";
@@ -54,7 +55,6 @@ import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
 import type { Paging } from "@/components/MkPagination.vue";
-import type { Endpoints } from "firefish-js";
 
 const props = defineProps<{
 	src: string;
@@ -74,7 +74,23 @@ const tlComponent = ref<InstanceType<typeof XNotes>>();
 const pullToRefreshComponent = ref<InstanceType<typeof MkPullToRefresh>>();
 
 let endpoint = ""; // keyof Endpoints
-let query, connection, connection2;
+let query: {
+	antennaId?: string | undefined;
+	withReplies?: boolean;
+	visibility?: string;
+	listId?: string | undefined;
+	channelId?: string | undefined;
+	fileId?: string | undefined;
+};
+let connection: {
+	on: (
+		arg0: string,
+		arg1: { (note: any): void; (note: any): void; (note: any): void },
+	) => void;
+	dispose: () => void;
+};
+let connection2: { dispose: () => void } | null;
+
 let tlHint: string;
 let tlHintClosed: boolean;
 let tlNotesCount = 0;

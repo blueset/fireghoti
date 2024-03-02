@@ -1,7 +1,7 @@
 // TODO: なんでもかんでもos.tsに突っ込むのやめたいのでよしなに分割する
 
 import { EventEmitter } from "eventemitter3";
-import { api as firefishApi, type entities } from "firefish-js";
+import { type entities, api as firefishApi } from "firefish-js";
 import insertTextAtCursor from "insert-text-at-cursor";
 import type { Component, Ref } from "vue";
 import { defineAsyncComponent, markRaw, ref } from "vue";

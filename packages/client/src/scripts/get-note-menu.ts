@@ -1,7 +1,7 @@
 import type { Ref } from "vue";
 import { defineAsyncComponent } from "vue";
 import type { entities } from "firefish-js";
-import { $i, isSignedIn, isModerator } from "@/reactiveAccount";
+import { $i, isModerator, isSignedIn } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
 import * as os from "@/os";

@@ -1,9 +1,9 @@
 import type { AsyncComponentLoader } from "vue";
 import { defineAsyncComponent, inject } from "vue";
-import { $i, isModerator, isEmojiMod } from "@/reactiveAccount";
 import { Router } from "@/nirax";
 import MkError from "@/pages/_error_.vue";
 import MkLoading from "@/pages/_loading_.vue";
+import { $i, isEmojiMod, isModerator } from "@/reactiveAccount";
 
 const page = (loader: AsyncComponentLoader<any>) =>
 	defineAsyncComponent({

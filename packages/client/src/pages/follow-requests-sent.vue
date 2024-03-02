@@ -64,8 +64,8 @@
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import MkPagination from "@/components/MkPagination.vue";
 import { acct } from "firefish-js";
+import MkPagination from "@/components/MkPagination.vue";
 import { userPage } from "@/filters/user";
 import * as os from "@/os";
 import { i18n } from "@/i18n";

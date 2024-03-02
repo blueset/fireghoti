@@ -40,6 +40,7 @@ import { i18n } from "@/i18n";
 import { fetchInstance, instance } from "@/instance";
 import { alert, api, confirm, popup, post, toast } from "@/os";
 import { $i, isSignedIn } from "@/reactiveAccount";
+import { compareFirefishVersions } from "@/scripts/compare-versions";
 import { deviceKind } from "@/scripts/device-kind";
 import { getAccountFromId } from "@/scripts/get-account-from-id";
 import { makeHotkey } from "@/scripts/hotkey";
@@ -52,9 +53,8 @@ import * as sound from "@/scripts/sound";
 import { applyTheme } from "@/scripts/theme";
 import { reloadChannel } from "@/scripts/unison-reload";
 import { ColdDeviceStorage, defaultStore } from "@/store";
-import { useStream, isReloading } from "@/stream";
+import { isReloading, useStream } from "@/stream";
 import widgets from "@/widgets";
-import { compareFirefishVersions } from "@/scripts/compare-versions";
 
 function checkForSplash() {
 	const splash = document.getElementById("splash");

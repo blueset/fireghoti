@@ -92,10 +92,10 @@ import {
 	ref,
 	watch,
 } from "vue";
+import { acct } from "firefish-js";
 import contains from "@/scripts/contains";
 import { char2filePath } from "@/scripts/twemoji-base";
 import { getStaticImageUrl } from "@/scripts/get-static-image-url";
-import { acct } from "firefish-js";
 import * as os from "@/os";
 import { MFM_TAGS } from "@/scripts/mfm-tags";
 import { defaultStore } from "@/store";

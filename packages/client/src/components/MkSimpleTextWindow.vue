@@ -3,8 +3,8 @@
 		:initial-width="800"
 		:can-resize="true"
 		:front="true"
-		@closed="emit('closed')"
 		class="thppypvi"
+		@closed="emit('closed')"
 	>
 		<template #header>
 			{{ title }}

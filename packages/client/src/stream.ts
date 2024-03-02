@@ -5,7 +5,7 @@ import { $i } from "@/reactiveAccount";
 
 let stream: Stream | null = null;
 let timeoutHeartBeat: number | null = null;
-export let isReloading: boolean = false;
+export let isReloading = false;
 
 export function useStream() {
 	if (stream != null) return stream;

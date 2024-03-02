@@ -21,7 +21,7 @@
 <script lang="ts" setup>
 import { shallowRef } from "vue";
 
-import { noteVisibilities, languages, type entities } from "firefish-js";
+import type { entities, languages, noteVisibilities } from "firefish-js";
 import MkModal from "@/components/MkModal.vue";
 import MkPostForm from "@/components/MkPostForm.vue";
 

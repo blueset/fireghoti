@@ -2,7 +2,9 @@
 	<div
 		ref="ticker"
 		v-tooltip="
-			`${capitalize(instance.softwareName)} ${instance.softwareVersion ?? ''}`
+			`${capitalize(instance.softwareName)} ${
+				instance.softwareVersion ?? ''
+			}`
 		"
 		class="hpaizdrt"
 		:style="bg"

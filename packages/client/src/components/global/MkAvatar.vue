@@ -22,6 +22,7 @@
 	</span>
 	<span
 		v-else-if="showLightBox"
+		ref="gallery"
 		v-user-preview="disablePreview ? undefined : user.id"
 		class="eiwwqkts _noSelect showLightBox"
 		:class="{
@@ -32,7 +33,6 @@
 		}"
 		:style="{ color }"
 		:title="acct.toString(user)"
-		ref="gallery"
 		@click.stop
 	>
 		<img class="inner avatar" :src="url" decoding="async" />
@@ -70,13 +70,13 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from "vue";
 import { acct, type entities } from "firefish-js";
+import PhotoSwipeLightbox from "photoswipe/lightbox";
+import PhotoSwipe from "photoswipe";
 import { getStaticImageUrl } from "@/scripts/get-static-image-url";
 import { extractAvgColorFromBlurhash } from "@/scripts/extract-avg-color-from-blurhash";
 import { userPage } from "@/filters/user";
 import MkUserOnlineIndicator from "@/components/MkUserOnlineIndicator.vue";
 import { defaultStore } from "@/store";
-import PhotoSwipeLightbox from "photoswipe/lightbox";
-import PhotoSwipe from "photoswipe";
 import "photoswipe/style.css";
 
 const props = withDefaults(
