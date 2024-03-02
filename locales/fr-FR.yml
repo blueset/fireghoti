@@ -2280,17 +2280,17 @@ publishTimelines: Publier les fils d'actualité pour les visiteurs
 publishTimelinesDescription: Si cette option est activée, les fils Local et Global
   sera affichée sur {url} même en cas de déconnexion.
 searchWordsDescription: "Pour rechercher des publications, saisissez le terme de recherche.
-  Des mots séparés avec un espace pour une recherche ET, ou « OU » (sans citations)
+  Des mots séparés avec un espace pour une recherche ET, ou « OR » (sans citations)
   entre des mots pour une recherche OU.\nPar exemple, « matin nuit » trouvera des
   publications contenant à la fois « matin » et « nuit », et « matin ou nuit » trouveront
   des messages qui contiennent soit « matin » ou « nuit » (ou les deux).\nVous pouvez
-  également combiner des conditions ET/OU comme « (matin OU nuit) ensommeillé ».\n
+  également combiner des conditions ET/OU comme « (matin OR nuit) ensommeillé ».\n
   \nSi vous souhaitez accéder à une page d'utilisateur ou à une page d'affichage spécifique,
   saisissez l'ID ou l'URL dans ce champ et cliquez sur le bouton « Rechercher ». Cliquez
   sur « Rechercher » recherchera des messages qui contiennent littéralement l'ID/URL."
 searchUsersDescription: "Pour rechercher des messages par un utilisateur/serveur spécifique,
   saisissez l'ID (@utilisateur@exemple.com, ou @utilisateur pour un utilisateur local)
-  ou le nom de domaine (exemple.com).\n\nSi vous saisissez « moi » (sans guillemets),
+  ou le nom de domaine (exemple.com).\n\nSi vous saisissez « me » (sans guillemets),
   tous vos messages (y compris les messages non-listés, abonnés-seulement, directs
   et secrets) seront recherchés.\n\nSi vous saisissez « local » (sans guillemets),
   les résultats seront filtrés pour inclure seulement des messages de ce serveur."
