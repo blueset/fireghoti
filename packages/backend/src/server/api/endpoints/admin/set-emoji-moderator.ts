@@ -1,6 +1,8 @@
 import define from "@/server/api/define.js";
 import { Users } from "@/models/index.js";
 import { publishInternalEvent } from "@/services/stream.js";
+import type { EmojiModPerm } from "@/models/entities/user.js";
+import { unsafeCast } from "@/prelude/unsafe-cast.js";
 
 export const meta = {
 	tags: ["admin"],
@@ -31,12 +33,8 @@ export default define(meta, paramDef, async (ps) => {
 		);
 	}
 
-	const _emojiModPerm =
-		(ps.emojiModPerm as "unauthorized" | "add" | "mod" | "full") ??
-		"unauthorized";
-
 	await Users.update(user.id, {
-		emojiModPerm: _emojiModPerm,
+		emojiModPerm: unsafeCast<EmojiModPerm>(ps.emojiModPerm),
 	});
 
 	publishInternalEvent("userChangeModeratorState", {
