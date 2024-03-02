@@ -34,7 +34,7 @@ export function apiFilterMastodon(router: Router): void {
 		} catch (e: any) {
 			apiLogger.error(inspect(e));
 			ctx.status = 401;
-			ctx.body = e.response.data;
+			ctx.body = e.response?.data;
 		}
 	});
 
@@ -49,7 +49,7 @@ export function apiFilterMastodon(router: Router): void {
 		} catch (e: any) {
 			apiLogger.error(inspect(e));
 			ctx.status = 401;
-			ctx.body = e.response.data;
+			ctx.body = e.response?.data;
 		}
 	});
 
@@ -68,7 +68,7 @@ export function apiFilterMastodon(router: Router): void {
 		} catch (e: any) {
 			apiLogger.error(inspect(e));
 			ctx.status = 401;
-			ctx.body = e.response.data;
+			ctx.body = e.response?.data;
 		}
 	});
 
@@ -85,7 +85,7 @@ export function apiFilterMastodon(router: Router): void {
 		} catch (e: any) {
 			apiLogger.error(inspect(e));
 			ctx.status = 401;
-			ctx.body = e.response.data;
+			ctx.body = e.response?.data;
 		}
 	});
 }
