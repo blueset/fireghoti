@@ -2004,3 +2004,8 @@ detectPostLanguage: 외국어로 인식된 게시물에 번역 버튼을 표시
 indexableDescription: Firefish 검색에서 나의 공개 게시물에 대한 검색을 허용합니다
 indexable: 인덱스 허용
 languageForTranslation: 게시물 번역에 사용할 언어
+replies: 답글
+renotes: 부스트
+quotes: 인용
+sentFollowRequests: 팔로우 요청 보냄
+reactions: 리액션
