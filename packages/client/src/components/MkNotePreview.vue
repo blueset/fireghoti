@@ -9,6 +9,7 @@
 				<div class="content">
 					<Mfm
 						:text="preprocess(text).trim()"
+						:lang="lang"
 						:author="$i"
 						:i="$i"
 						advanced-mfm
@@ -24,6 +25,7 @@ import preprocess from "@/scripts/preprocess";
 
 defineProps<{
 	text: string;
+	lang?: string;
 }>();
 </script>
 

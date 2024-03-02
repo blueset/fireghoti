@@ -147,6 +147,7 @@
 				v-model="cw"
 				class="cw"
 				:placeholder="i18n.ts.annotation"
+				:lang="language ?? undefined"
 				@keydown="onKeydown"
 			/>
 			<textarea
@@ -156,6 +157,7 @@
 				:class="{ withCw: useCw }"
 				:disabled="posting"
 				:placeholder="placeholder"
+				:lang="language ?? undefined"
 				data-cy-post-form-text
 				@keydown="onKeydown"
 				@paste="onPaste"
@@ -167,6 +169,7 @@
 				ref="hashtagsInputEl"
 				v-model="hashtags"
 				class="hashtags"
+				:lang="language ?? undefined"
 				:placeholder="i18n.ts.hashtags"
 				list="hashtags"
 			/>
@@ -178,8 +181,8 @@
 				@changeSensitive="updateFileSensitive"
 				@changeName="updateFileName"
 			/>
-			<XPollEditor v-if="poll" v-model="poll" @destroyed="poll = null" />
-			<XNotePreview v-if="showPreview" class="preview" :text="text" />
+			<XPollEditor v-if="poll" v-model="poll" :lang="language ?? undefined" @destroyed="poll = null" />
+			<XNotePreview v-if="showPreview" class="preview" :lang="language ?? undefined" :text="text" />
 			<footer>
 				<button
 					v-tooltip="i18n.ts.attachFile"
