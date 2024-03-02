@@ -44,6 +44,10 @@ export default defineComponent({
 			type: Boolean,
 			default: true,
 		},
+		lang: {
+			type: String,
+			default: null,
+		},
 	},
 
 	render() {
@@ -558,6 +562,6 @@ export default defineComponent({
 			);
 
 		// Parse ast to DOM
-		return h("span", genEl(ast));
+		return h("span", {lang: this.lang}, genEl(ast));
 	},
 });

@@ -22,6 +22,7 @@
 					<Mfm
 						:text="choice.text"
 						:plain="true"
+						:lang="note.lang"
 						:custom-emojis="note.emojis"
 					/>
 					<span v-if="showResult" class="votes"
