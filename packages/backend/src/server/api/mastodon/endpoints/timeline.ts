@@ -275,7 +275,10 @@ export function apiTimelineMastodon(router: Router): void {
 			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
-			const accountIds = ctx.query.account_ids || [ctx.query["account_ids[]"]];
+			let accountIds = ctx.query.account_ids || ctx.query["account_ids[]"] || ctx.body.account_ids;
+			if (typeof accountIds === "string") {
+				accountIds = [accountIds];
+			}
 			try {
 				const data = await client.deleteAccountsFromList(
 					convertId(ctx.params.id, IdType.FirefishId),
