@@ -51,7 +51,6 @@ export default class Misskey implements MegalodonInterface {
 		if (userAgent) {
 			agent = userAgent;
 		}
-		console.trace("Misskey init mfmConverter:", mfmConverter);
 		this.converter = new MisskeyAPI.Converter(baseUrl, mfmConverter);
 		this.client = new MisskeyAPI.Client(
 			baseUrl,
@@ -2926,22 +2925,63 @@ export default class Misskey implements MegalodonInterface {
 				reblog?: boolean;
 				mention?: boolean;
 				poll?: boolean;
+				status?: boolean;
 			};
 		} | null,
 	): Promise<Response<Entity.PushSubscription>> {
-		return new Promise((_, reject) => {
-			const err = new NoImplementedError("misskey does not support");
-			reject(err);
-		});
+		return this.client.post<{
+			userId: string,
+			endpoint: string,
+			sendReadMessage: boolean,
+			key: string,
+		}>("/api/sw/register", {
+			endpoint: _subscription.endpoint,
+			publickey: _subscription.keys.p256dh,
+			auth: _subscription.keys.auth,
+			sendReadMessage: false,
+			isMastodon: true,
+		}).then(res => ({
+			...res,
+			data: {
+				id: res.data.endpoint,
+				endpoint: res.data.endpoint,
+				server_key: res.data.key,
+				alerts: {
+					follow: true,
+					favourite: true,
+					mention: true,
+					reblog: true,
+					poll: true,
+					status: true,
+				},
+			}
+		}));
 	}
 
 	public async getPushSubscription(): Promise<
 		Response<Entity.PushSubscription>
 	> {
-		return new Promise((_, reject) => {
-			const err = new NoImplementedError("misskey does not support");
-			reject(err);
-		});
+		return this.client.post<{
+			userId: string,
+			endpoint: string,
+			sendReadMessage: boolean,
+			key: string,
+		}>("/api/sw/show-registration").then(res => ({
+			...res,
+			data: {
+				id: res.data.endpoint,
+				endpoint: res.data.endpoint,
+				server_key: res.data.key,
+				alerts: {
+					follow: true,
+					favourite: true,
+					mention: true,
+					reblog: true,
+					poll: true,
+					status: true,
+				},
+			}
+		}));
 	}
 
 	public async updatePushSubscription(
@@ -2952,23 +2992,43 @@ export default class Misskey implements MegalodonInterface {
 				reblog?: boolean;
 				mention?: boolean;
 				poll?: boolean;
+				status?: boolean;
 			};
 		} | null,
 	): Promise<Response<Entity.PushSubscription>> {
-		return new Promise((_, reject) => {
-			const err = new NoImplementedError("misskey does not support");
-			reject(err);
-		});
+		return this.client.post<{
+			userId: string,
+			endpoint: string,
+			sendReadMessage: boolean,
+			key: string,
+		}>("/api/sw/update-registration", {
+			sendReadMessage: false
+		}).then(res => ({
+			...res,
+			data: {
+				id: res.data.endpoint,
+				endpoint: res.data.endpoint,
+				server_key: res.data.key,
+				alerts: {
+					follow: true,
+					favourite: true,
+					mention: true,
+					reblog: true,
+					poll: true,
+					status: true,
+				},
+			}
+		}));
 	}
 
 	/**
 	 * DELETE /api/v1/push/subscription
 	 */
 	public async deletePushSubscription(): Promise<Response<{}>> {
-		return new Promise((_, reject) => {
-			const err = new NoImplementedError("misskey does not support");
-			reject(err);
-		});
+		return this.client.post<{}>("/api/sw/unregister", {}).then(res => ({
+			...res,
+			data: {}
+		}));
 	}
 
 	// ======================================
