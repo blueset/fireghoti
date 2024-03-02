@@ -125,6 +125,28 @@ export function apiAccountMastodon(router: Router): void {
 			ctx.body = data;
 		}
 	});
+    router.get("/v1/accounts/search", async (ctx)=>{
+        const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
+        const accessTokens = ctx.headers.authorization;
+        const client = getClient(BASE_URL, accessTokens);
+        try {
+            const data = await client.searchAccount(
+                ctx.query.q,
+                {
+                    following: ctx.query.following === "true",
+                    resolve: ctx.query.resolve === "true",
+                    limit: (ctx.query.limit && parseInt(ctx.query.limit.toString())) || undefined,
+                    max_id: ctx.query.max_id && convertId(ctx.query.max_id, IdType.FirefishId),
+                    since_id: ctx.query.since_id && convertId(ctx.query.since_id, IdType.FirefishId),
+                }
+            );
+            ctx.body = data.data.map((acct: any) => convertAccount(acct));
+        } catch (e: any) {
+            apiLogger.error(inspect(e));
+            ctx.status = 401;
+            ctx.body = e.response.data;
+        }
+    });
 	router.get<{ Params: { id: string } }>("/v1/accounts/:id", async (ctx) => {
 		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
 		const accessTokens = ctx.headers.authorization;

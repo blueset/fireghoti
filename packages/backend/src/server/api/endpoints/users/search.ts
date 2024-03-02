@@ -50,9 +50,26 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (isUsername) {
 		const usernameQuery = Users.createQueryBuilder("user")
-			.where("user.usernameLower LIKE :username", {
-				username: `${sqlLikeEscape(ps.query.replace("@", "").toLowerCase())}%`,
-			})
+			.where(
+				new Brackets((qb) => {
+					qb.where("user.usernameLower LIKE :username", {
+						username: `${sqlLikeEscape(ps.query.replace("@", "").toLowerCase())}%`,
+					});
+					// Try to match full username
+					const matches = ps.query.match(/^@(.+?)@(.+)$/);
+					if (matches) {
+						qb.orWhere(
+							new Brackets((qb) => {
+								qb.where("user.usernameLower = :username", {
+									username: sqlLikeEscape(matches[1].toLowerCase()),
+								}).andWhere("user.host = :host", {
+									host: sqlLikeEscape(matches[2].toLowerCase()),
+								});
+							}),
+						);
+					}
+				}),
+			)
 			.andWhere(
 				new Brackets((qb) => {
 					qb.where("user.updatedAt IS NULL").orWhere(
