@@ -23,9 +23,12 @@ if [ ! -f '/.firefish_env_initialized' ]; then
 		# Configuring a new server
 		cd /firefish
 		cp .config/devenv.yml .config/default.yml
-		URL="$(echo "${URL}" | sed 's#/#\\/#g')"
-		sed -i'.bak' "s/http:\/\/localhost:3000/${URL}/g" .config/default.yml 
-		rm .config/defaut.yml.bak
+
+		if [ -n "${URL-}" ]; then
+			URL="$(echo "${URL}" | sed 's#/#\\/#g')"
+			sed -i'.bak' "s/http:\/\/localhost:3000/${URL}/g" .config/default.yml 
+			rm .config/defaut.yml.bak
+		fi
 
 	fi
 
