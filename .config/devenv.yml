@@ -2,31 +2,18 @@ url: http://localhost:3000
 port: 3000
 
 db:
-  host: 127.0.0.1
-  port: 5432
+  host: db
+  port: 25432
 
-  db: firefish
+  db: firefish_db
 
   user: firefish
-  pass: firefish
+  pass: password
 
 redis:
-  host: localhost
-  port: 6379
+  host: redis
+  port: 26379
   family: 4
-#sonic:
-#  host: localhost
-#  port: 1491
-#  auth: SecretPassword
-#  collection: notes
-#  bucket: default
-
-#elasticsearch:
-#  host: localhost
-#  port: 9200
-#  ssl: false
-#  user:
-#  pass:
 
 id: 'aid'
 
@@ -36,3 +23,11 @@ reservedUsernames:
   - administrator
   - me
   - system
+
+logLevel: [
+  'error',
+  'success',
+  'warning',
+  'debug',
+  'info'
+]
