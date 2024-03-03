@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 
-set -xe
-node -v
+set -xeu
+node --version
 
 # Check Environment Initialized Flag
-if [ ! -f "/initialized_flag.txt" ];then
+if [ ! -f '/.firefish_env_initialized' ]; then
 
 	# Install compilation dependencies
 	apt-get update
@@ -14,7 +14,7 @@ if [ ! -f "/initialized_flag.txt" ];then
 	# Add Cargo PATH
 	PATH="/root/.cargo/bin:${PATH}"
 
-	if [ ! -f "/firefish/README.md" ];then
+	if [ ! -f '/firefish/README.md' ]; then
 
 		# Download Firefish and decompress
 		curl -vvv -O --proto '=https' --tlsv1.2 --show-error --fail https://firefish.dev/firefish/firefish/-/archive/develop/firefish-develop.tar.bz2
@@ -23,31 +23,32 @@ if [ ! -f "/initialized_flag.txt" ];then
 		# Configuring a new server
 		cd /firefish
 		cp .config/devenv.yml .config/default.yml
-		URL=${URL//\//\\\/}
-		sed -i "s/http:\/\/localhost:3000/${URL}/g" .config/default.yml
+		URL="$(echo "${URL}" | sed 's#/#\\/#g')"
+		sed -i'.bak' "s/http:\/\/localhost:3000/${URL}/g" .config/default.yml 
+		rm .config/defaut.yml.bak
 
 	fi
 
 	# Configure postgres, add pgroonga search
-	psql -U firefish -p 25432 -h db -c "CREATE EXTENSION pgroonga IF NOT EXISTS;"
+	psql -U firefish -p 25432 -h db -c 'CREATE EXTENSION pgroonga IF NOT EXISTS;'
 
 	# Configure pnpm, and install dev mode dependencies for compilation
 	cd /firefish
 	corepack enable
 	corepack prepare pnpm@latest --activate
-	pnpm install --prod false
+	pnpm install
 
 fi
 
 # Add Environment Initialized Flag
-touch /initialized_flag.txt
+touch /.firefish_env_initialized
 
 # Add Cargo PATH
 PATH="/root/.cargo/bin:${PATH}"
 
 # Start a new server
 cd /firefish
-pnpm install --prod false
-pnpm run build
+pnpm install
+pnpm run build:debug
 pnpm run migrate
 pnpm run start
