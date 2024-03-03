@@ -174,8 +174,8 @@ cacheRemoteFilesDescription: "When this setting is disabled, remote files are lo
 flagAsBot: "Mark this account as automated"
 flagAsBotDescription: "Enable this option if this account is controlled by a program.
   If enabled, it will act as a flag for other developers to prevent endless interaction
-  chains with other automated accounts and adjust Firefish's internal systems to treat this
-  account as an automated account."
+  chains with other automated accounts and adjust Firefish's internal systems to treat
+  this account as an automated account."
 flagAsCat: "Are you a cat? 😺"
 flagAsCatDescription: "You'll get cat ears and speak like a cat!"
 flagSpeakAsCat: "Speak as a cat"
@@ -1157,7 +1157,8 @@ vibrate: "Play vibrations"
 openServerInfo: "Show server information by clicking the server ticker on a post"
 iconSet: "Icon set"
 useCdn: "Get assets from CDN"
-useCdnDescription: "Load some static assets like Twemoji from the JSDelivr CDN instead of this Firefish server."
+useCdnDescription: "Load some static assets like Twemoji from the JSDelivr CDN instead
+  of this Firefish server."
 suggested: "Suggested"
 noLanguage: "No language"
 showPreviewByDefault: "Show preview in posting form by default"
@@ -1168,13 +1169,18 @@ replaceChatButtonWithAccountButton: "Replace chat button with account switch but
 replaceWidgetsButtonWithReloadButton: "Replace widgets button with reload button"
 searchEngine: "Search engine used in search bar MFM"
 postSearch: "Post search on this server"
-showBigPostButton: "Show a huge post button on the posting form" 
+showBigPostButton: "Show a huge post button on the posting form"
 emojiModPerm: "Custom emoji management permission"
-emojiModPermDescription: "Add: Allow this user to add new custom emojis and to set tag/category/license to newly added custom emojis.\nAdd and Edit: \"Add\" Permission + Allow this user to edit the name/category/tag/license of the existing custom emojis.\nAllow All: \"Add and Edit\" Permission + Allow this user to delete existing custom emojis."
+emojiModPermDescription: "Add: Allow this user to add new custom emojis and to set
+  tag/category/license to newly added custom emojis.\nAdd and Edit: \"Add\" Permission
+  + Allow this user to edit the name/category/tag/license of the existing custom emojis.\n
+  Allow All: \"Add and Edit\" Permission + Allow this user to delete existing custom
+  emojis."
 private: "Private"
 privateDescription: "Make visible for you only"
 makePrivate: "Make private"
-makePrivateConfirm: "This operation will send a deletion request to remote servers and change the visibility to private. Proceed?"
+makePrivateConfirm: "This operation will send a deletion request to remote servers
+  and change the visibility to private. Proceed?"
 enablePullToRefresh: "Enable \"Pull down to refresh\""
 pullToRefreshThreshold: "Pull distance for reloading"
 pullDownToReload: "Pull down to reload"
@@ -1182,15 +1188,32 @@ releaseToReload: "Release to reload"
 reloading: "Reloading"
 enableTimelineStreaming: "Update timelines automatically"
 searchWords: "Words to search / ID or URL to lookup"
-searchWordsDescription: "To search for posts, enter the search term. Separate words with a space for an AND search, or 'OR' (without quotes) between words for an OR search.\nFor example, 'morning night' will find posts that contain both 'morning' and 'night', and 'morning OR night' will find posts that contain either 'morning' or 'night' (or both).\nYou can also combine AND/OR conditions like '(morning OR night) sleepy'.\n\nIf you want to go to a specific user page or post page, enter the ID or URL in this field and click the 'Lookup' button. Clicking 'Search' will search for posts that literally contain the ID/URL."
+searchWordsDescription: "To search for posts, enter the search term. Separate words
+  with a space for an AND search, or 'OR' (without quotes) between words for an OR
+  search.\nFor example, 'morning night' will find posts that contain both 'morning'
+  and 'night', and 'morning OR night' will find posts that contain either 'morning'
+  or 'night' (or both).\nYou can also combine AND/OR conditions like '(morning OR
+  night) sleepy'.\n\nIf you want to go to a specific user page or post page, enter
+  the ID or URL in this field and click the 'Lookup' button. Clicking 'Search' will
+  search for posts that literally contain the ID/URL."
 searchUsers: "Posted by (optional)"
-searchUsersDescription: "To search for posts by a specific user/server, enter the ID (@user@example.com, or @user for a local user) or domain name (example.com).\n\nIf you enter 'me' (without quotes), all of your posts (including unlisted, followers-only, direct, and secret posts) will be searched.\n\nIf you enter 'local' (without quotes), the results will be filtered to include only posts from this server."
+searchUsersDescription: "To search for posts by a specific user/server, enter the
+  ID (@user@example.com, or @user for a local user) or domain name (example.com).\n
+  \nIf you enter 'me' (without quotes), all of your posts (including unlisted, followers-only,
+  direct, and secret posts) will be searched.\n\nIf you enter 'local' (without quotes),
+  the results will be filtered to include only posts from this server."
 searchRange: "Posted within (optional)"
-searchRangeDescription: "If you want to filter the time period, enter it in this format: 20220615-20231031\n\nIf you leave out the year (like 0105-0106 or 20231105-0110), it's interpreted as the current year.\n\nYou can also omit either the start or end date. For example, -0102 will filter the search results to show only posts made before 2 January this year, and 20231026- will filter the results to show only posts made after 26 October 2023."
+searchRangeDescription: "If you want to filter the time period, enter it in this format:
+  20220615-20231031\n\nIf you leave out the year (like 0105-0106 or 20231105-0110),
+  it's interpreted as the current year.\n\nYou can also omit either the start or end
+  date. For example, -0102 will filter the search results to show only posts made
+  before 2 January this year, and 20231026- will filter the results to show only posts
+  made after 26 October 2023."
 searchPostsWithFiles: "Only posts with files"
 searchCwAndAlt: "Include content warnings and file descriptions"
 publishTimelines: "Publish timelines for visitors"
-publishTimelinesDescription: "If enabled, the Local and Global timeline will be shown on {url} even when signed out."
+publishTimelinesDescription: "If enabled, the Local and Global timeline will be shown
+  on {url} even when signed out."
 
 _emojiModPerm:
   unauthorized: "None"
@@ -2191,4 +2214,5 @@ _iconSets:
   fill: "Filled"
   duotone: "Duotone"
 moreUrls: "Pinned pages"
-moreUrlsDescription: "Enter the pages you want to pin to the help menu in the lower left corner using this notation:\n\"Display name\": https://example.com/"
+moreUrlsDescription: "Enter the pages you want to pin to the help menu in the lower
+  left corner using this notation:\n\"Display name\": https://example.com/"

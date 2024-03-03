@@ -2045,3 +2045,5 @@ private: "秘密"
 privateDescription: "あなた以外には非公開"
 makePrivate: "秘密にする"
 makePrivateConfirm: "リモートサーバーに削除リクエストを送信し、投稿の公開範囲を「秘密」にして他の人から見られないようにします。実行しますか？"
+sentFollowRequests: 未承認のフォローリクエスト
+noSentFollowRequests: 未承認のフォローリクエストはありません

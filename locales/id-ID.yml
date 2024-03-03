@@ -1138,6 +1138,7 @@ _wordMute:
     dari timeline.
   muteLangs: Bahasa yang dibisukan
   muteLangsDescription: Pisahkan dengan spasi atau jeda baris untuk kondisi ATAU.
+  mutePatterns: Pola yang dibisukan
 _instanceMute:
   instanceMuteDescription: "Pengaturan ini akan membisukan postingan/pembagian apa
     saja dari server yang terdaftar, termasuk pengguna yang membalas pengguna lain
@@ -1881,8 +1882,8 @@ listsDesc: Daftar mengizinkanmu membuat linimasa berisi pengguna spesifik. Itu d
   diakses dari halaman linimasa.
 enableEmojiReactions: Aktifkan reaksi emoji
 showEmojisInReactionNotifications: Tampilkan emoji dalam notifikasi reaksi
-renoteMute: Bisukan postingan ulang
-renoteUnmute: Bunyikan postingan ulang
+renoteMute: Bisukan postingan ulang dalam lini masa
+renoteUnmute: Bunyikan postingan ulang dalam lini masa
 antennasDesc: "Antena menampilkan postingan baru yang cocok dengan kriteriamu!\n Itu
   dapat diakses dari halaman linimasa."
 antennaInstancesDescription: Daftarkan satu host server per baris
@@ -2213,3 +2214,43 @@ showPreviewByDefault: Tampilkan pratinjau dalam formulir kiriman secara bawaan
 useCdn: Dapatkan aset dari CDN
 useCdnDescription: Muat aset statis seperti Twemoji dari CDN JSDelivr daripada server
   Firefish ini.
+sentFollowRequests: Permintaan mengikuti terkirim
+replyUnmute: Suarakan balasan dalam lini masa
+noSentFollowRequests: Kamu belum punya permintaan mengikuti
+enablePullToRefresh: Aktifkan "Tarik ke bawah untuk memuat ulang"
+pullDownToReload: Tarik ke bawah untuk memuat ulang
+enableTimelineStreaming: Perbarui lini masa secara otomatis
+searchWords: Kata-kata untuk dicari / ID atau URL untuk dicari
+searchUsers: Dikirim oleh (opsional)
+searchCwAndAlt: Termasuk peringatan konten dan deskripsi berkas
+searchPostsWithFiles: Hanya kiriman dengan berkas
+publishTimelines: Terbitkan lini masa untuk pengunjung
+publishTimelinesDescription: Jika diaktifkan, lini masa Lokal dan Global akan ditampilkan
+  di {url} bahkan ketika keluar dari akun.
+searchWordsDescription: "Untuk mencari kiriman, masukkan istilah pencarian. Pisahkan
+  kata dengan spasi untuk pencarian AND (dan), atau 'OR' ('atau', tanpa tanda kutip)
+  di antara kata-kata untuk pencarian OR.\nMisalnya, 'pagi malam' akan menemukan postingan
+  yang mengandung 'pagi' dan 'malam', dan 'pagi OR malam' akan menemukan postingan
+  yang mengandung 'pagi' atau 'malam' (atau keduanya).\nAnda juga dapat menggabungkan
+  kondisi AND/OR seperti '(pagi OR malam) mengantuk'.\n\nJika kamu ingin membuka halaman
+  pengguna atau halaman postingan tertentu, masukkan ID atau URL pada kolom ini dan
+  klik tombol 'Cari'. Mengklik 'Cari' akan mencari postingan yang secara harfiah mengandung
+  ID/URL."
+pullToRefreshThreshold: Jarak penarikan untuk memuat ulang
+releaseToReload: Lepaskan untuk memuat ulang
+reloading: Memuat ulang
+replyMute: Bisukan balasan dalam lini masa
+searchRange: Dikirim dalam (opsional)
+searchUsersDescription: "Untuk mencari kiriman oleh pengguna/server tertentu, masukkan
+  ID (@pengguna@contoh.id, atau @pengguna untuk pengguna lokal) atau nama domain (contoh.id).\n
+  \nJika kamu memasukkan 'me' ('aku', tanpa tanda kutip), semua kirimanmu (termasuk
+  kiriman yang tidak terdaftar, khusus pengikut, langsung, dan rahasia) akan dicari.\n
+  \nJika Anda memasukkan 'local' (tanpa tanda kutip), hasilnya akan disaring untuk
+  menyertakan hanya kiriman dari server ini."
+searchRangeDescription: "Jika kamu ingin memfilter periode waktu, masukkan dalam format
+  ini: 20220615-20231031\n\nJika kamu menghilangkan tahun (seperti 0105-0106 atau
+  20231105-0110), maka akan ditafsirkan sebagai tahun saat ini.\n\nKamu juga bisa
+  menghilangkan tanggal awal atau akhir. Sebagai contoh, -0102 akan memfilter hasil
+  pencarian untuk menampilkan hanya kiriman yang dibuat sebelum tanggal 2 Januari
+  tahun ini, dan 20231026- akan memfilter hasil pencarian untuk menampilkan hanya
+  kiriman yang dibuat setelah tanggal 26 Oktober 2023."
