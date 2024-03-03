@@ -9,14 +9,14 @@ services:
       - db
       - redis
     ports:
-      - "3000:3000"
+      - "3030:3030"
     networks:
       - firefishnet
     environment:
       # Currently bug in the development env and it cannot run.
       NODE_ENV: production
       PGPASSWORD: password
-      URL: http://localhost:3000
+      URL: http://localhost:3030
     volumes:
       - ./firefish:/firefish:rw
       - ./docker-entrypoint.sh:/docker-entrypoint.sh:rw
