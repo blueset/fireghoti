@@ -3,8 +3,6 @@
 set -xeu
 node --version
 
-FIREFISH_URL='http://localhost:3030'
-
 # Check Environment Initialized Flag
 if [ ! -f '/.firefish_env_initialized' ]; then
 
@@ -26,7 +24,7 @@ if [ ! -f '/.firefish_env_initialized' ]; then
 		cd /firefish
 		cp .config/devenv.yml .config/default.yml
 
-		URL="$(echo "${FIREFISH_URL}" | sed 's#/#\\/#g')"
+		URL="$(echo "${URL}" | sed 's#/#\\/#g')"
 		sed -i'.bak' "s/http:\/\/localhost:3030/${URL}/g" .config/default.yml 
 		rm .config/defaut.yml.bak
 
