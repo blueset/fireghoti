@@ -6,8 +6,9 @@
 	"scripts": {
 		"start": "pnpm node ./built/index.js",
 		"start:test": "NODE_ENV=test pnpm node ./built/index.js",
-		"migrate": "typeorm migration:run --dataSource ./built/ormconfig.js",
-		"revertmigration": "typeorm migration:revert --dataSource ./built/ormconfig.js",
+		"migration:run": "typeorm migration:run --dataSource ./built/ormconfig.js",
+		"migration:revert": "typeorm migration:revert --dataSource ./built/ormconfig.js",
+		"migration:new": "pnpm node ./scripts/create-migration.mjs",
 		"check:connect": "node ./check_connect.js",
 		"build": "pnpm swc src --out-dir built --source-maps false --copy-files --strip-leading-paths",
 		"build:debug": "pnpm swc src --out-dir built --source-maps true --copy-files --strip-leading-paths",
