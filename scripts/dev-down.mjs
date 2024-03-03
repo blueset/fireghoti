@@ -5,7 +5,11 @@ import { execa } from "execa";
 (async () => {
 	const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-	execa("podman-compose", ["down"], {
+	execa("podman-compose", [
+		"--file",
+		"docker-compose-dbonly.yml",
+		"down",
+	], {
 		cwd: join(__dirname, "/../dev"),
 		stdio: "inherit",
 	});
