@@ -25,19 +25,18 @@ if [ ! -f '/.firefish_env_initialized' ]; then
 		cp .config/devenv.yml .config/default.yml
 
 		URL="$(echo "${URL}" | sed 's#/#\\/#g')"
-		sed -i'.bak' "s/http:\/\/localhost:3030/${URL}/g" .config/default.yml 
-		rm .config/defaut.yml.bak
+		sed -i'.bak' "s/http:\/\/localhost:3030/${URL}/" .config/default.yml 
 
 	fi
 
 	# Configure postgres, add pgroonga search
-	psql -U firefish -p 25432 -h db -c 'CREATE EXTENSION pgroonga IF NOT EXISTS;'
+	psql --user=firefish --host=firefish_db --dbname=firefish_db --command='CREATE EXTENSION IF NOT EXISTS pgroonga;'
 
 	# Configure pnpm, and install dev mode dependencies for compilation
 	cd /firefish
 	corepack enable
 	corepack prepare pnpm@latest --activate
-	pnpm install
+	pnpm install --prod false
 
 fi
 
@@ -49,7 +48,7 @@ PATH="/root/.cargo/bin:${PATH}"
 
 # Start a new server
 cd /firefish
-pnpm install
+pnpm install --prod false
 pnpm run build:debug
 pnpm run migrate
 pnpm run start
