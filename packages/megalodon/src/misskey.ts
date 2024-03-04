@@ -1386,6 +1386,11 @@ export default class Misskey implements MegalodonInterface {
 					replyId: options.in_reply_to_id,
 				});
 			}
+			if (options.language) {
+				params = Object.assign(params, {
+					lang: options.language,
+				});
+			}
 			if (options.sensitive) {
 				params = Object.assign(params, {
 					cw: "",
@@ -1643,11 +1648,16 @@ export default class Misskey implements MegalodonInterface {
 
 	public async editStatus(
 		_id: string,
-		_options: {
+		options: {
 			status?: string;
 			spoiler_text?: string;
 			sensitive?: boolean;
 			media_ids?: Array<string>;
+			language?: string;
+			media_attributes?: Array<{
+				id: string;
+				description?: string;
+			}>;
 			poll?: {
 				options?: Array<string>;
 				expires_in?: number;
@@ -1656,10 +1666,60 @@ export default class Misskey implements MegalodonInterface {
 			};
 		},
 	): Promise<Response<Entity.Status>> {
-		return new Promise((_, reject) => {
-			const err = new NoImplementedError("misskey does not support");
-			reject(err);
-		});
+		let params = {
+			editId: _id,
+			text: options.status,
+		};
+		if (options) {
+			if (options.media_ids) {
+				params = Object.assign(params, {
+					fileIds: options.media_ids,
+				});
+			}
+			if (options.poll) {
+				let pollParam = {
+					choices: options.poll.options,
+					expiresAt: null,
+					expiredAfter: options.poll.expires_in ? options.poll.expires_in * 1000 : null,
+				};
+				if (options.poll.multiple !== undefined) {
+					pollParam = Object.assign(pollParam, {
+						multiple: options.poll.multiple,
+					});
+				}
+				params = Object.assign(params, {
+					poll: pollParam,
+				});
+			}
+			if (options.language) {
+				params = Object.assign(params, {
+					lang: options.language,
+				});
+			}
+			if (options.sensitive) {
+				params = Object.assign(params, {
+					cw: "",
+				});
+			}
+			if (options.spoiler_text) {
+				params = Object.assign(params, {
+					cw: options.spoiler_text,
+				});
+			}
+			if (options.media_attributes) {
+				await Promise.all(options.media_attributes.map((m) => this.updateMedia(m.id, m)));
+			}
+		}
+		return this.client
+			.post<MisskeyAPI.Entity.CreatedNote>("/api/notes/edit", params)
+			.then(async (res) => ({
+				...res,
+				data: await this.noteWithDetails(
+					res.data.createdNote,
+					this.baseUrlToHost(this.baseUrl),
+					this.getFreshAccountCache(),
+				),
+			}));
 	}
 
 	/**

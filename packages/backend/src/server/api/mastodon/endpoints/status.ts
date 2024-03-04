@@ -27,10 +27,6 @@ export function apiStatusMastodon(router: Router): void {
 		const client = getClient(BASE_URL, accessTokens);
 		try {
 			let body: any = ctx.request.body;
-			if (body.in_reply_to_id)
-				body.in_reply_to_id = convertId(body.in_reply_to_id, IdType.FirefishId);
-			if (body.quote_id)
-				body.quote_id = convertId(body.quote_id, IdType.FirefishId);
 			if (
 				(!body.poll && body["poll[options][]"]) ||
 				(!body.media_ids && body["media_ids[]"])
@@ -113,6 +109,76 @@ export function apiStatusMastodon(router: Router): void {
 			ctx.body = e.response.data;
 		}
 	});
+	router.put<{ Params: { id: string } }>("/v1/statuses/:id", async (ctx) => {
+		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
+		const accessTokens = ctx.headers.authorization;
+		const client = getClient(BASE_URL, accessTokens);
+		try {
+			let body: any = ctx.request.body;
+			if (body.in_reply_to_id)
+				body.in_reply_to_id = convertId(body.in_reply_to_id, IdType.FirefishId);
+			if (body.quote_id)
+				body.quote_id = convertId(body.quote_id, IdType.FirefishId);
+			if (
+				(!body.poll && body["poll[options][]"]) ||
+				(!body.media_ids && body["media_ids[]"]) ||
+				(!body.media_attributes && body["media_attributes[][id]"])
+			) {
+				body = normalizeQuery(body);
+			}
+			const text = body.status;
+			const removed = text.replace(/@\S+/g, "").replace(/\s|​/g, "");
+			const isDefaultEmoji = emojiRegexAtStartToEnd.test(removed);
+			const isCustomEmoji = /^:[a-zA-Z0-9@_]+:$/.test(removed);
+			if ((body.in_reply_to_id && isDefaultEmoji) || isCustomEmoji) {
+				const a = await client.createEmojiReaction(
+					body.in_reply_to_id,
+					removed,
+				);
+				ctx.body = a.data;
+			}
+			if (!body.media_ids || !body.media_ids.length) body.media_ids = undefined;
+			if (body.media_ids) {
+				body.media_ids = (body.media_ids as string[]).map((p) =>
+					convertId(p, IdType.FirefishId),
+				);
+			}
+			if (!body.media_attributes || !body.media_ids.length) body.media_ids = undefined;
+			if (body.media_attributes) {
+				body.media_attributes = (body.media_attributes as {id: string}[]).map((p) =>
+					({...p, id: convertId(p.id, IdType.FirefishId)})
+				);
+			}
+			const { sensitive } = body;
+			body.sensitive =
+				typeof sensitive === "string" ? sensitive === "true" : sensitive;
+
+			if (body.poll) {
+				if (
+					body.poll.expires_in != null &&
+					typeof body.poll.expires_in === "string"
+				)
+					body.poll.expires_in = parseInt(body.poll.expires_in);
+				if (
+					body.poll.multiple != null &&
+					typeof body.poll.multiple === "string"
+				)
+					body.poll.multiple = body.poll.multiple == "true";
+				if (
+					body.poll.hide_totals != null &&
+					typeof body.poll.hide_totals === "string"
+				)
+					body.poll.hide_totals = body.poll.hide_totals == "true";
+			}
+			body.status = text;
+			const data = await client.editStatus(convertId(ctx.params.id, IdType.FirefishId), body);
+			ctx.body = convertStatus(data.data);
+		} catch (e: any) {
+			apiLogger.error(inspect(e));
+			ctx.status = 401;
+			ctx.body = e.response.data;
+		}
+	});
 	router.delete<{ Params: { id: string } }>("/v1/statuses/:id", async (ctx) => {
 		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
 		const accessTokens = ctx.headers.authorization;
@@ -161,6 +227,25 @@ export function apiStatusMastodon(router: Router): void {
 			}
 		},
 	);
+	router.get<{ Params: { id: string } }>("/v1/statuses/:id/source", async (ctx) => {
+		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
+		const accessTokens = ctx.headers.authorization;
+		const client = getClient(BASE_URL, accessTokens);
+		try {
+			const data = await client.getStatus(
+				convertId(ctx.params.id, IdType.FirefishId),
+			);
+			ctx.body = {
+				id: ctx.params.id,
+				text: data.data.plain_content,
+				spoiler_text: data.data.spoiler_text,
+			};
+		} catch (e: any) {
+			apiLogger.error(inspect(e));
+			ctx.status = ctx.status == 404 ? 404 : 401;
+			ctx.body = e.response.data;
+		}
+	});
 	router.get<{ Params: { id: string } }>(
 		"/v1/statuses/:id/history",
 		async (ctx) => {

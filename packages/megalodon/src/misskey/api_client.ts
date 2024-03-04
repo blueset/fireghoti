@@ -350,7 +350,7 @@ namespace MisskeyAPI {
 				card: null,
 				poll: n.poll ? this.poll(n.poll, n.id) : null,
 				application: null,
-				language: null,
+				language: n.lang,
 				pinned: null,
 				// Use emojis list to provide URLs for emoji reactions.
 				reactions: this.mapReactions(n.emojis, n.reactions, n.myReaction),

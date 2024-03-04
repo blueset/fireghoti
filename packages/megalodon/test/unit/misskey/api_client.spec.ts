@@ -198,7 +198,8 @@ describe('api_client', () => {
           fileIds: [],
           files: [],
           replyId: null,
-          renoteId: null
+          renoteId: null,
+          lang: null,
         }
         const megalodonStatus = converter.note(note, user.host || 'misskey.io')
         expect(megalodonStatus.plain_content).toEqual(plainContent)
@@ -222,7 +223,8 @@ describe('api_client', () => {
           fileIds: [],
           files: [],
           replyId: null,
-          renoteId: null
+          renoteId: null,
+          lang: null,
         }
         const megalodonStatus = converter.note(note, user.host || 'misskey.io')
         expect(megalodonStatus.plain_content).toEqual(plainContent)

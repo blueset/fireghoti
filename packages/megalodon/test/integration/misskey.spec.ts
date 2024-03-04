@@ -31,7 +31,8 @@ const note: MisskeyEntity.Note = {
   fileIds: [],
   files: [],
   replyId: null,
-  renoteId: null
+  renoteId: null,
+  lang: null,
 }
 
 const follow: MisskeyEntity.Notification = {

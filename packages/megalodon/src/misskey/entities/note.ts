@@ -28,5 +28,6 @@ namespace MisskeyEntity {
 		poll?: Poll;
 		mentions?: Array<string>;
 		myReaction?: string;
+		lang: string | null;
 	};
 }
