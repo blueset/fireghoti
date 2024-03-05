@@ -6,7 +6,7 @@ For scenarios with special needs, you may want to manually create a development 
 
 This article is written based on the Debian Bookworm. Other systems can refer to this article for deployment. However, it is recommended that new users use the same system or Docker environment as ours to avoid wasting time on environment configuration issues.
 
-The versions of Node.js, Rust, PostgreSQL, DragonflyDB that come with Debian Bookworm are low or not have, the latest official versions of these components are used to install them. Other components are installed using the apt package manager that comes with the system.
+The versions of Node.js, Rust, PostgreSQL that come with Debian Bookworm are low, the latest official versions of these components are used to install them. Other components are installed using the apt package manager that comes with the system.
 
 ## Allow `sudo` command
 

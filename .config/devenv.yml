@@ -15,6 +15,10 @@ redis:
 
 id: 'aid'
 
+#allowedPrivateNetworks: [
+#  '10.69.1.0/24'
+#]
+
 logLevel: [
   'error',
   'success',
