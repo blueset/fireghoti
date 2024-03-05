@@ -146,6 +146,7 @@ nano .config/default.yml
 sudo -i
 # cd /path/to/your/firefish
 cd /home/user/firefish
+npm i -g pm2
 corepack enable
 exit
 ```
@@ -154,8 +155,12 @@ exit
 
 ```sh
 corepack prepare pnpm@latest --activate
+pm2 install pm2-logrotate
 pnpm install --frozen-lockfile --prod false
 ```
+
+> **Note**
+> [`pm2-logrotate`](https://github.com/keymetrics/pm2-logrotate/blob/master/README.md) ensures that log files don't infinitely gather size, as Firefish produces a lot of logs.
 
 ## Start
 
@@ -182,3 +187,11 @@ DONE *  [core boot]     Now listening on port 3030 on https://your_firefish_url.
 ```
 
 3. A fresh Firefish environment is created on the URL you have set!
+
+4. If you want Firefish to run in the background, start it with this command.
+
+```sh
+pm2 start "NODE_ENV=production pnpm run start" --name Firefish
+# When you want display log
+pm2 logs Firefish
+```
