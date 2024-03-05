@@ -2,6 +2,7 @@ import { performance } from "perf_hooks";
 import type Koa from "koa";
 import type { CacheableLocalUser } from "@/models/entities/user.js";
 import type { AccessToken } from "@/models/entities/access-token.js";
+import { v4 as uuid } from "uuid";
 import { getIpHash } from "@/misc/get-ip-hash.js";
 import { limiter } from "./limiter.js";
 import type { IEndpointMeta } from "./endpoints.js";
@@ -177,20 +178,23 @@ export default async (
 			if (e instanceof ApiError) {
 				throw e;
 			} else {
-				apiLogger.error(`Internal error occurred in ${ep.name}: ${e.message}`, {
-					ep: ep.name,
-					ps: data,
-					e: {
-						message: e.message,
-						code: e.name,
-						stack: e.stack,
+				const errorId = uuid();
+				apiLogger.error(
+					`Internal error occurred in ${ep.name}: ${e.message} (Event ID: ${errorId})`,
+					{
+						ep: ep.name,
+						ps: data,
+						e: {
+							message: e.message,
+							code: e.name,
+							stack: e.stack,
+						},
 					},
-				});
+				);
 				throw new ApiError(null, {
 					e: {
-						message: e.message,
+						message: `Internal error (Event ID: ${errorId})`,
 						code: e.name,
-						stack: e.stack,
 					},
 				});
 			}

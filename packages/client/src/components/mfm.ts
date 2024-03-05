@@ -562,6 +562,6 @@ export default defineComponent({
 			);
 
 		// Parse ast to DOM
-		return h("span", {lang: this.lang}, genEl(ast));
+		return h("span", { lang: this.lang }, genEl(ast));
 	},
 });
