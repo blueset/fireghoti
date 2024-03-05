@@ -163,7 +163,7 @@ example.tld {
 }
 ```
 
-3. Running `sudo ystemctl restart caddy` to apply.
+3. Running `sudo systemctl restart caddy` to apply.
 
 ## Download and configuration Firefish
 
