@@ -179,15 +179,18 @@ export default async (
 				throw e;
 			} else {
 				const errorId = uuid();
-				apiLogger.error(`Internal error occurred in ${ep.name}: ${e.message} (Event ID: ${errorId})`, {
-					ep: ep.name,
-					ps: data,
-					e: {
-						message: e.message,
-						code: e.name,
-						stack: e.stack,
+				apiLogger.error(
+					`Internal error occurred in ${ep.name}: ${e.message} (Event ID: ${errorId})`,
+					{
+						ep: ep.name,
+						ps: data,
+						e: {
+							message: e.message,
+							code: e.name,
+							stack: e.stack,
+						},
 					},
-				});
+				);
 				throw new ApiError(null, {
 					e: {
 						message: `Internal error (Event ID: ${errorId})`,
