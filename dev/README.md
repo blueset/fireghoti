@@ -16,12 +16,12 @@ We support multiple methods to build a development environment, and you can choo
 
 ### Containerized Environment
 
-You can find documentation at [Here](docker/README.md).
+You can find documentation at [here](docker/README.md).
 
 ### Containerized Database Environment
 
-You can find documentation at [Here](docker-dbonly/README.md).
+You can find documentation at [here](docker-dbonly/README.md).
 
 ### Manually Make Development Environment
 
-You can find documentation at [Here](manually/README.md).
+You can find documentation at [here](manually/README.md).

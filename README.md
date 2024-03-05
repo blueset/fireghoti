@@ -58,7 +58,7 @@ If you have access to a server that supports one of the sources below, I recomme
 
 For install production environment details, read [this document](https://firefish.dev/firefish/firefish/-/blob/develop/docs/install.md).
 
-## Software Dependencies
+## Dependencies
 
 - At least [NodeJS](https://nodejs.org/en/) v18.16.0 (v20/v21 recommended)
 - At least [PostgreSQL](https://www.postgresql.org/) v12 (v16 recommended) with [PGroonga](https://pgroonga.github.io/) extension
