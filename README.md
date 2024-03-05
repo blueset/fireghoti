@@ -20,7 +20,7 @@ Firefish is based off of Misskey, a powerful microblogging server on ActivityPub
 ### Want to get involved? Great!
 
 - If you have the means to, [donations](https://opencollective.com/Firefish) are a great way to keep us going.
-- If you know how to program in TypeScript, Vue, or Rust, read the [contributing](./CONTRIBUTING.md) document.
+- If you know how to program in TypeScript, Vue, or Rust, read the [contributing](./CONTRIBUTING.md) document and our [Developers' Corner](./dev/README.md) .
 - If you know a non-English language, translating Firefish on [Weblate](https://hosted.weblate.org/engage/firefish/) help bring Firefish to more people. No technical experience needed!
 
 ### Links
