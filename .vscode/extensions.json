@@ -2,7 +2,6 @@
   "recommendations": [
     "editorconfig.editorconfig",
     "vue.volar",
-    "vue.vscode-typescript-vue-plugin",
     "arcanis.vscode-zipfs",
     "orta.vscode-twoslash-queries",
     "antfu.iconify",
