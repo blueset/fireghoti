@@ -44,8 +44,8 @@ db:
   db: firefish
 
   # Auth
-  user: example-firefish-user
-  pass: example-firefish-pass
+  user: firefish
+  pass: password
 
   # Whether disable Caching queries
   #disableCache: true
@@ -77,9 +77,9 @@ redis:
 # A Redis-compatible server (DragonflyDB, Keydb, Redis) for caching
 # If left blank, it will use the Redis server from above
 
-#cacheServer:
-  #host: localhost
-  #port: 6379
+cacheServer:
+  host: localhost
+  port: 6380
   #family: 0  # 0=Both, 4=IPv4, 6=IPv6
   #pass: example-pass
   #prefix: example-prefix
@@ -180,9 +180,6 @@ logLevel: [
 
 # Proxy remote files (default: false)
 #proxyRemoteFiles: true
-
-# Use authorized fetch for outgoing requests
-signToActivityPubGet: true
 
 #allowedPrivateNetworks: [
 #  '127.0.0.1/32'

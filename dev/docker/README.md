@@ -19,7 +19,7 @@ The Firefish repo comes with a new containerized environment to help make develo
 1. Run `docker compose up`. This will build the environment, dependencies and prepare the needed config files.
     - If you use Podman, you should run `podman-compose up` instead.
 1. Wait until the following message shows up.
-    ```
+    ```log
     DONE *  [core boot]     All workers started
     DONE *  [core boot]     Now listening on port 3030 on https://your_firefish_url.example.com
     ```
