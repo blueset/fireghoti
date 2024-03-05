@@ -37,6 +37,8 @@ export function apiStatusMastodon(router: Router): void {
 			const removed = text.replace(/@\S+/g, "").replace(/\s|​/g, "");
 			const isDefaultEmoji = emojiRegexAtStartToEnd.test(removed);
 			const isCustomEmoji = /^:[a-zA-Z0-9@_]+:$/.test(removed);
+			if (body.in_reply_to_id)
+				body.in_reply_to_id = convertId(body.in_reply_to_id, IdType.FirefishId);
 			if ((body.in_reply_to_id && isDefaultEmoji) || isCustomEmoji) {
 				const a = await client.createEmojiReaction(
 					body.in_reply_to_id,
