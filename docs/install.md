@@ -103,7 +103,7 @@ sudo -u postgres psql
 ```sql
 CREATE DATABASE firefish WITH ENCODING = 'UTF8';
 \connect firefish
-CREATE EXTENSION IF NOT EXISTS pgroonga;
+CREATE EXTENSION pgroonga;
 CREATE USER firefish WITH PASSWORD 'password';
 ALTER USER firefish WITH SUPERUSER;
 GRANT ALL ON DATABASE firefish TO firefish;
