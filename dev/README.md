@@ -1,5 +1,9 @@
 # Firefish Developers' Corner
 
+## Contribution guide and code of conduct
+
+You can also find contribution guide [here](../CONTRIBUTING.md) and code of conduct guide [here](../CODE_OF_CONDUCT.md).
+
 ## Changelog
 
 You can find more about software change [here](../docs/changelog.md), and API change [here](../docs/api-change.md).

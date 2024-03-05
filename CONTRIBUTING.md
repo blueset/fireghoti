@@ -69,6 +69,12 @@ Be willing to comment on the good points and not just the things you want fixed 
 	- Are there any omissions or gaps?
 	- Does it check for anomalies?
 
+## More info
+
+**For more technical details, please visit the Firefish Developers' Corner at [here](dev/README.md) .**
+
+# THE FOLLOWING IS OUTDATED:
+
 ## Preparing the development environment
 
 1. Install the following software
@@ -111,8 +117,6 @@ The `/deploy` command by issue comment can be used to deploy the contents of a M
 /deploy sha=<commit hash>
 ```
 An actual domain will be assigned so you can test the federation.
-
-# THE FOLLOWING IS OUTDATED:
 
 ## Merge
 
