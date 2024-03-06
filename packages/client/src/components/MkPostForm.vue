@@ -461,12 +461,12 @@ const placeholder = computed((): string => {
 
 const submitText = computed((): string => {
 	return props.editId
-		? i18n.ts.edit
+		? i18n.ts.toEdit
 		: props.renote
-			? i18n.ts.quote
+			? i18n.ts.toQuote
 			: props.reply
-				? i18n.ts.reply
-				: i18n.ts.note;
+				? i18n.ts.toReply
+				: i18n.ts.toPost;
 });
 
 const textLength = computed((): number => {

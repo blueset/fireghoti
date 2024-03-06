@@ -159,7 +159,7 @@ definePageMetadata(
 	computed(() =>
 		props.postId
 			? {
-					title: i18n.ts.edit,
+					title: i18n.ts.toEdit,
 					icon: `${icon("ph-pencil")}`,
 				}
 			: {

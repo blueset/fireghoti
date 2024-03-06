@@ -120,7 +120,7 @@
 					@click="os.post"
 				>
 					<i :class="icon('ph-pencil icon ph-fw')"></i
-					><span class="text">{{ i18n.ts.note }}</span>
+					><span class="text">{{ i18n.ts.toPost }}</span>
 				</button>
 				<button
 					v-tooltip.noDelay.right="i18n.ts.help"
