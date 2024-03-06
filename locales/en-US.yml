@@ -674,6 +674,7 @@ pluginTokenRequestedDescription: "This plugin will be able to use the permission
   set here."
 notificationType: "Notification type"
 edit: "Edit"
+toEdit: "Edit"
 emailServer: "Email server"
 enableEmail: "Enable email distribution"
 emailConfigInfo: "Used to confirm your email during sign-up or if you forget your
