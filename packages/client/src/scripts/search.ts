@@ -48,10 +48,6 @@ export async function search() {
 			mainRouter.push(`/${result.query}`);
 			return;
 		}
-		if (result.query.includes("@")) {
-			mainRouter.push(`/@${result.query}`);
-			return;
-		}
 		if (result.query.startsWith("https://")) {
 			const promise = api("ap/show", {
 				uri: result.query,
@@ -66,6 +62,10 @@ export async function search() {
 				mainRouter.push(`/notes/${res.object.id}`);
 			}
 
+			return;
+		}
+		if (result.query.match(/^[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)+$/i)) {
+			mainRouter.push(`/@${result.query}`);
 			return;
 		}
 
