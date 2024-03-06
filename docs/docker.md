@@ -5,8 +5,8 @@
 - Latest [Docker](https://docs.docker.com/get-docker/) installation
     - Alternatively, you can use [Podman](https://podman.io/docs/installation) and [Podman Compose](https://github.com/containers/podman-compose).
 - The following ports are not in use
-		- 80
-		- 443
+    - 80
+    - 443
     - 3000
     - 5432
     - 6379
