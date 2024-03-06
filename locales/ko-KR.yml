@@ -1824,7 +1824,6 @@ pushNotificationNotSupported: 브라우저 및 서버가 푸시 알림을 지원
 enableRecommendedTimeline: 추천 타임라인을 활성화
 pushNotificationAlreadySubscribed: 푸시 알림이 활성화되었습니다
 caption: 자동으로 설명 붙이기
-findOtherInstance: 다른 서버 둘러보기
 enableIdenticonGeneration: 유저 별 Identicon의 생성을 활성화
 secureModeInfo: 인증 정보가 없는 리모트 서버로부터의 요청에 응답하지 않습니다.
 allowedInstances: 허가된 서버

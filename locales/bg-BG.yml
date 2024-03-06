@@ -778,7 +778,6 @@ instanceDescription: Описание на сървъра
 accept: Приемане
 enableLocalTimeline: Включване на местния инфопоток
 enableGlobalTimeline: Включване на глобалния инфопоток
-findOtherInstance: Намиране на друг сървър
 removeMember: Премахване на член
 isAdmin: Администратор
 isModerator: Модератор

@@ -1104,10 +1104,8 @@ customKaTeXMacroDescription: "Set up macros to write mathematical expressions ea
   advanced syntax, such as conditional branching, cannot be used here."
 enableCustomKaTeXMacro: "Enable custom KaTeX macros"
 noteId: "Post ID"
-signupsDisabled: "Signups on this server are currently disabled, but you can always
-  sign up at another server! If you have an invitation code for this server, please
+signupsDisabled: "Signups on this server are currently disabled. If you have an invitation code for this server, please
   enter it below."
-findOtherInstance: "Find another server"
 apps: "Apps"
 sendModMail: "Send Moderation Notice"
 preventAiLearning: "Prevent AI bot scraping"

@@ -1912,10 +1912,9 @@ _skinTones:
   mediumDark: 中等偏深
 isModerator: 监察员
 isAdmin: 管理员
-findOtherInstance: 寻找其它服务器
 moveFromDescription: 这将为您的旧账号设置一个别名，以便您可以从该旧账号迁移到当前账号。在从旧账号迁移之前执行此操作。请输入格式如 @person@server.com
   的账号标签
-signupsDisabled: 该服务器目前关闭注册，但您随时可以在另一台服务器上注册！如果您有该服务器的邀请码，请在下面输入。
+signupsDisabled: 该服务器目前关闭注册。如果您有该服务器的邀请码，请在下面输入。
 silencedWarning: 显示这个页面是因为这些用户来自您的管理员设置的禁言服务器，所以他们有可能是垃圾信息。
 isBot: 这个账号是一个自动化账号
 moveAccountDescription: 这个过程是不可逆的。在迁移之前，请确保您已在新账号上为当前账号设置了别名。请输入格式如 @person@server.com

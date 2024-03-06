@@ -1839,7 +1839,6 @@ customKaTeXMacro: Macro KaTeX personalizzate
 signupsDisabled: Le iscrizioni su questo server al momento non sono possibili, ma
   puoi sempre iscriverti su un altro server! Se invece hai un codice di invito per
   questo server, inseriscilo qua sotto.
-findOtherInstance: Scegli un altro server
 apps: App
 expandOnNoteClick: Apri i post con un click
 userSaysSomethingReasonReply: '{name} ha risposto a un post che contiene {reason}'

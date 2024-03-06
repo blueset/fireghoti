@@ -1870,7 +1870,6 @@ _experiments:
   enablePostImports: 啟用匯入貼文的功能
   postImportsCaption: 
     允許使用者從舊有的Firefish・Misskey・Mastodon・Akkoma・Pleroma帳號匯入貼文。在伺服器佇列堵塞時匯入貼文可能會導致載入速度變慢。
-findOtherInstance: 找找另一個伺服器
 noGraze: 瀏覽器擴充元件 "Graze for Mastodon" 會與Firefish發生衝突，請停用該擴充元件。
 userSaysSomethingReasonRenote: '{name} 轉發了包含 {reason} 的貼文'
 pushNotificationNotSupported: 你的瀏覽器或伺服器不支援推送通知
@@ -1928,7 +1927,7 @@ isModerator: 板主
 isAdmin: 管理員
 isPatron: Firefish 項目贊助者
 silencedWarning: 顯示此頁面是因為這些使用者來自您伺服器管理員已靜音的伺服器，因此他們可能是垃圾訊息。
-signupsDisabled: 此伺服器目前停止註冊，但您隨時可以在另一台伺服器上註冊！如果您有此伺服器的邀請碼，請在下面輸入。
+signupsDisabled: 此伺服器目前停止註冊。如果您有此伺服器的邀請碼，請在下面輸入。
 showPopup: 通過彈出式視窗通知使用者
 showWithSparkles: 讓標題閃閃發光
 youHaveUnreadAnnouncements: 您有未讀的公告

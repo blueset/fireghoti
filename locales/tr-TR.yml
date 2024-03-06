@@ -1284,7 +1284,6 @@ _emailUnavailable:
   used: Bu mail zaten kullanılıyor
   format: Bu mail adresi yanlış
 apps: Uygulamalar
-findOtherInstance: Başka bir sunucu bul
 showWithSparkles: Parıltılarla göster
 showPopup: Kullanıcıları pop-up ile bilgilendirin
 silencedWarning: Bu sayfa, bu kullanıcılar yöneticinizin susturduğu sunuculardan olduğu
