@@ -2220,3 +2220,4 @@ _iconSets:
 moreUrls: "Pinned pages"
 moreUrlsDescription: "Enter the pages you want to pin to the help menu in the lower
   left corner using this notation:\n\"Display name\": https://example.com/"
+messagingUnencryptedInfo: "Chats on Firefish are not end-to-end encrypted. Don't share any sensitive infomation over Firefish."
