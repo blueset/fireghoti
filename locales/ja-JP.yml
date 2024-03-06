@@ -1947,8 +1947,7 @@ sendModMail: モデレーション通知を送る
 deleted: 削除済み
 editNote: 投稿を編集
 edited: '編集済み: {date} {time}'
-signupsDisabled: 
-  現在、このサーバーでは新規登録が一般開放されていません。招待コードをお持ちの場合には、以下の欄に入力してください。
+signupsDisabled: 現在、このサーバーでは新規登録が一般開放されていません。招待コードをお持ちの場合には、以下の欄に入力してください。
 newer: 新しい投稿
 older: 古い投稿
 accessibility: アクセシビリティ
