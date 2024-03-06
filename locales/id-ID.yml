@@ -1988,9 +1988,8 @@ moveAccountDescription: Proses ini permanen. Pastikan kamu sudah mengatur alias 
   akun ini ke akun barumu sebelum pindah. Silakan masukkan tag akun dengan format
   seperti @orang@server.com
 sendModMail: Kirim Pemberitahuan Moderasi
-signupsDisabled: Pendaftaran ke server ini nonaktif, tapi kamu dapat selalu mendaftar
-  ke server lain! Jika kamu memiliki kode undangan server ini, harap masukkan di bawah
-  ini.
+signupsDisabled: Pendaftaran ke server ini nonaktifkam. Jika kamu memiliki kode undangan
+  server ini, harap masukkan di bawah ini.
 enableCustomKaTeXMacro: Aktifkan makro KaTeX khusus
 isBot: Akun ini akun otomatis
 customMOTD: MOTD khusus (pesan layar percik)
@@ -2241,7 +2240,7 @@ reloading: Memuat ulang
 replyMute: Bisukan balasan dalam lini masa
 searchRange: Dikirim dalam (opsional)
 searchUsersDescription: "Untuk mencari kiriman oleh pengguna/server tertentu, masukkan
-  ID (@pengguna@contoh.id, atau @pengguna untuk pengguna lokal) atau nama domain (contoh.id).\n
+  ID (@pengguna@contoh.id, atau @pengguna untuk pengguna lokal) atau nama domain (contoh.id)\n
   \nJika kamu memasukkan 'me' ('aku', tanpa tanda kutip), semua kirimanmu (termasuk
   kiriman yang tidak terdaftar, khusus pengikut, langsung, dan rahasia) akan dicari.\n
   \nJika Anda memasukkan 'local' (tanpa tanda kutip), hasilnya akan disaring untuk
@@ -2253,3 +2252,11 @@ searchRangeDescription: "Jika kamu ingin memfilter periode waktu, masukkan dalam
   pencarian untuk menampilkan hanya kiriman yang dibuat sebelum tanggal 2 Januari
   tahun ini, dan 20231026- akan memfilter hasil pencarian untuk menampilkan hanya
   kiriman yang dibuat setelah tanggal 26 Oktober 2023."
+toPost: Kirim
+toQuote: Kutip
+noAltTextWarning: Beberapa berkas yang dilampirkan tidak memiliki deskripsi. Lupa
+  menulis deskripsinya?
+toEdit: Sunting
+showNoAltTextWarning: Tampilkan peringatan jika kamu mencoba mengirim berkas tanpa
+  deskripsi
+toReply: Balas
