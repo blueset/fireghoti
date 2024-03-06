@@ -9,6 +9,7 @@ Critical security updates are indicated by the :warning: icon.
 - Show unlisted posts from following users in antennas (similar to [Fedibird](https://github.com/fedibird/mastodon/tree/fedibird) and [kmyblue](https://github.com/kmycode/mastodon), unlisted posts from people you don't follow won't be shown)
 - Add ability to publish the Local and Global timelines on `/timeline` page
 - Add langage annotation to post contents (!10687)
+- Add a toggleable setting to show a warning when you attempt to post files without alt text
 - Fix bugs
 - Update documents
 

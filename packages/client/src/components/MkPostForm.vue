@@ -380,7 +380,7 @@ const showBigPostButton = defaultStore.state.showBigPostButton;
 
 const posting = ref(false);
 const text = ref(props.initialText ?? "");
-const files = ref(props.initialFiles ?? []);
+const files = ref(props.initialFiles ?? ([] as entities.DriveFile[]));
 const poll = ref<{
 	choices: string[];
 	multiple: boolean;
@@ -1020,6 +1020,22 @@ function deleteDraft() {
 }
 
 async function post() {
+	if (
+		defaultStore.state.showNoAltTextWarning &&
+		files.value.some((f) => f.comment == null || f.comment.length === 0)
+	) {
+		// "canceled" means "post anyway"
+		const { canceled } = await os.confirm({
+			type: "warning",
+			text: i18n.ts.noAltTextWarning,
+			okText: i18n.ts.goBack,
+			cancelText: i18n.ts.toPost,
+			isPlaintext: true,
+		});
+
+		if (!canceled) return;
+	}
+
 	const processedText = preprocess(text.value);
 
 	let postData = {
