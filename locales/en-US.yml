@@ -59,6 +59,7 @@ copyUsername: "Copy username"
 searchUser: "Search for a user"
 reply: "Reply"
 replies: "Replies"
+toReply: "Reply"
 jumpToPrevious: "Jump to previous"
 loadMore: "Load more"
 showMore: "Show more"
@@ -89,6 +90,7 @@ listsDesc: "Lists let you create timelines with specified users. They can be acc
 noLists: "You don't have any lists"
 note: "Post"
 notes: "Posts"
+toPost: "Post"
 following: "Following"
 followers: "Followers"
 followsYou: "Follows you"
@@ -121,6 +123,7 @@ cantRenote: "This post can't be boosted."
 cantReRenote: "A boost can't be boosted."
 quote: "Quote"
 quotes: "Quotes"
+toQuote: "Quote"
 pinnedNote: "Pinned post"
 pinned: "Pin to profile"
 you: "You"
@@ -671,6 +674,7 @@ pluginTokenRequestedDescription: "This plugin will be able to use the permission
   set here."
 notificationType: "Notification type"
 edit: "Edit"
+toEdit: "Edit"
 emailServer: "Email server"
 enableEmail: "Enable email distribution"
 emailConfigInfo: "Used to confirm your email during sign-up or if you forget your
@@ -1104,10 +1108,8 @@ customKaTeXMacroDescription: "Set up macros to write mathematical expressions ea
   advanced syntax, such as conditional branching, cannot be used here."
 enableCustomKaTeXMacro: "Enable custom KaTeX macros"
 noteId: "Post ID"
-signupsDisabled: "Signups on this server are currently disabled, but you can always
-  sign up at another server! If you have an invitation code for this server, please
-  enter it below."
-findOtherInstance: "Find another server"
+signupsDisabled: "Signups on this server are currently disabled. If you have an invitation
+  code for this server, please enter it below."
 apps: "Apps"
 sendModMail: "Send Moderation Notice"
 preventAiLearning: "Prevent AI bot scraping"
@@ -1214,6 +1216,8 @@ searchCwAndAlt: "Include content warnings and file descriptions"
 publishTimelines: "Publish timelines for visitors"
 publishTimelinesDescription: "If enabled, the Local and Global timeline will be shown
   on {url} even when signed out."
+noAltTextWarning: "Some attached file(s) have no description. Did you forget to write?"
+showNoAltTextWarning: "Show a warning if you attempt to post files without a description"
 
 _emojiModPerm:
   unauthorized: "None"
@@ -2216,3 +2220,4 @@ _iconSets:
 moreUrls: "Pinned pages"
 moreUrlsDescription: "Enter the pages you want to pin to the help menu in the lower
   left corner using this notation:\n\"Display name\": https://example.com/"
+messagingUnencryptedInfo: "Chats on Firefish are not end-to-end encrypted. Don't share any sensitive infomation over Firefish."

@@ -1992,7 +1992,6 @@ deleted: Usunięte
 editNote: Edytuj wpis
 edited: 'Edytowano o {date} {time}'
 silenced: Wyciszony
-findOtherInstance: Znajdź inny serwer
 userSaysSomethingReasonReply: '{name} odpowiedział na wpis zawierający {reason}'
 userSaysSomethingReasonRenote: '{name} podbił post zawierający {reason}'
 signupsDisabled: Rejestracja na tym serwerze jest obecnie zamknięta, ale zawsze możesz

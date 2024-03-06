@@ -61,7 +61,7 @@
 										v-if="
 											isSignedIn && $i.id === post.user.id
 										"
-										v-tooltip="i18n.ts.edit"
+										v-tooltip="i18n.ts.toEdit"
 										v-click-anime
 										class="_button"
 										@click="edit"

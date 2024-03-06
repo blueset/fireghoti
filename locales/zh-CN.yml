@@ -50,6 +50,7 @@ copyUsername: "复制用户名"
 searchUser: "搜索用户"
 reply: "回复"
 replies: "回复"
+toReply: "回复"
 loadMore: "加载更多"
 showMore: "查看更多"
 showLess: "关闭"
@@ -70,8 +71,9 @@ exportRequested: "导出请求已提交，这可能需要花一些时间，导�
 importRequested: "导入请求已提交，这可能需要花一点时间。"
 lists: "列表"
 noLists: "列表为空"
-note: "发帖"
+note: "帖子"
 notes: "帖子"
+toPost: "发帖"
 following: "关注中"
 followers: "关注者"
 followsYou: "关注了您"
@@ -103,6 +105,7 @@ cantRenote: "此帖子无法被转发。"
 cantReRenote: "转发无法被再次转发。"
 quote: "引用"
 quotes: "引用"
+toQuote: "引用"
 pinnedNote: "已置顶的帖子"
 pinned: "置顶"
 you: "您"
@@ -589,6 +592,7 @@ tokenRequested: "允许访问账号"
 pluginTokenRequestedDescription: "此插件将能够拥有这里设置的权限。"
 notificationType: "通知类型"
 edit: "编辑"
+toEdit: "编辑"
 emailServer: "邮件服务器"
 enableEmail: "启用发送邮件功能"
 emailConfigInfo: "用于确认电子邮件和密码重置"
@@ -1912,10 +1916,9 @@ _skinTones:
   mediumDark: 中等偏深
 isModerator: 监察员
 isAdmin: 管理员
-findOtherInstance: 寻找其它服务器
 moveFromDescription: 这将为您的旧账号设置一个别名，以便您可以从该旧账号迁移到当前账号。在从旧账号迁移之前执行此操作。请输入格式如 @person@server.com
   的账号标签
-signupsDisabled: 该服务器目前关闭注册，但您随时可以在另一台服务器上注册！如果您有该服务器的邀请码，请在下面输入。
+signupsDisabled: 该服务器目前关闭注册。如果您有该服务器的邀请码，请在下面输入。
 silencedWarning: 显示这个页面是因为这些用户来自您的管理员设置的禁言服务器，所以他们有可能是垃圾信息。
 isBot: 这个账号是一个自动化账号
 moveAccountDescription: 这个过程是不可逆的。在迁移之前，请确保您已在新账号上为当前账号设置了别名。请输入格式如 @person@server.com
@@ -2030,7 +2033,7 @@ emojiModPermDescription: "添加：允许该用户添加新的自定义表情符
   权限的基础上，允许该用户编辑现有自定义表情符号的名称/类别/标签/授权。\n全部允许：在 “添加和编辑” 权限的基础上，允许该用户删除现有的自定义表情符号。"
 replyMute: 静音回复
 replyUnmute: 取消静音回复
-searchWords: 要搜索的词 / ID 或者要查找的 URL
+searchWords: 要搜索的关键词 / 要查询的用户 ID 或 URL
 searchRange: 发表于（可选）
 searchUsers: 发布者（可选）
 searchUsersDescription: "要搜索特定用户/服务器的帖子，请输入 ID（@user@example.com，或 @user 对于本地用户）或域名（example.com）。\n
@@ -2039,10 +2042,11 @@ searchPostsWithFiles: 只带有文件的帖子
 searchCwAndAlt: 包括内容警告和文件描述
 publishTimelines: 为访客发布时间线
 publishTimelinesDescription: 如果启用，在用户登出时本地和全局时间线也会显示在 {url} 上。
-searchWordsDescription: "要搜索帖子，请输入搜索词。交集搜索用空格分隔单词，并集搜索单词之间用 OR 分隔。\n例如 '早上 晚上' 将查找包含
-  '早上' 和 '晚上' 的帖子，而 '早上 OR 晚上' 将查找包含 '早上' 或 '晚上' （以及同时包含两者）的帖子。\n您还可以组合交集/并集条件，例如
-  '(早上 OR 晚上) 困了' 。\n\n如果您想转到特定的用户页面或帖子页面，请在此字段中输入 ID 或 URL，然后单击 “查找” 按钮。 单击 “搜索”
-  将搜索字面包含 ID/URL 的帖子。"
+searchWordsDescription: "要搜索帖子，请输入关键词。交集搜索关键词之间使用空格进行区分，并集搜索关键词之间使用 OR 进行区分。\n例如 '早上
+  晚上' 将查找包含 '早上' 和 '晚上' 的帖子，而 '早上 OR 晚上' 将查找包含 '早上' 或 '晚上' （以及同时包含两者）的帖子。\n您还可以组合交集/并集条件，例如
+  '(早上 OR 晚上) 困了' 。\n\n如果您想转到特定的用户页面或帖子页面，请在此字段中输入用户 ID 或 URL，然后单击 “查询” 按钮。 单击 “搜索”
+  将搜索字面包含用户 ID/URL 的帖子。"
 searchRangeDescription: "如果您要过滤时间段，请按以下格式输入：20220615-20231031\n\n如果您省略年份（例如 0105-0106
   或 20231105-0110），它将被解释为当前年份。\n\n您还可以省略开始日期或结束日期。 例如 -0102 将过滤搜索结果以仅显示今年 1 月 2 日之前发布的帖子，而
   20231026- 将过滤结果以仅显示 2023 年 10 月 26 日之后发布的帖子。"
+messagingUnencryptedInfo: "Firefish 上的聊天没有经过端到端加密，请不要在聊天中分享您的敏感信息。"

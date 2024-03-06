@@ -445,7 +445,7 @@ export function getNoteMenu(props: {
 			isAppearAuthor
 				? {
 						icon: `${icon("ph-pencil-line")}`,
-						text: i18n.ts.edit,
+						text: i18n.ts.toEdit,
 						accent: true,
 						action: edit,
 				  }

@@ -73,7 +73,7 @@ const headerActions = computed(() =>
 		? [
 				{
 					icon: `${icon("ph-pencil")}`,
-					text: i18n.ts.edit,
+					text: i18n.ts.toEdit,
 					handler: async (): Promise<void> => {
 						const { canceled, result } = await os.form(
 							clip.value.name,

@@ -32,6 +32,12 @@ const emit = defineEmits<{
 .thppypvi {
 	max-height: 70%;
 	overflow-y: scroll;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.thppypvi::-webkit-scrollbar {
+	display: none;
 }
 
 .zrgnubda {

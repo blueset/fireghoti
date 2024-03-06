@@ -97,6 +97,7 @@ function toggle(x) {
 		display: block;
 		transition: inherit;
 		color: var(--fg);
+		text-align: initial;
 
 		> span {
 			display: block;

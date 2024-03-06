@@ -2090,7 +2090,6 @@ _experiments:
     de leurs anciens comptes Firefish, Misskey, Mastodon, Akkoma et Pleroma. Cela
     peut entraîner des ralentissements lors du chargement si votre file d'attente
     est congestionnée.
-findOtherInstance: Trouver un autre serveur
 userSaysSomethingReasonQuote: '{name} a cité une publication contenant {reason}'
 signupsDisabled: Les inscriptions sur ce serveur sont actuellement désactivés, mais
   vous pouvez toujours vous inscrire sur un autre serveur ! Si vous avez un code d'invitation

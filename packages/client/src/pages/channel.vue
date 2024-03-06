@@ -136,7 +136,7 @@ const headerActions = computed(() => [
 		? [
 				{
 					icon: `${icon("ph-gear-six")}`,
-					text: i18n.ts.edit,
+					text: i18n.ts.toEdit,
 					handler: edit,
 				},
 			]

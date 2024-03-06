@@ -1985,7 +1985,6 @@ deleted: Eliminado
 edited: 'Editado a las {date} {time}'
 editNote: Editar publicación
 silenceThisInstance: Silenciar este servidor
-findOtherInstance: Buscar otro servidor
 userSaysSomethingReasonRenote: '{name} impulsó una publicación que contiene {reason]'
 enableRecommendedTimeline: Habilitar línea de tiempo "Recomendado"
 searchPlaceholder: Buscar en Firefish

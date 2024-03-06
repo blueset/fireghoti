@@ -1908,7 +1908,6 @@ renoteMute: Ẩn lượt chia sẻ
 renoteUnmute: Bỏ ẩn lượt chia sẻ
 searchPlaceholder: Lướt Firefish
 edited: Đã sửa {date} {time}
-findOtherInstance: Tìm máy chủ khác
 noThankYou: Từ chối
 _filters:
   withFile: Có file

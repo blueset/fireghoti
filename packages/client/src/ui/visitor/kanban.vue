@@ -69,7 +69,9 @@
 						>
 						<small
 							>Powered by
-							<a href="https://joinfirefish.org/" target="_blank"
+							<a
+								href="https://firefish.dev/firefish/firefish"
+								target="_blank"
 								>Firefish</a
 							></small
 						>

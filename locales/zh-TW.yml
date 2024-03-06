@@ -50,6 +50,7 @@ copyUsername: "複製使用者名稱"
 searchUser: "搜尋使用者"
 reply: "回覆"
 replies: "回覆"
+toReply: "回覆"
 loadMore: "載入更多"
 showMore: "載入更多"
 showLess: "關閉"
@@ -72,6 +73,7 @@ lists: "清單"
 noLists: "你沒有任何清單"
 note: "貼文"
 notes: "貼文"
+toPost: "發貼文"
 following: "追隨中"
 followers: "追隨者"
 followsYou: "追隨你的人"
@@ -103,6 +105,7 @@ cantRenote: "無法轉發此貼文。"
 cantReRenote: "無法轉發之前已經轉發過的內容。"
 quote: "引用"
 quotes: "引用"
+toQuote: "引用"
 pinnedNote: "已置頂的貼文"
 pinned: "置頂"
 you: "您"
@@ -585,6 +588,7 @@ tokenRequested: "允許存取帳戶"
 pluginTokenRequestedDescription: "此外掛將擁有在此設定的權限。"
 notificationType: "通知形式"
 edit: "編輯"
+toEdit: "編輯"
 emailServer: "電郵伺服器"
 enableEmail: "啟用發送電郵功能"
 emailConfigInfo: "用於確認電郵地址及密碼重置"
@@ -1870,7 +1874,6 @@ _experiments:
   enablePostImports: 啟用匯入貼文的功能
   postImportsCaption: 
     允許使用者從舊有的Firefish・Misskey・Mastodon・Akkoma・Pleroma帳號匯入貼文。在伺服器佇列堵塞時匯入貼文可能會導致載入速度變慢。
-findOtherInstance: 找找另一個伺服器
 noGraze: 瀏覽器擴充元件 "Graze for Mastodon" 會與Firefish發生衝突，請停用該擴充元件。
 userSaysSomethingReasonRenote: '{name} 轉發了包含 {reason} 的貼文'
 pushNotificationNotSupported: 你的瀏覽器或伺服器不支援推送通知
@@ -1928,7 +1931,7 @@ isModerator: 板主
 isAdmin: 管理員
 isPatron: Firefish 項目贊助者
 silencedWarning: 顯示此頁面是因為這些使用者來自您伺服器管理員已靜音的伺服器，因此他們可能是垃圾訊息。
-signupsDisabled: 此伺服器目前停止註冊，但您隨時可以在另一台伺服器上註冊！如果您有此伺服器的邀請碼，請在下面輸入。
+signupsDisabled: 此伺服器目前停止註冊。如果您有此伺服器的邀請碼，請在下面輸入。
 showPopup: 通過彈出式視窗通知使用者
 showWithSparkles: 讓標題閃閃發光
 youHaveUnreadAnnouncements: 您有未讀的公告

@@ -2031,6 +2031,7 @@ _wordMute:
     de temps.
   muteLangs: Llenguatges silenciats
   muteLangsDescription: Separar amb espais o línies no es per una condició OR.
+  mutePatterns: Patrons per silenciar
 _auth:
   shareAccessAsk: Estàs segur que vols autoritzar aquesta aplicació per accedir al
     teu compte?
@@ -2066,7 +2067,6 @@ _relayStatus:
 deleted: Eliminat
 editNote: Edita la publicació
 edited: 'Editat el {date} {time}'
-findOtherInstance: Cercar un altre servidor
 signupsDisabled: Actualment, les inscripcions en aquest servidor estan desactivades,
   però sempre podeu registrar-vos en un altre servidor. Si teniu un codi d'invitació
   per a aquest servidor, introduïu-lo a continuació.
@@ -2244,3 +2244,16 @@ noSentFollowRequests: No tens cap sol·licitud de seguiment enviada
 sentFollowRequests: Enviar sol·licituds de seguiment
 replyMute: Silencia les respostes a les línies de temps
 replyUnmute: Treu el silencia de les respostes a les línies de temps
+searchWordsDescription: "Per cercar publicacions, escriu el terme a buscar. Separa
+  les paraules amb espais per fer condicions AND o escriules dins de cometes per fer
+  una cerca OR.\nPer exemple, 'dia nit' trobarà publicacions que continguin tan 'dia'
+  com 'nit', i 'dia OR nit' trobaran publicacions que continguin tan 'dia' com 'nit'
+  o ambdues.\nPots combinar condicions AND/OR per exemple '(dia OR nit) endormiscar'.\n
+  \nSi vols anar a una pàgina d'usuari o publicació en concret, escriu la adreça URL
+  o la ID en aquest camp i fes clic al botó 'Trobar'. Fent clic a 'Cercar' trobarà
+  publicacions que, literalment , continguin la ID/adreça URL."
+searchPostsWithFiles: Només publicacions amb fitxers
+searchCwAndAlt: Inclou avisos de contingut i arxius amb descripcions.
+searchUsers: Publicat per (opcional)
+searchRange: Publicat dintre de (opcional)
+publishTimelines: Publica línies de temps per visitants

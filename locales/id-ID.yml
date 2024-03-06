@@ -2007,7 +2007,6 @@ enterSendsMessage: Tekan Enter pada Pesan untuk mengirim pesan (matikan dengan C
   + Enter)
 showAdminUpdates: Indikasi versi Firefish baru tersedia (hanya admin)
 noteId: ID Postingan
-findOtherInstance: Cari server lain
 caption: Deskripsi itomatis
 splash: Layar Percik
 migration: Migrasi

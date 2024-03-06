@@ -121,6 +121,9 @@
 			<FormSwitch v-model="openServerInfo" class="_formBlock">{{
 				i18n.ts.openServerInfo
 			}}</FormSwitch>
+			<FormSwitch v-model="showNoAltTextWarning" class="_formBlock">{{
+				i18n.ts.showNoAltTextWarning
+			}}</FormSwitch>
 
 			<FormSelect v-model="serverDisconnectedBehavior" class="_formBlock">
 				<template #label>{{ i18n.ts.whenServerDisconnected }}</template>
@@ -523,6 +526,9 @@ const enablePullToRefresh = computed(
 );
 const pullToRefreshThreshold = computed(
 	defaultStore.makeGetterSetter("pullToRefreshThreshold"),
+);
+const showNoAltTextWarning = computed(
+	defaultStore.makeGetterSetter("showNoAltTextWarning"),
 );
 
 // This feature (along with injectPromo) is currently disabled

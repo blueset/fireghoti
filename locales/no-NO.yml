@@ -1196,7 +1196,6 @@ customKaTeXMacroDescription: 'Sett opp makroer for å skrive matematiske uttrykk
 signupsDisabled: Registreringer av nye konti på denne tjeneren er slått av, men du
   kan alltids registrere deg på en annen tjener! Hvis du har en invitasjonskode for
   denne tjeneren, skriv den inn under.
-findOtherInstance: Finn en annen tjener
 preventAiLearningDescription: Ber tredjeparts AI-språkmodeller om å ikke bruke innhold
   du laster opp, sliks om poster og bilder.
 enableCustomKaTeXMacro: Slå på egne KaTeX-makroer

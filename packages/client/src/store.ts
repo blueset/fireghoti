@@ -428,6 +428,10 @@ export const defaultStore = markRaw(
 			where: "device",
 			default: 150,
 		},
+		showNoAltTextWarning: {
+			where: "account",
+			default: true,
+		},
 	}),
 );
 

@@ -8,6 +8,9 @@
 		/></template>
 		<div>
 			<MkSpacer :content-max="800">
+				<MkInfo :closeable="false" class="_gap">
+					<I18n :src="i18n.ts.messagingUnencryptedInfo"> </I18n>
+				</MkInfo>
 				<swiper
 					:round-lengths="true"
 					:touch-angle="25"
@@ -94,6 +97,7 @@ import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import MkButton from "@/components/MkButton.vue";
 import MkChatPreview from "@/components/MkChatPreview.vue";
+import MkInfo from "@/components/MkInfo.vue";
 import MkPagination from "@/components/MkPagination.vue";
 import * as os from "@/os";
 import { useStream } from "@/stream";
