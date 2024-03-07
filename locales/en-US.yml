@@ -462,7 +462,7 @@ securityKeyName: "Key name"
 registerSecurityKey: "Register a security key"
 lastUsed: "Last used"
 unregister: "Unregister"
-passwordLessLogin: "Password-less login"
+passwordLessLogin: "Password-less sign in"
 resetPassword: "Reset password"
 newPasswordIs: "The new password is \"{password}\""
 reduceUiAnimation: "Reduce UI animations"
@@ -527,7 +527,7 @@ disableDrawer: "Don't use drawer-style menus"
 youHaveNoGroups: "You have no groups"
 joinOrCreateGroup: "Get invited to a group or create your own."
 noHistory: "No history available"
-signinHistory: "Login history"
+signinHistory: "Sign in history"
 disableAnimatedMfm: "Disable MFM with animation"
 doing: "Processing..."
 category: "Category"
@@ -717,8 +717,8 @@ useGlobalSetting: "Use global settings"
 useGlobalSettingDesc: "If turned on, your account's notification settings will be
   used. If turned off, individual configurations can be made."
 other: "Other"
-regenerateLoginToken: "Regenerate login token"
-regenerateLoginTokenDescription: "Regenerates the token used internally during login.
+regenerateLoginToken: "Regenerate sign in token"
+regenerateLoginTokenDescription: "Regenerates the token used internally during sign in.
   Normally this action is not necessary. If regenerated, all devices will be logged
   out."
 setMultipleBySeparatingWithSpace: "Separate multiple entries with spaces."
@@ -1001,7 +1001,7 @@ check: "Check"
 driveCapOverrideLabel: "Change the drive capacity for this user"
 driveCapOverrideCaption: "Reset the capacity to default by inputting a value of 0
   or lower."
-requireAdminForView: "You must log in with an administrator account to view this."
+requireAdminForView: "You must sign in with an administrator account to view this."
 isSystemAccount: "This account is created and automatically operated by the system.
   Please do not moderate, edit, delete, or otherwise tamper with this account, or
   it may break your server."
@@ -1011,7 +1011,7 @@ document: "Documentation"
 numberOfPageCache: "Number of cached pages"
 numberOfPageCacheDescription: "Increasing this number will improve convenience for
   users but cause more server load as well as more memory to be used."
-logoutConfirm: "Really log out?"
+logoutConfirm: "Really sign out?"
 lastActiveDate: "Last used at"
 statusbar: "Status bar"
 pleaseSelect: "Select an option"
@@ -1627,7 +1627,7 @@ _2fa:
   step2Url: "You can also enter this URL if you're using a desktop program:"
   step3Title: "Enter an authentication code"
   step3: "Enter the token provided by your app to finish setup."
-  step4: "From now on, any future login attempts will ask for such a login token."
+  step4: "From now on, any future sign in attempts will ask for such a token."
   securityKeyNotSupported: "Your browser does not support security keys."
   securityKeyInfo: "Besides fingerprint or PIN authentication, you can also setup
     authentication via hardware security keys that support FIDO2 to further secure

@@ -82,7 +82,7 @@ import { ref } from "vue";
 import MkSignin from "@/components/MkSignin.vue";
 import MkButton from "@/components/MkButton.vue";
 import * as os from "@/os";
-import { login } from "@/account";
+import { signIn } from "@/account";
 import { me } from "@/me";
 import { appendQuery, query } from "@/scripts/url";
 import { i18n } from "@/i18n";
@@ -136,7 +136,7 @@ function deny(): void {
 }
 
 function onLogin(res): void {
-	login(res.i);
+	signIn(res.i);
 }
 </script>
 

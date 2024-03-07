@@ -37,7 +37,7 @@ import {
 	removeAccount as _removeAccount,
 	addAccount as addAccounts,
 	getAccounts,
-	login,
+	signIn,
 } from "@/account";
 import { me } from "@/me";
 import { i18n } from "@/i18n";
@@ -142,7 +142,7 @@ async function switchAccount(account: any) {
 }
 
 function switchAccountWithToken(token: string) {
-	login(token);
+	signIn(token);
 }
 
 definePageMetadata({

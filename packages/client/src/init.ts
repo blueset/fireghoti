@@ -32,7 +32,7 @@ import {
 } from "vue";
 import { set } from "@/scripts/idb-proxy";
 
-import { login, refreshAccount, signout, updateAccount } from "@/account";
+import { signIn, refreshAccount, signOut, updateAccount } from "@/account";
 import components from "@/components";
 import { lang, ui, version } from "@/config";
 import directives from "@/directives";
@@ -133,7 +133,7 @@ function checkForSplash() {
 		if (!me || me.id !== loginId) {
 			const account = await getAccountFromId(loginId);
 			if (account) {
-				await login(account.token, target);
+				await signIn(account.token, target);
 			}
 		}
 
@@ -164,7 +164,7 @@ function checkForSplash() {
 
 			try {
 				document.body.innerHTML = "<div>Please wait...</div>";
-				await login(i);
+				await signIn(i);
 			} catch (err) {
 				// Render the error screen
 				// TODO: ちゃんとしたコンポーネントをレンダリングする(v10とかのトラブルシューティングゲーム付きのやつみたいな)
@@ -542,7 +542,7 @@ function checkForSplash() {
 		// トークンが再生成されたとき
 		// このままではMisskeyが利用できないので強制的にサインアウトさせる
 		main.on("myTokenRegenerated", () => {
-			signout();
+			signOut();
 		});
 	}
 

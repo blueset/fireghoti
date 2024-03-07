@@ -11,7 +11,7 @@ import { reloadChannel, unisonReload } from "@/scripts/unison-reload";
 
 export type Account = entities.MeDetailed;
 
-export async function signout() {
+export async function signOut() {
 	waiting();
 	localStorage.removeItem("account");
 
@@ -47,7 +47,7 @@ export async function signout() {
 
 	document.cookie = "igi=; path=/";
 
-	if (accounts.length > 0) login(accounts[0].token);
+	if (accounts.length > 0) signIn(accounts[0].token);
 	else unisonReload("/");
 }
 
@@ -89,7 +89,7 @@ function fetchAccount(token: string): Promise<Account> {
 				if (res.error) {
 					if (res.error.id === "a8c724b3-6e9c-4b46-b1a8-bc3ed6258370") {
 						showSuspendedDialog();
-						signout();
+						signOut();
 					} else {
 						alert({
 							type: "error",
@@ -126,7 +126,7 @@ export async function refreshAccount() {
 	return updateAccount(accountData);
 }
 
-export async function login(token: Account["token"], redirect?: string) {
+export async function signIn(token: Account["token"], redirect?: string) {
 	waiting();
 	if (_DEV_) console.log("logging as token ", token);
 	const newAccount = await fetchAccount(token);
@@ -190,7 +190,7 @@ export async function openAccountMenu(
 	}
 
 	function switchAccountWithToken(token: string) {
-		login(token);
+		signIn(token);
 	}
 
 	const storedAccounts = await getAccounts().then((accounts) =>
