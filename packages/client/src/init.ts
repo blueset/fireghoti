@@ -205,7 +205,6 @@ function checkForSplash() {
 
 	app.config.globalProperties = {
 		$i,
-		$instance: instance,
 	};
 
 	widgets(app);

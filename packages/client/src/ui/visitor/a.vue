@@ -3,7 +3,7 @@
 		<div
 			v-if="mainRouter.currentRoute?.name === 'index'"
 			class="banner"
-			:style="{ backgroundImage: `url(${$instance.bannerUrl})` }"
+			:style="{ backgroundImage: `url(${instance.bannerUrl})` }"
 		>
 			<div>
 				<h1 v-if="meta">
@@ -32,7 +32,7 @@
 		<div
 			v-else
 			class="banner-mini"
-			:style="{ backgroundImage: `url(${$instance.bannerUrl})` }"
+			:style="{ backgroundImage: `url(${instance.bannerUrl})` }"
 		>
 			<div>
 				<h1 v-if="meta">
@@ -86,6 +86,7 @@ import MkButton from "@/components/MkButton.vue";
 import { ColdDeviceStorage, defaultStore } from "@/store";
 import { mainRouter } from "@/router";
 import { i18n } from "@/i18n";
+import { instance } from "@/instance";
 
 const DESKTOP_THRESHOLD = 1100;
 

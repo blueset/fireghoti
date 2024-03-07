@@ -4,7 +4,7 @@
 		:style="{
 			backgroundImage: transparent
 				? 'none'
-				: `url(${$instance.backgroundImageUrl})`,
+				: `url(${instance.backgroundImageUrl})`,
 		}"
 	>
 		<div class="back" :class="{ transparent }"></div>
@@ -91,6 +91,7 @@ import XSigninDialog from "@/components/MkSigninDialog.vue";
 import XSignupDialog from "@/components/MkSignupDialog.vue";
 import MkButton from "@/components/MkButton.vue";
 import { i18n } from "@/i18n";
+import { instance } from "@/instance";
 
 export default defineComponent({
 	components: {
@@ -128,6 +129,7 @@ export default defineComponent({
 				limit: 10,
 			},
 			i18n,
+			instance,
 		};
 	},
 
