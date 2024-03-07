@@ -873,7 +873,7 @@ recommended: "推荐"
 check: "检查"
 driveCapOverrideLabel: "修改此用户的网盘容量"
 driveCapOverrideCaption: "输入 0 或以下的值将容量重置为默认值。"
-requireAdminForView: "需要使用管理员账号登录才能查看。"
+requireAdminForView: "您需要使用管理员账号登录才能查看。"
 isSystemAccount: "该账号由系统自动创建。请不要修改、编辑、删除或以其它方式篡改这个账号，否则可能会破坏您的服务器。"
 typeToConfirm: "输入 {x} 以确认操作"
 deleteAccount: "删除账号"
@@ -1263,7 +1263,7 @@ _2fa:
   step2: "然后，扫描屏幕上显示的二维码。"
   step2Url: "如果您使用的是桌面程序，您也可以输入这个URL："
   step3: "输入您的应用提供的令牌以完成设置。"
-  step4: "从现在开始，任何登录操作都将要求您提供这样一个登录令牌。"
+  step4: "从现在开始，任何登录操作都将要求您提供这样一个令牌。"
   securityKeyInfo: "除了指纹或 PIN 身份验证外，您还可以通过支持 FIDO2 的硬件安全密钥设置身份验证，以进一步保护您的账号。"
   token: 2FA 令牌
   step3Title: 输入验证码
