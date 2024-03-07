@@ -94,11 +94,15 @@ sudo apt install -y -V postgresql-16-pgdg-pgroonga
 
 Create Firefish database, user and PGroonga extension.
 
+Please not forget prompt database password in console.
+
 ```sh
 sudo --user=postgres createuser --no-createdb --no-createrole --no-superuser --encrypted --pwprompt firefish
 sudo --user=postgres createdb --encoding='UTF8' --owner=firefish firefish_db
 sudo --user=postgres psql --command='CREATE EXTENSION pgroonga;' --dbname=firefish_db
 ```
+
+If you forgot it, run `sudo -u postgres psql -c "ALTER USER firefish PASSWORD 'password';"` to set a password for firefish.
 
 ## Install Redis, Python 3 and build-essential
 
