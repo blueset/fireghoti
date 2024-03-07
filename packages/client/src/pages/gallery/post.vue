@@ -59,7 +59,7 @@
 								<div class="other">
 									<button
 										v-if="
-											isSignedIn && $i.id === post.user.id
+											isSignedIn && me.id === post.user.id
 										"
 										v-tooltip="i18n.ts.toEdit"
 										v-click-anime
@@ -105,7 +105,7 @@
 									<MkAcct :user="post.user" />
 								</div>
 								<MkFollowButton
-									v-if="!$i || $i.id != post.user.id"
+									v-if="!me || me.id != post.user.id"
 									:user="post.user"
 									:inline="true"
 									:transparent="false"
@@ -163,7 +163,7 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import { shareAvailable } from "@/scripts/share-available";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
-import { isSignedIn } from "@/reactiveAccount";
+import { isSignedIn } from "@/me";
 
 const router = useRouter();
 

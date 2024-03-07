@@ -56,7 +56,7 @@
 import { ref } from "vue";
 
 import { getAccounts } from "@/account";
-import { $i, isSignedIn } from "@/reactiveAccount";
+import { me, isSignedIn } from "@/me";
 import MkButton from "@/components/MkButton.vue";
 import { instance } from "@/instance";
 import { api, apiWithDialog, promiseDialog } from "@/os";
@@ -149,7 +149,7 @@ async function unsubscribe() {
 
 	if (isSignedIn && accounts.length >= 2) {
 		apiWithDialog("sw/unregister", {
-			i: $i.token,
+			i: me.token,
 			endpoint,
 		});
 	} else {
@@ -197,7 +197,7 @@ if (navigator.serviceWorker == null) {
 			instance.swPublickey &&
 			"PushManager" in window &&
 			isSignedIn &&
-			$i.token
+			me.token
 		) {
 			supported.value = true;
 

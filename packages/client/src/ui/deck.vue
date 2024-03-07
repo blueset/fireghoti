@@ -151,7 +151,7 @@
 			>
 				<i :class="icon('ph-bell')"></i
 				><span
-					v-if="$i?.hasUnreadNotification"
+					v-if="me?.hasUnreadNotification"
 					class="indicator"
 					:class="{
 						animateIndicator: defaultStore.state.animation,
@@ -203,7 +203,7 @@ import XDrawerMenu from "@/ui/_common_/navbar-for-mobile.vue";
 import MkButton from "@/components/MkButton.vue";
 import * as os from "@/os";
 import { navbarItemDef } from "@/navbar";
-import { $i, isSignedIn } from "@/reactiveAccount";
+import { me, isSignedIn } from "@/me";
 import { i18n } from "@/i18n";
 import { mainRouter } from "@/router";
 import { unisonReload } from "@/scripts/unison-reload";

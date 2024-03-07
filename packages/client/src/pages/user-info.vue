@@ -362,7 +362,7 @@ import { url } from "@/config";
 import { userPage } from "@/filters/user";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
-import { isAdmin, isModerator } from "@/reactiveAccount";
+import { isAdmin, isModerator } from "@/me";
 import { instance } from "@/instance";
 import icon from "@/scripts/icon";
 

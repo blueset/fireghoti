@@ -2,7 +2,7 @@
 	<FormSection :first="first">
 		<template #label>{{ i18n.ts["2fa"] }}</template>
 
-		<div v-if="$i" class="_gaps_s">
+		<div v-if="me" class="_gaps_s">
 			<MkFolder>
 				<template #icon
 					><i
@@ -12,7 +12,7 @@
 				></template>
 				<template #label>{{ i18n.ts.totp }}</template>
 				<template #caption>{{ i18n.ts.totpDescription }}</template>
-				<div v-if="$i.twoFactorEnabled" class="_gaps_s">
+				<div v-if="me.twoFactorEnabled" class="_gaps_s">
 					<div v-text="i18n.ts._2fa.alreadyRegistered" />
 					<MkButton @click="unregisterTOTP"
 						><i
@@ -24,7 +24,7 @@
 				</div>
 
 				<MkButton
-					v-else-if="!twoFactorData && !$i.twoFactorEnabled"
+					v-else-if="!twoFactorData && !me.twoFactorEnabled"
 					@click="registerTOTP"
 					>{{ i18n.ts._2fa.registerTOTP }}</MkButton
 				>
@@ -55,7 +55,7 @@
 							>{{ i18n.ts._2fa.registerSecurityKey }}</MkButton
 						>
 						<MkFolder
-							v-for="key in $i.securityKeysList"
+							v-for="key in me.securityKeysList"
 							:key="key.id"
 						>
 							<h3>{{ key.name }}</h3>
@@ -79,7 +79,7 @@
 
 			<MkSwitch
 				:disabled="
-					!$i.twoFactorEnabled || $i.securityKeysList.length === 0
+					!me.twoFactorEnabled || me.securityKeysList.length === 0
 				"
 				:model-value="usePasswordLessLogin"
 				@update:modelValue="(v) => updatePasswordLessLogin(v)"
@@ -103,7 +103,7 @@ import MkSwitch from "@/components/form/switch.vue";
 import FormSection from "@/components/form/section.vue";
 import MkFolder from "@/components/MkFolder.vue";
 import * as os from "@/os";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
@@ -120,7 +120,7 @@ withDefaults(
 
 const twoFactorData = ref<any>(null);
 const supportsCredentials = ref(!!navigator.credentials);
-const usePasswordLessLogin = computed(() => $i!.usePasswordLessLogin);
+const usePasswordLessLogin = computed(() => me!.usePasswordLessLogin);
 
 async function registerTOTP() {
 	const password = await os.inputText({
@@ -252,9 +252,9 @@ async function addSecurityKey() {
 				name: "Firefish",
 			},
 			user: {
-				id: byteify($i!.id, "ascii"),
-				name: $i!.username,
-				displayName: $i!.name,
+				id: byteify(me!.id, "ascii"),
+				name: me!.username,
+				displayName: me!.name,
 			},
 			pubKeyCredParams: [{ alg: -7, type: "public-key" }],
 			timeout: 60000,

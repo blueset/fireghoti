@@ -5,7 +5,7 @@ import copyToClipboard from "@/scripts/copy-to-clipboard";
 import { host } from "@/config";
 import * as os from "@/os";
 import { userActions } from "@/store";
-import { $i, isModerator, isSignedIn } from "@/reactiveAccount";
+import { me, isModerator, isSignedIn } from "@/me";
 import { mainRouter } from "@/router";
 import type { Router } from "@/nirax";
 import icon from "@/scripts/icon";
@@ -290,7 +290,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 				os.post({ specified: user });
 			},
 		},
-		$i.id !== user.id
+		me.id !== user.id
 			? {
 					type: "link",
 					icon: `${icon("ph-chats-teardrop")}`,
@@ -313,7 +313,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 			text: i18n.ts.addToList,
 			action: pushList,
 		},
-		$i.id !== user.id
+		me.id !== user.id
 			? {
 					icon: `${icon("ph-users-three")}`,
 					text: i18n.ts.inviteToGroup,
@@ -335,7 +335,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		},
 	] as any;
 
-	if (isSignedIn && $i.id !== user.id) {
+	if (isSignedIn && me.id !== user.id) {
 		menu = menu.concat([
 			{
 				icon: user.isMuted ? "ph-eye ph-lg" : "ph-eye-slash ph-lg",
@@ -386,7 +386,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		}
 	}
 
-	if (isSignedIn && $i.id === user.id) {
+	if (isSignedIn && me.id === user.id) {
 		menu = menu.concat([
 			null,
 			{

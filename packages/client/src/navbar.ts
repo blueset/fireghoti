@@ -2,7 +2,7 @@ import { computed, reactive } from "vue";
 import { ui } from "@/config";
 import { i18n } from "@/i18n";
 import * as os from "@/os";
-import { $i, isSignedIn } from "@/reactiveAccount";
+import { me, isSignedIn } from "@/me";
 import icon from "@/scripts/icon";
 import { search } from "@/scripts/search";
 import { unisonReload } from "@/scripts/unison-reload";
@@ -12,14 +12,14 @@ export const navbarItemDef = reactive({
 		title: "notifications",
 		icon: `${icon("ph-bell")}`,
 		show: computed(() => isSignedIn),
-		indicated: computed(() => $i?.hasUnreadNotification),
+		indicated: computed(() => me?.hasUnreadNotification),
 		to: "/my/notifications",
 	},
 	messaging: {
 		title: "messaging",
 		icon: `${icon("ph-chats-teardrop")}`,
 		show: computed(() => isSignedIn),
-		indicated: computed(() => $i?.hasUnreadMessagingMessage),
+		indicated: computed(() => me?.hasUnreadMessagingMessage),
 		to: "/my/messaging",
 	},
 	drive: {
@@ -31,8 +31,8 @@ export const navbarItemDef = reactive({
 	followRequests: {
 		title: "followRequests",
 		icon: `${icon("ph-hand-waving")}`,
-		show: computed(() => $i?.isLocked || $i?.hasPendingReceivedFollowRequest),
-		indicated: computed(() => $i?.hasPendingReceivedFollowRequest),
+		show: computed(() => me?.isLocked || me?.hasPendingReceivedFollowRequest),
+		indicated: computed(() => me?.hasPendingReceivedFollowRequest),
 		to: "/my/follow-requests",
 	},
 	explore: {
@@ -43,7 +43,7 @@ export const navbarItemDef = reactive({
 	announcements: {
 		title: "announcements",
 		icon: `${icon("ph-megaphone-simple")}`,
-		indicated: computed(() => $i?.hasUnreadAnnouncement),
+		indicated: computed(() => me?.hasUnreadAnnouncement),
 		to: "/announcements",
 	},
 	search: {

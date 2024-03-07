@@ -20,7 +20,7 @@
 				class="account _button"
 				@click="openAccountMenu"
 			>
-				<MkAvatar :user="postAccount ?? $i" class="avatar" />
+				<MkAvatar :user="postAccount ?? me" class="avatar" />
 			</button>
 			<div class="right">
 				<span
@@ -322,7 +322,7 @@ import MkInfo from "@/components/MkInfo.vue";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
 import { getAccounts, openAccountMenu as openAccountMenu_ } from "@/account";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { uploadFile } from "@/scripts/upload";
 import { deepClone } from "@/scripts/clone";
 import XCheatSheet from "@/components/MkCheatSheetDialog.vue";
@@ -517,7 +517,7 @@ if (props.mention) {
 
 if (
 	props.reply &&
-	(props.reply.user.username !== $i.username ||
+	(props.reply.user.username !== me.username ||
 		(props.reply.user.host != null && props.reply.user.host !== host))
 ) {
 	text.value = `@${props.reply.user.username}${
@@ -539,7 +539,7 @@ if (props.reply && props.reply.text != null) {
 				: `@${x.username}@${toASCII(otherHost)}`;
 
 		// exclude me
-		if ($i.username === x.username && (x.host == null || x.host === host))
+		if (me.username === x.username && (x.host == null || x.host === host))
 			continue;
 
 		// remove duplicates
@@ -573,7 +573,7 @@ if (
 		if (props.reply.visibleUserIds) {
 			os.api("users/show", {
 				userIds: props.reply.visibleUserIds.filter(
-					(uid) => uid !== $i.id && uid !== props.reply.userId,
+					(uid) => uid !== me.id && uid !== props.reply.userId,
 				),
 			}).then((users) => {
 				users.forEach(pushVisibleUser);
@@ -582,7 +582,7 @@ if (
 			visibility.value = "private";
 		}
 
-		if (props.reply.userId !== $i.id) {
+		if (props.reply.userId !== me.id) {
 			os.api("users/show", { userId: props.reply.userId }).then(
 				(user) => {
 					pushVisibleUser(user);
@@ -611,7 +611,7 @@ const addRe = (s: string) => {
 if (defaultStore.state.keepCw && props.reply && props.reply.cw) {
 	useCw.value = true;
 	cw.value =
-		props.reply.user.username === $i.username
+		props.reply.user.username === me.username
 			? props.reply.cw
 			: addRe(props.reply.cw);
 }
@@ -1194,9 +1194,9 @@ function openAccountMenu(ev: MouseEvent) {
 		{
 			withExtraOperation: false,
 			includeCurrentAccount: true,
-			active: postAccount.value != null ? postAccount.value.id : $i.id,
+			active: postAccount.value != null ? postAccount.value.id : me.id,
 			onChoose: (account) => {
-				if (account.id === $i.id) {
+				if (account.id === me.id) {
 					postAccount.value = null;
 				} else {
 					postAccount.value = account;

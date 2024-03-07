@@ -52,7 +52,7 @@ import MkSignin from "@/components/MkSignin.vue";
 import MkKeyValue from "@/components/MkKeyValue.vue";
 import * as os from "@/os";
 import { login } from "@/account";
-import { isSignedIn } from "@/reactiveAccount";
+import { isSignedIn } from "@/me";
 import { i18n } from "@/i18n";
 
 const props = defineProps<{

@@ -190,7 +190,7 @@ import number from "@/filters/number";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { deviceKind } from "@/scripts/device-kind";
-import { isModerator } from "@/reactiveAccount";
+import { isModerator } from "@/me";
 import { instance } from "@/instance";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";

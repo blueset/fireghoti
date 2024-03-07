@@ -22,7 +22,7 @@ import { swInject } from "./sw-inject";
 import { popup, popups } from "@/os";
 import { uploads } from "@/scripts/upload";
 import * as sound from "@/scripts/sound";
-import { $i, isSignedIn } from "@/reactiveAccount";
+import { me, isSignedIn } from "@/me";
 import { useStream } from "@/stream";
 
 const stream = useStream();
@@ -35,7 +35,7 @@ const XUpload = defineAsyncComponent(() => import("./upload.vue"));
 const dev = _DEV_;
 
 const onNotification = (notification) => {
-	if ($i.mutingNotificationTypes.includes(notification.type)) return;
+	if (me.mutingNotificationTypes.includes(notification.type)) return;
 
 	if (document.visibilityState === "visible") {
 		stream.send("readNotification", {

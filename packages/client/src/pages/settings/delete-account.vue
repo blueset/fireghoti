@@ -7,7 +7,7 @@
 			i18n.ts._accountDelete.sendEmail
 		}}</FormInfo>
 		<FormButton
-			v-if="!$i.isDeleted"
+			v-if="!me.isDeleted"
 			danger
 			class="_formBlock"
 			@click="deleteAccount"

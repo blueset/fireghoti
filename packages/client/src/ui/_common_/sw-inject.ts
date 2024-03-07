@@ -1,6 +1,6 @@
 import { post } from "@/os";
 import { login } from "@/account";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { getAccountFromId } from "@/scripts/get-account-from-id";
 import { mainRouter } from "@/router";
 
@@ -12,7 +12,7 @@ export function swInject() {
 
 		if (ev.data.type !== "order") return;
 
-		if (ev.data.loginId !== $i?.id) {
+		if (ev.data.loginId !== me?.id) {
 			return getAccountFromId(ev.data.loginId).then((account) => {
 				if (!account) return;
 				return login(account.token, ev.data.url);

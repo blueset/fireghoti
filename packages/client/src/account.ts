@@ -3,8 +3,7 @@ import { defineAsyncComponent } from "vue";
 import { i18n } from "./i18n";
 import { apiUrl } from "@/config";
 import { alert, api, popup, popupMenu, waiting } from "@/os";
-import { $i } from "@/reactiveAccount";
-import icon from "@/scripts/icon";
+import { me } from "@/me";
 import { del, get, set } from "@/scripts/idb-proxy";
 import { reloadChannel, unisonReload } from "@/scripts/unison-reload";
 
@@ -16,7 +15,7 @@ export async function signout() {
 	waiting();
 	localStorage.removeItem("account");
 
-	await removeAccount($i.id);
+	await removeAccount(me.id);
 
 	const accounts = await getAccounts();
 
@@ -29,7 +28,7 @@ export async function signout() {
 				await fetch(`${apiUrl}/sw/unregister`, {
 					method: "POST",
 					body: JSON.stringify({
-						i: $i.token,
+						i: me.token,
 						endpoint: push.endpoint,
 					}),
 				});
@@ -117,22 +116,23 @@ function showSuspendedDialog() {
 
 export function updateAccount(accountData) {
 	for (const [key, value] of Object.entries(accountData)) {
-		$i[key] = value;
+		me[key] = value;
 	}
-	localStorage.setItem("account", JSON.stringify($i));
+	localStorage.setItem("account", JSON.stringify(me));
 }
 
-export function refreshAccount() {
-	return fetchAccount($i.token).then(updateAccount);
+export async function refreshAccount() {
+	const accountData = await fetchAccount(me.token);
+	return updateAccount(accountData);
 }
 
 export async function login(token: Account["token"], redirect?: string) {
 	waiting();
 	if (_DEV_) console.log("logging as token ", token);
-	const me = await fetchAccount(token);
-	localStorage.setItem("account", JSON.stringify(me));
+	const newAccount = await fetchAccount(token);
+	localStorage.setItem("account", JSON.stringify(newAccount));
 	document.cookie = `token=${token}; path=/; max-age=31536000`; // bull dashboardの認証とかで使う
-	await addAccount(me.id, token);
+	await addAccount(newAccount.id, token);
 
 	if (redirect) {
 		// 他のタブは再読み込みするだけ
@@ -194,7 +194,7 @@ export async function openAccountMenu(
 	}
 
 	const storedAccounts = await getAccounts().then((accounts) =>
-		accounts.filter((x) => x.id !== $i.id),
+		accounts.filter((x) => x.id !== me.id),
 	);
 	const accountsPromise = api("users/show", {
 		userIds: storedAccounts.map((x) => x.id),
@@ -256,12 +256,12 @@ export async function openAccountMenu(
 								{
 									type: "link",
 									text: i18n.ts.profile,
-									to: `/@${$i.username}`,
-									avatar: $i,
+									to: `/@${me.username}`,
+									avatar: me,
 								},
 								null,
 						  ]),
-					...(opts.includeCurrentAccount ? [createItem($i)] : []),
+					...(opts.includeCurrentAccount ? [createItem(me)] : []),
 					...accountItemPromises,
 					...(isMobile ?? false
 						? [
@@ -269,8 +269,8 @@ export async function openAccountMenu(
 								{
 									type: "link",
 									text: i18n.ts.profile,
-									to: `/@${$i.username}`,
-									avatar: $i,
+									to: `/@${me.username}`,
+									avatar: me,
 								},
 						  ]
 						: [
@@ -304,7 +304,7 @@ export async function openAccountMenu(
 	} else {
 		popupMenu(
 			[
-				...(opts.includeCurrentAccount ? [createItem($i)] : []),
+				...(opts.includeCurrentAccount ? [createItem(me)] : []),
 				...accountItemPromises,
 			],
 			ev.currentTarget ?? ev.target,

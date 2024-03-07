@@ -46,7 +46,7 @@ import { i18n } from "@/i18n";
 import MkInfo from "@/components/MkInfo.vue";
 import MkSuperMenu from "@/components/MkSuperMenu.vue";
 import { signout } from "@/account";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { unisonReload } from "@/scripts/unison-reload";
 import { instance } from "@/instance";
 import { useRouter } from "@/router";
@@ -291,7 +291,7 @@ watch(router.currentRef, (to) => {
 });
 
 const emailNotConfigured = computed(
-	() => instance.enableEmail && ($i.email == null || !$i.emailVerified),
+	() => instance.enableEmail && (me.email == null || !me.emailVerified),
 );
 
 provideMetadataReceiver((info) => {

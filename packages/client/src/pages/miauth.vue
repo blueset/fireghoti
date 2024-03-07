@@ -1,6 +1,6 @@
 <template>
 	<MkSpacer :content-max="800">
-		<div v-if="$i">
+		<div v-if="me">
 			<div v-if="state == 'waiting'" class="waiting _section">
 				<div class="_content">
 					<MkLoading />
@@ -83,7 +83,7 @@ import MkSignin from "@/components/MkSignin.vue";
 import MkButton from "@/components/MkButton.vue";
 import * as os from "@/os";
 import { login } from "@/account";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { appendQuery, query } from "@/scripts/url";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";

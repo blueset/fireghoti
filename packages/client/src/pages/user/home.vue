@@ -68,7 +68,7 @@
 									<span
 										v-if="
 											isSignedIn &&
-											$i.id !== user.id &&
+											me.id !== user.id &&
 											user.isFollowed
 										"
 										class="followed"
@@ -133,7 +133,7 @@
 								<span
 									v-if="
 										isSignedIn &&
-										$i.id !== user.id &&
+										me.id !== user.id &&
 										user.isFollowed
 									"
 									class="followed"
@@ -221,7 +221,7 @@
 								:text="user.description"
 								:is-note="false"
 								:author="user"
-								:i="$i"
+								:i="me"
 								:custom-emojis="user.emojis"
 							/>
 							<p v-else class="empty">
@@ -294,7 +294,7 @@
 									<Mfm
 										:text="field.value"
 										:author="user"
-										:i="$i"
+										:i="me"
 										:custom-emojis="user.emojis"
 										:colored="false"
 									/>
@@ -341,7 +341,7 @@
 						/>
 					</div>
 					<MkInfo
-						v-else-if="isSignedIn && $i.id === user.id"
+						v-else-if="isSignedIn && me.id === user.id"
 						style="margin: 12px 0"
 						>{{ i18n.ts.userPagePinTip }}</MkInfo
 					>
@@ -384,7 +384,7 @@ import { userPage } from "@/filters/user";
 import { defaultStore } from "@/store";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
-import { $i, isModerator, isSignedIn } from "@/reactiveAccount";
+import { me, isModerator, isSignedIn } from "@/me";
 import { host } from "@/config";
 import icon from "@/scripts/icon";
 

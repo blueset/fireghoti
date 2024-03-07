@@ -35,7 +35,7 @@ import * as os from "@/os";
 import { useRouter } from "@/router";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
-import { $i, isSignedIn } from "@/reactiveAccount";
+import { me, isSignedIn } from "@/me";
 import icon from "@/scripts/icon";
 
 const XHome = defineAsyncComponent(() => import("./home.vue"));
@@ -86,7 +86,7 @@ const headerTabs = computed(() =>
 					title: i18n.ts.overview,
 					icon: `${icon("ph-user")}`,
 				},
-				...((isSignedIn && $i.id === user.value.id) ||
+				...((isSignedIn && me.id === user.value.id) ||
 				user.value.publicReactions
 					? [
 							{
