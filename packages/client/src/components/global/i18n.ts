@@ -27,14 +27,14 @@ export default defineComponent({
 			if (nextBracketOpen === -1) {
 				parsed.push(str);
 				break;
-			} else {
-				if (nextBracketOpen > 0) parsed.push(str.substr(0, nextBracketOpen));
-				parsed.push({
-					arg: str.substring(nextBracketOpen + 1, nextBracketClose),
-				});
 			}
+			if (nextBracketOpen > 0)
+				parsed.push(str.substring(0, nextBracketOpen + 1));
+			parsed.push({
+				arg: str.substring(nextBracketOpen + 1, nextBracketClose),
+			});
 
-			str = str.substr(nextBracketClose + 1);
+			str = str.substring(nextBracketClose + 1);
 		}
 
 		return h(

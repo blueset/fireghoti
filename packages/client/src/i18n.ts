@@ -1,13 +1,36 @@
 import { markRaw } from "vue";
 import { locale } from "@/config";
-import { I18n } from "@/scripts/i18n";
 
-export const i18n = markRaw(new I18n(locale));
+class I18n<T extends Record<string, any>> {
+	public ts: T;
 
-// このファイルに書きたくないけどここに書かないと何故かVeturが認識しない
-declare module "@vue/runtime-core" {
-	interface ComponentCustomProperties {
-		$t: (typeof i18n)["t"];
-		$ts: (typeof i18n)["locale"];
+	constructor(locale: T) {
+		this.ts = locale;
+
+		// #region BIND
+		this.t = this.t.bind(this);
+		// #endregion
+	}
+
+	// string にしているのは、ドット区切りでのパス指定を許可するため
+	// なるべくこのメソッド使うよりもlocale直接参照の方がvueのキャッシュ効いてパフォーマンスが良いかも
+	public t(key: string, args?: Record<string, string | number>): string {
+		try {
+			let str = key
+				.split(".")
+				.reduce((o, i) => o[i], this.ts) as unknown as string;
+
+			if (args) {
+				for (const [k, v] of Object.entries(args)) {
+					str = str.replace(`{${k}}`, v.toString());
+				}
+			}
+			return str;
+		} catch (err) {
+			console.warn(`missing localization '${key}'`);
+			return key;
+		}
 	}
 }
+
+export const i18n = markRaw(new I18n(locale));
