@@ -54,7 +54,7 @@ import XNotification from "@/components/MkNotification.vue";
 import XList from "@/components/MkDateSeparatedList.vue";
 import XNote from "@/components/MkNote.vue";
 import { useStream } from "@/stream";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { i18n } from "@/i18n";
 
 const props = defineProps<{
@@ -73,7 +73,7 @@ const pagination: Paging = {
 		includeTypes: props.includeTypes ?? undefined,
 		excludeTypes: props.includeTypes
 			? undefined
-			: $i.mutingNotificationTypes,
+			: me.mutingNotificationTypes,
 		unreadOnly: props.unreadOnly,
 	})),
 };
@@ -81,7 +81,7 @@ const pagination: Paging = {
 const onNotification = (notification) => {
 	const isMuted = props.includeTypes
 		? !props.includeTypes.includes(notification.type)
-		: $i.mutingNotificationTypes.includes(notification.type);
+		: me.mutingNotificationTypes.includes(notification.type);
 	if (isMuted || document.visibilityState === "visible") {
 		stream.send("readNotification", {
 			id: notification.id,

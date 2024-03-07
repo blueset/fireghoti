@@ -59,6 +59,7 @@ copyUsername: "Copy username"
 searchUser: "Search for a user"
 reply: "Reply"
 replies: "Replies"
+toReply: "Reply"
 jumpToPrevious: "Jump to previous"
 loadMore: "Load more"
 showMore: "Show more"
@@ -89,6 +90,7 @@ listsDesc: "Lists let you create timelines with specified users. They can be acc
 noLists: "You don't have any lists"
 note: "Post"
 notes: "Posts"
+toPost: "Post"
 following: "Following"
 followers: "Followers"
 followsYou: "Follows you"
@@ -121,6 +123,7 @@ cantRenote: "This post can't be boosted."
 cantReRenote: "A boost can't be boosted."
 quote: "Quote"
 quotes: "Quotes"
+toQuote: "Quote"
 pinnedNote: "Pinned post"
 pinned: "Pin to profile"
 you: "You"
@@ -459,7 +462,7 @@ securityKeyName: "Key name"
 registerSecurityKey: "Register a security key"
 lastUsed: "Last used"
 unregister: "Unregister"
-passwordLessLogin: "Password-less login"
+passwordLessLogin: "Password-less sign in"
 resetPassword: "Reset password"
 newPasswordIs: "The new password is \"{password}\""
 reduceUiAnimation: "Reduce UI animations"
@@ -524,7 +527,7 @@ disableDrawer: "Don't use drawer-style menus"
 youHaveNoGroups: "You have no groups"
 joinOrCreateGroup: "Get invited to a group or create your own."
 noHistory: "No history available"
-signinHistory: "Login history"
+signinHistory: "Sign in history"
 disableAnimatedMfm: "Disable MFM with animation"
 doing: "Processing..."
 category: "Category"
@@ -671,6 +674,7 @@ pluginTokenRequestedDescription: "This plugin will be able to use the permission
   set here."
 notificationType: "Notification type"
 edit: "Edit"
+toEdit: "Edit"
 emailServer: "Email server"
 enableEmail: "Enable email distribution"
 emailConfigInfo: "Used to confirm your email during sign-up or if you forget your
@@ -713,8 +717,8 @@ useGlobalSetting: "Use global settings"
 useGlobalSettingDesc: "If turned on, your account's notification settings will be
   used. If turned off, individual configurations can be made."
 other: "Other"
-regenerateLoginToken: "Regenerate login token"
-regenerateLoginTokenDescription: "Regenerates the token used internally during login.
+regenerateLoginToken: "Regenerate sign in token"
+regenerateLoginTokenDescription: "Regenerates the token used internally during sign in.
   Normally this action is not necessary. If regenerated, all devices will be logged
   out."
 setMultipleBySeparatingWithSpace: "Separate multiple entries with spaces."
@@ -997,7 +1001,7 @@ check: "Check"
 driveCapOverrideLabel: "Change the drive capacity for this user"
 driveCapOverrideCaption: "Reset the capacity to default by inputting a value of 0
   or lower."
-requireAdminForView: "You must log in with an administrator account to view this."
+requireAdminForView: "You must sign in with an administrator account to view this."
 isSystemAccount: "This account is created and automatically operated by the system.
   Please do not moderate, edit, delete, or otherwise tamper with this account, or
   it may break your server."
@@ -1007,7 +1011,7 @@ document: "Documentation"
 numberOfPageCache: "Number of cached pages"
 numberOfPageCacheDescription: "Increasing this number will improve convenience for
   users but cause more server load as well as more memory to be used."
-logoutConfirm: "Really log out?"
+logoutConfirm: "Really sign out?"
 lastActiveDate: "Last used at"
 statusbar: "Status bar"
 pleaseSelect: "Select an option"
@@ -1104,10 +1108,8 @@ customKaTeXMacroDescription: "Set up macros to write mathematical expressions ea
   advanced syntax, such as conditional branching, cannot be used here."
 enableCustomKaTeXMacro: "Enable custom KaTeX macros"
 noteId: "Post ID"
-signupsDisabled: "Signups on this server are currently disabled, but you can always
-  sign up at another server! If you have an invitation code for this server, please
-  enter it below."
-findOtherInstance: "Find another server"
+signupsDisabled: "Signups on this server are currently disabled. If you have an invitation
+  code for this server, please enter it below."
 apps: "Apps"
 sendModMail: "Send Moderation Notice"
 preventAiLearning: "Prevent AI bot scraping"
@@ -1212,8 +1214,10 @@ searchRangeDescription: "If you want to filter the time period, enter it in this
 searchPostsWithFiles: "Only posts with files"
 searchCwAndAlt: "Include content warnings and file descriptions"
 publishTimelines: "Publish timelines for visitors"
-publishTimelinesDescription: "If enabled, the Local and Global timeline will be shown
+publishTimelinesDescription: "If enabled, the Local and Global timelines will be shown
   on {url} even when signed out."
+noAltTextWarning: "Some attached file(s) have no description. Did you forget to write?"
+showNoAltTextWarning: "Show a warning if you attempt to post files without a description"
 
 _emojiModPerm:
   unauthorized: "None"
@@ -1623,7 +1627,7 @@ _2fa:
   step2Url: "You can also enter this URL if you're using a desktop program:"
   step3Title: "Enter an authentication code"
   step3: "Enter the token provided by your app to finish setup."
-  step4: "From now on, any future login attempts will ask for such a login token."
+  step4: "From now on, any future sign in attempts will ask for such a token."
   securityKeyNotSupported: "Your browser does not support security keys."
   securityKeyInfo: "Besides fingerprint or PIN authentication, you can also setup
     authentication via hardware security keys that support FIDO2 to further secure
@@ -2216,3 +2220,4 @@ _iconSets:
 moreUrls: "Pinned pages"
 moreUrlsDescription: "Enter the pages you want to pin to the help menu in the lower
   left corner using this notation:\n\"Display name\": https://example.com/"
+messagingUnencryptedInfo: "Chats on Firefish are not end-to-end encrypted. Don't share any sensitive infomation over Firefish."

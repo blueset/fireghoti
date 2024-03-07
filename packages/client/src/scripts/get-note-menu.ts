@@ -1,7 +1,7 @@
 import type { Ref } from "vue";
 import { defineAsyncComponent } from "vue";
 import type { entities } from "firefish-js";
-import { $i, isModerator, isSignedIn } from "@/reactiveAccount";
+import { me, isModerator, isSignedIn } from "@/me";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
 import * as os from "@/os";
@@ -288,10 +288,10 @@ export function getNoteMenu(props: {
 			noteId: appearNote.id,
 		});
 
-		const isAppearAuthor = appearNote.userId === $i.id;
+		const isAppearAuthor = appearNote.userId === me.id;
 
 		menu = [
-			...(props.currentClipPage?.value.userId === $i.id
+			...(props.currentClipPage?.value.userId === me.id
 				? [
 						{
 							icon: `${icon("ph-minus-circle")}`,
@@ -349,7 +349,7 @@ export function getNoteMenu(props: {
 					  },
 			),
 			isAppearAuthor
-				? ($i.pinnedNoteIds || []).includes(appearNote.id)
+				? (me.pinnedNoteIds || []).includes(appearNote.id)
 					? {
 							icon: `${icon("ph-push-pin")}`,
 							text: i18n.ts.unpin,
@@ -445,7 +445,7 @@ export function getNoteMenu(props: {
 			isAppearAuthor
 				? {
 						icon: `${icon("ph-pencil-line")}`,
-						text: i18n.ts.edit,
+						text: i18n.ts.toEdit,
 						accent: true,
 						action: edit,
 				  }

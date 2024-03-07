@@ -8,6 +8,9 @@
 		/></template>
 		<div>
 			<MkSpacer :content-max="800">
+				<MkInfo :closeable="false" class="_gap">
+					<I18n :src="i18n.ts.messagingUnencryptedInfo"> </I18n>
+				</MkInfo>
 				<swiper
 					:round-lengths="true"
 					:touch-angle="25"
@@ -94,13 +97,14 @@ import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import MkButton from "@/components/MkButton.vue";
 import MkChatPreview from "@/components/MkChatPreview.vue";
+import MkInfo from "@/components/MkInfo.vue";
 import MkPagination from "@/components/MkPagination.vue";
 import * as os from "@/os";
 import { useStream } from "@/stream";
 import { useRouter } from "@/router";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { deviceKind } from "@/scripts/device-kind";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
@@ -199,7 +203,7 @@ function onRead(ids): void {
 			if (found.recipientId) {
 				found.isRead = true;
 			} else if (found.groupId) {
-				found.reads.push($i.id);
+				found.reads.push(me.id);
 			}
 		}
 	}

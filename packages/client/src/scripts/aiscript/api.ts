@@ -1,13 +1,13 @@
 import { utils, values } from "@syuilo/aiscript";
 import * as os from "@/os";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 
 export function createAiScriptEnv(opts) {
 	let apiRequests = 0;
 	return {
-		USER_ID: $i ? values.STR($i.id) : values.NULL,
-		USER_NAME: $i ? values.STR($i.name) : values.NULL,
-		USER_USERNAME: $i ? values.STR($i.username) : values.NULL,
+		USER_ID: me ? values.STR(me.id) : values.NULL,
+		USER_NAME: me ? values.STR(me.name) : values.NULL,
+		USER_USERNAME: me ? values.STR(me.username) : values.NULL,
 		"Mk:dialog": values.FN_NATIVE(async ([title, text, type]) => {
 			await os.alert({
 				type: type ? type.value : "info",

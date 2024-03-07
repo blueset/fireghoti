@@ -122,7 +122,7 @@ import { useStream } from "@/stream";
 import * as sound from "@/scripts/sound";
 import { vibrate } from "@/scripts/vibrate";
 import { i18n } from "@/i18n";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { defaultStore } from "@/store";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
@@ -200,7 +200,7 @@ async function fetch() {
 	connection.value.on("read", onRead);
 	connection.value.on("deleted", onDeleted);
 	connection.value.on("typers", (_typers) => {
-		typers.value = _typers.filter((u) => u.id !== $i?.id);
+		typers.value = _typers.filter((u) => u.id !== me?.id);
 	});
 
 	document.addEventListener("visibilitychange", onVisibilitychange);
@@ -258,7 +258,7 @@ function onMessage(message) {
 	const _isBottom = isBottomVisible(rootEl.value, 64);
 
 	pagingComponent.value.prepend(message);
-	if (message.userId !== $i?.id && !document.hidden) {
+	if (message.userId !== me?.id && !document.hidden) {
 		connection.value?.send("read", {
 			id: message.id,
 		});
@@ -269,7 +269,7 @@ function onMessage(message) {
 		nextTick(() => {
 			thisScrollToBottom();
 		});
-	} else if (message.userId !== $i?.id) {
+	} else if (message.userId !== me?.id) {
 		// Notify
 		notifyNewMessage();
 	}
@@ -341,7 +341,7 @@ function notifyNewMessage() {
 function onVisibilitychange() {
 	if (document.hidden) return;
 	for (const message of pagingComponent.value.items) {
-		if (message.userId !== $i?.id && !message.isRead) {
+		if (message.userId !== me?.id && !message.isRead) {
 			connection.value?.send("read", {
 				id: message.id,
 			});

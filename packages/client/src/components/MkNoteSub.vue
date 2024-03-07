@@ -50,7 +50,7 @@
 							<Mfm
 								:text="translation.text"
 								:author="appearNote.user"
-								:i="$i"
+								:i="me"
 								:lang="targetLang"
 								:custom-emojis="appearNote.emojis"
 							/>
@@ -211,7 +211,7 @@ import { useRouter } from "@/router";
 import { userPage } from "@/filters/user";
 import * as os from "@/os";
 import { reactionPicker } from "@/scripts/reaction-picker";
-import { $i, isSignedIn } from "@/reactiveAccount";
+import { me, isSignedIn } from "@/me";
 import { i18n } from "@/i18n";
 import { useNoteCapture } from "@/scripts/use-note-capture";
 import { defaultStore } from "@/store";
@@ -269,7 +269,7 @@ const isDeleted = ref(false);
 const muted = ref(
 	getWordSoftMute(
 		note.value,
-		$i?.id,
+		me?.id,
 		defaultStore.state.mutedWords,
 		defaultStore.state.mutedLangs,
 	),

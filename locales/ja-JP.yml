@@ -53,6 +53,7 @@ copyUsername: "ユーザー名をコピー"
 searchUser: "ユーザーを検索"
 reply: "返信"
 replies: "返信"
+toReply: "返信"
 loadMore: "もっと読み込む"
 showMore: "もっと見る"
 showLess: "閉じる"
@@ -75,6 +76,7 @@ lists: "リスト"
 noLists: "リストはありません"
 note: "投稿"
 notes: "投稿"
+toPost: "投稿する"
 following: "フォロー"
 followers: "フォロワー"
 followsYou: "フォローされています"
@@ -105,6 +107,7 @@ cantRenote: "この投稿はブーストできません。"
 cantReRenote: "ブーストをブーストすることはできません。"
 quote: "引用"
 quotes: "引用"
+toQuote: "引用する"
 pinnedNote: "ピン留めされた投稿"
 pinned: "ピン留め"
 you: "あなた"
@@ -606,6 +609,7 @@ tokenRequested: "アカウントへのアクセス許可"
 pluginTokenRequestedDescription: "このプラグインはここで設定した権限を行使できるようになります。"
 notificationType: "通知の種類"
 edit: "編集"
+toEdit: "編集する"
 emailServer: "メールサーバー"
 enableEmail: "メール配信機能を有効化する"
 emailConfigInfo: "メールアドレスの確認やパスワードリセットの際に使います"
@@ -1018,6 +1022,8 @@ searchPostsWithFiles: "添付ファイルのある投稿のみ"
 searchCwAndAlt: "閲覧注意の注釈と添付ファイルの代替テキストも検索する"
 publishTimelines: "非ログインユーザーにもタイムラインを公開する"
 publishTimelinesDescription: "有効にすると、{url} でローカルタイムラインとグローバルタイムラインが公開されます。"
+noAltTextWarning: "説明が書かれていない添付ファイルがあります。書き忘れてはいませんか？"
+showNoAltTextWarning: "説明が書かれていない添付ファイルを投稿しようとした場合に警告する"
 
 _sensitiveMediaDetection:
   description: "機械学習を使って自動でセンシティブなメディアを検出し、モデレーションに役立てられます。サーバーの負荷が少し増えます。"
@@ -1941,9 +1947,7 @@ sendModMail: モデレーション通知を送る
 deleted: 削除済み
 editNote: 投稿を編集
 edited: '編集済み: {date} {time}'
-signupsDisabled: 
-  現在、このサーバーでは新規登録が一般開放されていません。招待コードをお持ちの場合には、以下の欄に入力してください。招待コードをお持ちでない場合にも、新規登録を開放している他のサーバーには入れますよ！
-findOtherInstance: 他のサーバーを探す
+signupsDisabled: 現在、このサーバーでは新規登録が一般開放されていません。招待コードをお持ちの場合には、以下の欄に入力してください。
 newer: 新しい投稿
 older: 古い投稿
 accessibility: アクセシビリティ

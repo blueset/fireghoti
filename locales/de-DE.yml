@@ -2024,7 +2024,6 @@ moveAccountDescription: 'Dieser Vorgang kann nicht rückgängig gemacht werden! 
   sie vor dem Umzug dieses Nutzerkontos sicher, dass Sie einen Namen für Ihr neues
   Nutzerkonto eingerichtet haben. Bitte geben sie die Bezeichnung des neuen Nutzerkontos
   wie folgt ein: @name@server.xyz'
-findOtherInstance: Einen anderen Server finden
 sendPushNotificationReadMessage: Löschung der Push-Benachrichtigungen sobald die entsprechenden
   Benachrichtigungen oder Nachrichten gelesen wurden
 signupsDisabled: Derzeit sind keine Anmeldungen auf diesem Server möglich! Anmeldungen

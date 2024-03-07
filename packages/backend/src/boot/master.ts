@@ -149,7 +149,7 @@ function showNodejsVersion(): void {
 
 	nodejsLogger.info(`Version ${process.version} detected.`);
 
-	const minVersion = "v18.16.0";
+	const minVersion = "v18.17.0";
 	if (semver.lt(process.version, minVersion)) {
 		nodejsLogger.error(`At least Node.js ${minVersion} required!`);
 		process.exit(1);

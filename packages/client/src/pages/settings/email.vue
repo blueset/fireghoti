@@ -6,11 +6,11 @@
 				<template #prefix
 					><i :class="icon('ph-envelope-simple-open')"></i
 				></template>
-				<template v-if="$i.email && !$i.emailVerified" #caption>{{
+				<template v-if="me.email && !me.emailVerified" #caption>{{
 					i18n.ts.verificationEmailSent
 				}}</template>
 				<template
-					v-else-if="emailAddress === $i.email && $i.emailVerified"
+					v-else-if="emailAddress === me.email && me.emailVerified"
 					#caption
 					><i
 						:class="icon('ph-check')"
@@ -23,7 +23,7 @@
 
 		<FormSection>
 			<FormSwitch
-				:model-value="$i.receiveAnnouncementEmail"
+				:model-value="me.receiveAnnouncementEmail"
 				@update:modelValue="onChangeReceiveAnnouncementEmail"
 			>
 				{{ i18n.ts.receiveAnnouncementFromInstance }}
@@ -66,12 +66,12 @@ import FormSection from "@/components/form/section.vue";
 import FormInput from "@/components/form/input.vue";
 import FormSwitch from "@/components/form/switch.vue";
 import * as os from "@/os";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
 
-const emailAddress = ref($i!.email);
+const emailAddress = ref(me!.email);
 
 const onChangeReceiveAnnouncementEmail = (v) => {
 	os.api("i/update", {
@@ -93,22 +93,22 @@ const saveEmailAddress = () => {
 };
 
 const emailNotification_mention = ref(
-	$i!.emailNotificationTypes.includes("mention"),
+	me!.emailNotificationTypes.includes("mention"),
 );
 const emailNotification_reply = ref(
-	$i!.emailNotificationTypes.includes("reply"),
+	me!.emailNotificationTypes.includes("reply"),
 );
 const emailNotification_quote = ref(
-	$i!.emailNotificationTypes.includes("quote"),
+	me!.emailNotificationTypes.includes("quote"),
 );
 const emailNotification_follow = ref(
-	$i!.emailNotificationTypes.includes("follow"),
+	me!.emailNotificationTypes.includes("follow"),
 );
 const emailNotification_receiveFollowRequest = ref(
-	$i!.emailNotificationTypes.includes("receiveFollowRequest"),
+	me!.emailNotificationTypes.includes("receiveFollowRequest"),
 );
 const emailNotification_groupInvited = ref(
-	$i!.emailNotificationTypes.includes("groupInvited"),
+	me!.emailNotificationTypes.includes("groupInvited"),
 );
 
 const saveNotificationSettings = () => {

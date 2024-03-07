@@ -1,6 +1,6 @@
 import { markRaw, ref } from "vue";
 import { Storage } from "./pizzax";
-import { isSignedIn } from "./reactiveAccount";
+import { isSignedIn } from "./me";
 
 export const postFormActions = [];
 export const userActions = [];
@@ -427,6 +427,10 @@ export const defaultStore = markRaw(
 		pullToRefreshThreshold: {
 			where: "device",
 			default: 150,
+		},
+		showNoAltTextWarning: {
+			where: "account",
+			default: true,
 		},
 	}),
 );

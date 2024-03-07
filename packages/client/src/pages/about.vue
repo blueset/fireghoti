@@ -28,7 +28,7 @@
 						<div
 							class="_formBlock fwhjspax"
 							:style="{
-								backgroundImage: `url(${$instance.bannerUrl})`,
+								backgroundImage: `url(${instance.bannerUrl})`,
 							}"
 						>
 							<div class="content">
@@ -41,7 +41,7 @@
 									@click="easterEgg"
 								/>
 								<div class="name">
-									<b>{{ $instance.name || host }}</b>
+									<b>{{ instance.name || host }}</b>
 								</div>
 							</div>
 						</div>
@@ -49,7 +49,7 @@
 						<MkKeyValue class="_formBlock">
 							<template #key>{{ i18n.ts.description }}</template>
 							<template #value
-								><div v-html="$instance.description"></div
+								><div v-html="instance.description"></div
 							></template>
 						</MkKeyValue>
 
@@ -70,7 +70,7 @@
 										i18n.ts.administrator
 									}}</template>
 									<template #value>{{
-										$instance.maintainerName
+										instance.maintainerName
 									}}</template>
 								</MkKeyValue>
 								<MkKeyValue class="_formBlock">
@@ -78,20 +78,20 @@
 										i18n.ts.contact
 									}}</template>
 									<template #value>{{
-										$instance.maintainerEmail
+										instance.maintainerEmail
 									}}</template>
 								</MkKeyValue>
 							</FormSplit>
 							<FormLink
-								v-if="$instance.tosUrl"
-								:to="$instance.tosUrl"
+								v-if="instance.tosUrl"
+								:to="instance.tosUrl"
 								class="_formBlock"
 								external
 								>{{ i18n.ts.tos }}</FormLink
 							>
 							<FormLink
-								v-if="$instance.donationLink"
-								:to="$instance.donationLink"
+								v-if="instance.donationLink"
+								:to="instance.donationLink"
 								external
 							>
 								<template #icon
@@ -99,7 +99,7 @@
 								></template>
 								{{
 									i18n.t("_aboutFirefish.donateHost", {
-										host: $instance.name || host,
+										host: instance.name || host,
 									})
 								}}
 								<template #suffix>Donate</template>
@@ -190,7 +190,7 @@ import number from "@/filters/number";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { deviceKind } from "@/scripts/device-kind";
-import { isModerator } from "@/reactiveAccount";
+import { isModerator } from "@/me";
 import { instance } from "@/instance";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";

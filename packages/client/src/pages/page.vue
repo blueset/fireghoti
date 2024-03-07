@@ -52,7 +52,7 @@
 									/></MkA>
 									<template
 										v-if="
-											isSignedIn && $i.id === page.userId
+											isSignedIn && me.id === page.userId
 										"
 									>
 										<MkA
@@ -63,7 +63,7 @@
 											><i :class="icon('ph-pencil')"
 										/></MkA>
 										<button
-											v-if="$i.pinnedPageId === page.id"
+											v-if="me.pinnedPageId === page.id"
 											v-tooltip="i18n.ts.unpin"
 											class="menu _button"
 											@click="pin(false)"
@@ -150,7 +150,7 @@
 									<MkAcct :user="page.user" />
 								</div>
 								<MkFollowButton
-									v-if="!$i || $i.id != page.user.id"
+									v-if="!me || me.id != page.user.id"
 									:user="page.user"
 									:inline="true"
 									:transparent="false"
@@ -161,9 +161,9 @@
 						</div>
 						<!-- <div class="links">
 						<MkA :to="`/@${username}/pages/${pageName}/view-source`" class="link">{{ i18n.ts._pages.viewSource }}</MkA>
-						<template v-if="isSignedIn && $i.id === page.userId">
+						<template v-if="isSignedIn && me.id === page.userId">
 							<MkA :to="`/pages/edit/${page.id}`" class="link">{{ i18n.ts._pages.editThisPage }}</MkA>
-							<button v-if="$i.pinnedPageId === page.id" class="link _textButton" @click="pin(false)">{{ i18n.ts.unpin }}</button>
+							<button v-if="me.pinnedPageId === page.id" class="link _textButton" @click="pin(false)">{{ i18n.ts.unpin }}</button>
 							<button v-else class="link _textButton" @click="pin(true)">{{ i18n.ts.pin }}</button>
 						</template>
 					</div> -->
@@ -215,7 +215,7 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import { shareAvailable } from "@/scripts/share-available";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
-import { isSignedIn } from "@/reactiveAccount";
+import { isSignedIn } from "@/me";
 
 const props = defineProps<{
 	pageName: string;

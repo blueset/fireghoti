@@ -10,7 +10,7 @@
 				</div>
 				<div :class="$style.text">
 					{{ i18n.ts._aboutFirefish.pleaseDonateToFirefish }}
-					<p v-if="$instance.donationLink">
+					<p v-if="instance.donationLink">
 						{{
 							i18n.t("_aboutFirefish.pleaseDonateToHost", {
 								host: hostname,
@@ -27,9 +27,9 @@
 						>{{ i18n.ts._aboutFirefish.donate }}</MkButton
 					>
 					<MkButton
-						v-if="$instance.donationLink"
+						v-if="instance.donationLink"
 						gradate
-						@click="openExternal($instance.donationLink)"
+						@click="openExternal(instance.donationLink)"
 						>{{
 							i18n.t("_aboutFirefish.donateHost", {
 								host: hostname,

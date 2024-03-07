@@ -26,12 +26,12 @@ import FormTextarea from "@/components/form/textarea.vue";
 import MkInfo from "@/components/MkInfo.vue";
 import MkButton from "@/components/MkButton.vue";
 import * as os from "@/os";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
 
-const instanceMutes = ref($i!.mutedInstances.join("\n"));
+const instanceMutes = ref(me!.mutedInstances.join("\n"));
 const changed = ref(false);
 
 async function save() {

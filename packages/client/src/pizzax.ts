@@ -4,7 +4,7 @@ import type { Ref } from "vue";
 import { onUnmounted, ref, watch } from "vue";
 import { api } from "./os";
 import { useStream } from "./stream";
-import { $i, isSignedIn } from "@/reactiveAccount";
+import { me, isSignedIn } from "@/me";
 
 type StateDef = Record<
 	string,
@@ -45,12 +45,12 @@ export class Storage<T extends StateDef> {
 		);
 		const deviceAccountState = isSignedIn
 			? JSON.parse(
-					localStorage.getItem(`${this.keyForLocalStorage}::${$i.id}`) || "{}",
+					localStorage.getItem(`${this.keyForLocalStorage}::${me.id}`) || "{}",
 			  )
 			: {};
 		const registryCache = isSignedIn
 			? JSON.parse(
-					localStorage.getItem(`${this.keyForLocalStorage}::cache::${$i.id}`) ||
+					localStorage.getItem(`${this.keyForLocalStorage}::cache::${me.id}`) ||
 						"{}",
 			  )
 			: {};
@@ -104,7 +104,7 @@ export class Storage<T extends StateDef> {
 							}
 						}
 						localStorage.setItem(
-							`${this.keyForLocalStorage}::cache::${$i.id}`,
+							`${this.keyForLocalStorage}::cache::${me.id}`,
 							JSON.stringify(cache),
 						);
 					},
@@ -135,13 +135,13 @@ export class Storage<T extends StateDef> {
 
 					const cache = JSON.parse(
 						localStorage.getItem(
-							`${this.keyForLocalStorage}::cache::${$i.id}`,
+							`${this.keyForLocalStorage}::cache::${me.id}`,
 						) || "{}",
 					);
 					if (cache[key] !== value) {
 						cache[key] = value;
 						localStorage.setItem(
-							`${this.keyForLocalStorage}::cache::${$i.id}`,
+							`${this.keyForLocalStorage}::cache::${me.id}`,
 							JSON.stringify(cache),
 						);
 					}
@@ -171,11 +171,11 @@ export class Storage<T extends StateDef> {
 			case "deviceAccount": {
 				if (!isSignedIn) break;
 				const deviceAccountState = JSON.parse(
-					localStorage.getItem(`${this.keyForLocalStorage}::${$i.id}`) || "{}",
+					localStorage.getItem(`${this.keyForLocalStorage}::${me.id}`) || "{}",
 				);
 				deviceAccountState[key] = value;
 				localStorage.setItem(
-					`${this.keyForLocalStorage}::${$i.id}`,
+					`${this.keyForLocalStorage}::${me.id}`,
 					JSON.stringify(deviceAccountState),
 				);
 				break;
@@ -183,12 +183,12 @@ export class Storage<T extends StateDef> {
 			case "account": {
 				if (!isSignedIn) break;
 				const cache = JSON.parse(
-					localStorage.getItem(`${this.keyForLocalStorage}::cache::${$i.id}`) ||
+					localStorage.getItem(`${this.keyForLocalStorage}::cache::${me.id}`) ||
 						"{}",
 				);
 				cache[key] = value;
 				localStorage.setItem(
-					`${this.keyForLocalStorage}::cache::${$i.id}`,
+					`${this.keyForLocalStorage}::cache::${me.id}`,
 					JSON.stringify(cache),
 				);
 				api("i/registry/set", {

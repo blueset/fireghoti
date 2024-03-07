@@ -103,7 +103,7 @@
 				i18n.ts.enableTimelineStreaming
 			}}</FormSwitch>
 			<!-- <FormSwitch
-				v-model="$i.injectFeaturedNote"
+				v-model="me.injectFeaturedNote"
 				class="_formBlock"
 				@update:modelValue="onChangeInjectFeaturedNote"
 			>
@@ -120,6 +120,9 @@
 			}}</FormSwitch>
 			<FormSwitch v-model="openServerInfo" class="_formBlock">{{
 				i18n.ts.openServerInfo
+			}}</FormSwitch>
+			<FormSwitch v-model="showNoAltTextWarning" class="_formBlock">{{
+				i18n.ts.showNoAltTextWarning
 			}}</FormSwitch>
 
 			<FormSelect v-model="serverDisconnectedBehavior" class="_formBlock">
@@ -294,7 +297,7 @@
 				}}</template></FormSwitch
 			>
 			<FormSwitch
-				v-if="$i?.isAdmin"
+				v-if="me?.isAdmin"
 				v-model="showAdminUpdates"
 				class="_formBlock"
 				>{{ i18n.ts.showAdminUpdates }}</FormSwitch
@@ -373,7 +376,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from "vue";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import FormSwitch from "@/components/form/switch.vue";
 import FormSelect from "@/components/form/select.vue";
 import FormRadios from "@/components/form/radios.vue";
@@ -524,13 +527,16 @@ const enablePullToRefresh = computed(
 const pullToRefreshThreshold = computed(
 	defaultStore.makeGetterSetter("pullToRefreshThreshold"),
 );
+const showNoAltTextWarning = computed(
+	defaultStore.makeGetterSetter("showNoAltTextWarning"),
+);
 
 // This feature (along with injectPromo) is currently disabled
 // function onChangeInjectFeaturedNote(v) {
 // 	os.api("i/update", {
 // 		injectFeaturedNote: v,
 // 	}).then((i) => {
-// 		$i!.injectFeaturedNote = i.injectFeaturedNote;
+// 		me!.injectFeaturedNote = i.injectFeaturedNote;
 // 	});
 // }
 

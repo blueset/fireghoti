@@ -21,7 +21,7 @@ import { Parser } from "@syuilo/aiscript";
 import XBlock from "./page.block.vue";
 import { Hpml } from "@/scripts/hpml/evaluator";
 import { url } from "@/config";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { defaultStore } from "@/store";
 
 export default defineComponent({
@@ -37,7 +37,7 @@ export default defineComponent({
 	setup(props, ctx) {
 		const hpml = new Hpml(props.page, {
 			randomSeed: Math.random(),
-			visitor: $i,
+			visitor: me,
 			url,
 			enableAiScript: !defaultStore.state.disablePagesScript,
 		});

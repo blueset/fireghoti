@@ -32,14 +32,14 @@ import {
 } from "vue";
 import { set } from "@/scripts/idb-proxy";
 
-import { login, refreshAccount, signout, updateAccount } from "@/account";
+import { signIn, refreshAccount, signOut, updateAccount } from "@/account";
 import components from "@/components";
 import { lang, ui, version } from "@/config";
 import directives from "@/directives";
 import { i18n } from "@/i18n";
 import { fetchInstance, instance } from "@/instance";
 import { alert, api, confirm, popup, post, toast } from "@/os";
-import { $i, isSignedIn } from "@/reactiveAccount";
+import { me, isSignedIn } from "@/me";
 import { compareFirefishVersions } from "@/scripts/compare-versions";
 import { deviceKind } from "@/scripts/device-kind";
 import { getAccountFromId } from "@/scripts/get-account-from-id";
@@ -75,8 +75,6 @@ function checkForSplash() {
 		console.warn("Development mode!!!");
 
 		console.info(`vue ${vueVersion}`);
-
-		(window as any).$i = $i;
 
 		window.addEventListener("error", (event) => {
 			console.error(event);
@@ -132,10 +130,10 @@ function checkForSplash() {
 	if (loginId) {
 		const target = getUrlWithoutLoginId(location.href);
 
-		if (!$i || $i.id !== loginId) {
+		if (!me || me.id !== loginId) {
 			const account = await getAccountFromId(loginId);
 			if (account) {
-				await login(account.token, target);
+				await signIn(account.token, target);
 			}
 		}
 
@@ -145,7 +143,7 @@ function checkForSplash() {
 	// #endregion
 
 	// #region Fetch user
-	if ($i?.token) {
+	if (me?.token) {
 		if (_DEV_) {
 			console.log("account cache found. refreshing...");
 		}
@@ -166,7 +164,7 @@ function checkForSplash() {
 
 			try {
 				document.body.innerHTML = "<div>Please wait...</div>";
-				await login(i);
+				await signIn(i);
 			} catch (err) {
 				// Render the error screen
 				// TODO: ちゃんとしたコンポーネントをレンダリングする(v10とかのトラブルシューティングゲーム付きのやつみたいな)
@@ -192,7 +190,7 @@ function checkForSplash() {
 	const app = createApp(
 		window.location.search === "?zen"
 			? defineAsyncComponent(() => import("@/ui/zen.vue"))
-			: !$i
+			: !me
 			  ? defineAsyncComponent(() => import("@/ui/visitor.vue"))
 			  : ui === "deck"
 				  ? defineAsyncComponent(() => import("@/ui/deck.vue"))
@@ -202,11 +200,6 @@ function checkForSplash() {
 	if (_DEV_) {
 		app.config.performance = true;
 	}
-
-	app.config.globalProperties = {
-		$i,
-		$instance: instance,
-	};
 
 	widgets(app);
 	directives(app);
@@ -259,7 +252,7 @@ function checkForSplash() {
 				defaultStore.state.showUpdates
 			) {
 				// ログインしてる場合だけ
-				if ($i) {
+				if (me) {
 					popup(
 						defineAsyncComponent(() => import("@/components/MkUpdated.vue")),
 						{},
@@ -433,7 +426,7 @@ function checkForSplash() {
 		// only add post shortcuts if logged in
 		hotkeys["p|n"] = post;
 
-		if ($i.isDeleted) {
+		if (me.isDeleted) {
 			alert({
 				type: "warning",
 				text: i18n.ts.accountDeletionInProgress,
@@ -447,7 +440,7 @@ function checkForSplash() {
 			if (Date.now() - lastUsedDate > 1000 * 60 * 60 * 2) {
 				toast(
 					i18n.t("welcomeBackWithName", {
-						name: $i.name || $i.username,
+						name: me.name || me.username,
 					}),
 				);
 			}
@@ -460,7 +453,7 @@ function checkForSplash() {
 		const neverShowDonationInfo = localStorage.getItem("neverShowDonationInfo");
 		if (
 			neverShowDonationInfo !== "true" &&
-			new Date($i.createdAt).getTime() < Date.now() - 1000 * 60 * 60 * 24 * 3 &&
+			new Date(me.createdAt).getTime() < Date.now() - 1000 * 60 * 60 * 24 * 3 &&
 			!location.pathname.startsWith("/miauth")
 		) {
 			if (
@@ -549,7 +542,7 @@ function checkForSplash() {
 		// トークンが再生成されたとき
 		// このままではMisskeyが利用できないので強制的にサインアウトさせる
 		main.on("myTokenRegenerated", () => {
-			signout();
+			signOut();
 		});
 	}
 

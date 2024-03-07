@@ -4,22 +4,22 @@
 			<div class="top">
 				<div
 					class="banner"
-					:user="$i"
-					:style="{ backgroundImage: `url(${$i.bannerUrl})` }"
+					:user="me"
+					:style="{ backgroundImage: `url(${me.bannerUrl})` }"
 				></div>
 				<button
 					v-click-anime
 					v-tooltip.noDelay.right="
-						`${i18n.ts.account}: @${$i.username}`
+						`${i18n.ts.account}: @${me.username}`
 					"
 					class="item _button account"
 					@click="openAccountMenu"
 				>
 					<MkAvatar
-						:user="$i"
+						:user="me"
 						class="icon"
 						disable-link
-					/><!-- <MkAcct class="text" :user="$i"/> -->
+					/><!-- <MkAcct class="text" :user="me"/> -->
 				</button>
 			</div>
 			<nav class="middle">
@@ -93,7 +93,7 @@
 					><span class="text">{{ i18n.ts.controlPanel }}</span>
 				</MkA>
 				<MkA
-					v-else-if="$i.emojiModPerm !== 'unauthorized'"
+					v-else-if="me.emojiModPerm !== 'unauthorized'"
 					v-click-anime
 					v-tooltip.noDelay.right="i18n.ts.customEmojis"
 					class="item _button"
@@ -128,13 +128,13 @@
 			</nav>
 			<div class="bottom">
 				<button
-					v-tooltip.noDelay.right="i18n.ts.note"
+					v-tooltip.noDelay.right="i18n.ts.toPost"
 					class="item _button post"
 					data-cy-open-post-form
 					@click="os.post"
 				>
 					<i :class="icon('icon ph-pencil ph-fw ph-lg')"></i
-					><span class="text">{{ i18n.ts.note }}</span>
+					><span class="text">{{ i18n.ts.toPost }}</span>
 				</button>
 				<button
 					v-tooltip.noDelay.right="i18n.ts.help"
@@ -145,12 +145,6 @@
 						:class="icon('help icon ph-info ph-xl ph-fw', false)"
 					></i>
 				</button>
-				<!-- <button v-click-anime v-tooltip.noDelay.right="$instance.name ?? i18n.ts.instance" class="item _button instance" @click="openInstanceMenu">
-				<img :src="$instance.faviconUrl || $instance.iconUrl || '/favicon.ico'" alt="" class="icon"/>
-			</button> -->
-				<!-- <button v-click-anime v-tooltip.noDelay.right="`${i18n.ts.account}: @${$i.username}`" class="item _button account" @click="openAccountMenu">
-				<MkAvatar :user="$i" class="account"/><MkAcct class="text" :user="$i"/>
-			</button> -->
 			</div>
 		</div>
 	</header>
@@ -161,7 +155,7 @@ import { computed, defineAsyncComponent, ref, watch } from "vue";
 import * as os from "@/os";
 import { navbarItemDef } from "@/navbar";
 import { openAccountMenu as openAccountMenu_ } from "@/account";
-import { $i, isAdmin, isModerator } from "@/reactiveAccount";
+import { me, isAdmin, isModerator } from "@/me";
 import { openHelpMenu_ } from "@/scripts/helpMenu";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";

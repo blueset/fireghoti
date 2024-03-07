@@ -7,7 +7,7 @@
 			i18n.ts._accountDelete.sendEmail
 		}}</FormInfo>
 		<FormButton
-			v-if="!$i.isDeleted"
+			v-if="!me.isDeleted"
 			danger
 			class="_formBlock"
 			@click="deleteAccount"
@@ -23,7 +23,7 @@
 import FormInfo from "@/components/MkInfo.vue";
 import FormButton from "@/components/MkButton.vue";
 import * as os from "@/os";
-import { signout } from "@/account";
+import { signOut } from "@/account";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
@@ -51,7 +51,7 @@ async function deleteAccount() {
 		title: i18n.ts._accountDelete.started,
 	});
 
-	await signout();
+	await signOut();
 }
 
 definePageMetadata({

@@ -14,7 +14,7 @@
 					</div>
 				</template>
 				<template #default="{ items }">
-					<MkInfo v-if="$i?.isLocked === false" warn class="info"
+					<MkInfo v-if="me?.isLocked === false" warn class="info"
 						>{{ i18n.ts.silencedWarning }}
 					</MkInfo>
 					<div class="mk-follow-requests">
@@ -50,7 +50,7 @@
 										:text="req.follower.description"
 										:is-note="false"
 										:author="req.follower"
-										:i="$i"
+										:i="me"
 										:custom-emojis="req.follower.emojis"
 										:plain="true"
 										:nowrap="true"
@@ -89,7 +89,7 @@ import { userPage } from "@/filters/user";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import icon from "@/scripts/icon";
 
 const paginationComponent = ref<InstanceType<typeof MkPagination>>();

@@ -36,7 +36,7 @@
 <script lang="ts" setup>
 import { toUnicode } from "punycode";
 import { host as localHost } from "@/config";
-import { $i, isSignedIn } from "@/reactiveAccount";
+import { me, isSignedIn } from "@/me";
 import { defaultStore } from "@/store";
 
 const props = defineProps<{
@@ -53,8 +53,8 @@ const url = `/${canonical}`;
 
 const isMe =
 	isSignedIn &&
-	`@${props.username}@${toUnicode(props.host)}` ===
-		`@${$i.username}@${toUnicode(localHost)}`.toLowerCase();
+	`@${props.username}@${toUnicode(props.host)}`.toLowerCase() ===
+		`@${me.username}@${toUnicode(localHost)}`.toLowerCase();
 </script>
 
 <style lang="scss" scoped>

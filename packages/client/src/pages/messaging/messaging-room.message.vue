@@ -25,7 +25,7 @@
 						ref="text"
 						class="text"
 						:text="message.text"
-						:i="$i"
+						:i="me"
 					/>
 				</div>
 				<div v-else class="content">
@@ -90,7 +90,7 @@ import XMediaList from "@/components/MkMediaList.vue";
 import { extractUrlFromMfm } from "@/scripts/extract-url-from-mfm";
 import MkUrlPreview from "@/components/MkUrlPreview.vue";
 import * as os from "@/os";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
@@ -99,7 +99,7 @@ const props = defineProps<{
 	isGroup?: boolean;
 }>();
 
-const isMe = computed(() => props.message.userId === $i?.id);
+const isMe = computed(() => props.message.userId === me?.id);
 const urls = computed(() =>
 	props.message.text ? extractUrlFromMfm(mfm.parse(props.message.text)) : [],
 );

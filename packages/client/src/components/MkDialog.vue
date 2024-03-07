@@ -144,16 +144,17 @@
 						:disabled="okButtonDisabled"
 						@click="ok"
 						>{{
-							showCancelButton || input || select
+							okText ??
+							(showCancelButton || input || select
 								? i18n.ts.ok
-								: i18n.ts.gotIt
+								: i18n.ts.gotIt)
 						}}</MkButton
 					>
 					<MkButton
 						v-if="showCancelButton || input || select"
 						inline
 						@click="cancel"
-						>{{ i18n.ts.cancel }}</MkButton
+						>{{ cancelText ?? i18n.ts.cancel }}</MkButton
 					>
 				</div>
 				<div v-else>
@@ -194,13 +195,11 @@
 
 <script lang="ts" setup>
 import { computed, onBeforeUnmount, onMounted, ref, shallowRef } from "vue";
-import { acct } from "firefish-js";
 import MkModal from "@/components/MkModal.vue";
 import MkButton from "@/components/MkButton.vue";
 import MkInput from "@/components/form/input.vue";
 import MkTextarea from "@/components/form/textarea.vue";
 import MkSelect from "@/components/form/select.vue";
-import * as os from "@/os";
 import { i18n } from "@/i18n";
 import iconClass from "@/scripts/icon";
 

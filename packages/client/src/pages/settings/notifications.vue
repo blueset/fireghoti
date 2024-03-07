@@ -54,7 +54,7 @@ import { notificationTypes } from "firefish-js";
 import FormButton from "@/components/MkButton.vue";
 import FormSection from "@/components/form/section.vue";
 import * as os from "@/os";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import MkPushNotificationAllowButton from "@/components/MkPushNotificationAllowButton.vue";
@@ -83,7 +83,7 @@ async function readAllNotifications() {
 
 function configure() {
 	const includingTypes = notificationTypes.filter(
-		(x) => !$i!.mutingNotificationTypes.includes(x),
+		(x) => !me!.mutingNotificationTypes.includes(x),
 	);
 	os.popup(
 		defineAsyncComponent(
@@ -103,7 +103,7 @@ function configure() {
 						),
 					})
 					.then((i) => {
-						$i!.mutingNotificationTypes = i.mutingNotificationTypes;
+						me!.mutingNotificationTypes = i.mutingNotificationTypes;
 					});
 			},
 		},
