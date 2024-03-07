@@ -257,7 +257,7 @@ export function apiTimelineMastodon(router: Router): void {
 			try {
 				const data = await client.addAccountsToList(
 					convertId(ctx.params.id, IdType.FirefishId),
-					(ctx.body.account_ids as string[]).map((id) =>
+					(ctx.request.body.account_ids as string[]).map((id) =>
 						convertId(id, IdType.FirefishId),
 					),
 				);
@@ -275,7 +275,7 @@ export function apiTimelineMastodon(router: Router): void {
 			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
-			let accountIds = ctx.query.account_ids || ctx.query["account_ids[]"] || ctx.body.account_ids;
+			let accountIds = ctx.query.account_ids || ctx.query["account_ids[]"] || ctx.request.body.account_ids;
 			if (typeof accountIds === "string") {
 				accountIds = [accountIds];
 			}

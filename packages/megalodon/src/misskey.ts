@@ -1474,6 +1474,7 @@ export default class Misskey implements MegalodonInterface {
 			cache,
 		);
 		status.bookmarked = await this.isStatusBookmarked(n.id);
+		status.reblogged = await this.isStatusReblogged(n.id);
 		return this.addMentionsToStatus(status, cache);
 	}
 
@@ -1483,6 +1484,16 @@ export default class Misskey implements MegalodonInterface {
 				noteId: id,
 			})
 			.then((p) => p.data.isFavorited ?? false);
+	}
+	
+	public async isStatusReblogged(id: string): Promise<boolean> {
+		return this.client
+			.post<MisskeyAPI.Entity.User>("/api/i", {})
+			.then((p) => this.client.post<Array<MisskeyAPI.Entity.Note>>("/api/notes/renotes", {
+				limit: 1,
+				noteId: id,
+				userId: p.data.id,
+			})).then(p => p.data.length > 0);
 	}
 
 	public async addUserDetailsToStatus(
