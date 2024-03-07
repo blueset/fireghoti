@@ -44,7 +44,8 @@ export default async (
 		throw new ApiError(accessDenied);
 	}
 
-	if (ep.meta.limit) {
+	// Disable API limit for admins
+	if (ep.meta.limit && (!user || user.isAdmin)) {
 		// koa will automatically load the `X-Forwarded-For` header if `proxy: true` is configured in the app.
 		let limitActor: string;
 		if (user) {
