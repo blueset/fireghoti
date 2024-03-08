@@ -2,7 +2,7 @@ version: "3"
 
 services:
   web:
-    image: docker.io/node:21-alpine
+    image: docker.io/node:21-slim
     container_name: firefish_web
     restart: unless-stopped
     depends_on:
@@ -35,7 +35,7 @@ services:
 
   db:
     restart: unless-stopped
-    image: docker.io/groonga/pgroonga:latest-alpine-16-slim
+    image: docker.io/groonga/pgroonga:latest-alpine-15-slim
     container_name: firefish_db
     networks:
       - firefishnet

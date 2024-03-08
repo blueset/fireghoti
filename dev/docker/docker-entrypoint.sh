@@ -7,8 +7,8 @@ node --version
 if [ ! -f '/.firefish_env_initialized' ]; then
 
 	# Install compilation dependencies
-	apk update
-	apk add --no-cache build-base linux-headers curl ca-certificates python3 git postgresql16-client zip unzip ffmpeg
+	apt-get update
+	DEBIAN_FRONTEND='noninteractive' apt-get install -y --no-install-recommends curl build-essential ca-certificates python3 postgresql-client-15 git
 	curl -vvv --proto '=https' --tlsv1.2 --show-error --fail https://sh.rustup.rs | sh -s -- -y
 
 	# Add Cargo PATH
