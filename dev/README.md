@@ -14,6 +14,10 @@ You can find interactive API documentation at any Firefish instance /api-doc end
 
 You can also find more about firefish-js [here](../packages/firefish-js/README.md).
 
+## Firefish's ActivityPub extensions
+
+You can also find more about Firefish's ActivityPub extensions [here](../docs/activitypub-extensions.md).
+
 ## Environment build
 
 We support multiple methods to build a development environment, and you can choose the method you like.
