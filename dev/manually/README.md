@@ -111,6 +111,13 @@ sudo apt update
 sudo apt install -y -V redis python3 build-essential
 ```
 
+## Install optional ffmpeg dependencies
+
+```sh
+sudo apt update
+sudo apt install -y -V ffmpeg
+```
+
 ## Download and configuration Firefish
 
 1. Download Firefish and Copy example configuration file.
