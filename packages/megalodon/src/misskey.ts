@@ -615,10 +615,12 @@ export default class Misskey implements MegalodonInterface {
 	public async getAccountLists(
 		_id: string,
 	): Promise<Response<Array<Entity.List>>> {
-		return new Promise((_, reject) => {
-			const err = new NoImplementedError("misskey does not support");
-			reject(err);
-		});
+		return this.client
+			.post<Array<MisskeyAPI.Entity.List>>("/api/users/lists/list", { userId: _id })
+			.then((res) => ({
+				...res,
+				data: res.data.map((l) => this.converter.list(l)),
+			}));
 	}
 
 	public async getIdentityProof(
