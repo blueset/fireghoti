@@ -1934,7 +1934,7 @@ migrationConfirm: "您确实确定要将账号迁移到 {account} 吗？此操�
 noteId: 帖子 ID
 moveFrom: 从旧账号迁移至此账号
 defaultReaction: 发出和收到帖子的默认表情符号反应
-sendModMail: 发送审核通知
+sendModMail: 发送管理通知
 isLocked: 该账号设置了关注请求
 _filters:
   notesBefore: 帖子早于
