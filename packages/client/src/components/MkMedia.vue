@@ -51,7 +51,7 @@
 				<video
 					:poster="media.thumbnailUrl"
 					:aria-label="media.comment"
-					preload="none"
+					preload="metadata"
 					controls
 					playsinline
 					@contextmenu.stop
