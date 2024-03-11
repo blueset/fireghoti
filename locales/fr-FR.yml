@@ -665,8 +665,8 @@ useGlobalSettingDesc: "S'il est activé, les paramètres de notification de votr
   effectuées."
 other: "Autre"
 regenerateLoginToken: "Régénérer le jeton de connexion"
-regenerateLoginTokenDescription: "Générer un nouveau jeton d'authentification. Cette
-  opération ne devrait pas être nécessaire ; lors de la génération d'un nouveau jeton,
+regenerateLoginTokenDescription: "Génère un nouveau jeton d'authentification. Cette
+  opération ne devrait pas être nécessaire ; lors de la génération d'un nouveau jeton,
   tous les appareils seront déconnectés."
 setMultipleBySeparatingWithSpace: "Vous pouvez en définir plusieurs, en les séparant
   par des espaces."
@@ -2303,3 +2303,12 @@ toReply: Répondre
 toPost: Publier
 toQuote: Citer
 toEdit: Modifier
+messagingUnencryptedInfo: Les conversations sur FIrefish ne sont pas cryptées. Ne
+  partagez aucune information sensible sur Firefish.
+moderationNote: Note de modération
+driveCapacityOverride: Limite de stockage personalisée
+ipFirstAcknowledged: La date de la première acquisition de l'adresse IP
+noAltTextWarning: Certains fichiers joints n'ont aucune description. Avez-vous oublié
+  de l'écrire ?
+showNoAltTextWarning: Afficher un avertissement si vous essayez de publier des fichiers
+  sans description
