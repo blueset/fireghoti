@@ -500,6 +500,8 @@ const withHashtags = computed(
 );
 const hashtags = computed(defaultStore.makeGetterSetter("postFormHashtags"));
 
+let firstTryPost = true;
+
 watch(text, () => {
 	checkMissingMention();
 });
@@ -1048,16 +1050,91 @@ async function post() {
 		defaultStore.state.showNoAltTextWarning &&
 		files.value.some((f) => f.comment == null || f.comment.length === 0)
 	) {
+		if (firstTryPost) {
+			for (const file of files.value) {
+				if (file.comment == null || file.comment.length === 0) {
+					os.popup(
+						defineAsyncComponent(
+							() => import("@/components/MkMediaCaption.vue"),
+						),
+						{
+							title: i18n.ts.describeFile,
+							input: {
+								placeholder: i18n.ts.inputNewDescription,
+								default:
+									file.comment !== null ? file.comment : "",
+							},
+							image: file,
+						},
+						{
+							done: (result) => {
+								if (!result || result.canceled) return;
+								const comment =
+									result.result.length === 0
+										? null
+										: result.result;
+								os.api("drive/files/update", {
+									fileId: file.id,
+									comment,
+								}).then(() => {
+									file.comment = comment;
+								});
+							},
+						},
+						"closed",
+					);
+				}
+			}
+			firstTryPost = false;
+			return;
+		}
+
 		// "canceled" means "post anyway"
 		const { canceled } = await os.confirm({
 			type: "warning",
 			text: i18n.ts.noAltTextWarning,
-			okText: i18n.ts.goBack,
+			okText: i18n.ts.describeFile,
 			cancelText: i18n.ts.toPost,
 			isPlaintext: true,
 		});
 
-		if (!canceled) return;
+		if (!canceled) {
+			for (const file of files.value) {
+				if (file.comment == null || file.comment.length === 0) {
+					os.popup(
+						defineAsyncComponent(
+							() => import("@/components/MkMediaCaption.vue"),
+						),
+						{
+							title: i18n.ts.describeFile,
+							input: {
+								placeholder: i18n.ts.inputNewDescription,
+								default:
+									file.comment !== null ? file.comment : "",
+							},
+							image: file,
+						},
+						{
+							done: (result) => {
+								if (!result || result.canceled) return;
+								const comment =
+									result.result.length === 0
+										? null
+										: result.result;
+								os.api("drive/files/update", {
+									fileId: file.id,
+									comment,
+								}).then(() => {
+									file.comment = comment;
+								});
+							},
+						},
+						"closed",
+					);
+				}
+			}
+			return;
+		}
 	}
 
 	const processedText = preprocess(text.value);
