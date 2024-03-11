@@ -718,8 +718,8 @@ useGlobalSettingDesc: "If turned on, your account's notification settings will b
   used. If turned off, individual configurations can be made."
 other: "Other"
 regenerateLoginToken: "Regenerate sign in token"
-regenerateLoginTokenDescription: "Regenerates the token used internally during sign in.
-  Normally this action is not necessary. If regenerated, all devices will be logged
+regenerateLoginTokenDescription: "Regenerates the token used internally during sign
+  in. Normally this action is not necessary. If regenerated, all devices will be logged
   out."
 setMultipleBySeparatingWithSpace: "Separate multiple entries with spaces."
 fileIdOrUrl: "File ID or URL"
@@ -1113,7 +1113,7 @@ signupsDisabled: "Signups on this server are currently disabled. If you have an 
 apps: "Apps"
 sendModMail: "Send Moderation Notice"
 moderationNote: "Moderation Note"
-ipFirstAcknowledged: "The date is the IP address was first acknowledged."
+ipFirstAcknowledged: "The date of the first acquisition of the IP address"
 driveCapacityOverride: "Drive Capacity Override"
 preventAiLearning: "Prevent AI bot scraping"
 preventAiLearningDescription: "Request third-party AI language models not to study
@@ -2223,4 +2223,5 @@ _iconSets:
 moreUrls: "Pinned pages"
 moreUrlsDescription: "Enter the pages you want to pin to the help menu in the lower
   left corner using this notation:\n\"Display name\": https://example.com/"
-messagingUnencryptedInfo: "Chats on Firefish are not end-to-end encrypted. Don't share any sensitive infomation over Firefish."
+messagingUnencryptedInfo: "Chats on Firefish are not end-to-end encrypted. Don't share
+  any sensitive infomation over Firefish."
