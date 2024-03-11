@@ -272,7 +272,7 @@
 						manual-save
 						class="_formBlock"
 					>
-						<template #label>Moderation note</template>
+						<template #label>{{ i18n.ts.moderationNote }}</template>
 					</FormTextarea>
 					<FormFolder class="_formBlock">
 						<template #label>IP</template>
@@ -280,8 +280,7 @@
 							i18n.ts.requireAdminForView
 						}}</MkInfo>
 						<MkInfo v-else
-							>The date is the IP address was first
-							acknowledged.</MkInfo
+							>{{ i18n.ts.ipFirstAcknowledged }}</MkInfo
 						>
 						<template v-if="isAdmin && ips">
 							<div
@@ -305,7 +304,7 @@
 						/>
 					</FormFolder>
 					<FormSection>
-						<template #label>Drive Capacity Override</template>
+						<template #label>{{ i18n.ts.driveCapacityOverride }}</template>
 
 						<FormInput
 							v-if="user.host == null"

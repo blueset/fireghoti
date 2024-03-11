@@ -1112,6 +1112,9 @@ signupsDisabled: "Signups on this server are currently disabled. If you have an 
   code for this server, please enter it below."
 apps: "Apps"
 sendModMail: "Send Moderation Notice"
+moderationNote: "Moderation Note"
+ipFirstAcknowledged: "The date is the IP address was first acknowledged."
+driveCapacityOverride: "Drive Capacity Override"
 preventAiLearning: "Prevent AI bot scraping"
 preventAiLearningDescription: "Request third-party AI language models not to study
   content you upload, such as posts and images."
