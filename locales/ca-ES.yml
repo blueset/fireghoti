@@ -2280,3 +2280,6 @@ searchRangeDescription: "Si vols filtrar per un període de temps, has de fer se
   mostrar només publicacions fetes abans del 2 de gener d'aquest any, i 20231026-
   filtrarà els resultats per mostrar publicacions fetes després del 26 d'octubre del
   2023."
+moderationNote: Nota de moderació
+ipFirstAcknowledged: Data en què es va veure la adreça IP per primera vegada
+driveCapacityOverride: Capacitat del disc esgotada
