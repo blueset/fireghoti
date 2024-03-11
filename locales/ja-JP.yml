@@ -2052,3 +2052,6 @@ makePrivateConfirm: "リモートサーバーに削除リクエストを送信�
 sentFollowRequests: 未承認のフォローリクエスト
 noSentFollowRequests: 未承認のフォローリクエストはありません
 messagingUnencryptedInfo: FirefishのチャットはE2E暗号化されていません。漏洩してはいけない情報はFirefishで送らないでください。
+moderationNote: モデレーション用のメモ
+ipFirstAcknowledged: IPアドレスが最初に取得された日
+driveCapacityOverride: ドライブ容量の変更
