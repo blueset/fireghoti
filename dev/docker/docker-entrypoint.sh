@@ -6,9 +6,19 @@ node --version
 # Check Environment Initialized Flag
 if [ ! -f '/.firefish_env_initialized' ]; then
 
+	# Install entrypoint dependencies
+	apt-get update
+	DEBIAN_FRONTEND='noninteractive' apt-get install -y --no-install-recommends wget curl ca-certificates lsb-release gnupg
+
+	# Create the PostgreSQL file repository configuration
+	sh -c 'echo "deb https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+
+	# Import the PostgreSQL repository signing key
+	wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+
 	# Install compilation dependencies
 	apt-get update
-	DEBIAN_FRONTEND='noninteractive' apt-get install -y --no-install-recommends curl build-essential ca-certificates python3 postgresql-client-15 git
+	DEBIAN_FRONTEND='noninteractive' apt-get install -y --no-install-recommends build-essential python3 ffmpeg git postgresql-client-16
 	curl -vvv --proto '=https' --tlsv1.2 --show-error --fail https://sh.rustup.rs | sh -s -- -y
 
 	# Add Cargo PATH

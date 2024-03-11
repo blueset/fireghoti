@@ -35,7 +35,7 @@ services:
 
   db:
     restart: unless-stopped
-    image: docker.io/groonga/pgroonga:latest-alpine-15-slim
+    image: docker.io/groonga/pgroonga:latest-alpine-16-slim
     container_name: firefish_db
     networks:
       - firefishnet
