@@ -2038,7 +2038,7 @@ noInstances: Il n'y a aucun serveur
 showLocalPosts: 'Montrer les notes locales dans :'
 homeTimeline: Timeline d'Accueil
 socialTimeline: Timeline Sociale
-requireAdminForView: Vous avez besoin d'un compte d'administration pour voir cela.
+requireAdminForView: Vous avez besoin d'un compte d'administration pour voir ceci.
 isSystemAccount: Ce compte est créé et géré automatiquement par le système. Veuillez
   ne pas modérer, éditer, supprimer ou altérer d'une autre manière ce compte, ou cela
   risque de perturber votre serveur.
@@ -2091,9 +2091,8 @@ _experiments:
     peut entraîner des ralentissements lors du chargement si votre file d'attente
     est congestionnée.
 userSaysSomethingReasonQuote: '{name} a cité une publication contenant {reason}'
-signupsDisabled: Les inscriptions sur ce serveur sont actuellement désactivés, mais
-  vous pouvez toujours vous inscrire sur un autre serveur ! Si vous avez un code d'invitation
-  pour ce serveur, entrez-le ci-dessous s'il vous plait.
+signupsDisabled: Les inscriptions sur ce serveur sont actuellement désactivés. Si
+  vous avez un code d'invitation pour ce serveur, saisissez-le ci-dessous.
 apps: Applications
 userSaysSomethingReasonReply: '{noms} a répondu à une publication contenant {raison}'
 defaultValueIs: 'défaut : {valeur}'
@@ -2300,3 +2299,7 @@ searchRangeDescription: "Si vous voulez filtrer par période de temps, saisissez
   résultats de recherche pour afficher seulement les messages effectués avant le 2
   janvier de cette année, et 20231026- filtrera les résultats pour afficher seulement
   les messages effectués après le 26 octobre 2023."
+toReply: Répondre
+toPost: Publier
+toQuote: Citer
+toEdit: Modifier
