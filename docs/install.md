@@ -22,7 +22,7 @@ reboot
 
 ```sh
 sudo apt update
-sudo apt install -y -V wget curl git ca-certificates
+sudo apt install -y -V wget curl git ca-certificates lsb-release gnupg
 ```
 
 ## Install Node.js
