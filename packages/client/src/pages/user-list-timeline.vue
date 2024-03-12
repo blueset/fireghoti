@@ -69,6 +69,13 @@ const headerActions = computed(() =>
 					handler: timetravel,
 				},
 				{
+					icon: `${icon("ph-list-bullets")}`,
+					title: i18n.ts.lists,
+					text: i18n.ts.lists,
+					iconOnly: true,
+					handler: chooseList,
+				},
+				{
 					icon: `${icon("ph-gear-six")}`,
 					text: i18n.ts.settings,
 					handler: settings,
@@ -78,6 +85,28 @@ const headerActions = computed(() =>
 );
 
 const headerTabs = computed(() => []);
+
+async function chooseList(ev: MouseEvent) {
+	await os.api("users/lists/list").then((res) => {
+		const items = [
+			{
+				type: "link" as const,
+				text: i18n.ts.manageLists,
+				icon: `${icon("ph-faders-horizontal")}`,
+				to: "/my/lists",
+			},
+		].concat(
+			res.map((list) => ({
+				type: "link" as const,
+				text: list.name,
+				icon: list.id === props.listId ? icon("ph-check") : "",
+				indicate: list.id === props.listId,
+				to: `/timeline/list/${list.id}`,
+			})),
+		);
+		os.popupMenu(items, ev.currentTarget ?? ev.target);
+	});
+}
 
 definePageMetadata(
 	computed(() =>
