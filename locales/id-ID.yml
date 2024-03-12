@@ -2262,3 +2262,6 @@ showNoAltTextWarning: Tampilkan peringatan jika kamu mencoba mengirim berkas tan
 toReply: Balas
 messagingUnencryptedInfo: Percakapan di Firefish tidak terenkripsi secara ujung ke
   ujung. Jangan bagikan informasi sensitif apa pun melalui Firefish.
+moderationNote: Catatan Moderasi
+driveCapacityOverride: Penimpaan Kapasitas Drive
+ipFirstAcknowledged: Tanggal akuisisi pertama dari alamat IP
