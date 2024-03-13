@@ -7,7 +7,7 @@ export class RemoveNativeUtilsMigration1705877093218
 		await queryRunner.query(`DROP TABLE IF EXISTS "reversi_game"`);
 		await queryRunner.query(`DROP TABLE IF EXISTS "reversi_matching"`);
 		await queryRunner.query(
-			`CREATE INDEX IF NOT EXISTS "IDX_note_url" ON "note" ("text")`,
+			`CREATE INDEX IF NOT EXISTS "IDX_note_url" ON "note" ("url")`,
 		);
 		await queryRunner.query(`DROP TABLE IF EXISTS "antenna_note"`);
 		await queryRunner.query(
