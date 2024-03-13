@@ -28,8 +28,7 @@ export default defineComponent({
 				parsed.push(str);
 				break;
 			}
-			if (nextBracketOpen > 0)
-				parsed.push(str.substring(0, nextBracketOpen));
+			if (nextBracketOpen > 0) parsed.push(str.substring(0, nextBracketOpen));
 			parsed.push({
 				arg: str.substring(nextBracketOpen + 1, nextBracketClose),
 			});

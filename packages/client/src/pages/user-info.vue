@@ -279,9 +279,9 @@
 						<MkInfo v-if="!isAdmin" warn>{{
 							i18n.ts.requireAdminForView
 						}}</MkInfo>
-						<MkInfo v-else
-							>{{ i18n.ts.ipFirstAcknowledged }}</MkInfo
-						>
+						<MkInfo v-else>{{
+							i18n.ts.ipFirstAcknowledged
+						}}</MkInfo>
 						<template v-if="isAdmin && ips">
 							<div
 								v-for="record in ips"
@@ -304,7 +304,9 @@
 						/>
 					</FormFolder>
 					<FormSection>
-						<template #label>{{ i18n.ts.driveCapacityOverride }}</template>
+						<template #label>{{
+							i18n.ts.driveCapacityOverride
+						}}</template>
 
 						<FormInput
 							v-if="user.host == null"
