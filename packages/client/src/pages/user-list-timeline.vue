@@ -100,7 +100,6 @@ async function chooseList(ev: MouseEvent) {
 				type: "link" as const,
 				text: list.name,
 				icon: list.id === props.listId ? icon("ph-check") : "",
-				indicate: list.id === props.listId,
 				to: `/timeline/list/${list.id}`,
 			})),
 		);
