@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and misskey-project
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 	<div ref="rootEl">
 		<div
@@ -9,6 +14,16 @@
 			}px;`"
 		>
 			<div :class="$style.frameContent">
+				<MkLoading
+					v-if="isRefreshing"
+					:class="$style.loader"
+					:em="true"
+				/>
+				<i
+					v-else
+					class="ti ti-arrow-bar-to-down"
+					:class="[$style.icon, { [$style.refresh]: pullEnded }]"
+				></i>
 				<div :class="$style.text">
 					<template v-if="pullEnded">{{
 						i18n.ts.releaseToReload
@@ -28,16 +43,16 @@
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, shallowRef } from "vue";
-// import { deviceKind } from "@/scripts/device-kind";
 import { i18n } from "@/i18n";
-import { defaultStore } from "@/store";
+import { getScrollContainer } from "@/scripts/scroll";
+import { isHorizontalSwipeSwiping } from "@/scripts/touch";
 
 const SCROLL_STOP = 10;
 const MAX_PULL_DISTANCE = Infinity;
-const FIRE_THRESHOLD = defaultStore.state.pullToRefreshThreshold;
-const RELEASE_TRANSITION_DURATION = 120;
+const FIRE_THRESHOLD = 230;
+const RELEASE_TRANSITION_DURATION = 200;
 const PULL_BRAKE_BASE = 1.5;
-const PULL_BRAKE_FACTOR = 100;
+const PULL_BRAKE_FACTOR = 170;
 
 const pullStarted = ref(false);
 const pullEnded = ref(false);
@@ -64,13 +79,6 @@ const props = withDefaults(
 const emits = defineEmits<{
 	(ev: "refresh"): void;
 }>();
-
-function getScrollableParentElement(node) {
-	if (node == null) return null;
-	if (node.scrollHeight > node.clientHeight) return node;
-
-	return getScrollableParentElement(node.parentNode);
-}
 
 function getScreenY(event) {
 	if (supportPointerDesktop) return event.screenY;
@@ -137,12 +145,12 @@ function moveEnd() {
 	}
 }
 
-function moving(event) {
+function moving(event: TouchEvent | PointerEvent) {
 	if (!pullStarted.value || isRefreshing.value || disabled) return;
-	if (scrollEl == null) scrollEl = getScrollableParentElement(rootEl);
 	if (
 		(scrollEl?.scrollTop ?? 0) >
-		(supportPointerDesktop ? SCROLL_STOP : SCROLL_STOP + pullDistance.value)
+			(supportPointerDesktop ? SCROLL_STOP : SCROLL_STOP + pullDistance.value) ||
+		isHorizontalSwipeSwiping.value
 	) {
 		pullDistance.value = 0;
 		pullEnded.value = false;
@@ -155,6 +163,15 @@ function moving(event) {
 	const moveScreenY = getScreenY(event);
 	const moveHeight = moveScreenY - startScreenY!;
 	pullDistance.value = Math.min(Math.max(moveHeight, 0), MAX_PULL_DISTANCE);
+
+	if (pullDistance.value > 0) {
+		if (event.cancelable) event.preventDefault();
+	}
+
+	if (pullDistance.value > SCROLL_STOP) {
+		event.stopPropagation();
+	}
+
 	pullEnded.value = pullDistance.value >= FIRE_THRESHOLD;
 }
 
@@ -169,25 +186,51 @@ function setDisabled(value) {
 	disabled = value;
 }
 
-onMounted(() => {
-	// supportPointerDesktop = !!window.PointerEvent && deviceKind === "desktop";
+function onScrollContainerScroll() {
+	const scrollPos = scrollEl!.scrollTop;
 
-	if (supportPointerDesktop) {
-		rootEl.value?.addEventListener("pointerdown", moveStart);
-		// "up" event won't be emmitted by mouse pointer on desktop
-		window.addEventListener("pointerup", moveEnd);
-		rootEl.value?.addEventListener("pointermove", moving, {
-			passive: true,
-		});
+	// When at the top of the page, disable vertical overscroll so passive touch listeners can take over.
+	if (scrollPos === 0) {
+		scrollEl!.style.touchAction = "pan-x pan-down pinch-zoom";
+		registerEventListenersForReadyToPull();
 	} else {
-		rootEl.value?.addEventListener("touchstart", moveStart);
-		rootEl.value?.addEventListener("touchend", moveEnd);
-		rootEl.value?.addEventListener("touchmove", moving, { passive: true });
+		scrollEl!.style.touchAction = "auto";
+		unregisterEventListenersForReadyToPull();
 	}
+}
+
+function registerEventListenersForReadyToPull() {
+	if (rootEl.value == null) return;
+	rootEl.value.addEventListener("touchstart", moveStart, { passive: true });
+	rootEl.value.addEventListener("touchmove", moving, { passive: false }); // passive: falseにしないとpreventDefaultが使えない
+}
+
+function unregisterEventListenersForReadyToPull() {
+	if (rootEl.value == null) return;
+	rootEl.value.removeEventListener("touchstart", moveStart);
+	rootEl.value.removeEventListener("touchmove", moving);
+}
+
+onMounted(() => {
+	if (rootEl.value == null) return;
+
+	scrollEl = getScrollContainer(rootEl.value);
+	if (scrollEl == null) return;
+
+	scrollEl.addEventListener("scroll", onScrollContainerScroll, {
+		passive: true,
+	});
+
+	rootEl.value.addEventListener("touchend", moveEnd, { passive: true });
+
+	registerEventListenersForReadyToPull();
 });
 
 onUnmounted(() => {
-	if (supportPointerDesktop) window.removeEventListener("pointerup", moveEnd);
+	if (scrollEl)
+		scrollEl.removeEventListener("scroll", onScrollContainerScroll);
+
+	unregisterEventListenersForReadyToPull();
 });
 
 defineExpose({

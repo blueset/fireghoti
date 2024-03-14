@@ -6,7 +6,6 @@
 		<div
 			ref="rootEl"
 			v-hotkey.global="keymap"
-			v-size="{ min: [800] }"
 			class="tqmomfks"
 		>
 			<div class="tl _block">
@@ -104,15 +103,12 @@ definePageMetadata(
 <style lang="scss" scoped>
 .tqmomfks {
 	padding: var(--margin);
+	max-width: 800px;
+	margin: 0 auto;
 
 	> .tl {
 		background: none;
 		border-radius: var(--radius);
-	}
-
-	&.min-width_800px {
-		max-width: 800px;
-		margin: 0 auto;
 	}
 }
 </style>

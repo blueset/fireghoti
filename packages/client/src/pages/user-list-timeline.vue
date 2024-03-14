@@ -3,7 +3,7 @@
 		<template #header
 			><MkPageHeader :actions="headerActions" :tabs="headerTabs"
 		/></template>
-		<div ref="rootEl" v-size="{ min: [800] }" class="eqqrhokj">
+		<div ref="rootEl" class="eqqrhokj">
 			<div class="tl _block">
 				<XTimeline
 					ref="tlEl"
@@ -122,14 +122,11 @@ definePageMetadata(
 <style lang="scss" scoped>
 .eqqrhokj {
 	padding: var(--margin);
+	max-width: 800px;
+	margin: 0 auto;
 	> .tl {
 		background: none;
 		border-radius: var(--radius);
-	}
-
-	&.min-width_800px {
-		max-width: 800px;
-		margin: 0 auto;
 	}
 }
 </style>
