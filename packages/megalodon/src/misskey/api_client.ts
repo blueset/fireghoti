@@ -261,6 +261,12 @@ namespace MisskeyAPI {
 				meta: {
 					width: f.properties.width,
 					height: f.properties.height,
+					original: {
+						width: f.properties.width,
+						height: f.properties.height,
+						size: `${f.properties.width}x${f.properties.height}`,
+						aspect: f.properties.width / f.properties.height,
+					}
 				},
 				description: f.comment,
 				blurhash: f.blurhash,
