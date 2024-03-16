@@ -1,6 +1,6 @@
 process.env.NODE_ENV = "test";
 
-import * as assert from "assert";
+import * as assert from "node:assert";
 import rndstr from "rndstr";
 import { initDb } from "../src/db/postgre.js";
 import { initTestDb } from "./utils.js";

@@ -1,11 +1,11 @@
-import * as childProcess from "child_process";
 import { SIGKILL } from "constants";
+import * as childProcess from "node:child_process";
 import * as fs from "node:fs";
 import * as http from "node:http";
 import * as path from "node:path";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import type { endpoints, Entities } from "firefish-js";
+import type { Entities, endpoints } from "firefish-js";
 import FormData from "form-data";
 import got from "got";
 import fetch from "node-fetch";

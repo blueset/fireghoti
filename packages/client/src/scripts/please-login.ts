@@ -1,5 +1,5 @@
 import { defineAsyncComponent } from "vue";
-import { isSignedIn } from "@/reactiveAccount";
+import { isSignedIn } from "@/me";
 import { i18n } from "@/i18n";
 import { popup } from "@/os";
 import { vibrate } from "@/scripts/vibrate";

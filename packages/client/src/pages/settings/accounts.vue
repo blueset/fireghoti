@@ -37,9 +37,9 @@ import {
 	removeAccount as _removeAccount,
 	addAccount as addAccounts,
 	getAccounts,
-	login,
+	signIn,
 } from "@/account";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
@@ -50,7 +50,7 @@ const accounts = ref<any>(null);
 const init = async () => {
 	getAccounts()
 		.then((accounts) => {
-			storedAccounts.value = accounts.filter((x) => x.id !== $i!.id);
+			storedAccounts.value = accounts.filter((x) => x.id !== me!.id);
 
 			console.log(storedAccounts.value);
 
@@ -142,7 +142,7 @@ async function switchAccount(account: any) {
 }
 
 function switchAccountWithToken(token: string) {
-	login(token);
+	signIn(token);
 }
 
 definePageMetadata({

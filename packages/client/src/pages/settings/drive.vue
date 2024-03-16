@@ -57,14 +57,14 @@ import bytes from "@/filters/bytes";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
-import { $i, isSignedIn } from "@/reactiveAccount";
+import { isSignedIn, me } from "@/me";
 import icon from "@/scripts/icon";
 
 const fetching = ref(true);
 const usage = ref<any>(null);
 const capacity = ref<any>(null);
 const uploadFolder = ref<any>(null);
-const alwaysMarkNsfw = ref<boolean>(isSignedIn && $i.alwaysMarkNsfw);
+const alwaysMarkNsfw = ref<boolean>(isSignedIn && me.alwaysMarkNsfw);
 
 const meterStyle = computed(() => {
 	return {

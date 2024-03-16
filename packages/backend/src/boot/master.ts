@@ -71,7 +71,7 @@ function greet() {
 				136,
 				0,
 			)(
-				" If you like Firefish, please consider starring or contributing to the repo. https://firefish.dev/firefish/firefish",
+				" If you like Firefish, please consider contributing to the repo. https://firefish.dev/firefish/firefish",
 			),
 		);
 

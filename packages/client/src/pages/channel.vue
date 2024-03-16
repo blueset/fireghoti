@@ -71,13 +71,13 @@
 						<Mfm
 							:text="channel.description"
 							:is-note="false"
-							:i="$i"
+							:i="me"
 						/>
 					</div>
 				</div>
 
 				<XPostForm
-					v-if="$i"
+					v-if="me"
 					:channel="channel"
 					class="post-form _panel _gap"
 					fixed
@@ -103,7 +103,7 @@ import XTimeline from "@/components/MkTimeline.vue";
 import XChannelFollowButton from "@/components/MkChannelFollowButton.vue";
 import * as os from "@/os";
 import { useRouter } from "@/router";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
@@ -132,7 +132,7 @@ function edit() {
 }
 
 const headerActions = computed(() => [
-	...(channel.value && channel.value?.userId === $i?.id
+	...(channel.value && channel.value?.userId === me?.id
 		? [
 				{
 					icon: `${icon("ph-gear-six")}`,

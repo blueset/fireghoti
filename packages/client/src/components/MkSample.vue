@@ -52,7 +52,7 @@ export default defineComponent({
 			flag: true,
 			radio: "firefish",
 			mfm: `Hello world! This is an @example mention. BTW, you are @${
-				this.$i ? this.$i.username : "guest"
+				this.me ? this.me.username : "guest"
 			}.\nAlso, here is ${config.url} and [example link](${
 				config.url
 			}). for more details, see <https://firefish.dev/firefish/firefish>.\nAs you know #Firefish is open-source software.`,

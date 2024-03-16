@@ -31,7 +31,7 @@
 			:text="note.cw"
 			:author="note.user"
 			:lang="note.lang"
-			:i="$i"
+			:i="me"
 			:custom-emojis="note.emojis"
 		/>
 	</p>
@@ -103,7 +103,7 @@
 					v-if="note.text"
 					:text="note.text"
 					:author="note.user"
-					:i="$i"
+					:i="me"
 					:lang="note.lang"
 					:custom-emojis="note.emojis"
 				/>

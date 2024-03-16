@@ -151,7 +151,7 @@ import FormButton from "@/components/MkButton.vue";
 import FormTextarea from "@/components/form/textarea.vue";
 import FormFolder from "@/components/form/folder.vue";
 
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import type { Theme } from "@/scripts/theme";
 import { applyTheme } from "@/scripts/theme";
 import lightTheme from "@/themes/_light.json5";
@@ -315,7 +315,7 @@ async function saveAs() {
 
 	theme.value.id = uuid();
 	theme.value.name = name;
-	theme.value.author = `@${$i.username}@${toUnicode(host)}`;
+	theme.value.author = `@${me.username}@${toUnicode(host)}`;
 	if (description.value) theme.value.desc = description.value;
 	await addTheme(theme.value);
 	applyTheme(theme.value);

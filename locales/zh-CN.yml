@@ -873,7 +873,7 @@ recommended: "推荐"
 check: "检查"
 driveCapOverrideLabel: "修改此用户的网盘容量"
 driveCapOverrideCaption: "输入 0 或以下的值将容量重置为默认值。"
-requireAdminForView: "需要使用管理员账号登录才能查看。"
+requireAdminForView: "您需要使用管理员账号登录才能查看。"
 isSystemAccount: "该账号由系统自动创建。请不要修改、编辑、删除或以其它方式篡改这个账号，否则可能会破坏您的服务器。"
 typeToConfirm: "输入 {x} 以确认操作"
 deleteAccount: "删除账号"
@@ -1263,7 +1263,7 @@ _2fa:
   step2: "然后，扫描屏幕上显示的二维码。"
   step2Url: "如果您使用的是桌面程序，您也可以输入这个URL："
   step3: "输入您的应用提供的令牌以完成设置。"
-  step4: "从现在开始，任何登录操作都将要求您提供这样一个登录令牌。"
+  step4: "从现在开始，任何登录操作都将要求您提供这样一个令牌。"
   securityKeyInfo: "除了指纹或 PIN 身份验证外，您还可以通过支持 FIDO2 的硬件安全密钥设置身份验证，以进一步保护您的账号。"
   token: 2FA 令牌
   step3Title: 输入验证码
@@ -1934,7 +1934,10 @@ migrationConfirm: "您确实确定要将账号迁移到 {account} 吗？此操�
 noteId: 帖子 ID
 moveFrom: 从旧账号迁移至此账号
 defaultReaction: 发出和收到帖子的默认表情符号反应
-sendModMail: 发送审核通知
+sendModMail: 发送管理通知
+moderationNote: "管理笔记"
+ipFirstAcknowledged: "该日期是这个 IP 地址首次被获取到的日期"
+driveCapacityOverride: "网盘容量变更"
 isLocked: 该账号设置了关注请求
 _filters:
   notesBefore: 帖子早于
@@ -2050,3 +2053,5 @@ searchRangeDescription: "如果您要过滤时间段，请按以下格式输入�
   或 20231105-0110），它将被解释为当前年份。\n\n您还可以省略开始日期或结束日期。 例如 -0102 将过滤搜索结果以仅显示今年 1 月 2 日之前发布的帖子，而
   20231026- 将过滤结果以仅显示 2023 年 10 月 26 日之后发布的帖子。"
 messagingUnencryptedInfo: "Firefish 上的聊天没有经过端到端加密，请不要在聊天中分享您的敏感信息。"
+noAltTextWarning: 有些附件没有说明。您是否忘记写说明了？
+showNoAltTextWarning: 当您尝试发布没有说明的帖子附件时显示警告

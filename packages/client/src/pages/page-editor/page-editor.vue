@@ -179,7 +179,7 @@ import { selectFile } from "@/scripts/select-file";
 import { mainRouter } from "@/router";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import icon from "@/scripts/icon";
 
 const props = defineProps<{
@@ -189,7 +189,7 @@ const props = defineProps<{
 }>();
 
 const tab = ref("settings");
-const author = ref($i);
+const author = ref(me);
 const readonly = ref(false);
 const page = ref(null);
 const pageId = ref(null);

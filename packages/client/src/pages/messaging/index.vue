@@ -104,7 +104,7 @@ import { useStream } from "@/stream";
 import { useRouter } from "@/router";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { deviceKind } from "@/scripts/device-kind";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
@@ -203,7 +203,7 @@ function onRead(ids): void {
 			if (found.recipientId) {
 				found.isRead = true;
 			} else if (found.groupId) {
-				found.reads.push($i.id);
+				found.reads.push(me.id);
 			}
 		}
 	}

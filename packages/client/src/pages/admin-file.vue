@@ -172,7 +172,7 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { deviceKind } from "@/scripts/device-kind";
-import { isAdmin, isModerator } from "@/reactiveAccount";
+import { isAdmin, isModerator } from "@/me";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
 import "swiper/scss";

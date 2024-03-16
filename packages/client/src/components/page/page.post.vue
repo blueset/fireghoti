@@ -73,7 +73,7 @@ export default defineComponent({
 						method: "POST",
 						body: formData,
 						headers: {
-							authorization: `Bearer ${this.$i.token}`,
+							authorization: `Bearer ${this.me.token}`,
 						},
 					})
 						.then((response) => response.json())

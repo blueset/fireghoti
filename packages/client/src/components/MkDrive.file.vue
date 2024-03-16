@@ -9,11 +9,11 @@
 		@dragstart="onDragstart"
 		@dragend="onDragend"
 	>
-		<div v-if="$i?.avatarId == file.id" class="label">
+		<div v-if="me?.avatarId == file.id" class="label">
 			<img src="/client-assets/label.svg" />
 			<p>{{ i18n.ts.avatar }}</p>
 		</div>
-		<div v-if="$i?.bannerId == file.id" class="label">
+		<div v-if="me?.bannerId == file.id" class="label">
 			<img src="/client-assets/label.svg" />
 			<p>{{ i18n.ts.banner }}</p>
 		</div>
@@ -45,7 +45,7 @@ import MkDriveFileThumbnail from "@/components/MkDriveFileThumbnail.vue";
 import bytes from "@/filters/bytes";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import icon from "@/scripts/icon";
 
 const props = withDefaults(

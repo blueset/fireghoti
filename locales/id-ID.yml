@@ -415,7 +415,7 @@ securityKeyName: "Nama kunci"
 registerSecurityKey: "Daftarkan kunci keamanan"
 lastUsed: "Terakhir digunakan"
 unregister: "Batalkan pendaftaran"
-passwordLessLogin: "Setel login tanpa kata sandi"
+passwordLessLogin: "Masuk tanpa kata sandi"
 resetPassword: "Atur ulang kata sandi"
 newPasswordIs: "Kata sandi baru adalah \"{password}\""
 reduceUiAnimation: "Kurangi animasi antarmuka"
@@ -655,10 +655,10 @@ useGlobalSetting: "Gunakan setelan global"
 useGlobalSettingDesc: "Jika dinyalakan, setelan pemberitahuan akun kamu akan digunakan.
   Jika dimatikan, konfigurasi secara individu dapat dibuat."
 other: "Lainnya"
-regenerateLoginToken: "Perbarui token login"
+regenerateLoginToken: "Perbarui token masuk"
 regenerateLoginTokenDescription: "Perbarui token yang digunakan secara internal saat
-  login. Normalnya aksi ini tidak diperlukan. Jika diperbarui, semua perangkat akan
-  dilogout."
+  masuk ke akun. Normalnya aksi ini tidak diperlukan. Jika diperbarui, semua perangkat
+  akan dikeluarkan dari akun."
 setMultipleBySeparatingWithSpace: "Kamu dapat menyetel banyak dengan memisahkannya
   menggunakan spasi."
 fileIdOrUrl: "File-ID atau URL"
@@ -1296,8 +1296,8 @@ _2fa:
   step2Url: "Di aplikasi desktop, masukkan URL berikut:"
   step3: "Masukkan token yang telah disediakan oleh aplikasimu untuk menyelesaikan
     pemasangan."
-  step4: "Mulai sekarang, upaya login apapun akan meminta token login dari aplikasi
-    otentikasi kamu."
+  step4: "Mulai sekarang, upaya pemasukan akun apa pun akan meminta token masuk dari
+    aplikasi autentikasi kamu."
   securityKeyInfo: "Kamu dapat memasang otentikasi WebAuthN untuk mengamankan proses
     login lebih lanjut dengan tidak hanya perangkat keras kunci keamanan yang mendukung
     FIDO2, namun juga sidik jari atau otentikasi PIN pada perangkatmu."
@@ -1988,9 +1988,8 @@ moveAccountDescription: Proses ini permanen. Pastikan kamu sudah mengatur alias 
   akun ini ke akun barumu sebelum pindah. Silakan masukkan tag akun dengan format
   seperti @orang@server.com
 sendModMail: Kirim Pemberitahuan Moderasi
-signupsDisabled: Pendaftaran ke server ini nonaktif, tapi kamu dapat selalu mendaftar
-  ke server lain! Jika kamu memiliki kode undangan server ini, harap masukkan di bawah
-  ini.
+signupsDisabled: Pendaftaran ke server ini nonaktifkam. Jika kamu memiliki kode undangan
+  server ini, harap masukkan di bawah ini.
 enableCustomKaTeXMacro: Aktifkan makro KaTeX khusus
 isBot: Akun ini akun otomatis
 customMOTD: MOTD khusus (pesan layar percik)
@@ -2185,7 +2184,7 @@ emojiModPerm: Perizinan pengelolaan emoji kustom
 emojiModPermDescription: "Tambah: Perbolehkan pengguna ini untuk menambahkan emoji
   kustom baru dan menetapkan tag/kategori/lisensi untuk semua emoji kustom yang telah
   ditambahkan.\nTambah dan Sunting: Perizinan \"Tambah\" + Perbolehkan pengguna ini
-  untuk menyunting nama/kategori/tag/lisensi emoji kustom yang sudah ada.\nPerbolehkan
+  untuk menyunting nama/kategori/tag/lisensi emoji kustom yang sudah ada.\n Perbolehkan
   Semua: Perizinan \"Tambah dan Sunting\" + Perbolehkan pengguna ini untuk menghapus
   semua emoji kustom yang sudah ada."
 private: Privat
@@ -2241,7 +2240,7 @@ reloading: Memuat ulang
 replyMute: Bisukan balasan dalam lini masa
 searchRange: Dikirim dalam (opsional)
 searchUsersDescription: "Untuk mencari kiriman oleh pengguna/server tertentu, masukkan
-  ID (@pengguna@contoh.id, atau @pengguna untuk pengguna lokal) atau nama domain (contoh.id).\n
+  ID (@pengguna@contoh.id, atau @pengguna untuk pengguna lokal) atau nama domain (contoh.id)\n
   \nJika kamu memasukkan 'me' ('aku', tanpa tanda kutip), semua kirimanmu (termasuk
   kiriman yang tidak terdaftar, khusus pengikut, langsung, dan rahasia) akan dicari.\n
   \nJika Anda memasukkan 'local' (tanpa tanda kutip), hasilnya akan disaring untuk
@@ -2253,3 +2252,16 @@ searchRangeDescription: "Jika kamu ingin memfilter periode waktu, masukkan dalam
   pencarian untuk menampilkan hanya kiriman yang dibuat sebelum tanggal 2 Januari
   tahun ini, dan 20231026- akan memfilter hasil pencarian untuk menampilkan hanya
   kiriman yang dibuat setelah tanggal 26 Oktober 2023."
+toPost: Kirim
+toQuote: Kutip
+noAltTextWarning: Beberapa berkas yang dilampirkan tidak memiliki deskripsi. Lupa
+  menulis deskripsinya?
+toEdit: Sunting
+showNoAltTextWarning: Tampilkan peringatan jika kamu mencoba mengirim berkas tanpa
+  deskripsi
+toReply: Balas
+messagingUnencryptedInfo: Percakapan di Firefish tidak terenkripsi secara ujung ke
+  ujung. Jangan bagikan informasi sensitif apa pun melalui Firefish.
+moderationNote: Catatan Moderasi
+driveCapacityOverride: Penimpaan Kapasitas Drive
+ipFirstAcknowledged: Tanggal akuisisi pertama dari alamat IP
