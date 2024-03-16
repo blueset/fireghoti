@@ -54,10 +54,9 @@ import MkInput from "@/components/form/input.vue";
 import MkSelect from "@/components/form/select.vue";
 import MkFolder from "@/components/MkFolder.vue";
 import MkTab from "@/components/MkTab.vue";
-import { emojiCategories, emojiTags } from "@/instance";
+import { emojiCategories, emojiTags, instance } from "@/instance";
 import { i18n } from "@/i18n";
 import iconify from "@/scripts/icon";
-import { instance } from "@/instance";
 
 export default defineComponent({
 	components: {

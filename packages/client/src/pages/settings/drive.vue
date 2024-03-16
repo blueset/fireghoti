@@ -57,7 +57,7 @@ import bytes from "@/filters/bytes";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
-import { me, isSignedIn } from "@/me";
+import { isSignedIn, me } from "@/me";
 import icon from "@/scripts/icon";
 
 const fetching = ref(true);

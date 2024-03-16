@@ -141,7 +141,7 @@ import { computed, defineAsyncComponent, toRef } from "vue";
 import * as os from "@/os";
 import { navbarItemDef } from "@/navbar";
 import { openAccountMenu as openAccountMenu_ } from "@/account";
-import { me, isModerator } from "@/me";
+import { isModerator, me } from "@/me";
 import { openHelpMenu_ } from "@/scripts/helpMenu";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";

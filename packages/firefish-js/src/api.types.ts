@@ -1,4 +1,4 @@
-import {
+import type {
 	Ad,
 	Announcement,
 	Antenna,
@@ -17,7 +17,7 @@ import {
 	FollowingFollowerPopulated,
 	GalleryPost,
 	Instance,
-	InstanceMetadata,
+	// InstanceMetadata,
 	LiteInstanceMetadata,
 	MeDetailed,
 	MessagingMessage,

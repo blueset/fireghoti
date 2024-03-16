@@ -384,7 +384,7 @@ import { userPage } from "@/filters/user";
 import { defaultStore } from "@/store";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
-import { me, isModerator, isSignedIn } from "@/me";
+import { isModerator, isSignedIn, me } from "@/me";
 import { host } from "@/config";
 import icon from "@/scripts/icon";
 

@@ -50,7 +50,7 @@ import XNotes from "@/components/MkNotes.vue";
 import MkInfo from "@/components/MkInfo.vue";
 import { useStream } from "@/stream";
 import * as sound from "@/scripts/sound";
-import { me, isSignedIn } from "@/me";
+import { isSignedIn, me } from "@/me";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";

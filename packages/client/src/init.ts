@@ -32,14 +32,14 @@ import {
 } from "vue";
 import { set } from "@/scripts/idb-proxy";
 
-import { signIn, refreshAccount, signOut, updateAccount } from "@/account";
+import { refreshAccount, signIn, signOut, updateAccount } from "@/account";
 import components from "@/components";
 import { lang, ui, version } from "@/config";
 import directives from "@/directives";
 import { i18n } from "@/i18n";
 import { fetchInstance, instance } from "@/instance";
+import { isSignedIn, me } from "@/me";
 import { alert, api, confirm, popup, post, toast } from "@/os";
-import { me, isSignedIn } from "@/me";
 import { compareFirefishVersions } from "@/scripts/compare-versions";
 import { deviceKind } from "@/scripts/device-kind";
 import { getAccountFromId } from "@/scripts/get-account-from-id";
@@ -435,7 +435,7 @@ function checkForSplash() {
 
 		const lastUsed = localStorage.getItem("lastUsed");
 		if (lastUsed) {
-			const lastUsedDate = parseInt(lastUsed, 10);
+			const lastUsedDate = Number.parseInt(lastUsed, 10);
 			// 二時間以上前なら
 			if (Date.now() - lastUsedDate > 1000 * 60 * 60 * 2) {
 				toast(

@@ -22,7 +22,7 @@ import { swInject } from "./sw-inject";
 import { popup, popups } from "@/os";
 import { uploads } from "@/scripts/upload";
 import * as sound from "@/scripts/sound";
-import { me, isSignedIn } from "@/me";
+import { isSignedIn, me } from "@/me";
 import { useStream } from "@/stream";
 
 const stream = useStream();

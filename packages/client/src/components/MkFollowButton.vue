@@ -66,7 +66,7 @@ import type { entities } from "firefish-js";
 import * as os from "@/os";
 import { useStream } from "@/stream";
 import { i18n } from "@/i18n";
-import { me, isSignedIn } from "@/me";
+import { isSignedIn, me } from "@/me";
 import { getUserMenu } from "@/scripts/get-user-menu";
 import { useRouter } from "@/router";
 import { vibrate } from "@/scripts/vibrate";

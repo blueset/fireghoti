@@ -4,7 +4,7 @@ import type { Ref } from "vue";
 import { onUnmounted, ref, watch } from "vue";
 import { api } from "./os";
 import { useStream } from "./stream";
-import { me, isSignedIn } from "@/me";
+import { isSignedIn, me } from "@/me";
 
 type StateDef = Record<
 	string,

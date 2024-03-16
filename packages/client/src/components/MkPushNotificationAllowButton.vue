@@ -56,7 +56,7 @@
 import { ref } from "vue";
 
 import { getAccounts } from "@/account";
-import { me, isSignedIn } from "@/me";
+import { isSignedIn, me } from "@/me";
 import MkButton from "@/components/MkButton.vue";
 import { instance } from "@/instance";
 import { api, apiWithDialog, promiseDialog } from "@/os";

@@ -2,7 +2,7 @@ import type { Ref } from "vue";
 import { onUnmounted } from "vue";
 import type { entities } from "firefish-js";
 import { useStream } from "@/stream";
-import { me, isSignedIn } from "@/me";
+import { isSignedIn, me } from "@/me";
 import * as os from "@/os";
 
 export function useNoteCapture(props: {
