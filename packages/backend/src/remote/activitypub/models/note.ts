@@ -1,6 +1,5 @@
 import promiseLimit from "promise-limit";
 import * as mfm from "mfm-js";
-import config from "@/config/index.js";
 import Resolver from "../resolver.js";
 import post from "@/services/note/create.js";
 import { extractMentionedUsers } from "@/services/note/create.js";
@@ -14,7 +13,7 @@ import { extractPollFromQuestion } from "./question.js";
 import vote from "@/services/note/polls/vote.js";
 import { apLogger } from "../logger.js";
 import { DriveFile } from "@/models/entities/drive-file.js";
-import { extractDbHost, toPuny } from "@/misc/convert-host.js";
+import { extractDbHost, isSameOrigin, toPuny } from "@/misc/convert-host.js";
 import {
 	Emojis,
 	Polls,
@@ -234,7 +233,7 @@ export async function createNote(
 				.catch(async (e) => {
 					// トークだったらinReplyToのエラーは無視
 					const uri = getApId(note.inReplyTo);
-					if (uri.startsWith(`${config.url}/`)) {
+					if (isSameOrigin(uri)) {
 						const id = uri.split("/").pop();
 						const talk = await MessagingMessages.findOneBy({ id });
 						if (talk) {
@@ -439,7 +438,7 @@ export async function resolveNote(
 		}
 		//#endregion
 
-		if (uri.startsWith(config.url)) {
+		if (isSameOrigin(uri)) {
 			throw new StatusError(
 				"cannot resolve local note",
 				400,
@@ -556,7 +555,7 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 	if (!uri) throw new Error("Missing note uri");
 
 	// Skip if URI points to this server
-	if (uri.startsWith(`${config.url}/`)) throw new Error("uri points local");
+	if (isSameOrigin(uri)) throw new Error("uri points local");
 
 	// A new resolver is created if not specified
 	if (resolver == null) resolver = new Resolver();
