@@ -513,8 +513,8 @@ export const UserRepository = db.getRepository(User).extend({
 						location: profile!.location,
 						birthday: profile!.birthday,
 						fields: profile!.fields,
-						followersCount: followersCount || 0,
-						followingCount: followingCount || 0,
+						followersCount: followersCount ?? null,
+						followingCount: followingCount ?? null,
 						notesCount: user.notesCount,
 						pinnedNoteIds: pins.map((pin) => pin.noteId),
 						pinnedNotes: Notes.packMany(
