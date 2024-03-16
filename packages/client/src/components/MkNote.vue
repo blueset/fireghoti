@@ -632,9 +632,7 @@ function setPostExpanded(val: boolean) {
 const accessibleLabel = computed(() => {
 	let label = `${appearNote.value.user.username}; `;
 	if (appearNote.value.renote) {
-		label += `${i18n.t("renoted")} ${
-			appearNote.value.renote.user.username
-		}; `;
+		label += `${i18n.t("renoted")} ${appearNote.value.renote.user.username}; `;
 		if (appearNote.value.renote.cw) {
 			label += `${i18n.t("cw")}: ${appearNote.value.renote.cw}; `;
 			if (postIsExpanded.value) {
