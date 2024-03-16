@@ -80,7 +80,7 @@ Critical security updates are indicated by the :warning: icon.
 - Change the second tab on the notifications page from "unread" to "reactions"
 - Add ability to show a huge post button on the posting form
 	- This is a joke feature inspired by https://mstdn.poyo.me/@prime/110668364208741253
-- Bug fix
+- Fix bugs
 - Add `/api/emojis` endpoint (compatible with Misskey v13) for better experiences with Misskey clients
 	- This does not mean we will continue to maintain API compatibility with Misskey. Instead, we plan to improve the compatibility with the Mastodon API.
 
@@ -101,7 +101,7 @@ Critical security updates are indicated by the :warning: icon.
 
 ## v20240213
 
-- Bug fix
+- Fix bugs
 - Refactoring
 
 ## v20240212
@@ -117,12 +117,12 @@ Critical security updates are indicated by the :warning: icon.
 
 ## v20240208
 
-- Bug fix (!10654 !10665)
+- Fix bugs (!10654 !10665)
 - Enlarge profile picture by clicking it (!10659)
 - Support Pleroma chat (!10660)
 - [Add documentation about downgrading](./docs/downgrade.md)
 
 ## v20240206
 
-- Many bug fixes
+- Fix many bugs
 - Per-post language selector (!10616)
