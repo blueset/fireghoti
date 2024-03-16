@@ -11,7 +11,7 @@ Critical security updates are indicated by the :warning: icon.
 - Add langage annotation to post contents (!10687)
 - Add a toggleable setting to show a warning when you attempt to post files without alt text
 - Fix bugs
-- Update documents
+- Update documents and example config files
 
 ## v20240301
 
