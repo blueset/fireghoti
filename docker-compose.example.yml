@@ -26,6 +26,10 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 4096M
 
   redis:
     restart: unless-stopped
@@ -40,6 +44,11 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+  #  deploy:
+  #    resources:
+  #      limits:
+  #        memory: 200M
+
 
   db:
     restart: unless-stopped
@@ -56,6 +65,10 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+  #  deploy:
+  #    resources:
+  #      limits:
+  #        memory: 200M
 
 networks:
   calcnet:
