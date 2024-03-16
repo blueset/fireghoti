@@ -528,8 +528,11 @@ export const UserRepository = db.getRepository(User).extend({
 						pinnedPage: profile!.pinnedPageId
 							? Pages.pack(profile!.pinnedPageId, me)
 							: null,
-						publicReactions: profile!.publicReactions,
-						ffVisibility: profile!.ffVisibility,
+						// TODO: federate publicReactions
+						publicReactions:
+							user.host == null ? profile!.publicReactions : false,
+						// TODO: federate ffVisibility
+						ffVisibility: user.host == null ? profile!.ffVisibility : "private",
 						twoFactorEnabled: profile!.twoFactorEnabled,
 						usePasswordLessLogin: profile!.usePasswordLessLogin,
 						securityKeys: UserSecurityKeys.countBy({
