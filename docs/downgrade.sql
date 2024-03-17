@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'FixMutingIndices1710690239308',
     'RemoveMentionedUsersColumn1710688552234',
     'NoteFile1710304584214',
     'RenameMetaColumns1705944717480',
@@ -17,6 +18,17 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- fix-muting-indices
+DROP INDEX "IDX_renote_muting_createdAt";
+DROP INDEX "IDX_renote_muting_muteeId";
+DROP INDEX "IDX_renote_muting_muterId";
+DROP INDEX "IDX_reply_muting_createdAt";
+DROP INDEX "IDX_reply_muting_muteeId";
+DROP INDEX "IDX_reply_muting_muterId";
+CREATE INDEX "IDX_renote_muting_createdAt" ON "muting" ("createdAt");
+CREATE INDEX "IDX_renote_muting_muteeId" ON "muting" ("muteeId");
+CREATE INDEX "IDX_renote_muting_muterId" ON "muting" ("muterId");
 
 -- remove-mentioned-users-column
 ALTER TABLE "note" ADD "mentionedRemoteUsers" text NOT NULL DEFAULT '[]'::text;
