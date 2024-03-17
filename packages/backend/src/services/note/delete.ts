@@ -1,4 +1,4 @@
-import { Brackets, In, IsNull, Not } from "typeorm";
+import { Brackets, In } from "typeorm";
 import { publishNoteStream } from "@/services/stream.js";
 import renderDelete from "@/remote/activitypub/renderer/delete.js";
 import renderAnnounce from "@/remote/activitypub/renderer/announce.js";
@@ -7,7 +7,7 @@ import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderTombstone from "@/remote/activitypub/renderer/tombstone.js";
 import config from "@/config/index.js";
 import type { User, ILocalUser, IRemoteUser } from "@/models/entities/user.js";
-import type { Note } from "@/models/entities/note.js";
+import type { Note, IMentionedRemoteUsers } from "@/models/entities/note.js";
 import { Notes, Users, Instances } from "@/models/index.js";
 import {
 	deliverToFollowers,
@@ -147,12 +147,11 @@ async function getMentionedRemoteUsers(note: Note) {
 	const where = [] as any[];
 
 	// mention / reply / dm
-	if (note.mentions.length > 0) {
-		where.push({
-			id: In(note.mentions),
-			// only remote users, local users are on the server and do not need to be notified
-			host: Not(IsNull()),
-		});
+	const uris = (
+		JSON.parse(note.mentionedRemoteUsers) as IMentionedRemoteUsers
+	).map((x) => x.uri);
+	if (uris.length > 0) {
+		where.push({ uri: In(uris) });
 	}
 
 	// renote / quote
