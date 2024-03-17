@@ -2246,10 +2246,12 @@ replyUnmute: Treu el silencia de les respostes a les línies de temps
 searchWordsDescription: "Per cercar publicacions, escriu el terme a buscar. Separa
   les paraules amb espais per fer condicions AND o escriules dins de cometes per fer
   una cerca OR.\nPer exemple, 'dia nit' trobarà publicacions que continguin tan 'dia'
-  com 'nit', i 'dia OR nit' trobaran publicacions que continguin tan 'dia' com 'nit'
-  o ambdues.\nPots combinar condicions AND/OR per exemple '(dia OR nit) endormiscar'.\n
-  \nSi vols anar a una pàgina d'usuari o publicació en concret, escriu la adreça URL
-  o la ID en aquest camp i fes clic al botó 'Trobar'. Fent clic a 'Cercar' trobarà
+  com 'nit', i 'dia OR nit' trobara publicacions que continguin tant 'dia' com 'nit'
+  (o ambdues).\nPots combinar condicions AND/OR per exemple '(dia OR nit) endormiscar'.\n
+  Si vols cercar per una seqüencia de paraules (per exemple una frase) has d'escriure-les
+  entre cometes dobles, per no fer una cerca amb condicionant AND: \"Avui he aprés\"\
+  \n \nSi vols anar a una pàgina d'usuari o publicació en concret, escriu la adreça
+  URL o la ID en aquest camp i fes clic al botó 'Trobar'. Fent clic a 'Cercar' trobarà
   publicacions que, literalment , continguin la ID/adreça URL."
 searchPostsWithFiles: Només publicacions amb fitxers
 searchCwAndAlt: Inclou avisos de contingut i arxius amb descripcions
@@ -2275,7 +2277,7 @@ messagingUnencryptedInfo: Els xats a Firefish no són encriptats d'extrem a extr
   No comparteixis dades sensibles fent servir Firefish.
 searchRangeDescription: "Si vols filtrar per un període de temps, has de fer servir
   aquest format: 20220615-20231031\n\nSi no escrius l'any (per exemple 0105-0106 o
-  20231105-0110), serà interpretat com l'any en curs.\n\nInclús pots morir la data
+  20231105-0110), serà interpretat com l'any en curs.\n\nInclús pots ometre la data
   de començament o de finalització. Per exemple, -0102 filtrarà els resultats per
   mostrar només publicacions fetes abans del 2 de gener d'aquest any, i 20231026-
   filtrarà els resultats per mostrar publicacions fetes després del 26 d'octubre del
