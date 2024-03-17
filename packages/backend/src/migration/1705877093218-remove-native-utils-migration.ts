@@ -105,10 +105,10 @@ export class RemoveNativeUtilsMigration1705877093218
 			`CREATE INDEX "IDX_9937ea48d7ae97ffb4f3f063a4" ON "antenna_note" ("read")`,
 		);
 		await queryRunner.query(
-			`ALTER TABLE "antenna_note" ADD CONSTRAINT IF NOT EXISTS "FK_0d775946662d2575dfd2068a5f5" FOREIGN KEY ("antennaId") REFERENCES "antenna"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+			`ALTER TABLE "antenna_note" ADD CONSTRAINT "FK_0d775946662d2575dfd2068a5f5" FOREIGN KEY ("antennaId") REFERENCES "antenna"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
 		);
 		await queryRunner.query(
-			`ALTER TABLE "antenna_note" ADD CONSTRAINT IF NOT EXISTS "FK_bd0397be22147e17210940e125b" FOREIGN KEY ("noteId") REFERENCES "note"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+			`ALTER TABLE "antenna_note" ADD CONSTRAINT "FK_bd0397be22147e17210940e125b" FOREIGN KEY ("noteId") REFERENCES "note"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
 		);
 		await queryRunner.query(`DROP INDEX IF EXISTS "IDX_note_url"`);
 		await queryRunner.query(
@@ -124,10 +124,10 @@ export class RemoveNativeUtilsMigration1705877093218
 			`CREATE INDEX IF NOT EXISTS "IDX_e247b23a3c9b45f89ec1299d06" ON "reversi_matching" ("childId")`,
 		);
 		await queryRunner.query(
-			`ALTER TABLE "reversi_matching" ADD CONSTRAINT IF NOT EXISTS "FK_3b25402709dd9882048c2bbade0" FOREIGN KEY ("parentId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+			`ALTER TABLE "reversi_matching" ADD CONSTRAINT "FK_3b25402709dd9882048c2bbade0" FOREIGN KEY ("parentId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
 		);
 		await queryRunner.query(
-			`ALTER TABLE "reversi_matching" ADD CONSTRAINT IF NOT EXISTS "FK_e247b23a3c9b45f89ec1299d066" FOREIGN KEY ("childId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+			`ALTER TABLE "reversi_matching" ADD CONSTRAINT "FK_e247b23a3c9b45f89ec1299d066" FOREIGN KEY ("childId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
 		);
 		await queryRunner.query(
 			`COMMENT ON COLUMN "reversi_matching"."createdAt" IS 'The created date of the ReversiMatching.'`,
@@ -139,10 +139,10 @@ export class RemoveNativeUtilsMigration1705877093218
 			`CREATE INDEX IF NOT EXISTS "IDX_b46ec40746efceac604142be1c" ON "reversi_game" ("createdAt")`,
 		);
 		await queryRunner.query(
-			`ALTER TABLE "reversi_game" ADD CONSTRAINT IF NOT EXISTS "FK_f7467510c60a45ce5aca6292743" FOREIGN KEY ("user1Id") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+			`ALTER TABLE "reversi_game" ADD CONSTRAINT "FK_f7467510c60a45ce5aca6292743" FOREIGN KEY ("user1Id") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
 		);
 		await queryRunner.query(
-			`ALTER TABLE "reversi_game" ADD CONSTRAINT IF NOT EXISTS "FK_6649a4e8c5d5cf32fb03b5da9f6" FOREIGN KEY ("user2Id") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+			`ALTER TABLE "reversi_game" ADD CONSTRAINT "FK_6649a4e8c5d5cf32fb03b5da9f6" FOREIGN KEY ("user2Id") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
 		);
 		await queryRunner.query(
 			`COMMENT ON COLUMN "reversi_game"."createdAt" IS 'The created date of the ReversiGame.'`,
