@@ -16,7 +16,7 @@ export class NoteFile1710304584214 implements MigrationInterface {
 			SELECT "t"."id", "t"."fid" FROM (
 				SELECT ROW_NUMBER() OVER () AS "rn", * FROM (
 					SELECT "id", UNNEST("fileIds") AS "fid" FROM "note"
-				)
+				) AS "s"
 			) AS "t"
 			INNER JOIN "drive_file" ON "drive_file"."id" = "t"."fid"
 			ORDER BY "rn"
