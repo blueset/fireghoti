@@ -118,8 +118,8 @@ export default async function (
 
 		// also deliever delete activity to cascaded notes
 		for (const cascadingNote of cascadingNotes) {
-			if (cascadingNote.userId !== user.id) {
-				// For others, the post appears to have been deleted and publishNoteStream is also required.
+			if (deleteFromDb) {
+				// For other notes, publishNoteStream is also required.
 				publishNoteStream(cascadingNote.id, "deleted", {
 					deletedAt: deletedAt,
 				});
