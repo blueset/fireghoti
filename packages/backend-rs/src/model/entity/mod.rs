@@ -35,6 +35,7 @@ pub mod muting;
 pub mod note;
 pub mod note_edit;
 pub mod note_favorite;
+pub mod note_file;
 pub mod note_reaction;
 pub mod note_thread_muting;
 pub mod note_unread;

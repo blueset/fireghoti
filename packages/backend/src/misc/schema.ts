@@ -32,6 +32,7 @@ import { packedQueueCountSchema } from "@/models/schema/queue.js";
 import { packedGalleryPostSchema } from "@/models/schema/gallery-post.js";
 import { packedEmojiSchema } from "@/models/schema/emoji.js";
 import { packedNoteEdit } from "@/models/schema/note-edit.js";
+import { packedNoteFileSchema } from "@/models/schema/note-file.js";
 
 export const refs = {
 	UserLite: packedUserLiteSchema,
@@ -47,6 +48,7 @@ export const refs = {
 	App: packedAppSchema,
 	MessagingMessage: packedMessagingMessageSchema,
 	Note: packedNoteSchema,
+	NoteFile: packedNoteFileSchema,
 	NoteEdit: packedNoteEdit,
 	NoteReaction: packedNoteReactionSchema,
 	NoteFavorite: packedNoteFavoriteSchema,

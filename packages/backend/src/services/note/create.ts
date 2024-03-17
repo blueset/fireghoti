@@ -31,6 +31,7 @@ import {
 	Channels,
 	ChannelFollowings,
 	NoteThreadMutings,
+	NoteFiles,
 } from "@/models/index.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { App } from "@/models/entities/app.js";
@@ -342,6 +343,12 @@ export default async (
 		}
 
 		const note = await insertNote(user, data, tags, emojis, mentionedUsers);
+
+		await NoteFiles.insert(
+			note.fileIds.map((fileId) => ({ noteId: note.id, fileId })),
+		).catch((e) => {
+			logger.error(inspect(e));
+		});
 
 		res(note);
 

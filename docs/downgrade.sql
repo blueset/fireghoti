@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'NoteFile1710304584214',
     'RenameMetaColumns1705944717480',
     'SeparateHardMuteWordsAndPatterns1706413792769',
     'IndexAltTextAndCw1708872574733',
@@ -15,6 +16,9 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- note-file
+DROP TABLE "note_file";
 
 -- rename-meta-columns
 ALTER TABLE "meta" RENAME COLUMN "tosUrl" TO "ToSUrl";
