@@ -38,8 +38,6 @@ pub struct Model {
     #[sea_orm(column_name = "visibleUserIds")]
     pub visible_user_ids: Vec<String>,
     pub mentions: Vec<String>,
-    #[sea_orm(column_name = "mentionedRemoteUsers", column_type = "Text")]
-    pub mentioned_remote_users: String,
     pub emojis: Vec<String>,
     pub tags: Vec<String>,
     #[sea_orm(column_name = "hasPoll")]
