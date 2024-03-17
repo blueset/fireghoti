@@ -1,8 +1,8 @@
 import type { Theme } from "./scripts/theme";
+import { isSignedIn, me } from "@/me";
 import { api } from "@/os";
-import { $i, isSignedIn } from "@/reactiveAccount";
 
-const lsCacheKey = isSignedIn ? `themes:${$i.id}` : "";
+const lsCacheKey = isSignedIn ? `themes:${me.id}` : "";
 
 export function getThemes(): Theme[] {
 	return JSON.parse(localStorage.getItem(lsCacheKey) || "[]");

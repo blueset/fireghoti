@@ -5,7 +5,7 @@
 				<div class="lxpfedzu">
 					<div class="banner">
 						<img
-							:src="$instance.iconUrl || '/favicon.ico'"
+							:src="instance.iconUrl || '/favicon.ico'"
 							alt=""
 							class="icon"
 						/>
@@ -73,7 +73,7 @@ import MkSuperMenu from "@/components/MkSuperMenu.vue";
 import MkInfo from "@/components/MkInfo.vue";
 import { instance } from "@/instance";
 import { version } from "@/config";
-import { $i } from "@/reactiveAccount";
+import { isAdmin, me } from "@/me";
 import * as os from "@/os";
 import { lookupUser } from "@/scripts/lookup-user";
 import { lookupFile } from "@/scripts/lookup-file";
@@ -85,7 +85,6 @@ import {
 	provideMetadataReceiver,
 } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
-import { compareFirefishVersions } from "@/scripts/compare-versions";
 
 const isEmpty = (x: string | null) => x == null || x === "";
 const el = ref<HTMLElement | null>(null);
@@ -122,8 +121,7 @@ os.api("admin/abuse-user-reports", {
 
 if (defaultStore.state.showAdminUpdates) {
 	os.api("latest-version").then((res) => {
-		updateAvailable.value =
-			compareFirefishVersions(version, res?.latest_version) === 1;
+		updateAvailable.value = version < res?.latest_version;
 	});
 }
 
@@ -214,7 +212,7 @@ const menuDef = computed(() => [
 			},
 		],
 	},
-	...($i?.isAdmin
+	...(isAdmin
 		? [
 				{
 					title: i18n.ts.settings,

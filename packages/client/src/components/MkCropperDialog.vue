@@ -42,7 +42,7 @@ import Cropper from "cropperjs";
 import tinycolor from "tinycolor2";
 import XModalWindow from "@/components/MkModalWindow.vue";
 import * as os from "@/os";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { defaultStore } from "@/store";
 import { apiUrl, url } from "@/config";
 import { query } from "@/scripts/url";
@@ -81,7 +81,7 @@ const ok = async () => {
 				method: "POST",
 				body: formData,
 				headers: {
-					authorization: `Bearer ${$i.token}`,
+					authorization: `Bearer ${me.token}`,
 				},
 			})
 				.then((response) => response.json())

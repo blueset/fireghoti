@@ -54,9 +54,9 @@ import MkInput from "@/components/form/input.vue";
 import MkSelect from "@/components/form/select.vue";
 import MkFolder from "@/components/MkFolder.vue";
 import MkTab from "@/components/MkTab.vue";
-import { emojiCategories, emojiTags } from "@/instance";
+import { emojiCategories, emojiTags, instance } from "@/instance";
 import { i18n } from "@/i18n";
-import icon from "@/scripts/icon";
+import iconify from "@/scripts/icon";
 
 export default defineComponent({
 	components: {
@@ -72,7 +72,7 @@ export default defineComponent({
 		return {
 			q: "",
 			customEmojiCategories: emojiCategories,
-			customEmojis: this.$instance.emojis,
+			customEmojis: instance.emojis,
 			tags: emojiTags,
 			selectedTags: new Set(),
 			searchEmojis: null,
@@ -126,6 +126,10 @@ export default defineComponent({
 			} else {
 				this.selectedTags.add(tag);
 			}
+		},
+
+		icon(name: string): string {
+			return iconify(name);
 		},
 	},
 });

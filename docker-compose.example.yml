@@ -6,8 +6,10 @@ services:
     container_name: firefish_web
     restart: unless-stopped
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     ports:
       - "3000:3000"
     networks:
@@ -19,6 +21,15 @@ services:
       - ./custom:/firefish/custom:ro
       - ./files:/firefish/files
       - ./.config:/firefish/.config:ro
+    healthcheck:
+      test: curl -f http://localhost:3000 || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 4096M
 
   redis:
     restart: unless-stopped
@@ -28,6 +39,16 @@ services:
       - calcnet
     volumes:
       - ./redis:/data
+    healthcheck:
+      test: redis-cli ping
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  #  deploy:
+  #    resources:
+  #      limits:
+  #        memory: 200M
+
 
   db:
     restart: unless-stopped
@@ -39,6 +60,15 @@ services:
       - .config/docker.env
     volumes:
       - ./db:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready --user="$${POSTGRES_USER}" --dbname="$${POSTGRES_DB}"
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  #  deploy:
+  #    resources:
+  #      limits:
+  #        memory: 200M
 
 networks:
   calcnet:

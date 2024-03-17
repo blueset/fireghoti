@@ -71,7 +71,7 @@ function greet() {
 				136,
 				0,
 			)(
-				" If you like Firefish, please consider starring or contributing to the repo. https://firefish.dev/firefish/firefish",
+				" If you like Firefish, please consider contributing to the repo. https://firefish.dev/firefish/firefish",
 			),
 		);
 
@@ -149,7 +149,7 @@ function showNodejsVersion(): void {
 
 	nodejsLogger.info(`Version ${process.version} detected.`);
 
-	const minVersion = "v18.16.0";
+	const minVersion = "v18.17.0";
 	if (semver.lt(process.version, minVersion)) {
 		nodejsLogger.error(`At least Node.js ${minVersion} required!`);
 		process.exit(1);

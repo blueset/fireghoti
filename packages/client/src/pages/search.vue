@@ -51,7 +51,7 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import { defaultStore } from "@/store";
 import { deviceKind } from "@/scripts/device-kind";
 import icon from "@/scripts/icon";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import "swiper/scss";
 import "swiper/scss/virtual";
 import { api } from "@/os";
@@ -96,7 +96,7 @@ const usersPagination = {
 };
 
 async function getUserId(user: string): Promise<string> {
-	if (user === "me") return $i!.id;
+	if (user === "me") return me!.id;
 
 	const split = (user.startsWith("@") ? user.slice(1) : user).split("@");
 	const username = split[0];

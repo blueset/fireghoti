@@ -1,6 +1,9 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'FixMutingIndices1710690239308',
+    'RemoveMentionedUsersColumn1710688552234',
+    'NoteFile1710304584214',
     'RenameMetaColumns1705944717480',
     'SeparateHardMuteWordsAndPatterns1706413792769',
     'IndexAltTextAndCw1708872574733',
@@ -15,6 +18,33 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- fix-muting-indices
+DROP INDEX "IDX_renote_muting_createdAt";
+DROP INDEX "IDX_renote_muting_muteeId";
+DROP INDEX "IDX_renote_muting_muterId";
+DROP INDEX "IDX_reply_muting_createdAt";
+DROP INDEX "IDX_reply_muting_muteeId";
+DROP INDEX "IDX_reply_muting_muterId";
+CREATE INDEX "IDX_renote_muting_createdAt" ON "muting" ("createdAt");
+CREATE INDEX "IDX_renote_muting_muteeId" ON "muting" ("muteeId");
+CREATE INDEX "IDX_renote_muting_muterId" ON "muting" ("muterId");
+
+-- remove-mentioned-users-column
+ALTER TABLE "note" ADD "mentionedRemoteUsers" text NOT NULL DEFAULT '[]'::text;
+CREATE TABLE "temp_mentions_1710688552234" AS
+  SELECT "id", "url", "uri", "username", "host"
+  FROM "user"
+  JOIN "user_profile" ON "user"."id" = "user_profile". "userId" WHERE "user"."host" IS NOT NULL;
+CREATE UNIQUE INDEX "temp_mentions_id" ON "temp_mentions_1710688552234" ("id");
+UPDATE "note" SET "mentionedRemoteUsers" = (
+  SELECT COALESCE(json_agg(row_to_json("data")::jsonb - 'id')::text, '[]') FROM "temp_mentions_1710688552234" AS "data"
+  WHERE "data"."id" = ANY("note"."mentions")
+);
+DROP TABLE "temp_mentions_1710688552234";
+
+-- note-file
+DROP TABLE "note_file";
 
 -- rename-meta-columns
 ALTER TABLE "meta" RENAME COLUMN "tosUrl" TO "ToSUrl";

@@ -19,7 +19,7 @@ import { UserNotePining } from "@/models/entities/user-note-pining.js";
 import { genId } from "@/misc/gen-id.js";
 import { UserPublickey } from "@/models/entities/user-publickey.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
-import { toPuny } from "@/misc/convert-host.js";
+import { isSameOrigin, toPuny } from "@/misc/convert-host.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
 import { toArray } from "@/prelude/array.js";
 import { fetchInstanceMetadata } from "@/services/fetch-instance-metadata.js";
@@ -138,7 +138,7 @@ export async function fetchPerson(
 	if (cached) return cached;
 
 	// Fetch from the database if the URI points to this server
-	if (uri.startsWith(`${config.url}/`)) {
+	if (isSameOrigin(uri)) {
 		const id = uri.split("/").pop();
 		const u = await Users.findOneBy({ id });
 		if (u) await uriPersonCache.set(uri, u);
@@ -166,7 +166,7 @@ export async function createPerson(
 ): Promise<User> {
 	if (typeof uri !== "string") throw new Error("uri is not string");
 
-	if (uri.startsWith(config.url)) {
+	if (isSameOrigin(uri)) {
 		throw new StatusError(
 			"cannot resolve local user",
 			400,
@@ -419,7 +419,7 @@ export async function updatePerson(
 	if (typeof uri !== "string") throw new Error("uri is not string");
 
 	// Skip if the URI points to this server
-	if (uri.startsWith(`${config.url}/`)) {
+	if (isSameOrigin(uri)) {
 		return;
 	}
 

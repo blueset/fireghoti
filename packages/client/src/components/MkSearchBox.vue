@@ -130,9 +130,7 @@ const searchUsers = ref(
 );
 const searchRange = ref(
 	searchParams.has("since") || searchParams.has("until")
-		? `${searchParams.get("since") ?? ""}-${
-				searchParams.get("until") ?? ""
-			}`
+		? `${searchParams.get("since") ?? ""}-${searchParams.get("until") ?? ""}`
 		: "",
 );
 const searchPostsWithFiles = ref(searchParams.get("withFiles") === "1");

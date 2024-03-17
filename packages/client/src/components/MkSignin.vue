@@ -142,7 +142,7 @@ import MkInfo from "@/components/MkInfo.vue";
 import { host as configHost } from "@/config";
 import { byteify, hexify } from "@/scripts/2fa";
 import * as os from "@/os";
-import { login } from "@/account";
+import { signIn } from "@/account";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
@@ -195,7 +195,7 @@ function onUsernameChange() {
 
 function onLogin(res) {
 	if (props.autoSet) {
-		return login(res.i);
+		return signIn(res.i);
 	}
 }
 

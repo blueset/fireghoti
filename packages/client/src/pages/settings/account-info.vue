@@ -3,7 +3,7 @@
 		<MkKeyValue>
 			<template #key>ID</template>
 			<template #value
-				><span class="_monospace">{{ $i.id }}</span></template
+				><span class="_monospace">{{ me.id }}</span></template
 			>
 		</MkKeyValue>
 
@@ -11,7 +11,7 @@
 			<MkKeyValue>
 				<template #key>{{ i18n.ts.registeredDate }}</template>
 				<template #value
-					><MkTime :time="$i.createdAt" mode="detail"
+					><MkTime :time="me.createdAt" mode="detail"
 				/></template>
 			</MkKeyValue>
 		</FormSection>
@@ -135,25 +135,25 @@
 			<MkKeyValue oneline style="margin: 1em 0">
 				<template #key>emailVerified</template>
 				<template #value>{{
-					$i.emailVerified ? i18n.ts.yes : i18n.ts.no
+					me.emailVerified ? i18n.ts.yes : i18n.ts.no
 				}}</template>
 			</MkKeyValue>
 			<MkKeyValue oneline style="margin: 1em 0">
 				<template #key>twoFactorEnabled</template>
 				<template #value>{{
-					$i.twoFactorEnabled ? i18n.ts.yes : i18n.ts.no
+					me.twoFactorEnabled ? i18n.ts.yes : i18n.ts.no
 				}}</template>
 			</MkKeyValue>
 			<MkKeyValue oneline style="margin: 1em 0">
 				<template #key>securityKeys</template>
 				<template #value>{{
-					$i.securityKeys ? i18n.ts.yes : i18n.ts.no
+					me.securityKeys ? i18n.ts.yes : i18n.ts.no
 				}}</template>
 			</MkKeyValue>
 			<MkKeyValue oneline style="margin: 1em 0">
 				<template #key>usePasswordLessLogin</template>
 				<template #value>{{
-					$i.usePasswordLessLogin ? i18n.ts.yes : i18n.ts.no
+					me.usePasswordLessLogin ? i18n.ts.yes : i18n.ts.no
 				}}</template>
 			</MkKeyValue>
 			<MkKeyValue oneline style="margin: 1em 0">
@@ -179,7 +179,7 @@ import MkKeyValue from "@/components/MkKeyValue.vue";
 import * as os from "@/os";
 import number from "@/filters/number";
 import bytes from "@/filters/bytes";
-import { $i, isAdmin, isModerator } from "@/reactiveAccount";
+import { isAdmin, isModerator, me } from "@/me";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
@@ -188,7 +188,7 @@ const stats = ref<any>({});
 
 onMounted(() => {
 	os.api("users/stats", {
-		userId: $i!.id,
+		userId: me!.id,
 	}).then((response) => {
 		stats.value = response;
 	});

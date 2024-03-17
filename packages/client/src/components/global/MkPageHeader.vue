@@ -20,10 +20,10 @@
 					<i :class="icon('ph-caret-left')"></i>
 				</button>
 				<MkAvatar
-					v-if="narrow && props.displayMyAvatar && $i"
+					v-if="narrow && props.displayMyAvatar && me"
 					v-vibrate="5"
 					class="avatar button"
-					:user="$i"
+					:user="me"
 					:disable-preview="true"
 					disable-link
 					@click.stop="openAccountMenu"
@@ -139,7 +139,7 @@ import { popupMenu } from "@/os";
 import { scrollToTop } from "@/scripts/scroll";
 import { injectPageMetadata } from "@/scripts/page-metadata";
 import { openAccountMenu as openAccountMenu_ } from "@/account";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 

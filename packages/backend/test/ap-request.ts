@@ -1,4 +1,4 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import httpSignature from "@peertube/http-signature";
 import { genRsaKeyPair } from "../src/misc/gen-key-pair.js";
 import {

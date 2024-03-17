@@ -103,7 +103,7 @@
 				i18n.ts.enableTimelineStreaming
 			}}</FormSwitch>
 			<!-- <FormSwitch
-				v-model="$i.injectFeaturedNote"
+				v-model="me.injectFeaturedNote"
 				class="_formBlock"
 				@update:modelValue="onChangeInjectFeaturedNote"
 			>
@@ -297,7 +297,7 @@
 				}}</template></FormSwitch
 			>
 			<FormSwitch
-				v-if="$i?.isAdmin"
+				v-if="me?.isAdmin"
 				v-model="showAdminUpdates"
 				class="_formBlock"
 				>{{ i18n.ts.showAdminUpdates }}</FormSwitch
@@ -376,7 +376,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from "vue";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import FormSwitch from "@/components/form/switch.vue";
 import FormSelect from "@/components/form/select.vue";
 import FormRadios from "@/components/form/radios.vue";
@@ -536,7 +536,7 @@ const showNoAltTextWarning = computed(
 // 	os.api("i/update", {
 // 		injectFeaturedNote: v,
 // 	}).then((i) => {
-// 		$i!.injectFeaturedNote = i.injectFeaturedNote;
+// 		me!.injectFeaturedNote = i.injectFeaturedNote;
 // 	});
 // }
 

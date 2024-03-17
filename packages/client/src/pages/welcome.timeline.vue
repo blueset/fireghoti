@@ -14,7 +14,7 @@
 							v-if="note.text"
 							:text="note.text"
 							:author="note.user"
-							:i="$i"
+							:i="me"
 							:custom-emojis="note.emojis"
 						/>
 						<!-- <MkA v-if="note.renoteId" class="rp" :to="`/notes/${note.renoteId}`">RN: ...</MkA> -->

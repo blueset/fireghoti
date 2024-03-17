@@ -180,7 +180,7 @@ import { userPage } from "@/filters/user";
 import * as os from "@/os";
 import { defaultStore, noteViewInterruptors } from "@/store";
 import { reactionPicker } from "@/scripts/reaction-picker";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { i18n } from "@/i18n";
 import { getNoteMenu } from "@/scripts/get-note-menu";
 import { useNoteCapture } from "@/scripts/use-note-capture";
@@ -235,7 +235,7 @@ const isDeleted = ref(false);
 const muted = ref(
 	getWordSoftMute(
 		note.value,
-		$i?.id,
+		me?.id,
 		defaultStore.state.mutedWords,
 		defaultStore.state.mutedLangs,
 	),

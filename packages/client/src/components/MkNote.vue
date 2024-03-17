@@ -127,7 +127,7 @@
 							<Mfm
 								:text="translation.text"
 								:author="appearNote.user"
-								:i="$i"
+								:i="me"
 								:lang="targetLang"
 								:custom-emojis="appearNote.emojis"
 							/>
@@ -296,7 +296,7 @@ import { userPage } from "@/filters/user";
 import * as os from "@/os";
 import { defaultStore, noteViewInterruptors } from "@/store";
 import { reactionPicker } from "@/scripts/reaction-picker";
-import { $i, isSignedIn } from "@/reactiveAccount";
+import { isSignedIn, me } from "@/me";
 import { i18n } from "@/i18n";
 import { getNoteMenu } from "@/scripts/get-note-menu";
 import { useNoteCapture } from "@/scripts/use-note-capture";
@@ -355,13 +355,13 @@ const reactButton = ref<HTMLElement>();
 const appearNote = computed(() =>
 	isRenote ? (note.value.renote as entities.Note) : note.value,
 );
-const isMyRenote = isSignedIn && $i.id === note.value.userId;
+const isMyRenote = isSignedIn && me.id === note.value.userId;
 const showContent = ref(false);
 const isDeleted = ref(false);
 const muted = ref(
 	getWordSoftMute(
 		note.value,
-		$i?.id,
+		me?.id,
 		defaultStore.state.mutedWords,
 		defaultStore.state.mutedLangs,
 	),
@@ -632,9 +632,7 @@ function setPostExpanded(val: boolean) {
 const accessibleLabel = computed(() => {
 	let label = `${appearNote.value.user.username}; `;
 	if (appearNote.value.renote) {
-		label += `${i18n.t("renoted")} ${
-			appearNote.value.renote.user.username
-		}; `;
+		label += `${i18n.t("renoted")} ${appearNote.value.renote.user.username}; `;
 		if (appearNote.value.renote.cw) {
 			label += `${i18n.t("cw")}: ${appearNote.value.renote.cw}; `;
 			if (postIsExpanded.value) {

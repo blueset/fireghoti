@@ -60,7 +60,7 @@ import FormInfo from "@/components/MkInfo.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import icon from "@/scripts/icon";
 
 const moveToAccount = ref("");
@@ -69,8 +69,8 @@ const accountAlias = ref([""]);
 await init();
 
 async function init() {
-	if ($i?.alsoKnownAs && $i.alsoKnownAs.length > 0) {
-		const aka = await os.api("users/show", { userIds: $i.alsoKnownAs });
+	if (me?.alsoKnownAs && me.alsoKnownAs.length > 0) {
+		const aka = await os.api("users/show", { userIds: me.alsoKnownAs });
 		accountAlias.value =
 			aka && aka.length > 0
 				? aka.map((user) => `@${acct.toString(user)}`)
@@ -86,7 +86,7 @@ async function save(): Promise<void> {
 			.map((e) => e.trim())
 			.filter((e) => e !== ""),
 	});
-	$i.alsoKnownAs = i.alsoKnownAs;
+	me.alsoKnownAs = i.alsoKnownAs;
 	await init();
 }
 

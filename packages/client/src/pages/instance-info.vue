@@ -275,7 +275,7 @@ import MkKeyValue from "@/components/MkKeyValue.vue";
 import FormSwitch from "@/components/form/switch.vue";
 import * as os from "@/os";
 import number from "@/filters/number";
-import { isAdmin } from "@/reactiveAccount";
+import { isAdmin } from "@/me";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { deviceKind } from "@/scripts/device-kind";
 import { defaultStore } from "@/store";

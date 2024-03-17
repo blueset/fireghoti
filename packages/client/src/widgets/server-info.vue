@@ -3,14 +3,14 @@
 		<div
 			:class="$style.container"
 			:style="{
-				backgroundImage: `url(${$instance.bannerUrl})`,
+				backgroundImage: `url(${instance.bannerUrl})`,
 			}"
 		>
 			<div :class="$style.iconContainer">
 				<img
 					:src="
-						$instance.faviconUrl ||
-						$instance.iconUrl ||
+						instance.faviconUrl ||
+						instance.iconUrl ||
 						'/favicon.ico'
 					"
 					alt="Instance logo"
@@ -20,7 +20,7 @@
 			<div :class="$style.bodyContainer">
 				<div :class="$style.body">
 					<MkA :class="$style.name" to="/about" behavior="window">{{
-						$instance.name
+						instance.name
 					}}</MkA>
 					<div :class="$style.host">{{ host }}</div>
 				</div>
@@ -34,6 +34,7 @@ import type { Widget, WidgetComponentExpose } from "./widget";
 import { useWidgetPropsManager } from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
 import { host } from "@/config";
+import { instance } from "@/instance";
 
 const name = "serverInfo";
 

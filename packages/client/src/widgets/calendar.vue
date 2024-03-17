@@ -50,7 +50,7 @@ import { useWidgetPropsManager } from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
 import { i18n } from "@/i18n";
 import { useInterval } from "@/scripts/use-interval";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 
 const name = "calendar";
 
@@ -76,7 +76,7 @@ const { widgetProps, configure } = useWidgetPropsManager(
 	emit,
 );
 
-const hasBirthday = Boolean($i?.birthday);
+const hasBirthday = Boolean(me?.birthday);
 
 const year = ref(0);
 const month = ref(0);
@@ -123,7 +123,7 @@ const tick = () => {
 	isHoliday.value = now.getDay() === 0 || now.getDay() === 6;
 
 	if (hasBirthday) {
-		const [bdayYear, bdayMonth, bdayDay] = $i.birthday.split("-");
+		const [bdayYear, bdayMonth, bdayDay] = me.birthday.split("-");
 		if (month.value === +bdayMonth && day.value == +bdayDay) {
 			isBirthday.value = true;
 		}

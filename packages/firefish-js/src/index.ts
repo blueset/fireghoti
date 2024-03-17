@@ -11,7 +11,7 @@ export {
 	Connection as ChannelConnection,
 	StreamTypes,
 	acct,
-	Acct,
+	type Acct,
 };
 
 export const permissions = consts.permissions;

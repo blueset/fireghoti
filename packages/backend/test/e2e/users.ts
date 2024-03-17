@@ -1,6 +1,6 @@
 process.env.NODE_ENV = "test";
 
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { inspect } from "node:util";
 import {
 	signup,

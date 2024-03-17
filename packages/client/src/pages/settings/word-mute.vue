@@ -74,7 +74,7 @@ import MkTab from "@/components/MkTab.vue";
 import * as os from "@/os";
 import number from "@/filters/number";
 import { defaultStore } from "@/store";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
@@ -93,8 +93,8 @@ const render = (mutedWords) =>
 const tab = ref("soft");
 const softMutedWords = ref(render(defaultStore.state.mutedWords));
 const softMutedLangs = ref(render(defaultStore.state.mutedLangs));
-const hardMutedWords = ref(render($i!.mutedWords));
-const hardMutedPatterns = ref($i!.mutedPatterns.join("\n"));
+const hardMutedWords = ref(render(me!.mutedWords));
+const hardMutedPatterns = ref(me!.mutedPatterns.join("\n"));
 const hardWordMutedNotesCount = ref(null);
 const changed = ref(false);
 

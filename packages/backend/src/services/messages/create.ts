@@ -134,13 +134,6 @@ export async function createMessage(
 			userId: message.userId,
 			visibility: "specified",
 			mentions: [recipientUser].map((u) => u.id),
-			mentionedRemoteUsers: JSON.stringify(
-				[recipientUser].map((u) => ({
-					uri: u.uri,
-					username: u.username,
-					host: u.host,
-				})),
-			),
 		} as Note;
 
 		let renderedNote: Record<string, unknown> = await renderNote(

@@ -7,13 +7,13 @@
 		<div
 			class="llvierxe"
 			:style="{
-				backgroundImage: $i.bannerUrl ? `url(${$i.bannerUrl})` : null,
+				backgroundImage: me.bannerUrl ? `url(${me.bannerUrl})` : null,
 			}"
 		>
 			<div class="avatar">
 				<MkAvatar
 					class="avatar"
-					:user="$i"
+					:user="me"
 					:disable-link="true"
 					@click="changeAvatar"
 				/>
@@ -118,7 +118,7 @@
 				i18n.t("_profile.metadataDescription", {
 					a: "\<a\>",
 					l: "\<a\>",
-					rel: `rel="me" href="https://${host}/@${$i.username}"`,
+					rel: `rel="me" href="https://${host}/@${me.username}"`,
 				})
 			}}</template>
 		</FormSlot>
@@ -162,19 +162,19 @@ import FormSlot from "@/components/form/slot.vue";
 import { selectFile } from "@/scripts/select-file";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { host } from "@/config";
 import icon from "@/scripts/icon";
 
 const profile = reactive({
-	name: $i?.name,
-	description: $i?.description,
-	location: $i?.location,
-	birthday: $i?.birthday,
-	isBot: $i?.isBot,
-	isCat: $i?.isCat,
-	speakAsCat: $i?.speakAsCat,
+	name: me?.name,
+	description: me?.description,
+	location: me?.location,
+	birthday: me?.birthday,
+	isBot: me?.isBot,
+	isCat: me?.isCat,
+	speakAsCat: me?.speakAsCat,
 });
 
 const props = withDefaults(
@@ -197,7 +197,7 @@ watch(
 );
 
 const fields = reactive(
-	$i.fields.map((field) => ({ name: field.name, value: field.value })),
+	me.fields.map((field) => ({ name: field.name, value: field.value })),
 );
 
 function addField() {
@@ -253,8 +253,8 @@ function changeAvatar(ev) {
 			const i = await os.apiWithDialog("i/update", {
 				avatarId: originalOrCropped.id,
 			});
-			$i.avatarId = i.avatarId;
-			$i.avatarUrl = i.avatarUrl;
+			me.avatarId = i.avatarId;
+			me.avatarUrl = i.avatarUrl;
 		},
 	);
 }
@@ -278,8 +278,8 @@ function changeBanner(ev) {
 			const i = await os.apiWithDialog("i/update", {
 				bannerId: originalOrCropped.id,
 			});
-			$i.bannerId = i.bannerId;
-			$i.bannerUrl = i.bannerUrl;
+			me.bannerId = i.bannerId;
+			me.bannerUrl = i.bannerUrl;
 		},
 	);
 }

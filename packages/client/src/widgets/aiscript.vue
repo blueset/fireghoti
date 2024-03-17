@@ -38,7 +38,7 @@ import type { GetFormResultType } from "@/scripts/form";
 import * as os from "@/os";
 import MkContainer from "@/components/MkContainer.vue";
 import { createAiScriptEnv } from "@/scripts/aiscript/api";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
@@ -84,7 +84,7 @@ const run = async () => {
 	const aiscript = new Interpreter(
 		createAiScriptEnv({
 			storageKey: "widget",
-			token: $i?.token,
+			token: me?.token,
 		}),
 		{
 			in: (q) => {
