@@ -17,6 +17,20 @@ import { countSameRenotes } from "@/misc/count-same-renotes.js";
 import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
 import { deliverToRelays } from "@/services/relay.js";
 
+async function recalculateNotesCountOfUser(user: { id: User["id"] }) {
+	const newCount = await Notes.createQueryBuilder()
+		.where(`"userId" = :id`, { id: user.id })
+		.getCount();
+	await Users.createQueryBuilder()
+		.update()
+		.set({
+			updatedAt: new Date(),
+			notesCount: newCount,
+		})
+		.where("id = :id", { id: user.id })
+		.execute();
+}
+
 /**
  * 投稿を削除します。
  * @param user 投稿者
@@ -115,6 +129,11 @@ export default async function (
 			id: note.id,
 			userId: user.id,
 		});
+
+		if (Users.isLocalUser(user)) {
+			// For the case of cascading deletion, it cannot be solved by simply reducing the notesCount by 1.
+			recalculateNotesCountOfUser(user);
+		}
 	}
 }
 
