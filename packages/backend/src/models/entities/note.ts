@@ -151,6 +151,7 @@ export class Note {
 	})
 	public score: number;
 
+	// FIXME: file id is not removed from this array even if the file is deleted
 	@Index()
 	@Column({
 		...id(),
@@ -183,6 +184,7 @@ export class Note {
 	})
 	public mentions: User["id"][];
 
+	// FIXME: WHAT IS THIS
 	@Column("text", {
 		default: "[]",
 	})
