@@ -321,6 +321,11 @@ export const routes = [
 		loginRequired: true,
 	},
 	{
+		path: "/authorize_interaction",
+		component: page(() => import("./pages/authorize_interaction.vue")),
+		loginRequired: true,
+	},
+	{
 		path: "/share",
 		component: page(() => import("./pages/share.vue")),
 		loginRequired: true,
