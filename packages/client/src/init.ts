@@ -40,7 +40,6 @@ import { i18n } from "@/i18n";
 import { fetchInstance, instance } from "@/instance";
 import { isSignedIn, me } from "@/me";
 import { alert, api, confirm, popup, post, toast } from "@/os";
-import { compareFirefishVersions } from "@/scripts/compare-versions";
 import { deviceKind } from "@/scripts/device-kind";
 import { getAccountFromId } from "@/scripts/get-account-from-id";
 import { makeHotkey } from "@/scripts/hotkey";
@@ -246,11 +245,7 @@ function checkForSplash() {
 
 		try {
 			// 変なバージョン文字列来るとcompareVersionsでエラーになるため
-			if (
-				lastVersion != null &&
-				compareFirefishVersions(lastVersion, version) === 1 &&
-				defaultStore.state.showUpdates
-			) {
+			if (lastVersion < version && defaultStore.state.showUpdates) {
 				// ログインしてる場合だけ
 				if (me) {
 					popup(

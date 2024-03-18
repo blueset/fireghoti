@@ -73,6 +73,7 @@ import { UserPending } from "@/models/entities/user-pending.js";
 import { Webhook } from "@/models/entities/webhook.js";
 import { UserIp } from "@/models/entities/user-ip.js";
 import { NoteEdit } from "@/models/entities/note-edit.js";
+import { NoteFile } from "@/models/entities/note-file.js";
 
 import { entities as charts } from "@/services/chart/entities.js";
 import { dbLogger } from "./logger.js";
@@ -143,6 +144,7 @@ export const entities = [
 	Note,
 	NoteEdit,
 	NoteFavorite,
+	NoteFile,
 	NoteReaction,
 	NoteWatching,
 	NoteThreadMuting,

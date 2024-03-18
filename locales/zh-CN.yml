@@ -1936,7 +1936,7 @@ moveFrom: 从旧账号迁移至此账号
 defaultReaction: 发出和收到帖子的默认表情符号反应
 sendModMail: 发送管理通知
 moderationNote: "管理笔记"
-ipFirstAcknowledged: "该日期是这个 IP 地址首次被获取到的日期"
+ipFirstAcknowledged: "首次获取此 IP 地址的日期"
 driveCapacityOverride: "网盘容量变更"
 isLocked: 该账号设置了关注请求
 _filters:
@@ -2047,11 +2047,12 @@ publishTimelines: 为访客发布时间线
 publishTimelinesDescription: 如果启用，在用户登出时本地和全局时间线也会显示在 {url} 上。
 searchWordsDescription: "要搜索帖子，请输入关键词。交集搜索关键词之间使用空格进行区分，并集搜索关键词之间使用 OR 进行区分。\n例如 '早上
   晚上' 将查找包含 '早上' 和 '晚上' 的帖子，而 '早上 OR 晚上' 将查找包含 '早上' 或 '晚上' （以及同时包含两者）的帖子。\n您还可以组合交集/并集条件，例如
-  '(早上 OR 晚上) 困了' 。\n\n如果您想转到特定的用户页面或帖子页面，请在此字段中输入用户 ID 或 URL，然后单击 “查询” 按钮。 单击 “搜索”
-  将搜索字面包含用户 ID/URL 的帖子。"
+  '(早上 OR 晚上) 困了' 。\n如果您想搜索单词序列（例如一个英语句子），您必须将其放在双引号中，例如 \"Today I learned\" 以区分于交集搜索。\n
+  \n如果您想转到特定的用户页面或帖子页面，请在此字段中输入用户 ID 或 URL，然后单击 “查询” 按钮。 单击 “搜索” 将搜索字面包含用户 ID/URL
+  的帖子。"
 searchRangeDescription: "如果您要过滤时间段，请按以下格式输入：20220615-20231031\n\n如果您省略年份（例如 0105-0106
   或 20231105-0110），它将被解释为当前年份。\n\n您还可以省略开始日期或结束日期。 例如 -0102 将过滤搜索结果以仅显示今年 1 月 2 日之前发布的帖子，而
   20231026- 将过滤结果以仅显示 2023 年 10 月 26 日之后发布的帖子。"
 messagingUnencryptedInfo: "Firefish 上的聊天没有经过端到端加密，请不要在聊天中分享您的敏感信息。"
-noAltTextWarning: 有些附件没有说明。您是否忘记写说明了？
-showNoAltTextWarning: 当您尝试发布没有说明的帖子附件时显示警告
+noAltTextWarning: 有些附件没有描述。您是否忘记写描述了？
+showNoAltTextWarning: 当您尝试发布没有描述的帖子附件时显示警告

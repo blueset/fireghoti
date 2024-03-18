@@ -1198,7 +1198,9 @@ searchWordsDescription: "To search for posts, enter the search term. Separate wo
   search.\nFor example, 'morning night' will find posts that contain both 'morning'
   and 'night', and 'morning OR night' will find posts that contain either 'morning'
   or 'night' (or both).\nYou can also combine AND/OR conditions like '(morning OR
-  night) sleepy'.\n\nIf you want to go to a specific user page or post page, enter
+  night) sleepy'.\nIf you want to search for a sequence of words (e.g., a sentence), you
+  must put it in double quotes, not to make it an AND search: \"Today I learned\"\n\n
+  If you want to go to a specific user page or post page, enter
   the ID or URL in this field and click the 'Lookup' button. Clicking 'Search' will
   search for posts that literally contain the ID/URL."
 searchUsers: "Posted by (optional)"
