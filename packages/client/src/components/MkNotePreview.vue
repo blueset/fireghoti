@@ -22,6 +22,7 @@
 
 <script lang="ts" setup>
 import preprocess from "@/scripts/preprocess";
+import { me } from "@/me";
 
 defineProps<{
 	text: string;
