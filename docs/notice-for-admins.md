@@ -74,14 +74,14 @@ db:
 
 Please edit your `docker-compose.yml` to replace the database container image from `docker.io/postgres` to `docker.io/groonga/pgroonga`.
 
-Please make sure to use the same PostgreSQL version. If you are using `docker.io/postgres:16-alpine` (PostgreSQL v16), the corresponding image tag is `docker.io/groonga/pgroonga:latest-alpine-16` (or `docker.io/groonga/pgroonga:latest-alpine-16-slim`).
+The list of tags can be found on <https://hub.docker.com/r/groonga/pgroonga/tags>. Tags are named as `{PGroonga version}-{alpine or debian}-{PostgreSQL major version}`.
 
-The list of tags can be found on <https://hub.docker.com/r/groonga/pgroonga/tags>.
+Please make sure to use the same PostgreSQL version. If you are using `docker.io/postgres:16-alpine` (PostgreSQL v16), the corresponding image is `docker.io/groonga/pgroonga:3.1.8-alpine-16` (or `docker.io/groonga/pgroonga:3.1.8-alpine-16-slim`). There are also tags called `latest-alpine-16` and `latest-alpine-16-slim`, but please be careful if you use these tags since [PGroonga may introduce breaking changes](https://pgroonga.github.io/upgrade/), similar to PostgreSQL.
 
 ```yaml
 db:
   restart: unless-stopped
-  image: docker.io/groonga/pgroonga:latest-alpine-16-slim  # change here
+  image: docker.io/groonga/pgroonga:3.1.8-alpine-16-slim  # change here
   container_name: firefish_db
 ```
 
