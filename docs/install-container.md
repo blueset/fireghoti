@@ -26,7 +26,7 @@ Everything else can be left as-is.
 
 ## Pull the container image
 
-The image tag is [`registry.firefish.dev/firefish/firefish:latest`](https://firefish.dev/firefish/firefish/container_registry).
+The image tag is [`registry.firefish.dev/firefish/firefish:latest`](https://firefish.dev/firefish/firefish/container_registry/1).
 
 ```sh
 docker pull registry.firefish.dev/firefish/firefish:latest
