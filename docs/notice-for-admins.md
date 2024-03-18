@@ -21,7 +21,7 @@ psql (PostgreSQL) 16.1
 
 In this case, your PostgreSQL major version is `16`.
 
-There are official installation instructions for many operating systems on <https://pgroonga.github.io/install>, so please follow the instructions on this page. However, since many users are using Ubuntu, and there are no instructions for Arch Linux, we explicitly list the instructions for Ubuntu and Arch Linux here. Please keep in mind that this is not official information and the procedures may change.
+There are official installation instructions for many operating systems on <https://pgroonga.github.io/install>, so please follow the instructions on this page. However, since many users are using Ubuntu, and there are no instructions for Arch Linux and Fedora, we explicitly list the instructions for Ubuntu, Arch Linux and Fedora here. Please keep in mind that this is not official information and the procedures may change.
 
 ##### Ubuntu
 
@@ -51,6 +51,39 @@ You can install PGroonga from the Arch User Repository.
 git clone https://aur.archlinux.org/pgroonga.git && cd pgroonga && makepkg -si
 # or paru -S pgroonga
 # or yay -S pgroonga
+```
+
+##### Fedora
+
+You need to build PGroonga from source and create a policy package.
+
+```sh
+sudo dnf install make groonga-devel postgresql-server-devel redhat-rpm-config
+wget https://packages.groonga.org/source/pgroonga/pgroonga-3.1.8.tar.gz
+tar xvf pgroonga-3.1.8.tar.gz
+cd pgroonga-3.1.8
+make
+sudo make install
+```
+
+```sh
+cat > pgroonga.te << EOF
+module pgroonga 1.0;
+
+require {
+    type postgresql_t;
+    type postgresql_db_t;
+    class file map;
+}
+
+allow postgresql_t postgresql_db_t:file map;
+EOF
+```
+
+```sh
+checkmodule -M -m -o pgroonga.mod pgroonga.te
+semodule_package -o pgroonga.pp -m pgroonga.mod
+sudo semodule -i pgroonga.pp
 ```
 
 #### 2. Enable PGroonga
