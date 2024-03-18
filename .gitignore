@@ -60,7 +60,9 @@ packages/backend/assets/LICENSE
 packages/megalodon/lib
 packages/megalodon/.idea
 
-dev/docker/firefish
+dev/container/firefish
+dev/container/db
+dev/container/redis
 
 # blender backups
 *.blend1

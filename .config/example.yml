@@ -41,7 +41,7 @@ db:
   port: 5432
   #ssl: false
   # Database name
-  db: firefish
+  db: firefish_db
 
   # Auth
   user: firefish
@@ -77,9 +77,9 @@ redis:
 # A Redis-compatible server (DragonflyDB, Keydb, Redis) for caching
 # If left blank, it will use the Redis server from above
 
-cacheServer:
-  host: localhost
-  port: 6380
+#cacheServer:
+  #host: localhost
+  #port: 6379
   #family: 0  # 0=Both, 4=IPv4, 6=IPv6
   #pass: example-pass
   #prefix: example-prefix

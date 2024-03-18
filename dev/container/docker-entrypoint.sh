@@ -18,7 +18,7 @@ if [ ! -f '/.firefish_env_initialized' ]; then
 
 	# Install compilation dependencies
 	apt-get update
-	DEBIAN_FRONTEND='noninteractive' apt-get install -y --no-install-recommends build-essential python3 ffmpeg git postgresql-client-16
+	DEBIAN_FRONTEND='noninteractive' apt-get install -y --no-install-recommends build-essential python3 ffmpeg git postgresql-client-12
 	curl -vvv --proto '=https' --tlsv1.2 --show-error --fail https://sh.rustup.rs | sh -s -- -y
 
 	# Add Cargo PATH

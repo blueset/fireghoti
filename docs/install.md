@@ -1,256 +1,292 @@
-# Install Production Environment
+# Install Firefish
 
-Hope this article can help you about install production environment.
+This document shows an example procedure for installing Firefish on Debian 12. Note that there is much room for customizing the server setup; this document merely demonstrates a simple installation.
 
-## Introduction
+If you want to use the pre-built container image, please refer to [`install-container.md`](./install-container.md).
 
-This article is written based on the Debian Bookworm. Other systems can refer to this article for deployment. However, it is recommended that new users use the same system or Docker environment as ours to avoid wasting time on environment configuration issues.
+Make sure that you can use the `sudo` command before proceeding.
 
-The versions of Node.js, Rust, PostgreSQL, DragonflyDB that come with Debian Bookworm are low or not have, the latest official versions of these components are used to install them. Other components are installed using the apt package manager that comes with the system.
+## 1. Install dependencies
 
-## Allow `sudo` command
-
-```sh
-su -
-apt install -y -V sudo
-# user is your username
-usermod -aG sudo user
-reboot
-```
-
-## Install Base Requirements
+### Utilities
 
 ```sh
 sudo apt update
-sudo apt install -y -V wget curl git ca-certificates lsb-release gnupg
+sudo apt install build-essential python3 curl wget git lsb-release
 ```
 
-## Install Node.js
+### Node.js and pnpm
 
-The latest version at the time of writing is v21.6.2. Please replace it with the latest Node.js version number during installation. Details can be found in [nodejs.org](https://nodejs.org) .
-
-1. Download and extract.
+Instructions can be found at [this repository](https://github.com/nodesource/distributions).
 
 ```sh
-VERSION=v21.6.2
-DISTRO=linux-x64
-sudo mkdir -p /usr/local/lib/nodejs
-wget https://nodejs.org/dist/v21.6.2/node-$VERSION-$DISTRO.tar.xz
-sudo tar -xJvf node-$VERSION-$DISTRO.tar.xz -C /usr/local/lib/nodejs
+NODE_MAJOR=20
+curl -fsSL "https://deb.nodesource.com/setup_${NODE_MAJOR}.x" | sudo -E bash -
+sudo apt install nodejs
+
+# check version
+node --version
 ```
 
-2. Open your `.profile` and `/root/.profile` files.
-
+You also need to enable `pnpm`.
 ```sh
-nano ~/.profile
-sudo nano /root/.profile
+sudo corepack enable
+corepack prepare pnpm@latest --activate
+
+# check version
+pnpm --version
 ```
 
-3. Add below content at below of this two file to set the environment variable.
+### PostgreSQL and PGroonga
+
+PostgreSQL install instructions can be found at [this page](https://www.postgresql.org/download/).
 
 ```sh
-# Nodejs
-VERSION=v21.6.2
-DISTRO=linux-x64
-export PATH=/usr/local/lib/nodejs/node-$VERSION-$DISTRO/bin:$PATH
-```
-
-4. Refresh `PATH` and test.
-
-```sh
-. ~/.profile
-node -v
-# Switching to root
-sudo -i
-. ~/.profile
-node -v
-exit
-```
-
-## Install Rust
-
-1. Running this script and choose "Proceed with installation" option.
-
-```sh
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-. ~/.profile
-cargo -V
-```
-
-## Install PostgreSQL with PGroonga extension
-
-```sh
-wget https://apache.jfrog.io/artifactory/arrow/$(lsb_release --id --short | tr 'A-Z' 'a-z')/apache-arrow-apt-source-latest-$(lsb_release --codename --short).deb
-sudo apt install -y -V ./apache-arrow-apt-source-latest-$(lsb_release --codename --short).deb
-wget https://packages.groonga.org/debian/groonga-apt-source-latest-$(lsb_release --codename --short).deb
-sudo apt install -y -V ./groonga-apt-source-latest-$(lsb_release --codename --short).deb
-echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release --codename --short)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+sudo sh -c 'echo "deb https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 sudo apt update
-sudo apt install -y -V postgresql-16-pgdg-pgroonga
+sudo apt install postgresql-16
+
+sudo systemctl enable --now postgresql
+
+# check version
+psql --version
 ```
 
-## Configuration PostgreSQL
-
-1. Execute this to running `psql` as `postgres` user.
+PGroonga install instructions can be found at [this page](https://pgroonga.github.io/install/).
 
 ```sh
-sudo -u postgres psql
-```
-
-2. Create Firefish database, user and PGroonga extension. **Please change the password.**
-
-```sql
-CREATE DATABASE firefish WITH ENCODING = 'UTF8';
-\connect firefish
-CREATE EXTENSION pgroonga;
-CREATE USER firefish WITH PASSWORD 'password';
-ALTER USER firefish WITH SUPERUSER;
-GRANT ALL ON DATABASE firefish TO firefish;
-```
-
-3. Run `exit` to return.
-
-## Install DragonflyDB (Cache)
-
-```sh
-wget https://dragonflydb.gateway.scarf.sh/latest/dragonfly_amd64.deb
-sudo dpkg -i dragonfly_amd64.deb
-```
-
-## Configuration DragonflyDB
-
-If you experience a lot of traffic, it's a good idea to set up another Redis-compatible caching server. If you don't set one one up, it'll fall back to the mandatory Redis server. DragonflyDB is the recommended option due to its unrivaled performance and ease of use.
-
-1. Open your `dragonfly.conf` files.
-
-```sh
-sudo nano /etc/dragonfly/dragonfly.conf
-```
-
-2. Add content at below of this file to set the different port variable because default port is 6379.
-
-```conf
---port=6380
-```
-
-3. Run `sudo systemctl restart dragonfly` to restart it.
-
-## Install Caddy, Redis, Python 3 and build-essential
-
-If you already have experience using nginx, you can consider replacing caddy with nginx here.
-
-```sh
+wget "https://apache.jfrog.io/artifactory/arrow/$(lsb_release --id --short | tr 'A-Z' 'a-z')/apache-arrow-apt-source-latest-$(lsb_release --codename --short).deb"
+sudo apt install "./apache-arrow-apt-source-latest-$(lsb_release --codename --short).deb"
+wget "https://packages.groonga.org/debian/groonga-apt-source-latest-$(lsb_release --codename --short).deb"
+sudo apt install "./groonga-apt-source-latest-$(lsb_release --codename --short).deb"
 sudo apt update
-sudo apt install -y -V caddy redis python3 build-essential
+sudo apt install postgresql-16-pgdg-pgroonga
+
+rm "apache-arrow-apt-source-latest-$(lsb_release --codename --short).deb" "groonga-apt-source-latest-$(lsb_release --codename --short).deb"
 ```
 
-## Configuration Caddy
+### Redis
 
-If you replaced nginx in the previous step, please refer to the "Other reverse proxy server" chapter in the document for configuration.
-
-1. Run this to modify caddy configuration.
+Instructions can be found at [this page](https://redis.io/docs/install/install-redis/).
 
 ```sh
-sudo nano /etc/caddy/Caddyfile
-```
-
-2. Add this below, should change `example.tld` to your domain.
-
-```conf
-example.tld {
-    reverse_proxy http://127.0.0.1:3000
-}
-```
-
-3. Running `sudo systemctl restart caddy` to apply.
-
-## Install optional ffmpeg dependencies
-
-```sh
+curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
 sudo apt update
-sudo apt install -y -V ffmpeg
+sudo apt install redis
+
+sudo systemctl enable --now redis-server
+
+# check version
+redis-cli --version
 ```
 
-## Download and configuration Firefish
-
-1. Download Firefish and Copy example configuration file.
+### FFmpeg
 
 ```sh
-# cd /path/to/your/firefish
-git clone https://firefish.dev/firefish/firefish.git
-cd firefish/
-git checkout main
-cp .config/example.yml .config/default.yml
+sudo apt install ffmpeg
 ```
 
-> **Note**
-> By default, you're on the develop branch. Run `git checkout main` to switch to the Main branch.
+## 2. Set up a database
 
-2. Open your `default.yml` files and make changes like `URL`, `db` and `reservedUsernames`.
+1. Create a database user
+    ```sh
+    sudo -u postgres createuser --no-createdb --no-createrole --no-superuser --encrypted --pwprompt firefish
+    ```
+    If you forgot the password you typed, you can reset it by executing `sudo -u postgres psql -c "ALTER USER firefish PASSWORD 'password';"`.
+2. Create a database
+    ```sh
+    sudo -u postgres createdb --encoding='UTF8' --owner=firefish firefish_db
+    ```
+3. Enable PGronnga extension
+    ```sh
+    sudo -u postgres psql --command='CREATE EXTENSION pgroonga;' --dbname=firefish_db
+    ```
+
+## 3. Configure Firefish
+
+1. Create an user for Firefish and switch user
+   ```sh
+   sudo useradd --create-home --user-group --shell /bin/bash firefish
+   sudo su --login firefish
+   
+   # check the current working directory
+   # the result should be /home/firefish
+   pwd
+   ```
+1. Install Rust toolchain
+    Instructions can be found at [this page](https://www.rust-lang.org/tools/install).
+    
+    ```sh
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    . "${HOME}/.cargo/env"
+    
+    # check version
+    cargo --version
+    ```
+3. Clone the Firefish repository
+    ```sh
+    git clone --branch=main https://firefish.dev/firefish/firefish.git
+    ```
+1. Copy and edit the config file
+    ```sh
+    cd firefish
+    cp .config/example.yml .config/default.yml
+    nano .config/default.yml
+    ```
+
+    ```yaml
+    url: https://your-server-domain.example.com  # change here
+    port: 3000
+    
+    db:
+      host: localhost
+      port: 5432
+      db: firefish_db
+      user: firefish
+      pass: your-database-password  # and here
+    ```
+
+## 4. Build Firefish
+
+1. Build
+    ```sh
+    pnpm install --frozen-lockfile
+    NODE_ENV=production pnpm run build
+    ```
+1. Execute database migrations
+    ```sh
+    pnpm run migrate
+    ```
+1. Logout from `firefish` user
+    ```sh
+    exit
+    ```
+
+## 5. Preparation for publishing a server
+
+### 1. Set up a firewall
+
+To expose your server securely, you may want to set up a firewall. We use [ufw](https://launchpad.net/ufw) in this instruction.
 
 ```sh
-nano .config/default.yml
+sudo apt install ufw
+# if you use SSH
+# SSH_PORT=22
+# sudo ufw limit "${SSH_PORT}/tcp"
+sudo ufw default deny
+sudo ufw allow 80
+sudo ufw allow 443
+sudo ufw --force enable
+
+# check status
+sudo ufw status
 ```
 
-## Install Firefish
+### 2. Set up a reverse proxy
 
-**run these steps to update Firefish in the future!**
+In this instruction, we use [Caddy](https://caddyserver.com/) to make the Firefish server accesible from internet. However, you can also use [Nginx](https://nginx.org/en/) if you want ([example Nginx config file](../firefish.nginx.conf)).
 
-1. Let corepack enable.
+1. Install Caddy
+    ```sh
+    sudo apt install debian-keyring debian-archive-keyring apt-transport-https
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+    sudo apt update
+    sudo apt install caddy
+
+    # check version
+    caddy version
+    ```
+1. Replace the config file
+    ```sh
+    sudo mv /etc/caddy/Caddyfile /etc/caddy/Caddyfile.bak
+    sudo nano /etc/caddy/Caddyfile
+    ```
+
+    ```Caddyfile
+    your-server-domain.example.com {
+    	reverse_proxy http://127.0.0.1:3000
+    
+    	log {
+    		output file /var/log/caddy/firefish.log
+    	}
+    }
+    ```
+1. Restart Caddy
+    ```sh
+    sudo systemctl restart caddy
+    ```
+
+## 6. Publish your Firefish server
+
+1. Create a service file
+    ```sh
+    sudo nano /etc/systemd/system/firefish.service
+    ```
+
+    ```service
+    [Unit]
+    Description=Firefish daemon
+    Requires=redis.service caddy.service postgresql.service
+    After=redis.service caddy.service postgresql.service network-online.target
+
+    [Service]
+    Type=simple
+    User=firefish
+    Group=firefish
+    UMask=0027
+    ExecStart=/usr/bin/pnpm run start
+    WorkingDirectory=/home/firefish/firefish
+    Environment="NODE_ENV=production"
+    Environment="npm_config_cache=/tmp"
+    # uncomment the following line if you use jemalloc (note that the path varies on different environments)
+    # Environment="LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2"
+    StandardOutput=journal
+    StandardError=journal
+    SyslogIdentifier=firefish
+    TimeoutSec=60
+    Restart=always
+
+    CapabilityBoundingSet=
+    DevicePolicy=closed
+    NoNewPrivileges=true
+    LockPersonality=true
+    PrivateDevices=true
+    PrivateIPC=true
+    PrivateMounts=true
+    PrivateUsers=true
+    ProtectClock=true
+    ProtectControlGroups=true
+    ProtectHostname=true
+    ProtectKernelTunables=true
+    ProtectKernelModules=true
+    ProtectKernelLogs=true
+    ProtectProc=invisible
+    RestrictNamespaces=true
+    RestrictRealtime=true
+    RestrictSUIDSGID=true
+    SecureBits=noroot-locked
+    SystemCallArchitectures=native
+    SystemCallFilter=~@chown @clock @cpu-emulation @debug @ipc @keyring @memlock @module @mount @obsolete @privileged @raw-io @reboot @resources @setuid @swap
+    SystemCallFilter=capset pipe pipe2 setpriority
+
+    [Install]
+    WantedBy=multi-user.target
+    ```
+1. Start Firefish
+    ```sh
+    sudo systemctl enable --now firefish
+    ```
+
+## Upgrading
+
+Please refer to the [upgrade instruction](./upgrade.md). Be sure to switch to `firefish` user and go to the Firefish directory before performing `pnpm install --frozen-lockfile`:
 
 ```sh
-# Switching to root
-sudo -i
-# cd /path/to/your/firefish
-cd /home/user/firefish
-npm i -g pm2
-corepack enable
-exit
-```
-
-2. Install dependency.
-
-```sh
-corepack prepare pnpm@latest --activate
-pnpm install --frozen-lockfile --prod false
-pm2 install pm2-logrotate
-```
-
-> **Note**
-> [`pm2-logrotate`](https://github.com/keymetrics/pm2-logrotate/blob/master/README.md) ensures that log files don't infinitely gather size, as Firefish produces a lot of logs.
-
-3. Build and migrate
-
-```sh
-pnpm install --prod false
-NODE_ENV=production pnpm run build && pnpm run migrate
-```
-
-4. Start Firefish
-
-```sh
-pm2 start "NODE_ENV=production pnpm run start" --name Firefish
-pm2 logs Firefish
-```
-
-5. Wait until the following message shows up.
-
-```log
-1|Firefish | DONE *     [core boot]     All workers started
-1|Firefish | DONE *     [core boot]     Now listening on port 3000 on https://your_firefish_url.example.com (default value: https://localhost:3000)
-```
-
-6. A fresh Firefish environment is created on the URL you have set!
-
-7. By the way, Please use content at below to generate vapid keys to enable Push-Notifications.
-
-```sh
-# Switching to root
-sudo -i
-npm install -g web-push
-web-push generate-vapid-keys
-exit
+sudo su --login firefish
+cd ~/firefish
 ```
 
 ## Customize
@@ -263,22 +299,13 @@ exit
 - To update custom assets without rebuilding, just run `pnpm run gulp`.
 - To block ChatGPT, CommonCrawl, or other crawlers from indexing your instance, uncomment the respective rules in `./custom/robots.txt`.
 
-## Other reverse proxy server
-
-### Nginx
-
-- Run `sudo cp ./firefish.nginx.conf /etc/nginx/sites-available/ && cd /etc/nginx/sites-available/` .
-- Edit `firefish.nginx.conf` to reflect your server properly.
-- Run `sudo ln -s ./firefish.nginx.conf ../sites-enabled/firefish.nginx.conf` .
-- Run `sudo nginx -t` to validate that the config is valid, then restart the NGINX service.
-
 ## Tips & Tricks
 
 - When editing the config file, please don't fill out the settings at the bottom. They're designed *only* for managed hosting, not self hosting. Those settings are much better off being set in Firefish's control panel.
 - Port 3000 (used in the default config) might be already used on your server for something else. To find an open port for Firefish, run `for p in {3000..4000}; do ss -tlnH | tr -s ' ' | cut -d" " -sf4 | grep -q "${p}$" || echo "${p}"; done | head -n 1`. Replace 3000 with the minimum port and 4000 with the maximum port if you need it.
-- I'd recommend you use a S3 Bucket/CDN for Object Storage, especially if you use Docker.
+- We'd recommend you use a S3 Bucket/CDN for Object Storage, especially if you use containers.
 - When using object storage, setting a proper `Access-Control-Allow-Origin` response header is highly recommended.
-- I'd ***strongly*** recommend against using CloudFlare, but if you do, make sure to turn code minification off.
+- We'd recommend against using CloudFlare, but if you do, make sure to turn code minification off.
 - For push notifications, run `npx web-push generate-vapid-keys`, then put the public and private keys into Control Panel > General > ServiceWorker.
 - For translations, make a [DeepL](https://deepl.com) account and generate an API key, then put it into Control Panel > General > DeepL Translation.
 - To add another admin account:
