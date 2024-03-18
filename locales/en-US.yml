@@ -1193,7 +1193,7 @@ releaseToReload: "Release to reload"
 reloading: "Reloading"
 enableTimelineStreaming: "Update timelines automatically"
 searchWords: "Words to search / ID or URL to lookup"
-searchWordsDescription: "To search for posts, enter the search term. Separate words
+searchWordsDescription: "Enter the search term here to search for posts. Separate words
   with a space for an AND search, or 'OR' (without quotes) between words for an OR
   search.\nFor example, 'morning night' will find posts that contain both 'morning'
   and 'night', and 'morning OR night' will find posts that contain either 'morning'
