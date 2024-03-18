@@ -5,7 +5,7 @@ Critical security updates are indicated by the :warning: icon.
 - Server administrators should check [notice-for-admins.md](./notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](./api-change.md) as well.
 
-## Unreleased
+## [v20240319](https://firefish.dev/firefish/firefish/-/compare/v20240301...v20240319?from_project_id=7&straight=false)
 
 - Introduce new full-text search engine and post search filters
 - Refactoring
