@@ -119,10 +119,11 @@ export async function pushNotification<T extends keyof pushNotificationsTypes>(
 				(notificationBody.type === "reaction" && `${displayName} reacted ${notificationBody.reaction}`) ||
 				(notificationBody.type === "pollVote" && `${displayName} voted ${notificationBody.note?.poll.choices[notificationBody.choice || 0]?.text}`) ||
 				(notificationBody.type === "pollEnded" && `${displayName} closed a poll`) ||
+				(notificationBody.type === "followRequestAccepted" && `${displayName} accepted your follow request`) ||
 				(notificationBody.type === "groupInvited" && `${displayName} invited you to ${notificationBody.invitation.group.name}`) ||
 				(notificationBody.type === "app" && notificationBody.header)
-			)) || `New ${type} notification`,
-			body: (type === "notification" && (body as Packed<"Notification">).note?.text) || 
+			)) || `New ${type} (${notificationBody.type}) notification`,
+			body: (type === "notification" && ((body as Packed<"Notification">).note?.text || (body as Packed<"Notification">).note?.renote?.text)) || 
 				(type === "unreadMessagingMessage" && (body as Packed<"MessagingMessage">).text) ||notificationBody.body || "",
 		} : {
 			type,
@@ -143,11 +144,15 @@ export async function pushNotification<T extends keyof pushNotificationsTypes>(
 					proxy: config.proxy,
 				},
 			)
+			.then((result) => {
+				console.log("Push notification, pushSubscription:", pushSubscription, ", result:", result);
+				return result;
+			})
 			.catch((err: any) => {
 				//swLogger.info(err.statusCode);
 				//swLogger.info(err.headers);
 				//swLogger.info(err.body);
-
+				console.log("Push notification, pushSubscription:", pushSubscription, ", error:", err);
 				if (err.statusCode === 410) {
 					SwSubscriptions.delete({
 						userId: userId,
