@@ -1019,32 +1019,58 @@ function deleteDraft() {
 	localStorage.setItem("drafts", JSON.stringify(draftData));
 }
 
+/**
+ * Compare two language codes to determine whether they are decisively different
+ * @returns false if they are close enough
+ */
+function isSameLanguage(langCode1: string | null, langCode2: string | null) {
+	if (!langCode1 || !langCode2) return false;
+
+	// Sort them alphabetically
+	if (langCode1 > langCode2) {
+		[langCode1, langCode2] = [langCode2, langCode1];
+	}
+	if (langCode2.startsWith(langCode1)) return true;
+
+	const inSameSeries = (series: (string | null)[]) =>
+		series.includes(langCode1) && series.includes(langCode2);
+
+	if (inSameSeries(["zh", "zh-hant", "zh-hans", "yue", "nan"])) {
+		return true;
+	}
+	if (inSameSeries(["nb", "no", "nn"])) {
+		return true;
+	}
+	return false;
+}
+
 async function post() {
 	// For text that is too short, the false positive rate may be too high, so we don't show alarm.
 	if (defaultStore.state.autocorrectNoteLanguage && text.value.length > 10) {
 		const detectedLanguage: string = detectLanguage(text.value) ?? "";
 
-		const currentLanguageName : string | undefined | false = 
-			language.value &&
-			langmap[language.value]?.nativeName
-		const detectedLanguageName : string | undefined | false = 
-			detectedLanguage !== "" && 
-			detectedLanguage !== language.value &&
-			langmap[detectedLanguage]?.nativeName;
+		const currentLanguageName: string | undefined | false =
+			language.value && langmap[language.value]?.nativeName;
+		const detectedLanguageName: string | undefined | false =
+			detectedLanguage !== "" && langmap[detectedLanguage]?.nativeName;
 
-		if (currentLanguageName && detectedLanguageName) {
+		if (
+			currentLanguageName &&
+			detectedLanguageName &&
+			!isSameLanguage(detectedLanguage, language.value)
+		) {
 			// "canceled" means "post with detected language".
 			const { canceled } = await os.confirm({
 				type: "warning",
 				text: i18n.t("incorrectLanguageWarning", {
-								detected: `${detectedLanguageName}`,
-								current: `${currentLanguageName}`,
-							}),
+					detected: detectedLanguageName,
+					current: currentLanguageName,
+				}),
 				okText: i18n.ts.no,
 				cancelText: i18n.ts.yes,
 				isPlaintext: true,
 			});
-	
+
 			if (canceled) {
 				language.value = detectedLanguage;
 			}
