@@ -116,6 +116,7 @@ sudo apt install ffmpeg
    pwd
    ```
 1. Install Rust toolchain
+
     Instructions can be found at [this page](https://www.rust-lang.org/tools/install).
     
     ```sh
