@@ -283,7 +283,7 @@ In this instruction, we use [Caddy](https://caddyserver.com/) to make the Firefi
 
 ## Upgrading
 
-Please refer to the [upgrade instruction](./upgrade.md). Be sure to switch to `firefish` user and go to the Firefish directory before performing `pnpm install --frozen-lockfile`:
+Please refer to the [upgrade instruction](./upgrade.md). Be sure to switch to `firefish` user and go to the Firefish directory before executing the `git` command:
 
 ```sh
 sudo su --login firefish
