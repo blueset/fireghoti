@@ -22,7 +22,7 @@ class I18n<T extends Record<string, any>> {
 
 			if (args) {
 				for (const [k, v] of Object.entries(args)) {
-					str = str.replace(`{${k}}`, v.toString());
+					str = str.replaceAll(`{${k}}`, v.toString());
 				}
 			}
 			return str;

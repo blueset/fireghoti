@@ -432,6 +432,10 @@ export const defaultStore = markRaw(
 			where: "account",
 			default: true,
 		},
+		autocorrectNoteLanguage: {
+			where: "account",
+			default: true,
+		}
 	}),
 );
 

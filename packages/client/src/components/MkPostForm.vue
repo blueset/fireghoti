@@ -1020,6 +1020,37 @@ function deleteDraft() {
 }
 
 async function post() {
+	// For text that is too short, the false positive rate may be too high, so we don't show alarm.
+	if (defaultStore.state.autocorrectNoteLanguage && text.value.length > 10) {
+		const detectedLanguage: string = detectLanguage(text.value) ?? "";
+
+		const currentLanguageName : string | undefined | false = 
+			language.value &&
+			langmap[language.value]?.nativeName
+		const detectedLanguageName : string | undefined | false = 
+			detectedLanguage !== "" && 
+			detectedLanguage !== language.value &&
+			langmap[detectedLanguage]?.nativeName;
+
+		if (currentLanguageName && detectedLanguageName) {
+			// "canceled" means "post with detected language".
+			const { canceled } = await os.confirm({
+				type: "warning",
+				text: i18n.t("incorrectLanguageWarning", {
+								detected: `${detectedLanguageName}`,
+								current: `${currentLanguageName}`,
+							}),
+				okText: i18n.ts.no,
+				cancelText: i18n.ts.yes,
+				isPlaintext: true,
+			});
+	
+			if (canceled) {
+				language.value = detectedLanguage;
+			}
+		}
+	}
+
 	if (
 		defaultStore.state.showNoAltTextWarning &&
 		files.value.some((f) => f.comment == null || f.comment.length === 0)

@@ -2056,3 +2056,5 @@ searchRangeDescription: "如果您要过滤时间段，请按以下格式输入�
 messagingUnencryptedInfo: "Firefish 上的聊天没有经过端到端加密，请不要在聊天中分享您的敏感信息。"
 noAltTextWarning: 有些附件没有描述。您是否忘记写描述了？
 showNoAltTextWarning: 当您尝试发布没有描述的帖子附件时显示警告
+autocorrectNoteLanguage: 自动检测和弹窗纠正您所使用的帖子语言
+incorrectLanguageWarning: "看上去您帖子使用的语言是{detected}，但您选择的语言是{current}。\n要改为以{detected}发帖吗？"

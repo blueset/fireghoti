@@ -2227,3 +2227,5 @@ moreUrlsDescription: "Enter the pages you want to pin to the help menu in the lo
   left corner using this notation:\n\"Display name\": https://example.com/"
 messagingUnencryptedInfo: "Chats on Firefish are not end-to-end encrypted. Don't share
   any sensitive infomation over Firefish."
+autocorrectNoteLanguage: Automatically detect and warn to correct the language of your post.
+incorrectLanguageWarning: "It looks like your post is in {detected}, but the language you selected is {current}.\nWould you like to post in {detected} instead?"

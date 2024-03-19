@@ -125,6 +125,7 @@ const defaultStoreSaveKeys: (keyof (typeof defaultStore)["state"])[] = [
 	"enablePullToRefresh",
 	"pullToRefreshThreshold",
 	"showNoAltTextWarning",
+	"autocorrectNoteLanguage",
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 	"lightTheme",
