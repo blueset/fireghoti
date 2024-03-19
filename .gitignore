@@ -29,7 +29,7 @@ coverage
 !/.config/docker_ci.env
 !/.config/helm_values_example.yml
 !/.config/LICENSE
-docker-compose.yml
+/docker-compose.yml
 /custom
 
 # ESLint

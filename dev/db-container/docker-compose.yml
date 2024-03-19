@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  redis:
+    image: docker.io/redis:7-alpine
+    ports:
+      - "26379:6379"
+  db:
+    image: docker.io/groonga/pgroonga:3.1.8-alpine-12
+    environment:
+      - "POSTGRES_PASSWORD=password"
+      - "POSTGRES_USER=firefish"
+      - "POSTGRES_DB=firefish_db"
+    ports:
+      - "25432:5432"
+    volumes:
+      - "./install.sql:/docker-entrypoint-initdb.d/install.sql:ro"
