@@ -148,11 +148,11 @@ export default async function (
 			instanceNotesCountDecreasement[user.host] ??= 0;
 			instanceNotesCountDecreasement[user.host]++;
 		}
-		for (const [host, number] of Object.entries(
+		for (const [host, count] of Object.entries(
 			instanceNotesCountDecreasement,
 		)) {
 			registerOrFetchInstanceDoc(host).then((i) => {
-				Instances.decrement({ id: i.id }, "notesCount", number);
+				Instances.decrement({ id: i.id }, "notesCount", count);
 			});
 		}
 	}
@@ -163,10 +163,12 @@ export default async function (
 			userId: user.id,
 		});
 
-		for (const [_, affectedUser] of Object.entries(affectedLocalUsers)) {
-			// For the case of cascading deletion, it cannot be solved by simply reducing the notesCount by 1.
-			recalculateNotesCountOfUser(affectedUser);
-		}
+		// Handle cascading deletion (it's not as simple as notesCount -= 1)
+		await Promise.all(
+			Object.values(affectedLocalUsers).map((user) =>
+				recalculateNotesCountOfUser(user),
+			),
+		);
 	}
 }
 
