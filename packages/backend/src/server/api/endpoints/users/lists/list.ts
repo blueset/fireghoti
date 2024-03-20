@@ -36,7 +36,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		.where("userLists.userId = :userId", { userId: me.id });
 	if (ps.userId) {
         query = query.andWhere(
-			`EXISTS(SELECT 1 FROM ${UserListJoinings.metadata.tableName} ulj WHERE ulj."userId" = :joinUserId AND ulj."userListId" = userLists_id)`, 
+			`EXISTS(SELECT 1 FROM ${UserListJoinings.metadata.tableName} ulj WHERE ulj."userId" = :joinUserId AND ulj."userListId" = "userLists"."id")`, 
 			{ joinUserId: ps.userId }
 		);
     }

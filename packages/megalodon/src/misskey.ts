@@ -1476,7 +1476,7 @@ export default class Misskey implements MegalodonInterface {
 			cache,
 		);
 		status.bookmarked = await this.isStatusBookmarked(n.id);
-		status.reblogged = await this.isStatusReblogged(n.id);
+		status.reblogged = await this.isStatusReblogged(n.renoteId ?? n.id);
 		return this.addMentionsToStatus(status, cache);
 	}
 
