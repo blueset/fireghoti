@@ -2,7 +2,7 @@
 
 Breaking changes are indicated by the :warning: icon.
 
-## Unreleased
+## v20240319
 
 - :warning: `followingCount` and `followersCount` in `users/show` will be `null` (instead of 0) if these values are unavailable.
 - :warning: `admin/search/index-all` is removed since posts are now indexed automatically.

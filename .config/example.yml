@@ -41,11 +41,11 @@ db:
   port: 5432
   #ssl: false
   # Database name
-  db: firefish
+  db: firefish_db
 
   # Auth
-  user: example-firefish-user
-  pass: example-firefish-pass
+  user: firefish
+  pass: password
 
   # Whether disable Caching queries
   #disableCache: true
@@ -180,9 +180,6 @@ logLevel: [
 
 # Proxy remote files (default: false)
 #proxyRemoteFiles: true
-
-# Use authorized fetch for outgoing requests
-signToActivityPubGet: true
 
 #allowedPrivateNetworks: [
 #  '127.0.0.1/32'

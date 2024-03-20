@@ -1,19 +1,13 @@
-# Running a Firefish server with Docker
+# Running a Firefish server with containers
 
-## Pre-built docker container
-[registry.firefish.dev/firefish/firefish](https://firefish.dev/firefish/firefish/container_registry)
+## Prerequisites
 
-## `docker-compose`
+- Latest [Docker](https://docs.docker.com/get-docker/) installation
+  - You can also use [Podman](https://podman.io/docs/installation) and [Podman Compose](https://github.com/containers/podman-compose).
 
-There are example config files that you can use to build the container from source
+## Configuration
 
-- docker-compose.example.yml (**compose file**)
-- .config/docker_example.env (**db config settings**)
-- .config/default.yml (**firefish server settings**)
-
-## Configuring
-
-Copy the files:
+Copy the example config files:
 
 ```sh
 cp docker-compose.example.yml docker-compose.yml
@@ -23,20 +17,31 @@ cp .config/docker_example.env .config/docker.env
 
 then edit them according to your environment.
 You can configure `docker.env` with anything you like, but you will have to pay attention to the `default.yml` file:
+
 - `url` should be set to the URL you will be hosting the web interface for the server at.
 - `host`, `db`, `user`, `pass` will have to be configured in the `PostgreSQL configuration` section - `host` is the name of the postgres container (eg: *firefish_db_1*), and the others should match your `docker.env`.
 - `host`will need to be configured in the *Redis configuration* section - it is the name of the redis container (eg: *firefish_redis_1*)
-- `auth` will need to be configured in the *Sonic* section - cannot be the default `SecretPassword`
 
 Everything else can be left as-is.
 
-## Running docker-compose
+## Pull the container image
 
-The [prebuilt container for firefish](https://firefish.dev/firefish/firefish/container_registry) is fairly large, and may take a few minutes to download and extract using docker.
+The image tag is [`registry.firefish.dev/firefish/firefish:latest`](https://firefish.dev/firefish/firefish/container_registry/1).
 
-Copy `docker-compose.yml` and the `config/` to a directory, then run the **docker-compose** command:
-`docker-compose up -d`.
+```sh
+docker pull registry.firefish.dev/firefish/firefish:latest
+# or podman pull registry.firefish.dev/firefish/firefish:latest
+```
+
+## Run
+
+```sh
+docker compose up --detach
+# or podman-compose up --detach
+```
 
 NOTE: This will take some time to come fully online, even after download and extracting the container images, and it may emit some error messages before completing successfully. Specifically, the `db` container needs to initialize and so isn't available to the `web` container right away. Only once the `db` container comes online does the `web` container start building and initializing the firefish tables.
 
 Once the server is up you can use a web browser to access the web interface at `http://serverip:3000` (where `serverip` is the IP of the server you are running the firefish server on).
+
+To publish your server, please follow the instructions in [section 5 of this installation guide](./install.md#5-preparation-for-publishing-a-server).

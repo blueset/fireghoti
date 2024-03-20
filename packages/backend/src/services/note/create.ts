@@ -18,6 +18,7 @@ import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instanc
 import { extractMentions } from "@/misc/extract-mentions.js";
 import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
 import { extractHashtags } from "@/misc/extract-hashtags.js";
+import type { IMentionedRemoteUsers } from "@/models/entities/note.js";
 import { Note } from "@/models/entities/note.js";
 import {
 	Mutings,
@@ -750,6 +751,21 @@ async function insertNote(
 	// Append mentions data
 	if (mentionedUsers.length > 0) {
 		insert.mentions = mentionedUsers.map((u) => u.id);
+		const profiles = await UserProfiles.findBy({ userId: In(insert.mentions) });
+		insert.mentionedRemoteUsers = JSON.stringify(
+			mentionedUsers
+				.filter((u) => Users.isRemoteUser(u))
+				.map((u) => {
+					const profile = profiles.find((p) => p.userId === u.id);
+					const url = profile != null ? profile.url : null;
+					return {
+						uri: u.uri,
+						url: url == null ? undefined : url,
+						username: u.username,
+						host: u.host,
+					} as IMentionedRemoteUsers[0];
+				}),
+		);
 	}
 
 	// 投稿を作成

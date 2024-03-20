@@ -2,7 +2,10 @@
 
 Critical security updates are indicated by the :warning: icon.
 
-## Unreleased
+- Server administrators should check [notice-for-admins.md](./notice-for-admins.md) as well.
+- Third-party client/bot developers may want to check [api-change.md](./api-change.md) as well.
+
+## [v20240319](https://firefish.dev/firefish/firefish/-/compare/v20240301...v20240319?from_project_id=7&straight=false)
 
 - Introduce new full-text search engine and post search filters
 - Refactoring
@@ -12,6 +15,7 @@ Critical security updates are indicated by the :warning: icon.
 - Add a toggleable setting to show a warning when you attempt to post files without alt text
 - Fix bugs
 - Update documents and example config files
+- Added `/authorize_interaction` page, allowing users to jump from a remote Mastodon post/user page to the corresponding page in Firefish (!10702)
 
 ## [v20240301](https://firefish.dev/firefish/firefish/-/compare/v20240229...v20240301?from_project_id=7&straight=false)
 

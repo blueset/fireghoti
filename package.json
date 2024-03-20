@@ -1,6 +1,6 @@
 {
 	"name": "firefish",
-	"version": "20240301",
+	"version": "20240319",
 	"repository": {
 		"type": "git",
 		"url": "https://firefish.dev/firefish/firefish.git"
@@ -19,10 +19,10 @@
 		"gulp": "gulp build",
 		"watch": "pnpm run dev",
 		"dev": "pnpm node ./scripts/dev.mjs",
-		"dev:up": "pnpm node ./scripts/dev-up.mjs",
-		"dev:down": "pnpm node ./scripts/dev-down.mjs",
-		"dev:init": "pnpm run dev:down && pnpm run dev:up",
 		"dev:staging": "NODE_OPTIONS=--max_old_space_size=3072 NODE_ENV=development pnpm run build && pnpm run start",
+		"db:up": "pnpm node ./scripts/db-up.mjs",
+		"db:down": "pnpm node ./scripts/db-down.mjs",
+		"db:init": "pnpm run dev:down && pnpm run dev:up",
 		"lint": "pnpm -r --parallel run lint",
 		"debug": "pnpm run build:debug && pnpm run start",
 		"build:debug": "pnpm run clean && pnpm node ./scripts/dev-build.mjs && pnpm run gulp",

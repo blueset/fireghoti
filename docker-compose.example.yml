@@ -52,7 +52,7 @@ services:
 
   db:
     restart: unless-stopped
-    image: docker.io/groonga/pgroonga:latest-alpine-16-slim
+    image: docker.io/groonga/pgroonga:3.1.8-alpine-16-slim
     container_name: firefish_db
     networks:
       - calcnet
