@@ -18,22 +18,15 @@ import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instanc
 import { deliverToRelays } from "@/services/relay.js";
 import type { IActivity } from "@/remote/activitypub/type.js";
 
-async function recalculateNotesCountOfUser(user: {
+async function recalculateNotesCountOfLocalUser(user: {
 	id: User["id"];
-	host: null;
+	host: User["host"];
 }) {
-	if (!Users.isLocalUser(user)) return;
-	const newCount = await Notes.createQueryBuilder()
-		.where(`"userId" = :id`, { id: user.id })
-		.getCount();
-	await Users.createQueryBuilder()
-		.update()
-		.set({
-			updatedAt: new Date(),
-			notesCount: newCount,
-		})
-		.where("id = :id", { id: user.id })
-		.execute();
+	if (user.host == null) {
+		await Notes.countBy({ userId: user.id }).then((newCount) =>
+			Users.update(user.id, { updatedAt: new Date(), notesCount: newCount }),
+		);
+	}
 }
 
 /**
@@ -166,7 +159,7 @@ export default async function (
 		// Handle cascading deletion (it's not as simple as notesCount -= 1)
 		await Promise.all(
 			Object.values(affectedLocalUsers).map((user) =>
-				recalculateNotesCountOfUser(user),
+				recalculateNotesCountOfLocalUser(user),
 			),
 		);
 	}
