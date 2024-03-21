@@ -33,6 +33,7 @@ pub use super::muting::Entity as Muting;
 pub use super::note::Entity as Note;
 pub use super::note_edit::Entity as NoteEdit;
 pub use super::note_favorite::Entity as NoteFavorite;
+pub use super::note_file::Entity as NoteFile;
 pub use super::note_reaction::Entity as NoteReaction;
 pub use super::note_thread_muting::Entity as NoteThreadMuting;
 pub use super::note_unread::Entity as NoteUnread;

@@ -31,7 +31,7 @@
 import { computed, provide, ref, watch } from "vue";
 import type { entities } from "firefish-js";
 import XNotes from "@/components/MkNotes.vue";
-import { me, isSignedIn } from "@/me";
+import { isSignedIn, me } from "@/me";
 import { i18n } from "@/i18n";
 import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";

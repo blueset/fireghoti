@@ -155,14 +155,13 @@ import { computed, defineAsyncComponent, ref, watch } from "vue";
 import * as os from "@/os";
 import { navbarItemDef } from "@/navbar";
 import { openAccountMenu as openAccountMenu_ } from "@/account";
-import { me, isAdmin, isModerator } from "@/me";
+import { isAdmin, isModerator, me } from "@/me";
 import { openHelpMenu_ } from "@/scripts/helpMenu";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
 import { version } from "@/config";
 import icon from "@/scripts/icon";
-import { compareFirefishVersions } from "@/scripts/compare-versions";
 
 const isEmpty = (x: string | null) => x == null || x === "";
 
@@ -212,8 +211,7 @@ if (isAdmin) {
 
 if (defaultStore.state.showAdminUpdates) {
 	os.api("latest-version").then((res) => {
-		updateAvailable.value =
-			compareFirefishVersions(version, res?.latest_version) === 1;
+		updateAvailable.value = version < res?.latest_version;
 	});
 }
 

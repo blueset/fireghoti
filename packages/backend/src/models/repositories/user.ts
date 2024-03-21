@@ -513,8 +513,8 @@ export const UserRepository = db.getRepository(User).extend({
 						location: profile!.location,
 						birthday: profile!.birthday,
 						fields: profile!.fields,
-						followersCount: followersCount || 0,
-						followingCount: followingCount || 0,
+						followersCount: followersCount ?? null,
+						followingCount: followingCount ?? null,
 						notesCount: user.notesCount,
 						pinnedNoteIds: pins.map((pin) => pin.noteId),
 						pinnedNotes: Notes.packMany(
@@ -528,8 +528,11 @@ export const UserRepository = db.getRepository(User).extend({
 						pinnedPage: profile!.pinnedPageId
 							? Pages.pack(profile!.pinnedPageId, me)
 							: null,
-						publicReactions: profile!.publicReactions,
-						ffVisibility: profile!.ffVisibility,
+						// TODO: federate publicReactions
+						publicReactions:
+							user.host == null ? profile!.publicReactions : false,
+						// TODO: federate ffVisibility
+						ffVisibility: user.host == null ? profile!.ffVisibility : "private",
 						twoFactorEnabled: profile!.twoFactorEnabled,
 						usePasswordLessLogin: profile!.usePasswordLessLogin,
 						securityKeys: UserSecurityKeys.countBy({

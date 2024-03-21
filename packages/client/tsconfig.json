@@ -23,15 +23,10 @@
 		"useDefineForClassFields": true,
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"],
+			"@/*": ["./src/*"]
 		},
-		"typeRoots": [
-			"node_modules/@types",
-			"@types",
-		],
-		"types": [
-			"vite/client",
-		],
+		"typeRoots": ["node_modules/@types", "@types"],
+		"types": ["vite/client"],
 		"lib": ["esnext", "dom"],
 		"jsx": "preserve"
 	},

@@ -416,7 +416,7 @@ securityKeyName: "キーの名前"
 registerSecurityKey: "セキュリティキーを登録する"
 lastUsed: "最後の使用"
 unregister: "登録を解除"
-passwordLessLogin: "パスワード無しでログイン"
+passwordLessLogin: "パスワード無しでサインイン"
 resetPassword: "パスワードをリセット"
 newPasswordIs: "新しいパスワードは「{password}」です"
 reduceUiAnimation: "UIのアニメーションを減らす"
@@ -481,7 +481,7 @@ disableDrawer: "メニューをドロワーで表示しない"
 youHaveNoGroups: "グループがありません"
 joinOrCreateGroup: "既存のグループに招待してもらうか、新しくグループを作成してください。"
 noHistory: "履歴はありません"
-signinHistory: "ログイン履歴"
+signinHistory: "サインイン履歴"
 disableAnimatedMfm: "動きのあるMFMを無効にする"
 doing: "やっています"
 category: "カテゴリ"
@@ -648,8 +648,8 @@ notificationSettingDesc: "表示する通知の種別を選択してください
 useGlobalSetting: "グローバル設定を使う"
 useGlobalSettingDesc: "オンにすると、アカウントの通知設定が使用されます。オフにすると、個別に設定できるようになります。"
 other: "その他"
-regenerateLoginToken: "ログイントークンを再生成"
-regenerateLoginTokenDescription: "ログインに使用される内部トークンを再生成します。通常この操作を行う必要はありません。再生成すると、全てのデバイスでログアウトされます。"
+regenerateLoginToken: "サインイントークンを再生成"
+regenerateLoginTokenDescription: "サインインに使用される内部トークンを再生成します。通常この操作を行う必要はありません。再生成すると、全てのデバイスからサインアウトされます。"
 setMultipleBySeparatingWithSpace: "スペースで区切って複数設定できます。"
 fileIdOrUrl: "ファイルIDまたはURL"
 behavior: "動作"
@@ -908,14 +908,14 @@ thereIsUnresolvedAbuseReportWarning: "未対応の通報があります。"
 check: "チェック"
 driveCapOverrideLabel: "このユーザーのドライブ容量上限を変更"
 driveCapOverrideCaption: "0以下を指定すると解除されます。"
-requireAdminForView: "閲覧するには管理者アカウントでログインしている必要があります。"
+requireAdminForView: "閲覧するには管理者アカウントでサインインしている必要があります。"
 isSystemAccount: "システムにより自動で作成・管理されているアカウントです。モデレーション・編集・削除を行うとサーバーの動作が不正になる可能性があるため、操作しないでください。"
 typeToConfirm: "この操作を行うには {x} と入力してください"
 deleteAccount: "アカウント削除"
 document: "ドキュメント"
 numberOfPageCache: "ページキャッシュ数"
 numberOfPageCacheDescription: "多くすると利便性が向上しますが、負荷とメモリ使用量が増えます。"
-logoutConfirm: "ログアウトしますか？"
+logoutConfirm: "サインアウトしますか？"
 lastActiveDate: "最終利用日時"
 statusbar: "ステータスバー"
 pleaseSelect: "選択してください"
@@ -1008,7 +1008,8 @@ enableTimelineStreaming: "タイムラインを自動で更新する"
 searchWords: "検索語句・照会するIDやURL"
 searchWordsDescription: "投稿を検索するには、ここに検索語句を入力してください。空白区切りでAND検索になり、ORを挟むとOR検索になります。\n
   例えば「朝 夜」と入力すると「朝」と「夜」が両方含まれた投稿を検索し、「朝 OR 夜」と入力すると「朝」または「夜」（または両方）が含まれた投稿を検索します。\n
-  「(朝 OR 夜) 眠い」のように、AND検索とOR検索を同時に行うこともできます。\n\n特定のユーザーや投稿のページに飛びたい場合には、この欄にID (@user@example.com)
+  「(朝 OR 夜) 眠い」のように、AND検索とOR検索を同時に行うこともできます。\n空白を含む文字列をAND検索ではなくそのまま検索したい場合、\"明日 買うもの\"\
+  \ のように二重引用符 (\") で囲む必要があります。\n\n特定のユーザーや投稿のページに飛びたい場合には、この欄にID (@user@example.com)
   や投稿のURLを入力し「照会」を押してください。「検索」を押すとそのIDやURLが文字通り含まれる投稿を検索します。"
 searchUsers: "投稿元（オプション）"
 searchUsersDescription: "投稿検索で投稿者を絞りたい場合、@user@example.com（ローカルユーザーなら @user）の形式で投稿者のIDを入力してください。ユーザーIDではなくドメイン名
@@ -2051,3 +2052,7 @@ makePrivate: "秘密にする"
 makePrivateConfirm: "リモートサーバーに削除リクエストを送信し、投稿の公開範囲を「秘密」にして他の人から見られないようにします。実行しますか？"
 sentFollowRequests: 未承認のフォローリクエスト
 noSentFollowRequests: 未承認のフォローリクエストはありません
+messagingUnencryptedInfo: FirefishのチャットはE2E暗号化されていません。漏洩してはいけない情報はFirefishで送らないでください。
+moderationNote: モデレーション用のメモ
+ipFirstAcknowledged: IPアドレスが最初に取得された日
+driveCapacityOverride: ドライブ容量の変更

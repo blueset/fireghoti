@@ -90,6 +90,11 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	const profile = await UserProfiles.findOneByOrFail({ userId: user.id });
 
+	// TODO: federate ffVisibility
+	if (profile.userHost != null) {
+		throw new ApiError(meta.errors.forbidden);
+	}
+
 	if (profile.ffVisibility === "private") {
 		if (me == null || me.id !== user.id) {
 			throw new ApiError(meta.errors.forbidden);

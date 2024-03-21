@@ -1,7 +1,7 @@
 process.env.NODE_ENV = "test";
 
-import * as assert from "assert";
-import * as childProcess from "child_process";
+import * as assert from "node:assert";
+import type * as childProcess from "node:child_process";
 import {
 	async,
 	connectStream,

@@ -296,7 +296,7 @@ import { userPage } from "@/filters/user";
 import * as os from "@/os";
 import { defaultStore, noteViewInterruptors } from "@/store";
 import { reactionPicker } from "@/scripts/reaction-picker";
-import { me, isSignedIn } from "@/me";
+import { isSignedIn, me } from "@/me";
 import { i18n } from "@/i18n";
 import { getNoteMenu } from "@/scripts/get-note-menu";
 import { useNoteCapture } from "@/scripts/use-note-capture";
@@ -632,9 +632,7 @@ function setPostExpanded(val: boolean) {
 const accessibleLabel = computed(() => {
 	let label = `${appearNote.value.user.username}; `;
 	if (appearNote.value.renote) {
-		label += `${i18n.t("renoted")} ${
-			appearNote.value.renote.user.username
-		}; `;
+		label += `${i18n.t("renoted")} ${appearNote.value.renote.user.username}; `;
 		if (appearNote.value.renote.cw) {
 			label += `${i18n.t("cw")}: ${appearNote.value.renote.cw}; `;
 			if (postIsExpanded.value) {

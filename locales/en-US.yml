@@ -718,8 +718,8 @@ useGlobalSettingDesc: "If turned on, your account's notification settings will b
   used. If turned off, individual configurations can be made."
 other: "Other"
 regenerateLoginToken: "Regenerate sign in token"
-regenerateLoginTokenDescription: "Regenerates the token used internally during sign in.
-  Normally this action is not necessary. If regenerated, all devices will be logged
+regenerateLoginTokenDescription: "Regenerates the token used internally during sign
+  in. Normally this action is not necessary. If regenerated, all devices will be logged
   out."
 setMultipleBySeparatingWithSpace: "Separate multiple entries with spaces."
 fileIdOrUrl: "File ID or URL"
@@ -1112,6 +1112,9 @@ signupsDisabled: "Signups on this server are currently disabled. If you have an 
   code for this server, please enter it below."
 apps: "Apps"
 sendModMail: "Send Moderation Notice"
+moderationNote: "Moderation Note"
+ipFirstAcknowledged: "The date of the first acquisition of the IP address"
+driveCapacityOverride: "Drive Capacity Override"
 preventAiLearning: "Prevent AI bot scraping"
 preventAiLearningDescription: "Request third-party AI language models not to study
   content you upload, such as posts and images."
@@ -1190,12 +1193,14 @@ releaseToReload: "Release to reload"
 reloading: "Reloading"
 enableTimelineStreaming: "Update timelines automatically"
 searchWords: "Words to search / ID or URL to lookup"
-searchWordsDescription: "To search for posts, enter the search term. Separate words
+searchWordsDescription: "Enter the search term here to search for posts. Separate words
   with a space for an AND search, or 'OR' (without quotes) between words for an OR
   search.\nFor example, 'morning night' will find posts that contain both 'morning'
   and 'night', and 'morning OR night' will find posts that contain either 'morning'
   or 'night' (or both).\nYou can also combine AND/OR conditions like '(morning OR
-  night) sleepy'.\n\nIf you want to go to a specific user page or post page, enter
+  night) sleepy'.\nIf you want to search for a sequence of words (e.g., a sentence), you
+  must put it in double quotes, not to make it an AND search: \"Today I learned\"\n\n
+  If you want to go to a specific user page or post page, enter
   the ID or URL in this field and click the 'Lookup' button. Clicking 'Search' will
   search for posts that literally contain the ID/URL."
 searchUsers: "Posted by (optional)"
@@ -2220,4 +2225,5 @@ _iconSets:
 moreUrls: "Pinned pages"
 moreUrlsDescription: "Enter the pages you want to pin to the help menu in the lower
   left corner using this notation:\n\"Display name\": https://example.com/"
-messagingUnencryptedInfo: "Chats on Firefish are not end-to-end encrypted. Don't share any sensitive infomation over Firefish."
+messagingUnencryptedInfo: "Chats on Firefish are not end-to-end encrypted. Don't share
+  any sensitive infomation over Firefish."

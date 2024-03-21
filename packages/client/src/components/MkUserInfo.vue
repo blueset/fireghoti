@@ -97,7 +97,7 @@ import XShowMoreButton from "@/components/MkShowMoreButton.vue";
 import MkNumber from "@/components/MkNumber.vue";
 import { userPage } from "@/filters/user";
 import { i18n } from "@/i18n";
-import { me, isSignedIn } from "@/me";
+import { isSignedIn, me } from "@/me";
 
 const props = defineProps<{
 	user: entities.UserDetailed;

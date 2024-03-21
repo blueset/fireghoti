@@ -35,7 +35,7 @@ import * as os from "@/os";
 import { useRouter } from "@/router";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
-import { me, isSignedIn } from "@/me";
+import { isSignedIn, me } from "@/me";
 import icon from "@/scripts/icon";
 
 const XHome = defineAsyncComponent(() => import("./home.vue"));

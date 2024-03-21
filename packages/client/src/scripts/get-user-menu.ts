@@ -5,7 +5,7 @@ import copyToClipboard from "@/scripts/copy-to-clipboard";
 import { host } from "@/config";
 import * as os from "@/os";
 import { userActions } from "@/store";
-import { me, isModerator, isSignedIn } from "@/me";
+import { isModerator, isSignedIn, me } from "@/me";
 import { mainRouter } from "@/router";
 import type { Router } from "@/nirax";
 import icon from "@/scripts/icon";

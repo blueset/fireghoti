@@ -19,7 +19,7 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import type { entities } from "firefish-js";
-import { me, isSignedIn } from "@/me";
+import { isSignedIn, me } from "@/me";
 import XReaction from "@/components/MkReactionsViewer.reaction.vue";
 
 const props = defineProps<{

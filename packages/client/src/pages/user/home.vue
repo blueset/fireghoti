@@ -311,6 +311,7 @@
 								<span>{{ i18n.ts.notes }}</span>
 							</MkA>
 							<MkA
+								v-if="user.followingCount != null"
 								v-click-anime
 								:to="userPage(user, 'following')"
 								:class="{ active: page === 'following' }"
@@ -319,6 +320,7 @@
 								<span>{{ i18n.ts.following }}</span>
 							</MkA>
 							<MkA
+								v-if="user.followersCount != null"
 								v-click-anime
 								:to="userPage(user, 'followers')"
 								:class="{ active: page === 'followers' }"
@@ -384,7 +386,7 @@ import { userPage } from "@/filters/user";
 import { defaultStore } from "@/store";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
-import { me, isModerator, isSignedIn } from "@/me";
+import { isModerator, isSignedIn, me } from "@/me";
 import { host } from "@/config";
 import icon from "@/scripts/icon";
 

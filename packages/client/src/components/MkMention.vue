@@ -36,7 +36,7 @@
 <script lang="ts" setup>
 import { toUnicode } from "punycode";
 import { host as localHost } from "@/config";
-import { me, isSignedIn } from "@/me";
+import { isSignedIn, me } from "@/me";
 import { defaultStore } from "@/store";
 
 const props = defineProps<{

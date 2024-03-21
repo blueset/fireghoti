@@ -29,7 +29,7 @@ coverage
 !/.config/docker_ci.env
 !/.config/helm_values_example.yml
 !/.config/LICENSE
-docker-compose.yml
+/docker-compose.yml
 /custom
 
 # ESLint
@@ -60,6 +60,10 @@ packages/backend/assets/LICENSE
 packages/megalodon/lib
 packages/megalodon/.idea
 
+dev/container/firefish
+dev/container/db
+dev/container/redis
+
 # blender backups
 *.blend1
 *.blend2
@@ -70,10 +74,6 @@ packages/megalodon/.idea
 # old yarn
 .yarn
 yarn*
-
-# Nix Development shell items
-.devenv
-.direnv
 
 # Cargo cache for Docker
 /.cargo-cache

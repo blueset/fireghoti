@@ -38,8 +38,6 @@ pub struct Model {
     #[sea_orm(column_name = "visibleUserIds")]
     pub visible_user_ids: Vec<String>,
     pub mentions: Vec<String>,
-    #[sea_orm(column_name = "mentionedRemoteUsers", column_type = "Text")]
-    pub mentioned_remote_users: String,
     pub emojis: Vec<String>,
     pub tags: Vec<String>,
     #[sea_orm(column_name = "hasPoll")]
@@ -100,6 +98,8 @@ pub enum Relation {
     NoteEdit,
     #[sea_orm(has_many = "super::note_favorite::Entity")]
     NoteFavorite,
+    #[sea_orm(has_many = "super::note_file::Entity")]
+    NoteFile,
     #[sea_orm(has_many = "super::note_reaction::Entity")]
     NoteReaction,
     #[sea_orm(has_many = "super::note_unread::Entity")]
@@ -161,6 +161,12 @@ impl Related<super::note_edit::Entity> for Entity {
 impl Related<super::note_favorite::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::NoteFavorite.def()
+    }
+}
+
+impl Related<super::note_file::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::NoteFile.def()
     }
 }
 

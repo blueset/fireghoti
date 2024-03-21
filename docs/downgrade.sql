@@ -1,6 +1,8 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'FixMutingIndices1710690239308',
+    'NoteFile1710304584214',
     'RenameMetaColumns1705944717480',
     'SeparateHardMuteWordsAndPatterns1706413792769',
     'IndexAltTextAndCw1708872574733',
@@ -16,6 +18,20 @@ DELETE FROM "migrations" WHERE name IN (
     'RemoveNativeUtilsMigration1705877093218',
     'SwSubscriptionAccessToken1709395223611'
 );
+
+-- fix-muting-indices
+DROP INDEX "IDX_renote_muting_createdAt";
+DROP INDEX "IDX_renote_muting_muteeId";
+DROP INDEX "IDX_renote_muting_muterId";
+DROP INDEX "IDX_reply_muting_createdAt";
+DROP INDEX "IDX_reply_muting_muteeId";
+DROP INDEX "IDX_reply_muting_muterId";
+CREATE INDEX "IDX_renote_muting_createdAt" ON "muting" ("createdAt");
+CREATE INDEX "IDX_renote_muting_muteeId" ON "muting" ("muteeId");
+CREATE INDEX "IDX_renote_muting_muterId" ON "muting" ("muterId");
+
+-- note-file
+DROP TABLE "note_file";
 
 -- rename-meta-columns
 ALTER TABLE "meta" RENAME COLUMN "tosUrl" TO "ToSUrl";
