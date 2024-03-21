@@ -1016,7 +1016,10 @@ function deleteDraft() {
  * @returns false if they are close enough
  */
 function isSameLanguage(langCode1: string | null, langCode2: string | null) {
-	return languageContains(langCode1, langCode2) || languageContains(langCode2, langCode1);
+	return (
+		languageContains(langCode1, langCode2) ||
+		languageContains(langCode2, langCode1)
+	);
 }
 
 /**
@@ -1025,15 +1028,14 @@ function isSameLanguage(langCode1: string | null, langCode2: string | null) {
 function languageContains(langCode1: string | null, langCode2: string | null) {
 	if (!langCode1 || !langCode2) return false;
 
-	if (langCode1 === "zh" && 
+	if (
+		langCode1 === "zh" &&
 		["zh-hant", "zh-hans", "yue", "nan"].includes(langCode2)
 	) {
 		return true;
 	}
 
-	if (langCode1 === "no" && 
-		["nb", "nn"].includes(langCode2)
-	) {
+	if (langCode1 === "no" && ["nb", "nn"].includes(langCode2)) {
 		return true;
 	}
 	return false;
