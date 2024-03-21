@@ -758,22 +758,14 @@ const language = ref<string | null>(
 		localStorage.getItem("lang")?.split("-")[0],
 );
 
-function filterLangmapByPrefix(
-	prefix: string,
+function filterSubclassLanguages(
+	langCode: string,
 ): { langCode: string; nativeName: string }[] {
-	let to_return = Object.entries(langmap)
-		.filter(([langCode, _]) => langCode.startsWith(prefix))
+	return Object.entries(langmap)
+		.filter(([lc, _]) => languageContains(langCode, lc))
 		.map(([langCode, v]) => {
 			return { langCode, nativeName: v.nativeName };
 		});
-
-	if (prefix === "zh")
-		to_return = to_return.concat([
-			{ langCode: "yue", nativeName: langmap.yue.nativeName },
-			{ langCode: "nan", nativeName: langmap.nan.nativeName },
-		]);
-
-	return to_return;
 }
 
 function setLanguage() {
@@ -785,7 +777,7 @@ function setLanguage() {
 			type: "label",
 			text: i18n.ts.suggested,
 		});
-		filterLangmapByPrefix(detectedLanguage).forEach((v) => {
+		for (const v of filterSubclassLanguages(detectedLanguage)) {
 			actions.push({
 				text: v.nativeName,
 				danger: false,
@@ -794,7 +786,7 @@ function setLanguage() {
 					language.value = v.langCode;
 				},
 			});
-		});
+		}
 		actions.push(null);
 	}
 
@@ -1024,21 +1016,24 @@ function deleteDraft() {
  * @returns false if they are close enough
  */
 function isSameLanguage(langCode1: string | null, langCode2: string | null) {
+	return languageContains(langCode1, langCode2) || languageContains(langCode2, langCode1);
+}
+
+/**
+ * Returns true if langCode1 contains langCode2
+ */
+function languageContains(langCode1: string | null, langCode2: string | null) {
 	if (!langCode1 || !langCode2) return false;
 
-	// Sort them alphabetically
-	if (langCode1 > langCode2) {
-		[langCode1, langCode2] = [langCode2, langCode1];
-	}
-	if (langCode2.startsWith(langCode1)) return true;
-
-	const inSameSeries = (series: (string | null)[]) =>
-		series.includes(langCode1) && series.includes(langCode2);
-
-	if (inSameSeries(["zh", "zh-hant", "zh-hans", "yue", "nan"])) {
+	if (langCode1 === "zh" && 
+		["zh-hant", "zh-hans", "yue", "nan"].includes(langCode2)
+	) {
 		return true;
 	}
-	if (inSameSeries(["nb", "no", "nn"])) {
+
+	if (langCode1 === "no" && 
+		["nb", "nn"].includes(langCode2)
+	) {
 		return true;
 	}
 	return false;
