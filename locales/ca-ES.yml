@@ -2258,7 +2258,7 @@ searchCwAndAlt: Inclou avisos de contingut i arxius amb descripcions
 searchUsers: Publicat per (opcional)
 searchRange: Publicat dintre de (opcional)
 publishTimelines: Publica línies de temps per visitants
-toPost: Publicà
+toPost: Publicar
 publishTimelinesDescription: Si està activat, les línies de temps Global i Local es
   mostraran a {url} fins i tot sense estar registrat.
 noAltTextWarning: Alguns fitxers adjunts no tenen una descripció. T'has s oblidat
