@@ -5,7 +5,7 @@ endif
 
 
 .PHONY: pre-commit
-pre-commit: format entities
+pre-commit: format entities update-index-js
 
 .PHONY: format
 format:
@@ -15,6 +15,10 @@ format:
 entities:
 	pnpm run migrate
 	$(MAKE) -C ./packages/backend-rs regenerate-entities
+
+.PHONY: update-index-js
+update-index-js:
+	$(MAKE) -C ./packages/backend-rs index.js
 
 
 .PHONY: build
