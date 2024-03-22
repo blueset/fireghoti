@@ -142,6 +142,7 @@ export async function pushNotification<T extends keyof pushNotificationsTypes>(
 				JSON.stringify(notificationPayload),
 				{
 					proxy: config.proxy,
+					...(subscription.appAccessToken ? {contentEncoding: "aesgcm"} : {})
 				},
 			)
 			.then((result) => {
