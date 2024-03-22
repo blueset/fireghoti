@@ -13,6 +13,7 @@
     - [Podman](https://podman.io/docs/installation) and [Podman Compose](https://github.com/containers/podman-compose)
     - [containerd](https://github.com/containerd/containerd) and [nerdctl](https://github.com/containerd/nerdctl)
     - or whatever you want to use
+  - GNU Make
 - The following ports are not in use
   - 25432
   - 26379
@@ -26,6 +27,12 @@ You can refer to [local-installation.md](./local-installation.md) to install the
     ```sh
     git clone https://firefish.dev/your-user-name/firefish.git
     cd firefish
+    ```
+1. Copy example config file
+    ```sh
+    cp dev/config.example.env dev/config.env
+    # If you use container runtime other than Docker, you need to modify the "COMPOSE" variable
+    # vim dev/config.env
     ```
 1. Create `.config/default.yml` with the following content
     ```yaml
@@ -53,13 +60,7 @@ You can refer to [local-installation.md](./local-installation.md) to install the
     ```
 1. Start database containers
     ```sh
-    cd dev/db-container
-    docker compose up --detach
-    # or podman-compose up --detach
-    # or whatever
-    
-    # go back to the repository root
-    cd ../..
+    make db.up
     ```
 
 ## Build and start Firefish
@@ -88,11 +89,7 @@ You can refer to [local-installation.md](./local-installation.md) to install the
 You can recreate a fresh local Firefish environment by recreating the database containers:
 
 ```sh
-cd dev/db-container
-docker compose down
-docker compose up --detach
-cd ../..
-
+make db.init
 pnpm run migrate
 pnpm run start
 ```

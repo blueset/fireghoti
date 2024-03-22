@@ -20,9 +20,6 @@
 		"watch": "pnpm run dev",
 		"dev": "pnpm node ./scripts/dev.mjs",
 		"dev:staging": "NODE_OPTIONS=--max_old_space_size=3072 NODE_ENV=development pnpm run build && pnpm run start",
-		"db:up": "pnpm node ./scripts/db-up.mjs",
-		"db:down": "pnpm node ./scripts/db-down.mjs",
-		"db:init": "pnpm run dev:down && pnpm run dev:up",
 		"lint": "pnpm -r --parallel run lint",
 		"debug": "pnpm run build:debug && pnpm run start",
 		"build:debug": "pnpm run clean && pnpm node ./scripts/dev-build.mjs && pnpm run gulp",
@@ -32,8 +29,7 @@
 		"clean": "pnpm node ./scripts/clean-built.mjs",
 		"clean-npm": "pnpm node ./scripts/clean-npm.mjs",
 		"clean-cargo": "pnpm node ./scripts/clean-cargo.mjs",
-		"clean-all": "pnpm run clean && pnpm run clean-cargo && pnpm run clean-npm",
-		"entities": "pnpm node ./scripts/regenerate-sea-orm-entities.mjs"
+		"clean-all": "pnpm run clean && pnpm run clean-cargo && pnpm run clean-npm"
 	},
 	"dependencies": {
 		"js-yaml": "4.1.0",

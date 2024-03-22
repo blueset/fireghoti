@@ -63,6 +63,7 @@ packages/megalodon/.idea
 dev/container/firefish
 dev/container/db
 dev/container/redis
+dev/config.env
 
 # blender backups
 *.blend1
