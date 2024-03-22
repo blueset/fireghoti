@@ -22,8 +22,8 @@ async function recalculateNotesCountOfLocalUser(user: {
 	id: User["id"];
 	host: User["host"];
 }) {
-	if (user.host == null) {
-		await Notes.countBy({ userId: user.id }).then((newCount) =>
+	if (Users.isLocalUser(user)) {
+		await Notes.countBy({ userId: user.id }).then((newCount: number) =>
 			Users.update(user.id, { updatedAt: new Date(), notesCount: newCount }),
 		);
 	}
@@ -168,7 +168,7 @@ export default async function (
 async function findCascadingNotes(note: Note) {
 	const cascadingNotes: Note[] = [];
 
-	const recursive = async (noteId: string) => {
+	const findRepliesAndQuotes = async (noteId: string) => {
 		const query = Notes.createQueryBuilder("note")
 			.where("note.replyId = :noteId", { noteId })
 			.orWhere(
@@ -179,13 +179,16 @@ async function findCascadingNotes(note: Note) {
 				}),
 			)
 			.leftJoinAndSelect("note.user", "user");
-		const replies = await query.getMany();
-		for (const reply of replies) {
-			cascadingNotes.push(reply);
-			await recursive(reply.id);
-		}
+		const repliesAndQuotes = await query.getMany();
+
+		await Promise.all(
+			repliesAndQuotes.map((n: Note) => {
+				cascadingNotes.push(n);
+				return findRepliesAndQuotes(n.id);
+			}),
+		);
 	};
-	await recursive(note.id);
+	await findRepliesAndQuotes(note.id);
 
 	return cascadingNotes;
 }
