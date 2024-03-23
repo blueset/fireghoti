@@ -17,6 +17,8 @@ The full-text search engine used in Firefish has been changed to [PGroonga](http
 - Required Node.js version has been bumped from v18.16.0 to v18.17.0.
 - You need to install PGroonga on your system. Please follow the instructions below.
 
+[Edit (2024/03/23 23:55 UTC+9)] **Warning**: You may fail to install PGroonga, since the package registry of Apache Arrow (one of the subdependencies of PGroonga) is currently down ([GitHub issue](https://github.com/apache/arrow/issues/40759)). **We recommend that you hold off on upgrading until this problem is resolved.**
+
 #### 1. Install PGroonga
 
 Please execute `psql --version` to check your PostgreSQL major version. This will print a message like this:
