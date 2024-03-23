@@ -67,7 +67,7 @@
 							rounded
 							style="margin-left: 12px; margin-top: 12px"
 							onclick="window.location.href='/explore'"
-							>Explore</MkButton
+							>{{ i18n.ts.explore }}</MkButton
 						>
 					</div>
 				</div>

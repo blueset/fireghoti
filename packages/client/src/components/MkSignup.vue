@@ -1,11 +1,6 @@
 <template>
 	<div v-if="instance.disableRegistration" style="margin-bottom: 1rem">
 		<p>{{ i18n.ts.signupsDisabled }}</p>
-		<a href="https://joinfirefish.org/join">
-			<MkButton rounded gradate
-				>{{ i18n.ts.findOtherInstance }}
-			</MkButton>
-		</a>
 	</div>
 	<form
 		class="qlvuhzng _formRoot"
@@ -286,7 +281,7 @@ import MkSwitch from "./form/switch.vue";
 import MkCaptcha from "@/components/MkCaptcha.vue";
 import * as config from "@/config";
 import * as os from "@/os";
-import { login } from "@/account";
+import { signIn } from "@/account";
 import { instance } from "@/instance";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
@@ -475,7 +470,7 @@ function onSubmit(): void {
 					emit("signup", res);
 
 					if (props.autoSet) {
-						login(res.i);
+						signIn(res.i);
 					}
 				});
 			}

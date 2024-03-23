@@ -8,7 +8,7 @@
 						<Mfm
 							:text="clip.description"
 							:is-note="false"
-							:i="$i"
+							:i="me"
 						/>
 					</div>
 					<div class="user">
@@ -31,7 +31,7 @@
 import { computed, provide, ref, watch } from "vue";
 import type { entities } from "firefish-js";
 import XNotes from "@/components/MkNotes.vue";
-import { $i, isSignedIn } from "@/reactiveAccount";
+import { isSignedIn, me } from "@/me";
 import { i18n } from "@/i18n";
 import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";
@@ -51,7 +51,7 @@ const pagination = {
 };
 
 const isOwned: boolean | null = computed<boolean | null>(
-	() => isSignedIn && clip.value && $i.id === clip.value.userId,
+	() => isSignedIn && clip.value && me.id === clip.value.userId,
 );
 
 watch(
@@ -73,7 +73,7 @@ const headerActions = computed(() =>
 		? [
 				{
 					icon: `${icon("ph-pencil")}`,
-					text: i18n.ts.edit,
+					text: i18n.ts.toEdit,
 					handler: async (): Promise<void> => {
 						const { canceled, result } = await os.form(
 							clip.value.name,

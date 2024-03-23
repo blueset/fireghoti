@@ -3,7 +3,7 @@ import type { entities } from "firefish-js";
 import { readAndCompressImage } from "browser-image-resizer";
 import { defaultStore } from "@/store";
 import { apiUrl } from "@/config";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { alert } from "@/os";
 import { i18n } from "@/i18n";
 
@@ -84,7 +84,7 @@ export function uploadFile(
 
 			const xhr = new XMLHttpRequest();
 			xhr.open("POST", `${apiUrl}/drive/files/create`, true);
-			xhr.setRequestHeader("Authorization", `Bearer ${$i.token}`);
+			xhr.setRequestHeader("Authorization", `Bearer ${me.token}`);
 			xhr.onload = (ev) => {
 				if (
 					xhr.status !== 200 ||

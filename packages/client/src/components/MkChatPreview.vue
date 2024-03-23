@@ -4,7 +4,7 @@
 		:class="{
 			isMe: isMe(message),
 			isRead: message.groupId
-				? message.reads.includes($i?.id)
+				? message.reads.includes(me?.id)
 				: message.isRead,
 		}"
 		:to="
@@ -65,16 +65,16 @@
 </template>
 
 <script lang="ts" setup>
-import { i18n } from "@/i18n";
 import { acct } from "firefish-js";
-import { $i } from "@/reactiveAccount";
+import { i18n } from "@/i18n";
+import { me } from "@/me";
 
 defineProps<{
 	message: Record<string, any>;
 }>();
 
 function isMe(message): boolean {
-	return message.userId === $i?.id;
+	return message.userId === me?.id;
 }
 </script>
 

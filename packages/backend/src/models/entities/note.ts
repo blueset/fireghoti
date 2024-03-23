@@ -2,15 +2,20 @@ import {
 	Entity,
 	Index,
 	JoinColumn,
+	JoinTable,
 	Column,
 	PrimaryColumn,
+	ManyToMany,
 	ManyToOne,
+	OneToMany,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
-import type { DriveFile } from "./drive-file.js";
+import { DriveFile } from "./drive-file.js";
 import { id } from "../id.js";
 import { noteVisibilities } from "../../types.js";
 import { Channel } from "./channel.js";
+import { NoteFile } from "./note-file.js";
 
 @Entity()
 @Index("IDX_NOTE_TAGS", { synchronize: false })
@@ -34,12 +39,6 @@ export class Note {
 	})
 	public replyId: Note["id"] | null;
 
-	@ManyToOne((type) => Note, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public reply: Note | null;
-
 	@Index()
 	@Column({
 		...id(),
@@ -48,12 +47,6 @@ export class Note {
 	})
 	public renoteId: Note["id"] | null;
 
-	@ManyToOne((type) => Note, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public renote: Note | null;
-
 	@Index()
 	@Column("varchar", {
 		length: 256,
@@ -61,6 +54,7 @@ export class Note {
 	})
 	public threadId: string | null;
 
+	@Index() // USING pgroonga
 	@Column("text", {
 		nullable: true,
 	})
@@ -78,6 +72,7 @@ export class Note {
 	})
 	public name: string | null;
 
+	@Index() // USING pgroonga pgroonga_varchar_full_text_search_ops_v2
 	@Column("varchar", {
 		length: 512,
 		nullable: true,
@@ -90,12 +85,6 @@ export class Note {
 		comment: "The ID of author.",
 	})
 	public userId: User["id"];
-
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
 
 	@Column("boolean", {
 		default: false,
@@ -149,6 +138,8 @@ export class Note {
 	})
 	public score: number;
 
+	// FIXME: file id is not removed from this array even if the file is deleted
+	// TODO: drop this column and use note_files
 	@Index()
 	@Column({
 		...id(),
@@ -181,6 +172,7 @@ export class Note {
 	})
 	public mentions: User["id"][];
 
+	// FIXME: WHAT IS THIS
 	@Column("text", {
 		default: "[]",
 	})
@@ -214,11 +206,54 @@ export class Note {
 	})
 	public channelId: Channel["id"] | null;
 
-	@ManyToOne((type) => Channel, {
+	//#region Relations
+	@OneToMany(
+		() => NoteFile,
+		(noteFile: NoteFile) => noteFile.note,
+	)
+	public noteFiles: Relation<NoteFile[]>;
+
+	@ManyToMany(
+		() => DriveFile,
+		(file: DriveFile) => file.notes,
+	)
+	@JoinTable({
+		name: "note_file",
+		joinColumn: {
+			name: "noteId",
+			referencedColumnName: "id",
+		},
+		inverseJoinColumn: {
+			name: "fileId",
+			referencedColumnName: "id",
+		},
+	})
+	public files: Relation<DriveFile[]>;
+
+	@ManyToOne(() => Note, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public reply: Note | null;
+
+	@ManyToOne(() => Note, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public renote: Note | null;
+
+	@ManyToOne(() => Channel, {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
 	public channel: Channel | null;
+
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public user: User | null;
+	//#endregion Relations
 
 	//#region Denormalized fields
 	@Index()

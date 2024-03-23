@@ -1,7 +1,7 @@
 // TODO: なんでもかんでもos.tsに突っ込むのやめたいのでよしなに分割する
 
 import { EventEmitter } from "eventemitter3";
-import { api as firefishApi, type entities } from "firefish-js";
+import { type entities, api as firefishApi } from "firefish-js";
 import insertTextAtCursor from "insert-text-at-cursor";
 import type { Component, Ref } from "vue";
 import { defineAsyncComponent, markRaw, ref } from "vue";
@@ -11,7 +11,7 @@ import MkPostFormDialog from "@/components/MkPostFormDialog.vue";
 import MkToast from "@/components/MkToast.vue";
 import MkWaitingDialog from "@/components/MkWaitingDialog.vue";
 import { apiUrl, url } from "@/config";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import type { MenuItem } from "@/types/menu";
 
 export const pendingApiRequestsCount = ref(0);
@@ -32,7 +32,7 @@ export const api = ((
 		pendingApiRequestsCount.value--;
 	};
 
-	const authorizationToken = token ?? $i?.token ?? undefined;
+	const authorizationToken = token ?? me?.token ?? undefined;
 	const authorization = authorizationToken
 		? `Bearer ${authorizationToken}`
 		: undefined;
@@ -77,7 +77,7 @@ export const apiGet = ((
 
 	const query = new URLSearchParams(data);
 
-	const authorizationToken = token ?? $i?.token ?? undefined;
+	const authorizationToken = token ?? me?.token ?? undefined;
 	const authorization = authorizationToken
 		? `Bearer ${authorizationToken}`
 		: undefined;

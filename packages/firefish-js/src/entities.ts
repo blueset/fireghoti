@@ -107,6 +107,7 @@ export type MeDetailed = UserDetailed & {
 	isDeleted: boolean;
 	isExplorable: boolean;
 	mutedWords: string[][];
+	mutedPatterns: string[];
 	mutingNotificationTypes: string[];
 	noCrawle: boolean;
 	preventAiLearning: boolean;
@@ -149,6 +150,7 @@ export type Note = {
 	fileIds: DriveFile["id"][];
 	visibility: "public" | "home" | "followers" | "specified";
 	visibleUserIds?: User["id"][];
+	lang?: string;
 	localOnly?: boolean;
 	channel?: Channel["id"];
 	myReaction?: string;

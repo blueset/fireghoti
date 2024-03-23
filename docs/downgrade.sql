@@ -1,6 +1,12 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'FixMutingIndices1710690239308',
+    'NoteFile1710304584214',
+    'RenameMetaColumns1705944717480',
+    'SeparateHardMuteWordsAndPatterns1706413792769',
+    'IndexAltTextAndCw1708872574733',
+    'Pgroonga1698420787202',
     'ChangeDefaultConfigs1709251460718',
     'AddReplyMuting1704851359889',
     'FixNoteUrlIndex1709129810501',
@@ -11,6 +17,39 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- fix-muting-indices
+DROP INDEX "IDX_renote_muting_createdAt";
+DROP INDEX "IDX_renote_muting_muteeId";
+DROP INDEX "IDX_renote_muting_muterId";
+DROP INDEX "IDX_reply_muting_createdAt";
+DROP INDEX "IDX_reply_muting_muteeId";
+DROP INDEX "IDX_reply_muting_muterId";
+CREATE INDEX "IDX_renote_muting_createdAt" ON "muting" ("createdAt");
+CREATE INDEX "IDX_renote_muting_muteeId" ON "muting" ("muteeId");
+CREATE INDEX "IDX_renote_muting_muterId" ON "muting" ("muterId");
+
+-- note-file
+DROP TABLE "note_file";
+
+-- rename-meta-columns
+ALTER TABLE "meta" RENAME COLUMN "tosUrl" TO "ToSUrl";
+ALTER TABLE "meta" RENAME COLUMN "objectStorageUseSsl" TO "objectStorageUseSSL";
+ALTER TABLE "meta" RENAME COLUMN "customMotd" TO "customMOTD";
+
+-- separate-hard-mute-words-and-patterns
+UPDATE "user_profile" SET "mutedWords" = "mutedWords" || array_to_json("mutedPatterns")::jsonb;
+ALTER TABLE "user_profile" DROP "mutedPatterns";
+
+-- index-alt-text-and-cw
+DROP INDEX "IDX_f4f7b93d05958527300d79ac82";
+DROP INDEX "IDX_8e3bbbeb3df04d1a8105da4c8f";
+
+-- pgroonga
+DROP INDEX "IDX_f27f5d88941e57442be75ba9c8";
+DROP INDEX "IDX_065d4d8f3b5adb4a08841eae3c";
+DROP INDEX "IDX_fcb770976ff8240af5799e3ffc";
+DROP EXTENSION pgroonga CASCADE;
 
 -- change-default-configs
 ALTER TABLE "user_profile" ALTER COLUMN "noCrawle" SET DEFAULT false;

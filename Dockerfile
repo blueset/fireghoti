@@ -48,7 +48,7 @@ FROM docker.io/node:20-alpine
 WORKDIR /firefish
 
 # Install runtime dependencies
-RUN apk update && apk add --no-cache zip unzip tini ffmpeg
+RUN apk update && apk add --no-cache zip unzip tini ffmpeg curl
 
 COPY . ./
 

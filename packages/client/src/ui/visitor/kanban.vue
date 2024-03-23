@@ -4,7 +4,7 @@
 		:style="{
 			backgroundImage: transparent
 				? 'none'
-				: `url(${$instance.backgroundImageUrl})`,
+				: `url(${instance.backgroundImageUrl})`,
 		}"
 	>
 		<div class="back" :class="{ transparent }"></div>
@@ -69,7 +69,9 @@
 						>
 						<small
 							>Powered by
-							<a href="https://joinfirefish.org/" target="_blank"
+							<a
+								href="https://firefish.dev/firefish/firefish"
+								target="_blank"
 								>Firefish</a
 							></small
 						>
@@ -89,6 +91,7 @@ import XSigninDialog from "@/components/MkSigninDialog.vue";
 import XSignupDialog from "@/components/MkSignupDialog.vue";
 import MkButton from "@/components/MkButton.vue";
 import { i18n } from "@/i18n";
+import { instance } from "@/instance";
 
 export default defineComponent({
 	components: {
@@ -126,6 +129,7 @@ export default defineComponent({
 				limit: 10,
 			},
 			i18n,
+			instance,
 		};
 	},
 

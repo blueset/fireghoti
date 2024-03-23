@@ -5,7 +5,7 @@
 				<div class="lxpfedzu">
 					<div class="banner">
 						<img
-							:src="$instance.iconUrl || '/favicon.ico'"
+							:src="instance.iconUrl || '/favicon.ico'"
 							alt=""
 							class="icon"
 						/>
@@ -73,12 +73,11 @@ import MkSuperMenu from "@/components/MkSuperMenu.vue";
 import MkInfo from "@/components/MkInfo.vue";
 import { instance } from "@/instance";
 import { version } from "@/config";
-import { $i } from "@/reactiveAccount";
+import { isAdmin, me } from "@/me";
 import * as os from "@/os";
 import { lookupUser } from "@/scripts/lookup-user";
 import { lookupFile } from "@/scripts/lookup-file";
 import { lookupInstance } from "@/scripts/lookup-instance";
-import { indexPosts } from "@/scripts/index-posts";
 import { defaultStore } from "@/store";
 import { useRouter } from "@/router";
 import {
@@ -122,11 +121,7 @@ os.api("admin/abuse-user-reports", {
 
 if (defaultStore.state.showAdminUpdates) {
 	os.api("latest-version").then((res) => {
-		const cleanRes = parseInt(res?.latest_version.replace(/[^0-9]/g, ""));
-		const cleanVersion = parseInt(version.replace(/[^0-9]/g, ""));
-		if (cleanRes > cleanVersion) {
-			updateAvailable.value = true;
-		}
+		updateAvailable.value = version < res?.latest_version;
 	});
 }
 
@@ -153,16 +148,6 @@ const menuDef = computed(() => [
 							icon: `${icon("ph-user-plus")}`,
 							text: i18n.ts.invite,
 							action: invite,
-						},
-					]
-				: []),
-			...($i.isAdmin
-				? [
-						{
-							type: "button",
-							icon: `${icon("ph-list-magnifying-glass")}`,
-							text: i18n.ts.indexPosts,
-							action: indexPosts,
 						},
 					]
 				: []),
@@ -227,7 +212,7 @@ const menuDef = computed(() => [
 			},
 		],
 	},
-	...($i?.isAdmin
+	...(isAdmin
 		? [
 				{
 					title: i18n.ts.settings,

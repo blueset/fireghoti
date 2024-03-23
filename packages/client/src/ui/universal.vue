@@ -85,7 +85,7 @@
 				>
 					<i :class="icon('ph-bell')"></i
 					><span
-						v-if="$i?.hasUnreadNotification"
+						v-if="me?.hasUnreadNotification"
 						class="indicator"
 						:class="{
 							animateIndicator: defaultStore.state.animation,
@@ -120,7 +120,7 @@
 				>
 					<i :class="icon('ph-chats-teardrop')"></i
 					><span
-						v-if="$i?.hasUnreadMessagingMessage"
+						v-if="me?.hasUnreadMessagingMessage"
 						class="indicator"
 						:class="{
 							animateIndicator: defaultStore.state.animation,
@@ -222,7 +222,7 @@ import { defaultStore } from "@/store";
 import { navbarItemDef } from "@/navbar";
 import { i18n } from "@/i18n";
 import { openAccountMenu as openAccountMenuImpl } from "@/account";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { mainRouter } from "@/router";
 import { provideMetadataReceiver } from "@/scripts/page-metadata";
 import { deviceKind } from "@/scripts/device-kind";

@@ -4,22 +4,22 @@
 			<div class="top">
 				<div
 					class="banner"
-					:user="$i"
-					:style="{ backgroundImage: `url(${$i.bannerUrl})` }"
+					:user="me"
+					:style="{ backgroundImage: `url(${me.bannerUrl})` }"
 				></div>
 				<button
 					v-click-anime
 					v-tooltip.noDelay.right="
-						`${i18n.ts.account}: @${$i.username}`
+						`${i18n.ts.account}: @${me.username}`
 					"
 					class="item _button account"
 					@click="openAccountMenu"
 				>
 					<MkAvatar
-						:user="$i"
+						:user="me"
 						class="icon"
 						disable-link
-					/><!-- <MkAcct class="text" :user="$i"/> -->
+					/><!-- <MkAcct class="text" :user="me"/> -->
 				</button>
 			</div>
 			<div class="middle">
@@ -81,7 +81,7 @@
 					><span class="text">{{ i18n.ts.controlPanel }}</span>
 				</MkA>
 				<MkA
-					v-else-if="$i.emojiModPerm !== 'unauthorized'"
+					v-else-if="me.emojiModPerm !== 'unauthorized'"
 					v-click-anime
 					v-tooltip.noDelay.right="i18n.ts.customEmojis"
 					class="item _button"
@@ -120,7 +120,7 @@
 					@click="os.post"
 				>
 					<i :class="icon('ph-pencil icon ph-fw')"></i
-					><span class="text">{{ i18n.ts.note }}</span>
+					><span class="text">{{ i18n.ts.toPost }}</span>
 				</button>
 				<button
 					v-tooltip.noDelay.right="i18n.ts.help"
@@ -141,7 +141,7 @@ import { computed, defineAsyncComponent, toRef } from "vue";
 import * as os from "@/os";
 import { navbarItemDef } from "@/navbar";
 import { openAccountMenu as openAccountMenu_ } from "@/account";
-import { $i, isModerator } from "@/reactiveAccount";
+import { isModerator, me } from "@/me";
 import { openHelpMenu_ } from "@/scripts/helpMenu";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";

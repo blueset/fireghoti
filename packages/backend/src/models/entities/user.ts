@@ -9,6 +9,8 @@ import {
 import { id } from "../id.js";
 import { DriveFile } from "./drive-file.js";
 
+export type EmojiModPerm = "unauthorized" | "add" | "mod" | "full";
+
 @Entity()
 @Index(["usernameLower", "host"], { unique: true })
 export class User {
@@ -58,6 +60,7 @@ export class User {
 	})
 	public usernameLower: string;
 
+	@Index() // USING pgroonga pgroonga_varchar_full_text_search_ops_v2
 	@Column("varchar", {
 		length: 128,
 		nullable: true,
@@ -187,7 +190,7 @@ export class User {
 		enum: ["unauthorized", "add", "mod", "full"],
 		default: "unauthorized",
 	})
-	public emojiModPerm: "unauthorized" | "add" | "mod" | "full";
+	public emojiModPerm: EmojiModPerm;
 
 	@Index()
 	@Column("boolean", {

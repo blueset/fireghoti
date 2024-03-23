@@ -1324,9 +1324,6 @@ _widgets:
   instanceCloud: Cloud del server
   unixClock: Orologio UNIX
   serverInfo: Informazioni sul server
-  meiliIndexCount: Post indicizzati
-  meiliStatus: Stato del server
-  meiliSize: Dimensione indice
   userList: Elenco utenti
 _cw:
   hide: "Nascondi"
@@ -1838,13 +1835,10 @@ customSplashIconsDescription: Elenco degli URL di icone personalizzate da mostra
   le immagini siano su un URL statico, preferibilmente di dimensioni 192x192.
 swipeOnDesktop: Permetti lo swipe su desktop simile alla versione mobile
 logoImageUrl: URL del logo
-indexFrom: Indicizza dal post ID
 customKaTeXMacro: Macro KaTeX personalizzate
-indexPosts: Crea indice dei post
 signupsDisabled: Le iscrizioni su questo server al momento non sono possibili, ma
   puoi sempre iscriverti su un altro server! Se invece hai un codice di invito per
   questo server, inseriscilo qua sotto.
-findOtherInstance: Scegli un altro server
 apps: App
 expandOnNoteClick: Apri i post con un click
 userSaysSomethingReasonReply: '{name} ha risposto a un post che contiene {reason}'
@@ -1919,9 +1913,6 @@ lastActiveDate: Ultimo utilizzo
 enterSendsMessage: Premi "Invio" nei messaggi per inviare (altrimenti è "Ctrl + Invio")
 customMOTD: Messaggi di caricamento personalizzati (splash screen)
 replayTutorial: Ripeti il tutorial
-indexFromDescription: Lascia vuoto per indicizzare tutti i post
-indexNotice: Creazione indice in corso. Sarà necessario del tempo, fai attenzione
-  a non riavviare il server per almeno un'ora.
 enableCustomKaTeXMacro: Abilita le macro KaTeX personalizzate
 preventAiLearningDescription: Richiedi ai bot di intelligenza artificiale di terze
   parti di non studiare e acquisire il contenuto che carichi, come post e immagini.
@@ -2029,8 +2020,8 @@ requireAdminForView: Devi avere un account amministratore per vedere questo cont
 jumpToPrevious: Vai al precedente
 flagShowTimelineReplies: Mostra le risposte nella timeline
 cw: Content warning
-renoteMute: Silenzia i boost
-renoteUnmute: Non silenziare i boost
+renoteMute: Silenzia i boost nelle timeline
+renoteUnmute: Non silenziare i boost nelle timeline
 enableEmojiReactions: Abilita le reazioni con emoji
 preferencesBackups: Backup delle preferenze
 adminCustomCssWarn: Questa impostazione dovrebbe essere usata solo se ne comprendi
@@ -2181,8 +2172,9 @@ showPreviewByDefault: Mostra sempre l'anteprima del messaggio
 replaceWidgetsButtonWithReloadButton: Sostituisci il bottone dei widget con quello
   di reload
 squareCatAvatars: Mostra avatar quadrati per gli account di gatti
-searchEngine: Motore della barra di ricerca MFM
-hideFollowButtons: Nascondi i bottoni di follow se in posizioni cliccabili per errore
+searchEngine: Motore di ricerca della barra MFM
+hideFollowButtons: Nascondi i bottoni di follow se sono in una posizione cliccabile
+  per errore
 preventMisclick: Protezione dai click accidentali
 forMobile: Mobile
 replaceChatButtonWithAccountButton: Sostituisci il bottone chat con quello di cambio
@@ -2205,3 +2197,17 @@ emojiModPermDescription: "Aggiungi: Permette all'utente di aggiungere emoji pers
   in più permette di rimuovere le emoji personalizzate."
 makePrivateConfirm: Questa operazione invierà ai server remoti un richiesta di rimozione
   e cambierà la visibilità a "Privato". Confermi?
+sentFollowRequests: Richieste di follow inviate
+searchWords: Parole da cercare / ID o URL da mostrare
+enablePullToRefresh: Abilita il "Trascina in basso per aggiornare"
+pullToRefreshThreshold: Distanza di trascinamento per ricaricare
+pullDownToReload: Trascina in basso per ricaricare
+releaseToReload: Rilascia per ricaricare
+reloading: Ricaricamento
+enableTimelineStreaming: Aggiorna le timeline in automatico
+noSentFollowRequests: Non hai inviato richieste di follow
+replyMute: Silenzia le risposte nelle timeline
+replyUnmute: Non silenziare le risposte nelle timeline
+useCdn: Carica gli asset da CDN
+useCdnDescription: Carica alcuni asset statici come Twemoji dal CDN JSDelivr invece
+  che da questo server Firefish.

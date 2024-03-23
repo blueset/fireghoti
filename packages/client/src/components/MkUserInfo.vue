@@ -8,7 +8,7 @@
 			:class="{ detailed }"
 		>
 			<span
-				v-if="isSignedIn && $i.id !== user.id && user.isFollowed"
+				v-if="isSignedIn && me.id !== user.id && user.isFollowed"
 				class="followed"
 				>{{ i18n.ts.followsYou }}</span
 			>
@@ -34,7 +34,7 @@
 				class="mfm"
 				:text="user.description"
 				:author="user"
-				:i="$i"
+				:i="me"
 				:custom-emojis="user.emojis"
 			/>
 			<span v-else style="opacity: 0.7">{{
@@ -56,7 +56,7 @@
 					<Mfm
 						:text="field.value"
 						:author="user"
-						:i="$i"
+						:i="me"
 						:custom-emojis="user.emojis"
 						:colored="false"
 					/>
@@ -80,7 +80,7 @@
 		<div class="buttons">
 			<slot>
 				<MkFollowButton
-					v-if="isSignedIn && user.id !== $i.id"
+					v-if="isSignedIn && user.id !== me.id"
 					:user="user"
 				/>
 			</slot>
@@ -97,7 +97,7 @@ import XShowMoreButton from "@/components/MkShowMoreButton.vue";
 import MkNumber from "@/components/MkNumber.vue";
 import { userPage } from "@/filters/user";
 import { i18n } from "@/i18n";
-import { $i, isSignedIn } from "@/reactiveAccount";
+import { isSignedIn, me } from "@/me";
 
 const props = defineProps<{
 	user: entities.UserDetailed;

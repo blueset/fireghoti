@@ -1,11 +1,11 @@
 import { Stream } from "firefish-js";
 import { markRaw } from "vue";
 import { url } from "@/config";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 
 let stream: Stream | null = null;
 let timeoutHeartBeat: number | null = null;
-export let isReloading: boolean = false;
+export let isReloading = false;
 
 export function useStream() {
 	if (stream != null) return stream;
@@ -13,9 +13,9 @@ export function useStream() {
 	stream = markRaw(
 		new Stream(
 			url,
-			$i
+			me
 				? {
-						token: $i.token,
+						token: me.token,
 				  }
 				: null,
 		),

@@ -415,7 +415,7 @@ securityKeyName: "Nama kunci"
 registerSecurityKey: "Daftarkan kunci keamanan"
 lastUsed: "Terakhir digunakan"
 unregister: "Batalkan pendaftaran"
-passwordLessLogin: "Setel login tanpa kata sandi"
+passwordLessLogin: "Masuk tanpa kata sandi"
 resetPassword: "Atur ulang kata sandi"
 newPasswordIs: "Kata sandi baru adalah \"{password}\""
 reduceUiAnimation: "Kurangi animasi antarmuka"
@@ -655,10 +655,10 @@ useGlobalSetting: "Gunakan setelan global"
 useGlobalSettingDesc: "Jika dinyalakan, setelan pemberitahuan akun kamu akan digunakan.
   Jika dimatikan, konfigurasi secara individu dapat dibuat."
 other: "Lainnya"
-regenerateLoginToken: "Perbarui token login"
+regenerateLoginToken: "Perbarui token masuk"
 regenerateLoginTokenDescription: "Perbarui token yang digunakan secara internal saat
-  login. Normalnya aksi ini tidak diperlukan. Jika diperbarui, semua perangkat akan
-  dilogout."
+  masuk ke akun. Normalnya aksi ini tidak diperlukan. Jika diperbarui, semua perangkat
+  akan dikeluarkan dari akun."
 setMultipleBySeparatingWithSpace: "Kamu dapat menyetel banyak dengan memisahkannya
   menggunakan spasi."
 fileIdOrUrl: "File-ID atau URL"
@@ -1138,6 +1138,7 @@ _wordMute:
     dari timeline.
   muteLangs: Bahasa yang dibisukan
   muteLangsDescription: Pisahkan dengan spasi atau jeda baris untuk kondisi ATAU.
+  mutePatterns: Pola yang dibisukan
 _instanceMute:
   instanceMuteDescription: "Pengaturan ini akan membisukan postingan/pembagian apa
     saja dari server yang terdaftar, termasuk pengguna yang membalas pengguna lain
@@ -1295,8 +1296,8 @@ _2fa:
   step2Url: "Di aplikasi desktop, masukkan URL berikut:"
   step3: "Masukkan token yang telah disediakan oleh aplikasimu untuk menyelesaikan
     pemasangan."
-  step4: "Mulai sekarang, upaya login apapun akan meminta token login dari aplikasi
-    otentikasi kamu."
+  step4: "Mulai sekarang, upaya pemasukan akun apa pun akan meminta token masuk dari
+    aplikasi autentikasi kamu."
   securityKeyInfo: "Kamu dapat memasang otentikasi WebAuthN untuk mengamankan proses
     login lebih lanjut dengan tidak hanya perangkat keras kunci keamanan yang mendukung
     FIDO2, namun juga sidik jari atau otentikasi PIN pada perangkatmu."
@@ -1390,14 +1391,11 @@ _widgets:
   aiscript: "Konsol AiScript"
   aichan: "Ai"
   rssTicker: Telegraf RSS
-  meiliIndexCount: Postingan yang terindeks
   userList: Daftar Pengguna
   instanceCloud: Server Awan
   unixClock: Jam UNIX
-  meiliSize: Ukuran indeks
   _userList:
     chooseList: Pilih daftar
-  meiliStatus: Status Server
   serverInfo: Info Server
 _cw:
   hide: "Sembunyikan"
@@ -1884,8 +1882,8 @@ listsDesc: Daftar mengizinkanmu membuat linimasa berisi pengguna spesifik. Itu d
   diakses dari halaman linimasa.
 enableEmojiReactions: Aktifkan reaksi emoji
 showEmojisInReactionNotifications: Tampilkan emoji dalam notifikasi reaksi
-renoteMute: Bisukan postingan ulang
-renoteUnmute: Bunyikan postingan ulang
+renoteMute: Bisukan postingan ulang dalam lini masa
+renoteUnmute: Bunyikan postingan ulang dalam lini masa
 antennasDesc: "Antena menampilkan postingan baru yang cocok dengan kriteriamu!\n Itu
   dapat diakses dari halaman linimasa."
 antennaInstancesDescription: Daftarkan satu host server per baris
@@ -1984,17 +1982,14 @@ speed: Kecepatan
 slow: Pelan
 remoteOnly: Jarak jauh saja
 moveFrom: Dari akun lama pindahkan ke akun ini
-indexNotice: Sedang mengindeks. Ini memerlukan beberapa waktu, mohon jangan mulai
-  ulang server setidaknya satu jam.
 sendPushNotificationReadMessage: Hapus pemberitahuan dorong saat pemberitahuan atau
   pesan relevan sudah dibaca
 moveAccountDescription: Proses ini permanen. Pastikan kamu sudah mengatur alias dari
   akun ini ke akun barumu sebelum pindah. Silakan masukkan tag akun dengan format
   seperti @orang@server.com
 sendModMail: Kirim Pemberitahuan Moderasi
-signupsDisabled: Pendaftaran ke server ini nonaktif, tapi kamu dapat selalu mendaftar
-  ke server lain! Jika kamu memiliki kode undangan server ini, harap masukkan di bawah
-  ini.
+signupsDisabled: Pendaftaran ke server ini nonaktifkam. Jika kamu memiliki kode undangan
+  server ini, harap masukkan di bawah ini.
 enableCustomKaTeXMacro: Aktifkan makro KaTeX khusus
 isBot: Akun ini akun otomatis
 customMOTD: MOTD khusus (pesan layar percik)
@@ -2010,9 +2005,7 @@ showAds: Tampilkan spanduk komunitas
 enterSendsMessage: Tekan Enter pada Pesan untuk mengirim pesan (matikan dengan Ctrl
   + Enter)
 showAdminUpdates: Indikasi versi Firefish baru tersedia (hanya admin)
-indexFrom: Indeks dari Post ID berikutnya
 noteId: ID Postingan
-findOtherInstance: Cari server lain
 caption: Deskripsi itomatis
 splash: Layar Percik
 migration: Migrasi
@@ -2022,7 +2015,6 @@ moveFromDescription: Ini akan mengatur alias akun lamamu jadi kamu dapat pindah 
   akun tersebut ke akun sekarang. Lakukan ini SEBELUM memindahkan akun lama. Silakan
   masukkan tag akun dengan format seperti @orang@server.com
 defaultReaction: Reaksi emoji bawaan untuk postingan keluar dan masuk
-indexPosts: Indeks Postingan
 preventAiLearning: Cegah scraping bot AI
 customKaTeXMacro: Makro KaTeX khusus
 sendPushNotificationReadMessageCaption: Pemberitahuan yang berisi teks "{emptyPushNotificationMessage}"
@@ -2052,7 +2044,6 @@ migrationConfirm: "Kamu sangat yakin ingin memindahkan akunmu ke {account}? Seka
   lagi secara normal. \nDan juga, harap pastikan kamu sudah mengatur akun sekarang
   sebagai akun yang dipindahkan."
 license: Lisensi
-indexFromDescription: Kosongkan untuk mengindeks setiap postingan
 noGraze: Harap nonaktifkan ekstensi peramban "Graze for Mastodon", karena akan menganggu
   Firefish.
 silencedWarning: Halaman ini tampil karena pengguna ini datang dari server yang dibisukan
@@ -2193,7 +2184,7 @@ emojiModPerm: Perizinan pengelolaan emoji kustom
 emojiModPermDescription: "Tambah: Perbolehkan pengguna ini untuk menambahkan emoji
   kustom baru dan menetapkan tag/kategori/lisensi untuk semua emoji kustom yang telah
   ditambahkan.\nTambah dan Sunting: Perizinan \"Tambah\" + Perbolehkan pengguna ini
-  untuk menyunting nama/kategori/tag/lisensi emoji kustom yang sudah ada.\nPerbolehkan
+  untuk menyunting nama/kategori/tag/lisensi emoji kustom yang sudah ada.\n Perbolehkan
   Semua: Perizinan \"Tambah dan Sunting\" + Perbolehkan pengguna ini untuk menghapus
   semua emoji kustom yang sudah ada."
 private: Privat
@@ -2221,3 +2212,56 @@ showPreviewByDefault: Tampilkan pratinjau dalam formulir kiriman secara bawaan
 useCdn: Dapatkan aset dari CDN
 useCdnDescription: Muat aset statis seperti Twemoji dari CDN JSDelivr daripada server
   Firefish ini.
+sentFollowRequests: Permintaan mengikuti terkirim
+replyUnmute: Suarakan balasan dalam lini masa
+noSentFollowRequests: Kamu belum punya permintaan mengikuti
+enablePullToRefresh: Aktifkan "Tarik ke bawah untuk memuat ulang"
+pullDownToReload: Tarik ke bawah untuk memuat ulang
+enableTimelineStreaming: Perbarui lini masa secara otomatis
+searchWords: Kata-kata untuk dicari / ID atau URL untuk dicari
+searchUsers: Dikirim oleh (opsional)
+searchCwAndAlt: Termasuk peringatan konten dan deskripsi berkas
+searchPostsWithFiles: Hanya kiriman dengan berkas
+publishTimelines: Terbitkan lini masa untuk pengunjung
+publishTimelinesDescription: Jika diaktifkan, lini masa Lokal dan Global akan ditampilkan
+  di {url} bahkan ketika keluar dari akun.
+searchWordsDescription: "Untuk mencari kiriman, masukkan istilah pencarian. Pisahkan
+  kata dengan spasi untuk pencarian AND (dan), atau 'OR' ('atau', tanpa tanda kutip)
+  di antara kata-kata untuk pencarian OR.\nMisalnya, 'pagi malam' akan menemukan postingan
+  yang mengandung 'pagi' dan 'malam', dan 'pagi OR malam' akan menemukan postingan
+  yang mengandung 'pagi' atau 'malam' (atau keduanya).\nAnda juga dapat menggabungkan
+  kondisi AND/OR seperti '(pagi OR malam) mengantuk'.\n\nJika kamu ingin membuka halaman
+  pengguna atau halaman postingan tertentu, masukkan ID atau URL pada kolom ini dan
+  klik tombol 'Cari'. Mengklik 'Cari' akan mencari postingan yang secara harfiah mengandung
+  ID/URL."
+pullToRefreshThreshold: Jarak penarikan untuk memuat ulang
+releaseToReload: Lepaskan untuk memuat ulang
+reloading: Memuat ulang
+replyMute: Bisukan balasan dalam lini masa
+searchRange: Dikirim dalam (opsional)
+searchUsersDescription: "Untuk mencari kiriman oleh pengguna/server tertentu, masukkan
+  ID (@pengguna@contoh.id, atau @pengguna untuk pengguna lokal) atau nama domain (contoh.id)\n
+  \nJika kamu memasukkan 'me' ('aku', tanpa tanda kutip), semua kirimanmu (termasuk
+  kiriman yang tidak terdaftar, khusus pengikut, langsung, dan rahasia) akan dicari.\n
+  \nJika Anda memasukkan 'local' (tanpa tanda kutip), hasilnya akan disaring untuk
+  menyertakan hanya kiriman dari server ini."
+searchRangeDescription: "Jika kamu ingin memfilter periode waktu, masukkan dalam format
+  ini: 20220615-20231031\n\nJika kamu menghilangkan tahun (seperti 0105-0106 atau
+  20231105-0110), maka akan ditafsirkan sebagai tahun saat ini.\n\nKamu juga bisa
+  menghilangkan tanggal awal atau akhir. Sebagai contoh, -0102 akan memfilter hasil
+  pencarian untuk menampilkan hanya kiriman yang dibuat sebelum tanggal 2 Januari
+  tahun ini, dan 20231026- akan memfilter hasil pencarian untuk menampilkan hanya
+  kiriman yang dibuat setelah tanggal 26 Oktober 2023."
+toPost: Kirim
+toQuote: Kutip
+noAltTextWarning: Beberapa berkas yang dilampirkan tidak memiliki deskripsi. Lupa
+  menulis deskripsinya?
+toEdit: Sunting
+showNoAltTextWarning: Tampilkan peringatan jika kamu mencoba mengirim berkas tanpa
+  deskripsi
+toReply: Balas
+messagingUnencryptedInfo: Percakapan di Firefish tidak terenkripsi secara ujung ke
+  ujung. Jangan bagikan informasi sensitif apa pun melalui Firefish.
+moderationNote: Catatan Moderasi
+driveCapacityOverride: Penimpaan Kapasitas Drive
+ipFirstAcknowledged: Tanggal akuisisi pertama dari alamat IP

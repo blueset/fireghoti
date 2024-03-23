@@ -19,7 +19,7 @@
 
 <script lang="ts" setup>
 import { onUnmounted, ref } from "vue";
-import { useStream, isReloading } from "@/stream";
+import { isReloading, useStream } from "@/stream";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 

@@ -53,6 +53,7 @@ copyUsername: "ユーザー名をコピー"
 searchUser: "ユーザーを検索"
 reply: "返信"
 replies: "返信"
+toReply: "返信"
 loadMore: "もっと読み込む"
 showMore: "もっと見る"
 showLess: "閉じる"
@@ -75,6 +76,7 @@ lists: "リスト"
 noLists: "リストはありません"
 note: "投稿"
 notes: "投稿"
+toPost: "投稿する"
 following: "フォロー"
 followers: "フォロワー"
 followsYou: "フォローされています"
@@ -105,6 +107,7 @@ cantRenote: "この投稿はブーストできません。"
 cantReRenote: "ブーストをブーストすることはできません。"
 quote: "引用"
 quotes: "引用"
+toQuote: "引用する"
 pinnedNote: "ピン留めされた投稿"
 pinned: "ピン留め"
 you: "あなた"
@@ -413,7 +416,7 @@ securityKeyName: "キーの名前"
 registerSecurityKey: "セキュリティキーを登録する"
 lastUsed: "最後の使用"
 unregister: "登録を解除"
-passwordLessLogin: "パスワード無しでログイン"
+passwordLessLogin: "パスワード無しでサインイン"
 resetPassword: "パスワードをリセット"
 newPasswordIs: "新しいパスワードは「{password}」です"
 reduceUiAnimation: "UIのアニメーションを減らす"
@@ -478,7 +481,7 @@ disableDrawer: "メニューをドロワーで表示しない"
 youHaveNoGroups: "グループがありません"
 joinOrCreateGroup: "既存のグループに招待してもらうか、新しくグループを作成してください。"
 noHistory: "履歴はありません"
-signinHistory: "ログイン履歴"
+signinHistory: "サインイン履歴"
 disableAnimatedMfm: "動きのあるMFMを無効にする"
 doing: "やっています"
 category: "カテゴリ"
@@ -606,6 +609,7 @@ tokenRequested: "アカウントへのアクセス許可"
 pluginTokenRequestedDescription: "このプラグインはここで設定した権限を行使できるようになります。"
 notificationType: "通知の種類"
 edit: "編集"
+toEdit: "編集する"
 emailServer: "メールサーバー"
 enableEmail: "メール配信機能を有効化する"
 emailConfigInfo: "メールアドレスの確認やパスワードリセットの際に使います"
@@ -644,8 +648,8 @@ notificationSettingDesc: "表示する通知の種別を選択してください
 useGlobalSetting: "グローバル設定を使う"
 useGlobalSettingDesc: "オンにすると、アカウントの通知設定が使用されます。オフにすると、個別に設定できるようになります。"
 other: "その他"
-regenerateLoginToken: "ログイントークンを再生成"
-regenerateLoginTokenDescription: "ログインに使用される内部トークンを再生成します。通常この操作を行う必要はありません。再生成すると、全てのデバイスでログアウトされます。"
+regenerateLoginToken: "サインイントークンを再生成"
+regenerateLoginTokenDescription: "サインインに使用される内部トークンを再生成します。通常この操作を行う必要はありません。再生成すると、全てのデバイスからサインアウトされます。"
 setMultipleBySeparatingWithSpace: "スペースで区切って複数設定できます。"
 fileIdOrUrl: "ファイルIDまたはURL"
 behavior: "動作"
@@ -904,14 +908,14 @@ thereIsUnresolvedAbuseReportWarning: "未対応の通報があります。"
 check: "チェック"
 driveCapOverrideLabel: "このユーザーのドライブ容量上限を変更"
 driveCapOverrideCaption: "0以下を指定すると解除されます。"
-requireAdminForView: "閲覧するには管理者アカウントでログインしている必要があります。"
+requireAdminForView: "閲覧するには管理者アカウントでサインインしている必要があります。"
 isSystemAccount: "システムにより自動で作成・管理されているアカウントです。モデレーション・編集・削除を行うとサーバーの動作が不正になる可能性があるため、操作しないでください。"
 typeToConfirm: "この操作を行うには {x} と入力してください"
 deleteAccount: "アカウント削除"
 document: "ドキュメント"
 numberOfPageCache: "ページキャッシュ数"
 numberOfPageCacheDescription: "多くすると利便性が向上しますが、負荷とメモリ使用量が増えます。"
-logoutConfirm: "ログアウトしますか？"
+logoutConfirm: "サインアウトしますか？"
 lastActiveDate: "最終利用日時"
 statusbar: "ステータスバー"
 pleaseSelect: "選択してください"
@@ -974,10 +978,6 @@ migrationConfirm: "本当にこのアカウントを {account} に引っ越し�
   この操作を行う前に引っ越し先のアカウントでエイリアスを作成する必要があります。エイリアスが作成されているか、必ず確認してください。"
 defaultReaction: "リモートとローカルの投稿に対するデフォルトの絵文字リアクション"
 license: "ライセンス"
-indexPosts: "投稿をインデックス"
-indexFrom: "この投稿ID以降をインデックスする"
-indexFromDescription: "空白で全ての投稿を指定します"
-indexNotice: "インデックスを開始しました。完了まで時間がかかる場合があるため、少なくとも1時間はサーバーを再起動しないでください。"
 customKaTeXMacro: "カスタムKaTeXマクロ"
 customKaTeXMacroDescription: "数式入力を楽にするためのマクロを設定しましょう！記法はLaTeXにおけるコマンドの定義と同様に \\newcommand{\\
   name}{content} または \\newcommand{\\add}[2]{#1 + #2} のように記述します。後者の例では \\add{3}{foo}
@@ -1005,6 +1005,26 @@ pullDownToReload: "下に引っ張って再読み込み"
 releaseToReload: "離して再読み込み"
 reloading: "読み込み中"
 enableTimelineStreaming: "タイムラインを自動で更新する"
+searchWords: "検索語句・照会するIDやURL"
+searchWordsDescription: "投稿を検索するには、ここに検索語句を入力してください。空白区切りでAND検索になり、ORを挟むとOR検索になります。\n
+  例えば「朝 夜」と入力すると「朝」と「夜」が両方含まれた投稿を検索し、「朝 OR 夜」と入力すると「朝」または「夜」（または両方）が含まれた投稿を検索します。\n
+  「(朝 OR 夜) 眠い」のように、AND検索とOR検索を同時に行うこともできます。\n空白を含む文字列をAND検索ではなくそのまま検索したい場合、\"明日 買うもの\"\
+  \ のように二重引用符 (\") で囲む必要があります。\n\n特定のユーザーや投稿のページに飛びたい場合には、この欄にID (@user@example.com)
+  や投稿のURLを入力し「照会」を押してください。「検索」を押すとそのIDやURLが文字通り含まれる投稿を検索します。"
+searchUsers: "投稿元（オプション）"
+searchUsersDescription: "投稿検索で投稿者を絞りたい場合、@user@example.com（ローカルユーザーなら @user）の形式で投稿者のIDを入力してください。ユーザーIDではなくドメイン名
+  (example.com) を指定すると、そのサーバーの投稿を検索します。\n\nme とだけ入力すると、自分の投稿を検索します。この検索結果には未収載・フォロワー限定・ダイレクト・秘密を含む全ての投稿が含まれます。\n
+  \nlocal とだけ入力すると、ローカルサーバーの投稿を検索します。"
+searchRange: "投稿期間（オプション）"
+searchRangeDescription: "投稿検索で投稿期間を絞りたい場合、20220615-20231031 のような形式で投稿期間を入力してください。今年の日付を指定する場合には年の指定を省略できます（0105-0106
+  や 20231105-0110 のように）。\n\n開始日と終了日のどちらか一方は省略可能です。例えば -0102 とすると今年1月2日までの投稿のみを、20231026-
+  とすると2023年10月26日以降の投稿のみを検索します。"
+searchPostsWithFiles: "添付ファイルのある投稿のみ"
+searchCwAndAlt: "閲覧注意の注釈と添付ファイルの代替テキストも検索する"
+publishTimelines: "非ログインユーザーにもタイムラインを公開する"
+publishTimelinesDescription: "有効にすると、{url} でローカルタイムラインとグローバルタイムラインが公開されます。"
+noAltTextWarning: "説明が書かれていない添付ファイルがあります。書き忘れてはいませんか？"
+showNoAltTextWarning: "説明が書かれていない添付ファイルを投稿しようとした場合に警告する"
 
 _sensitiveMediaDetection:
   description: "機械学習を使って自動でセンシティブなメディアを検出し、モデレーションに役立てられます。サーバーの負荷が少し増えます。"
@@ -1216,7 +1236,8 @@ _menuDisplay:
   hide: "隠す"
 _wordMute:
   muteWords: "ミュートするワード"
-  muteLangs: "ミュートされた言語"
+  mutePatterns: "ミュートするパターン"
+  muteLangs: "ミュートする言語"
   muteWordsDescription: "スペースで区切るとAND指定になり、改行で区切るとOR指定になります。"
   muteWordsDescription2: "キーワードをスラッシュで囲むと正規表現になります。"
   muteLangsDescription: "OR 条件の場合はスペースまたは改行で区切ります。"
@@ -1453,10 +1474,7 @@ _widgets:
   userList: "ユーザーリスト"
   _userList:
     chooseList: "リストを選択"
-  meiliStatus: サーバーステータス
   serverInfo: サーバー情報
-  meiliSize: インデックスサイズ
-  meiliIndexCount: インデックス済みの投稿
 _cw:
   hide: "隠す"
   show: "もっと見る"
@@ -1930,9 +1948,7 @@ sendModMail: モデレーション通知を送る
 deleted: 削除済み
 editNote: 投稿を編集
 edited: '編集済み: {date} {time}'
-signupsDisabled: 
-  現在、このサーバーでは新規登録が一般開放されていません。招待コードをお持ちの場合には、以下の欄に入力してください。招待コードをお持ちでない場合にも、新規登録を開放している他のサーバーには入れますよ！
-findOtherInstance: 他のサーバーを探す
+signupsDisabled: 現在、このサーバーでは新規登録が一般開放されていません。招待コードをお持ちの場合には、以下の欄に入力してください。
 newer: 新しい投稿
 older: 古い投稿
 accessibility: アクセシビリティ
@@ -2022,7 +2038,9 @@ searchEngine: "検索のMFMで使用する検索エンジン"
 postSearch: "このサーバーの投稿検索"
 showBigPostButton: "投稿ボタンを巨大にする"
 emojiModPerm: "カスタム絵文字の管理権"
-emojiModPermDescription: "追加: カスタム絵文字の新規追加と新規追加されたカスタム絵文字（正確には、タグとカテゴリとライセンスが設定されていないカスタム絵文字）へのタグとカテゴリとライセンスの設定を許可します。\n追加と変更:「追加」の権限に加え、既存の絵文字の名前・カテゴリ・タグ・ライセンスの変更を許可します。\n全て許可:「追加と変更」の権限に加え、既存のカスタム絵文字の削除を許可します。\nこの設定にかかわらず、サーバーの管理者およびモデレーターには「全て許可」の権限が与えられます。"
+emojiModPermDescription: "追加: カスタム絵文字の新規追加と新規追加されたカスタム絵文字（正確には、タグとカテゴリとライセンスが設定されていないカスタム絵文字）へのタグとカテゴリとライセンスの設定を許可します。\n\
+  追加と変更:「追加」の権限に加え、既存の絵文字の名前・カテゴリ・タグ・ライセンスの変更を許可します。\n全て許可:「追加と変更」の権限に加え、既存のカスタム絵文字の削除を許可します。\n\
+  この設定にかかわらず、サーバーの管理者およびモデレーターには「全て許可」の権限が与えられます。"
 _emojiModPerm:
   unauthorized: "無し"
   add: "追加"
@@ -2032,3 +2050,9 @@ private: "秘密"
 privateDescription: "あなた以外には非公開"
 makePrivate: "秘密にする"
 makePrivateConfirm: "リモートサーバーに削除リクエストを送信し、投稿の公開範囲を「秘密」にして他の人から見られないようにします。実行しますか？"
+sentFollowRequests: 未承認のフォローリクエスト
+noSentFollowRequests: 未承認のフォローリクエストはありません
+messagingUnencryptedInfo: FirefishのチャットはE2E暗号化されていません。漏洩してはいけない情報はFirefishで送らないでください。
+moderationNote: モデレーション用のメモ
+ipFirstAcknowledged: IPアドレスが最初に取得された日
+driveCapacityOverride: ドライブ容量の変更

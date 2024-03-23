@@ -1,6 +1,10 @@
 <template>
 	<div>
-		<XDrive ref="drive" @cd="(x) => (folder = x)" :fullPageHeader="true" />
+		<XDrive
+			ref="drive"
+			:full-page-header="true"
+			@cd="(x) => (folder = x)"
+		/>
 	</div>
 </template>
 

@@ -1,15 +1,21 @@
 import type { Antenna } from "@/models/entities/antenna.js";
 import type { Note } from "@/models/entities/note.js";
 import type { User } from "@/models/entities/user.js";
-import { Blockings, UserProfiles } from "@/models/index.js";
+import type { UserProfile } from "@/models/entities/user-profile.js";
+import { Blockings, Followings, UserProfiles } from "@/models/index.js";
 import { getFullApAccount } from "@/misc/convert-host.js";
 import * as Acct from "@/misc/acct.js";
+import { getWordHardMute } from "@/misc/check-word-mute.js";
 import type { Packed } from "@/misc/schema.js";
 import { Cache } from "@/misc/cache.js";
-import { getWordHardMute } from "@/misc/check-word-mute.js";
 
 const blockingCache = new Cache<User["id"][]>("blocking", 60 * 5);
-const mutedWordsCache = new Cache<string[][] | undefined>("mutedWords", 60 * 5);
+const hardMutesCache = new Cache<{
+	userId: UserProfile["userId"];
+	mutedWords: UserProfile["mutedWords"];
+	mutedPatterns: UserProfile["mutedPatterns"];
+}>("hardMutes", 60 * 5);
+const followingCache = new Cache<User["id"][]>("following", 60 * 5);
 
 export async function checkHitAntenna(
 	antenna: Antenna,
@@ -17,11 +23,10 @@ export async function checkHitAntenna(
 	noteUser: { id: User["id"]; username: string; host: string | null },
 ): Promise<boolean> {
 	if (note.visibility === "specified") return false;
-	if (note.visibility === "home") return false;
-	if (!antenna.withReplies && note.replyId != null) return false;
 	if (antenna.withFile) {
 		if (note.fileIds && note.fileIds.length === 0) return false;
 	}
+	if (!antenna.withReplies && note.replyId != null) return false;
 
 	if (antenna.src === "users") {
 		const accts = antenna.users.map((x) => {
@@ -48,14 +53,19 @@ export async function checkHitAntenna(
 		.map((xs) => xs.filter((x) => x !== ""))
 		.filter((xs) => xs.length > 0);
 
+	let text = `${note.text ?? ""} ${note.cw ?? ""}`;
+	if (note.files != null)
+		text += ` ${note.files.map((f) => f.comment ?? "").join(" ")}`;
+	text = text.trim();
+
 	if (keywords.length > 0) {
 		if (note.text == null) return false;
 
 		const matched = keywords.some((and) =>
 			and.every((keyword) =>
 				antenna.caseSensitive
-					? note.text!.includes(keyword)
-					: note.text!.toLowerCase().includes(keyword.toLowerCase()),
+					? text.includes(keyword)
+					: text.toLowerCase().includes(keyword.toLowerCase()),
 			),
 		);
 
@@ -73,8 +83,8 @@ export async function checkHitAntenna(
 		const matched = excludeKeywords.some((and) =>
 			and.every((keyword) =>
 				antenna.caseSensitive
-					? note.text!.includes(keyword)
-					: note.text!.toLowerCase().includes(keyword.toLowerCase()),
+					? note.text?.includes(keyword)
+					: note.text?.toLowerCase().includes(keyword.toLowerCase()),
 			),
 		);
 
@@ -89,12 +99,34 @@ export async function checkHitAntenna(
 	);
 	if (blockings.includes(antenna.userId)) return false;
 
-	const mutedWords = await mutedWordsCache.fetch(antenna.userId, () =>
-		UserProfiles.findOneBy({ userId: antenna.userId }).then(
-			(profile) => profile?.mutedWords,
-		),
+	if (note.visibility === "followers" || note.visibility === "home") {
+		const following = await followingCache.fetch(antenna.userId, () =>
+			Followings.find({
+				where: { followerId: antenna.userId },
+				select: ["followeeId"],
+			}).then((relations) => relations.map((relation) => relation.followeeId)),
+		);
+		if (!following.includes(note.userId)) return false;
+	}
+
+	const mutes = await hardMutesCache.fetch(antenna.userId, () =>
+		UserProfiles.findOneByOrFail({
+			userId: antenna.userId,
+		}).then((profile) => {
+			return {
+				userId: antenna.userId,
+				mutedWords: profile.mutedWords,
+				mutedPatterns: profile.mutedPatterns,
+			};
+		}),
 	);
-	if (await getWordHardMute(note, antenna.userId, mutedWords)) return false;
+	if (
+		mutes.mutedWords != null &&
+		mutes.mutedPatterns != null &&
+		antenna.userId !== note.userId &&
+		(await getWordHardMute(note, mutes.mutedWords, mutes.mutedPatterns))
+	)
+		return false;
 
 	// TODO: eval expression
 

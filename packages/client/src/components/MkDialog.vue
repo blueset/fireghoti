@@ -101,15 +101,6 @@
 						"
 					/>
 				</template>
-				<template v-if="input.type === 'search'" #suffix>
-					<button
-						v-tooltip.noDelay="i18n.ts.filter"
-						class="_buttonIcon"
-						@click.stop="openSearchFilters"
-					>
-						<i :class="iconClass('ph-funnel', false)"></i>
-					</button>
-				</template>
 			</MkInput>
 			<MkTextarea
 				v-if="input && input.type === 'paragraph'"
@@ -153,16 +144,17 @@
 						:disabled="okButtonDisabled"
 						@click="ok"
 						>{{
-							showCancelButton || input || select
+							okText ??
+							(showCancelButton || input || select
 								? i18n.ts.ok
-								: i18n.ts.gotIt
+								: i18n.ts.gotIt)
 						}}</MkButton
 					>
 					<MkButton
 						v-if="showCancelButton || input || select"
 						inline
 						@click="cancel"
-						>{{ i18n.ts.cancel }}</MkButton
+						>{{ cancelText ?? i18n.ts.cancel }}</MkButton
 					>
 				</div>
 				<div v-else>
@@ -203,13 +195,11 @@
 
 <script lang="ts" setup>
 import { computed, onBeforeUnmount, onMounted, ref, shallowRef } from "vue";
-import { acct } from "firefish-js";
 import MkModal from "@/components/MkModal.vue";
 import MkButton from "@/components/MkButton.vue";
 import MkInput from "@/components/form/input.vue";
 import MkTextarea from "@/components/form/textarea.vue";
 import MkSelect from "@/components/form/select.vue";
-import * as os from "@/os";
 import { i18n } from "@/i18n";
 import iconClass from "@/scripts/icon";
 
@@ -376,117 +366,6 @@ function appendFilter(value: string) {
 			.join(" ")
 			.trim() + " "
 	);
-}
-
-async function openSearchFilters(ev) {
-	await os.popupMenu(
-		[
-			{
-				icon: `${iconClass("ph-user")}`,
-				text: i18n.ts._filters.fromUser,
-				action: () => {
-					os.selectUser().then((user) => {
-						inputValue.value = appendFilter(
-							"from:@" + acct.toString(user),
-						);
-					});
-				},
-			},
-			{
-				type: "parent",
-				text: i18n.ts._filters.withFile,
-				icon: `${iconClass("ph-paperclip")}`,
-				children: [
-					{
-						text: i18n.ts.image,
-						icon: `${iconClass("ph-image-square")}`,
-						action: () => {
-							inputValue.value = appendFilter("has:image");
-						},
-					},
-					{
-						text: i18n.ts.video,
-						icon: `${iconClass("ph-video-camera")}`,
-						action: () => {
-							inputValue.value = appendFilter("has:video");
-						},
-					},
-					{
-						text: i18n.ts.audio,
-						icon: `${iconClass("ph-music-note")}`,
-						action: () => {
-							inputValue.value = appendFilter("has:audio");
-						},
-					},
-					{
-						text: i18n.ts.file,
-						icon: `${iconClass("ph-file")}`,
-						action: () => {
-							inputValue.value = appendFilter("has:file");
-						},
-					},
-				],
-			},
-			{
-				icon: `${iconClass("ph-link")}`,
-				text: i18n.ts._filters.fromDomain,
-				action: () => {
-					inputValue.value = appendFilter("domain:");
-				},
-			},
-			{
-				icon: `${iconClass("ph-calendar-blank")}`,
-				text: i18n.ts._filters.notesBefore,
-				action: () => {
-					os.inputDate({
-						title: i18n.ts._filters.notesBefore,
-					}).then((res) => {
-						if (res.canceled) return;
-						inputValue.value = appendFilter(
-							"before:" + formatDateToYYYYMMDD(res.result),
-						);
-					});
-				},
-			},
-			{
-				icon: `${iconClass("ph-calendar-blank")}`,
-				text: i18n.ts._filters.notesAfter,
-				action: () => {
-					os.inputDate({
-						title: i18n.ts._filters.notesAfter,
-					}).then((res) => {
-						if (res.canceled) return;
-						inputValue.value = appendFilter(
-							"after:" + formatDateToYYYYMMDD(res.result),
-						);
-					});
-				},
-			},
-			{
-				icon: `${iconClass("ph-eye")}`,
-				text: i18n.ts._filters.followingOnly,
-				action: () => {
-					inputValue.value = appendFilter("filter:following");
-				},
-			},
-			{
-				icon: `${iconClass("ph-users-three")}`,
-				text: i18n.ts._filters.followersOnly,
-				action: () => {
-					inputValue.value = appendFilter("filter:followers");
-				},
-			},
-		],
-		ev.target,
-		{ noReturnFocus: true },
-	);
-	inputEl.value?.focus();
-	if (typeof inputValue.value === "string") {
-		inputEl.value?.selectRange(
-			inputValue.value.length,
-			inputValue.value.length,
-		); // cursor at end
-	}
 }
 
 onMounted(() => {

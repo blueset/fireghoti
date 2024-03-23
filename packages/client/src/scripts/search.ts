@@ -1,65 +1,101 @@
-import * as os from "@/os";
 import { i18n } from "@/i18n";
+import { api, popup, promiseDialog } from "@/os";
 import { mainRouter } from "@/router";
-import { instance } from "@/instance";
+import MkSearchBox from "@/components/MkSearchBox.vue";
 
 export async function search() {
-	const { canceled, result: query } = await os.inputText({
-		type: instance.features.searchFilters ? "search" : "text",
-		title: i18n.ts.search,
-		placeholder: i18n.ts.searchPlaceholder,
+	const { canceled, result } = await new Promise<
+		| { canceled: true; result: undefined }
+		| {
+				canceled: false;
+				result: {
+					action: "lookup";
+					query: string;
+				};
+		  }
+		| {
+				canceled: false;
+				result: {
+					action: "search";
+					query?: string;
+					from?: string;
+					range?: string;
+					withFiles: boolean;
+					searchCwAndAlt: boolean;
+				};
+		  }
+	>((resolve, _) => {
+		popup(
+			MkSearchBox,
+			{},
+			{
+				done: (result) => {
+					resolve(result ?? { canceled: true });
+				},
+			},
+			"closed",
+		);
 	});
-	if (canceled || query == null || query === "") return;
 
-	const q = query.trim();
+	if (canceled || result == null || result.query === "") return;
 
-	if (q.startsWith("@") && !q.includes(" ")) {
-		mainRouter.push(`/${q}`);
-		return;
-	}
+	if (result.action === "lookup") {
+		if (result.query.startsWith("#")) {
+			mainRouter.push(`/tags/${encodeURIComponent(result.query.slice(1))}`);
+			return;
+		}
+		if (result.query.startsWith("@")) {
+			mainRouter.push(`/${result.query}`);
+			return;
+		}
+		if (result.query.startsWith("https://")) {
+			const promise = api("ap/show", {
+				uri: result.query,
+			});
 
-	if (q.startsWith("#")) {
-		mainRouter.push(`/tags/${encodeURIComponent(q.slice(1))}`);
-		return;
-	}
+			promiseDialog(promise, null, null, i18n.ts.fetchingAsApObject);
+			const res = await promise;
 
-	// like 2018/03/12
-	if (/^[0-9]{4}\/[0-9]{2}\/[0-9]{2}/.test(q.replace(/-/g, "/"))) {
-		const date = new Date(q.replace(/-/g, "/"));
+			if (res.type === "User") {
+				mainRouter.push(`/@${res.object.username}@${res.object.host}`);
+			} else if (res.type === "Note") {
+				mainRouter.push(`/notes/${res.object.id}`);
+			}
 
-		// 日付しか指定されてない場合、例えば 2018/03/12 ならユーザーは
-		// 2018/03/12 のコンテンツを「含む」結果になることを期待するはずなので
-		// 23時間59分進める(そのままだと 2018/03/12 00:00:00 「まで」の
-		// 結果になってしまい、2018/03/12 のコンテンツは含まれない)
-		if (q.replace(/-/g, "/").match(/^[0-9]{4}\/[0-9]{2}\/[0-9]{2}$/)) {
-			date.setHours(23, 59, 59, 999);
+			return;
 		}
 
-		// TODO
-		// v.$root.$emit('warp', date);
-		os.alert({
-			type: "waiting",
-		});
-		return;
+		// fallback
+		mainRouter.push(`/search?q=${encodeURIComponent(result.query)}`);
 	}
 
-	if (q.startsWith("https://")) {
-		const promise = os.api("ap/show", {
-			uri: q,
-		});
+	if (result.action === "search") {
+		const params = new URLSearchParams();
 
-		os.promiseDialog(promise, null, null, i18n.ts.fetchingAsApObject);
-
-		const res = await promise;
-
-		if (res.type === "User") {
-			mainRouter.push(`/@${res.object.username}@${res.object.host}`);
-		} else if (res.type === "Note") {
-			mainRouter.push(`/notes/${res.object.id}`);
+		if (result.query != null) {
+			params.append("q", result.query);
 		}
 
-		return;
-	}
+		if (result.from != null) {
+			if (result.from === "me" || result.from.includes("@"))
+				params.append("user", result.from);
+			else params.append("host", result.from);
+		}
 
-	mainRouter.push(`/search?q=${encodeURIComponent(q)}`);
+		if (result.range != null) {
+			const split = result.range.split("-");
+			if (split.length === 1) {
+				params.append("since", result.range);
+				params.append("until", result.range);
+			} else {
+				if (split[0] !== "") params.append("since", split[0]);
+				if (split[1] !== "") params.append("until", split[1]);
+			}
+		}
+
+		params.append("detailed", result.searchCwAndAlt ? "1" : "0");
+		params.append("withFiles", result.withFiles ? "1" : "0");
+
+		mainRouter.push(`/search?${params.toString()}`);
+	}
 }

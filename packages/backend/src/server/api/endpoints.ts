@@ -51,7 +51,6 @@ import * as ep___admin_relays_list from "./endpoints/admin/relays/list.js";
 import * as ep___admin_relays_remove from "./endpoints/admin/relays/remove.js";
 import * as ep___admin_resetPassword from "./endpoints/admin/reset-password.js";
 import * as ep___admin_resolveAbuseUserReport from "./endpoints/admin/resolve-abuse-user-report.js";
-import * as ep___admin_search_indexAll from "./endpoints/admin/search/index-all.js";
 import * as ep___admin_sendEmail from "./endpoints/admin/send-email.js";
 import * as ep___admin_sendModMail from "./endpoints/admin/send-mod-mail.js";
 import * as ep___admin_serverInfo from "./endpoints/admin/server-info.js";
@@ -283,7 +282,7 @@ import * as ep___pages_update from "./endpoints/pages/update.js";
 import * as ep___ping from "./endpoints/ping.js";
 import * as ep___recommendedInstances from "./endpoints/recommended-instances.js";
 import * as ep___pinnedUsers from "./endpoints/pinned-users.js";
-import * as ep___customMOTD from "./endpoints/custom-motd.js";
+import * as ep___customMotd from "./endpoints/custom-motd.js";
 import * as ep___customSplashIcons from "./endpoints/custom-splash-icons.js";
 import * as ep___latestVersion from "./endpoints/latest-version.js";
 import * as ep___patrons from "./endpoints/patrons.js";
@@ -400,7 +399,6 @@ const eps = [
 	["admin/relays/remove", ep___admin_relays_remove],
 	["admin/reset-password", ep___admin_resetPassword],
 	["admin/resolve-abuse-user-report", ep___admin_resolveAbuseUserReport],
-	["admin/search/index-all", ep___admin_search_indexAll],
 	["admin/send-email", ep___admin_sendEmail],
 	["admin/send-mod-mail", ep___admin_sendModMail],
 	["admin/server-info", ep___admin_serverInfo],
@@ -633,7 +631,7 @@ const eps = [
 	["reply-mute/create", ep___reply_mute_create],
 	["reply-mute/delete", ep___reply_mute_delete],
 	["reply-mute/list", ep___reply_mute_list],
-	["custom-motd", ep___customMOTD],
+	["custom-motd", ep___customMotd],
 	["custom-splash-icons", ep___customSplashIcons],
 	["latest-version", ep___latestVersion],
 	["patrons", ep___patrons],

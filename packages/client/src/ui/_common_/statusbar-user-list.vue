@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import type { entities } from "firefish-js";
 import MarqueeText from "@/components/MkMarquee.vue";
 import * as os from "@/os";

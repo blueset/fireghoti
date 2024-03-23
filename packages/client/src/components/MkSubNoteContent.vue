@@ -30,7 +30,8 @@
 			class="text"
 			:text="note.cw"
 			:author="note.user"
-			:i="$i"
+			:lang="note.lang"
+			:i="me"
 			:custom-emojis="note.emojis"
 		/>
 	</p>
@@ -102,7 +103,8 @@
 					v-if="note.text"
 					:text="note.text"
 					:author="note.user"
-					:i="$i"
+					:i="me"
+					:lang="note.lang"
 					:custom-emojis="note.emojis"
 				/>
 				<MkA

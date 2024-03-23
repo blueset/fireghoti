@@ -4,12 +4,17 @@ import {
 	Index,
 	JoinColumn,
 	Column,
+	ManyToMany,
 	ManyToOne,
+	OneToMany,
+	type Relation,
 } from "typeorm";
 import { id } from "../id.js";
+import { Note } from "./note.js";
 import { User } from "./user.js";
 import { DriveFolder } from "./drive-folder.js";
 import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
+import { NoteFile } from "./note-file.js";
 
 @Entity()
 @Index(["userId", "folderId", "id"])
@@ -30,12 +35,6 @@ export class DriveFile {
 		comment: "The owner ID.",
 	})
 	public userId: User["id"] | null;
-
-	@ManyToOne((type) => User, {
-		onDelete: "SET NULL",
-	})
-	@JoinColumn()
-	public user: User | null;
 
 	@Index()
 	@Column("varchar", {
@@ -70,6 +69,7 @@ export class DriveFile {
 	})
 	public size: number;
 
+	@Index() // USING pgroonga pgroonga_varchar_full_text_search_ops_v2
 	@Column("varchar", {
 		length: DB_MAX_IMAGE_COMMENT_LENGTH,
 		nullable: true,
@@ -170,12 +170,6 @@ export class DriveFile {
 	})
 	public folderId: DriveFolder["id"] | null;
 
-	@ManyToOne((type) => DriveFolder, {
-		onDelete: "SET NULL",
-	})
-	@JoinColumn()
-	public folder: DriveFolder | null;
-
 	@Index()
 	@Column("boolean", {
 		default: false,
@@ -204,4 +198,30 @@ export class DriveFile {
 		nullable: true,
 	})
 	public requestIp: string | null;
+
+	//#region Relations
+	@OneToMany(
+		() => NoteFile,
+		(noteFile: NoteFile) => noteFile.file,
+	)
+	public noteFiles: Relation<NoteFile[]>;
+
+	@ManyToMany(
+		() => Note,
+		(note: Note) => note.files,
+	)
+	public notes: Relation<Note[]>;
+
+	@ManyToOne(() => User, {
+		onDelete: "SET NULL",
+	})
+	@JoinColumn()
+	public user: User | null;
+
+	@ManyToOne(() => DriveFolder, {
+		onDelete: "SET NULL",
+	})
+	@JoinColumn()
+	public folder: DriveFolder | null;
+	//#endregion Relations
 }

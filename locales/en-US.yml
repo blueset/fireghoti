@@ -59,6 +59,7 @@ copyUsername: "Copy username"
 searchUser: "Search for a user"
 reply: "Reply"
 replies: "Replies"
+toReply: "Reply"
 jumpToPrevious: "Jump to previous"
 loadMore: "Load more"
 showMore: "Show more"
@@ -89,6 +90,7 @@ listsDesc: "Lists let you create timelines with specified users. They can be acc
 noLists: "You don't have any lists"
 note: "Post"
 notes: "Posts"
+toPost: "Post"
 following: "Following"
 followers: "Followers"
 followsYou: "Follows you"
@@ -121,6 +123,7 @@ cantRenote: "This post can't be boosted."
 cantReRenote: "A boost can't be boosted."
 quote: "Quote"
 quotes: "Quotes"
+toQuote: "Quote"
 pinnedNote: "Pinned post"
 pinned: "Pin to profile"
 you: "You"
@@ -174,8 +177,8 @@ cacheRemoteFilesDescription: "When this setting is disabled, remote files are lo
 flagAsBot: "Mark this account as automated"
 flagAsBotDescription: "Enable this option if this account is controlled by a program.
   If enabled, it will act as a flag for other developers to prevent endless interaction
-  chains with other automated accounts and adjust Firefish's internal systems to treat this
-  account as an automated account."
+  chains with other automated accounts and adjust Firefish's internal systems to treat
+  this account as an automated account."
 flagAsCat: "Are you a cat? 😺"
 flagAsCatDescription: "You'll get cat ears and speak like a cat!"
 flagSpeakAsCat: "Speak as a cat"
@@ -459,7 +462,7 @@ securityKeyName: "Key name"
 registerSecurityKey: "Register a security key"
 lastUsed: "Last used"
 unregister: "Unregister"
-passwordLessLogin: "Password-less login"
+passwordLessLogin: "Password-less sign in"
 resetPassword: "Reset password"
 newPasswordIs: "The new password is \"{password}\""
 reduceUiAnimation: "Reduce UI animations"
@@ -524,7 +527,7 @@ disableDrawer: "Don't use drawer-style menus"
 youHaveNoGroups: "You have no groups"
 joinOrCreateGroup: "Get invited to a group or create your own."
 noHistory: "No history available"
-signinHistory: "Login history"
+signinHistory: "Sign in history"
 disableAnimatedMfm: "Disable MFM with animation"
 doing: "Processing..."
 category: "Category"
@@ -671,6 +674,7 @@ pluginTokenRequestedDescription: "This plugin will be able to use the permission
   set here."
 notificationType: "Notification type"
 edit: "Edit"
+toEdit: "Edit"
 emailServer: "Email server"
 enableEmail: "Enable email distribution"
 emailConfigInfo: "Used to confirm your email during sign-up or if you forget your
@@ -713,9 +717,9 @@ useGlobalSetting: "Use global settings"
 useGlobalSettingDesc: "If turned on, your account's notification settings will be
   used. If turned off, individual configurations can be made."
 other: "Other"
-regenerateLoginToken: "Regenerate login token"
-regenerateLoginTokenDescription: "Regenerates the token used internally during login.
-  Normally this action is not necessary. If regenerated, all devices will be logged
+regenerateLoginToken: "Regenerate sign in token"
+regenerateLoginTokenDescription: "Regenerates the token used internally during sign
+  in. Normally this action is not necessary. If regenerated, all devices will be logged
   out."
 setMultipleBySeparatingWithSpace: "Separate multiple entries with spaces."
 fileIdOrUrl: "File ID or URL"
@@ -997,7 +1001,7 @@ check: "Check"
 driveCapOverrideLabel: "Change the drive capacity for this user"
 driveCapOverrideCaption: "Reset the capacity to default by inputting a value of 0
   or lower."
-requireAdminForView: "You must log in with an administrator account to view this."
+requireAdminForView: "You must sign in with an administrator account to view this."
 isSystemAccount: "This account is created and automatically operated by the system.
   Please do not moderate, edit, delete, or otherwise tamper with this account, or
   it may break your server."
@@ -1007,7 +1011,7 @@ document: "Documentation"
 numberOfPageCache: "Number of cached pages"
 numberOfPageCacheDescription: "Increasing this number will improve convenience for
   users but cause more server load as well as more memory to be used."
-logoutConfirm: "Really log out?"
+logoutConfirm: "Really sign out?"
 lastActiveDate: "Last used at"
 statusbar: "Status bar"
 pleaseSelect: "Select an option"
@@ -1092,11 +1096,6 @@ migrationConfirm: "Are you absolutely sure you want to migrate your account to {
   as the account you're moving from."
 defaultReaction: "Default emoji reaction for outgoing and incoming posts"
 license: "License"
-indexPosts: "Index Posts"
-indexFrom: "Index from Post ID onwards"
-indexFromDescription: "Leave blank to index every post"
-indexNotice: "Now indexing. This will probably take a while, please don't restart
-  your server for at least an hour."
 customKaTeXMacro: "Custom KaTeX macros"
 customKaTeXMacroDescription: "Set up macros to write mathematical expressions easily!
   The notation conforms to the LaTeX command definitions and is written as \\newcommand{\\
@@ -1109,12 +1108,13 @@ customKaTeXMacroDescription: "Set up macros to write mathematical expressions ea
   advanced syntax, such as conditional branching, cannot be used here."
 enableCustomKaTeXMacro: "Enable custom KaTeX macros"
 noteId: "Post ID"
-signupsDisabled: "Signups on this server are currently disabled, but you can always
-  sign up at another server! If you have an invitation code for this server, please
-  enter it below."
-findOtherInstance: "Find another server"
+signupsDisabled: "Signups on this server are currently disabled. If you have an invitation
+  code for this server, please enter it below."
 apps: "Apps"
 sendModMail: "Send Moderation Notice"
+moderationNote: "Moderation Note"
+ipFirstAcknowledged: "The date of the first acquisition of the IP address"
+driveCapacityOverride: "Drive Capacity Override"
 preventAiLearning: "Prevent AI bot scraping"
 preventAiLearningDescription: "Request third-party AI language models not to study
   content you upload, such as posts and images."
@@ -1162,7 +1162,8 @@ vibrate: "Play vibrations"
 openServerInfo: "Show server information by clicking the server ticker on a post"
 iconSet: "Icon set"
 useCdn: "Get assets from CDN"
-useCdnDescription: "Load some static assets like Twemoji from the JSDelivr CDN instead of this Firefish server."
+useCdnDescription: "Load some static assets like Twemoji from the JSDelivr CDN instead
+  of this Firefish server."
 suggested: "Suggested"
 noLanguage: "No language"
 showPreviewByDefault: "Show preview in posting form by default"
@@ -1173,19 +1174,55 @@ replaceChatButtonWithAccountButton: "Replace chat button with account switch but
 replaceWidgetsButtonWithReloadButton: "Replace widgets button with reload button"
 searchEngine: "Search engine used in search bar MFM"
 postSearch: "Post search on this server"
-showBigPostButton: "Show a huge post button on the posting form" 
+showBigPostButton: "Show a huge post button on the posting form"
 emojiModPerm: "Custom emoji management permission"
-emojiModPermDescription: "Add: Allow this user to add new custom emojis and to set tag/category/license to newly added custom emojis.\nAdd and Edit: \"Add\" Permission + Allow this user to edit the name/category/tag/license of the existing custom emojis.\nAllow All: \"Add and Edit\" Permission + Allow this user to delete existing custom emojis."
+emojiModPermDescription: "Add: Allow this user to add new custom emojis and to set
+  tag/category/license to newly added custom emojis.\nAdd and Edit: \"Add\" Permission
+  + Allow this user to edit the name/category/tag/license of the existing custom emojis.\n
+  Allow All: \"Add and Edit\" Permission + Allow this user to delete existing custom
+  emojis."
 private: "Private"
 privateDescription: "Make visible for you only"
 makePrivate: "Make private"
-makePrivateConfirm: "This operation will send a deletion request to remote servers and change the visibility to private. Proceed?"
+makePrivateConfirm: "This operation will send a deletion request to remote servers
+  and change the visibility to private. Proceed?"
 enablePullToRefresh: "Enable \"Pull down to refresh\""
 pullToRefreshThreshold: "Pull distance for reloading"
 pullDownToReload: "Pull down to reload"
 releaseToReload: "Release to reload"
 reloading: "Reloading"
 enableTimelineStreaming: "Update timelines automatically"
+searchWords: "Words to search / ID or URL to lookup"
+searchWordsDescription: "Enter the search term here to search for posts. Separate words
+  with a space for an AND search, or 'OR' (without quotes) between words for an OR
+  search.\nFor example, 'morning night' will find posts that contain both 'morning'
+  and 'night', and 'morning OR night' will find posts that contain either 'morning'
+  or 'night' (or both).\nYou can also combine AND/OR conditions like '(morning OR
+  night) sleepy'.\nIf you want to search for a sequence of words (e.g., a sentence), you
+  must put it in double quotes, not to make it an AND search: \"Today I learned\"\n\n
+  If you want to go to a specific user page or post page, enter
+  the ID or URL in this field and click the 'Lookup' button. Clicking 'Search' will
+  search for posts that literally contain the ID/URL."
+searchUsers: "Posted by (optional)"
+searchUsersDescription: "To search for posts by a specific user/server, enter the
+  ID (@user@example.com, or @user for a local user) or domain name (example.com).\n
+  \nIf you enter 'me' (without quotes), all of your posts (including unlisted, followers-only,
+  direct, and secret posts) will be searched.\n\nIf you enter 'local' (without quotes),
+  the results will be filtered to include only posts from this server."
+searchRange: "Posted within (optional)"
+searchRangeDescription: "If you want to filter the time period, enter it in this format:
+  20220615-20231031\n\nIf you leave out the year (like 0105-0106 or 20231105-0110),
+  it's interpreted as the current year.\n\nYou can also omit either the start or end
+  date. For example, -0102 will filter the search results to show only posts made
+  before 2 January this year, and 20231026- will filter the results to show only posts
+  made after 26 October 2023."
+searchPostsWithFiles: "Only posts with files"
+searchCwAndAlt: "Include content warnings and file descriptions"
+publishTimelines: "Publish timelines for visitors"
+publishTimelinesDescription: "If enabled, the Local and Global timelines will be shown
+  on {url} even when signed out."
+noAltTextWarning: "Some attached file(s) have no description. Did you forget to write?"
+showNoAltTextWarning: "Show a warning if you attempt to post files without a description"
 
 _emojiModPerm:
   unauthorized: "None"
@@ -1426,6 +1463,7 @@ _menuDisplay:
   hide: "Hide"
 _wordMute:
   muteWords: "Muted words"
+  mutePatterns: "Muted patterns"
   muteLangs: "Muted Languages"
   muteWordsDescription: "Separate with spaces for an AND condition or with line breaks
     for an OR condition."
@@ -1594,7 +1632,7 @@ _2fa:
   step2Url: "You can also enter this URL if you're using a desktop program:"
   step3Title: "Enter an authentication code"
   step3: "Enter the token provided by your app to finish setup."
-  step4: "From now on, any future login attempts will ask for such a login token."
+  step4: "From now on, any future sign in attempts will ask for such a token."
   securityKeyNotSupported: "Your browser does not support security keys."
   securityKeyInfo: "Besides fingerprint or PIN authentication, you can also setup
     authentication via hardware security keys that support FIDO2 to further secure
@@ -1690,9 +1728,6 @@ _widgets:
   serverInfo: "Server Info"
   _userList:
     chooseList: "Select a list"
-  meiliStatus: "Server Status"
-  meiliSize: "Index size"
-  meiliIndexCount: "Indexed posts"
 
 _cw:
   hide: "Hide"
@@ -2188,4 +2223,7 @@ _iconSets:
   fill: "Filled"
   duotone: "Duotone"
 moreUrls: "Pinned pages"
-moreUrlsDescription: "Enter the pages you want to pin to the help menu in the lower left corner using this notation:\n\"Display name\": https://example.com/"
+moreUrlsDescription: "Enter the pages you want to pin to the help menu in the lower
+  left corner using this notation:\n\"Display name\": https://example.com/"
+messagingUnencryptedInfo: "Chats on Firefish are not end-to-end encrypted. Don't share
+  any sensitive infomation over Firefish."

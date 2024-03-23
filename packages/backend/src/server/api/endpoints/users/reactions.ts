@@ -49,6 +49,11 @@ export const paramDef = {
 export default define(meta, paramDef, async (ps, me) => {
 	const profile = await UserProfiles.findOneByOrFail({ userId: ps.userId });
 
+	// TODO: federate publicReactions
+	if (profile.userHost != null) {
+		throw new ApiError(meta.errors.reactionsNotPublic);
+	}
+
 	if (!profile.publicReactions && (me == null || me.id !== ps.userId)) {
 		throw new ApiError(meta.errors.reactionsNotPublic);
 	}

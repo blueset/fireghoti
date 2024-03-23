@@ -468,6 +468,16 @@ export const packedMeDetailedOnlySchema = {
 				},
 			},
 		},
+		mutedPatterns: {
+			type: "array",
+			nullable: false,
+			optional: false,
+			items: {
+				type: "string",
+				nullable: false,
+				optional: false,
+			},
+		},
 		mutedInstances: {
 			type: "array",
 			nullable: true,

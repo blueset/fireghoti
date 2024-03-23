@@ -14,11 +14,9 @@
 			"keepImportAssertions": true,
 			"emitAssertForImportAttributes": true
 		},
-		"baseUrl": ".",
+		"baseUrl": "src",
 		"paths": {
-			"@/*": [
-				"./src/*"
-			]
+			"@/*": ["*"]
 		},
 		"target": "es2022"
 	},

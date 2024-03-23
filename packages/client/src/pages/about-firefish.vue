@@ -35,7 +35,7 @@
 							><MkEmoji
 								class="emoji"
 								:emoji="emoji.emoji"
-								:custom-emojis="$instance.emojis"
+								:custom-emojis="instance.emojis"
 								:is-reaction="false"
 								:normal="true"
 								:no-style="true"
@@ -92,10 +92,11 @@ import FormSection from "@/components/form/section.vue";
 import MkButton from "@/components/MkButton.vue";
 import { physics } from "@/scripts/physics";
 import { i18n } from "@/i18n";
-import { defaultStore } from "@/store";
+import { defaultReactions, defaultStore } from "@/store";
 import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
+import { instance } from "@/instance";
 
 let easterEggReady = false;
 const easterEggEmojis = ref([]);
@@ -103,7 +104,10 @@ const easterEggEngine = ref(null);
 const containerEl = ref<HTMLElement>();
 
 function iconLoaded() {
-	const emojis = defaultStore.state.reactions;
+	const emojis =
+		defaultStore.state.reactions.length > 0
+			? defaultStore.state.reactions
+			: defaultReactions;
 	const containerWidth = containerEl.value?.offsetWidth;
 	for (let i = 0; i < 32; i++) {
 		easterEggEmojis.value.push({

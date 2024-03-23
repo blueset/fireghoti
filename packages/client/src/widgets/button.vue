@@ -18,7 +18,7 @@ import type {
 import { createAiScriptEnv } from "@/scripts/aiscript/api";
 import type { GetFormResultType } from "@/scripts/form";
 import * as os from "@/os";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import MkButton from "@/components/MkButton.vue";
 
 const name = "button";
@@ -57,7 +57,7 @@ const run = async () => {
 	const aiscript = new Interpreter(
 		createAiScriptEnv({
 			storageKey: "widget",
-			token: $i?.token,
+			token: me?.token,
 		}),
 		{
 			in: (q) => {

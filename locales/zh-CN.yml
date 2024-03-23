@@ -31,12 +31,12 @@ uploading: "正在上传..."
 save: "保存"
 users: "用户"
 addUser: "添加用户"
-favorite: "添加到书签"
-favorites: "书签"
+favorite: "添加到收藏"
+favorites: "收藏"
 unfavorite: "取消收藏"
-favorited: "已添加到书签。"
-alreadyFavorited: "书签中已存在。"
-cantFavorite: "无法添加到书签。"
+favorited: "已添加到收藏。"
+alreadyFavorited: "收藏中已存在。"
+cantFavorite: "无法添加到收藏。"
 pin: "置顶"
 unpin: "取消置顶"
 copyContent: "复制内容"
@@ -50,6 +50,7 @@ copyUsername: "复制用户名"
 searchUser: "搜索用户"
 reply: "回复"
 replies: "回复"
+toReply: "回复"
 loadMore: "加载更多"
 showMore: "查看更多"
 showLess: "关闭"
@@ -70,8 +71,9 @@ exportRequested: "导出请求已提交，这可能需要花一些时间，导�
 importRequested: "导入请求已提交，这可能需要花一点时间。"
 lists: "列表"
 noLists: "列表为空"
-note: "发帖"
+note: "帖子"
 notes: "帖子"
+toPost: "发帖"
 following: "关注中"
 followers: "关注者"
 followsYou: "关注了您"
@@ -103,6 +105,7 @@ cantRenote: "此帖子无法被转发。"
 cantReRenote: "转发无法被再次转发。"
 quote: "引用"
 quotes: "引用"
+toQuote: "引用"
 pinnedNote: "已置顶的帖子"
 pinned: "置顶"
 you: "您"
@@ -146,9 +149,9 @@ addEmoji: "添加表情符号"
 settingGuide: "推荐配置"
 cacheRemoteFiles: "缓存远程文件"
 cacheRemoteFilesDescription: "当禁用此设定时远程文件将直接从远程服务器载入。禁用后会减小储存空间需求，但是会增加流量，因为缩略图不会被生成。"
-flagAsBot: "这是一个机器人账号"
-flagAsBotDescription: "如果此账号由程序控制，请启用此项。启用后，此标志可以帮助其它开发人员防止机器人之间产生无限互动的行为，并让 Firefish
-  的内部系统将此账号识别为机器人。"
+flagAsBot: "标记此账号为自动化账号"
+flagAsBotDescription: "如果此账号由程序控制，请启用此项。启用后，此标志可以帮助其它开发人员防止自动化账号之间产生无限互动的行为，并让 Firefish
+  的内部系统将此账号识别为自动化账号。"
 flagAsCat: "将这个账号设定为一只猫😺"
 flagAsCatDescription: "您会长出猫耳朵并像猫一样说话！"
 flagShowTimelineReplies: "在时间线上显示帖子的回复"
@@ -264,7 +267,7 @@ agreeTo: "我同意 {0}"
 tos: "服务条款"
 start: "开始"
 home: "首页"
-remoteUserCaution: "由于此用户来自其它服务器，显示的信息可能不完整。"
+remoteUserCaution: "由于此用户来自其它服务器，显示的信息不完整。"
 activity: "活动"
 images: "图片"
 birthday: "生日"
@@ -589,6 +592,7 @@ tokenRequested: "允许访问账号"
 pluginTokenRequestedDescription: "此插件将能够拥有这里设置的权限。"
 notificationType: "通知类型"
 edit: "编辑"
+toEdit: "编辑"
 emailServer: "邮件服务器"
 enableEmail: "启用发送邮件功能"
 emailConfigInfo: "用于确认电子邮件和密码重置"
@@ -685,7 +689,7 @@ disableShowingAnimatedImages: "不播放动画"
 verificationEmailSent: "已发送确认电子邮件。请访问电子邮件中的链接以完成验证。"
 notSet: "未设置"
 emailVerified: "电子邮件地址已验证"
-noteFavoritesCount: "加入书签的帖子数"
+noteFavoritesCount: "加入收藏的帖子数"
 pageLikesCount: "页面点赞次数"
 pageLikedCount: "页面被点赞次数"
 contact: "联系人"
@@ -869,7 +873,7 @@ recommended: "推荐"
 check: "检查"
 driveCapOverrideLabel: "修改此用户的网盘容量"
 driveCapOverrideCaption: "输入 0 或以下的值将容量重置为默认值。"
-requireAdminForView: "需要使用管理员账号登录才能查看。"
+requireAdminForView: "您需要使用管理员账号登录才能查看。"
 isSystemAccount: "该账号由系统自动创建。请不要修改、编辑、删除或以其它方式篡改这个账号，否则可能会破坏您的服务器。"
 typeToConfirm: "输入 {x} 以确认操作"
 deleteAccount: "删除账号"
@@ -904,9 +908,9 @@ account: "账号"
 move: "迁移"
 customKaTeXMacro: "自定义 KaTeX 宏"
 customKaTeXMacroDescription: "使用宏来轻松的输入数学表达式吧！宏的用法与 LaTeX 中的命令定义相同。您可以使用 \\newcommand{\\
-  name}{content} 或 \\newcommand{\\name}[number of arguments]{content} 来输入数学表达式。举个例子，\\
-  newcommand{\\add}[2]{#1 + #2} 会将 \\add{3}{foo} 展开为 3 + foo。此外，宏名称外的花括号 {} 可以被替换为圆括号
-  () 和方括号 []，这会影响用于参数的括号。每行只能够定义一个宏，无法在中间换行，且无效的行将被忽略。只支持简单字符串替换功能，不支持高级语法，如条件分支等。"
+  name}{content} 或 \\newcommand{\\name}[number of arguments]{content} 来输入数学表达式。举个例子，
+  \\newcommand{\\add}[2]{#1 + #2} 会将 \\add{3}{foo} 展开为 3 + foo 。此外，宏名称外的花括号 {} 可以被替换为圆括号
+  () 和方括号 [] ，这会影响用于参数的括号。每行只能够定义一个宏，您无法在中间换行。无效的行将被忽略。只支持简单字符串替换功能，不支持高级语法，如条件分支等。"
 enableCustomKaTeXMacro: "启用自定义 KaTeX 宏"
 _sensitiveMediaDetection:
   description: "可以使用机器学习技术自动检测敏感媒体，以便进行审核。服务器负载将略微增加。"
@@ -1127,6 +1131,7 @@ _wordMute:
   lang: "语言"
   hard: "硬过滤"
   mutedNotes: "已过滤的帖子"
+  mutePatterns: 静音表达式
 _instanceMute:
   instanceMuteDescription: "静音列出服务器中的所有帖子和转帖，包括服务器的用户回复。"
   instanceMuteDescription2: "设置时用换行符来分隔"
@@ -1258,7 +1263,7 @@ _2fa:
   step2: "然后，扫描屏幕上显示的二维码。"
   step2Url: "如果您使用的是桌面程序，您也可以输入这个URL："
   step3: "输入您的应用提供的令牌以完成设置。"
-  step4: "从现在开始，任何登录操作都将要求您提供这样一个登录令牌。"
+  step4: "从现在开始，任何登录操作都将要求您提供这样一个令牌。"
   securityKeyInfo: "除了指纹或 PIN 身份验证外，您还可以通过支持 FIDO2 的硬件安全密钥设置身份验证，以进一步保护您的账号。"
   token: 2FA 令牌
   step3Title: 输入验证码
@@ -1276,8 +1281,8 @@ _permissions:
   "write:blocks": "编辑屏蔽名单"
   "read:drive": "查看网盘"
   "write:drive": "管理网盘文件"
-  "read:favorites": "查看收藏夹"
-  "write:favorites": "编辑收藏夹"
+  "read:favorites": "查看收藏"
+  "write:favorites": "编辑收藏"
   "read:following": "查看关注信息"
   "write:following": "关注/取消关注其它账号"
   "read:messaging": "查看聊天消息"
@@ -1350,9 +1355,6 @@ _widgets:
   aiscript: "AiScript 控制台"
   aichan: "小蓝"
   userList: 用户列表
-  meiliStatus: 服务器状态
-  meiliIndexCount: 已索引的帖子
-  meiliSize: 索引大小
   serverInfo: 服务器信息
   _userList:
     chooseList: 选择列表
@@ -1403,7 +1405,7 @@ _postForm:
     b: "发生了什么？"
     c: "您有什么想法？"
     d: "您想要发布些什么吗？"
-    e: "请写下来吧"
+    e: "请写下来吧..."
     f: "等待您的发布..."
 _profile:
   name: "昵称"
@@ -1914,13 +1916,11 @@ _skinTones:
   mediumDark: 中等偏深
 isModerator: 监察员
 isAdmin: 管理员
-findOtherInstance: 寻找其它服务器
 moveFromDescription: 这将为您的旧账号设置一个别名，以便您可以从该旧账号迁移到当前账号。在从旧账号迁移之前执行此操作。请输入格式如 @person@server.com
   的账号标签
-indexPosts: 索引帖子
-signupsDisabled: 该服务器目前关闭注册，但您随时可以在另一台服务器上注册！如果您有该服务器的邀请码，请在下面输入。
+signupsDisabled: 该服务器目前关闭注册。如果您有该服务器的邀请码，请在下面输入。
 silencedWarning: 显示这个页面是因为这些用户来自您的管理员设置的禁言服务器，所以他们有可能是垃圾信息。
-isBot: 这个账号是一个机器人
+isBot: 这个账号是一个自动化账号
 moveAccountDescription: 这个过程是不可逆的。在迁移之前，请确保您已在新账号上为当前账号设置了别名。请输入格式如 @person@server.com
   账号标签
 moveFromLabel: 您要迁移出的旧账号：
@@ -1931,13 +1931,13 @@ moveTo: 将当前账号迁移至新账号
 moveToLabel: 您要迁移到的目标账号：
 moveAccount: 迁移账号！
 migrationConfirm: "您确实确定要将账号迁移到 {account} 吗？此操作无法撤消，并且您将无法再次正常使用旧账号。\n另外，请确保您已将此当前账号设置为要移出的账号。"
-indexFromDescription: 留空以索引每个帖子
 noteId: 帖子 ID
 moveFrom: 从旧账号迁移至此账号
 defaultReaction: 发出和收到帖子的默认表情符号反应
-indexNotice: 现在开始索引。这可能需要一段时间，请至少一个小时内不要重新启动服务器。
-indexFrom: 从帖子 ID 开始的索引
-sendModMail: 发送审核通知
+sendModMail: 发送管理通知
+moderationNote: "管理笔记"
+ipFirstAcknowledged: "首次获取此 IP 地址的日期"
+driveCapacityOverride: "网盘容量变更"
 isLocked: 该账号设置了关注请求
 _filters:
   notesBefore: 帖子早于
@@ -1993,3 +1993,66 @@ openServerInfo: 点击帖子上的服务器滚动条时显示服务器信息
 clickToShowPatterns: 点击显示模块模式
 private: "秘密"
 privateDescription: "仅你可见"
+_iconSets:
+  regular: 标准
+  duotone: 双色
+  fill: 填满
+  bold: 加粗
+  light: 减细
+emojiModPerm: 自定义表情符号管理权限
+squareCatAvatars: 猫模式账号显示圆形头像
+makePrivate: 设为私有
+makePrivateConfirm: 此操作将向远程服务器发送删除请求并将可见性更改为私有。是否继续？
+_emojiModPerm:
+  add: 添加
+  mod: 添加和编辑
+  unauthorized: 未授权
+  full: 全部允许
+moreUrls: 置顶页面
+enablePullToRefresh: 启用 “下拉刷新”
+pullToRefreshThreshold: 触发下拉刷新所需的距离
+pullDownToReload: 下拉刷新
+releaseToReload: 释放刷新
+reloading: 刷新中
+attachedToNotes: 带有此附件的帖子
+showAttachedNotes: 显示有此附件的帖子
+iconSet: 图标样式
+moreUrlsDescription: "请您使用以下形式输入要固定到左下角帮助菜单的页面，每行一个：\n\"显示名称\": https://example.com/"
+useCdn: 从 CDN 获取资源
+useCdnDescription: 从 JSDelivr CDN（而不是 Firefish 服务器）加载一些静态资源，例如 Twemoji。
+showBigPostButton: 在发帖表单上显示一个巨大的发帖按钮
+suggested: 建议
+noLanguage: 无语言
+showPreviewByDefault: 默认以发布形式显示预览
+preventMisclick: 预防误触
+hideFollowButtons: 隐藏会误触的关注按钮
+forMobile: 移动设备
+replaceChatButtonWithAccountButton: 将聊天按钮替换为帐户切换按钮
+replaceWidgetsButtonWithReloadButton: 将小部件按钮替换为重新加载按钮
+searchEngine: 搜索栏 MFM 中使用的搜索引擎
+postSearch: 在此服务器上搜索帖子
+enableTimelineStreaming: 自动更新时间线
+emojiModPermDescription: "添加：允许该用户添加新的自定义表情符号，并为新添加的自定义表情符号设置标签/类别/授权。\n添加和编辑：在 “添加”
+  权限的基础上，允许该用户编辑现有自定义表情符号的名称/类别/标签/授权。\n全部允许：在 “添加和编辑” 权限的基础上，允许该用户删除现有的自定义表情符号。"
+replyMute: 静音回复
+replyUnmute: 取消静音回复
+searchWords: 要搜索的关键词 / 要查询的用户 ID 或 URL
+searchRange: 发表于（可选）
+searchUsers: 发布者（可选）
+searchUsersDescription: "要搜索特定用户/服务器的帖子，请输入 ID（@user@example.com，或 @user 对于本地用户）或域名（example.com）。\n
+  \n如果您输入 'me' （不带引号），您的所有帖子（包括不公开的帖子、仅限关注者的帖子、直接帖子和秘密帖子）都会被搜索。\n\n如果您输入 'local' （不带引号），结果将被过滤以仅包含来自该服务器的帖子。"
+searchPostsWithFiles: 只带有文件的帖子
+searchCwAndAlt: 包括内容警告和文件描述
+publishTimelines: 为访客发布时间线
+publishTimelinesDescription: 如果启用，在用户登出时本地和全局时间线也会显示在 {url} 上。
+searchWordsDescription: "在此处输入搜索词以搜索帖子。交集搜索关键词之间使用空格进行区分，并集搜索关键词之间使用 OR 进行区分。\n例如
+  '早上 晚上' 将查找包含 '早上' 和 '晚上' 的帖子，而 '早上 OR 晚上' 将查找包含 '早上' 或 '晚上' （以及同时包含两者）的帖子。\n您还可以组合交集/并集条件，例如
+  '(早上 OR 晚上) 困了' 。\n如果您想搜索单词序列（例如一个英语句子），您必须将其放在双引号中，例如 \"Today I learned\" 以区分于交集搜索。\n
+  \n如果您想转到特定的用户页面或帖子页面，请在此字段中输入用户 ID 或 URL，然后单击 “查询” 按钮。 单击 “搜索” 将搜索字面包含用户 ID/URL
+  的帖子。"
+searchRangeDescription: "如果您要过滤时间段，请按以下格式输入：20220615-20231031\n\n如果您省略年份（例如 0105-0106
+  或 20231105-0110），它将被解释为当前年份。\n\n您还可以省略开始日期或结束日期。 例如 -0102 将过滤搜索结果以仅显示今年 1 月 2 日之前发布的帖子，而
+  20231026- 将过滤结果以仅显示 2023 年 10 月 26 日之后发布的帖子。"
+messagingUnencryptedInfo: "Firefish 上的聊天没有经过端到端加密，请不要在聊天中分享您的敏感信息。"
+noAltTextWarning: 有些附件没有描述。您是否忘记写描述了？
+showNoAltTextWarning: 当您尝试发布没有描述的帖子附件时显示警告

@@ -45,7 +45,6 @@ const isRefreshing = ref(false);
 const pullDistance = ref(0);
 
 let disabled = false;
-
 let supportPointerDesktop = false;
 let startScreenY: number | null = null;
 
@@ -94,7 +93,7 @@ function moveBySystem(to: number): Promise<void> {
 			return;
 		}
 		const startTime = Date.now();
-		let intervalId = setInterval(() => {
+		const intervalId = setInterval(() => {
 			const time = Date.now() - startTime;
 			if (time > RELEASE_TRANSITION_DURATION) {
 				pullDistance.value = to;

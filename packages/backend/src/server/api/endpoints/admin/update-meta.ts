@@ -17,6 +17,7 @@ export const paramDef = {
 		disableLocalTimeline: { type: "boolean", nullable: true },
 		disableRecommendedTimeline: { type: "boolean", nullable: true },
 		disableGlobalTimeline: { type: "boolean", nullable: true },
+		enableGuestTimeline: { type: "boolean", nullable: true },
 		defaultReaction: { type: "string", nullable: true },
 		recommendedInstances: {
 			type: "array",
@@ -206,6 +207,10 @@ export default define(meta, paramDef, async (ps, me) => {
 		set.disableGlobalTimeline = ps.disableGlobalTimeline;
 	}
 
+	if (typeof ps.enableGuestTimeline === "boolean") {
+		set.enableGuestTimeline = ps.enableGuestTimeline;
+	}
+
 	if (typeof ps.defaultReaction === "string") {
 		set.defaultReaction = ps.defaultReaction;
 	}
@@ -215,7 +220,7 @@ export default define(meta, paramDef, async (ps, me) => {
 	}
 
 	if (Array.isArray(ps.customMOTD)) {
-		set.customMOTD = ps.customMOTD.filter(Boolean);
+		set.customMotd = ps.customMOTD.filter(Boolean);
 	}
 
 	if (Array.isArray(ps.customSplashIcons)) {
@@ -426,7 +431,7 @@ export default define(meta, paramDef, async (ps, me) => {
 	}
 
 	if (ps.tosUrl !== undefined) {
-		set.ToSUrl = ps.tosUrl;
+		set.tosUrl = ps.tosUrl;
 	}
 
 	if (ps.moreUrls !== undefined) {
@@ -482,7 +487,7 @@ export default define(meta, paramDef, async (ps, me) => {
 	}
 
 	if (ps.objectStorageUseSSL !== undefined) {
-		set.objectStorageUseSSL = ps.objectStorageUseSSL;
+		set.objectStorageUseSsl = ps.objectStorageUseSSL;
 	}
 
 	if (ps.objectStorageUseProxy !== undefined) {

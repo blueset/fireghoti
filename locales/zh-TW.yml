@@ -50,6 +50,7 @@ copyUsername: "複製使用者名稱"
 searchUser: "搜尋使用者"
 reply: "回覆"
 replies: "回覆"
+toReply: "回覆"
 loadMore: "載入更多"
 showMore: "載入更多"
 showLess: "關閉"
@@ -72,6 +73,7 @@ lists: "清單"
 noLists: "你沒有任何清單"
 note: "貼文"
 notes: "貼文"
+toPost: "發貼文"
 following: "追隨中"
 followers: "追隨者"
 followsYou: "追隨你的人"
@@ -103,6 +105,7 @@ cantRenote: "無法轉發此貼文。"
 cantReRenote: "無法轉發之前已經轉發過的內容。"
 quote: "引用"
 quotes: "引用"
+toQuote: "引用"
 pinnedNote: "已置頂的貼文"
 pinned: "置頂"
 you: "您"
@@ -585,6 +588,7 @@ tokenRequested: "允許存取帳戶"
 pluginTokenRequestedDescription: "此外掛將擁有在此設定的權限。"
 notificationType: "通知形式"
 edit: "編輯"
+toEdit: "編輯"
 emailServer: "電郵伺服器"
 enableEmail: "啟用發送電郵功能"
 emailConfigInfo: "用於確認電郵地址及密碼重置"
@@ -789,7 +793,7 @@ previewNoteText: "預覽文本"
 customCss: "自定義 CSS"
 customCssWarn: "這個設定必須由具備相關知識的人員操作，不當的設定可能导致客戶端無法正常使用。"
 global: "公開"
-squareAvatars: "大頭貼以方形顯示"
+squareAvatars: "以方形顯示非貓使用者的大頭貼"
 sent: "發送"
 received: "收取"
 searchResult: "搜尋結果"
@@ -831,7 +835,7 @@ voteConfirm: "確定投給「{choice}」？"
 hide: "隱藏"
 leaveGroup: "離開群組"
 leaveGroupConfirm: "確定離開「{name}」？"
-useDrawerReactionPickerForMobile: "在移動設備上使用抽屜顯示"
+useDrawerReactionPickerForMobile: "在手機版使用抽屜顯示"
 welcomeBackWithName: "歡迎回來，{name}"
 clickToFinishEmailVerification: "點擊 [{ok}] 完成電子郵件地址認證。"
 overridedDeviceKind: "裝置類型"
@@ -1123,6 +1127,7 @@ _wordMute:
   langDescription: 將指定語言的貼文從時間軸中隱藏。
   muteLangs: 被靜音的語言
   muteLangsDescription: OR條件以空格或換行進行分隔。
+  mutePatterns: 靜音表達式
 _instanceMute:
   instanceMuteDescription: "將設定的伺服器的所有貼文及轉發靜音。對被靜音伺服器的使用者的回覆也將被靜音。"
   instanceMuteDescription2: "設定時以換行進行分隔"
@@ -1337,7 +1342,7 @@ _widgets:
   unixClock: "UNIX時間"
   federation: "聯邦宇宙"
   instanceCloud: "伺服器雲"
-  postForm: "發佈窗口"
+  postForm: "發文介面"
   slideshow: "幻燈片"
   button: "按鈕"
   onlineUsers: "線上的使用者"
@@ -1349,9 +1354,6 @@ _widgets:
   userList: 使用者列表
   _userList:
     chooseList: 選擇一個清單
-  meiliIndexCount: 編入索引的帖子
-  meiliStatus: 伺服器狀態
-  meiliSize: 索引大小
 _cw:
   hide: "隱藏"
   show: "瀏覽更多"
@@ -1872,15 +1874,12 @@ _experiments:
   enablePostImports: 啟用匯入貼文的功能
   postImportsCaption: 
     允許使用者從舊有的Firefish・Misskey・Mastodon・Akkoma・Pleroma帳號匯入貼文。在伺服器佇列堵塞時匯入貼文可能會導致載入速度變慢。
-findOtherInstance: 找找另一個伺服器
 noGraze: 瀏覽器擴充元件 "Graze for Mastodon" 會與Firefish發生衝突，請停用該擴充元件。
 userSaysSomethingReasonRenote: '{name} 轉發了包含 {reason} 的貼文'
 pushNotificationNotSupported: 你的瀏覽器或伺服器不支援推送通知
 accessibility: 輔助功能
 userSaysSomethingReasonReply: '{name} 回覆了包含 {reason} 的貼文'
 hiddenTags: 隱藏主題標籤
-indexPosts: 索引貼文
-indexNotice: 現在開始索引。 這可能需要一段時間，請不要在一個小時內重啟你的伺服器。
 deleted: 已刪除
 editNote: 編輯貼文
 edited: '於 {date} {time} 編輯'
@@ -1925,16 +1924,14 @@ sendModMail: 發送審核通知
 enableIdenticonGeneration: 啟用Identicon生成
 enableServerMachineStats: 啟用伺服器硬體統計資訊
 reactionPickerSkinTone: 首選表情符號膚色
-indexFromDescription: 留空以索引每個貼文
 preventAiLearning: 防止 AI 機器人抓取
 preventAiLearningDescription: 請求第三方 AI 語言模型不要研究您上傳的內容，例如貼文和圖像。
-indexFrom: 建立此貼文ID以後的索引
 isLocked: 該帳戶已獲得以下批准
 isModerator: 板主
 isAdmin: 管理員
 isPatron: Firefish 項目贊助者
 silencedWarning: 顯示此頁面是因為這些使用者來自您伺服器管理員已靜音的伺服器，因此他們可能是垃圾訊息。
-signupsDisabled: 此伺服器目前停止註冊，但您隨時可以在另一台伺服器上註冊！如果您有此伺服器的邀請碼，請在下面輸入。
+signupsDisabled: 此伺服器目前停止註冊。如果您有此伺服器的邀請碼，請在下面輸入。
 showPopup: 通過彈出式視窗通知使用者
 showWithSparkles: 讓標題閃閃發光
 youHaveUnreadAnnouncements: 您有未讀的公告
@@ -2010,3 +2007,50 @@ private: "祕密"
 privateDescription: "僅你可見"
 makePrivate: "設為祕密"
 makePrivateConfirm: "此操作將向遠端伺服器發送刪除請求，並將貼文的公開範圍設為「祕密」。是否繼續？"
+squareCatAvatars: 以方形顯示貓咪使用者的大頭貼
+showBigPostButton: 放大發文介面中的貼文按鈕
+emojiModPerm: 自訂表情符號的管理權限
+emojiModPermDescription: "新增: 允許新增自訂表情符號，並允許設定尚未設定標籤/類別/授權條款的現有自訂表情符號。\n新增及編輯: 除了「新增」的權限之外，也允許編輯現有自訂表情符號的標籤/類別/授權條款\n
+  全部允許: 除了「新增及編輯」的權限之外，也允許刪除現有的自訂表情符號。"
+_emojiModPerm:
+  full: 全部允許
+  unauthorized: 不允許
+  add: 新增
+  mod: 新增及編輯
+replyMute: 靜音回覆貼文
+useCdn: 從 CDN 獲取資源
+useCdnDescription: 從 JSDelivr CDN（而非此 Firefish 伺服器）載入 Twemoji 等的靜態資源。
+replyUnmute: 解除靜音回覆貼文
+suggested: 建議
+noLanguage: 無語言
+forMobile: 手機版
+replaceChatButtonWithAccountButton: 將頁面下方的「傳送訊息按鈕」替換成「切換帳戶按鈕」
+replaceWidgetsButtonWithReloadButton: 將頁面下方的「小工具按鈕」替換成「重新整理按鈕」
+postSearch: 在此伺服器搜尋貼文
+searchWords: 搜尋關鍵字 / 查詢的ID或URL
+searchEngine: MFM搜尋欄使用的搜尋引擎
+enablePullToRefresh: 啟用「下拉重新整理」
+pullToRefreshThreshold: 觸發下拉重新整理所需的距離
+pullDownToReload: 下拉重新整理
+releaseToReload: 放開以重新整理
+reloading: 重新整理中
+enableTimelineStreaming: 自動更新時間軸
+searchUsers: 發文者（選填）
+searchRange: 日期範圍（選填）
+searchPostsWithFiles: 僅帶有附件的貼文
+searchCwAndAlt: 包含內容警告及替代文字
+publishTimelines: 允許未登入的使用者查看時間軸
+publishTimelinesDescription: 啟用後，未登入的使用者可於 {url} 查看本地時間軸及公開時間軸。
+searchWordsDescription: "請在此欄位輸入欲搜尋的關鍵字。以空格分隔關鍵字以進行AND搜尋，在關鍵字之間插入「OR」以進行OR搜尋。\n舉例來說，輸入「早上
+  晚上」會搜尋包含「早上」和「晚上」的貼文，「早上 OR 晚上」會搜尋包含「早上」或「晚上」（或兩者皆包含）的貼文。\n您也可以同時進行AND搜尋及OR搜尋，例如「(早上
+  OR 晚上) 想睡覺」。\n如欲搜尋包含空白的字串，請使用雙引號 (\") 以與AND搜尋進行區別，例如「\"Today I learned\"」。\n\n如欲前往特定使用者或貼文的頁面，請在此欄位輸入使用者ID（@user@example.com）或貼文的URL，並點擊「查詢」按鈕。點擊「搜尋」按鈕則會搜尋字面上包含輸入的ID或URL的貼文。"
+searchUsersDescription: "如欲搜尋特定使用者的貼文，請以「@user@example.com（本地使用者則為 @user）」的格式輸入發文者的ID，或輸入網域名稱（example.com）以搜尋特定伺服器的貼文。\n\
+  \n輸入「me」以搜尋自己的所有貼文（包含不在主頁顯示、追隨者、指定使用者、祕密貼文）。\n\n輸入「local」以搜尋本地伺服器的貼文。"
+searchRangeDescription: "如欲搜尋特定期間的貼文，請以「20220615-20231031」的格式輸入日期範圍。\n\n今年的日期可省略年份（例如0105-0106、20231105-0110）。\n\
+  \n開始日期和結果日期可擇一省略。舉例來說，「-0102」表示僅搜尋今年1月2日為止的貼文，「20231026-」表示僅搜尋2023年10月26日以後的貼文。"
+noAltTextWarning: 有些附件沒有說明，您是否忘記寫了？
+moderationNote: 管理員備註
+ipFirstAcknowledged: 首次取得此 IP 位址的日期
+driveCapacityOverride: 雲端硬碟容量變更
+showNoAltTextWarning: 在嘗試發佈包含沒有替代文字的貼文時顯示警告
+messagingUnencryptedInfo: Firefish 上的聊天沒有經過點對點加密，請不要發送敏感資訊。

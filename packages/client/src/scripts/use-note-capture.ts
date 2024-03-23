@@ -2,7 +2,7 @@ import type { Ref } from "vue";
 import { onUnmounted } from "vue";
 import type { entities } from "firefish-js";
 import { useStream } from "@/stream";
-import { $i, isSignedIn } from "@/reactiveAccount";
+import { isSignedIn, me } from "@/me";
 import * as os from "@/os";
 
 export function useNoteCapture(props: {
@@ -34,7 +34,7 @@ export function useNoteCapture(props: {
 
 				note.value.reactions[reaction] = currentCount + 1;
 
-				if (isSignedIn && body.userId === $i.id) {
+				if (isSignedIn && body.userId === me.id) {
 					note.value.myReaction = reaction;
 				}
 				break;
@@ -48,7 +48,7 @@ export function useNoteCapture(props: {
 
 				note.value.reactions[reaction] = Math.max(0, currentCount - 1);
 
-				if (isSignedIn && body.userId === $i.id) {
+				if (isSignedIn && body.userId === me.id) {
 					note.value.myReaction = undefined;
 				}
 				break;
@@ -62,7 +62,7 @@ export function useNoteCapture(props: {
 					choices[choice] = {
 						...choices[choice],
 						votes: choices[choice].votes + 1,
-						...(isSignedIn && body.userId === $i.id
+						...(isSignedIn && body.userId === me.id
 							? {
 									isVoted: true,
 							  }

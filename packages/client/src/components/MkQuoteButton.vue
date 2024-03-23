@@ -14,7 +14,7 @@ import { computed } from "vue";
 import type { entities } from "firefish-js";
 import { pleaseLogin } from "@/scripts/please-login";
 import * as os from "@/os";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
@@ -26,7 +26,7 @@ const props = defineProps<{
 const canRenote = computed(
 	() =>
 		["public", "home"].includes(props.note.visibility) ||
-		props.note.userId === $i?.id,
+		props.note.userId === me?.id,
 );
 
 function quote(): void {

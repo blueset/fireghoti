@@ -2,7 +2,9 @@
 	<div
 		ref="ticker"
 		v-tooltip="
-			`${capitalize(instance.softwareName)} ${instance.softwareVersion ?? ''}`
+			`${capitalize(instance.softwareName)} ${
+				instance.softwareVersion ?? ''
+			}`
 		"
 		class="hpaizdrt"
 		:style="bg"
@@ -53,6 +55,7 @@ const commonNames = new Map<string, string>([
 	["gnusocial", "GNU social"],
 	["gotosocial", "GoToSocial"],
 	["kbin", "/kbin"],
+	["kmyblue", "kmyblue"],
 	["microblogpub", "microblog.pub"],
 	["nextcloud social", "Nextcloud Social"],
 	["peertube", "PeerTube"],

@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import path, { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execa } from "execa";
@@ -32,4 +33,6 @@ import { execa } from "execa";
 			stdio: "inherit",
 		}
 	);
+
+	fs.copyFileSync("packages/backend-rs/index.js", "packages/backend-rs/built/index.js");
 })();

@@ -6,11 +6,10 @@ services:
     container_name: firefish_web
     restart: unless-stopped
     depends_on:
-      - db
-      - redis
-### Uncomment one of the following to use a search engine
-#     - meilisearch
-#     - sonic
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     ports:
       - "3000:3000"
     networks:
@@ -22,6 +21,15 @@ services:
       - ./custom:/firefish/custom:ro
       - ./files:/firefish/files
       - ./.config:/firefish/.config:ro
+    healthcheck:
+      test: curl -f http://localhost:3000 || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 4096M
 
   redis:
     restart: unless-stopped
@@ -31,10 +39,20 @@ services:
       - calcnet
     volumes:
       - ./redis:/data
+    healthcheck:
+      test: redis-cli ping
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  #  deploy:
+  #    resources:
+  #      limits:
+  #        memory: 200M
+
 
   db:
     restart: unless-stopped
-    image: docker.io/postgres:16-alpine
+    image: docker.io/groonga/pgroonga:3.1.8-alpine-16-slim
     container_name: firefish_db
     networks:
       - calcnet
@@ -42,33 +60,15 @@ services:
       - .config/docker.env
     volumes:
       - ./db:/var/lib/postgresql/data
-
-### Only one of the below should be used.
-### Meilisearch is better overall, but resource-intensive. Sonic is a very light full text search engine.
-
-#  meilisearch:
-#    container_name: meilisearch
-#    image: getmeili/meilisearch:v1.1.1
-#    environment:
-#      - MEILI_ENV=${MEILI_ENV:-development}
-#    ports:
-#      - "7700:7700"
-#    networks:
-#      - calcnet
-#    volumes:
-#      - ./meili_data:/meili_data
-#    restart: unless-stopped
-
-#  sonic:
-#    restart: unless-stopped
-#    image: docker.io/valeriansaliou/sonic:v1.4.0
-#    logging:
-#     driver: none
-#    networks:
-#      - calcnet
-#    volumes:
-#      - ./sonic:/var/lib/sonic/store
-#      - ./sonic/config.cfg:/etc/sonic.cfg
+    healthcheck:
+      test: pg_isready --user="$${POSTGRES_USER}" --dbname="$${POSTGRES_DB}"
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  #  deploy:
+  #    resources:
+  #      limits:
+  #        memory: 200M
 
 networks:
   calcnet:

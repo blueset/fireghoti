@@ -165,19 +165,19 @@ import FormFolder from "@/components/form/folder.vue";
 import * as os from "@/os";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
 
-const isLocked = ref($i.isLocked);
-const autoAcceptFollowed = ref($i.autoAcceptFollowed);
-const noCrawle = ref($i.noCrawle);
-const isIndexable = ref($i.isIndexable);
-const isExplorable = ref($i.isExplorable);
-const hideOnlineStatus = ref($i.hideOnlineStatus);
-const publicReactions = ref($i.publicReactions);
-const ffVisibility = ref($i.ffVisibility);
-const preventAiLearning = ref($i.preventAiLearning);
+const isLocked = ref(me.isLocked);
+const autoAcceptFollowed = ref(me.autoAcceptFollowed);
+const noCrawle = ref(me.noCrawle);
+const isIndexable = ref(me.isIndexable);
+const isExplorable = ref(me.isExplorable);
+const hideOnlineStatus = ref(me.hideOnlineStatus);
+const publicReactions = ref(me.publicReactions);
+const ffVisibility = ref(me.ffVisibility);
+const preventAiLearning = ref(me.preventAiLearning);
 
 const defaultNoteVisibility = computed(
 	defaultStore.makeGetterSetter("defaultNoteVisibility"),

@@ -494,9 +494,7 @@ export const UserRepository = db.getRepository(User).extend({
 						url: profile!.url,
 						uri: user.uri,
 						movedToUri: user.movedToUri
-							? await this.userFromURI(user.movedToUri).catch(
-									() => user.movedToUri,
-							  )
+							? await this.userFromURI(user.movedToUri).catch(() => null)
 							: null,
 						alsoKnownAs: user.alsoKnownAs,
 						createdAt: user.createdAt.toISOString(),
@@ -515,8 +513,8 @@ export const UserRepository = db.getRepository(User).extend({
 						location: profile!.location,
 						birthday: profile!.birthday,
 						fields: profile!.fields,
-						followersCount: followersCount || 0,
-						followingCount: followingCount || 0,
+						followersCount: followersCount ?? null,
+						followingCount: followingCount ?? null,
 						notesCount: user.notesCount,
 						pinnedNoteIds: pins.map((pin) => pin.noteId),
 						pinnedNotes: Notes.packMany(
@@ -530,8 +528,11 @@ export const UserRepository = db.getRepository(User).extend({
 						pinnedPage: profile!.pinnedPageId
 							? Pages.pack(profile!.pinnedPageId, me)
 							: null,
-						publicReactions: profile!.publicReactions,
-						ffVisibility: profile!.ffVisibility,
+						// TODO: federate publicReactions
+						publicReactions:
+							user.host == null ? profile!.publicReactions : false,
+						// TODO: federate ffVisibility
+						ffVisibility: user.host == null ? profile!.ffVisibility : "private",
 						twoFactorEnabled: profile!.twoFactorEnabled,
 						usePasswordLessLogin: profile!.usePasswordLessLogin,
 						securityKeys: UserSecurityKeys.countBy({
@@ -544,13 +545,13 @@ export const UserRepository = db.getRepository(User).extend({
 				? {
 						avatarId: user.avatarId,
 						bannerId: user.bannerId,
-						injectFeaturedNote: profile!.injectFeaturedNote,
-						receiveAnnouncementEmail: profile!.receiveAnnouncementEmail,
-						alwaysMarkNsfw: profile!.alwaysMarkNsfw,
-						carefulBot: profile!.carefulBot,
-						autoAcceptFollowed: profile!.autoAcceptFollowed,
-						noCrawle: profile!.noCrawle,
-						preventAiLearning: profile!.preventAiLearning,
+						injectFeaturedNote: profile?.injectFeaturedNote,
+						receiveAnnouncementEmail: profile?.receiveAnnouncementEmail,
+						alwaysMarkNsfw: profile?.alwaysMarkNsfw,
+						carefulBot: profile?.carefulBot,
+						autoAcceptFollowed: profile?.autoAcceptFollowed,
+						noCrawle: profile?.noCrawle,
+						preventAiLearning: profile?.preventAiLearning,
 						isExplorable: user.isExplorable,
 						isDeleted: user.isDeleted,
 						hideOnlineStatus: user.hideOnlineStatus,
@@ -571,17 +572,18 @@ export const UserRepository = db.getRepository(User).extend({
 						hasUnreadNotification: this.getHasUnreadNotification(user.id),
 						hasPendingReceivedFollowRequest:
 							this.getHasPendingReceivedFollowRequest(user.id),
-						mutedWords: profile!.mutedWords,
-						mutedInstances: profile!.mutedInstances,
-						mutingNotificationTypes: profile!.mutingNotificationTypes,
-						emailNotificationTypes: profile!.emailNotificationTypes,
+						mutedWords: profile?.mutedWords,
+						mutedPatterns: profile?.mutedPatterns,
+						mutedInstances: profile?.mutedInstances,
+						mutingNotificationTypes: profile?.mutingNotificationTypes,
+						emailNotificationTypes: profile?.emailNotificationTypes,
 				  }
 				: {}),
 
 			...(opts.includeSecrets
 				? {
-						email: profile!.email,
-						emailVerified: profile!.emailVerified,
+						email: profile?.email,
+						emailVerified: profile?.emailVerified,
 						securityKeysList: UserSecurityKeys.find({
 							where: {
 								userId: user.id,

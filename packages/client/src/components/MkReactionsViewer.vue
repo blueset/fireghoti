@@ -19,7 +19,7 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import type { entities } from "firefish-js";
-import { $i, isSignedIn } from "@/reactiveAccount";
+import { isSignedIn, me } from "@/me";
 import XReaction from "@/components/MkReactionsViewer.reaction.vue";
 
 const props = defineProps<{
@@ -30,7 +30,7 @@ const reactionsEl = ref<HTMLElement>();
 
 const initialReactions = new Set(Object.keys(props.note.reactions));
 
-const isMe = computed(() => isSignedIn && $i.id === props.note.userId);
+const isMe = computed(() => isSignedIn && me.id === props.note.userId);
 </script>
 
 <style lang="scss" scoped>

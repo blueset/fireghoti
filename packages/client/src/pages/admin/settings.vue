@@ -125,6 +125,9 @@
 						</FormSection>
 
 						<FormSection>
+							<FormInfo class="_formBlock">{{
+								i18n.ts.disablingTimelinesInfo
+							}}</FormInfo>
 							<FormSwitch
 								v-model="enableLocalTimeline"
 								class="_formBlock"
@@ -135,9 +138,19 @@
 								class="_formBlock"
 								>{{ i18n.ts.enableGlobalTimeline }}</FormSwitch
 							>
+						</FormSection>
+
+						<FormSection>
 							<FormInfo class="_formBlock">{{
-								i18n.ts.disablingTimelinesInfo
+								i18n.t("publishTimelinesDescription", {
+									url: `${instanceDomain}/timelime`,
+								})
 							}}</FormInfo>
+							<FormSwitch
+								v-model="enableGuestTimeline"
+								class="_formBlock"
+								>{{ i18n.ts.publishTimelines }}</FormSwitch
+							>
 						</FormSection>
 
 						<FormSection>
@@ -467,6 +480,7 @@ const defaultDarkTheme: any = ref(null);
 const enableLocalTimeline = ref(false);
 const enableGlobalTimeline = ref(false);
 const enableRecommendedTimeline = ref(false);
+const enableGuestTimeline = ref(false);
 const pinnedUsers = ref("");
 const customMOTD = ref("");
 const recommendedInstances = ref("");
@@ -487,6 +501,7 @@ const defaultReaction = ref("");
 const defaultReactionCustom = ref("");
 const enableServerMachineStats = ref(false);
 const enableIdenticonGeneration = ref(false);
+const instanceDomain = ref("");
 
 function isValidHttpUrl(src: string) {
 	let url: URL;
@@ -522,6 +537,7 @@ function stringifyMoreUrls(src: { name: string; url: string }[]): string {
 async function init() {
 	const meta = await os.api("admin/meta");
 	if (!meta) throw new Error("No meta");
+	instanceDomain.value = meta.uri;
 	name.value = meta.name;
 	description.value = meta.description;
 	tosUrl.value = meta.tosUrl;
@@ -539,6 +555,7 @@ async function init() {
 	enableLocalTimeline.value = !meta.disableLocalTimeline;
 	enableGlobalTimeline.value = !meta.disableGlobalTimeline;
 	enableRecommendedTimeline.value = !meta.disableRecommendedTimeline;
+	enableGuestTimeline.value = meta.enableGuestTimeline;
 	pinnedUsers.value = meta.pinnedUsers.join("\n");
 	customMOTD.value = meta.customMOTD.join("\n");
 	customSplashIcons.value = meta.customSplashIcons.join("\n");
@@ -591,6 +608,7 @@ function save() {
 		disableLocalTimeline: !enableLocalTimeline.value,
 		disableGlobalTimeline: !enableGlobalTimeline.value,
 		disableRecommendedTimeline: !enableRecommendedTimeline.value,
+		enableGuestTimeline: enableGuestTimeline.value,
 		pinnedUsers: pinnedUsers.value.split("\n"),
 		customMOTD: customMOTD.value.split("\n"),
 		customSplashIcons: customSplashIcons.value.split("\n"),

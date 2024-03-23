@@ -45,8 +45,6 @@ docker-compose.yml
 docker-compose.example.yml
 firefish.apache.conf
 firefish.nginx.conf
-flake.lock
-flake.nix
 title.svg
 /.gitlab
 /chart

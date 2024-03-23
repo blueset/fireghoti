@@ -89,7 +89,7 @@ export default define(meta, paramDef, async (ps, me) => {
 				set.objectStorageSecretKey = config.objectStorage.secretKey;
 			}
 			if (typeof config.objectStorage.useSsl === "boolean") {
-				set.objectStorageUseSSL = config.objectStorage.useSsl;
+				set.objectStorageUseSsl = config.objectStorage.useSsl;
 			}
 			if (typeof config.objectStorage.connnectOverProxy === "boolean") {
 				set.objectStorageUseProxy = config.objectStorage.connnectOverProxy;

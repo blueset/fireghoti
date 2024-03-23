@@ -6,11 +6,14 @@ type NoteLike = {
 	text: Note["text"];
 	files?: Note["files"];
 	cw?: Note["cw"];
+	reply?: NoteLike | null;
+	renote?: NoteLike | null;
 };
 
 function checkWordMute(
-	note: NoteLike,
-	mutedWords: Array<string | string[]>,
+	note: NoteLike | null | undefined,
+	mutedWords: string[][],
+	mutedPatterns: string[],
 ): boolean {
 	if (note == null) return false;
 
@@ -21,33 +24,33 @@ function checkWordMute(
 
 	if (text === "") return false;
 
-	for (const mutePattern of mutedWords) {
-		if (Array.isArray(mutePattern)) {
-			// Clean up
-			const keywords = mutePattern.filter((keyword) => keyword !== "");
+	for (const mutedWord of mutedWords) {
+		// Clean up
+		const keywords = mutedWord.filter((keyword) => keyword !== "");
 
-			if (
-				keywords.length > 0 &&
-				keywords.every((keyword) =>
-					text.toLowerCase().includes(keyword.toLowerCase()),
-				)
+		if (
+			keywords.length > 0 &&
+			keywords.every((keyword) =>
+				text.toLowerCase().includes(keyword.toLowerCase()),
 			)
-				return true;
-		} else {
-			// represents RegExp
-			const regexp = mutePattern.match(/^\/(.+)\/(.*)$/);
+		)
+			return true;
+	}
 
+	for (const mutedPattern of mutedPatterns) {
+		// represents RegExp
+		const regexp = mutedPattern.match(/^\/(.+)\/(.*)$/);
+
+		// This should never happen due to input sanitisation.
+		if (!regexp) {
+			console.warn(`Found invalid regex in word mutes: ${mutedPattern}`);
+			continue;
+		}
+
+		try {
+			if (new RE2(regexp[1], regexp[2]).test(text)) return true;
+		} catch (err) {
 			// This should never happen due to input sanitisation.
-			if (!regexp) {
-				console.warn(`Found invalid regex in word mutes: ${mutePattern}`);
-				continue;
-			}
-
-			try {
-				if (new RE2(regexp[1], regexp[2]).test(text)) return true;
-			} catch (err) {
-				// This should never happen due to input sanitisation.
-			}
 		}
 	}
 
@@ -55,17 +58,17 @@ function checkWordMute(
 }
 
 export async function getWordHardMute(
-	note: NoteLike,
-	meId: string | null | undefined,
-	mutedWords?: Array<string | string[]>,
+	note: NoteLike | null,
+	mutedWords: string[][],
+	mutedPatterns: string[],
 ): Promise<boolean> {
-	if (note.userId === meId || mutedWords == null) return false;
+	if (note == null || mutedWords == null || mutedPatterns == null) return false;
 
 	if (mutedWords.length > 0) {
 		return (
-			checkWordMute(note, mutedWords) ||
-			checkWordMute(note.reply, mutedWords) ||
-			checkWordMute(note.renote, mutedWords)
+			checkWordMute(note, mutedWords, mutedPatterns) ||
+			checkWordMute(note.reply, mutedWords, mutedPatterns) ||
+			checkWordMute(note.renote, mutedWords, mutedPatterns)
 		);
 	}
 

@@ -33,7 +33,8 @@
 import { computed, ref } from "vue";
 
 // SPECIFICATION: https://misskey-hub.net/docs/features/share-form.html
-import { acct, noteVisibilities, type entities } from "firefish-js";
+import type { entities } from "firefish-js";
+import { acct, noteVisibilities } from "firefish-js";
 import MkButton from "@/components/MkButton.vue";
 import XPostForm from "@/components/MkPostForm.vue";
 import * as os from "@/os";

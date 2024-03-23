@@ -46,7 +46,7 @@ import MkButton from "@/components/MkButton.vue";
 import MkInput from "@/components/form/input.vue";
 import { host } from "@/config";
 import * as os from "@/os";
-import { login } from "@/account";
+import { signIn } from "@/account";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
@@ -71,7 +71,7 @@ function submit() {
 					});
 				}
 			});
-			return login(res?.token);
+			return signIn(res?.token);
 		})
 		.catch(() => {
 			submitting.value = false;

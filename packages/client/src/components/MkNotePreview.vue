@@ -1,16 +1,17 @@
 <template>
 	<div v-size="{ min: [350, 500] }" class="fefdfafb">
-		<MkAvatar class="avatar" :user="$i" disable-link />
+		<MkAvatar class="avatar" :user="me" disable-link />
 		<div class="main">
 			<div class="header">
-				<MkUserName :user="$i" />
+				<MkUserName :user="me" />
 			</div>
 			<div class="body">
 				<div class="content">
 					<Mfm
 						:text="preprocess(text).trim()"
-						:author="$i"
-						:i="$i"
+						:lang="lang"
+						:author="me"
+						:i="me"
 						advanced-mfm
 					/>
 				</div>
@@ -21,9 +22,11 @@
 
 <script lang="ts" setup>
 import preprocess from "@/scripts/preprocess";
+import { me } from "@/me";
 
 defineProps<{
 	text: string;
+	lang?: string;
 }>();
 </script>
 

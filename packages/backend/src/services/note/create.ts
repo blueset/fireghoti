@@ -1,6 +1,4 @@
 import * as mfm from "mfm-js";
-import es from "@/db/elasticsearch.js";
-import sonic from "@/db/sonic.js";
 import {
 	publishMainStream,
 	publishNotesStream,
@@ -33,6 +31,7 @@ import {
 	Channels,
 	ChannelFollowings,
 	NoteThreadMutings,
+	NoteFiles,
 } from "@/models/index.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { App } from "@/models/entities/app.js";
@@ -59,7 +58,6 @@ import type { UserProfile } from "@/models/entities/user-profile.js";
 import { db } from "@/db/postgre.js";
 import { getActiveWebhooks } from "@/misc/webhook-cache.js";
 import { shouldSilenceInstance } from "@/misc/should-block-instance.js";
-import meilisearch from "@/db/meilisearch.js";
 import { redisClient } from "@/db/redis.js";
 import { Mutex } from "redis-semaphore";
 import { langmap } from "@/misc/langmap.js";
@@ -68,9 +66,13 @@ import { inspect } from "node:util";
 
 const logger = new Logger("create-note");
 
-const mutedWordsCache = new Cache<
-	{ userId: UserProfile["userId"]; mutedWords: UserProfile["mutedWords"] }[]
->("mutedWords", 60 * 5);
+const hardMutesCache = new Cache<
+	{
+		userId: UserProfile["userId"];
+		mutedWords: UserProfile["mutedWords"];
+		mutedPatterns: UserProfile["mutedPatterns"];
+	}[]
+>("hardMutes", 60 * 5);
 
 type NotificationType = "reply" | "renote" | "quote" | "mention";
 
@@ -166,7 +168,6 @@ export default async (
 		createdAt: User["createdAt"];
 		isBot: User["isBot"];
 		inbox?: User["inbox"];
-		isIndexable?: User["isIndexable"];
 	},
 	data: Option,
 	silent = false,
@@ -343,6 +344,12 @@ export default async (
 
 		const note = await insertNote(user, data, tags, emojis, mentionedUsers);
 
+		await NoteFiles.insert(
+			note.fileIds.map((fileId) => ({ noteId: note.id, fileId })),
+		).catch((e) => {
+			logger.error(inspect(e));
+		});
+
 		res(note);
 
 		// Register host
@@ -361,27 +368,30 @@ export default async (
 		incNotesCountOfUser(user);
 
 		// Word mute
-		mutedWordsCache
+		hardMutesCache
 			.fetch(null, () =>
 				UserProfiles.find({
 					where: {
 						enableWordMute: true,
 					},
-					select: ["userId", "mutedWords"],
+					select: ["userId", "mutedWords", "mutedPatterns"],
 				}),
 			)
 			.then((us) => {
 				for (const u of us) {
-					getWordHardMute(data, u.userId, u.mutedWords).then((shouldMute) => {
-						if (shouldMute) {
-							MutedNotes.insert({
-								id: genId(),
-								userId: u.userId,
-								noteId: note.id,
-								reason: "word",
-							});
-						}
-					});
+					if (u.userId === user.id) return;
+					getWordHardMute(note, u.mutedWords, u.mutedPatterns).then(
+						(shouldMute: boolean) => {
+							if (shouldMute) {
+								MutedNotes.insert({
+									id: genId(),
+									userId: u.userId,
+									noteId: note.id,
+									reason: "word",
+								});
+							}
+						},
+					);
 				}
 			});
 
@@ -654,11 +664,6 @@ export default async (
 				}
 			});
 		}
-
-		// Register to search database
-		if (user.isIndexable) {
-			await index(note, false);
-		}
 	});
 
 async function renderNoteOrRenoteActivity(data: Option, note: Note) {
@@ -811,40 +816,6 @@ async function insertNote(
 		logger.error(inspect(e));
 
 		throw e;
-	}
-}
-
-export async function index(note: Note, reindexing: boolean): Promise<void> {
-	if (!note.text || note.visibility !== "public") return;
-
-	if (config.elasticsearch && es) {
-		es.index({
-			index: config.elasticsearch.index || "misskey_note",
-			id: note.id.toString(),
-			body: {
-				text: normalizeForSearch(note.text),
-				userId: note.userId,
-				userHost: note.userHost,
-			},
-		});
-	}
-
-	if (sonic) {
-		await sonic.ingest.push(
-			sonic.collection,
-			sonic.bucket,
-			JSON.stringify({
-				id: note.id,
-				userId: note.userId,
-				userHost: note.userHost,
-				channelId: note.channelId,
-			}),
-			note.text,
-		);
-	}
-
-	if (meilisearch && !reindexing) {
-		await meilisearch.ingestNote(note);
 	}
 }
 

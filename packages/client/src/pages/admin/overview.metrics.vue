@@ -29,24 +29,6 @@
 					<p>Used: {{ bytes(diskUsed, 1) }}</p>
 				</div>
 			</div>
-
-			<div class="_panel">
-				<XPie class="pie" :value="meiliProgress" />
-				<div>
-					<p><i :class="icon('ph-file-search')"></i>MeiliSearch</p>
-					<p>
-						{{ i18n.ts._widgets.meiliStatus }}: {{ meiliAvailable }}
-					</p>
-					<p>
-						{{ i18n.ts._widgets.meiliSize }}:
-						{{ bytes(meiliTotalSize, 1) }}
-					</p>
-					<p>
-						{{ i18n.ts._widgets.meiliIndexCount }}:
-						{{ meiliIndexCount }}
-					</p>
-				</div>
-			</div>
 		</div>
 	</div>
 </template>
@@ -57,7 +39,6 @@ import XPie from "../../widgets/server-metric/pie.vue";
 import bytes from "@/filters/bytes";
 import { useStream } from "@/stream";
 import * as os from "@/os";
-import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
 const stream = useStream();
@@ -72,11 +53,6 @@ const memTotal = ref(0);
 const memUsed = ref(0);
 const memFree = ref(0);
 
-const meiliProgress = ref(0);
-const meiliTotalSize = ref(0);
-const meiliIndexCount = ref(0);
-const meiliAvailable = ref("unavailable");
-
 const diskUsage = computed(() => meta.fs.used / meta.fs.total);
 const diskTotal = computed(() => meta.fs.total);
 const diskUsed = computed(() => meta.fs.used);
@@ -89,11 +65,6 @@ function onStats(stats) {
 	memTotal.value = stats.mem.total;
 	memUsed.value = stats.mem.active;
 	memFree.value = memTotal.value - memUsed.value;
-
-	meiliTotalSize.value = stats.meilisearch.size;
-	meiliIndexCount.value = stats.meilisearch.indexed_count;
-	meiliAvailable.value = stats.meilisearch.health;
-	meiliProgress.value = meiliIndexCount.value / serverStats.notesCount;
 }
 
 const connection = stream.useChannel("serverStats");

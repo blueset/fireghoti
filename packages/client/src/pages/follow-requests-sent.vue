@@ -47,7 +47,7 @@
 										:text="req.followee.description"
 										:is-note="false"
 										:author="req.followee"
-										:i="$i"
+										:i="me"
 										:custom-emojis="req.followee.emojis"
 										:plain="true"
 										:nowrap="true"
@@ -64,13 +64,13 @@
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import MkPagination from "@/components/MkPagination.vue";
 import { acct } from "firefish-js";
+import MkPagination from "@/components/MkPagination.vue";
 import { userPage } from "@/filters/user";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
-import { $i } from "@/reactiveAccount";
+import { me } from "@/me";
 import icon from "@/scripts/icon";
 
 const paginationComponent = ref<InstanceType<typeof MkPagination>>();

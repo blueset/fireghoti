@@ -2,6 +2,17 @@
 
 Breaking changes are indicated by the :warning: icon.
 
+## v20240319
+
+- :warning: `followingCount` and `followersCount` in `users/show` will be `null` (instead of 0) if these values are unavailable.
+- :warning: `admin/search/index-all` is removed since posts are now indexed automatically.
+- New optional parameters are added to `notes/search` endpoint:
+	- `sinceDate`
+	- `untilDate`
+	- `withFiles`
+	- `searchCwAndAlt`
+- Added `enableGuestTimeline` field to the response of `meta` and `admin/meta`, and the request of `admin/update-meta` (optional).
+
 ## v20240301
 
 - With the addition of new features, the following endpoints are added:

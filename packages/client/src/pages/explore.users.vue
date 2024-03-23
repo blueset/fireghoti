@@ -146,7 +146,7 @@ import MkFolder from "@/components/MkFolder.vue";
 import MkTab from "@/components/MkTab.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
-import { isSignedIn } from "@/reactiveAccount";
+import { isSignedIn } from "@/me";
 import icon from "@/scripts/icon";
 
 const props = defineProps<{

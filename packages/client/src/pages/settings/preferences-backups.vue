@@ -65,7 +65,7 @@ import * as os from "@/os";
 import { ColdDeviceStorage, defaultStore } from "@/store";
 import { unisonReload } from "@/scripts/unison-reload";
 import { useStream } from "@/stream";
-import { isSignedIn } from "@/reactiveAccount";
+import { isSignedIn } from "@/me";
 import { i18n } from "@/i18n";
 import { host, version } from "@/config";
 import { definePageMetadata } from "@/scripts/page-metadata";
@@ -124,6 +124,7 @@ const defaultStoreSaveKeys: (keyof (typeof defaultStore)["state"])[] = [
 	"enableTimelineStreaming",
 	"enablePullToRefresh",
 	"pullToRefreshThreshold",
+	"showNoAltTextWarning",
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 	"lightTheme",

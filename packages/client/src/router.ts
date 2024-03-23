@@ -1,6 +1,6 @@
 import type { AsyncComponentLoader } from "vue";
 import { defineAsyncComponent, inject } from "vue";
-import { $i, isModerator, isEmojiMod } from "@/reactiveAccount";
+import { isEmojiMod, isModerator, me } from "@/me";
 import { Router } from "@/nirax";
 import MkError from "@/pages/_error_.vue";
 import MkLoading from "@/pages/_loading_.vue";
@@ -306,12 +306,23 @@ export const routes = [
 		component: page(() => import("./pages/search.vue")),
 		query: {
 			q: "query",
+			user: "user",
+			host: "host",
+			since: "since",
+			until: "until",
+			withFiles: "withFiles",
 			channel: "channel",
+			detailed: "searchCwAndAlt",
 		},
 	},
 	{
 		path: "/authorize-follow",
 		component: page(() => import("./pages/follow.vue")),
+		loginRequired: true,
+	},
+	{
+		path: "/authorize_interaction",
+		component: page(() => import("./pages/authorize_interaction.vue")),
 		loginRequired: true,
 	},
 	{
@@ -633,6 +644,12 @@ export const routes = [
 		loginRequired: true,
 	},
 	{
+		path: "/timeline",
+		// TODO: show not-found page if meta.enableGuestTimeline is false
+		//       (currently it shows nothing if guest timelines are unavailable)
+		component: page(() => import("./pages/timeline.vue")),
+	},
+	{
 		path: "/timeline/list/:listId",
 		component: page(() => import("./pages/user-list-timeline.vue")),
 		loginRequired: true,
@@ -645,7 +662,7 @@ export const routes = [
 	{
 		name: "index",
 		path: "/",
-		component: $i
+		component: me
 			? page(() => import("./pages/timeline.vue"))
 			: page(() => import("./pages/welcome.vue")),
 		globalCacheKey: "index",

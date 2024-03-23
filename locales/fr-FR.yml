@@ -76,7 +76,7 @@ importRequested: "Vous avez initié une importation. Cela pourrait prendre un pe
   temps."
 lists: "Listes"
 noLists: "Vous n'avez aucune liste"
-note: "Publication"
+note: "Publier"
 notes: "Publications"
 following: "Abonnements"
 followers: "Abonné·e·s"
@@ -666,7 +666,7 @@ useGlobalSettingDesc: "S'il est activé, les paramètres de notification de votr
 other: "Autre"
 regenerateLoginToken: "Régénérer le jeton de connexion"
 regenerateLoginTokenDescription: "Générer un nouveau jeton d'authentification. Cette
-  opération ne devrait pas être nécessaire ; lors de la génération d'un nouveau jeton,
+  opération ne devrait pas être nécessaire ; lors de la génération d'un nouveau jeton,
   tous les appareils seront déconnectés."
 setMultipleBySeparatingWithSpace: "Vous pouvez en définir plusieurs, en les séparant
   par des espaces."
@@ -1152,6 +1152,7 @@ _wordMute:
   muteLangs: Langues filtrées
   muteLangsDescription: Séparer avec des espaces ou des retours à la ligne pour une
     condition OU (OR).
+  mutePatterns: Patrons masqués
 _instanceMute:
   instanceMuteDescription2: "Séparer avec des sauts de lignes"
   title: "Masque les publications provenant des serveurs listés."
@@ -1400,10 +1401,7 @@ _widgets:
   _userList:
     chooseList: Sélectionner une liste
   unixClock: Horloge UNIX
-  meiliIndexCount: Publications indexées
   serverInfo: Info serveur
-  meiliStatus: État du serveur
-  meiliSize: Taille de l'index
   instanceCloud: Nuage de serveurs
   rssTicker: Bandeau RSS
 _cw:
@@ -2002,7 +2000,7 @@ forwardReportIsAnonymous: À la place de votre compte, un compte système anonym
   affiché comme rapporteur au serveur distant.
 noThankYou: Non merci
 addInstance: Ajouter un serveur
-renoteMute: Masquer les boosts
+renoteMute: Masquer les boosts dans vos fils d'actualité
 flagSpeakAsCat: Parler comme un chat
 flagSpeakAsCatDescription: Vos messages seront « nyanifiés » en mode chat
 hiddenTags: Hashtags cachés
@@ -2034,13 +2032,13 @@ updateAvailable: Une mise à jour peut être disponible !
 accountMoved: "L'utilisateur·rice a migré vers un nouveau compte :"
 enableEmojiReactions: Activer les réactions par émojis
 showEmojisInReactionNotifications: Montrer les émojis dans les notifications de réactions
-renoteUnmute: Ne plus masquer les boosts
+renoteUnmute: Ne plus masquer les boosts dans vos fils d'actualité
 selectInstance: Choisir un serveur
 noInstances: Il n'y a aucun serveur
 showLocalPosts: 'Montrer les notes locales dans :'
 homeTimeline: Timeline d'Accueil
 socialTimeline: Timeline Sociale
-requireAdminForView: Vous avez besoin d'un compte d'administration pour voir cela.
+requireAdminForView: Vous avez besoin d'un compte d'administration pour voir ceci.
 isSystemAccount: Ce compte est créé et géré automatiquement par le système. Veuillez
   ne pas modérer, éditer, supprimer ou altérer d'une autre manière ce compte, ou cela
   risque de perturber votre serveur.
@@ -2061,9 +2059,6 @@ moveToLabel: 'Compte vers lequel vous migrez :'
 moveFrom: Migrer vers ce compte depuis un ancien compte
 defaultReaction: Émoji de réaction par défaut pour les publications entrantes et sortantes
 license: Licence
-indexPosts: Indexer les publications
-indexNotice: Indexation en cours. Cela prendra certainement du temps, veuillez ne
-  pas redémarrer votre serveur pour au moins une heure.
 customKaTeXMacro: Macros KaTeX personnalisées
 enableCustomKaTeXMacro: Activer les macros KaTeX personnalisées
 noteId: ID des publications
@@ -2095,11 +2090,9 @@ _experiments:
     de leurs anciens comptes Firefish, Misskey, Mastodon, Akkoma et Pleroma. Cela
     peut entraîner des ralentissements lors du chargement si votre file d'attente
     est congestionnée.
-findOtherInstance: Trouver un autre serveur
 userSaysSomethingReasonQuote: '{name} a cité une publication contenant {reason}'
-signupsDisabled: Les inscriptions sur ce serveur sont actuellement désactivés, mais
-  vous pouvez toujours vous inscrire sur un autre serveur ! Si vous avez un code d'invitation
-  pour ce serveur, entrez-le ci-dessous s'il vous plait.
+signupsDisabled: Les inscriptions sur ce serveur sont actuellement désactivés. Si
+  vous avez un code d'invitation pour ce serveur, saisissez-le ci-dessous.
 apps: Applications
 userSaysSomethingReasonReply: '{noms} a répondu à une publication contenant {raison}'
 defaultValueIs: 'défaut : {valeur}'
@@ -2110,7 +2103,6 @@ expandOnNoteClick: Ouvrir la publications en cliquant
 preventAiLearning: Empêcher le récupération de données par des IA
 listsDesc: Les listes vous laissent créer des fils personnalisés avec des utilisateur·rice·s
   spécifié·e·s. Elles sont accessibles depuis la page des fils.
-indexFromDescription: Laisser vide pour indexer toutes les publications
 _feeds:
   jsonFeed: flux JSON
   atom: Atom
@@ -2120,7 +2112,6 @@ alt: ALT
 swipeOnMobile: Permettre le balayage entre les pages
 expandOnNoteClickDesc: Si désactivé, vous pourrez toujours ouvrir les publications
   dans le menu du clic droit et en cliquant sur l'horodatage.
-indexFrom: Indexer à partir de l'ID des publications
 older: ancien
 newer: récent
 accessibility: Accessibilité
@@ -2268,3 +2259,56 @@ makePrivateConfirm: Cette opération enverra une demande de suppression aux serv
 useCdn: Obtenir des actifs à partir d'un réseau de diffusion de contenu
 useCdnDescription: Obtenir des actifs, tels que Twemoji, à partir du réseau de diffusion
   de contenu « JSDelivr » au lieu de ce serveur.
+sentFollowRequests: Demandes d'abonnement envoyées
+enablePullToRefresh: Activer « Dérouler pour actualiser »
+reloading: Rechargement en cours
+pullToRefreshThreshold: Distance de traction pour le rechargement
+pullDownToReload: Tirer pour actualiser
+releaseToReload: Relâcher pour actualiser
+searchWords: Mot(s), ID ou URL à rechercher
+searchUsers: Publier par (faculatif)
+replyMute: Masquer les réponses dans vos fils d'actualité
+replyUnmute: Ne plus masquer les réponses dans vos fils d'actualité
+noSentFollowRequests: Vous n'avez envoyé aucune demande d'abonnement
+enableTimelineStreaming: Actualiser les fils d'actualité automatiquement
+searchRange: Publier entre (faculatif)
+searchCwAndAlt: Inclure les avertissements de contenu et les descriptions de fichiers
+searchPostsWithFiles: Publications uniquement avec fichiers
+publishTimelines: Publier les fils d'actualité pour les visiteurs
+publishTimelinesDescription: Si cette option est activée, les fils Local et Global
+  sera affichée sur {url} même en cas de déconnexion.
+searchWordsDescription: "Pour rechercher des publications, saisissez le terme de recherche.
+  Des mots séparés avec un espace pour une recherche ET, ou « OR » (sans citations)
+  entre des mots pour une recherche OU.\nPar exemple, « matin nuit » trouvera des
+  publications contenant à la fois « matin » et « nuit », et « matin ou nuit » trouveront
+  des messages qui contiennent soit « matin » ou « nuit » (ou les deux).\nVous pouvez
+  également combiner des conditions ET/OU comme « (matin OR nuit) ensommeillé ».\n
+  \nSi vous souhaitez accéder à une page d'utilisateur ou à une page d'affichage spécifique,
+  saisissez l'ID ou l'URL dans ce champ et cliquez sur le bouton « Rechercher ». Cliquez
+  sur « Rechercher » recherchera des messages qui contiennent littéralement l'ID/URL."
+searchUsersDescription: "Pour rechercher des messages par un utilisateur/serveur spécifique,
+  saisissez l'ID (@utilisateur@exemple.com, ou @utilisateur pour un utilisateur local)
+  ou le nom de domaine (exemple.com).\n\nSi vous saisissez « me » (sans guillemets),
+  tous vos messages (y compris les messages non-listés, abonnés-seulement, directs
+  et secrets) seront recherchés.\n\nSi vous saisissez « local » (sans guillemets),
+  les résultats seront filtrés pour inclure seulement des messages de ce serveur."
+searchRangeDescription: "Si vous voulez filtrer par période de temps, saisissez-la
+  dans ce format : 20220615-20231031\n\nSi vous omettez l'année (comme le 0105-0106
+  ou le 20231105-0110), elle est interprétée comme l'année en cours.\n\nVous pouvez
+  également omettre le début ou la fin de la date. Par exemple, -0102 filtrera les
+  résultats de recherche pour afficher seulement les messages effectués avant le 2
+  janvier de cette année, et 20231026- filtrera les résultats pour afficher seulement
+  les messages effectués après le 26 octobre 2023."
+toReply: Répondre
+toPost: Publier
+toQuote: Citer
+toEdit: Modifier
+messagingUnencryptedInfo: Les conversations sur Firefish ne sont pas cryptées. Ne
+  partagez aucune information sensible sur Firefish.
+moderationNote: Note de modération
+driveCapacityOverride: Limite de stockage personalisée
+ipFirstAcknowledged: La date de la première acquisition de l'adresse IP
+noAltTextWarning: Certains fichiers joints n'ont aucune description. Avez-vous oublié
+  de l'écrire ?
+showNoAltTextWarning: Afficher un avertissement si vous essayez de publier des fichiers
+  sans description
