@@ -16,11 +16,24 @@ import {
 import { countSameRenotes } from "@/misc/count-same-renotes.js";
 import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
 import { deliverToRelays } from "@/services/relay.js";
+import type { IActivity } from "@/remote/activitypub/type.js";
+
+async function recalculateNotesCountOfLocalUser(user: {
+	id: User["id"];
+	host: User["host"];
+}) {
+	if (Users.isLocalUser(user)) {
+		await Notes.countBy({ userId: user.id }).then((newCount: number) =>
+			Users.update(user.id, { updatedAt: new Date(), notesCount: newCount }),
+		);
+	}
+}
 
 /**
  * 投稿を削除します。
  * @param user 投稿者
  * @param note 投稿
+ * @param deleteFromDb false if called by making private
  */
 export default async function (
 	user: { id: User["id"]; uri: User["uri"]; host: User["host"] },
@@ -43,6 +56,16 @@ export default async function (
 	if (note.replyId && deleteFromDb) {
 		await Notes.decrement({ id: note.replyId }, "repliesCount", 1);
 	}
+
+	const cascadingNotes = await findCascadingNotes(note);
+	const affectedLocalUsers: Record<
+		User["id"],
+		{ id: User["id"]; uri: User["uri"]; host: null }
+	> = {};
+	if (Users.isLocalUser(user)) {
+		affectedLocalUsers[user.id] = user;
+	}
+	const instanceNotesCountDecreasement: Record<string, number> = {};
 
 	if (!quiet) {
 		// Only broadcast "deleted" to local if the note is deleted from db
@@ -87,12 +110,23 @@ export default async function (
 		}
 
 		// also deliever delete activity to cascaded notes
-		const cascadingNotes = (await findCascadingNotes(note)).filter(
-			(note) => !note.localOnly,
-		); // filter out local-only notes
 		for (const cascadingNote of cascadingNotes) {
+			if (deleteFromDb) {
+				// For other notes, publishNoteStream is also required.
+				publishNoteStream(cascadingNote.id, "deleted", {
+					deletedAt: deletedAt,
+				});
+			}
+
 			if (!cascadingNote.user) continue;
-			if (!Users.isLocalUser(cascadingNote.user)) continue;
+			if (!Users.isLocalUser(cascadingNote.user)) {
+				if (!Users.isRemoteUser(cascadingNote.user)) continue;
+				instanceNotesCountDecreasement[cascadingNote.user.host] ??= 0;
+				instanceNotesCountDecreasement[cascadingNote.user.host]++;
+				continue; // filter out remote users
+			}
+			affectedLocalUsers[cascadingNote.user.id] ??= cascadingNote.user;
+			if (cascadingNote.localOnly) continue; // filter out local-only notes
 			const content = renderActivity(
 				renderDelete(
 					renderTombstone(`${config.url}/notes/${cascadingNote.id}`),
@@ -104,8 +138,14 @@ export default async function (
 		//#endregion
 
 		if (Users.isRemoteUser(user)) {
-			registerOrFetchInstanceDoc(user.host).then((i) => {
-				Instances.decrement({ id: i.id }, "notesCount", 1);
+			instanceNotesCountDecreasement[user.host] ??= 0;
+			instanceNotesCountDecreasement[user.host]++;
+		}
+		for (const [host, count] of Object.entries(
+			instanceNotesCountDecreasement,
+		)) {
+			registerOrFetchInstanceDoc(host).then((i) => {
+				Instances.decrement({ id: i.id }, "notesCount", count);
 			});
 		}
 	}
@@ -115,13 +155,20 @@ export default async function (
 			id: note.id,
 			userId: user.id,
 		});
+
+		// Handle cascading deletion (it's not as simple as notesCount -= 1)
+		await Promise.all(
+			Object.values(affectedLocalUsers).map((user) =>
+				recalculateNotesCountOfLocalUser(user),
+			),
+		);
 	}
 }
 
 async function findCascadingNotes(note: Note) {
 	const cascadingNotes: Note[] = [];
 
-	const recursive = async (noteId: string) => {
+	const findRepliesAndQuotes = async (noteId: string) => {
 		const query = Notes.createQueryBuilder("note")
 			.where("note.replyId = :noteId", { noteId })
 			.orWhere(
@@ -132,15 +179,18 @@ async function findCascadingNotes(note: Note) {
 				}),
 			)
 			.leftJoinAndSelect("note.user", "user");
-		const replies = await query.getMany();
-		for (const reply of replies) {
-			cascadingNotes.push(reply);
-			await recursive(reply.id);
-		}
-	};
-	await recursive(note.id);
+		const repliesAndQuotes = await query.getMany();
 
-	return cascadingNotes.filter((note) => note.userHost === null); // filter out non-local users
+		await Promise.all(
+			repliesAndQuotes.map((n: Note) => {
+				cascadingNotes.push(n);
+				return findRepliesAndQuotes(n.id);
+			}),
+		);
+	};
+	await findRepliesAndQuotes(note.id);
+
+	return cascadingNotes;
 }
 
 async function getMentionedRemoteUsers(note: Note) {
@@ -171,7 +221,7 @@ async function getMentionedRemoteUsers(note: Note) {
 async function deliverToConcerned(
 	user: { id: ILocalUser["id"]; host: null },
 	note: Note,
-	content: any,
+	content: IActivity | null,
 ) {
 	deliverToFollowers(user, content);
 	deliverToRelays(user, content);
