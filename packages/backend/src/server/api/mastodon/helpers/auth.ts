@@ -8,6 +8,8 @@ import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js"
 import { difference, toSingleLast, unique } from "@/prelude/array.js";
 import { ILocalUser } from "@/models/entities/user.js";
 import { splitCamelCaseIntoWords } from "@redocly/openapi-core/lib/utils";
+import { App } from "@/models/entities/app";
+import { convertId, IdConvertType as IdType } from "backend-rs";
 
 export class AuthHelpers {
     public static async registerApp(ctx: MastoContext): Promise<OAuth.Application> {
@@ -26,20 +28,27 @@ export class AuthHelpers {
             throw new MastoApiError(400, 'Invalid redirect_uris');
         }
 
-        const id = genId();
+        let app: App;
+        try {
+            app = await Apps.findOneByOrFail({ name: client_name, callbackUrl: redirect_uris.join('\n'), description: website, permission: scopes });
+        } catch {
+            const id = genId();
 
-        const app = await Apps.insert({
-            id,
-            secret: secureRndstr(32),
-            createdAt: new Date(),
-            name: client_name,
-            description: website,
-            permission: scopes,
-            callbackUrl: redirect_uris?.join('\n'),
-        }).then((x) => Apps.findOneByOrFail(x.identifiers[0]));
+            app = await Apps.insert({
+                id,
+                secret: secureRndstr(32),
+                createdAt: new Date(),
+                name: client_name,
+                description: website,
+                permission: scopes,
+                callbackUrl: redirect_uris.join('\n'),
+            }).then((x) => Apps.findOneByOrFail(x.identifiers[0]));
+        }
 
         return {
-            id: app.id,
+            id: app.name === "ZonePane" ?
+                convertId(app.id, IdType.MastodonId).substring(0, 6) : // ZonePane only accepts a small int as app ID
+                app.id,
             name: app.name,
             website: app.description,
             redirect_uri: app.callbackUrl ?? "",
@@ -96,7 +105,7 @@ export class AuthHelpers {
 
     public static async getAuthToken(ctx: MastoContext) {
         const body: any = ctx.request.body || ctx.request.query;
-        const scopes: string[] = (typeof body.scope === "string" ? body.scope.split(' ') : body.scope) ?? ['read'];
+        const scopes: string[] = (typeof body.scope === "string" ? body.scope.replaceAll("+", " ").split(' ') : body.scope) ?? ['read'];
         const clientId = toSingleLast(body.client_id);
         const code = toSingleLast(body.code);
 
