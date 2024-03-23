@@ -5,7 +5,7 @@
 		"type": "git",
 		"url": "https://firefish.dev/firefish/firefish.git"
 	},
-	"packageManager": "pnpm@8.15.4",
+	"packageManager": "pnpm@8.15.5",
 	"private": true,
 	"scripts": {
 		"rebuild": "pnpm run clean && pnpm run build",
@@ -39,14 +39,14 @@
 		"gulp-terser": "2.1.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.6.1",
-		"@biomejs/cli-darwin-arm64": "^1.6.1",
-		"@biomejs/cli-darwin-x64": "^1.6.1",
-		"@biomejs/cli-linux-arm64": "^1.6.1",
-		"@biomejs/cli-linux-x64": "^1.6.1",
-		"@types/node": "20.11.28",
+		"@biomejs/biome": "1.6.2",
+		"@biomejs/cli-darwin-arm64": "^1.6.2",
+		"@biomejs/cli-darwin-x64": "^1.6.2",
+		"@biomejs/cli-linux-arm64": "^1.6.2",
+		"@biomejs/cli-linux-x64": "^1.6.2",
+		"@types/node": "20.11.30",
 		"execa": "8.0.1",
-		"pnpm": "8.15.4",
-		"typescript": "5.4.2"
+		"pnpm": "8.15.5",
+		"typescript": "5.4.3"
 	}
 }
