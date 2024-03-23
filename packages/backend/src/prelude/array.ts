@@ -52,6 +52,14 @@ export function unique<T>(xs: T[]): T[] {
 	return [...new Set(xs)];
 }
 
+export function uniqBy<T, U>(a: T[], key: (elm: T) => U): T[] {
+	const seen = new Set<U>();
+	return a.filter((item) => {
+		const k = key(item);
+		return seen.has(k) ? false : seen.add(k);
+	})
+}
+
 export function sum(xs: number[]): number {
 	return xs.reduce((a, b) => a + b, 0);
 }
@@ -135,4 +143,8 @@ export function toArray<T>(x: T | T[] | undefined): T[] {
 
 export function toSingle<T>(x: T | T[] | undefined): T | undefined {
 	return Array.isArray(x) ? x[0] : x;
+}
+
+export function toSingleLast<T>(x: T | T[] | undefined): T | undefined {
+	return Array.isArray(x) ? x.at(-1) : x;
 }

@@ -43,7 +43,10 @@ export const api = ((
 			body: JSON.stringify(data),
 			credentials: "omit",
 			cache: "no-cache",
-			headers: authorization && useToken ? { authorization } : {},
+			headers: {
+				"Content-Type": "application/json",
+				...(authorization && useToken ? { authorization } : {})
+			},
 		})
 			.then(async (res) => {
 				const body = res.status === 204 ? null : await res.json();

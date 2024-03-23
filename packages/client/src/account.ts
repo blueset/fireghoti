@@ -149,6 +149,7 @@ export async function openAccountMenu(
 	opts: {
 		includeCurrentAccount?: boolean;
 		withExtraOperation: boolean;
+		withoutProfileLink?: boolean;
 		active?: entities.UserDetailed["id"];
 		onChoose?: (account: entities.UserDetailed) => void;
 	},
@@ -252,7 +253,7 @@ export async function openAccountMenu(
 									],
 								},
 						  ]
-						: [
+						: !opts.withoutProfileLink ? [
 								{
 									type: "link",
 									text: i18n.ts.profile,
@@ -260,9 +261,10 @@ export async function openAccountMenu(
 									avatar: me,
 								},
 								null,
-						  ]),
+						  ] : []),
 					...(opts.includeCurrentAccount ? [createItem(me)] : []),
 					...accountItemPromises,
+					...(opts.withoutProfileLink ? [null] : []),
 					...(isMobile ?? false
 						? [
 								null,

@@ -70,3 +70,7 @@ setInterval(() => {
 		cache = meta;
 	});
 }, 1000 * 10);
+
+export function fetchMetaSync(): Meta | null {
+	return cache;
+}

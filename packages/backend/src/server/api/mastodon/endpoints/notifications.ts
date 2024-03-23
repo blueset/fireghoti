@@ -1,156 +1,85 @@
 import Router from "@koa/router";
-import { convertId, IdType } from "@/server/api/index.js";
-import { getClient } from "../ApiMastodonCompatibleService.js";
-import { convertTimelinesArgsId } from "./timeline.js";
-import { convertNotification } from "../converters.js";
-import { apiLogger } from "@/server/api/logger.js";
-import { inspect } from "node:util";
+import { limitToInt, normalizeUrlQuery } from "./timeline.js";
+import { NotificationHelpers } from "@/server/api/mastodon/helpers/notification.js";
+import { NotificationConverter } from "@/server/api/mastodon/converters/notification.js";
+import { auth } from "@/server/api/mastodon/middleware/auth.js";
+import { filterContext } from "@/server/api/mastodon/middleware/filter-context.js";
 
-function toLimitToInt(q: any) {
-	if (q.limit) if (typeof q.limit === "string") q.limit = parseInt(q.limit, 10);
-	return q;
-}
+export function setupEndpointsNotifications(router: Router): void {
+    router.get("/v1/notifications",
+        auth(true, ['read:notifications']),
+        filterContext('notifications'),
+        async (ctx) => {
+            const args = normalizeUrlQuery(limitToInt(ctx.query), ['types[]', 'exclude_types[]']);
+            const res = await NotificationHelpers.getNotifications(args.max_id, args.since_id, args.min_id, args.limit, args['types[]'], args['exclude_types[]'], args.account_id, ctx);
+            ctx.body = await NotificationConverter.encodeMany(res, ctx);
+        }
+    );
 
-export function apiNotificationsMastodon(router: Router): void {
-	router.get("/v1/notifications", async (ctx) => {
-		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-		const accessTokens = ctx.request.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		const body: any = ctx.request.body;
-		try {
-			const data = await client.getNotifications(
-				convertTimelinesArgsId(toLimitToInt(ctx.query)),
-			);
-			const notfs = data.data;
-			const ret = notfs.map((n) => {
-				n = convertNotification(n);
-				if (n.type !== "follow" && n.type !== "follow_request") {
-					if (n.type === "reaction") n.type = "favourite";
-					return n;
-				} else {
-					return n;
-				}
-			});
-			ctx.body = ret;
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
+    router.get("/v1/notifications/:id",
+        auth(true, ['read:notifications']),
+        filterContext('notifications'),
+        async (ctx) => {
+            const notification = await NotificationHelpers.getNotificationOr404(ctx.params.id, ctx);
+            ctx.body = await NotificationConverter.encode(notification, ctx);
+        }
+    );
 
-	router.get("/v1/notifications/:id", async (ctx) => {
-		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-		const accessTokens = ctx.request.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		const body: any = ctx.request.body;
-		try {
-			const dataRaw = await client.getNotification(
-				convertId(ctx.params.id, IdType.FirefishId),
-			);
-			const data = convertNotification(dataRaw.data);
-			ctx.body = data;
-			if (
-				data.type !== "follow" &&
-				data.type !== "follow_request" &&
-				data.type === "reaction"
-			) {
-				data.type = "favourite";
-			}
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
+    router.post("/v1/notifications/clear",
+        auth(true, ['write:notifications']),
+        async (ctx) => {
+            await NotificationHelpers.clearAllNotifications(ctx);
+            ctx.body = {};
+        }
+    );
 
-	router.post("/v1/notifications/clear", async (ctx) => {
-		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-		const accessTokens = ctx.request.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		const body: any = ctx.request.body;
-		try {
-			const data = await client.dismissNotifications();
-			ctx.body = data.data;
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
+    router.post("/v1/notifications/:id/dismiss",
+        auth(true, ['write:notifications']),
+        async (ctx) => {
+            const notification = await NotificationHelpers.getNotificationOr404(ctx.params.id, ctx);
+            await NotificationHelpers.dismissNotification(notification.id, ctx);
+            ctx.body = {};
+        }
+    );
 
-	router.post("/v1/notification/:id/dismiss", async (ctx) => {
-		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-		const accessTokens = ctx.request.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		const body: any = ctx.request.body;
-		try {
-			const data = await client.dismissNotification(
-				convertId(ctx.params.id, IdType.FirefishId),
-			);
-			ctx.body = data.data;
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
+    router.post("/v1/conversations/:id/read",
+        auth(true, ['write:conversations']),
+        async (ctx, reply) => {
+            await NotificationHelpers.markConversationAsRead(ctx.params.id, ctx);
+            ctx.body = {};
+        }
+    );
 
-	router.get("/v1/push/subscription", async (ctx) => {
-		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-		const accessTokens = ctx.request.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.getPushSubscription();
-			ctx.body = data.data;
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
+    router.get("/v1/push/subscription",
+        auth(true, ['read:notifications']),
+        async (ctx) => {
+            const subscription = await NotificationHelpers.getPushSubscriptionOr404(ctx);
+            ctx.body = await NotificationConverter.encodeSubscription(subscription, ctx);
+        }
+    );
 
-	router.post("/v1/push/subscription", async (ctx) => {
-		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-		const accessTokens = ctx.request.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		const body: any = ctx.request.body;
-		try {
-			const data = await client.subscribePushNotification(body.subscription, body.data);
-			ctx.body = data.data;
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
+    router.post("/v1/push/subscription",
+        auth(true, ['write:notifications']),
+        async (ctx) => {
+            const subscription = await NotificationHelpers.setPushSubscription(ctx);
+            ctx.body = await NotificationConverter.encodeSubscription(subscription, ctx);
+        }
+    );
 
-	router.put("/v1/push/subscription", async (ctx) => {
-		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-		const accessTokens = ctx.request.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		const body: any = ctx.request.body;
-		try {
-			const data = await client.updatePushSubscription(body.data);
-			ctx.body = data.data;
-		} catch (e: any) {
-			apiLogger.error(inspect(e), e.response.data);
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
+    router.delete("/v1/push/subscription",
+        auth(true, ['write:notifications']),
+        async (ctx) => {
+            await NotificationHelpers.deletePushSubscription(ctx);
+            ctx.body = {};
+        }
+    );
 
-	router.delete("/v1/push/subscription", async (ctx) => {
-		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-		const accessTokens = ctx.request.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.deletePushSubscription();
-			ctx.body = data.data;
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
+    router.put("/v1/push/subscription",
+        auth(true, ['write:notifications']),
+        async (ctx) => {
+            // FIXME: implement alerts
+            const subscription = await NotificationHelpers.getPushSubscriptionOr404(ctx);
+            ctx.body = await NotificationConverter.encodeSubscription(subscription, ctx);
+        }
+    );
 }

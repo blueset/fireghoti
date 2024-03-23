@@ -156,6 +156,11 @@ type NoteStreamEventTypes = {
 	};
 };
 
+export interface NoteUpdatesStreamTypes {
+	deleted: Note;
+	updated: Note;
+}
+
 export interface ChannelStreamTypes {
 	typing: User["id"];
 }
@@ -264,6 +269,10 @@ export type StreamMessages = {
 	notes: {
 		name: "notesStream";
 		payload: Note;
+	};
+	noteUpdates: {
+		name: "noteUpdatesStream";
+		payload: EventUnionFromDictionary<NoteUpdatesStreamTypes>;
 	};
 };
 
