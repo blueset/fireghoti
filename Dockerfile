@@ -1,9 +1,9 @@
 ## Install dev and compilation dependencies, build files
-FROM docker.io/node:20-slim as build
+FROM docker.io/node:20-alpine as build
 WORKDIR /firefish
 
 # Install compilation dependencies
-RUN apt-get update && DEBIAN_FRONTEND='noninteractive' apt-get install -y --no-install-recommends curl build-essential ca-certificates python3
+RUN apk update && apk add --no-cache build-base linux-headers curl ca-certificates python3
 RUN curl --proto '=https' --tlsv1.2 --silent --show-error --fail https://sh.rustup.rs | sh -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 
@@ -44,14 +44,11 @@ RUN NODE_ENV='production' pnpm run --recursive --parallel --filter '!backend-rs'
 RUN find . -path '*/node_modules/*' -delete && pnpm install --prod --frozen-lockfile
 
 ## Runtime container
-FROM docker.io/node:20-slim
+FROM docker.io/node:20-alpine
 WORKDIR /firefish
 
 # Install runtime dependencies
-RUN apt-get update && DEBIAN_FRONTEND='noninteractive' apt-get install -y --no-install-recommends zip unzip tini ffmpeg ca-certificates curl
-
-RUN echo 'deb https://deb.debian.org/debian experimental main' | tee /etc/apt/sources.list
-RUN apt-get update && DEBIAN_FRONTEND='noninteractive' apt-get --target-release experimental install -y --no-install-recommends libc6
+RUN apk update && apk add --no-cache zip unzip tini ffmpeg curl
 
 COPY . ./
 
@@ -73,5 +70,5 @@ COPY --from=build /firefish/packages/backend-rs/built /firefish/packages/backend
 RUN corepack enable && corepack prepare pnpm@latest --activate
 ENV NODE_ENV=production
 VOLUME "/firefish/files"
-ENTRYPOINT [ "/usr/bin/tini", "--" ]
+ENTRYPOINT [ "/sbin/tini", "--" ]
 CMD [ "pnpm", "run", "start:container" ]
