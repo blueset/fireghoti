@@ -632,9 +632,6 @@ importers:
       autosize:
         specifier: 6.0.1
         version: 6.0.1
-      blurhash:
-        specifier: 2.0.5
-        version: 2.0.5
       broadcast-channel:
         specifier: 7.0.0
         version: 7.0.0
@@ -5906,6 +5903,7 @@ packages:
 
   /blurhash@2.0.5:
     resolution: {integrity: sha512-cRygWd7kGBQO3VEhPiTgq4Wc43ctsM+o46urrmPOiuAe+07fzlSB9OJVdpgDL0jPqXUVQ9ht7aq7kxOeJHRK+w==}
+    dev: false
 
   /bmp-js@0.1.0:
     resolution: {integrity: sha512-vHdS19CnY3hwiNdkaqk93DvjVLfbEcI8mys4UjuWrlX1haDmroo8o4xCzh4wD6DGV6HxRCyauwhHRqMTfERtjw==}
