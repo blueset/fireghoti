@@ -7,7 +7,7 @@ import { awaitAll } from "@/prelude/await-all.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { getNote } from "@/server/api/common/getters.js";
 import { getStubMastoContext, MastoContext } from "@/server/api/mastodon/index.js";
-import { Notifications } from "@/models/index.js";
+import { Apps, Notifications } from "@/models/index.js";
 import isQuote from "@/misc/is-quote.js";
 import { unique } from "@/prelude/array.js";
 import { Note } from "@/models/entities/note.js";
@@ -136,6 +136,7 @@ export class NotificationConverter {
         body: pushNotificationsTypes[T],
     ): Promise<Partial<MastodonEntity.NotificationPayload>> {
         if (!subscription.appAccessToken) return {};
+        const app = subscription.appAccessToken.appId ? await Apps.findOneBy({ id: subscription.appAccessToken.appId }) : null;
         const access_token = subscription.appAccessToken.token;
         let preferred_locale = "en";
         let notification_id = "";
@@ -178,6 +179,13 @@ export class NotificationConverter {
             icon = notificationBody.user?.avatarUrl ?? "";
             description = notificationBody.text || "";
         }
+
+        // App-specific compats
+        if (app?.name === "Mastodon for Android" || app?.name === "Megalodon" || app?.name === "Moshidon") {
+            // Mastodon for Android (and forks) require notification_id to be convertible to a long int, but never use it.
+            notification_id = new Date().getTime().toString();
+        }
+
         return {
             access_token,
             preferred_locale,

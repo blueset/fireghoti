@@ -8,8 +8,10 @@ import type { AccessToken } from "@/models/entities/access-token";
 
 export async function AuthMiddleware(ctx: MastoContext, next: () => Promise<any>) {
     const token = await getTokenFromOAuth(ctx.headers.authorization);
+    const app = token?.appId ? await Apps.findOneBy({ id: token.appId }) : null;
 
     ctx.appId = token?.appId;
+    ctx.tokenApp = app;
     ctx.user = token?.user ?? null as ILocalUser | null;
     ctx.scopes = token?.permission ?? [] as string[];
     ctx.tokenId = token?.id;

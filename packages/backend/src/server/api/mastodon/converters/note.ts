@@ -184,7 +184,7 @@ export class NoteConverter {
             application: null, //FIXME
             language: note.lang,
             pinned: isPinned,
-            reactions: populated.then(populated => Promise.resolve(reaction).then(reaction => this.encodeReactions(note.reactions, reaction?.reaction, populated))),
+            reactions: populated.then(populated => Promise.resolve(reaction).then(reaction => this.encodeReactions(note.reactions, reaction?.reaction, populated, ctx))),
             bookmarked: isBookmarked,
             quote: reblog.then(reblog => isQuote(note) ? reblog : null),
             edited_at: note.updatedAt?.toISOString() ?? null,
@@ -292,7 +292,12 @@ export class NoteConverter {
         await prefetchEmojis(aggregateNoteEmojis(notes));
     }
 
-    private static encodeReactions(reactions: Record<string, number>, myReaction: string | undefined, populated: PopulatedEmoji[]): MastodonEntity.Reaction[] {
+    private static encodeReactions(reactions: Record<string, number>, myReaction: string | undefined, populated: PopulatedEmoji[], ctx: MastoContext): MastodonEntity.Reaction[] {
+        if (ctx?.tokenApp?.name === "SoraSNS for iPad") {
+            // 3rd party compat
+            // SoraSNS requires `reactions` to be a `Dictionary<string, int>`.
+            return reactions as unknown as MastodonEntity.Reaction[];
+        }
         return Object.keys(reactions).map(key => {
 
             const isCustom = key.startsWith(':') && key.endsWith(':');
