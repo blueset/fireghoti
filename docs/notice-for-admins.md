@@ -2,6 +2,12 @@
 
 You can skip intermediate versions when upgrading from an old version, but please read the notices and follow the instructions for each intermediate version before [upgrading](./upgrade.md).
 
+## Unreleased
+
+### For Docker/Podman users
+
+The Firefish OCI container image is now based on [`docker.io/node:20-alpine`](https://hub.docker.com/layers/library/node/20-alpine/images/sha256-121edf6661770d20483818426b32042da33323b6fd30fc1ad4cd6890a817e240) (migrated from Debian to Alpine). This is a notification only and no action is required.
+
 ## v20240319
 
 The full-text search engine used in Firefish has been changed to [PGroonga](https://pgroonga.github.io/). This is no longer an optional feature, so please enable PGroonga on your system. If you are using Sonic, Meilisearch, or Elasticsearch, you can also uninstall it from your system and remove the settings from `.config/default.yml`.
