@@ -849,7 +849,7 @@ auto: "自动"
 themeColor: "服务器滚动条颜色"
 size: "大小"
 numberOfColumn: "列数"
-searchByGoogle: "Google"
+searchByGoogle: "搜索"
 instanceDefaultLightTheme: "服务器默认浅色主题"
 instanceDefaultDarkTheme: "服务器默认深色主题"
 instanceDefaultThemeDescription: "以对象格式键入主题代码。"
@@ -2000,7 +2000,7 @@ _iconSets:
   bold: 加粗
   light: 减细
 emojiModPerm: 自定义表情符号管理权限
-squareCatAvatars: 猫模式账号显示圆形头像
+squareCatAvatars: 为猫账号显示方形头像图标
 makePrivate: 设为私有
 makePrivateConfirm: 此操作将向远程服务器发送删除请求并将可见性更改为私有。是否继续？
 _emojiModPerm:
