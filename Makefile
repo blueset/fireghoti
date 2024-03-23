@@ -36,3 +36,9 @@ db.up:
 	$(MAKE) -C ./dev/db-container up
 db.down:
 	$(MAKE) -C ./dev/db-container down
+
+.PHONY: psql redis-cli
+psql:
+	$(MAKE) -C ./dev/db-container psql
+redis-cli:
+	$(MAKE) -C ./dev/db-container redis-cli
