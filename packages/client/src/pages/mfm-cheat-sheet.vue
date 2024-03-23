@@ -437,6 +437,30 @@
 						</div>
 					</div>
 				</div>
+				<div class="section _block">
+					<div class="title">{{ i18n.ts._mfm.ruby }}</div>
+					<div class="content">
+						<p>{{ i18n.ts._mfm.rubyDescription }}</p>
+						<div class="preview">
+							<Mfm :text="preview_ruby" />
+							<MkTextarea v-model="preview_ruby"
+								><span>MFM</span></MkTextarea
+							>
+						</div>
+					</div>
+				</div>
+				<div class="section _block">
+					<div class="title">{{ i18n.ts._mfm.unixTime }}</div>
+					<div class="content">
+						<p>{{ i18n.ts._mfm.unixTimeDescription }}</p>
+						<div class="preview">
+							<Mfm :text="preview_unixtime" />
+							<MkTextarea v-model="preview_unixtime"
+								><span>MFM</span></MkTextarea
+							>
+						</div>
+					</div>
+				</div>
 			</div>
 		</MkSpacer>
 	</MkStickyContainer>
@@ -531,6 +555,12 @@ const preview_plain = ref(
 );
 const preview_fade = ref(
 	"$[fade 🍮] $[fade.out 🍮] $[fade.speed=3s 🍮] $[fade.delay=3s 🍮]",
+);
+const preview_ruby = ref(
+	"$[ruby 商業用音楽工場|こうば] $[ruby $[rainbow 語り継がれる創造神] かみさま]",
+);
+const preview_unixtime = ref(
+	"$[unixtime 1630000000]",
 );
 
 definePageMetadata({
