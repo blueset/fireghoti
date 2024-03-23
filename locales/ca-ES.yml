@@ -135,7 +135,7 @@ userList: "Llistes"
 smtpUser: "Nom d'usuari"
 smtpPass: "Contrasenya"
 user: "Usuari"
-searchByGoogle: "Cercar"
+searchByGoogle: "Cerca"
 file: "Fitxer"
 _email:
   _follow:
@@ -145,7 +145,7 @@ _email:
 _mfm:
   mention: "Menció"
   quote: "Citar"
-  search: "Cercar"
+  search: "Cerca"
   dummy: Firefish amplia el món del Fediverse
   hashtag: Etiqueta
   intro: MFM és un llenguatge de marques utilitzat a Misskey, Firefish, Akkoma i més
