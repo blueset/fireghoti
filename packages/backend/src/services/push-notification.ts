@@ -83,15 +83,9 @@ export async function pushNotification<T extends keyof pushNotificationsTypes>(
 				p256dh: subscription.publickey,
 			},
 		};
-		const notificationBody = body as Packed<"Notification">;
-		const displayName = (type === "notification" && (
-			notificationBody.user?.name ||
-			(notificationBody.user?.host && `@${notificationBody.user?.username}@${notificationBody.user?.host}`) ||
-			(notificationBody.user?.username && `@${notificationBody.user?.username}`) 
-		)) || "Someone";
 		const notificationPayload = 
 			subscription.appAccessToken ? 
-			NotificationConverter.encodePushNotificationPayload(subscription, type, body) : {
+			await NotificationConverter.encodePushNotificationPayload(subscription, type, body) : {
 				type,
 				body:
 					type === "notification"
