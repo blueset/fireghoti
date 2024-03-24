@@ -429,7 +429,7 @@ export class NoteConverter {
                             summary.open_graph?.videos?.[0]?.stream ??
                             summary.open_graph?.videos?.[0]?.url ??
                             "",
-                        blurhash: "",
+                        blurhash: null,
                     }
                 }
             } catch {

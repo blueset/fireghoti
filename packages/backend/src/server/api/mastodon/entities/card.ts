@@ -13,6 +13,6 @@ namespace MastodonEntity {
         width: number;
         height: number;
         embed_url: string;
-        blurhash: string;
+        blurhash: string | null;
     };
 }
