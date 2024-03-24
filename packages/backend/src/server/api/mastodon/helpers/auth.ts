@@ -64,7 +64,9 @@ export class AuthHelpers {
 
         const body = ctx.request.body as any;
         const scopes: string[] = (typeof body.scopes === "string" ? body.scopes.split(' ') : body.scopes) ?? ['read'];
-        const clientId = toSingleLast(body.client_id);
+        let clientId = toSingleLast(body.client_id);
+        // s.1a23 - Elk specific fix
+        if (clientId === "aHR0cHM6Ly9zLjFhMjMuc3R1ZGlvL2F1dGgvMTg3ODUyMWItMDc0NS00MGVkLThiNTQtYzdhNGUzZDcyNjQw") clientId = "9qlbc397v13thdtp";
 
         if (clientId == null) throw new MastoApiError(400, "Invalid client_id (1)");
 
@@ -91,8 +93,9 @@ export class AuthHelpers {
 
     public static async getAppInfo(ctx: MastoContext) {
         const body = ctx.request.body as any;
-        const clientId = toSingleLast(body.client_id);
-        console.log("body", body);
+        let clientId = toSingleLast(body.client_id);
+        // s.1a23 - Elk specific fix
+        if (clientId === "aHR0cHM6Ly9zLjFhMjMuc3R1ZGlvL2F1dGgvMTg3ODUyMWItMDc0NS00MGVkLThiNTQtYzdhNGUzZDcyNjQw") clientId = "9qlbc397v13thdtp";
 
         if (clientId == null) throw new MastoApiError(400, "Invalid client_id (3)");
 
@@ -106,8 +109,10 @@ export class AuthHelpers {
     public static async getAuthToken(ctx: MastoContext) {
         const body: any = ctx.request.body || ctx.request.query;
         const scopes: string[] = (typeof body.scope === "string" ? body.scope.replaceAll("+", " ").split(' ') : body.scope) ?? ['read'];
-        const clientId = toSingleLast(body.client_id);
+        let clientId = toSingleLast(body.client_id);
         const code = toSingleLast(body.code);
+        // s.1a23 - Elk specific fix
+        if (clientId === "aHR0cHM6Ly9zLjFhMjMuc3R1ZGlvL2F1dGgvMTg3ODUyMWItMDc0NS00MGVkLThiNTQtYzdhNGUzZDcyNjQw") clientId = "9qlbc397v13thdtp";
 
         const invalidScopeError = new MastoApiError(400, "invalid_scope", "The requested scope is invalid, unknown, or malformed.");
         const invalidClientError = new MastoApiError(401, "invalid_client", "Client authentication failed due to unknown client, no client authentication included, or unsupported authentication method.");
@@ -138,7 +143,9 @@ export class AuthHelpers {
     public static async revokeAuthToken(ctx: MastoContext) {
         const error = new MastoApiError(403, "unauthorized_client", "You are not authorized to revoke this token");
         const body: any = ctx.request.body || ctx.request.query;
-        const clientId = toSingleLast(body.client_id);
+        let clientId = toSingleLast(body.client_id);
+        // s.1a23 - Elk specific fix
+        if (clientId === "aHR0cHM6Ly9zLjFhMjMuc3R1ZGlvL2F1dGgvMTg3ODUyMWItMDc0NS00MGVkLThiNTQtYzdhNGUzZDcyNjQw") clientId = "9qlbc397v13thdtp";
         const clientSecret = toSingleLast(body.client_secret);
         const token = toSingleLast(body.token);
 
