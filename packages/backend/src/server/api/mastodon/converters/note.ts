@@ -2,7 +2,7 @@ import { ILocalUser, User } from "@/models/entities/user.js";
 import { getNote } from "@/server/api/common/getters.js";
 import { Note } from "@/models/entities/note.js";
 import config from "@/config/index.js";
-import mfm from "mfm-js";
+import mfm, { MfmLink, MfmUrl } from "mfm-js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
 import { escapeMFM } from "@/server/api/mastodon/converters/mfm.js";
@@ -31,11 +31,12 @@ import isQuote from "@/misc/is-quote.js";
 import { unique } from "@/prelude/array.js";
 import { NoteReaction } from "@/models/entities/note-reaction.js";
 import { Cache } from "@/misc/cache.js";
-// import { HtmlNoteCacheEntry } from "@/models/entities/html-note-cache-entry.js";
 import { isFiltered } from "@/misc/is-filtered.js";
+import { unfurl } from 'unfurl.js'
 
 export class NoteConverter {
     private static noteContentHtmlCache = new Cache<string | null>('html:note:content', config.htmlCache?.ttlSeconds ?? 60 * 60);
+    private static cardCache = new Cache<MastodonEntity.Card | null>('note:card', 60 * 60);
     public static async encode(note: Note, ctx: MastoContext, recurseCounter: number = 2): Promise<MastodonEntity.Status> {
         const user = ctx.user as ILocalUser | null;
         const noteUser = note.user ?? UserHelpers.getUserCached(note.userId, ctx);
@@ -117,12 +118,28 @@ export class NoteConverter {
 
         const text = quoteUri.then(quoteUri => note.text !== null ? quoteUri !== null ? note.text.replaceAll(`RE: ${quoteUri}`, '').replaceAll(quoteUri, '').trimEnd() : note.text : null);
 
-        const content = this.noteContentHtmlCache.fetch(identifier, async () =>
-            Promise.resolve(await this.fetchFromCacheWithFallback(note, ctx) ?? text.then(text => text !== null
-                ? quoteUri.then(quoteUri => MfmHelpers.toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers), note.userHost, false, quoteUri))
-                    .then(p => p ?? escapeMFM(text))
-                : "")), true)
-            .then(p => p ?? '');
+        const content = 
+            this.noteContentHtmlCache.fetch(
+                identifier, 
+                async () => text.then(text => 
+                    text !== null ?
+                    quoteUri
+                        .then(quoteUri => MfmHelpers.toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers), note.userHost, false, quoteUri))
+                        .then(p => p ?? escapeMFM(text)) :
+                    ""
+                ),
+                true
+            ).then(p => p ?? '');
+
+        const card = text
+            .then(async (text) => this.extractUrlFromMfm(text))
+            .then(async (urls) => !urls ? null : 
+                this.cardCache.fetch(
+                    identifier, 
+                    async () => this.generateCard(urls, note.lang ?? undefined),
+                    true
+                )
+            );
 
         const isPinned = (ctx.pinAggregate as Map<string, boolean>)?.get(note.id)
             ?? (user && note.userId === user.id
@@ -179,7 +196,7 @@ export class NoteConverter {
             media_attachments: files.then(files => files.length > 0 ? files.map((f) => FileConverter.encode(f)) : []),
             mentions: mentions,
             tags: tags,
-            card: null, //FIXME
+            card: card,
             poll: note.hasPoll ? populatePoll(note, user?.id ?? null).then(p => noteEmoji.then(emojis => PollConverter.encode(p, note.id, emojis))) : null,
             application: null, //FIXME
             language: note.lang,
@@ -207,7 +224,6 @@ export class NoteConverter {
         const mutingAggregate = new Map<Note["id"], boolean>();
         const bookmarkAggregate = new Map<Note["id"], boolean>();
         const pinAggregate = new Map<Note["id"], boolean>();
-        // const htmlNoteCacheAggregate = new Map<Note["id"], HtmlNoteCacheEntry | null>();
 
         const renoteIds = notes
             .filter((n) => n.renoteId != null)
@@ -215,17 +231,6 @@ export class NoteConverter {
 
         const noteIds = unique(notes.map((n) => n.id));
         const targets = unique([...noteIds, ...renoteIds]);
-
-        /*
-        if (config.htmlCache?.dbFallback) {
-            const htmlNoteCacheEntries = await HtmlNoteCacheEntries.findBy({
-                noteId: In(targets)
-            });
-
-            for (const target of targets) {
-                htmlNoteCacheAggregate.set(target, htmlNoteCacheEntries.find(n => n.noteId === target) ?? null);
-            }
-        }*/
 
         if (user?.id != null) {
             const mutingTargets = unique([...notes.map(n => n.threadId ?? n.id)]);
@@ -283,7 +288,6 @@ export class NoteConverter {
         ctx.mutingAggregate = mutingAggregate;
         ctx.bookmarkAggregate = bookmarkAggregate;
         ctx.pinAggregate = pinAggregate;
-        // ctx.htmlNoteCacheAggregate = htmlNoteCacheAggregate;
 
         const users = notes.filter(p => !!p.user).map(p => p.user as User);
         const renoteUserIds = notes.filter(p => p.renoteUserId !== null).map(p => p.renoteUserId as string);
@@ -321,52 +325,6 @@ export class NoteConverter {
         return NoteConverter.encode(note, ctx);
     }
 
-    private static async fetchFromCacheWithFallback(note: Note, ctx: MastoContext): Promise<string | null> {
-        return null;
-        /*
-        if (!config.htmlCache?.dbFallback) return null;
-        let dbHit: HtmlNoteCacheEntry | Promise<HtmlNoteCacheEntry | null> | null | undefined = (ctx.htmlNoteCacheAggregate as Map<string, HtmlNoteCacheEntry | null> | undefined)?.get(note.id);
-        if (dbHit === undefined) dbHit = HtmlNoteCacheEntries.findOneBy({ noteId: note.id });
-
-        return Promise.resolve(dbHit)
-            .then(res => {
-                if (res === null || (res.updatedAt?.getTime() !== note.updatedAt?.getTime())) {
-                    return this.dbCacheMiss(note, ctx);
-                }
-                return res;
-            })
-            .then(hit => hit?.updatedAt === note.updatedAt ? hit?.content ?? null : null);
-        */
-    }
-
-    /*
-	private static async dbCacheMiss(note: Note, ctx: MastoContext): Promise<HtmlNoteCacheEntry | null> {
-		const identifier = `${note.id}:${(note.updatedAt ?? note.createdAt).getTime()}`;
-		const cache = ctx.cache as AccountCache;
-		return cache.locks.acquire(identifier, async () => {
-			const cachedContent = await this.noteContentHtmlCache.get(identifier);
-			if (cachedContent !== undefined) {
-				return { content: cachedContent } as HtmlNoteCacheEntry;
-			}
-
-			const quoteUri = note.renote
-				? isQuote(note)
-					? (note.renote.url ?? note.renote.uri ?? `${config.url}/notes/${note.renote.id}`)
-					: null
-				: null;
-
-			const text = note.text !== null ? quoteUri !== null ? note.text.replaceAll(`RE: ${quoteUri}`, '').replaceAll(quoteUri, '').trimEnd() : note.text : null;
-			const content = text !== null
-				? MfmHelpers.toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers), note.userHost, false, quoteUri)
-					.then(p => p ?? escapeMFM(text))
-				: null;
-
-			HtmlNoteCacheEntries.upsert({ noteId: note.id, updatedAt: note.updatedAt ?? note.createdAt, content: await content }, ["noteId"]);
-			await this.noteContentHtmlCache.set(identifier, await content);
-			return { content } as HtmlNoteCacheEntry;
-		});
-	}*/
-
     public static async prewarmCache(note: Note): Promise<void> {
         if (!config.htmlCache?.prewarm) return;
         const identifier = `${note.id}:${(note.updatedAt ?? note.createdAt).getTime()}`;
@@ -397,5 +355,87 @@ export class NoteConverter {
 
         // if (config.htmlCache?.dbFallback)
         //     HtmlNoteCacheEntries.upsert({ noteId: note.id, updatedAt: note.updatedAt ?? note.createdAt, content: await content }, ["noteId"]);
+    }
+
+    private static removeHash(x: string) { return x.replace(/#[^#]*$/, "") };
+
+    private static extractUrlFromMfm(text: string | null): string[] {
+        if (!text) return [];
+        const nodes = mfm.parse(text);
+        const urlNodes = mfm.extract(nodes, (node) => {
+            return (
+                node.type === "url" ||
+                (node.type === "link" && !node.props.silent)
+            );
+        }) as (MfmUrl | MfmLink)[];
+        const urls: string[] = unique(urlNodes.map((x) => x.props.url));
+    
+        return urls.reduce((array, url) => {
+            const urlWithoutHash = this.removeHash(url);
+            if (!array.map((x) => this.removeHash(x)).includes(urlWithoutHash))
+                array.push(url);
+            return array;
+        }, [] as string[]);
+    }
+
+    private static async generateCard(urls: string[], lang?: string): Promise<MastodonEntity.Card | null> {
+        if (urls.length === 0) return null;
+        for (const url of urls) {
+            try {
+                const summary = await unfurl(url, { oembed: true, follow: 10, compress: true, headers: { 'Accept-Language': lang ?? 'en-US' }});
+                if (summary) {
+                    return {
+                        url: summary.canonical_url ?? url,
+                        title: summary.title ?? "",
+                        description: summary.description ?? "",
+                        image: 
+                            summary.oEmbed?.thumbnails?.[0]?.url ??
+                            summary.open_graph?.images?.[0]?.secure_url ??
+                            summary.open_graph?.images?.[0]?.url ??
+                            summary.twitter_card?.images?.[0]?.url ??
+                            null,
+                        type: 
+                            summary.oEmbed?.type ??
+                            ((summary.open_graph?.videos || summary.open_graph?.audio || summary.twitter_card?.players) ? "video" : "link"),
+                        author_name: 
+                            summary.author ??
+                            summary.oEmbed?.author_name ??
+                            summary.open_graph?.article?.author ??
+                            summary.twitter_card?.creator ??
+                            "",
+                        author_url: 
+                            summary.oEmbed?.author_name ??
+                            "",
+                        provider_name: 
+                            summary.oEmbed?.provider_name ??
+                            summary.open_graph?.site_name ??
+                            summary.twitter_card?.site ??
+                            "",
+                        provider_url: 
+                            summary.oEmbed?.provider_url ??
+                            "",
+                        html: (summary.oEmbed as { html?: string })?.html ?? "",
+                        width: 
+                            summary.oEmbed?.thumbnails?.[0]?.width ??
+                            summary.open_graph?.images?.[0]?.width ??
+                            summary.open_graph?.videos?.[0]?.width ??
+                            0,
+                        height:
+                            summary.oEmbed?.thumbnails?.[0]?.height ??
+                            summary.open_graph?.images?.[0]?.height ??
+                            summary.open_graph?.videos?.[0]?.height ??
+                            0,
+                        embed_url: 
+                            summary.open_graph?.videos?.[0]?.stream ??
+                            summary.open_graph?.videos?.[0]?.url ??
+                            null,
+                        blurhash: null,
+                    }
+                }
+            } catch {
+                // no op.
+            }
+        }
+        return null;
     }
 }
