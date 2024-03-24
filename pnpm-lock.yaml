@@ -91,8 +91,8 @@ importers:
         specifier: ^15.0.0
         version: 15.0.0
       adm-zip:
-        specifier: ^0.5.12
-        version: 0.5.12
+        specifier: 0.5.10
+        version: 0.5.10
       ajv:
         specifier: 8.12.0
         version: 8.12.0
@@ -5068,8 +5068,8 @@ packages:
     hasBin: true
     dev: true
 
-  /adm-zip@0.5.12:
-    resolution: {integrity: sha512-6TVU49mK6KZb4qG6xWaaM4C7sA/sgUMLy/JYMOzkcp3BvVLpW0fXDFQiIzAuxFCt/2+xD7fNIiPFAoLZPhVNLQ==}
+  /adm-zip@0.5.10:
+    resolution: {integrity: sha512-x0HvcHqVJNTPk/Bw8JbLWlWoo6Wwnsug0fnYYro1HBrjxZ3G7/AZk7Ahv8JwDe1uIcz8eBqvu86FuF1POiG7vQ==}
     engines: {node: '>=6.0'}
     dev: false
 

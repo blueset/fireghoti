@@ -34,7 +34,7 @@
 		"@redocly/openapi-core": "1.10.5",
 		"@sinonjs/fake-timers": "11.2.2",
 		"@twemoji/parser": "^15.0.0",
-		"adm-zip": "^0.5.12",
+		"adm-zip": "0.5.10",
 		"ajv": "8.12.0",
 		"archiver": "7.0.1",
 		"argon2": "^0.40.1",
