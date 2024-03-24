@@ -4,16 +4,16 @@ import type { ILocalUser, User } from "@/models/entities/user.js";
 import type { MastodonStream } from "./channel.js";
 import { Blockings, Followings, Mutings, RenoteMutings, UserListJoinings, UserProfiles, } from "@/models/index.js";
 import type { UserProfile } from "@/models/entities/user-profile.js";
-import { StreamEventEmitter, StreamMessages } from "@/server/api/stream/types.js";
+import type { StreamEventEmitter, StreamMessages } from "@/server/api/stream/types.js";
 import { apiLogger } from "@/server/api/logger.js";
 import { MastodonStreamUser } from "@/server/api/mastodon/streaming/channels/user.js";
 import { MastodonStreamDirect } from "@/server/api/mastodon/streaming/channels/direct.js";
 import { MastodonStreamPublic } from "@/server/api/mastodon/streaming/channels/public.js";
 import { MastodonStreamList } from "@/server/api/mastodon/streaming/channels/list.js";
-import { ParsedUrlQuery } from "querystring";
+import type { ParsedUrlQuery } from "node:querystring";
 import { toSingleLast } from "@/prelude/array.js";
 import { MastodonStreamTag } from "@/server/api/mastodon/streaming/channels/tag.js";
-import { OAuthToken } from "@/models/entities/oauth-token.js";
+import type { AccessToken } from "@/models/entities/access-token.js";
 
 const logger = apiLogger.createSubLogger("streaming").createSubLogger("mastodon");
 const channels: Record<string, any> = {
@@ -41,7 +41,7 @@ export class MastodonStreamingConnection {
     public renoteMuting: Set<User["id"]> = new Set();
     public blocking: Set<User["id"]> = new Set();
     public hidden: Set<User["id"]> = new Set();
-    public token?: OAuthToken;
+    public token?: AccessToken;
     private wsConnection: websocket.connection;
     private channels: MastodonStream[] = [];
     public subscriber: StreamEventEmitter;
@@ -175,7 +175,7 @@ export class MastodonStreamingConnection {
                 logger.info(`Refusing connection to channel ${channel} without authentication, terminating connection`);
                 this.closeConnection();
                 return;
-            } else if (!channels[channel].requiredScopes.every((p: string) => this.token?.scopes?.includes(p))) {
+            } else if (!channels[channel].requiredScopes.every((p: string) => this.token?.permission?.includes(p))) {
                 logger.info(`Refusing connection to channel ${channel} without required OAuth scopes, terminating connection`);
                 this.closeConnection();
                 return;
