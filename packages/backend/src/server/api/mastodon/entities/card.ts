@@ -4,7 +4,7 @@ namespace MastodonEntity {
         title: string;
         description: string;
         type: "link" | "photo" | "video" | "rich";
-        image: string | null;
+        image: string;
         author_name: string;
         author_url: string;
         provider_name: string;
@@ -12,7 +12,7 @@ namespace MastodonEntity {
         html: string;
         width: number;
         height: number;
-        embed_url: string | null;
-        blurhash: string | null;
+        embed_url: string;
+        blurhash: string;
     };
 }
