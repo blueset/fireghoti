@@ -329,6 +329,7 @@ import XCheatSheet from "@/components/MkCheatSheetDialog.vue";
 import preprocess from "@/scripts/preprocess";
 import { vibrate } from "@/scripts/vibrate";
 import { langmap } from "@/scripts/langmap";
+import { isSupportedLang, isSameLanguage, languageContains, parentLanguage } from "@/scripts/language-utils";
 import type { MenuItem } from "@/types/menu";
 import detectLanguage from "@/scripts/detect-language";
 import icon from "@/scripts/icon";
@@ -1011,35 +1012,7 @@ function deleteDraft() {
 	localStorage.setItem("drafts", JSON.stringify(draftData));
 }
 
-/**
- * Compare two language codes to determine whether they are decisively different
- * @returns false if they are close enough
- */
-function isSameLanguage(langCode1: string | null, langCode2: string | null) {
-	return (
-		languageContains(langCode1, langCode2) ||
-		languageContains(langCode2, langCode1)
-	);
-}
 
-/**
- * Returns true if langCode1 contains langCode2
- */
-function languageContains(langCode1: string | null, langCode2: string | null) {
-	if (!langCode1 || !langCode2) return false;
-
-	if (
-		langCode1 === "zh" &&
-		["zh-hant", "zh-hans", "yue", "nan"].includes(langCode2)
-	) {
-		return true;
-	}
-
-	if (langCode1 === "no" && ["nb", "nn"].includes(langCode2)) {
-		return true;
-	}
-	return false;
-}
 
 async function post() {
 	// For text that is too short, the false positive rate may be too high, so we don't show alarm.
@@ -1054,7 +1027,8 @@ async function post() {
 		if (
 			currentLanguageName &&
 			detectedLanguageName &&
-			!isSameLanguage(detectedLanguage, language.value)
+			!isSameLanguage(detectedLanguage, language.value) &&
+			isSupportedLang(parentLanguage(language.value))
 		) {
 			// "canceled" means "post with detected language".
 			const { canceled } = await os.confirm({
