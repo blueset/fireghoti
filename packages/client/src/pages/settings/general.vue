@@ -124,6 +124,9 @@
 			<FormSwitch v-model="showNoAltTextWarning" class="_formBlock">{{
 				i18n.ts.showNoAltTextWarning
 			}}</FormSwitch>
+			<FormSwitch v-model="autocorrectNoteLanguage" class="_formBlock">{{
+				i18n.ts.autocorrectNoteLanguage
+			}}</FormSwitch>
 
 			<FormSelect v-model="serverDisconnectedBehavior" class="_formBlock">
 				<template #label>{{ i18n.ts.whenServerDisconnected }}</template>
@@ -529,6 +532,9 @@ const pullToRefreshThreshold = computed(
 );
 const showNoAltTextWarning = computed(
 	defaultStore.makeGetterSetter("showNoAltTextWarning"),
+);
+const autocorrectNoteLanguage = computed(
+	defaultStore.makeGetterSetter("autocorrectNoteLanguage"),
 );
 
 // This feature (along with injectPromo) is currently disabled

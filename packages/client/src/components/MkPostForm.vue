@@ -329,6 +329,7 @@ import XCheatSheet from "@/components/MkCheatSheetDialog.vue";
 import preprocess from "@/scripts/preprocess";
 import { vibrate } from "@/scripts/vibrate";
 import { langmap } from "@/scripts/langmap";
+import { isSupportedLang, isSameLanguage, languageContains, parentLanguage } from "@/scripts/language-utils";
 import type { MenuItem } from "@/types/menu";
 import detectLanguage from "@/scripts/detect-language";
 import icon from "@/scripts/icon";
@@ -758,22 +759,14 @@ const language = ref<string | null>(
 		localStorage.getItem("lang")?.split("-")[0],
 );
 
-function filterLangmapByPrefix(
-	prefix: string,
+function filterSubclassLanguages(
+	langCode: string,
 ): { langCode: string; nativeName: string }[] {
-	let to_return = Object.entries(langmap)
-		.filter(([langCode, _]) => langCode.startsWith(prefix))
+	return Object.entries(langmap)
+		.filter(([lc, _]) => languageContains(langCode, lc))
 		.map(([langCode, v]) => {
 			return { langCode, nativeName: v.nativeName };
 		});
-
-	if (prefix === "zh")
-		to_return = to_return.concat([
-			{ langCode: "yue", nativeName: langmap.yue.nativeName },
-			{ langCode: "nan", nativeName: langmap.nan.nativeName },
-		]);
-
-	return to_return;
 }
 
 function setLanguage() {
@@ -785,7 +778,7 @@ function setLanguage() {
 			type: "label",
 			text: i18n.ts.suggested,
 		});
-		filterLangmapByPrefix(detectedLanguage).forEach((v) => {
+		for (const v of filterSubclassLanguages(detectedLanguage)) {
 			actions.push({
 				text: v.nativeName,
 				danger: false,
@@ -794,7 +787,7 @@ function setLanguage() {
 					language.value = v.langCode;
 				},
 			});
-		});
+		}
 		actions.push(null);
 	}
 
@@ -1019,7 +1012,42 @@ function deleteDraft() {
 	localStorage.setItem("drafts", JSON.stringify(draftData));
 }
 
+
+
 async function post() {
+	// For text that is too short, the false positive rate may be too high, so we don't show alarm.
+	if (defaultStore.state.autocorrectNoteLanguage && text.value.length > 10) {
+		const detectedLanguage: string = detectLanguage(text.value) ?? "";
+
+		const currentLanguageName: string | undefined | false =
+			language.value && langmap[language.value]?.nativeName;
+		const detectedLanguageName: string | undefined | false =
+			detectedLanguage !== "" && langmap[detectedLanguage]?.nativeName;
+
+		if (
+			currentLanguageName &&
+			detectedLanguageName &&
+			!isSameLanguage(detectedLanguage, language.value) &&
+			isSupportedLang(parentLanguage(language.value))
+		) {
+			// "canceled" means "post with detected language".
+			const { canceled } = await os.confirm({
+				type: "warning",
+				text: i18n.t("incorrectLanguageWarning", {
+					detected: detectedLanguageName,
+					current: currentLanguageName,
+				}),
+				okText: i18n.ts.no,
+				cancelText: i18n.ts.yes,
+				isPlaintext: true,
+			});
+
+			if (canceled) {
+				language.value = detectedLanguage;
+			}
+		}
+	}
+
 	if (
 		defaultStore.state.showNoAltTextWarning &&
 		files.value.some((f) => f.comment == null || f.comment.length === 0)
