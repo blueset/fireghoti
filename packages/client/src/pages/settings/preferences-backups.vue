@@ -125,6 +125,7 @@ const defaultStoreSaveKeys: (keyof (typeof defaultStore)["state"])[] = [
 	"enablePullToRefresh",
 	"pullToRefreshThreshold",
 	"showNoAltTextWarning",
+	"showAddFileDescriptionAtFirstPost",
 	"autocorrectNoteLanguage",
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
