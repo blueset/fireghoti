@@ -16,7 +16,7 @@ export const packedNoteEdit = {
 		},
 		note: {
 			type: "object",
-			optional: false,
+			optional: true,
 			nullable: false,
 			ref: "Note",
 		},
