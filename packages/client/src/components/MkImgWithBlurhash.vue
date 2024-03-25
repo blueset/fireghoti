@@ -21,30 +21,46 @@
 		loading="lazy"
 		@load="onLoad"
 	/>
+	<i
+		class="alt-indicator"
+		:class="icon('ph-subtitles')"
+		v-if="alt && showAltIndicator"
+		v-tooltip.noLabel="
+			`${i18n.ts.alt}: ${
+				alt.length > 200
+					? alt.trim().slice(0, 200) + '...'
+					: alt.trim()
+			}`
+		"
+	></i>
 </template>
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import { decodeBlurHash } from "fast-blurhash";
+import icon from "@/scripts/icon";
+import { i18n } from "@/i18n";
 
 const props = withDefaults(
 	defineProps<{
 		src?: string | null;
 		hash?: string;
-		alt?: string;
+		alt?: string | null;
 		type?: string | null;
 		title?: string | null;
 		size?: number;
 		cover?: boolean;
 		largestDimension?: "width" | "height";
+		showAltIndicator?: boolean
 	}>(),
 	{
 		src: null,
 		type: null,
-		alt: "",
+		alt: null,
 		title: null,
 		size: 64,
 		cover: true,
+		showAltIndicator: false
 	},
 );
 
@@ -95,5 +111,22 @@ img {
 	&.tall {
 		height: 100%;
 	}
+}
+
+i.alt-indicator {
+	display: flex;
+	gap: 4px;
+	position: absolute;
+	border-radius: 6px;
+	overflow: hidden;
+	top: 0;
+	right: 0;
+	background-color: var(--accentedBg);
+	-webkit-backdrop-filter: var(--blur, blur(15px));
+	backdrop-filter: var(--blur, blur(15px));
+	color: var(--accent);
+	font-size: 1em;
+	padding: 6px 8px;
+	text-align: center;
 }
 </style>
