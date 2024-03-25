@@ -8,7 +8,6 @@
 	"license": "MIT",
 	"scripts": {
 		"build": "pnpm swc src --out-dir built --source-maps false --copy-files --strip-leading-paths",
-		"build:types": "pnpm tsc --emitDeclarationOnly",
 		"build:debug": "pnpm swc src --out-dir built --source-maps true --copy-files --strip-leading-paths",
 		"watch": "pnpm swc src --out-dir built --source-maps true --copy-files --strip-leading-paths --watch",
 		"lint": "pnpm biome check --apply src",
