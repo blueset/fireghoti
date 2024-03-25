@@ -25,6 +25,13 @@
 		class="alt-indicator"
 		:class="icon('ph-subtitles')"
 		v-if="alt && show_alt_indicator"
+		v-tooltip.noLabel="
+			`${i18n.ts.alt}: ${
+				alt.length > 200
+					? alt.trim().slice(0, 200) + '...'
+					: alt.trim()
+			}`
+		"
 	></i>
 </template>
 
@@ -32,6 +39,7 @@
 import { onMounted, ref } from "vue";
 import { decodeBlurHash } from "fast-blurhash";
 import icon from "@/scripts/icon";
+import { i18n } from "@/i18n";
 
 const props = withDefaults(
 	defineProps<{
@@ -117,7 +125,7 @@ i.alt-indicator {
 	-webkit-backdrop-filter: var(--blur, blur(15px));
 	backdrop-filter: var(--blur, blur(15px));
 	color: var(--accent);
-	font-size: 0.8em;
+	font-size: 1em;
 	padding: 6px 8px;
 	text-align: center;
 }
