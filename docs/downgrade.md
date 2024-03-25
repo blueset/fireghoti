@@ -54,7 +54,7 @@
     POSTGRES_USER=user_name    # user name
     POSTGRES_DB=database_name  # database name
     ```
-1. Change the image tag to `registry.firefish.dev/firefish/firefish:v20240206`
+1. Change Firefish image tag from `latest` to `v20240206`
     ```sh
     vim docker-compose.yml
     ```
@@ -66,6 +66,9 @@
       web:
         image: registry.firefish.dev/firefish/firefish:v20240206  # here
     ```
+1. Change database image from `docker.io/groonga/pgroonga` to `docker.io/postgres`
+
+    Please make sure to use the same PostgreSQL version. For example, if you are using `docker.io/groonga/pgroonga:3.1.8-alpine-16`, you should change it to `docker.io/postgres:16-alpine`. PGroonga images are tagged as `{PGroonga version}-{alpine or debian}-{PostgreSQL major version}`. PostgreSQL image tags can be found at <https://hub.docker.com/_/postgres/tags>.
 1. Start the container and confirm that Firefish is downgraded
     ```sh
     docker-compose up --detach
