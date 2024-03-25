@@ -393,7 +393,7 @@ export class NoteConverter {
                             summary.open_graph?.images?.[0]?.secure_url ??
                             summary.open_graph?.images?.[0]?.url ??
                             summary.twitter_card?.images?.[0]?.url ??
-                            "",
+                            null,
                         type: 
                             summary.oEmbed?.type ??
                             ((summary.open_graph?.videos || summary.open_graph?.audio || summary.twitter_card?.players) ? "video" : "link"),
@@ -430,6 +430,9 @@ export class NoteConverter {
                             summary.open_graph?.videos?.[0]?.url ??
                             "",
                         blurhash: null,
+                        published_at: summary.open_graph?.article?.published_time ?? null,
+                        image_description: summary.open_graph?.images?.[0]?.alt ?? "",
+                        language: lang ?? null,
                     }
                 }
             } catch {
