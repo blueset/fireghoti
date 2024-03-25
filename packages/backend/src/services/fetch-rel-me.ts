@@ -1,11 +1,18 @@
 import { Window } from "happy-dom";
 import config from "@/config/index.js";
+import { getHtml } from "@/misc/fetch.js";
 
 async function getRelMeLinks(url: string): Promise<string[]> {
 	try {
+		// const html = await getHtml(url);
 		const dom = new Window({
 			url: url,
 		});
+		dom.document.open();
+		dom.document.write(await getHtml(url));
+		dom.document.close();
+		// await new Promise<void>((resolve) => dom.document.readyState === "complete" ? resolve() : dom.document.addEventListener("load", () => resolve()));
+		// await dom.happyDOM.waitUntilComplete();
 		const allLinks = [...dom.window.document.querySelectorAll("a, link")];
 		const relMeLinks = allLinks
 			.filter((a) => {

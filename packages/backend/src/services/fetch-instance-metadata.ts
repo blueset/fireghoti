@@ -2,7 +2,7 @@ import { URL } from "node:url";
 import { Window } from "happy-dom";
 import fetch from "node-fetch";
 import tinycolor from "tinycolor2";
-import { getJson, getAgentByUrl } from "@/misc/fetch.js";
+import { getJson, getAgentByUrl, getHtml } from "@/misc/fetch.js";
 import type { Instance } from "@/models/entities/instance.js";
 import { Instances } from "@/models/index.js";
 import { getFetchInstanceMetadataLock } from "@/misc/app-lock.js";
@@ -157,10 +157,13 @@ async function fetchNodeinfo(instance: Instance): Promise<NodeInfo> {
 
 async function fetchDom(instance: Instance): Promise<Window["document"]> {
 	logger.info(`Fetching HTML of ${instance.host} ...`);
-
+	const url = `https://${instance.host}`;
 	const window = new Window({
 		url: `https://${instance.host}`,
 	});
+	window.document.open();
+	window.document.write(await getHtml(url));
+	window.document.close();
 	const doc = window.document;
 
 	return doc;
