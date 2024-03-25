@@ -4,7 +4,7 @@
 	"description": "Firefish SDK for JavaScript",
 	"homepage": "https://firefish.dev/firefish/firefish/-/tree/develop/packages/firefish-js",
 	"main": "./built/index.js",
-	"types": "./built/index.d.ts",
+	"types": "./src/index.ts",
 	"license": "MIT",
 	"scripts": {
 		"build": "pnpm swc src --out-dir built --source-maps false --copy-files --strip-leading-paths",
