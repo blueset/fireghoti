@@ -1,4 +1,4 @@
-import { Window } from "happy-dom";
+import { type HTMLAnchorElement, type HTMLLinkElement, Window } from "happy-dom";
 import config from "@/config/index.js";
 import { getHtml } from "@/misc/fetch.js";
 
@@ -7,6 +7,13 @@ async function getRelMeLinks(url: string): Promise<string[]> {
 		// const html = await getHtml(url);
 		const dom = new Window({
 			url: url,
+			settings: {
+				disableJavaScriptEvaluation: true,
+				disableJavaScriptFileLoading: true,
+				disableCSSFileLoading: true,
+				disableComputedStyleRendering: true,
+				disableIframePageLoading: true,
+			}
 		});
 		dom.document.open();
 		dom.document.write(await getHtml(url));
@@ -28,18 +35,20 @@ async function getRelMeLinks(url: string): Promise<string[]> {
 
 export async function verifyLink(
 	link: string,
-	username: string,
+	username?: string,
+	url?: string | null,
 ): Promise<boolean> {
 	let verified = false;
 	if (link.startsWith("http")) {
 		const relMeLinks = await getRelMeLinks(link);
 		verified = relMeLinks.some((href) =>
-			new RegExp(
+			(url && href.startsWith(url)) ||
+			(username && new RegExp(
 				`^https?:\/\/${config.host.replace(
 					/[.*+\-?^${}()|[\]\\]/g,
 					"\\$&",
 				)}\/@${username.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&")}$`,
-			).test(href),
+			).test(href)),
 		);
 	}
 	return verified;

@@ -47,6 +47,7 @@ import { extractApHashtags } from "./tag.js";
 import { resolveNote, extractEmojis } from "./note.js";
 import { resolveImage } from "./image.js";
 import { inspect } from "node:util";
+import { verifyLink } from "@/services/fetch-rel-me.js";
 
 const logger = apLogger;
 
@@ -184,7 +185,9 @@ export async function createPerson(
 
 	const host = toPuny(new URL(object.id).hostname);
 
-	const fields = analyzeAttachments(person.attachment || []);
+	const url = getOneApHrefNullable(person.url);
+
+	const fields = await analyzeAttachments(person.attachment || [], url);
 
 	const tags = extractApHashtags(person.tag)
 		.map((tag) => normalizeForSearch(tag))
@@ -193,8 +196,6 @@ export async function createPerson(
 	const isBot = getApType(object) !== "Person";
 
 	const bday = person["vcard:bday"]?.match(/^\d{4}-\d{2}-\d{2}/);
-
-	const url = getOneApHrefNullable(person.url);
 
 	if (url && !url.startsWith("https://")) {
 		throw new Error(`unexpected schema of person url: ${url}`);
@@ -456,15 +457,15 @@ export async function updatePerson(
 
 	const emojiNames = emojis.map((emoji) => emoji.name);
 
-	const fields = analyzeAttachments(person.attachment || []);
+	const url = getOneApHrefNullable(person.url);
+
+	const fields = await analyzeAttachments(person.attachment || [], url);
 
 	const tags = extractApHashtags(person.tag)
 		.map((tag) => normalizeForSearch(tag))
 		.splice(0, 32);
 
 	const bday = person["vcard:bday"]?.match(/^\d{4}-\d{2}-\d{2}/);
-
-	const url = getOneApHrefNullable(person.url);
 
 	if (url && !url.startsWith("https://")) {
 		throw new Error(`unexpected schema of person url: ${url}`);
@@ -646,20 +647,27 @@ export async function resolvePerson(
 	return await createPerson(uri, resolver);
 }
 
-export function analyzeAttachments(
+export async function analyzeAttachments(
 	attachments: IObject | IObject[] | undefined,
+	url?: string,
 ) {
 	const fields: {
 		name: string;
 		value: string;
+		verified: boolean;
 	}[] = [];
 
 	if (Array.isArray(attachments)) {
 		for (const attachment of attachments.filter(isPropertyValue)) {
-			fields.push({
+			const field = {
 				name: attachment.name,
 				value: fromHtml(attachment.value),
-			});
+				verified: false,
+			};
+			if (field.name && field.value && field.value.startsWith("http") && url) {
+				field.verified = await verifyLink(field.value, undefined, url);
+			}
+			fields.push(field);
 		}
 	}
 
