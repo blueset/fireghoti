@@ -131,6 +131,11 @@ export const meta = {
 				optional: false,
 				nullable: false,
 			},
+			markLocalFilesNsfwByDefault: {
+				type: "boolean",
+				optional: false,
+				nullable: false,
+			},
 			emailRequiredForSignup: {
 				type: "boolean",
 				optional: false,
@@ -490,6 +495,7 @@ export default define(meta, paramDef, async (ps, me) => {
 					pinnedClipId:
 						instance.privateMode && !me ? [] : instance.pinnedClipId,
 					cacheRemoteFiles: instance.cacheRemoteFiles,
+					markLocalFilesNsfwByDefault: instance.markLocalFilesNsfwByDefault,
 					requireSetup:
 						(await Users.countBy({
 							host: IsNull(),

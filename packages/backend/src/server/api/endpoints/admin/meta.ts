@@ -29,6 +29,11 @@ export const meta = {
 				optional: false,
 				nullable: false,
 			},
+			markLocalFilesNsfwByDefault: {
+				type: "boolean",
+				optional: false,
+				nullable: false,
+			},
 			emailRequiredForSignup: {
 				type: "boolean",
 				optional: false,
@@ -506,6 +511,7 @@ export default define(meta, paramDef, async () => {
 		pinnedPages: instance.pinnedPages,
 		pinnedClipId: instance.pinnedClipId,
 		cacheRemoteFiles: instance.cacheRemoteFiles,
+		markLocalFilesNsfwByDefault: instance.markLocalFilesNsfwByDefault,
 		defaultReaction: instance.defaultReaction,
 		recommendedInstances: instance.recommendedInstances,
 		pinnedUsers: instance.pinnedUsers,

@@ -305,6 +305,19 @@
 								}}</template>
 							</FormSwitch>
 
+							<FormSwitch
+								v-model="markLocalFilesNsfwByDefault"
+								class="_formBlock"
+							>
+								<template #label>{{
+									i18n.ts.markLocalFilesNsfwByDefault
+								}}</template>
+								<template #caption>{{
+									i18n.ts
+										.markLocalFilesNsfwByDefaultDescription
+								}}</template>
+							</FormSwitch>
+
 							<FormSplit :min-width="280">
 								<FormInput
 									v-model="localDriveCapacityMb"
@@ -486,6 +499,7 @@ const customMOTD = ref("");
 const recommendedInstances = ref("");
 const customSplashIcons = ref("");
 const cacheRemoteFiles = ref(false);
+const markLocalFilesNsfwByDefault = ref(false);
 const localDriveCapacityMb = ref(0);
 const remoteDriveCapacityMb = ref(0);
 const enableRegistration = ref(false);
@@ -561,6 +575,7 @@ async function init() {
 	customSplashIcons.value = meta.customSplashIcons.join("\n");
 	recommendedInstances.value = meta.recommendedInstances.join("\n");
 	cacheRemoteFiles.value = meta.cacheRemoteFiles;
+	markLocalFilesNsfwByDefault.value = meta.markLocalFilesNsfwByDefault;
 	localDriveCapacityMb.value = meta.driveCapacityPerLocalUserMb;
 	remoteDriveCapacityMb.value = meta.driveCapacityPerRemoteUserMb;
 	enableRegistration.value = !meta.disableRegistration;
@@ -614,6 +629,7 @@ function save() {
 		customSplashIcons: customSplashIcons.value.split("\n"),
 		recommendedInstances: recommendedInstances.value.split("\n"),
 		cacheRemoteFiles: cacheRemoteFiles.value,
+		markLocalFilesNsfwByDefault: markLocalFilesNsfwByDefault.value,
 		localDriveCapacityMb: localDriveCapacityMb.value,
 		remoteDriveCapacityMb: remoteDriveCapacityMb.value,
 		disableRegistration: !enableRegistration.value,

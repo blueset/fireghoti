@@ -36,6 +36,8 @@ pub struct Model {
     pub icon_url: Option<String>,
     #[sea_orm(column_name = "cacheRemoteFiles")]
     pub cache_remote_files: bool,
+    #[sea_orm(column_name = "markLocalFilesNsfwByDefault")]
+    pub always_make_server_file_nsfw: bool,
     #[sea_orm(column_name = "enableRecaptcha")]
     pub enable_recaptcha: bool,
     #[sea_orm(column_name = "recaptchaSiteKey")]

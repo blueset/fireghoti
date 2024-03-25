@@ -95,6 +95,7 @@ export const paramDef = {
 		localDriveCapacityMb: { type: "integer" },
 		remoteDriveCapacityMb: { type: "integer" },
 		cacheRemoteFiles: { type: "boolean" },
+		markLocalFilesNsfwByDefault: { type: "boolean" },
 		emailRequiredForSignup: { type: "boolean" },
 		enableHcaptcha: { type: "boolean" },
 		hcaptchaSiteKey: { type: "string", nullable: true },
@@ -328,6 +329,10 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (ps.cacheRemoteFiles !== undefined) {
 		set.cacheRemoteFiles = ps.cacheRemoteFiles;
+	}
+
+	if (ps.markLocalFilesNsfwByDefault !== undefined) {
+		set.markLocalFilesNsfwByDefault = ps.markLocalFilesNsfwByDefault;
 	}
 
 	if (ps.emailRequiredForSignup !== undefined) {
