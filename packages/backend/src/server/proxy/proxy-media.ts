@@ -15,23 +15,6 @@ import { isMimeImage } from "@/misc/is-mime-image.js";
 import { inspect } from "node:util";
 
 export async function proxyMedia(ctx: Koa.Context) {
-	try {
-		proxyMediaInternal(ctx);
-	} catch (e) {
-		if (ctx.query.fallback) {
-			ctx.redirect("/static-assets/badges/error.webp");
-			return;
-		}
-		throw e;
-	}
-	if (ctx.status !== 200 && ctx.query.fallback) {
-		ctx.redirect("/static-assets/badges/error.webp");
-		return;
-	}
-	return;
-}
-
-async function proxyMediaInternal(ctx: Koa.Context) {
 	let url = "url" in ctx.query ? ctx.query.url : `https://${ctx.params.url}`;
 
 	if (typeof url !== "string") {
@@ -41,10 +24,9 @@ async function proxyMediaInternal(ctx: Koa.Context) {
 
 	url = url.replace("//", "/");
 
-	let hostname;
+	const { hostname } = new URL(url);
 	let resolvedIps;
 	try {
-		hostname = new URL(url);
 		resolvedIps = await promises.resolve(hostname);
 	} catch (error) {
 		ctx.status = 400;

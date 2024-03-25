@@ -17,11 +17,7 @@
 				}"
 			>
 				<div v-if="thumbnail" class="thumbnail">
-					<img
-						:src="thumbnail"
-						onerror="this.src='/static-assets/badges/error.webp'"
-						loading="lazy"
-					/>
+					<img :src="thumbnail" loading="lazy" />
 					<button
 						v-if="tweetId"
 						v-tooltip="
@@ -59,12 +55,7 @@
 					<p :title="description">
 						<span>
 							<span :title="sitename || undefined">
-								<img
-									v-if="icon"
-									class="icon"
-									:src="icon"
-									onerror="this.src='/static-assets/badges/error.webp'"
-								/>
+								<img v-if="icon" class="icon" :src="icon" />
 								{{ sitename }}
 							</span>
 							{{ description }}
