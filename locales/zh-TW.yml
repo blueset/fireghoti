@@ -2054,3 +2054,5 @@ ipFirstAcknowledged: 首次取得此 IP 位址的日期
 driveCapacityOverride: 雲端硬碟容量變更
 showNoAltTextWarning: 在嘗試發佈包含沒有替代文字的貼文時顯示警告
 messagingUnencryptedInfo: Firefish 上的聊天沒有經過點對點加密，請不要發送敏感資訊。
+autocorrectNoteLanguage: 在設定的貼文語言不符合自動偵測的結果時顯示警告
+incorrectLanguageWarning: "此貼文的語言似乎為{detected}，但您選擇的語言為{current}。\n要將貼文語言變更為{detected}嗎？"
