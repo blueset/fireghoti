@@ -7,7 +7,7 @@
 			:alt="file.comment"
 			:title="file.name"
 			:cover="fit !== 'contain'"
-			:show_alt_indicator="show_alt_indicator"
+			:show-alt-indicator="showAltIndicator"
 		/>
 		<i v-else-if="is === 'image'" :class="icon('ph-file-image icon')"></i>
 		<i v-else-if="is === 'video'" :class="icon('ph-file-video icon')"></i>
@@ -38,10 +38,10 @@ const props = withDefaults(
 	defineProps<{
 		file: entities.DriveFile;
 		fit: string;
-		show_alt_indicator?: boolean
+		showAltIndicator?: boolean
 	}>(),
 	{
-		show_alt_indicator: false,
+		showAltIndicator: false,
 	}
 );
 

@@ -24,7 +24,7 @@
 	<i
 		class="alt-indicator"
 		:class="icon('ph-subtitles')"
-		v-if="alt && show_alt_indicator"
+		v-if="alt && showAltIndicator"
 		v-tooltip.noLabel="
 			`${i18n.ts.alt}: ${
 				alt.length > 200
@@ -51,7 +51,7 @@ const props = withDefaults(
 		size?: number;
 		cover?: boolean;
 		largestDimension?: "width" | "height";
-		show_alt_indicator?: boolean
+		showAltIndicator?: boolean
 	}>(),
 	{
 		src: null,
@@ -60,7 +60,7 @@ const props = withDefaults(
 		title: null,
 		size: 64,
 		cover: true,
-		show_alt_indicator: false
+		showAltIndicator: false
 	},
 );
 

@@ -19,7 +19,7 @@
 					class="thumbnail"
 					:file="element"
 					fit="cover"
-					:show_alt_indicator="true"
+					:show-alt-indicator="true"
 				/>
 				<div v-if="element.isSensitive" class="sensitive">
 					<i :class="icon('ph-warning icon')"></i>
