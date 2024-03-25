@@ -606,13 +606,13 @@ export default define(meta, paramDef, async (ps, user) => {
 		update.updatedAt = new Date();
 		await Notes.update(note.id, update);
 
-		// Add NoteEdit history
+		// Add NoteEdit history for the previous one
 		await NoteEdits.insert({
 			id: genId(),
 			noteId: note.id,
-			text: ps.text || undefined,
-			cw: ps.cw,
-			fileIds: ps.fileIds,
+			text: note.text || undefined,
+			cw: note.cw,
+			fileIds: note.fileIds,
 			updatedAt: new Date(),
 		});
 
