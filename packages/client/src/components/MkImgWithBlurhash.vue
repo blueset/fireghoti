@@ -21,30 +21,38 @@
 		loading="lazy"
 		@load="onLoad"
 	/>
+	<i
+		class="alt-indicator"
+		:class="icon('ph-subtitles')"
+		v-if="alt && show_alt_indicator"
+	></i>
 </template>
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import { decodeBlurHash } from "fast-blurhash";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
 		src?: string | null;
 		hash?: string;
-		alt?: string;
+		alt?: string | null;
 		type?: string | null;
 		title?: string | null;
 		size?: number;
 		cover?: boolean;
 		largestDimension?: "width" | "height";
+		show_alt_indicator?: boolean
 	}>(),
 	{
 		src: null,
 		type: null,
-		alt: "",
+		alt: null,
 		title: null,
 		size: 64,
 		cover: true,
+		show_alt_indicator: false
 	},
 );
 
@@ -95,5 +103,22 @@ img {
 	&.tall {
 		height: 100%;
 	}
+}
+
+i.alt-indicator {
+	display: flex;
+	gap: 4px;
+	position: absolute;
+	border-radius: 6px;
+	overflow: hidden;
+	top: 0;
+	right: 0;
+	background-color: var(--accentedBg);
+	-webkit-backdrop-filter: var(--blur, blur(15px));
+	backdrop-filter: var(--blur, blur(15px));
+	color: var(--accent);
+	font-size: 0.8em;
+	padding: 6px 8px;
+	text-align: center;
 }
 </style>

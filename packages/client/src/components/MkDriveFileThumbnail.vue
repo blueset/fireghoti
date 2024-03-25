@@ -4,9 +4,10 @@
 			v-if="isThumbnailAvailable"
 			:hash="file.blurhash"
 			:src="file.thumbnailUrl"
-			:alt="file.name"
+			:alt="file.comment"
 			:title="file.name"
 			:cover="fit !== 'contain'"
+			:show_alt_indicator="show_alt_indicator"
 		/>
 		<i v-else-if="is === 'image'" :class="icon('ph-file-image icon')"></i>
 		<i v-else-if="is === 'video'" :class="icon('ph-file-video icon')"></i>
@@ -33,10 +34,16 @@ import type { entities } from "firefish-js";
 import ImgWithBlurhash from "@/components/MkImgWithBlurhash.vue";
 import icon from "@/scripts/icon";
 
-const props = defineProps<{
-	file: entities.DriveFile;
-	fit: string;
-}>();
+const props = withDefaults(
+	defineProps<{
+		file: entities.DriveFile;
+		fit: string;
+		show_alt_indicator?: boolean
+	}>(),
+	{
+		show_alt_indicator: false,
+	}
+);
 
 const is = computed(() => {
 	if (props.file.type.startsWith("image/")) return "image";
