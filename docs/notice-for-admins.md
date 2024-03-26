@@ -19,7 +19,7 @@ The full-text search engine used in Firefish has been changed to [PGroonga](http
 
 [Edit (2024/03/23 23:55 UTC+9)] ~~**Warning**: You may fail to install PGroonga, since the package registry of Apache Arrow (one of the subdependencies of PGroonga) is currently down ([GitHub issue](https://github.com/apache/arrow/issues/40759)). We recommend that you hold off on upgrading until this problem is resolved.~~
 
-[Edit (2025/03/25 22:31 UTC+9)] The Apache Arrow repository is now back up and running again.
+[Edit (2024/03/25 22:31 UTC+9)] The Apache Arrow repository is now back up and running again.
 
 #### 1. Install PGroonga
 
