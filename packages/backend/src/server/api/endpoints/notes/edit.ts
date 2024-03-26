@@ -9,6 +9,7 @@ import {
 	UserProfiles,
 	Polls,
 	NoteEdits,
+	NoteFiles,
 } from "@/models/index.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { IMentionedRemoteUsers, Note } from "@/models/entities/note.js";
@@ -604,6 +605,13 @@ export default define(meta, paramDef, async (ps, user) => {
 	if (notEmpty(update)) {
 		update.updatedAt = new Date();
 		await Notes.update(note.id, update);
+
+		if (update.fileIds != null) {
+			await NoteFiles.delete({ noteId: note.id });
+			await NoteFiles.insert(
+				update.fileIds.map((fileId) => ({ noteId: note.id, fileId })),
+			);
+		}
 
 		// Add NoteEdit history for the previous one
 		await NoteEdits.insert({
