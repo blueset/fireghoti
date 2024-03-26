@@ -6,7 +6,13 @@ import { extractDbHost, isSelfHost } from "@/misc/convert-host.js";
 import { apGet } from "./request.js";
 import type { IObject, ICollection, IOrderedCollection } from "./type.js";
 import { isCollectionOrOrderedCollection, getApId } from "./type.js";
-import { FollowRequests, Notes, NoteReactions, Polls, Users } from "@/models/index.js";
+import {
+	FollowRequests,
+	Notes,
+	NoteReactions,
+	Polls,
+	Users,
+} from "@/models/index.js";
 import { parseUri } from "./db-resolver.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
 import { renderLike } from "@/remote/activitypub/renderer/like.js";
@@ -114,7 +120,7 @@ export default class Resolver {
 		apLogger.debug("Getting object from remote, authenticated as user:");
 		apLogger.debug(JSON.stringify(this.user, null, 2));
 
-		const object = await apGet(value, this.user);
+		const { finalUrl, content: object } = await apGet(value, this.user);
 
 		if (
 			object == null ||
@@ -125,6 +131,13 @@ export default class Resolver {
 				: object["@context"] !== "https://www.w3.org/ns/activitystreams")
 		) {
 			throw new Error("invalid response");
+		}
+
+		if (
+			object.id != null &&
+			new URL(finalUrl).host != new URL(object.id).host
+		) {
+			throw new Error("Object ID host doesn't match final url host");
 		}
 
 		return object;
@@ -160,7 +173,8 @@ export default class Resolver {
 				// if rest is a <followee id>
 				if (parsed.rest != null && /^\w+$/.test(parsed.rest)) {
 					const [follower, followee] = await Promise.all(
-						[parsed.id, parsed.rest].map((id) => Users.findOneByOrFail({ id })));
+						[parsed.id, parsed.rest].map((id) => Users.findOneByOrFail({ id })),
+					);
 					return renderActivity(renderFollow(follower, followee, url));
 				}
 

@@ -42,8 +42,8 @@ export default async (user: { id: User["id"] }, url: string, object: any) => {
 export async function apGet(
 	url: string,
 	user?: ILocalUser,
-	redirects: boolean = true
-): Promise<IObject> {
+	redirects: boolean = true,
+): Promise<{ finalUrl: string; content: IObject }> {
 	if (!isValidUrl(url)) {
 		throw new StatusError("Invalid URL", 400);
 	}
@@ -72,7 +72,8 @@ export async function apGet(
 
 		if (redirects && [301, 302, 307, 308].includes(res.status)) {
 			const newUrl = res.headers.get("location");
-			if (newUrl == null) throw new Error("apGet got redirect but no target location");
+			if (newUrl == null)
+				throw new Error("apGet got redirect but no target location");
 			apLogger.debug(`apGet is redirecting to ${newUrl}`);
 			return apGet(newUrl, user, false);
 		}
@@ -90,7 +91,8 @@ export async function apGet(
 
 		if (redirects && [301, 302, 307, 308].includes(res.status)) {
 			const newUrl = res.headers.get("location");
-			if (newUrl == null) throw new Error("apGet got redirect but no target location");
+			if (newUrl == null)
+				throw new Error("apGet got redirect but no target location");
 			apLogger.debug(`apGet is redirecting to ${newUrl}`);
 			return apGet(newUrl, undefined, false);
 		}
@@ -98,7 +100,9 @@ export async function apGet(
 
 	const contentType = res.headers.get("content-type");
 	if (contentType == null || !validateContentType(contentType)) {
-		throw new Error(`apGet response had unexpected content-type: ${contentType}`);
+		throw new Error(
+			`apGet response had unexpected content-type: ${contentType}`,
+		);
 	}
 
 	if (res.body == null) throw new Error("body is null");
@@ -106,7 +110,10 @@ export async function apGet(
 	const text = await res.text();
 	if (text.length > 65536) throw new Error("too big result");
 
-	return JSON.parse(text) as IObject;
+	return {
+		finalUrl: res.url,
+		content: JSON.parse(text) as IObject,
+	};
 }
 
 function validateContentType(contentType: string): boolean {
