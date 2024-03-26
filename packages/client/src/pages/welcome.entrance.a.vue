@@ -5,7 +5,10 @@
 			<XTimeline class="tl" />
 			<div class="shape1"></div>
 			<div class="shape2"></div>
-			<img src="/client-assets/misskey.svg" class="misskey" />
+			<div class="misskey">
+				<div>Powered by</div>
+				<img src="/client-assets/misskey.svg" />
+			</div>
 			<div class="emojis">
 				<MkEmoji
 					v-for="reaction in defaultReactions"
@@ -267,6 +270,15 @@ function showMenu(ev) {
 			top: 42px;
 			left: 42px;
 			width: 140px;
+			text-align-last: left;
+			color: #fff;
+			> div {
+				margin-inline-start: 7px;
+    			margin-block-end: -1em;
+				@media (max-width: 450px) {
+					margin-inline-start: 5px;
+				}
+			}
 
 			@media (max-width: 450px) {
 				width: 130px;

@@ -56,7 +56,7 @@ const ripples = ref<HTMLElement | null>(null);
 onMounted(() => {
 	if (props.autofocus) {
 		nextTick(() => {
-			el.value!.focus();
+			el.value?.focus();
 		});
 	}
 });
