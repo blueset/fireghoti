@@ -34,7 +34,6 @@ import renderUpdate from "@/remote/activitypub/renderer/update.js";
 import { deliverToRelays } from "@/services/relay.js";
 // import { deliverQuestionUpdate } from "@/services/note/polls/update.js";
 import { langmap } from "@/misc/langmap.js";
-import detectLanguage from "@/misc/detect-language.js";
 
 export const meta = {
 	tags: ["notes"],
