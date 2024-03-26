@@ -5,6 +5,7 @@ import CacheableLookup from "cacheable-lookup";
 import fetch from "node-fetch";
 import { HttpProxyAgent, HttpsProxyAgent } from "hpagent";
 import config from "@/config/index.js";
+import { isValidUrl } from "./is-valid-url.js";
 
 export async function getJson(
 	url: string,
@@ -58,6 +59,10 @@ export async function getResponse(args: {
 	timeout?: number;
 	size?: number;
 }) {
+	if (!isValidUrl(args.url)) {
+		throw new StatusError("Invalid URL", 400);
+	}
+
 	const timeout = args.timeout || 10 * 1000;
 
 	const controller = new AbortController();
@@ -81,6 +86,10 @@ export async function getResponse(args: {
 			res.status,
 			res.statusText,
 		);
+	}
+
+	if (res.redirected && !isValidUrl(res.url)) {
+		throw new StatusError("Invalid URL", 400);
 	}
 
 	return res;

@@ -8,10 +8,15 @@ import chalk from "chalk";
 import Logger from "@/services/logger.js";
 import IPCIDR from "ip-cidr";
 import PrivateIp from "private-ip";
+import { isValidUrl } from "./is-valid-url.js";
 
 const pipeline = util.promisify(stream.pipeline);
 
 export async function downloadUrl(url: string, path: string): Promise<void> {
+	if (!isValidUrl(url)) {
+		throw new StatusError("Invalid URL", 400);
+	}
+
 	const logger = new Logger("download");
 
 	logger.info(`Downloading ${chalk.cyan(url)} ...`);
@@ -43,6 +48,12 @@ export async function downloadUrl(url: string, path: string): Promise<void> {
 			retry: {
 				limit: 0,
 			},
+		})
+		.on("redirect", (res: Got.Response, opts: Got.NormalizedOptions) => {
+			if (!isValidUrl(opts.url)) {
+				logger.warn(`Invalid URL: ${opts.url}`);
+				req.destroy();
+			}
 		})
 		.on("response", (res: Got.Response) => {
 			if (

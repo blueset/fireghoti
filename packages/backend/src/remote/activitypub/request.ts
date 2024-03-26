@@ -1,10 +1,11 @@
 import config from "@/config/index.js";
 import { getUserKeypair } from "@/misc/keypair-store.js";
 import type { User, ILocalUser } from "@/models/entities/user.js";
-import { getResponse } from "@/misc/fetch.js";
+import { StatusError, getResponse } from "@/misc/fetch.js";
 import { createSignedPost, createSignedGet } from "./ap-request.js";
 import type { Response } from "node-fetch";
 import type { IObject } from "./type.js";
+import { isValidUrl } from "@/misc/is-valid-url.js";
 
 export default async (user: { id: User["id"] }, url: string, object: any) => {
 	const body = JSON.stringify(object);
@@ -37,6 +38,10 @@ export default async (user: { id: User["id"] }, url: string, object: any) => {
  * @param url URL to fetch
  */
 export async function apGet(url: string, user?: ILocalUser): Promise<IObject> {
+	if (!isValidUrl(url)) {
+		throw new StatusError("Invalid URL", 400);
+	}
+
 	let res: Response;
 
 	if (user != null) {
