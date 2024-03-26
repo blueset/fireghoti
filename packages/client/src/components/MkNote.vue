@@ -154,7 +154,12 @@
 						{{ appearNote.channel.name }}</MkA
 					>
 				</div>
-				<footer ref="footerEl" class="footer" tabindex="-1">
+				<footer
+					v-show="!hideFooter" 
+					ref="footerEl"
+					class="footer"
+					tabindex="-1"
+				>
 					<XReactionsViewer
 						v-if="enableEmojiReactions"
 						ref="reactionsViewer"
@@ -312,6 +317,7 @@ const props = defineProps<{
 	pinned?: boolean;
 	detailedView?: boolean;
 	collapsedReply?: boolean;
+	hideFooter?: boolean;
 }>();
 
 const inChannel = inject("inChannel", null);

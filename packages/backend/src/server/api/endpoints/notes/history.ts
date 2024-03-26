@@ -58,6 +58,9 @@ export default define(meta, paramDef, async (ps, user) => {
 		},
 		take: ps.limit,
 		skip: ps.offset,
+		order: {
+			id: "DESC"
+		},
 	});
 
 	return await NoteEdits.packMany(history);

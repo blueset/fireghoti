@@ -11,6 +11,10 @@ import { noteActions } from "@/store";
 import { shareAvailable } from "@/scripts/share-available";
 import { getUserMenu } from "@/scripts/get-user-menu";
 import icon from "@/scripts/icon";
+import { useRouter } from "@/router";
+import { notePage } from "@/filters/note";
+
+const router = useRouter();
 
 export function getNoteMenu(props: {
 	note: entities.Note;
@@ -71,6 +75,10 @@ export function getNoteMenu(props: {
 			channel: appearNote.channel,
 			editId: appearNote.id,
 		});
+	}
+
+	function showEditHistory(): void {
+		router.push(notePage(appearNote, { historyPage: true }));
 	}
 
 	function makePrivate(): void {
@@ -288,6 +296,8 @@ export function getNoteMenu(props: {
 			noteId: appearNote.id,
 		});
 
+		const isEdited = !!appearNote.updatedAt;
+
 		const isAppearAuthor = appearNote.userId === me.id;
 
 		menu = [
@@ -360,6 +370,13 @@ export function getNoteMenu(props: {
 							text: i18n.ts.pin,
 							action: () => togglePin(true),
 					  }
+				: undefined,
+			isEdited
+				? {
+						icon: `${icon('ph-clock-countdown')}`,
+						text: i18n.ts.noteEditHistory,
+						action: () => showEditHistory(),
+					}
 				: undefined,
 			instance.translatorAvailable
 				? {

@@ -143,9 +143,9 @@ export type Note = {
 	user: User;
 	userId: User["id"];
 	reply?: Note;
-	replyId: Note["id"];
+	replyId: Note["id"] | null;
 	renote?: Note;
-	renoteId: Note["id"];
+	renoteId: Note["id"] | null;
 	files: DriveFile[];
 	fileIds: DriveFile["id"][];
 	visibility: "public" | "home" | "followers" | "specified";
@@ -175,6 +175,15 @@ export type Note = {
 	updatedAt?: DateString;
 	isHidden?: boolean;
 };
+
+export type NoteEdit = {
+	id: string;
+	noteId: string;
+	text: string | null;
+	cw: string | null;
+	updatedAt: string;
+	fileIds: DriveFile["id"];
+}
 
 export type NoteReaction = {
 	id: ID;

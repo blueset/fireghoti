@@ -2232,3 +2232,4 @@ messagingUnencryptedInfo: "Chats on Firefish are not end-to-end encrypted. Don't
   any sensitive infomation over Firefish."
 autocorrectNoteLanguage: "Show a warning if the post language does not match the auto-detected result"
 incorrectLanguageWarning: "It looks like your post is in {detected}, but you selected {current}.\nWould you like to set the language to {detected} instead?"
+noteEditHistory: "Post edit history"

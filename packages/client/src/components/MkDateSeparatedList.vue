@@ -10,7 +10,7 @@ export default defineComponent({
 	props: {
 		items: {
 			type: Array as PropType<
-				{ id: string; createdAt: string; _shouldInsertAd_: boolean }[]
+				{ id: string; createdAt: string; _shouldInsertAd_?: boolean }[]
 			>,
 			required: true,
 		},

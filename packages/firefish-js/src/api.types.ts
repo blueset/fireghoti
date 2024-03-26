@@ -22,6 +22,7 @@ import type {
 	MeDetailed,
 	MessagingMessage,
 	Note,
+	NoteEdit,
 	NoteFavorite,
 	NoteReaction,
 	Notification,
@@ -656,6 +657,14 @@ export type Endpoints = {
 			untilDate?: number;
 		};
 		res: Note[];
+	};
+	"notes/history": {
+		req: {
+			noteId: Note["id"];
+			limit?: number;
+			offset?: number;
+		};
+		res: NoteEdit[]
 	};
 	"notes/recommended-timeline": {
 		req: {
