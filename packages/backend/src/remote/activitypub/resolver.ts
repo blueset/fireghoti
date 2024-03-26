@@ -6,7 +6,7 @@ import { extractDbHost, isSelfHost } from "@/misc/convert-host.js";
 import { apGet } from "./request.js";
 import type { IObject, ICollection, IOrderedCollection } from "./type.js";
 import { isCollectionOrOrderedCollection, getApId } from "./type.js";
-import { Notes, NoteReactions, Polls, Users } from "@/models/index.js";
+import { FollowRequests, Notes, NoteReactions, Polls, Users } from "@/models/index.js";
 import { parseUri } from "./db-resolver.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
 import { renderLike } from "@/remote/activitypub/renderer/like.js";
@@ -17,7 +17,7 @@ import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import { shouldBlockInstance } from "@/misc/should-block-instance.js";
 import { apLogger } from "@/remote/activitypub/logger.js";
-import { In, IsNull, Not } from "typeorm";
+import { IsNull, Not } from "typeorm";
 
 export default class Resolver {
 	private history: Set<string>;
@@ -130,58 +130,52 @@ export default class Resolver {
 		return object;
 	}
 
-	private resolveLocal(url: string): Promise<IObject> {
+	private async resolveLocal(url: string): Promise<IObject> {
 		const parsed = parseUri(url);
 		if (!parsed.local) throw new Error("resolveLocal: not local");
 
 		switch (parsed.type) {
 			case "notes":
-				return Notes.findOneByOrFail({ id: parsed.id }).then((note) => {
-					if (parsed.rest === "activity") {
-						// this refers to the create activity and not the note itself
-						return renderActivity(renderCreate(renderNote(note), note));
-					} else {
-						return renderNote(note);
-					}
-				});
+				const note = await Notes.findOneByOrFail({ id: parsed.id });
+				if (parsed.rest === "activity") {
+					// this refers to the create activity and not the note itself
+					return renderActivity(renderCreate(renderNote(note), note));
+				} else {
+					return renderNote(note);
+				}
 			case "users":
-				return Users.findOneByOrFail({ id: parsed.id }).then((user) =>
-					renderPerson(user as ILocalUser),
-				);
+				const user = await Users.findOneByOrFail({ id: parsed.id });
+				return await renderPerson(user as ILocalUser);
 			case "questions":
 				// Polls are indexed by the note they are attached to.
-				return Promise.all([
+				const [pollNote, poll] = await Promise.all([
 					Notes.findOneByOrFail({ id: parsed.id }),
 					Polls.findOneByOrFail({ noteId: parsed.id }),
-				]).then(([note, poll]) =>
-					renderQuestion({ id: note.userId }, note, poll),
-				);
+				]);
+				return await renderQuestion({ id: pollNote.userId }, pollNote, poll);
 			case "likes":
-				return NoteReactions.findOneByOrFail({ id: parsed.id }).then(
-					(reaction) => renderActivity(renderLike(reaction, { uri: null })),
-				);
+				const reaction = await NoteReactions.findOneByOrFail({ id: parsed.id });
+				return renderActivity(renderLike(reaction, { uri: null }));
 			case "follows":
 				// if rest is a <followee id>
 				if (parsed.rest != null && /^\w+$/.test(parsed.rest)) {
-					return Promise.all(
-						[parsed.id, parsed.rest].map((id) => Users.findOneByOrFail({ id })),
-					).then(([follower, followee]) =>
-						renderActivity(renderFollow(follower, followee, url)),
-					);
+					const [follower, followee] = await Promise.all(
+						[parsed.id, parsed.rest].map((id) => Users.findOneByOrFail({ id })));
+					return renderActivity(renderFollow(follower, followee, url));
 				}
 
 				// Another situation is there is only requestId, then obtained object from database.
-				const followRequest = FollowRequests.findOneBy({
+				const followRequest = await FollowRequests.findOneBy({
 					id: parsed.id,
 				});
 				if (followRequest == null) {
 					throw new Error("resolveLocal: invalid follow URI");
 				}
-				const follower = Users.findOneBy({
+				const follower = await Users.findOneBy({
 					id: followRequest.followerId,
 					host: IsNull(),
 				});
-				const followee = Users.findOneBy({
+				const followee = await Users.findOneBy({
 					id: followRequest.followeeId,
 					host: Not(IsNull()),
 				});
@@ -190,7 +184,7 @@ export default class Resolver {
 				}
 				return renderActivity(renderFollow(follower, followee, url));
 			default:
-				throw new Error(`resolveLocal: type ${type} unhandled`);
+				throw new Error(`resolveLocal: type ${parsed.type} unhandled`);
 		}
 	}
 }
