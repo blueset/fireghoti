@@ -12,7 +12,7 @@ napi = ["dep:napi", "dep:napi-derive"]
 crate-type = ["cdylib", "lib"]
 
 [dependencies]
-async-trait = "0.1.78"
+async-trait = "0.1.79"
 cfg-if = "1.0.0"
 chrono = "0.4.35"
 cuid2 = "0.1.2"
@@ -23,13 +23,13 @@ rand = "0.8.5"
 schemars = { version = "0.8.16", features = ["chrono"] }
 sea-orm = { version = "0.12.15", features = ["sqlx-postgres", "runtime-tokio-rustls"] }
 serde = { version = "1.0.197", features = ["derive"] }
-serde_json = "1.0.114"
+serde_json = "1.0.115"
 thiserror = "1.0.58"
 tokio = { version = "1.36.0", features = ["full"] }
 
 # Default enable napi4 feature, see https://nodejs.org/api/n-api.html#node-api-version-matrix
-napi = { version = "2.16.0", default-features = false, features = ["napi9", "tokio_rt"], optional = true }
-napi-derive = { version = "2.16.0", optional = true }
+napi = { version = "2.16.1", default-features = false, features = ["napi9", "tokio_rt"], optional = true }
+napi-derive = { version = "2.16.1", optional = true }
 basen = "0.1.0"
 
 [dev-dependencies]
