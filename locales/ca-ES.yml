@@ -9,14 +9,14 @@ notifications: "Notificacions"
 username: "Nom d'usuari"
 password: "Contrasenya"
 forgotPassword: "Contrasenya oblidada"
-fetchingAsApObject: "Cercant en el Fediverse"
+fetchingAsApObject: "Obtenint des de el Fediverse"
 ok: "D'acord"
 gotIt: "Ho he entès!"
 cancel: "Cancel·la"
 enterUsername: "Introdueix el teu nom d'usuari"
 renotedBy: "Impulsat per {user}"
-noNotes: "Cap publicació"
-noNotifications: "Cap notificació"
+noNotes: "Sense publicacions"
+noNotifications: "Sense notificacions"
 instance: "Servidor"
 settings: "Preferències"
 basicSettings: "Configuració bàsica"
@@ -35,23 +35,23 @@ users: "Usuaris"
 addUser: "Afegeix un usuari"
 favorite: "Afegeix a les adreces d'interès"
 favorites: "Adreces d'interès"
-unfavorite: "Eliminar de les adreces d'interès"
-favorited: "Afegit a les adreces d'interès."
-alreadyFavorited: "Ja es troba a les adreces d'interès."
+unfavorite: "Suprimeix de les adreces d'interès"
+favorited: "S'ha afegit a les adreces d'interès."
+alreadyFavorited: "Ja s'ha afegit a les adreces d'interès."
 cantFavorite: "No s'ha pogut afegir a les adreces d'interès."
-pin: "Fixar al perfil"
-unpin: "Deixa de fixar al perfil"
+pin: "Fixa al perfil"
+unpin: "No fixis al perfil"
 copyContent: "Copia el contingut"
 copyLink: "Copia l'enllaç"
-delete: "Elimina"
-deleteAndEdit: "Elimina i edita"
-deleteAndEditConfirm: "Segur que vols eliminar la publicació i editar-la? Perdràs
+delete: "Suprimeix"
+deleteAndEdit: "Suprimeix i edita"
+deleteAndEditConfirm: "Segur que vols suprimir aquesta publicació i editar-la? Perdràs
   totes les reaccions, impulsos i respostes."
 addToList: "Afegeix a la llista"
 sendMessage: "Envia un missatge"
 copyUsername: "Copia el nom d'usuari"
 searchUser: "Cerca un usuari"
-reply: "Respon"
+reply: "Resposta"
 loadMore: "Carrega'n més"
 showMore: "Mostra'n més"
 youGotNewFollower: "t'ha seguit"
@@ -66,20 +66,20 @@ export: "Exporta"
 files: "Fitxers"
 download: "Baixa"
 driveFileDeleteConfirm: "Segur que vols eliminar el fitxer «{name}»? S'eliminarà de
-  totes les notes que el continguin com a fitxer adjunt."
+  totes les publicacions que el continguin com a fitxer adjunt."
 unfollowConfirm: "Segur que vols deixar de seguir a {name}?"
-exportRequested: "Has demanat exportar dades. Això pot trigar una estona. S'afegirà
-  al teu Disc un cop completada."
-importRequested: "Has demanat importar dades. Això pot trigar una estona."
+exportRequested: "Has sol·licitat una exportació. Això pot trigar una estona. S'afegirà
+  al teu Disc un cop finalitzada."
+importRequested: "Has sol·licitat una importació de dades. Això pot trigar una estona."
 lists: "Llistes"
 noLists: "No tens cap llista"
-note: "Publica"
+note: "Publicació"
 notes: "Publicacions"
 following: "Seguint"
 followers: "Seguidors"
 followsYou: "Et segueix"
-createList: "Crear una llista"
-manageLists: "Gestionar les llistes"
+createList: "Crea una llista"
+manageLists: "Gestiona les llistes"
 error: "Error"
 somethingHappened: "S'ha produït un error"
 retry: "Torna-ho a intentar"
@@ -91,7 +91,7 @@ serverIsDead: "Aquest servidor no respon. Espera una estona i torna-ho a provar.
 youShouldUpgradeClient: "Per veure aquesta pàgina, actualitzeu-la per actualitzar
   el vostre client."
 enterListName: "Introdueix un nom per a la llista"
-privacy: "Privadesa"
+privacy: "Privacitat"
 makeFollowManuallyApprove: "Les sol·licituds de seguiment requereixen aprovació"
 defaultNoteVisibility: "Visibilitat per defecte"
 follow: "Segueix"
@@ -2066,7 +2066,7 @@ _relayStatus:
   rejected: Rebutjat
 deleted: Eliminat
 editNote: Edita la publicació
-edited: 'Editat el {date} {time}'
+edited: 'Editat a les {time} {date}'
 signupsDisabled: Actualment, les inscripcions en aquest servidor estan desactivades.
   Si teniu un codi d'invitació per a aquest servidor, introduïu-lo a continuació.
 userSaysSomethingReasonQuote: '{name} ha citat una publicació que conté {reason}'
@@ -2096,7 +2096,7 @@ newer: Més nou
 older: Més antic
 silencedWarning: S'està mostrant aquesta pàgina per què aquest usuari és d'un servidor
   que l'administrador a silenciat, així que pot ser spam.
-jumpToPrevious: Vés a l'anterior
+jumpToPrevious: Salta a l'anterior
 cw: Avís de contingut
 antennasDesc: "Les antenes mostren publicacions noves que coincideixen amb els criteris
   establerts!\nS'hi pot accedir des de la pàgina de línies de temps."
@@ -2104,7 +2104,7 @@ expandOnNoteClick: Obre la publicació amb un clic
 expandOnNoteClickDesc: Si està desactivat, encara pots obrir les publicacions al menú
   del botó dret o fent clic a la marca de temps.
 channelFederationWarn: Els canals encara no es federen amb altres servidors
-searchPlaceholder: Cerca a Firefish
+searchPlaceholder: Cercar a Firefish
 listsDesc: Les llistes et permeten crear línies de temps amb usuaris específics. Es
   pot accedir des de la pàgina de línies de temps.
 clipsDesc: Els clips són com marcadors categoritzats que es poden compartir. Podeu
@@ -2264,8 +2264,8 @@ publishTimelinesDescription: Si està activat, les línies de temps Global i Loc
 noAltTextWarning: Alguns fitxers adjunts no tenen una descripció. T'has s oblidat
   d'escriure-les?
 showNoAltTextWarning: Mostra un avís si públiques un fitxer sense descripció
-toReply: Respon
-toQuote: Cita
+toReply: Resposta
+toQuote: Citar
 toEdit: Edita
 searchUsersDescription: "Per buscar publicacions concretes d'un usuari/servidor, escriu
   la ID (@usuari@exemple.com, o @usuari per un usuari local) o nom del domini (exemple.com).\n
@@ -2285,3 +2285,12 @@ searchRangeDescription: "Si vols filtrar per un període de temps, has de fer se
 moderationNote: Nota de moderació
 ipFirstAcknowledged: Data en què es va veure la adreça IP per primera vegada
 driveCapacityOverride: Capacitat del disc esgotada
+incorrectLanguageWarning: "Semblar ser que la teva publicació es troba en {detected},
+  però has seleccionat {current}.\nVols canviar l'idioma a {detected}?"
+markLocalFilesNsfwByDefault: Marcar tots els fitxers locals nous com a sensibles per
+  defecte
+markLocalFilesNsfwByDefaultDescription: Independentment d'aquest ajust, els usuaris
+  poden treure l'etiqueta NSFW els mateixos. Els fitxers que ja existeixen no es veuen
+  afectats.
+autocorrectNoteLanguage: Mostra un avís si l'idioma de la publicació no coincideix
+  amb el resultat de l'idioma detectat automàticament

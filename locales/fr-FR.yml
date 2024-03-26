@@ -2315,3 +2315,12 @@ noAltTextWarning: Certains fichiers joints n'ont aucune description. Avez-vous o
   de l'écrire ?
 showNoAltTextWarning: Afficher un avertissement si vous essayez de publier des fichiers
   sans description
+autocorrectNoteLanguage: Afficher un avertissement si la langue de publication ne
+  correspond pas au résultat autodétecté
+incorrectLanguageWarning: "Il semble que votre publication est en {detected}, mais
+  vous avez sélectionné {current}.\nVoulez-vous sélectionner {detected} à la place ?"
+markLocalFilesNsfwByDefault: Marquer tous les nouveaux fichiers locaux comme sensibles
+  par défaut
+markLocalFilesNsfwByDefaultDescription: Indépendamment de ce réglage, les utilisateurs
+  peuvent supprimer le drapeau « sensible » (NSFW) eux-mêmes. Les fichiers existants
+  ne sont pas affectés.
