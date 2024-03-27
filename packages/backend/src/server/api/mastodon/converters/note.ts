@@ -134,11 +134,14 @@ export class NoteConverter {
         const card = text
             .then(async (text) => this.extractUrlFromMfm(text))
             .then(async (urls) => !urls ? null : 
-                this.cardCache.fetch(
-                    identifier, 
-                    async () => this.generateCard(urls, note.lang ?? undefined),
-                    true
-                )
+                Promise.race([
+                    this.cardCache.fetch(
+                        identifier, 
+                        async () => this.generateCard(urls, note.lang ?? undefined),
+                        true
+                    ),
+                    new Promise<null>(resolve => setTimeout(() => resolve(null), 5000)) // Timeout card generation after 5 seconds
+                ]))
             );
 
         const isPinned = (ctx.pinAggregate as Map<string, boolean>)?.get(note.id)
