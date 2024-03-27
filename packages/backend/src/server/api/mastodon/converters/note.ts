@@ -141,7 +141,7 @@ export class NoteConverter {
                         true
                     ),
                     new Promise<null>(resolve => setTimeout(() => resolve(null), 5000)) // Timeout card generation after 5 seconds
-                ]))
+                ])
             );
 
         const isPinned = (ctx.pinAggregate as Map<string, boolean>)?.get(note.id)
