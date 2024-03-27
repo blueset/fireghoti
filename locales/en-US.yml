@@ -1432,6 +1432,10 @@ _mfm:
   plain: "Plain"
   plainDescription: "Deactivates the effects of all MFM contained within this MFM
     effect."
+  ruby: Ruby
+  rubyDescription: Display ruby text
+  unixTime: "Unix time"
+  unixTimeDescription: "Display Unix timestamp (in seconds) in a human-readable format."
 _instanceTicker:
   none: "Never show"
   remote: "Show for remote users"

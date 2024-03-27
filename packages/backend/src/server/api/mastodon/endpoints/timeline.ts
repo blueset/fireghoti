@@ -1,316 +1,116 @@
 import Router from "@koa/router";
-import { getClient } from "../ApiMastodonCompatibleService.js";
 import { ParsedUrlQuery } from "querystring";
-import {
-	convertAccount,
-	convertConversation,
-	convertList,
-	convertStatus,
-} from "../converters.js";
-import { convertId, IdType } from "@/server/api/index.js";
-import { apiLogger } from "@/server/api/logger.js";
-import { inspect } from "node:util";
+import { TimelineHelpers } from "@/server/api/mastodon/helpers/timeline.js";
+import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
+import { UserLists } from "@/models/index.js";
+import { auth } from "@/server/api/mastodon/middleware/auth.js";
+import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
+import { filterContext } from "@/server/api/mastodon/middleware/filter-context.js";
 
-export function limitToInt(q: ParsedUrlQuery) {
-	let object: any = q;
-	if (q.limit)
-		if (typeof q.limit === "string") object.limit = parseInt(q.limit, 10);
-	if (q.offset)
-		if (typeof q.offset === "string") object.offset = parseInt(q.offset, 10);
-	return object;
+//TODO: Move helper functions to a helper class
+export function limitToInt(q: ParsedUrlQuery, additional: string[] = []) {
+    let object: any = q;
+    if (q.limit)
+        if (typeof q.limit === "string") object.limit = parseInt(q.limit, 10);
+    if (q.offset)
+        if (typeof q.offset === "string") object.offset = parseInt(q.offset, 10);
+    for (const key of additional)
+        if (typeof q[key] === "string") object[key] = parseInt(<string>q[key], 10);
+    return object;
 }
 
-export function argsToBools(q: ParsedUrlQuery) {
-	// Values taken from https://docs.joinmastodon.org/client/intro/#boolean
-	const toBoolean = (value: string) =>
-		!["0", "f", "F", "false", "FALSE", "off", "OFF"].includes(value);
+export function argsToBools(q: ParsedUrlQuery, additional: string[] = []) {
+    // Values taken from https://docs.joinmastodon.org/client/intro/#boolean
+    const toBoolean = (value: string) =>
+        !["0", "f", "F", "false", "FALSE", "off", "OFF"].includes(value);
 
-	// Keys taken from:
-	// - https://docs.joinmastodon.org/methods/accounts/#statuses
-	// - https://docs.joinmastodon.org/methods/timelines/#public
-	// - https://docs.joinmastodon.org/methods/timelines/#tag
-	let object: any = q;
-	if (q.only_media)
-		if (typeof q.only_media === "string")
-			object.only_media = toBoolean(q.only_media);
-	if (q.exclude_replies)
-		if (typeof q.exclude_replies === "string")
-			object.exclude_replies = toBoolean(q.exclude_replies);
-	if (q.exclude_reblogs)
-		if (typeof q.exclude_reblogs === "string")
-			object.exclude_reblogs = toBoolean(q.exclude_reblogs);
-	if (q.pinned)
-		if (typeof q.pinned === "string") object.pinned = toBoolean(q.pinned);
-	if (q.local)
-		if (typeof q.local === "string") object.local = toBoolean(q.local);
-	return q;
+    // Keys taken from:
+    // - https://docs.joinmastodon.org/methods/accounts/#statuses
+    // - https://docs.joinmastodon.org/methods/timelines/#public
+    // - https://docs.joinmastodon.org/methods/timelines/#tag
+    let keys = ['only_media', 'exclude_replies', 'exclude_reblogs', 'pinned', 'local', 'remote'].concat(additional);
+    let object: any = q;
+
+    for (const key of keys)
+        if (q[key] && typeof q[key] === "string")
+            object[key] = toBoolean(<string>q[key]);
+
+    return object;
 }
 
-export function convertTimelinesArgsId(q: ParsedUrlQuery) {
-	if (typeof q.min_id === "string")
-		q.min_id = convertId(q.min_id, IdType.FirefishId);
-	if (typeof q.max_id === "string")
-		q.max_id = convertId(q.max_id, IdType.FirefishId);
-	if (typeof q.since_id === "string")
-		q.since_id = convertId(q.since_id, IdType.FirefishId);
-	return q;
+export function normalizeUrlQuery(q: ParsedUrlQuery, arrayKeys: string[] = []): any {
+    const dict: any = {};
+
+    for (const k in q) {
+        if (arrayKeys.includes(k))
+            dict[k] = Array.isArray(q[k]) ? q[k] : [q[k]];
+        else
+            dict[k] = Array.isArray(q[k]) ? q[k]?.at(-1) : q[k];
+    }
+
+    return dict;
 }
 
-export function apiTimelineMastodon(router: Router): void {
-	router.get("/v1/timelines/public", async (ctx, reply) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const query: any = ctx.query;
-			const data =
-				query.local === "true"
-					? await client.getLocalTimeline(
-							convertTimelinesArgsId(argsToBools(limitToInt(query))),
-					  )
-					: await client.getPublicTimeline(
-							convertTimelinesArgsId(argsToBools(limitToInt(query))),
-					  );
-			ctx.body = data.data.map((status) => convertStatus(status));
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
-	router.get<{ Params: { hashtag: string } }>(
-		"/v1/timelines/tag/:hashtag",
-		async (ctx, reply) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.getTagTimeline(
-					ctx.params.hashtag,
-					convertTimelinesArgsId(argsToBools(limitToInt(ctx.query))),
-				);
-				ctx.body = data.data.map((status) => convertStatus(status));
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
-		},
-	);
-	router.get("/v1/timelines/home", async (ctx, reply) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.getHomeTimeline(
-				convertTimelinesArgsId(limitToInt(ctx.query)),
-			);
-			ctx.body = data.data.map((status) => convertStatus(status));
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
-	router.get<{ Params: { listId: string } }>(
-		"/v1/timelines/list/:listId",
-		async (ctx, reply) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.getListTimeline(
-					convertId(ctx.params.listId, IdType.FirefishId),
-					convertTimelinesArgsId(limitToInt(ctx.query)),
-				);
-				ctx.body = data.data.map((status) => convertStatus(status));
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
-		},
-	);
-	router.get("/v1/conversations", async (ctx, reply) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.getConversationTimeline(
-				convertTimelinesArgsId(limitToInt(ctx.query)),
-			);
-			ctx.body = data.data.map((conversation) =>
-				convertConversation(conversation),
-			);
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
-	router.get("/v1/lists", async (ctx, reply) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.getLists();
-			ctx.body = data.data.map((list) => convertList(list));
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
-	router.get<{ Params: { id: string } }>(
-		"/v1/lists/:id",
-		async (ctx, reply) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.getList(
-					convertId(ctx.params.id, IdType.FirefishId),
-				);
-				ctx.body = convertList(data.data);
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
-		},
-	);
-	router.post("/v1/lists", async (ctx, reply) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.createList((ctx.request.body as any).title);
-			ctx.body = convertList(data.data);
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
-	router.put<{ Params: { id: string } }>(
-		"/v1/lists/:id",
-		async (ctx, reply) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.updateList(
-					convertId(ctx.params.id, IdType.FirefishId),
-					(ctx.request.body as any).title,
-				);
-				ctx.body = convertList(data.data);
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
-		},
-	);
-	router.delete<{ Params: { id: string } }>(
-		"/v1/lists/:id",
-		async (ctx, reply) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.deleteList(
-					convertId(ctx.params.id, IdType.FirefishId),
-				);
-				ctx.body = data.data;
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
-		},
-	);
-	router.get<{ Params: { id: string } }>(
-		"/v1/lists/:id/accounts",
-		async (ctx, reply) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.getAccountsInList(
-					convertId(ctx.params.id, IdType.FirefishId),
-					convertTimelinesArgsId(ctx.query as any),
-				);
-				ctx.body = data.data.map((account) => convertAccount(account));
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
-		},
-	);
-	router.post<{ Params: { id: string } }>(
-		"/v1/lists/:id/accounts",
-		async (ctx, reply) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.addAccountsToList(
-					convertId(ctx.params.id, IdType.FirefishId),
-					(ctx.request.body.account_ids as string[]).map((id) =>
-						convertId(id, IdType.FirefishId),
-					),
-				);
-				ctx.body = data.data;
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
-		},
-	);
-	router.delete<{ Params: { id: string } }>(
-		"/v1/lists/:id/accounts",
-		async (ctx, reply) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			let accountIds = ctx.query.account_ids || ctx.query["account_ids[]"] || ctx.request.body.account_ids;
-			if (typeof accountIds === "string") {
-				accountIds = [accountIds];
-			}
-			try {
-				const data = await client.deleteAccountsFromList(
-					convertId(ctx.params.id, IdType.FirefishId),
-					(accountIds as string[]).map((id) =>
-						convertId(id, IdType.FirefishId),
-					),
-				);
-				ctx.body = data.data;
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
-		},
-	);
-}
-function escapeHTML(str: string) {
-	if (!str) {
-		return "";
-	}
-	return str
-		.replace(/&/g, "&amp;")
-		.replace(/</g, "&lt;")
-		.replace(/>/g, "&gt;")
-		.replace(/"/g, "&quot;")
-		.replace(/'/g, "&#039;");
-}
-function nl2br(str: string) {
-	if (!str) {
-		return "";
-	}
-	str = str.replace(/\r\n/g, "<br />");
-	str = str.replace(/(\n|\r)/g, "<br />");
-	return str;
+export function setupEndpointsTimeline(router: Router): void {
+    router.get("/v1/timelines/public",
+        auth(true, ['read:statuses']),
+        filterContext('public'),
+        async (ctx, reply) => {
+            const args = normalizeUrlQuery(argsToBools(limitToInt(ctx.query)));
+            const res = await TimelineHelpers.getPublicTimeline(args.max_id, args.since_id, args.min_id, args.limit, args.only_media, args.local, args.remote, ctx);
+            ctx.body = await NoteConverter.encodeMany(res, ctx);
+        });
+    router.get<{ Params: { hashtag: string } }>(
+        "/v1/timelines/tag/:hashtag",
+        auth(false, ['read:statuses']),
+        filterContext('public'),
+        async (ctx, reply) => {
+            const tag = (ctx.params.hashtag ?? '').trim().toLowerCase();
+            const args = normalizeUrlQuery(argsToBools(limitToInt(ctx.query)), ['any[]', 'all[]', 'none[]']);
+            const res = await TimelineHelpers.getTagTimeline(tag, args.max_id, args.since_id, args.min_id, args.limit, args['any[]'] ?? [], args['all[]'] ?? [], args['none[]'] ?? [], args.only_media, args.local, args.remote, ctx);
+            ctx.body = await NoteConverter.encodeMany(res, ctx);
+        },
+    );
+    router.get("/v1/timelines/home",
+        auth(true, ['read:statuses']),
+        filterContext('home'),
+        async (ctx, reply) => {
+            const args = normalizeUrlQuery(limitToInt(ctx.query));
+            const res = await TimelineHelpers.getHomeTimeline(args.max_id, args.since_id, args.min_id, args.limit, ctx);
+            ctx.body = await NoteConverter.encodeMany(res, ctx);
+        });
+    router.get<{ Params: { listId: string } }>(
+        "/v1/timelines/list/:listId",
+        auth(true, ['read:lists']),
+        filterContext('home'),
+        async (ctx, reply) => {
+            const list = await UserLists.findOneBy({ userId: ctx.user.id, id: ctx.params.listId });
+            if (!list) throw new MastoApiError(404);
+
+            const args = normalizeUrlQuery(limitToInt(ctx.query));
+            const res = await TimelineHelpers.getListTimeline(list, args.max_id, args.since_id, args.min_id, args.limit, ctx);
+            ctx.body = await NoteConverter.encodeMany(res, ctx);
+        },
+    );
+    router.get("/v1/conversations",
+        auth(true, ['read:statuses']),
+        async (ctx, reply) => {
+            const args = normalizeUrlQuery(limitToInt(ctx.query));
+            ctx.body = await TimelineHelpers.getConversations(args.max_id, args.since_id, args.min_id, args.limit, ctx);
+        }
+    );
+    router.get("/v1/markers",
+        auth(true, ['read:statuses']),
+        async (ctx, reply) => {
+            const args = normalizeUrlQuery(ctx.query, ["timeline[]"]);
+            ctx.body = await TimelineHelpers.getMarkers(args["timeline[]"], ctx);
+        }
+    );
+    router.post("/v1/markers",
+        auth(true, ['write:statuses']),
+        async (ctx, reply) => {
+            const body = ctx.request.body as any;
+            ctx.body = await TimelineHelpers.setMarkers(body, ctx);
+        }
+    );
 }

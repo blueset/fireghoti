@@ -1,5 +1,5 @@
 <template>
-	<time :title="absolute">
+	<time :title="absolute" :datetime="_timeIso">
 		<template v-if="invalid">{{ i18n.ts._ago.invalid }}</template>
 		<template v-else-if="mode === 'relative'">{{ relative }}</template>
 		<template v-else-if="mode === 'absolute'">{{ absolute }}</template>
@@ -25,17 +25,24 @@ const props = withDefaults(
 	},
 );
 
-const _time =
-	props.time == null
-		? NaN
-		: typeof props.time === "number"
-			? props.time
-			: (props.time instanceof Date
-					? props.time
-					: new Date(props.time)
-				).getTime();
+function getDateSafe(n: Date | string | number) {
+	try {
+		if (n instanceof Date) {
+			return n;
+		}
+		return new Date(n);
+	} catch (err) {
+		return {
+			getTime: () => Number.NaN,
+			toISOString: () => undefined,
+		};
+	}
+}
+
+const _time = props.time == null ? Number.NaN : getDateSafe(props.time).getTime();
+const _timeIso = props.time == null ? undefined : getDateSafe(props.time).toISOString();
 const invalid = Number.isNaN(_time);
-const absolute = !invalid ? dateTimeFormat.format(_time) : i18n.ts._ago.invalid;
+const absolute = !invalid ? dateTimeFormat.format(_time).replaceAll("GMT", "UTC") : i18n.ts._ago.invalid;
 
 const now = ref((props.origin ?? new Date()).getTime());
 const relative = computed<string>(() => {

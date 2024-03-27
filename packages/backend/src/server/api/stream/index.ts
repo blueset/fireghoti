@@ -27,7 +27,7 @@ import channels from "./channels/index.js";
 import type Channel from "./channel.js";
 import type { StreamEventEmitter, StreamMessages } from "./types.js";
 import { Converter } from "megalodon";
-import { getClient } from "@/server/api/mastodon/ApiMastodonCompatibleService.js";
+// import { getClient } from "@/server/api/mastodon/ApiMastodonCompatibleService.js";
 import { apiLogger } from "@/server/api/logger.js";
 import { inspect } from "node:util";
 import { toHtml } from "@/mfm/to-html.js";
@@ -161,7 +161,7 @@ export default class Connection {
 		} catch (e) {
 			return;
 		}
-
+		/*
 		const simpleObj = objs[0];
 		if (simpleObj.stream) {
 			// is Mastodon Compatible
@@ -248,7 +248,7 @@ export default class Connection {
 					});
 				}
 			}
-		}
+		}*/
 
 		for (const obj of objs) {
 			const { type, body } = obj;
