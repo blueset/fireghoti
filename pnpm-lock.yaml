@@ -360,6 +360,9 @@ importers:
       ulid:
         specifier: 2.3.0
         version: 2.3.0
+      unfurl.js:
+        specifier: ^6.4.0
+        version: 6.4.0
       uuid:
         specifier: 9.0.1
         version: 9.0.1
@@ -10212,7 +10215,6 @@ packages:
   /he@1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
-    dev: true
 
   /hexoid@1.0.0:
     resolution: {integrity: sha512-QFLV0taWQOZtvIRIAdBChesmogZrtuXvVWsFHZTk2SU+anspqZ2vMnoLg7IE1+Uk16N19APic1BuF8bC8c2m5g==}
@@ -16866,6 +16868,23 @@ packages:
 
   /unicode-emoji-json@0.6.0:
     resolution: {integrity: sha512-tAYF+EsOxa8jo/XPNYHRX7Nc8uoII+/edIpHM4DQI4nMp3AuRmwGZhL8fEBe0kUk0zHK+6wiwxxxNwfW5ap2Tg==}
+
+  /unfurl.js@6.4.0:
+    resolution: {integrity: sha512-DogJFWPkOWMcu2xPdpmbcsL+diOOJInD3/jXOv6saX1upnWmMK8ndAtDWUfJkuInqNI9yzADud4ID9T+9UeWCw==}
+    engines: {node: '>=6.0.0'}
+    dependencies:
+      debug: 3.2.7
+      he: 1.2.0
+      htmlparser2: 8.0.2
+      iconv-lite: 0.4.24
+      node-fetch: 2.6.12
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: false
+
+  /unicode-emoji-json@0.4.0:
+    resolution: {integrity: sha512-lVNOwh2AnmbwqtSrEVjAWKQoVzWgyWmXVqPuPkPfKb0tnA0+uYN/4ILCTdy9IRj/+3drAVhmjwjNJQr2dhCwnA==}
     dev: true
 
   /unicorn-magic@0.1.0:
