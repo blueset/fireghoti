@@ -2058,3 +2058,5 @@ ipFirstAcknowledged: IPアドレスが最初に取得された日
 driveCapacityOverride: ドライブ容量の変更
 autocorrectNoteLanguage: 設定した投稿言語が自動検出されたものと異なる場合に警告する
 incorrectLanguageWarning: "この投稿は{detected}で書かれていると判定されました。\n投稿言語を{current}ではなく{detected}にしますか？"
+markLocalFilesNsfwByDefault: このサーバーの全てのファイルをデフォルトでNSFWに設定する
+markLocalFilesNsfwByDefaultDescription: この設定が有効でも、ユーザーは自分でNSFWのフラグを外すことができます。また、この設定は既存のファイルには影響しません。

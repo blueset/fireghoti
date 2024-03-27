@@ -2269,3 +2269,6 @@ incorrectLanguageWarning: "Sepertinya kirimanmu dalam bahasa {detected}, tetapi 
   memilih {current}.\nApakah kamu ingin ubah bahasanya ke bahasa {detected} saja?"
 autocorrectNoteLanguage: Tampilkan peringatan jika bahasa kiriman tidak cocok dengan
   hasil yang dideteksi secara otomatis
+markLocalFilesNsfwByDefault: Tandai semua berkas lokal baru sensitif secara bawaan
+markLocalFilesNsfwByDefaultDescription: Terlepas dari pengaturan ini, pengguna dapat
+  menghapus sendiri tanda NSFW. Berkas yang ada tidak berpengaruh.
