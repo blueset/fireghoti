@@ -2225,7 +2225,7 @@ searchPostsWithFiles: Hanya kiriman dengan berkas
 publishTimelines: Terbitkan lini masa untuk pengunjung
 publishTimelinesDescription: Jika diaktifkan, lini masa Lokal dan Global akan ditampilkan
   di {url} bahkan ketika keluar dari akun.
-searchWordsDescription: "Untuk mencari kiriman, masukkan istilah pencarian. Pisahkan
+searchWordsDescription: "Masukkan kata kunci di sini untuk mencari kiriman. Pisahkan
   kata dengan spasi untuk pencarian AND (dan), atau 'OR' ('atau', tanpa tanda kutip)
   di antara kata-kata untuk pencarian OR.\nMisalnya, 'pagi malam' akan menemukan postingan
   yang mengandung 'pagi' dan 'malam', dan 'pagi OR malam' akan menemukan postingan
@@ -2265,3 +2265,10 @@ messagingUnencryptedInfo: Percakapan di Firefish tidak terenkripsi secara ujung 
 moderationNote: Catatan Moderasi
 driveCapacityOverride: Penimpaan Kapasitas Drive
 ipFirstAcknowledged: Tanggal akuisisi pertama dari alamat IP
+incorrectLanguageWarning: "Sepertinya kirimanmu dalam bahasa {detected}, tetapi Anda
+  memilih {current}.\nApakah kamu ingin ubah bahasanya ke bahasa {detected} saja?"
+autocorrectNoteLanguage: Tampilkan peringatan jika bahasa kiriman tidak cocok dengan
+  hasil yang dideteksi secara otomatis
+markLocalFilesNsfwByDefault: Tandai semua berkas lokal baru sensitif secara bawaan
+markLocalFilesNsfwByDefaultDescription: Terlepas dari pengaturan ini, pengguna dapat
+  menghapus sendiri tanda NSFW. Berkas yang ada tidak berpengaruh.

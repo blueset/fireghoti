@@ -152,6 +152,8 @@ cacheRemoteFilesDescription: "当禁用此设定时远程文件将直接从远�
 flagAsBot: "标记此账号为自动化账号"
 flagAsBotDescription: "如果此账号由程序控制，请启用此项。启用后，此标志可以帮助其它开发人员防止自动化账号之间产生无限互动的行为，并让 Firefish
   的内部系统将此账号识别为自动化账号。"
+markLocalFilesNsfwByDefault: "将所有新增本地文件默认标注为敏感内容"
+markLocalFilesNsfwByDefaultDescription: "无论此设置如何，用户都可以自行删除内容的敏感内容标志。现有文件也不受影响。"
 flagAsCat: "将这个账号设定为一只猫😺"
 flagAsCatDescription: "您会长出猫耳朵并像猫一样说话！"
 flagShowTimelineReplies: "在时间线上显示帖子的回复"
@@ -168,7 +170,7 @@ searchWith: "搜索：{q}"
 youHaveNoLists: "列表为空"
 followConfirm: "您确定要关注 {name} 吗？"
 proxyAccount: "代理账号"
-proxyAccountDescription: "代理账号是在某些情况下充当用户的远程关注者的账号。 例如，当一个用户添加一个远程用户为代理账号时，如果没有本地用户关注该用户，远程用户的活动将不会被传递到服务器，因此代理账号将被关注。"
+proxyAccountDescription: "代理账号是在某些情况下充当远程用户的关注者的账号。 例如，当一个用户把一个远程用户添加到列表时，如果没有本地用户关注该用户，远程用户的活动将不会被传递到服务器，为了避免此情况，代理账号将关注它。"
 host: "主机名"
 selectUser: "选择用户"
 recipient: "接收者"
@@ -849,7 +851,7 @@ auto: "自动"
 themeColor: "服务器滚动条颜色"
 size: "大小"
 numberOfColumn: "列数"
-searchByGoogle: "Google"
+searchByGoogle: "搜索"
 instanceDefaultLightTheme: "服务器默认浅色主题"
 instanceDefaultDarkTheme: "服务器默认深色主题"
 instanceDefaultThemeDescription: "以对象格式键入主题代码。"
@@ -2000,7 +2002,7 @@ _iconSets:
   bold: 加粗
   light: 减细
 emojiModPerm: 自定义表情符号管理权限
-squareCatAvatars: 猫模式账号显示圆形头像
+squareCatAvatars: 为猫账号显示方形头像图标
 makePrivate: 设为私有
 makePrivateConfirm: 此操作将向远程服务器发送删除请求并将可见性更改为私有。是否继续？
 _emojiModPerm:
@@ -2056,3 +2058,5 @@ searchRangeDescription: "如果您要过滤时间段，请按以下格式输入�
 messagingUnencryptedInfo: "Firefish 上的聊天没有经过端到端加密，请不要在聊天中分享您的敏感信息。"
 noAltTextWarning: 有些附件没有描述。您是否忘记写描述了？
 showNoAltTextWarning: 当您尝试发布没有描述的帖子附件时显示警告
+autocorrectNoteLanguage: 当帖子语言不符合自动检测的结果的时候显示警告
+incorrectLanguageWarning: "看上去您帖子使用的语言是{detected}，但您选择的语言是{current}。\n要改为以{detected}发帖吗？"

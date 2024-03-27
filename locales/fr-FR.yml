@@ -2277,15 +2277,18 @@ searchPostsWithFiles: Publications uniquement avec fichiers
 publishTimelines: Publier les fils d'actualité pour les visiteurs
 publishTimelinesDescription: Si cette option est activée, les fils Local et Global
   sera affichée sur {url} même en cas de déconnexion.
-searchWordsDescription: "Pour rechercher des publications, saisissez le terme de recherche.
-  Des mots séparés avec un espace pour une recherche ET, ou « OR » (sans citations)
+searchWordsDescription: "Saisissez le terme de recherche ici pour rechercher des publications.
+  Séparez les mots avec un espace pour une recherche ET, ou « OR » (sans guillemets)
   entre des mots pour une recherche OU.\nPar exemple, « matin nuit » trouvera des
   publications contenant à la fois « matin » et « nuit », et « matin ou nuit » trouveront
   des messages qui contiennent soit « matin » ou « nuit » (ou les deux).\nVous pouvez
   également combiner des conditions ET/OU comme « (matin OR nuit) ensommeillé ».\n
-  \nSi vous souhaitez accéder à une page d'utilisateur ou à une page d'affichage spécifique,
-  saisissez l'ID ou l'URL dans ce champ et cliquez sur le bouton « Rechercher ». Cliquez
-  sur « Rechercher » recherchera des messages qui contiennent littéralement l'ID/URL."
+  Si vous voulez chercher une séquence de mots (par exemple, une phrase), vous devez
+  le mettre en double citations, pour ne pas en faire une recherche ET : \"Aujourd'hui
+  j'ai appris\"\n\nSi vous souhaitez accéder à une page d'utilisateur ou à une page
+  d'affichage spécifique, saisissez l'ID ou l'URL dans ce champ et cliquez sur le
+  bouton « Rechercher ». Cliquez sur « Rechercher » recherchera des messages qui contiennent
+  littéralement l'ID/URL."
 searchUsersDescription: "Pour rechercher des messages par un utilisateur/serveur spécifique,
   saisissez l'ID (@utilisateur@exemple.com, ou @utilisateur pour un utilisateur local)
   ou le nom de domaine (exemple.com).\n\nSi vous saisissez « me » (sans guillemets),
@@ -2312,3 +2315,12 @@ noAltTextWarning: Certains fichiers joints n'ont aucune description. Avez-vous o
   de l'écrire ?
 showNoAltTextWarning: Afficher un avertissement si vous essayez de publier des fichiers
   sans description
+autocorrectNoteLanguage: Afficher un avertissement si la langue de publication ne
+  correspond pas au résultat autodétecté
+incorrectLanguageWarning: "Il semble que votre publication est en {detected}, mais
+  vous avez sélectionné {current}.\nVoulez-vous sélectionner {detected} à la place ?"
+markLocalFilesNsfwByDefault: Marquer tous les nouveaux fichiers locaux comme sensibles
+  par défaut
+markLocalFilesNsfwByDefaultDescription: Indépendamment de ce réglage, les utilisateurs
+  peuvent supprimer le drapeau « sensible » (NSFW) eux-mêmes. Les fichiers existants
+  ne sont pas affectés.

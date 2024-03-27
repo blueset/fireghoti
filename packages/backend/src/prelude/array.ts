@@ -3,7 +3,6 @@ import type { EndoRelation, Predicate } from "./relation.js";
 /**
  * Count the number of elements that satisfy the predicate
  */
-
 export function countIf<T>(f: Predicate<T>, xs: T[]): number {
 	return xs.filter(f).length;
 }
@@ -66,6 +65,21 @@ export function sum(xs: number[]): number {
 
 export function maximum(xs: number[]): number {
 	return Math.max(...xs);
+}
+
+/**
+ * Returns if two arrays are equal
+ *
+ * examples:
+ *   equal([1, 2, 3], [1, 2, 3]) === true
+ *   equal([1, 2, 3], [1, 3, 2]) === false
+ *   equal([1, 2, 3], [1, 2])    === false
+ */
+export function equal<T>(lhs: T[], rhs: T[]): boolean {
+	return (
+		lhs.length === rhs.length &&
+		lhs.every((value, index) => value === rhs[index])
+	);
 }
 
 /**

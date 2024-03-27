@@ -149,6 +149,8 @@ addEmoji: "加入表情符號"
 settingGuide: "推薦設定"
 cacheRemoteFiles: "快取遠端檔案"
 cacheRemoteFilesDescription: "禁用此設定會停止遠端檔案的緩存，從而節省儲存空間，但資料會因直接連線從而產生額外數據花費。"
+markLocalFilesNsfwByDefault: "將所有新增本地檔案預設標註為敏感內容"
+markLocalFilesNsfwByDefaultDescription: "無論此設置如何，使用者都可以自行刪除檔案的敏感內容標誌。現有檔案也不受影響。"
 flagAsBot: "標記此帳號為自動化帳號"
 flagAsBotDescription: "如果本帳戶是由程式控制，請啟用此選項。此選項將作為一個標示以幫助其他開發者防止自動化帳號之間產生無限互動的行為，並會調整Firefish內部系統將此帳號識別為自動化帳號。"
 flagAsCat: "你是喵咪嗎？w😺"
@@ -2041,9 +2043,9 @@ searchPostsWithFiles: 僅帶有附件的貼文
 searchCwAndAlt: 包含內容警告及替代文字
 publishTimelines: 允許未登入的使用者查看時間軸
 publishTimelinesDescription: 啟用後，未登入的使用者可於 {url} 查看本地時間軸及公開時間軸。
-searchWordsDescription: "如欲搜尋貼文，請在此欄位輸入欲搜尋的關鍵字。以空格分隔關鍵字以進行AND搜尋，在關鍵字之間插入「OR」以進行OR搜尋。\n
-  舉例來說，輸入「早上 晚上」會搜尋包含「早上」和「晚上」的貼文，「早上 OR 晚上」會搜尋包含「早上」或「晚上」（或兩者皆包含）的貼文。\n您也可以同時進行AND搜尋及OR搜尋，例如「(早上
-  OR 晚上) 想睡覺」。\n\n如欲前往特定使用者或貼文的頁面，請在此欄位輸入使用者ID（@user@example.com）或貼文的URL，並點擊「查詢」按鈕。點擊「搜尋」按鈕則會搜尋字面上包含輸入的ID或URL的貼文。"
+searchWordsDescription: "請在此欄位輸入欲搜尋的關鍵字。以空格分隔關鍵字以進行AND搜尋，在關鍵字之間插入「OR」以進行OR搜尋。\n舉例來說，輸入「早上
+  晚上」會搜尋包含「早上」和「晚上」的貼文，「早上 OR 晚上」會搜尋包含「早上」或「晚上」（或兩者皆包含）的貼文。\n您也可以同時進行AND搜尋及OR搜尋，例如「(早上
+  OR 晚上) 想睡覺」。\n如欲搜尋包含空白的字串，請使用雙引號 (\") 以與AND搜尋進行區別，例如「\"Today I learned\"」。\n\n如欲前往特定使用者或貼文的頁面，請在此欄位輸入使用者ID（@user@example.com）或貼文的URL，並點擊「查詢」按鈕。點擊「搜尋」按鈕則會搜尋字面上包含輸入的ID或URL的貼文。"
 searchUsersDescription: "如欲搜尋特定使用者的貼文，請以「@user@example.com（本地使用者則為 @user）」的格式輸入發文者的ID，或輸入網域名稱（example.com）以搜尋特定伺服器的貼文。\n\
   \n輸入「me」以搜尋自己的所有貼文（包含不在主頁顯示、追隨者、指定使用者、祕密貼文）。\n\n輸入「local」以搜尋本地伺服器的貼文。"
 searchRangeDescription: "如欲搜尋特定期間的貼文，請以「20220615-20231031」的格式輸入日期範圍。\n\n今年的日期可省略年份（例如0105-0106、20231105-0110）。\n\
@@ -2052,3 +2054,7 @@ noAltTextWarning: 有些附件沒有說明，您是否忘記寫了？
 moderationNote: 管理員備註
 ipFirstAcknowledged: 首次取得此 IP 位址的日期
 driveCapacityOverride: 雲端硬碟容量變更
+showNoAltTextWarning: 在嘗試發佈包含沒有替代文字的貼文時顯示警告
+messagingUnencryptedInfo: Firefish 上的聊天沒有經過點對點加密，請不要發送敏感資訊。
+autocorrectNoteLanguage: 在設定的貼文語言不符合自動偵測的結果時顯示警告
+incorrectLanguageWarning: "此貼文的語言似乎為{detected}，但您選擇的語言為{current}。\n要將貼文語言變更為{detected}嗎？"

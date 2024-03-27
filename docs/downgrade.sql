@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'markLocalFilesNsfwByDefault1709305200000',
     'FixMutingIndices1710690239308',
     'NoteFile1710304584214',
     'RenameMetaColumns1705944717480',
@@ -18,6 +19,9 @@ DELETE FROM "migrations" WHERE name IN (
     'RemoveNativeUtilsMigration1705877093218',
     'SwSubscriptionAccessToken1709395223611'
 );
+
+-- markLocalFilesNsfwByDefault
+ALTER TABLE "meta" DROP COLUMN "markLocalFilesNsfwByDefault";
 
 -- fix-muting-indices
 DROP INDEX "IDX_renote_muting_createdAt";

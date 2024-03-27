@@ -569,6 +569,7 @@ export async function addFile({
 		: null;
 
 	const folder = await fetchFolder();
+	const instance = await fetchMeta();
 
 	let file = new DriveFile();
 	file.id = genId();
@@ -583,7 +584,8 @@ export async function addFile({
 	file.requestIp = requestIp;
 	file.requestHeaders = requestHeaders;
 	file.isSensitive = user
-		? Users.isLocalUser(user) && profile!.alwaysMarkNsfw
+		? Users.isLocalUser(user) &&
+		  (instance!.markLocalFilesNsfwByDefault || profile!.alwaysMarkNsfw)
 			? true
 			: sensitive != null
 			  ? sensitive

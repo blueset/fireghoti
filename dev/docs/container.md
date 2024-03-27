@@ -16,6 +16,10 @@
 
 1. Download the [`dev/container` directory](./dev/container) and execute `chmod +x docker-entrypoint.sh`
     - Alternatively, you can use `git clone https://firefish.dev/firefish/firefish.git && cd firefish/dev/container`, although this will clone the entire repository.
+1. Copy the example config file
+    ```sh
+    cp config.example.env config.env
+    ```
 1. Edit `docker-compose.yml` and set `URL` to the URL you want to use (or leave it as `http://localhost:3030`)
 1. Run `docker compose up`
     - This will build the environment, install dependencies and prepare the needed config files.

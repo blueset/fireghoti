@@ -19,6 +19,11 @@ export function fromHtml(html: string, hashtagNames?: string[]): string {
 		return appendChildren(childNodes, background).join("").trim();
 	}
 
+	/**
+	 * Get only the text, ignoring all formatting inside
+	 * @param node
+	 * @returns
+	 */
 	function getText(node: TreeAdapter.Node): string {
 		if (treeAdapter.isTextNode(node)) return node.value;
 		if (!treeAdapter.isElementNode(node)) return "";
@@ -44,6 +49,13 @@ export function fromHtml(html: string, hashtagNames?: string[]): string {
 		}
 	}
 
+	/**
+	 *
+	 * @param node
+	 * @param index
+	 * @param background Determine whether the context is `<ul>` or `<ol>`
+	 * @returns
+	 */
 	function analyze(
 		node: TreeAdapter.Node,
 		index = 1,
@@ -169,6 +181,8 @@ export function fromHtml(html: string, hashtagNames?: string[]): string {
 				return ["\n\n", appendChildren(node.childNodes)];
 			}
 
+			// MFM does not currently support lists,
+			// but this parser will parse html into a markdown style list with correct indentation.
 			case "ul": {
 				return [
 					"\n  ",
@@ -208,6 +222,7 @@ export function fromHtml(html: string, hashtagNames?: string[]): string {
 				return ["\n", appendChildren(node.childNodes)];
 			}
 
+			// temporary solution
 			case "ruby": {
 				const rtText = node.childNodes
 					.filter((n) => n.nodeName === "rt")

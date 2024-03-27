@@ -114,7 +114,11 @@ sudo apt install ffmpeg
     ```sh
     git clone https://firefish.dev/your-user-name/firefish.git
     ```
-1. Create the config file
+1. Copy the example database config file
+    ```sh
+    cp dev/config.example.env dev/config.env
+    ```
+1. Create a config file for Firefish
     ```sh
     cd firefish
     vim .config/default.yml

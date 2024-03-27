@@ -40,9 +40,11 @@
 					>
 				</div>
 
-				<FormSwitch v-model="isSensitive">{{
-					i18n.ts.markAsSensitive
-				}}</FormSwitch>
+				<FormSwitch
+					v-if="!instance.markLocalFilesNsfwByDefault"
+					v-model="isSensitive"
+					>{{ i18n.ts.markAsSensitive }}</FormSwitch
+				>
 
 				<FormButton v-if="postId" primary @click="save"
 					><i :class="icon('ph-floppy-disk-back')"></i>
@@ -73,6 +75,7 @@ import { selectFiles } from "@/scripts/select-file";
 import * as os from "@/os";
 import { useRouter } from "@/router";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import { instance } from "@/instance";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
