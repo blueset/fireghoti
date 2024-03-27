@@ -223,17 +223,26 @@ export const DriveFileRepository = db.getRepository(DriveFile).extend({
 
 	getFinalUrl(url: string): string {
 		if (!config.proxyRemoteFiles) return url;
-		if (!url.startsWith('https://') && !url.startsWith('http://')) return url;
+		if (!url.startsWith("https://") && !url.startsWith("http://")) return url;
 		if (url.startsWith(`${config.url}/files`)) return url;
 		if (url.startsWith(`${config.url}/static-assets`)) return url;
 		if (url.startsWith(`${config.url}/identicon`)) return url;
 		if (url.startsWith(`${config.url}/avatar`)) return url;
 
 		const meta = fetchMetaSync();
-        const baseUrl = meta ? meta.objectStorageBaseUrl ?? `${meta.objectStorageUseSSL ? "https" : "http"}://${meta.objectStorageEndpoint}${meta.objectStoragePort ? `:${meta.objectStoragePort}` : ""}/${meta.objectStorageBucket}` : null;
+		const baseUrl = meta
+			? meta.objectStorageBaseUrl ??
+			  `${meta.objectStorageUseSSL ? "https" : "http"}://${
+					meta.objectStorageEndpoint
+			  }${meta.objectStoragePort ? `:${meta.objectStoragePort}` : ""}/${
+					meta.objectStorageBucket
+			  }`
+			: null;
 		if (baseUrl !== null && url.startsWith(baseUrl)) return url;
 
-		return `${config.url}/proxy/${encodeURIComponent(new URL(url).pathname)}?${query({ url: url })}`;
+		return `${config.url}/proxy/${encodeURIComponent(
+			new URL(url).pathname,
+		)}?${query({ url: url })}`;
 	},
 
 	getFinalUrlMaybe(url?: string | null): string | null {

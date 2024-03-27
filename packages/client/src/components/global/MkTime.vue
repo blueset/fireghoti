@@ -39,10 +39,14 @@ function getDateSafe(n: Date | string | number) {
 	}
 }
 
-const _time = props.time == null ? Number.NaN : getDateSafe(props.time).getTime();
-const _timeIso = props.time == null ? undefined : getDateSafe(props.time).toISOString();
+const _time =
+	props.time == null ? Number.NaN : getDateSafe(props.time).getTime();
+const _timeIso =
+	props.time == null ? undefined : getDateSafe(props.time).toISOString();
 const invalid = Number.isNaN(_time);
-const absolute = !invalid ? dateTimeFormat.format(_time).replaceAll("GMT", "UTC") : i18n.ts._ago.invalid;
+const absolute = !invalid
+	? dateTimeFormat.format(_time).replaceAll("GMT", "UTC")
+	: i18n.ts._ago.invalid;
 
 const now = ref((props.origin ?? new Date()).getTime());
 const relative = computed<string>(() => {

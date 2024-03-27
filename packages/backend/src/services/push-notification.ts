@@ -83,34 +83,53 @@ export async function pushNotification<T extends keyof pushNotificationsTypes>(
 				p256dh: subscription.publickey,
 			},
 		};
-		const notificationPayload = 
-			subscription.appAccessToken ? 
-			await NotificationConverter.encodePushNotificationPayload(subscription, type, body) : {
-				type,
-				body:
-					type === "notification"
-						? truncateNotification(body as Packed<"Notification">)
-						: body,
-				userId,
-				dateTime: new Date().getTime(),
-			};
+		const notificationPayload = subscription.appAccessToken
+			? await NotificationConverter.encodePushNotificationPayload(
+					subscription,
+					type,
+					body,
+			  )
+			: {
+					type,
+					body:
+						type === "notification"
+							? truncateNotification(body as Packed<"Notification">)
+							: body,
+					userId,
+					dateTime: new Date().getTime(),
+			  };
 
-		console.log("Push notification, pushSubscription:", pushSubscription, ", notificationPayload:", notificationPayload, ", body:", body, ", Stringify payload:", JSON.stringify(notificationPayload));
+		console.log(
+			"Push notification, pushSubscription:",
+			pushSubscription,
+			", notificationPayload:",
+			notificationPayload,
+			", body:",
+			body,
+			", Stringify payload:",
+			JSON.stringify(notificationPayload),
+		);
 		push
-			.sendNotification(
-				pushSubscription,
-				JSON.stringify(notificationPayload),
-				{
-					proxy: config.proxy,
-					...(subscription.appAccessToken ? {contentEncoding: "aesgcm"} : {})
-				},
-			)
+			.sendNotification(pushSubscription, JSON.stringify(notificationPayload), {
+				proxy: config.proxy,
+				...(subscription.appAccessToken ? { contentEncoding: "aesgcm" } : {}),
+			})
 			.then((result) => {
-				console.log("Push notification, pushSubscription:", pushSubscription, ", result:", result);
+				console.log(
+					"Push notification, pushSubscription:",
+					pushSubscription,
+					", result:",
+					result,
+				);
 				return result;
 			})
 			.catch((err: any) => {
-				console.log("Push notification, pushSubscription:", pushSubscription, ", error:", err);
+				console.log(
+					"Push notification, pushSubscription:",
+					pushSubscription,
+					", error:",
+					err,
+				);
 				if (err.statusCode === 410) {
 					SwSubscriptions.delete({
 						userId: userId,

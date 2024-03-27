@@ -53,7 +53,9 @@ export default define(meta, paramDef, async (ps, me) => {
 			.where(
 				new Brackets((qb) => {
 					qb.where("user.usernameLower LIKE :username", {
-						username: `${sqlLikeEscape(ps.query.replace("@", "").toLowerCase())}%`,
+						username: `${sqlLikeEscape(
+							ps.query.replace("@", "").toLowerCase(),
+						)}%`,
 					});
 					// Try to match full username
 					const matches = ps.query.match(/^@(.+?)@(.+)$/);

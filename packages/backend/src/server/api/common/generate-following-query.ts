@@ -20,34 +20,40 @@ export async function generateFollowingQuery(
 		let curr = new Date();
 		let prev = new Date();
 		prev.setDate(prev.getDate() - 7);
-		return Notes.createQueryBuilder('note')
+		return Notes.createQueryBuilder("note")
 			.where(`note.createdAt > :prev`, { prev })
 			.andWhere(`note.createdAt < :curr`, { curr })
 			.andWhere(
 				new Brackets((qb) => {
 					qb.where(`note.userId IN (${followingQuery.getQuery()})`);
 					qb.orWhere(`note.userId = :meId`, { meId: me.id });
-				})
+				}),
 			)
 			.getCount()
-			.then(res => {
-				logger.info(`Calculating heuristics for user ${me.id} took ${new Date().getTime() - curr.getTime()}ms`);
+			.then((res) => {
+				logger.info(
+					`Calculating heuristics for user ${me.id} took ${
+						new Date().getTime() - curr.getTime()
+					}ms`,
+				);
 				return res;
 			});
 	});
 
-	const shouldUseUnion = heuristic < cutoff ;
+	const shouldUseUnion = heuristic < cutoff;
 
 	q.andWhere(
 		new Brackets((qb) => {
 			if (shouldUseUnion) {
-				qb.where(`note.userId = ANY(array(${followingQuery.getQuery()} UNION ALL VALUES (:meId)))`);
+				qb.where(
+					`note.userId = ANY(array(${followingQuery.getQuery()} UNION ALL VALUES (:meId)))`,
+				);
 			} else {
 				qb.where(`note.userId = :meId`);
 				qb.orWhere(`note.userId IN (${followingQuery.getQuery()})`);
 			}
 		}),
-	)
+	);
 
 	q.setParameters({ meId: me.id });
 }

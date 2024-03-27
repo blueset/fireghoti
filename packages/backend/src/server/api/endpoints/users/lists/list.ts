@@ -32,14 +32,16 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, me) => {
-	let query = UserLists.createQueryBuilder("userLists")
-		.where("userLists.userId = :userId", { userId: me.id });
+	let query = UserLists.createQueryBuilder("userLists").where(
+		"userLists.userId = :userId",
+		{ userId: me.id },
+	);
 	if (ps.userId) {
-        query = query.andWhere(
-			`EXISTS(SELECT 1 FROM ${UserListJoinings.metadata.tableName} ulj WHERE ulj."userId" = :joinUserId AND ulj."userListId" = "userLists"."id")`, 
-			{ joinUserId: ps.userId }
+		query = query.andWhere(
+			`EXISTS(SELECT 1 FROM ${UserListJoinings.metadata.tableName} ulj WHERE ulj."userId" = :joinUserId AND ulj."userListId" = "userLists"."id")`,
+			{ joinUserId: ps.userId },
 		);
-    }
+	}
 	const userLists = await query.getMany();
 
 	return await Promise.all(userLists.map((x) => UserLists.pack(x)));

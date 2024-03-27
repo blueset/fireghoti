@@ -47,7 +47,7 @@ export class SwSubscription {
 		default: false,
 	})
 	public sendReadMessage: boolean;
-	
+
 	/**
 	 * App notification app (token for), used for Mastodon API notifications
 	 */

@@ -1,55 +1,78 @@
 <template>
 	<MkSpacer :content-max="800">
 		<div v-if="me">
-			<div v-if="state == 'waiting'" class="waiting _section" :class="[$style.section]">
+			<div
+				v-if="state == 'waiting'"
+				class="waiting _section"
+				:class="[$style.section]"
+			>
 				<div class="_content">
 					<MkLoading />
 				</div>
 			</div>
-			<div v-if="state == 'denied'" class="denied _section" :class="[$style.section]">
+			<div
+				v-if="state == 'denied'"
+				class="denied _section"
+				:class="[$style.section]"
+			>
 				<div class="_content">
 					<p>{{ i18n.ts._auth.denied }}</p>
 				</div>
 			</div>
-			<div v-else-if="state == 'error'" class="error _section" :class="[$style.section]">
+			<div
+				v-else-if="state == 'error'"
+				class="error _section"
+				:class="[$style.section]"
+			>
 				<div class="_content">
 					<p>{{ message }}</p>
 				</div>
 			</div>
-			<div v-else-if="state == 'accepted-oob'" class="accepted-oob _section" :class="[$style.section]">
+			<div
+				v-else-if="state == 'accepted-oob'"
+				class="accepted-oob _section"
+				:class="[$style.section]"
+			>
 				<div class="_content">
 					<p>{{ i18n.ts._auth.copyAsk }}</p>
 					<pre>{{ code }}</pre>
 				</div>
 			</div>
-			<div v-else-if="state == 'accepted'" class="accepted _section" :class="[$style.section]">
+			<div
+				v-else-if="state == 'accepted'"
+				class="accepted _section"
+				:class="[$style.section]"
+			>
 				<div class="_content">
-					<p>
-						{{ i18n.ts._auth.callback }}<MkEllipsis />
-					</p>
+					<p>{{ i18n.ts._auth.callback }}<MkEllipsis /></p>
 				</div>
 			</div>
 			<div v-else class="_section" :class="[$style.section]">
 				<div :class="[$style.container]">
 					<button
-							v-click-anime
-							class="item _button"
-							:class="[$style.account]"
-							@click="openAccountMenu"
+						v-click-anime
+						class="item _button"
+						:class="[$style.account]"
+						@click="openAccountMenu"
 					>
 						<MkAvatar
-								:user="me"
-								:class="[$style.icon]"
-								disableLink
+							:user="me"
+							:class="[$style.icon]"
+							disableLink
 						/><!-- <MkAcct class="text" :user="me"/> -->
 					</button>
 					<div :class="[$style.left]">
 						<div>{{ i18n.ts.you }}</div>
-						<div>@{{ me.username }}<span :class="[$style.fade]">@{{ config.host }}</span></div>
+						<div>
+							@{{ me.username
+							}}<span :class="[$style.fade]"
+								>@{{ config.host }}</span
+							>
+						</div>
 					</div>
 				</div>
-				<hr/>
-				<h2>{{i18n.ts._auth.authRequired}}</h2>
+				<hr />
+				<h2>{{ i18n.ts._auth.authRequired }}</h2>
 				<div v-if="name" class="_title">
 					{{ i18n.t("_auth.shareAccess", { name: name }) }}
 				</div>
@@ -60,14 +83,14 @@
 					<p>{{ i18n.ts._auth.permissionAsk }}</p>
 					<div :class="[$style.permissions]">
 						<div
-								v-for="p in _scopes"
-								:key="p"
-								:class="[$style.permission]"
+							v-for="p in _scopes"
+							:key="p"
+							:class="[$style.permission]"
 						>
 							<i
-									:class="[`ph-${getIcon(p)}`]"
-									class="ph-bold ph-xl"
-									style="margin-right: 0.5rem"
+								:class="[`ph-${getIcon(p)}`]"
+								class="ph-bold ph-xl"
+								style="margin-right: 0.5rem"
 							></i>
 							<span class="monospace">{{ p }}</span>
 						</div>
@@ -75,11 +98,11 @@
 				</div>
 				<div class="_footer">
 					<MkButton inline @click="deny">{{
-							i18n.ts.cancel
-						}}</MkButton>
+						i18n.ts.cancel
+					}}</MkButton>
 					<MkButton inline primary @click="accept">{{
-							i18n.ts.accept
-						}}</MkButton>
+						i18n.ts.accept
+					}}</MkButton>
 				</div>
 			</div>
 		</div>
@@ -110,69 +133,77 @@ const props = defineProps<{
 	state?: string;
 }>();
 
-const _scopes = props.scope?.split(" ")?.filter(p => p.length > 0) ?? ['read'];
+const _scopes = props.scope?.split(" ")?.filter((p) => p.length > 0) ?? [
+	"read",
+];
 
 const state = ref<string | null>(null);
 const code = ref<string | null>(null);
 const name = ref<string | null>(null);
-const message = ref<string>('Unknown error occurred');
+const message = ref<string>("Unknown error occurred");
 
 if (me) {
-	await os.api("v1/firefish/apps/info", {
-		client_id: props.client_id,
-	}).then(res => {
-		name.value = res.name;
-	}).catch(reason => {
-		message.value = reason;
-		state.value = 'error';
-	});
+	await os
+		.api("v1/firefish/apps/info", {
+			client_id: props.client_id,
+		})
+		.then((res) => {
+			name.value = res.name;
+		})
+		.catch((reason) => {
+			message.value = reason;
+			state.value = "error";
+		});
 }
 
 const getUrlParams = () =>
-		window.location.search
-				.substring(1)
-				.split("&")
-				.reduce((result, query) => {
-					const [k, v] = query.split("=");
-					result[k] = decodeURIComponent(v);
-					return result;
-				}, {});
+	window.location.search
+		.substring(1)
+		.split("&")
+		.reduce((result, query) => {
+			const [k, v] = query.split("=");
+			result[k] = decodeURIComponent(v);
+			return result;
+		}, {});
 
-const redirectUri = getUrlParams()['redirect_uri'];
+const redirectUri = getUrlParams()["redirect_uri"];
 if (redirectUri !== props.redirect_uri)
-	console.warn(`Mismatching redirect_uris between props (${props.redirect_uri}) and getUrlParams (${redirectUri})`);
+	console.warn(
+		`Mismatching redirect_uris between props (${props.redirect_uri}) and getUrlParams (${redirectUri})`,
+	);
 
 function getIcon(p: string) {
 	if (p.startsWith("write")) return "pencil-simple";
-	else if(p.startsWith("read")) return "eye";
+	else if (p.startsWith("read")) return "eye";
 	else if (p.startsWith("push")) return "bell-ringing";
-	else if(p.startsWith("follow")) return "users";
+	else if (p.startsWith("follow")) return "users";
 	else return "check-fat";
 }
 
 async function accept(): Promise<void> {
 	state.value = "waiting";
-	const res = await os.api("v1/firefish/auth/code", {
-		client_id: props.client_id,
-		redirect_uri: redirectUri,
-		scopes: _scopes,
-	}).catch(r => {
-		message.value = r;
-		state.value = 'error';
-		throw r;
-	});
+	const res = await os
+		.api("v1/firefish/auth/code", {
+			client_id: props.client_id,
+			redirect_uri: redirectUri,
+			scopes: _scopes,
+		})
+		.catch((r) => {
+			message.value = r;
+			state.value = "error";
+			throw r;
+		});
 
-	if (props.redirect_uri !== 'urn:ietf:wg:oauth:2.0:oob') {
+	if (props.redirect_uri !== "urn:ietf:wg:oauth:2.0:oob") {
 		state.value = "accepted";
 		location.href = appendQuery(
-				redirectUri,
-				query({
-					code: res.code,
-					state: props.state,
-				}),
+			redirectUri,
+			query({
+				code: res.code,
+				state: props.state,
+			}),
 		);
-	}
-	else {
+	} else {
 		code.value = res.code;
 		state.value = "accepted-oob";
 	}
@@ -188,12 +219,12 @@ async function onLogin(res): Promise<void> {
 
 function openAccountMenu(ev: MouseEvent) {
 	openAccountMenu_(
-			{
-				includeCurrentAccount: true,
-				withExtraOperation: true,
-				withoutProfileLink: true
-			},
-			ev,
+		{
+			includeCurrentAccount: true,
+			withExtraOperation: true,
+			withoutProfileLink: true,
+		},
+		ev,
 	);
 }
 </script>
@@ -245,7 +276,7 @@ function openAccountMenu(ev: MouseEvent) {
 }
 
 .fade {
-	opacity: .5;
+	opacity: 0.5;
 }
 
 .left {

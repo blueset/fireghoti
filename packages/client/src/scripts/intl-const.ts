@@ -1,6 +1,8 @@
 import { lang } from "@/config";
 
-export const versatileLang = (lang ?? "ja-JP").replace("ja-KS", "ja-JP").replace("en-US", "en-GB");
+export const versatileLang = (lang ?? "ja-JP")
+	.replace("ja-KS", "ja-JP")
+	.replace("en-US", "en-GB");
 export const dateTimeFormat = new Intl.DateTimeFormat(versatileLang, {
 	year: "numeric",
 	month: "short",

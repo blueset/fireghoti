@@ -13,7 +13,12 @@
 		<button
 			class="_buttonPrimary _shadow"
 			:class="{ instant: !defaultStore.state.animation }"
-			@click="() => { tlComponent?.scrollTop(); reloadTimeline() }"
+			@click="
+				() => {
+					tlComponent?.scrollTop();
+					reloadTimeline();
+				}
+			"
 		>
 			{{ i18n.ts.newNoteRecived }}
 			<i :class="icon('ph-arrow-up', false)"></i>

@@ -26,7 +26,8 @@ export const initializeStreamingServer = (server: http.Server) => {
 		const headers = request.httpRequest.headers["sec-websocket-protocol"] || "";
 		const cred = q.i || q.access_token || headers;
 		const accessToken = cred.toString();
-		const isMastodon = request.resourceURL.pathname?.startsWith('/api/v1/streaming');
+		const isMastodon =
+			request.resourceURL.pathname?.startsWith("/api/v1/streaming");
 
 		let main: MainStreamConnection | MastodonStreamingConnection;
 		let user: ILocalUser | null | undefined;
@@ -59,7 +60,9 @@ export const initializeStreamingServer = (server: http.Server) => {
 			return;
 		}
 
-		const connection = request.accept(request.requestedProtocols[0] ?? undefined);
+		const connection = request.accept(
+			request.requestedProtocols[0] ?? undefined,
+		);
 
 		const ev = new EventEmitter();
 
@@ -74,14 +77,25 @@ export const initializeStreamingServer = (server: http.Server) => {
 
 		main = isMastodon
 			? new MastodonStreamingConnection(connection, ev, user, app, q)
-			: new MainStreamConnection(connection, ev, user, app, host, accessToken, prepareStream);
+			: new MainStreamConnection(
+					connection,
+					ev,
+					user,
+					app,
+					host,
+					accessToken,
+					prepareStream,
+			  );
 
 		const intervalId = user
-			? setInterval(() => {
-					Users.update(user!.id, {
-						lastActiveDate: new Date(),
-					});
-			  }, 1000 * 60 * 5)
+			? setInterval(
+					() => {
+						Users.update(user!.id, {
+							lastActiveDate: new Date(),
+						});
+					},
+					1000 * 60 * 5,
+			  )
 			: null;
 		if (user) {
 			Users.update(user.id, {

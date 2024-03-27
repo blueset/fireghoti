@@ -403,7 +403,12 @@ export default class Connection {
 					JSON.stringify({
 						stream: [payload.id],
 						event: "update",
-						payload: JSON.stringify(new Converter('', (s: string) => toHtml(mfm.parse(s))).note(payload.body, this.host)),
+						payload: JSON.stringify(
+							new Converter("", (s: string) => toHtml(mfm.parse(s))).note(
+								payload.body,
+								this.host,
+							),
+						),
 					}),
 				);
 				this.onSubscribeNote({
@@ -438,7 +443,9 @@ export default class Connection {
 				}
 			} else if (payload.type === "unreadNotification") {
 				if (payload.id === "user") {
-					const body = new Converter('', (s: string) => toHtml(mfm.parse(s))).notification(payload.body, this.host);
+					const body = new Converter("", (s: string) =>
+						toHtml(mfm.parse(s)),
+					).notification(payload.body, this.host);
 					if (body.type === "reaction") body.type = "favourite";
 					this.wsConnection.send(
 						JSON.stringify({

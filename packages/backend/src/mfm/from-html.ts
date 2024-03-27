@@ -248,7 +248,10 @@ export function fromHtml(html: string, hashtagNames?: string[]): string {
 					if (iso8901Time.value === text) {
 						return [`$[unixtime ${Math.floor(parsedTime.getTime() / 1000)}]`];
 					} else {
-						return [...appendChildren(node.childNodes), `($[unixtime ${Math.floor(parsedTime.getTime() / 1000)}])`];
+						return [
+							...appendChildren(node.childNodes),
+							`($[unixtime ${Math.floor(parsedTime.getTime() / 1000)}])`,
+						];
 					}
 				} catch (e) {
 					return appendChildren(node.childNodes);

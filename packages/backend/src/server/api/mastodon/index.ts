@@ -26,34 +26,37 @@ export const logger = apiLogger.createSubLogger("mastodon");
 export type MastoContext = RouterContext & DefaultContext;
 
 export function setupMastodonApi(router: Router): void {
-    setupMiddleware(router);
-    setupEndpointsAuth(router);
-    setupEndpointsAccount(router);
-    setupEndpointsStatus(router);
-    setupEndpointsFilter(router);
-    setupEndpointsTimeline(router);
-    setupEndpointsNotifications(router);
-    setupEndpointsStreaming(router);
-    setupEndpointsSearch(router);
-    setupEndpointsMedia(router);
-    setupEndpointsList(router);
-    setupEndpointsMisc(router);
+	setupMiddleware(router);
+	setupEndpointsAuth(router);
+	setupEndpointsAccount(router);
+	setupEndpointsStatus(router);
+	setupEndpointsFilter(router);
+	setupEndpointsTimeline(router);
+	setupEndpointsNotifications(router);
+	setupEndpointsStreaming(router);
+	setupEndpointsSearch(router);
+	setupEndpointsMedia(router);
+	setupEndpointsList(router);
+	setupEndpointsMisc(router);
 }
 
 function setupMiddleware(router: Router): void {
-    router.use(KoaBodyMiddleware());
-    router.use(SetHeadersMiddleware);
-    router.use(CatchErrorsMiddleware);
-    router.use(NormalizeQueryMiddleware);
-    router.use(PaginationMiddleware);
-    router.use(AuthMiddleware);
-    router.use(CacheMiddleware);
+	router.use(KoaBodyMiddleware());
+	router.use(SetHeadersMiddleware);
+	router.use(CatchErrorsMiddleware);
+	router.use(NormalizeQueryMiddleware);
+	router.use(PaginationMiddleware);
+	router.use(AuthMiddleware);
+	router.use(CacheMiddleware);
 }
 
-export function getStubMastoContext(user: ILocalUser | null | undefined, filterContext?: string): any {
-    return {
-        user: user ?? null,
-        cache: UserHelpers.getFreshAccountCache(),
-        filterContext: filterContext,
-    };
+export function getStubMastoContext(
+	user: ILocalUser | null | undefined,
+	filterContext?: string,
+): any {
+	return {
+		user: user ?? null,
+		cache: UserHelpers.getFreshAccountCache(),
+		filterContext: filterContext,
+	};
 }

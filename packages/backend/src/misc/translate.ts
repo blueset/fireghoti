@@ -78,7 +78,11 @@ export async function translate(
 	const result = await deeplTranslator.translateText(
 		text,
 		source as deepl.SourceLanguageCode | null,
-		(target === "en" ? (to === "en" ? "en-US" : to) : target) as deepl.TargetLanguageCode,
+		(target === "en"
+			? to === "en"
+				? "en-US"
+				: to
+			: target) as deepl.TargetLanguageCode,
 	);
 
 	return {

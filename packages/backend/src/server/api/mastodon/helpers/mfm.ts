@@ -6,70 +6,77 @@ import mfm from "mfm-js";
 import { resolveMentionFromCache } from "@/remote/resolve-user.js";
 
 export class MfmHelpers {
-    public static async toHtml(
-        nodes: mfm.MfmNode[] | null,
-        mentionedRemoteUsers: IMentionedRemoteUsers = [],
-        objectHost: string | null,
-        inline: boolean = false,
-        quoteUri: string | null = null
-    ) {
-        if (nodes == null) {
-            return null;
-        }
+	public static async toHtml(
+		nodes: mfm.MfmNode[] | null,
+		mentionedRemoteUsers: IMentionedRemoteUsers = [],
+		objectHost: string | null,
+		inline: boolean = false,
+		quoteUri: string | null = null,
+	) {
+		if (nodes == null) {
+			return null;
+		}
 
-        const { window } = new HappyDom();
+		const { window } = new HappyDom();
 
-        const doc = window.document;
+		const doc = window.document;
 
-        async function appendChildren(children: mfm.MfmNode[], targetElement: any): Promise<void> {
-            if (children) {
-                for (const child of (await Promise.all(children.map(async (x) => await (handlers as any)[x.type](x)))).flat())
-                    targetElement.appendChild(child);
-            }
-        }
+		async function appendChildren(
+			children: mfm.MfmNode[],
+			targetElement: any,
+		): Promise<void> {
+			if (children) {
+				for (const child of (
+					await Promise.all(
+						children.map(async (x) => await (handlers as any)[x.type](x)),
+					)
+				).flat())
+					targetElement.appendChild(child);
+			}
+		}
 
-        const handlers: {
-            [K in mfm.MfmNode["type"]]: (node: mfm.NodeType<K>) => any;
-        } = {
-            async bold(node) {
-                const el = doc.createElement("strong");
-                await appendChildren(node.children, el);
-                return [el];
-            },
+		const handlers: {
+			[K in mfm.MfmNode["type"]]: (node: mfm.NodeType<K>) => any;
+		} = {
+			async bold(node) {
+				const el = doc.createElement("strong");
+				await appendChildren(node.children, el);
+				return [el];
+			},
 
-            async small(node) {
-                const el = doc.createElement("small");
-                await appendChildren(node.children, el);
-                return [el];
-            },
+			async small(node) {
+				const el = doc.createElement("small");
+				await appendChildren(node.children, el);
+				return [el];
+			},
 
-            async strike(node) {
-                const el = doc.createElement("del");
-                await appendChildren(node.children, el);
-                return [el];
-            },
+			async strike(node) {
+				const el = doc.createElement("del");
+				await appendChildren(node.children, el);
+				return [el];
+			},
 
-            async italic(node) {
-                const el = doc.createElement("em");
-                await appendChildren(node.children, el);
-                return [el];
-            },
+			async italic(node) {
+				const el = doc.createElement("em");
+				await appendChildren(node.children, el);
+				return [el];
+			},
 
-            async fn(node) {
-                if (node.props.name === "unixtime") {
-                    const el = doc.createElement("time");
+			async fn(node) {
+				if (node.props.name === "unixtime") {
+					const el = doc.createElement("time");
 					const text =
 						node.children[0].type === "text" ? node.children[0].props.text : "";
-                    try {
-                        const date = new Date(Number.parseInt(text, 10) * 1000);
-                        const el = doc.createElement("time");
-                        el.setAttribute("datetime", date.toISOString());
-                        el.textContent = date.toISOString();
-                        return [el];
-                    } catch {
-                        // use default render
-                    }
-                } else if (node.props.name === "ruby") {
+					try {
+						const date = new Date(Number.parseInt(text, 10) * 1000);
+						const el = doc.createElement("time");
+						el.setAttribute("datetime", date.toISOString());
+						el.textContent = date.toISOString();
+						return [el];
+					} catch {
+						// use default render
+					}
+				} else if (node.props.name === "ruby") {
 					if (node.children.length === 1) {
 						const child = node.children[0];
 						const text = child.type === "text" ? child.props.text : "";
@@ -96,189 +103,197 @@ export class MfmHelpers {
 						return [rubyEl];
 					}
 					const rt = node.children.at(-1);
-                    if (rt) {
-                        const text = rt.type === "text" ? rt.props.text : "";
-                        const rubyEl = doc.createElement("ruby");
-                        const rtEl = doc.createElement("rt");
-    
-                        // ruby未対応のHTMLサニタイザーを通したときにルビが「劉備（りゅうび）」となるようにする
-                        const rpStartEl = doc.createElement("rp");
-                        rpStartEl.appendChild(doc.createTextNode("("));
-                        const rpEndEl = doc.createElement("rp");
-                        rpEndEl.appendChild(doc.createTextNode(")"));
-    
-                        await appendChildren(
-                            node.children.slice(0, node.children.length - 1),
-                            rubyEl,
-                        );
-                        rtEl.appendChild(doc.createTextNode(text.trim()));
-                        rubyEl.appendChild(rpStartEl);
-                        rubyEl.appendChild(rtEl);
-                        rubyEl.appendChild(rpEndEl);
-                        return [rubyEl];
-                    }
-                }
-                const el = doc.createElement("span");
-                el.textContent = `${node.props.name}(`;
-                await appendChildren(node.children, el);
-                el.textContent += ')';
-                return [el];
-            },
+					if (rt) {
+						const text = rt.type === "text" ? rt.props.text : "";
+						const rubyEl = doc.createElement("ruby");
+						const rtEl = doc.createElement("rt");
 
-            blockCode(node) {
-                const pre = doc.createElement("pre");
-                const inner = doc.createElement("code");
-                inner.setAttribute("class", `language-${node.props.lang}`);
+						// ruby未対応のHTMLサニタイザーを通したときにルビが「劉備（りゅうび）」となるようにする
+						const rpStartEl = doc.createElement("rp");
+						rpStartEl.appendChild(doc.createTextNode("("));
+						const rpEndEl = doc.createElement("rp");
+						rpEndEl.appendChild(doc.createTextNode(")"));
 
-                const nodes = node.props.code
-                    .split(/\r\n|\r|\n/)
-                    .map((x) => doc.createTextNode(x));
+						await appendChildren(
+							node.children.slice(0, node.children.length - 1),
+							rubyEl,
+						);
+						rtEl.appendChild(doc.createTextNode(text.trim()));
+						rubyEl.appendChild(rpStartEl);
+						rubyEl.appendChild(rtEl);
+						rubyEl.appendChild(rpEndEl);
+						return [rubyEl];
+					}
+				}
+				const el = doc.createElement("span");
+				el.textContent = `${node.props.name}(`;
+				await appendChildren(node.children, el);
+				el.textContent += ")";
+				return [el];
+			},
 
-                for (const x of intersperse<FIXME | "br">("br", nodes)) {
-                    inner.appendChild(x === "br" ? doc.createElement("br") : x);
-                }
+			blockCode(node) {
+				const pre = doc.createElement("pre");
+				const inner = doc.createElement("code");
+				inner.setAttribute("class", `language-${node.props.lang}`);
 
-                pre.appendChild(inner);
-                return [pre];
-            },
+				const nodes = node.props.code
+					.split(/\r\n|\r|\n/)
+					.map((x) => doc.createTextNode(x));
 
-            async center(node) {
-                const el = doc.createElement("div");
-                el.style.textAlign = "center";
-                await appendChildren(node.children, el);
-                return [el];
-            },
+				for (const x of intersperse<FIXME | "br">("br", nodes)) {
+					inner.appendChild(x === "br" ? doc.createElement("br") : x);
+				}
 
-            emojiCode(node) {
-                return [doc.createTextNode(`\u200B:${node.props.name}:\u200B`)];
-            },
+				pre.appendChild(inner);
+				return [pre];
+			},
 
-            unicodeEmoji(node) {
-                return [doc.createTextNode(node.props.emoji)];
-            },
+			async center(node) {
+				const el = doc.createElement("div");
+				el.style.textAlign = "center";
+				await appendChildren(node.children, el);
+				return [el];
+			},
 
-            hashtag(node) {
-                const a = doc.createElement("a");
-                a.setAttribute('href', `${config.url}/tags/${node.props.hashtag}`);
-                a.textContent = `#${node.props.hashtag}`;
-                a.setAttribute("rel", "tag");
-                a.setAttribute("class", "hashtag");
-                return [a];
-            },
+			emojiCode(node) {
+				return [doc.createTextNode(`\u200B:${node.props.name}:\u200B`)];
+			},
 
-            inlineCode(node) {
-                const el = doc.createElement("code");
-                el.textContent = node.props.code;
-                return [el];
-            },
+			unicodeEmoji(node) {
+				return [doc.createTextNode(node.props.emoji)];
+			},
 
-            mathInline(node) {
-                const el = doc.createElement("code");
-                el.textContent = node.props.formula;
-                return [el];
-            },
+			hashtag(node) {
+				const a = doc.createElement("a");
+				a.setAttribute("href", `${config.url}/tags/${node.props.hashtag}`);
+				a.textContent = `#${node.props.hashtag}`;
+				a.setAttribute("rel", "tag");
+				a.setAttribute("class", "hashtag");
+				return [a];
+			},
 
-            mathBlock(node) {
-                const el = doc.createElement("code");
-                el.textContent = node.props.formula;
-                return [el];
-            },
+			inlineCode(node) {
+				const el = doc.createElement("code");
+				el.textContent = node.props.code;
+				return [el];
+			},
 
-            async link(node) {
-                const a = doc.createElement("a");
-                a.setAttribute("rel", "nofollow noopener noreferrer");
-                a.setAttribute("target", "_blank");
-                a.setAttribute('href',node.props.url);
-                await appendChildren(node.children, a);
-                return [a];
-            },
+			mathInline(node) {
+				const el = doc.createElement("code");
+				el.textContent = node.props.formula;
+				return [el];
+			},
 
-            async mention(node) {
-                const { username, host, acct } = node.props;
-                const resolved = await resolveMentionFromCache(username, host, objectHost, mentionedRemoteUsers);
+			mathBlock(node) {
+				const el = doc.createElement("code");
+				el.textContent = node.props.formula;
+				return [el];
+			},
 
-                const el = doc.createElement("span");
-                if (resolved === null) {
-                    el.textContent = acct;
-                } else {
-                    el.setAttribute("class", "h-card");
-                    el.setAttribute("translate", "no");
-                    const a = doc.createElement("a");
-                    a.setAttribute('href',resolved.href);
-                    a.className = "u-url mention";
-                    const span = doc.createElement("span");
-                    span.textContent = resolved.username;
-                    if (!resolved.isLocal) {
-                        span.textContent += `@${resolved.host}`;
-                    }
-                    a.textContent = '@';
-                    a.appendChild(span);
-                    el.appendChild(a);
-                }
+			async link(node) {
+				const a = doc.createElement("a");
+				a.setAttribute("rel", "nofollow noopener noreferrer");
+				a.setAttribute("target", "_blank");
+				a.setAttribute("href", node.props.url);
+				await appendChildren(node.children, a);
+				return [a];
+			},
 
-                return [el];
-            },
+			async mention(node) {
+				const { username, host, acct } = node.props;
+				const resolved = await resolveMentionFromCache(
+					username,
+					host,
+					objectHost,
+					mentionedRemoteUsers,
+				);
 
-            async quote(node) {
-                const el = doc.createElement("blockquote");
-                await appendChildren(node.children, el);
-                return [el];
-            },
+				const el = doc.createElement("span");
+				if (resolved === null) {
+					el.textContent = acct;
+				} else {
+					el.setAttribute("class", "h-card");
+					el.setAttribute("translate", "no");
+					const a = doc.createElement("a");
+					a.setAttribute("href", resolved.href);
+					a.className = "u-url mention";
+					const span = doc.createElement("span");
+					span.textContent = resolved.username;
+					if (!resolved.isLocal) {
+						span.textContent += `@${resolved.host}`;
+					}
+					a.textContent = "@";
+					a.appendChild(span);
+					el.appendChild(a);
+				}
 
-            text(node) {
-                // const el = doc.createElement("span");
-                const result = [];
-                const nodes = node.props.text
-                    .split(/\r\n|\r|\n/)
-                    .map((x) => doc.createTextNode(x));
+				return [el];
+			},
 
-                for (const x of intersperse<FIXME | "br">("br", nodes)) {
-                    result.push(x === "br" ? doc.createElement("br") : x);
-                }
+			async quote(node) {
+				const el = doc.createElement("blockquote");
+				await appendChildren(node.children, el);
+				return [el];
+			},
 
-                return result;
-            },
+			text(node) {
+				// const el = doc.createElement("span");
+				const result = [];
+				const nodes = node.props.text
+					.split(/\r\n|\r|\n/)
+					.map((x) => doc.createTextNode(x));
 
-            url(node) {
-                const a = doc.createElement("a");
-                a.setAttribute("rel", "nofollow noopener noreferrer");
-                a.setAttribute("target", "_blank");
-                a.setAttribute('href', node.props.url);
-                a.textContent = node.props.url.replace(/^https?:\/\//, '');
-                return [a];
-            },
+				for (const x of intersperse<FIXME | "br">("br", nodes)) {
+					result.push(x === "br" ? doc.createElement("br") : x);
+				}
 
-            search(node) {
-                const a = doc.createElement("a");
-                a.setAttribute('href', `https://www.google.com/search?q=${node.props.query}`);
-                a.textContent = node.props.content;
-                return [a];
-            },
+				return result;
+			},
 
-            async plain(node) {
-                const el = doc.createElement("span");
-                await appendChildren(node.children, el);
-                return [el];
-            },
-        };
+			url(node) {
+				const a = doc.createElement("a");
+				a.setAttribute("rel", "nofollow noopener noreferrer");
+				a.setAttribute("target", "_blank");
+				a.setAttribute("href", node.props.url);
+				a.textContent = node.props.url.replace(/^https?:\/\//, "");
+				return [a];
+			},
 
-        await appendChildren(nodes, doc.body);
+			search(node) {
+				const a = doc.createElement("a");
+				a.setAttribute(
+					"href",
+					`https://www.google.com/search?q=${node.props.query}`,
+				);
+				a.textContent = node.props.content;
+				return [a];
+			},
 
-        if (quoteUri !== null) {
-            const a = doc.createElement("a");
-            a.setAttribute('href', quoteUri);
-            a.textContent = quoteUri.replace(/^https?:\/\//, '');
+			async plain(node) {
+				const el = doc.createElement("span");
+				await appendChildren(node.children, el);
+				return [el];
+			},
+		};
 
-            const quote = doc.createElement("span");
-            quote.setAttribute("class", "quote-inline");
-            quote.appendChild(doc.createElement("br"));
-            quote.appendChild(doc.createElement("br"));
-            quote.innerHTML += 'RE: ';
-            quote.appendChild(a);
+		await appendChildren(nodes, doc.body);
 
-            doc.body.appendChild(quote);
-        }
+		if (quoteUri !== null) {
+			const a = doc.createElement("a");
+			a.setAttribute("href", quoteUri);
+			a.textContent = quoteUri.replace(/^https?:\/\//, "");
 
-        return inline ? doc.body.innerHTML : `<p>${doc.body.innerHTML}</p>`;
-    }
+			const quote = doc.createElement("span");
+			quote.setAttribute("class", "quote-inline");
+			quote.appendChild(doc.createElement("br"));
+			quote.appendChild(doc.createElement("br"));
+			quote.innerHTML += "RE: ";
+			quote.appendChild(a);
+
+			doc.body.appendChild(quote);
+		}
+
+		return inline ? doc.body.innerHTML : `<p>${doc.body.innerHTML}</p>`;
+	}
 }

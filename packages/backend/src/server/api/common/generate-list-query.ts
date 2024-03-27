@@ -12,12 +12,14 @@ export function generateListQuery(
 
 	const memberQuery = UserListJoinings.createQueryBuilder("member")
 		.select("member.userId")
-		.where(`member.userListId IN (${listQuery.getQuery()})`)
+		.where(`member.userListId IN (${listQuery.getQuery()})`);
 
-	q.andWhere(new Brackets((qb) => {
-		qb.where(`note.userId = :meId`);
-		qb.orWhere(`note.userId NOT IN (${memberQuery.getQuery()})`);
-	}));
+	q.andWhere(
+		new Brackets((qb) => {
+			qb.where(`note.userId = :meId`);
+			qb.orWhere(`note.userId NOT IN (${memberQuery.getQuery()})`);
+		}),
+	);
 
 	q.setParameters({ meId: me.id });
 }

@@ -1,6 +1,7 @@
 import * as mfm from "mfm-js";
 import {
-	publishNoteStream, publishNoteUpdatesStream,
+	publishNoteStream,
+	publishNoteUpdatesStream,
 } from "@/services/stream.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
@@ -49,9 +50,7 @@ export default async function (
 	const fileIds = data.files?.map((file) => file.id) ?? [];
 	const fileTypes = data.files?.map((file) => file.type) ?? [];
 
-	const tokens = mfm
-		.parse(data.text || "")
-		.concat(mfm.parse(data.cw || ""));
+	const tokens = mfm.parse(data.text || "").concat(mfm.parse(data.cw || ""));
 
 	const tags: string[] = extractHashtags(tokens)
 		.filter((tag) => Array.from(tag || "").length <= 128)
@@ -60,7 +59,7 @@ export default async function (
 
 	const emojis = extractCustomEmojisFromMfm(tokens);
 
-	const mentionUsers = (await extractMentionedUsers(user, tokens));
+	const mentionUsers = await extractMentionedUsers(user, tokens);
 
 	const mentionUserIds = mentionUsers.map((user) => user.id);
 	const remoteUsers = mentionUsers.filter((user) => user.host != null);
@@ -125,7 +124,8 @@ export default async function (
 			});
 			publishing = true;
 		} else {
-			const choicesChanged = JSON.stringify(dbPoll.choices) !== JSON.stringify(data.poll.choices);
+			const choicesChanged =
+				JSON.stringify(dbPoll.choices) !== JSON.stringify(data.poll.choices);
 
 			if (
 				dbPoll.multiple !== data.poll.multiple ||
@@ -138,7 +138,9 @@ export default async function (
 					{
 						choices: data.poll?.choices,
 						multiple: data.poll?.multiple,
-						votes: choicesChanged ? new Array(data.poll.choices.length).fill(0) : data.poll?.votes,
+						votes: choicesChanged
+							? new Array(data.poll.choices.length).fill(0)
+							: data.poll?.votes,
 						expiresAt: data.poll?.expiresAt,
 						noteVisibility:
 							note.visibility === "hidden" ? "home" : note.visibility,
@@ -146,7 +148,9 @@ export default async function (
 				);
 
 				// Reset votes
-				if (JSON.stringify(dbPoll.choices) !== JSON.stringify(data.poll.choices)) {
+				if (
+					JSON.stringify(dbPoll.choices) !== JSON.stringify(data.poll.choices)
+				) {
 					await PollVotes.delete({ noteId: dbPoll.noteId });
 				}
 
@@ -154,7 +158,10 @@ export default async function (
 			} else {
 				for (let i = 0; i < data.poll.choices.length; i++) {
 					if (dbPoll.votes[i] !== data.poll.votes?.[i]) {
-						await Polls.update({ noteId: note.id }, { votes: data.poll?.votes });
+						await Polls.update(
+							{ noteId: note.id },
+							{ votes: data.poll?.votes },
+						);
 						publishing = true;
 						break;
 					}
@@ -237,6 +244,5 @@ export default async function (
 }
 
 function notEmpty(partial: Partial<any>) {
-    return Object.keys(partial).length > 0;
+	return Object.keys(partial).length > 0;
 }
-

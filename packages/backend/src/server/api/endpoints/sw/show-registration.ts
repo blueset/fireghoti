@@ -48,14 +48,17 @@ export const paramDef = {
 
 // eslint-disable-next-line import/no-default-export
 export default define(meta, paramDef, async (ps, me, token) => {
-
-	const subscription = ps.endpoint ? await SwSubscriptions.findOneBy({
-		userId: me.id,
-		endpoint: ps.endpoint,
-	}) : token ? await SwSubscriptions.findOneBy({
-		userId: me.id,
-		appAccessTokenId: token.id,
-	}) : null;
+	const subscription = ps.endpoint
+		? await SwSubscriptions.findOneBy({
+				userId: me.id,
+				endpoint: ps.endpoint,
+		  })
+		: token
+		  ? await SwSubscriptions.findOneBy({
+					userId: me.id,
+					appAccessTokenId: token.id,
+			  })
+		  : null;
 
 	const instance = await fetchMeta(true);
 

@@ -1,4 +1,8 @@
-import { type HTMLAnchorElement, type HTMLLinkElement, Window } from "happy-dom";
+import {
+	type HTMLAnchorElement,
+	type HTMLLinkElement,
+	Window,
+} from "happy-dom";
 import config from "@/config/index.js";
 import { getHtml } from "@/misc/fetch.js";
 
@@ -13,7 +17,7 @@ async function getRelMeLinks(url: string): Promise<string[]> {
 				disableCSSFileLoading: true,
 				disableComputedStyleRendering: true,
 				disableIframePageLoading: true,
-			}
+			},
 		});
 		dom.document.open();
 		dom.document.write(await getHtml(url));
@@ -41,14 +45,16 @@ export async function verifyLink(
 	let verified = false;
 	if (link.startsWith("http")) {
 		const relMeLinks = await getRelMeLinks(link);
-		verified = relMeLinks.some((href) =>
-			(url && href.startsWith(url)) ||
-			(username && new RegExp(
-				`^https?:\/\/${config.host.replace(
-					/[.*+\-?^${}()|[\]\\]/g,
-					"\\$&",
-				)}\/@${username.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&")}$`,
-			).test(href)),
+		verified = relMeLinks.some(
+			(href) =>
+				(url && href.startsWith(url)) ||
+				(username &&
+					new RegExp(
+						`^https?:\/\/${config.host.replace(
+							/[.*+\-?^${}()|[\]\\]/g,
+							"\\$&",
+						)}\/@${username.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&")}$`,
+					).test(href)),
 		);
 	}
 	return verified;

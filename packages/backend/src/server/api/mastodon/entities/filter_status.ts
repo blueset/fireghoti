@@ -1,6 +1,6 @@
 namespace MastodonEntity {
-    export type FilterStatus = {
-        id: string;
-        status_id: string;
-    };
+	export type FilterStatus = {
+		id: string;
+		status_id: string;
+	};
 }

@@ -30,8 +30,15 @@ export async function publishToFollowers(userId: User["id"]) {
 	}
 }
 
-export async function updateUserProfileData(user: User, profile: UserProfile | null, updates: Partial<User>, profileUpdates: Partial<UserProfile>, isSecure: boolean) {
-	if (!profile) profile = await UserProfiles.findOneByOrFail({ userId: user.id });
+export async function updateUserProfileData(
+	user: User,
+	profile: UserProfile | null,
+	updates: Partial<User>,
+	profileUpdates: Partial<UserProfile>,
+	isSecure: boolean,
+) {
+	if (!profile)
+		profile = await UserProfiles.findOneByOrFail({ userId: user.id });
 
 	let emojis = [] as string[];
 	let tags = [] as string[];
@@ -84,11 +91,13 @@ export async function updateUserProfileData(user: User, profile: UserProfile | n
 		acceptAllFollowRequests(user);
 	}
 
-	await promiseEarlyReturn(UserProfiles.updateMentions(user.id)
-		.finally(() => {
+	await promiseEarlyReturn(
+		UserProfiles.updateMentions(user.id).finally(() => {
 			UserConverter.prewarmCacheById(user.id, oldProfile);
 			publishToFollowers(user.id);
-		}), 1500);
+		}),
+		1500,
+	);
 
 	return iObj;
 }

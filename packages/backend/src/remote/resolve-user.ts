@@ -15,8 +15,14 @@ import { RecursionLimiter } from "@/models/repositories/user-profile.js";
 import { promiseEarlyReturn } from "@/prelude/promise.js";
 
 const logger = remoteLogger.createSubLogger("resolve-user");
-const localUsernameCache = new Cache<string | null>("localUserNameCapitalization", 60 * 60 * 24);
-const profileMentionCache = new Cache<ProfileMention | null>("resolveProfileMentions", 60 * 60);
+const localUsernameCache = new Cache<string | null>(
+	"localUserNameCapitalization",
+	60 * 60 * 24,
+);
+const profileMentionCache = new Cache<ProfileMention | null>(
+	"resolveProfileMentions",
+	60 * 60,
+);
 
 type ProfileMention = {
 	user: User;
@@ -27,13 +33,17 @@ type ProfileMention = {
 	};
 };
 
-type refreshType = 'refresh' | 'refresh-in-background' | 'refresh-timeout-1500ms' | 'no-refresh';
+type refreshType =
+	| "refresh"
+	| "refresh-in-background"
+	| "refresh-timeout-1500ms"
+	| "no-refresh";
 
 export async function resolveUser(
 	username: string,
 	host: string | null,
-	refresh: refreshType = 'refresh',
-	limiter: RecursionLimiter = new RecursionLimiter()
+	refresh: refreshType = "refresh",
+	limiter: RecursionLimiter = new RecursionLimiter(),
 ): Promise<User> {
 	const usernameLower = username.toLowerCase();
 
@@ -90,7 +100,7 @@ export async function resolveUser(
 
 		// If subject is different, we're dealing with a split domain setup (that's already been validated by resolveUserWebFinger)
 		if (acctLower != finalAcctLower) {
-			logger.info('re-resolving split domain redirect user...');
+			logger.info("re-resolving split domain redirect user...");
 			const m = finalAcct.match(/^([^@]+)@(.*)/);
 			if (m) {
 				// Re-check if we already have the user in the database post-redirect
@@ -101,28 +111,41 @@ export async function resolveUser(
 
 				// If yes, return existing user
 				if (user != null) {
-					logger.succ(`return existing remote user: ${chalk.magenta(finalAcctLower)}`);
+					logger.succ(
+						`return existing remote user: ${chalk.magenta(finalAcctLower)}`,
+					);
 					return user;
 				}
 				// Otherwise create and return new user
 				else {
-					logger.succ(`return new remote user: ${chalk.magenta(finalAcctLower)}`);
-					return await createPerson(fingerRes.self.href, undefined, subjectHost, limiter);
+					logger.succ(
+						`return new remote user: ${chalk.magenta(finalAcctLower)}`,
+					);
+					return await createPerson(
+						fingerRes.self.href,
+						undefined,
+						subjectHost,
+						limiter,
+					);
 				}
 			}
 		}
 
 		// Not a split domain setup, so we can simply create and return the new user
 		logger.succ(`return new remote user: ${chalk.magenta(finalAcctLower)}`);
-		return await createPerson(fingerRes.self.href, undefined, subjectHost, limiter);
+		return await createPerson(
+			fingerRes.self.href,
+			undefined,
+			subjectHost,
+			limiter,
+		);
 	}
 
 	// If user information is out of date, return it by starting over from WebFinger
 	if (
-		(refresh === 'refresh' || refresh === 'refresh-timeout-1500ms') && (
-			user.lastFetchedAt == null ||
-			Date.now() - user.lastFetchedAt.getTime() > 1000 * 60 * 60 * 24
-		)
+		(refresh === "refresh" || refresh === "refresh-timeout-1500ms") &&
+		(user.lastFetchedAt == null ||
+			Date.now() - user.lastFetchedAt.getTime() > 1000 * 60 * 60 * 24)
 	) {
 		// Prevent multiple attempts to connect to unconnected instances, update before each attempt to prevent subsequent similar attempts
 		await Users.update(user.id, {
@@ -165,7 +188,9 @@ export async function resolveUser(
 
 		// Update user.host if we're dealing with an account that's part of a split domain setup that hasn't been fixed yet
 		if (m && user.host != finalHost) {
-			logger.info(`updating user host to subject acct host: ${user.host} -> ${finalHost}`);
+			logger.info(
+				`updating user host to subject acct host: ${user.host} -> ${finalHost}`,
+			);
 			await Users.update(
 				{
 					usernameLower,
@@ -177,12 +202,14 @@ export async function resolveUser(
 			);
 		}
 
-		if (refresh === 'refresh') {
+		if (refresh === "refresh") {
 			await updatePerson(fingerRes.self.href);
 			logger.info(`return resynced remote user: ${finalAcctLower}`);
-		}
-		else if (refresh === 'refresh-timeout-1500ms') {
-			const res = await promiseEarlyReturn(updatePerson(fingerRes.self.href), 1500);
+		} else if (refresh === "refresh-timeout-1500ms") {
+			const res = await promiseEarlyReturn(
+				updatePerson(fingerRes.self.href),
+				1500,
+			);
 			logger.info(`return possibly resynced remote user: ${finalAcctLower}`);
 		}
 
@@ -193,10 +220,14 @@ export async function resolveUser(
 				return u;
 			}
 		});
-	} else if (refresh === 'refresh-in-background' && (user.lastFetchedAt == null || Date.now() - user.lastFetchedAt.getTime() > 1000 * 60 * 60 * 24)) {
+	} else if (
+		refresh === "refresh-in-background" &&
+		(user.lastFetchedAt == null ||
+			Date.now() - user.lastFetchedAt.getTime() > 1000 * 60 * 60 * 24)
+	) {
 		// Run the refresh in the background
 		// noinspection ES6MissingAwait
-		resolveUser(username, host, 'refresh', limiter);
+		resolveUser(username, host, "refresh", limiter);
 	}
 
 	logger.info(`return existing remote user: ${acctLower}`);
@@ -225,24 +256,47 @@ async function resolveSelf(acctLower: string) {
 	return self;
 }
 
-async function getLocalUsernameCached(username: string): Promise<string | null> {
+async function getLocalUsernameCached(
+	username: string,
+): Promise<string | null> {
 	return localUsernameCache.fetch(username.toLowerCase(), () =>
-		Users.findOneBy({ usernameLower: username.toLowerCase(), host: IsNull() })
-			.then(p => p ? p.username : null));
+		Users.findOneBy({
+			usernameLower: username.toLowerCase(),
+			host: IsNull(),
+		}).then((p) => (p ? p.username : null)),
+	);
 }
 
-export function getMentionFallbackUri(username: string, host: string | null, objectHost: string | null): string {
+export function getMentionFallbackUri(
+	username: string,
+	host: string | null,
+	objectHost: string | null,
+): string {
 	let fallback = `${config.url}/@${username}`;
-	if (host !== null && host !== config.host)
-		fallback += `@${host}`;
-	else if (objectHost !== null && objectHost !== config.host && host !== config.host)
+	if (host !== null && host !== config.host) fallback += `@${host}`;
+	else if (
+		objectHost !== null &&
+		objectHost !== config.host &&
+		host !== config.host
+	)
 		fallback += `@${objectHost}`;
 
 	return fallback;
 }
 
-export async function resolveMentionFromCache(username: string, host: string | null, objectHost: string | null, cache: IMentionedRemoteUsers): Promise<{ username: string, href: string, host: string, isLocal: boolean } | null> {
-	const isLocal = (host === null && objectHost === null) || host === config.host;
+export async function resolveMentionFromCache(
+	username: string,
+	host: string | null,
+	objectHost: string | null,
+	cache: IMentionedRemoteUsers,
+): Promise<{
+	username: string;
+	href: string;
+	host: string;
+	isLocal: boolean;
+} | null> {
+	const isLocal =
+		(host === null && objectHost === null) || host === config.host;
 	if (isLocal) {
 		const finalUsername = await getLocalUsernameCached(username);
 		if (finalUsername === null) return null;
@@ -250,34 +304,60 @@ export async function resolveMentionFromCache(username: string, host: string | n
 	}
 
 	const fallback = getMentionFallbackUri(username, host, objectHost);
-	const cached = cache.find(r => r.username.toLowerCase() === username.toLowerCase() && r.host === (host ?? objectHost));
+	const cached = cache.find(
+		(r) =>
+			r.username.toLowerCase() === username.toLowerCase() &&
+			r.host === (host ?? objectHost),
+	);
 	const href = cached?.url ?? cached?.uri;
-	if (cached && href != null) return { username: cached.username, href: href, isLocal, host: cached.host };
-	if (isLocal) return { username: username, href: fallback, isLocal, host: config.host };
+	if (cached && href != null)
+		return {
+			username: cached.username,
+			href: href,
+			isLocal,
+			host: cached.host,
+		};
+	if (isLocal)
+		return { username: username, href: fallback, isLocal, host: config.host };
 	return null;
 }
 
-export async function resolveMentionToUserAndProfile(username: string, host: string | null, objectHost: string | null, limiter: RecursionLimiter) {
-	return profileMentionCache.fetch(`${username}@${host ?? objectHost}`, async () => {
-		try {
-			const user = await resolveUser(username, host ?? objectHost, 'no-refresh', limiter);
-			const profile = await UserProfiles.findOneBy({ userId: user.id });
-			const data = { username, host: host ?? objectHost };
+export async function resolveMentionToUserAndProfile(
+	username: string,
+	host: string | null,
+	objectHost: string | null,
+	limiter: RecursionLimiter,
+) {
+	return profileMentionCache.fetch(
+		`${username}@${host ?? objectHost}`,
+		async () => {
+			try {
+				const user = await resolveUser(
+					username,
+					host ?? objectHost,
+					"no-refresh",
+					limiter,
+				);
+				const profile = await UserProfiles.findOneBy({ userId: user.id });
+				const data = { username, host: host ?? objectHost };
 
-			return { user, profile, data };
-		}
-		catch {
-			return null;
-		}
-	});
+				return { user, profile, data };
+			} catch {
+				return null;
+			}
+		},
+	);
 }
 
-async function resolveUserWebFinger(acctLower: string, recurse: boolean = true): Promise<{
-	subject: string,
+async function resolveUserWebFinger(
+	acctLower: string,
+	recurse: boolean = true,
+): Promise<{
+	subject: string;
 	self: {
 		href: string;
 		rel?: string;
-	}
+	};
 }> {
 	logger.info(`WebFinger for ${chalk.yellow(acctLower)}`);
 	const fingerRes = await webFinger(acctLower).catch((e) => {
@@ -300,10 +380,20 @@ async function resolveUserWebFinger(acctLower: string, recurse: boolean = true):
 		throw new Error("self link not found");
 	}
 	if (`${acctToSubject(acctLower)}` !== normalizeSubject(fingerRes.subject)) {
-		logger.info(`acct subject mismatch (${acctToSubject(acctLower)} !== ${normalizeSubject(fingerRes.subject)}), possible split domain deployment detected, repeating webfinger`)
-		if (!recurse){
-			logger.error('split domain verification failed (recurse limit reached), aborting')
-			throw new Error('split domain verification failed (recurse limit reached), aborting');
+		logger.info(
+			`acct subject mismatch (${acctToSubject(
+				acctLower,
+			)} !== ${normalizeSubject(
+				fingerRes.subject,
+			)}), possible split domain deployment detected, repeating webfinger`,
+		);
+		if (!recurse) {
+			logger.error(
+				"split domain verification failed (recurse limit reached), aborting",
+			);
+			throw new Error(
+				"split domain verification failed (recurse limit reached), aborting",
+			);
 		}
 		const initialAcct = subjectToAcct(fingerRes.subject);
 		const initialAcctLower = initialAcct.toLowerCase();
@@ -311,25 +401,31 @@ async function resolveUserWebFinger(acctLower: string, recurse: boolean = true):
 		const finalAcct = subjectToAcct(splitFingerRes.subject);
 		const finalAcctLower = finalAcct.toLowerCase();
 		if (initialAcct !== finalAcct) {
-			logger.error('split domain verification failed (subject mismatch), aborting')
-			throw new Error('split domain verification failed (subject mismatch), aborting');
+			logger.error(
+				"split domain verification failed (subject mismatch), aborting",
+			);
+			throw new Error(
+				"split domain verification failed (subject mismatch), aborting",
+			);
 		}
 
-		logger.info(`split domain configuration detected: ${acctLower} -> ${finalAcctLower}`);
+		logger.info(
+			`split domain configuration detected: ${acctLower} -> ${finalAcctLower}`,
+		);
 
 		return splitFingerRes;
 	}
 
 	return {
 		subject: fingerRes.subject,
-		self: self
+		self: self,
 	};
 }
 
 function subjectToAcct(subject: string): string {
-	if (!subject.startsWith('acct:')) {
+	if (!subject.startsWith("acct:")) {
 		logger.error("Subject isnt a valid acct");
-		throw ("Subject isnt a valid acct");
+		throw "Subject isnt a valid acct";
 	}
 	return subject.substring(5);
 }

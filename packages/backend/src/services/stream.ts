@@ -115,7 +115,7 @@ class Publisher {
 		type: K,
 		value: NoteUpdatesStreamTypes[K],
 	): void => {
-		this.publish('noteUpdatesStream', type, value);
+		this.publish("noteUpdatesStream", type, value);
 	};
 
 	public publishChannelStream = <K extends keyof ChannelStreamTypes>(

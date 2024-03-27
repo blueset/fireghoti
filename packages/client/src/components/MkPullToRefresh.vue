@@ -148,7 +148,9 @@ function moving(event: TouchEvent | PointerEvent) {
 	if (!pullStarted.value || isRefreshing.value || disabled) return;
 	if (
 		(scrollEl?.scrollTop ?? 0) >
-			(supportPointerDesktop ? SCROLL_STOP : SCROLL_STOP + pullDistance.value) ||
+			(supportPointerDesktop
+				? SCROLL_STOP
+				: SCROLL_STOP + pullDistance.value) ||
 		isHorizontalSwipeSwiping.value
 	) {
 		pullDistance.value = 0;

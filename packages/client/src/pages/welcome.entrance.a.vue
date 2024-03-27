@@ -274,7 +274,7 @@ function showMenu(ev) {
 			color: #fff;
 			> div {
 				margin-inline-start: 7px;
-    			margin-block-end: -1em;
+				margin-block-end: -1em;
 				@media (max-width: 450px) {
 					margin-inline-start: 5px;
 				}

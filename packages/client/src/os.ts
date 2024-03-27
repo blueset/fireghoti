@@ -45,7 +45,7 @@ export const api = ((
 			cache: "no-cache",
 			headers: {
 				"Content-Type": "application/json",
-				...(authorization && useToken ? { authorization } : {})
+				...(authorization && useToken ? { authorization } : {}),
 			},
 		})
 			.then(async (res) => {

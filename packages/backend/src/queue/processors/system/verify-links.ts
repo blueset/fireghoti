@@ -14,20 +14,26 @@ export async function verifyLinks(
 ): Promise<void> {
 	logger.info("Verifying links...");
 
-	const usersToVerify = (await UserProfiles.find({
-		where: {
-			fields: Not([]),
-			...(job.data?.all ? {} : {userHost: ""}),
-		},
-		relations: ["user"],
-	})).filter(user => user.fields?.length);
+	const usersToVerify = (
+		await UserProfiles.find({
+			where: {
+				fields: Not([]),
+				...(job.data?.all ? {} : { userHost: "" }),
+			},
+			relations: ["user"],
+		})
+	).filter((user) => user.fields?.length);
 	for (const user of usersToVerify) {
 		for (const field of user.fields) {
 			if (!field || field.name === "" || field.value === "") {
 				continue;
 			}
 			if (field.value.startsWith("http") && (user.user?.username || user.url)) {
-				field.verified = await verifyLink(field.value, user.user?.username, user.url);
+				field.verified = await verifyLink(
+					field.value,
+					user.user?.username,
+					user.url,
+				);
 			}
 		}
 		if (user.fields.length > 0) {

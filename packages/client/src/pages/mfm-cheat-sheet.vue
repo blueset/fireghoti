@@ -559,9 +559,7 @@ const preview_fade = ref(
 const preview_ruby = ref(
 	"$[ruby 商業用音楽工場|こうば] $[ruby $[rainbow 語り継がれる創造神] かみさま]",
 );
-const preview_unixtime = ref(
-	"$[unixtime 1630000000]",
-);
+const preview_unixtime = ref("$[unixtime 1630000000]");
 
 definePageMetadata({
 	title: i18n.ts._mfm.cheatSheet,

@@ -56,7 +56,7 @@ export function uniqBy<T, U>(a: T[], key: (elm: T) => U): T[] {
 	return a.filter((item) => {
 		const k = key(item);
 		return seen.has(k) ? false : seen.add(k);
-	})
+	});
 }
 
 export function sum(xs: number[]): number {

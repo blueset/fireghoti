@@ -362,7 +362,7 @@ export const routes = [
 			force_login: "force_login",
 			lang: "lang",
 			state: "state",
-		}
+		},
 	},
 	{
 		path: "/miauth/:session",

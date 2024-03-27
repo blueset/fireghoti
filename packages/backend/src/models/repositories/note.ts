@@ -156,12 +156,16 @@ export const NoteRepository = db.getRepository(Note).extend({
 			const userProfiles = await UserProfiles.findBy({
 				userId: In(mentionedUserIds),
 			});
-			return JSON.stringify(mentionedUsers.map(u => ({
-				username: u.username,
-				host: u.host ?? config.host,
-				uri: u.uri ?? `${config.url}/users/${u.id}`,
-				url: userProfiles.find(p => p.userId === u.id)?.url ?? `${config.url}/@${u.username}`,
-			})));
+			return JSON.stringify(
+				mentionedUsers.map((u) => ({
+					username: u.username,
+					host: u.host ?? config.host,
+					uri: u.uri ?? `${config.url}/users/${u.id}`,
+					url:
+						userProfiles.find((p) => p.userId === u.id)?.url ??
+						`${config.url}/@${u.username}`,
+				})),
+			);
 		}
 		return undefined;
 	},

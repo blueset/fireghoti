@@ -20,13 +20,17 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, me, token) => {
-	const swSubscription = ps.endpoint ? await SwSubscriptions.findOneBy({
-		userId: me.id,
-		endpoint: ps.endpoint,
-	}) : token ? await SwSubscriptions.findOneBy({
-		userId: me.id,
-		appAccessTokenId: token.id,
-	}) : null;
+	const swSubscription = ps.endpoint
+		? await SwSubscriptions.findOneBy({
+				userId: me.id,
+				endpoint: ps.endpoint,
+		  })
+		: token
+		  ? await SwSubscriptions.findOneBy({
+					userId: me.id,
+					appAccessTokenId: token.id,
+			  })
+		  : null;
 
 	if (swSubscription === null) {
 		throw new Error("No such registration");

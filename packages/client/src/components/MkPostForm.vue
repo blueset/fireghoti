@@ -1017,8 +1017,6 @@ function deleteDraft() {
 	localStorage.setItem("drafts", JSON.stringify(draftData));
 }
 
-
-
 async function post() {
 	// For text that is too short, the false positive rate may be too high, so we don't show alarm.
 	if (defaultStore.state.autocorrectNoteLanguage && text.value.length > 10) {
