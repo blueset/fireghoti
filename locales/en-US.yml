@@ -1196,16 +1196,16 @@ releaseToReload: "Release to reload"
 reloading: "Reloading"
 enableTimelineStreaming: "Update timelines automatically"
 searchWords: "Words to search / ID or URL to lookup"
-searchWordsDescription: "Enter the search term here to search for posts. Separate words
-  with a space for an AND search, or 'OR' (without quotes) between words for an OR
-  search.\nFor example, 'morning night' will find posts that contain both 'morning'
+searchWordsDescription: "Enter the search term here to search for posts. Separate
+  words with a space for an AND search, or 'OR' (without quotes) between words for
+  an OR search.\nFor example, 'morning night' will find posts that contain both 'morning'
   and 'night', and 'morning OR night' will find posts that contain either 'morning'
   or 'night' (or both).\nYou can also combine AND/OR conditions like '(morning OR
-  night) sleepy'.\nIf you want to search for a sequence of words (e.g., a sentence), you
-  must put it in double quotes, not to make it an AND search: \"Today I learned\"\n\n
-  If you want to go to a specific user page or post page, enter
-  the ID or URL in this field and click the 'Lookup' button. Clicking 'Search' will
-  search for posts that literally contain the ID/URL."
+  night) sleepy'.\nIf you want to search for a sequence of words (e.g., a sentence),
+  you must put it in double quotes, not to make it an AND search: \"Today I learned\"\
+  \n\n If you want to go to a specific user page or post page, enter the ID or URL
+  in this field and click the 'Lookup' button. Clicking 'Search' will search for posts
+  that literally contain the ID/URL."
 searchUsers: "Posted by (optional)"
 searchUsersDescription: "To search for posts by a specific user/server, enter the
   ID (@user@example.com, or @user for a local user) or domain name (example.com).\n
@@ -2230,5 +2230,7 @@ moreUrlsDescription: "Enter the pages you want to pin to the help menu in the lo
   left corner using this notation:\n\"Display name\": https://example.com/"
 messagingUnencryptedInfo: "Chats on Firefish are not end-to-end encrypted. Don't share
   any sensitive infomation over Firefish."
-autocorrectNoteLanguage: "Show a warning if the post language does not match the auto-detected result"
-incorrectLanguageWarning: "It looks like your post is in {detected}, but you selected {current}.\nWould you like to set the language to {detected} instead?"
+autocorrectNoteLanguage: "Show a warning if the post language does not match the auto-detected
+  result"
+incorrectLanguageWarning: "It looks like your post is in {detected}, but you selected
+  {current}.\nWould you like to set the language to {detected} instead?"
