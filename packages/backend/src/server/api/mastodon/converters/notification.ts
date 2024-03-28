@@ -214,6 +214,10 @@ export class NotificationConverter {
 				(notificationBody.user?.username &&
 					`@${notificationBody.user?.username}`) ||
 				"Someone";
+			const username = (notificationBody.user?.host &&
+				`@${notificationBody.user?.username}@${notificationBody.user?.host}`) ||
+			(notificationBody.user?.username &&
+				`@${notificationBody.user?.username}`) || "";
 
 			switch (notificationBody.type) {
 				case "mention":
@@ -246,6 +250,12 @@ export class NotificationConverter {
 				case "groupInvited":
 					title = `${displayName} invited you to ${notificationBody.invitation.group.name}`;
 					break;
+				case "follow":
+					title = `${displayName} followed you`;
+					break;
+				case "receiveFollowRequest":
+					title = `${displayName} sent you a follow request`;
+					break;
 				case "app":
 					title = `${notificationBody.header}`;
 					break;
@@ -255,6 +265,7 @@ export class NotificationConverter {
 			description =
 				(effectiveNote && getNoteSummary(effectiveNote)) ||
 				notificationBody.body ||
+				username ||
 				"";
 		} else if (type === "unreadMessagingMessage") {
 			const notificationBody =
