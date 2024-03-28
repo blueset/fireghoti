@@ -121,7 +121,7 @@ export default class Resolver {
 			(Array.isArray(object["@context"])
 				? !(object["@context"] as unknown[]).includes(
 						"https://www.w3.org/ns/activitystreams",
-				  )
+					)
 				: object["@context"] !== "https://www.w3.org/ns/activitystreams")
 		) {
 			throw new Error("invalid response");

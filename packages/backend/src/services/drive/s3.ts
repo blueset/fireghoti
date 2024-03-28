@@ -9,7 +9,7 @@ export function getS3(meta: Meta) {
 		meta.objectStorageEndpoint != null
 			? `${meta.objectStorageUseSsl ? "https://" : "http://"}${
 					meta.objectStorageEndpoint
-			  }`
+				}`
 			: `${meta.objectStorageUseSsl ? "https://" : "http://"}example.net`;
 
 	try {

@@ -16,7 +16,7 @@ export function useStream() {
 			me
 				? {
 						token: me.token,
-				  }
+					}
 				: null,
 		),
 	);

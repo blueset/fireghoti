@@ -30,10 +30,10 @@ function normalizeHost(
 		src === "."
 			? null // .はローカルホスト (ここがマッチするのはリアクションのみ)
 			: src === undefined
-			  ? noteUserHost // ノートなどでホスト省略表記の場合はローカルホスト (ここがリアクションにマッチすることはない)
-			  : isSelfHost(src)
-				  ? null // 自ホスト指定
-				  : src || noteUserHost; // 指定されたホスト || ノートなどの所有者のホスト (こっちがリアクションにマッチすることはない)
+				? noteUserHost // ノートなどでホスト省略表記の場合はローカルホスト (ここがリアクションにマッチすることはない)
+				: isSelfHost(src)
+					? null // 自ホスト指定
+					: src || noteUserHost; // 指定されたホスト || ノートなどの所有者のホスト (こっちがリアクションにマッチすることはない)
 
 	host = toPunyNullable(host);
 
@@ -87,7 +87,7 @@ export async function populateEmoji(
 		? emojiUrl
 		: `${config.url}/proxy/${encodeURIComponent(
 				new URL(emojiUrl).pathname,
-		  )}?${query({ url: emojiUrl })}`;
+			)}?${query({ url: emojiUrl })}`;
 
 	return {
 		name: emojiName,
@@ -168,7 +168,7 @@ export async function prefetchEmojis(
 			? await Emojis.find({
 					where: emojisQuery,
 					select: ["name", "host", "originalUrl", "publicUrl"],
-			  })
+				})
 			: [];
 	const trans = redisClient.multi();
 	for (const emoji of _emojis) {

@@ -300,7 +300,7 @@ export function getNoteMenu(props: {
 							action: unclip,
 						},
 						null,
-				  ]
+					]
 				: []),
 			statePromise.then((state) =>
 				state?.isFavorited
@@ -308,12 +308,12 @@ export function getNoteMenu(props: {
 							icon: `${icon("ph-bookmark-simple")}`,
 							text: i18n.ts.unfavorite,
 							action: () => toggleFavorite(false),
-					  }
+						}
 					: {
 							icon: `${icon("ph-bookmark-simple")}`,
 							text: i18n.ts.favorite,
 							action: () => toggleFavorite(true),
-					  },
+						},
 			),
 			{
 				icon: `${icon("ph-paperclip")}`,
@@ -327,13 +327,13 @@ export function getNoteMenu(props: {
 									icon: `${icon("ph-eye-slash")}`,
 									text: i18n.ts.unwatch,
 									action: () => toggleWatch(false),
-							  }
+								}
 							: {
 									icon: `${icon("ph-eye")}`,
 									text: i18n.ts.watch,
 									action: () => toggleWatch(true),
-							  },
-				  )
+								},
+					)
 				: undefined,
 			statePromise.then((state) =>
 				state.isMutedThread
@@ -341,12 +341,12 @@ export function getNoteMenu(props: {
 							icon: `${icon("ph-speaker-x")}`,
 							text: i18n.ts.unmuteThread,
 							action: () => toggleThreadMute(false),
-					  }
+						}
 					: {
 							icon: `${icon("ph-speaker-x")}`,
 							text: i18n.ts.muteThread,
 							action: () => toggleThreadMute(true),
-					  },
+						},
 			),
 			isAppearAuthor
 				? (me.pinnedNoteIds || []).includes(appearNote.id)
@@ -354,19 +354,19 @@ export function getNoteMenu(props: {
 							icon: `${icon("ph-push-pin")}`,
 							text: i18n.ts.unpin,
 							action: () => togglePin(false),
-					  }
+						}
 					: {
 							icon: `${icon("ph-push-pin")}`,
 							text: i18n.ts.pin,
 							action: () => togglePin(true),
-					  }
+						}
 				: undefined,
 			instance.translatorAvailable
 				? {
 						icon: `${icon("ph-translate")}`,
 						text: i18n.ts.translate,
 						action: translate,
-				  }
+					}
 				: undefined,
 			appearNote.url || appearNote.uri
 				? {
@@ -375,7 +375,7 @@ export function getNoteMenu(props: {
 						action: () => {
 							window.open(appearNote.url || appearNote.uri, "_blank");
 						},
-				  }
+					}
 				: undefined,
 			{
 				type: "parent",
@@ -397,14 +397,14 @@ export function getNoteMenu(props: {
 								icon: `${icon("ph-link-simple")}`,
 								text: `${i18n.ts.copyLink} (${i18n.ts.origin})`,
 								action: copyOriginal,
-						  }
+							}
 						: undefined,
 					shareAvailable()
 						? {
 								icon: `${icon("ph-share-network")}`,
 								text: i18n.ts.share,
 								action: share,
-						  }
+							}
 						: undefined,
 				],
 			},
@@ -440,7 +440,7 @@ export function getNoteMenu(props: {
 								"closed",
 							);
 						},
-				  }
+					}
 				: undefined,
 			isAppearAuthor
 				? {
@@ -448,7 +448,7 @@ export function getNoteMenu(props: {
 						text: i18n.ts.toEdit,
 						accent: true,
 						action: edit,
-				  }
+					}
 				: undefined,
 			isAppearAuthor &&
 			!(
@@ -460,7 +460,7 @@ export function getNoteMenu(props: {
 						text: i18n.ts.makePrivate,
 						danger: true,
 						action: makePrivate,
-				  }
+					}
 				: undefined,
 			isAppearAuthor
 				? {
@@ -468,7 +468,7 @@ export function getNoteMenu(props: {
 						text: i18n.ts.deleteAndEdit,
 						danger: true,
 						action: delEdit,
-				  }
+					}
 				: undefined,
 			isAppearAuthor || isModerator
 				? {
@@ -476,7 +476,7 @@ export function getNoteMenu(props: {
 						text: i18n.ts.delete,
 						danger: true,
 						action: del,
-				  }
+					}
 				: undefined,
 			!isAppearAuthor ? null : undefined,
 			!isAppearAuthor
@@ -485,7 +485,7 @@ export function getNoteMenu(props: {
 						icon: `${icon("ph-user")}`,
 						text: i18n.ts.user,
 						children: getUserMenu(appearNote.user),
-				  }
+					}
 				: undefined,
 		].filter((x) => x !== undefined);
 	} else {
@@ -497,7 +497,7 @@ export function getNoteMenu(props: {
 						action: () => {
 							window.open(appearNote.url || appearNote.uri, "_blank");
 						},
-				  }
+					}
 				: undefined,
 			{
 				icon: `${icon("ph-clipboard-text")}`,
@@ -514,14 +514,14 @@ export function getNoteMenu(props: {
 						icon: `${icon("ph-link-simple")}`,
 						text: `${i18n.ts.copyLink} (${i18n.ts.origin})`,
 						action: copyOriginal,
-				  }
+					}
 				: undefined,
 			shareAvailable()
 				? {
 						icon: `${icon("ph-share-network")}`,
 						text: i18n.ts.share,
 						action: share,
-				  }
+					}
 				: undefined,
 		].filter((x) => x !== undefined);
 	}

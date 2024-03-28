@@ -88,7 +88,7 @@ export const PageRepository = db.getRepository(Page).extend({
 			isLiked: meId
 				? await PageLikes.findOneBy({ pageId: page.id, userId: meId }).then(
 						(x) => x != null,
-				  )
+					)
 				: undefined,
 		});
 	},

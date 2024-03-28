@@ -40,7 +40,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		...(ownedGroups.length > 0
 			? {
 					userGroupId: Not(In(ownedGroups.map((x) => x.id))),
-			  }
+				}
 			: {}),
 	});
 

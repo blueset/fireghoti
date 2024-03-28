@@ -63,12 +63,12 @@ export default {
 					direction: binding.modifiers.left
 						? "left"
 						: binding.modifiers.right
-						  ? "right"
-						  : binding.modifiers.top
-							  ? "top"
-							  : binding.modifiers.bottom
-								  ? "bottom"
-								  : "top",
+							? "right"
+							: binding.modifiers.top
+								? "top"
+								: binding.modifiers.bottom
+									? "bottom"
+									: "top",
 					targetElement: el,
 				},
 				{},

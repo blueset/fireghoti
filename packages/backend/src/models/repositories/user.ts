@@ -53,8 +53,8 @@ type IsMeAndIsUserDetailed<
 	? ExpectsMe extends true
 		? Packed<"MeDetailed">
 		: ExpectsMe extends false
-		  ? Packed<"UserDetailedNotMe">
-		  : Packed<"UserDetailed">
+			? Packed<"UserDetailedNotMe">
+			: Packed<"UserDetailed">
 	: Packed<"UserLite">;
 
 const ajv = new Ajv();
@@ -235,7 +235,7 @@ export const UserRepository = db.getRepository(User).extend({
 			reads.length > 0
 				? {
 						id: Not(In(reads.map((read) => read.announcementId))),
-				  }
+					}
 				: {},
 		);
 
@@ -292,7 +292,7 @@ export const UserRepository = db.getRepository(User).extend({
 				? await NoteUnreads.findOneBy({
 						userId: userId,
 						noteChannelId: In(channels.map((x) => x.followeeId)),
-				  })
+					})
 				: null;
 
 		return unread != null;
@@ -335,8 +335,8 @@ export const UserRepository = db.getRepository(User).extend({
 		return elapsed < USER_ONLINE_THRESHOLD
 			? "online"
 			: elapsed < USER_ACTIVE_THRESHOLD
-			  ? "active"
-			  : "offline";
+				? "active"
+				: "offline";
 	},
 
 	async getAvatarUrl(user: User): Promise<string> {
@@ -429,23 +429,23 @@ export const UserRepository = db.getRepository(User).extend({
 			profile == null
 				? null
 				: profile.ffVisibility === "public" || isMe
-				  ? user.followingCount
-				  : profile.ffVisibility === "followers" &&
-						  relation &&
-						  relation.isFollowing
-					  ? user.followingCount
-					  : null;
+					? user.followingCount
+					: profile.ffVisibility === "followers" &&
+							relation &&
+							relation.isFollowing
+						? user.followingCount
+						: null;
 
 		const followersCount =
 			profile == null
 				? null
 				: profile.ffVisibility === "public" || isMe
-				  ? user.followersCount
-				  : profile.ffVisibility === "followers" &&
-						  relation &&
-						  relation.isFollowing
-					  ? user.followersCount
-					  : null;
+					? user.followersCount
+					: profile.ffVisibility === "followers" &&
+							relation &&
+							relation.isFollowing
+						? user.followersCount
+						: null;
 
 		const falsy = opts.detail ? false : undefined;
 
@@ -481,7 +481,7 @@ export const UserRepository = db.getRepository(User).extend({
 										iconUrl: instance.iconUrl,
 										faviconUrl: instance.faviconUrl,
 										themeColor: instance.themeColor,
-								  }
+									}
 								: undefined,
 						)
 				: undefined,
@@ -538,7 +538,7 @@ export const UserRepository = db.getRepository(User).extend({
 						securityKeys: UserSecurityKeys.countBy({
 							userId: user.id,
 						}).then((result) => result >= 1),
-				  }
+					}
 				: {}),
 
 			...(opts.detail && isMe
@@ -577,7 +577,7 @@ export const UserRepository = db.getRepository(User).extend({
 						mutedInstances: profile?.mutedInstances,
 						mutingNotificationTypes: profile?.mutingNotificationTypes,
 						emailNotificationTypes: profile?.emailNotificationTypes,
-				  }
+					}
 				: {}),
 
 			...(opts.includeSecrets
@@ -594,7 +594,7 @@ export const UserRepository = db.getRepository(User).extend({
 								lastUsed: true,
 							},
 						}),
-				  }
+					}
 				: {}),
 
 			...(relation
@@ -609,7 +609,7 @@ export const UserRepository = db.getRepository(User).extend({
 						isMuted: relation.isMuted,
 						isRenoteMuted: relation.isRenoteMuted,
 						isReplyMuted: relation.isReplyMuted,
-				  }
+					}
 				: {}),
 		} as Promiseable<Packed<"User">> as Promiseable<
 			IsMeAndIsUserDetailed<ExpectsMe, D>

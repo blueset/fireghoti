@@ -107,15 +107,15 @@ export default async function (
 		let outstr = author
 			? `${author.name}(@${author.username}@${
 					author.host ? author.host : config.host
-			  }) ${
+				}) ${
 					note.renoteId ? "renotes" : note.replyId ? "replies" : "says"
-			  }: <br>`
+				}: <br>`
 			: "";
 		const files =
 			note.fileIds.length > 0
 				? await DriveFiles.findBy({
 						id: In(note.fileIds),
-				  })
+					})
 				: [];
 		let fileEle = "";
 		for (const file of files) {

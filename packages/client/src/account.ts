@@ -251,7 +251,7 @@ export async function openAccountMenu(
 										},
 									],
 								},
-						  ]
+							]
 						: [
 								{
 									type: "link",
@@ -260,7 +260,7 @@ export async function openAccountMenu(
 									avatar: me,
 								},
 								null,
-						  ]),
+							]),
 					...(opts.includeCurrentAccount ? [createItem(me)] : []),
 					...accountItemPromises,
 					...(isMobile ?? false
@@ -272,7 +272,7 @@ export async function openAccountMenu(
 									to: `/@${me.username}`,
 									avatar: me,
 								},
-						  ]
+							]
 						: [
 								{
 									type: "parent",
@@ -293,7 +293,7 @@ export async function openAccountMenu(
 										},
 									],
 								},
-						  ]),
+							]),
 				],
 			],
 			ev.currentTarget ?? ev.target,

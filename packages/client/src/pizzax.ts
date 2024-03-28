@@ -46,13 +46,13 @@ export class Storage<T extends StateDef> {
 		const deviceAccountState = isSignedIn
 			? JSON.parse(
 					localStorage.getItem(`${this.keyForLocalStorage}::${me.id}`) || "{}",
-			  )
+				)
 			: {};
 		const registryCache = isSignedIn
 			? JSON.parse(
 					localStorage.getItem(`${this.keyForLocalStorage}::cache::${me.id}`) ||
 						"{}",
-			  )
+				)
 			: {};
 
 		const state = {};

@@ -69,7 +69,7 @@ export function uploadFile(
 						file.type !== imgConfig.mimeType
 							? `${ctx.name}.${
 									mimeTypeMap[compressTypeMap[file.type].mimeType]
-							  }`
+								}`
 							: ctx.name;
 				} catch (err) {
 					console.error("Failed to resize image", err);
