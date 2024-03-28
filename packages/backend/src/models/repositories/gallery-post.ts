@@ -30,7 +30,7 @@ export const GalleryPostRepository = db.getRepository(GalleryPost).extend({
 			isLiked: meId
 				? await GalleryLikes.findOneBy({ postId: post.id, userId: meId }).then(
 						(x) => x != null,
-				  )
+					)
 				: undefined,
 		});
 	},

@@ -205,8 +205,8 @@ export async function createNote(
 	note.attachment = Array.isArray(note.attachment)
 		? note.attachment
 		: note.attachment
-		  ? [note.attachment]
-		  : [];
+			? [note.attachment]
+			: [];
 	const files = note.attachment.map(
 		(attach) => (attach.sensitive = note.sensitive),
 	)
@@ -216,7 +216,7 @@ export async function createNote(
 						(x) => limit(() => resolveImage(actor, x)) as Promise<DriveFile>,
 					),
 				)
-		  ).filter((image) => image != null)
+			).filter((image) => image != null)
 		: [];
 
 	// Reply

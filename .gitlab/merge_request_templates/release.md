@@ -2,6 +2,8 @@
 
 ## Checklist
 
+- [ ] There are no pending changes on Weblate
+
 I have updated...
 
 - [ ] `package.json`

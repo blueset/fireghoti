@@ -67,10 +67,10 @@ export function apiTimelineMastodon(router: Router): void {
 				query.local === "true"
 					? await client.getLocalTimeline(
 							convertTimelinesArgsId(argsToBools(limitToInt(query))),
-					  )
+						)
 					: await client.getPublicTimeline(
 							convertTimelinesArgsId(argsToBools(limitToInt(query))),
-					  );
+						);
 			ctx.body = data.data.map((status) => convertStatus(status));
 		} catch (e: any) {
 			apiLogger.error(inspect(e));

@@ -38,11 +38,11 @@ const props = withDefaults(
 	defineProps<{
 		file: entities.DriveFile;
 		fit: string;
-		showAltIndicator?: boolean
+		showAltIndicator?: boolean;
 	}>(),
 	{
 		showAltIndicator: false,
-	}
+	},
 );
 
 const is = computed(() => {

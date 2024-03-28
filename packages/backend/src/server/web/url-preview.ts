@@ -37,11 +37,11 @@ export const urlPreviewHandler = async (ctx: Koa.Context) => {
 						url: url,
 						lang: lang ?? "en-US",
 					})}`,
-			  )
+				)
 			: await summaly.default(url, {
 					followRedirects: false,
 					lang: lang ?? "en-US",
-			  });
+				});
 
 		logger.succ(`Got preview of ${url}: ${summary.title}`);
 
@@ -83,7 +83,7 @@ function wrap(url?: string): string | null {
 			? `${config.url}/proxy/preview.webp?${query({
 					url,
 					preview: "1",
-			  })}`
+				})}`
 			: url
 		: null;
 }

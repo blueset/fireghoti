@@ -110,7 +110,7 @@ export default async (
 							? `${emoji.name}@${emoji.host}`
 							: `${emoji.name}@.`,
 						url: emoji.publicUrl || emoji.originalUrl, // || emoji.originalUrl してるのは後方互換性のため
-				  }
+					}
 				: null,
 		userId: user.id,
 	});

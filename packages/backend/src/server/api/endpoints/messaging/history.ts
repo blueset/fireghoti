@@ -44,7 +44,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	const groups = ps.group
 		? await UserGroupJoinings.findBy({
 				userId: user.id,
-		  }).then((xs) => xs.map((x) => x.userGroupId))
+			}).then((xs) => xs.map((x) => x.userGroupId))
 		: [];
 
 	if (ps.group && groups.length === 0) {

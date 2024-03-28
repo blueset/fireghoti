@@ -37,7 +37,7 @@ export const api = async (endpoint: string, params: any, me?: any) => {
 	const auth = me
 		? {
 				i: me.token,
-		  }
+			}
 		: {};
 
 	const res = await got<string>(`http://localhost:${port}/api/${endpoint}`, {
@@ -77,7 +77,7 @@ export const request = async (
 	const auth = me
 		? {
 				i: me.token,
-		  }
+			}
 		: {};
 
 	const res = await fetch(`http://localhost:${port}/api${endpoint}`, {
@@ -152,8 +152,8 @@ export const uploadFile = async (user: any, _path?: string): Promise<any> => {
 		_path == null
 			? `${_dirname}/resources/Lenna.jpg`
 			: path.isAbsolute(_path)
-			  ? _path
-			  : `${_dirname}/resources/${_path}`;
+				? _path
+				: `${_dirname}/resources/${_path}`;
 
 	const formData = new FormData() as any;
 	formData.append("i", user.token);

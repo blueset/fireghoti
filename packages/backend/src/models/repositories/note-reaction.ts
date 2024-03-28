@@ -32,7 +32,7 @@ export const NoteReactionRepository = db.getRepository(NoteReaction).extend({
 				? {
 						// may throw error
 						note: await Notes.pack(reaction.note ?? reaction.noteId, me),
-				  }
+					}
 				: {}),
 		};
 	},

@@ -291,7 +291,7 @@ import XStarButtonNoEmoji from "@/components/MkStarButtonNoEmoji.vue";
 import XQuoteButton from "@/components/MkQuoteButton.vue";
 import MkVisibility from "@/components/MkVisibility.vue";
 import copyToClipboard from "@/scripts/copy-to-clipboard";
-import detectLanguage from "@/scripts/detect-language";
+import { detectLanguage } from "@/scripts/language-utils";
 import { url } from "@/config";
 import { pleaseLogin } from "@/scripts/please-login";
 import { focusNext, focusPrev } from "@/scripts/focus";

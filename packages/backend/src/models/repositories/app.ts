@@ -38,7 +38,7 @@ export const AppRepository = db.getRepository(App).extend({
 							appId: app.id,
 							userId: me.id,
 						}).then((count) => count > 0),
-				  }
+					}
 				: {}),
 		};
 	},

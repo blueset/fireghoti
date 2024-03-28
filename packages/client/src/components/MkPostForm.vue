@@ -329,9 +329,14 @@ import XCheatSheet from "@/components/MkCheatSheetDialog.vue";
 import preprocess from "@/scripts/preprocess";
 import { vibrate } from "@/scripts/vibrate";
 import { langmap } from "@/scripts/langmap";
-import { isSupportedLang, isSameLanguage, languageContains, parentLanguage } from "@/scripts/language-utils";
+import {
+	detectLanguage,
+	isSupportedLang,
+	isSameLanguage,
+	languageContains,
+	parentLanguage,
+} from "@/scripts/language-utils";
 import type { MenuItem } from "@/types/menu";
-import detectLanguage from "@/scripts/detect-language";
 import icon from "@/scripts/icon";
 
 const modal = inject("modal");
@@ -1011,8 +1016,6 @@ function deleteDraft() {
 
 	localStorage.setItem("drafts", JSON.stringify(draftData));
 }
-
-
 
 async function post() {
 	// For text that is too short, the false positive rate may be too high, so we don't show alarm.

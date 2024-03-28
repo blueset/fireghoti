@@ -33,10 +33,10 @@
 	},
 	"scripts": {
 		"artifacts": "napi artifacts",
-		"build": "napi build --features napi --platform --release --cargo-flags=--locked ./built/",
-		"build:debug": "napi build --features napi --platform --cargo-flags=--locked ./built/",
+		"build": "napi build --features napi --platform --release ./built/",
+		"build:debug": "napi build --features napi --platform ./built/",
 		"prepublishOnly": "napi prepublish -t npm",
-		"test": "pnpm run cargo:test && pnpm run build:napi && ava",
+		"test": "pnpm run cargo:test && pnpm run build:debug && ava",
 		"universal": "napi universal",
 		"version": "napi version",
 		"format": "cargo fmt --all --",

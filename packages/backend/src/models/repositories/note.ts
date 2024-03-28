@@ -227,7 +227,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 				? {
 						id: channel.id,
 						name: channel.name,
-				  }
+					}
 				: undefined,
 			mentions: note.mentions.length > 0 ? note.mentions : undefined,
 			uri: note.uri || undefined,
@@ -237,7 +237,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 			...(meId
 				? {
 						myReaction: populateMyReaction(note, meId, options?._hint_),
-				  }
+					}
 				: {}),
 
 			...(opts.detail
@@ -246,16 +246,16 @@ export const NoteRepository = db.getRepository(Note).extend({
 							? this.pack(note.reply || note.replyId, me, {
 									detail: false,
 									_hint_: options?._hint_,
-							  })
+								})
 							: undefined,
 
 						renote: note.renoteId
 							? this.pack(note.renote || note.renoteId, me, {
 									detail: true,
 									_hint_: options?._hint_,
-							  })
+								})
 							: undefined,
-				  }
+					}
 				: {}),
 			lang: note.lang,
 		});

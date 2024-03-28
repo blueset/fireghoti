@@ -99,11 +99,11 @@ export default async function (
 								note,
 							),
 							user,
-					  )
+						)
 					: renderDelete(
 							renderTombstone(`${config.url}/notes/${note.id}`),
 							user,
-					  ),
+						),
 			);
 
 			deliverToConcerned(user, note, content);

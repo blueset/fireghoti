@@ -97,10 +97,10 @@ type UnionToIntersection<T> = (T extends any ? (x: T) => any : never) extends (
 type UnflattenSingleton<K extends string, V> = K extends `${infer A}.${infer B}`
 	? {
 			[_ in A]: UnflattenSingleton<B, V>;
-	  }
+		}
 	: {
 			[_ in K]: V;
-	  };
+		};
 
 type Unflatten<T extends Record<string, any>> = UnionToIntersection<
 	{
@@ -176,8 +176,8 @@ export default abstract class Chart<T extends Schema> {
 				v.range === "big"
 					? "bigint"
 					: v.range === "small"
-					  ? "smallint"
-					  : "integer";
+						? "smallint"
+						: "integer";
 			if (v.uniqueIncrement) {
 				columns[uniqueTempColumnPrefix + name] = {
 					type: "varchar",
@@ -234,8 +234,8 @@ export default abstract class Chart<T extends Schema> {
 					span === "hour"
 						? `__chart__${camelToSnake(name)}`
 						: span === "day"
-						  ? `__chart_day__${camelToSnake(name)}`
-						  : (new Error("not happen") as never),
+							? `__chart_day__${camelToSnake(name)}`
+							: (new Error("not happen") as never),
 				columns: {
 					id: {
 						type: "integer",
@@ -251,7 +251,7 @@ export default abstract class Chart<T extends Schema> {
 									type: "varchar",
 									length: 128,
 								},
-						  }
+							}
 						: {}),
 					...Chart.convertSchemaToColumnDefinitions(schema),
 				},
@@ -335,15 +335,15 @@ export default abstract class Chart<T extends Schema> {
 			span === "hour"
 				? this.repositoryForHour
 				: span === "day"
-				  ? this.repositoryForDay
-				  : (new Error("not happen") as never);
+					? this.repositoryForDay
+					: (new Error("not happen") as never);
 
 		return repository
 			.findOne({
 				where: group
 					? {
 							group: group,
-					  }
+						}
 					: {},
 				order: {
 					date: -1,
@@ -365,16 +365,16 @@ export default abstract class Chart<T extends Schema> {
 			span === "hour"
 				? [y, m, d, h]
 				: span === "day"
-				  ? [y, m, d]
-				  : (new Error("not happen") as never),
+					? [y, m, d]
+					: (new Error("not happen") as never),
 		);
 
 		const repository =
 			span === "hour"
 				? this.repositoryForHour
 				: span === "day"
-				  ? this.repositoryForDay
-				  : (new Error("not happen") as never);
+					? this.repositoryForDay
+					: (new Error("not happen") as never);
 
 		// 現在(=今のHour or Day)のログ
 		const currentLog = (await repository.findOneBy({
@@ -729,21 +729,21 @@ export default abstract class Chart<T extends Schema> {
 						cursor ? dateUTC([y2, m2, d2, 0]) : dateUTC([y, m, d, 0]),
 						amount - 1,
 						"day",
-				  )
+					)
 				: span === "hour"
-				  ? subtractTime(
+					? subtractTime(
 							cursor ? dateUTC([y2, m2, d2, h2]) : dateUTC([y, m, d, h]),
 							amount - 1,
 							"hour",
-					  )
-				  : (new Error("not happen") as never);
+						)
+					: (new Error("not happen") as never);
 
 		const repository =
 			span === "hour"
 				? this.repositoryForHour
 				: span === "day"
-				  ? this.repositoryForDay
-				  : (new Error("not happen") as never);
+					? this.repositoryForDay
+					: (new Error("not happen") as never);
 
 		// ログ取得
 		let logs = (await repository.find({
@@ -764,7 +764,7 @@ export default abstract class Chart<T extends Schema> {
 				where: group
 					? {
 							group: group,
-					  }
+						}
 					: {},
 				order: {
 					date: -1,
@@ -801,8 +801,8 @@ export default abstract class Chart<T extends Schema> {
 				span === "hour"
 					? subtractTime(dateUTC([y, m, d, h]), i, "hour")
 					: span === "day"
-					  ? subtractTime(dateUTC([y, m, d]), i, "day")
-					  : (new Error("not happen") as never);
+						? subtractTime(dateUTC([y, m, d]), i, "day")
+						: (new Error("not happen") as never);
 
 			const log = logs.find((l) =>
 				isTimeSame(new Date(l.date * 1000), current),

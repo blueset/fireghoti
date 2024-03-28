@@ -129,12 +129,12 @@ export function genOpenapiSpec() {
 									},
 								},
 							},
-					  }
+						}
 					: {
 							"204": {
 								description: "OK (without any results)",
 							},
-					  }),
+						}),
 				"400": {
 					description: "Client error",
 					content: {
@@ -192,7 +192,7 @@ export function genOpenapiSpec() {
 									},
 								},
 							},
-					  }
+						}
 					: {}),
 				"500": {
 					description: "Internal server error",

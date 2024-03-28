@@ -68,7 +68,7 @@ export const initializeStreamingServer = (server: http.Server) => {
 						});
 					},
 					1000 * 60 * 5,
-			  )
+				)
 			: null;
 		if (user) {
 			Users.update(user.id, {

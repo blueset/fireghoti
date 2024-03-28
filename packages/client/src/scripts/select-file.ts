@@ -93,7 +93,7 @@ function select(
 					? {
 							text: label,
 							type: "label",
-					  }
+						}
 					: undefined,
 				{
 					type: "switch",

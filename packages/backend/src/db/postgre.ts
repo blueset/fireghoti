@@ -213,7 +213,7 @@ export const db = new DataSource({
 					db: config.redis.db || 0,
 					tls: config.redis.tls,
 				},
-		  }
+			}
 		: false,
 	logging: log,
 	logger: log ? new MyCustomLogger() : undefined,

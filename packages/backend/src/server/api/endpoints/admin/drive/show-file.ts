@@ -210,7 +210,7 @@ export default define(meta, paramDef, async (ps, me) => {
 						webpublicUrl: ps.url,
 					},
 				],
-		  });
+			});
 
 	if (file == null) {
 		throw new ApiError(meta.errors.noSuchFile);

@@ -39,11 +39,11 @@
 		"gulp-terser": "2.1.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.6.2",
-		"@biomejs/cli-darwin-arm64": "^1.6.2",
-		"@biomejs/cli-darwin-x64": "^1.6.2",
-		"@biomejs/cli-linux-arm64": "^1.6.2",
-		"@biomejs/cli-linux-x64": "^1.6.2",
+		"@biomejs/biome": "1.6.3",
+		"@biomejs/cli-darwin-arm64": "^1.6.3",
+		"@biomejs/cli-darwin-x64": "^1.6.3",
+		"@biomejs/cli-linux-arm64": "^1.6.3",
+		"@biomejs/cli-linux-x64": "^1.6.3",
 		"@types/node": "20.11.30",
 		"execa": "8.0.1",
 		"pnpm": "8.15.5",

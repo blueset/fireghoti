@@ -81,7 +81,7 @@ export default define(meta, paramDef, async (ps, me) => {
 			: {
 					usernameLower: ps.username!.toLowerCase(),
 					host: toPunyNullable(ps.host) ?? IsNull(),
-			  },
+				},
 	);
 
 	if (user == null) {

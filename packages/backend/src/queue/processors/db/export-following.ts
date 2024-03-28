@@ -38,7 +38,7 @@ export async function exportFollowing(
 		const mutings = job.data.excludeMuting
 			? await Mutings.findBy({
 					muterId: user.id,
-			  })
+				})
 			: [];
 
 		while (true) {

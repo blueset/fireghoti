@@ -85,7 +85,7 @@ export default async function renderNote(
 		note.mentions.length > 0
 			? await Users.findBy({
 					id: In(note.mentions),
-			  })
+				})
 			: [];
 
 	const hashtagTags = (note.tags || []).map((tag) => renderHashtag(tag));
@@ -117,7 +117,7 @@ export default async function renderNote(
 	const contentMap = note.lang
 		? {
 				[note.lang]: content,
-		  }
+			}
 		: null;
 
 	const emojis = await getEmojis(note.emojis);
@@ -143,13 +143,13 @@ export default async function renderNote(
 						totalItems: poll!.votes[i],
 					},
 				})),
-		  }
+			}
 		: {};
 
 	const asTalk = isTalk
 		? {
 				_misskey_talk: true,
-		  }
+			}
 		: {};
 
 	return {

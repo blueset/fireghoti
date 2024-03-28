@@ -297,7 +297,7 @@ export default define(meta, paramDef, async (ps, user) => {
 					choices: ps.poll.choices,
 					multiple: ps.poll.multiple,
 					expiresAt: ps.poll.expiresAt ? new Date(ps.poll.expiresAt) : null,
-			  }
+				}
 			: undefined,
 		text: ps.text || undefined,
 		lang: ps.lang,

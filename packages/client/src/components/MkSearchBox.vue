@@ -142,6 +142,10 @@ function done(canceled: boolean, result?: searchQuery) {
 }
 
 function search() {
+	searchWords.value = searchWords.value.trim();
+	searchUsers.value = searchUsers.value.trim();
+	searchRange.value = searchRange.value.trim();
+
 	if (
 		searchWords.value === "" &&
 		searchUsers.value === "" &&
@@ -160,6 +164,8 @@ function search() {
 }
 
 function lookup() {
+	searchWords.value = searchWords.value.trim();
+
 	if (searchWords.value === "") return;
 
 	done(false, {
