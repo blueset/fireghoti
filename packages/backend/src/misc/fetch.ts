@@ -83,6 +83,9 @@ export async function getResponse(args: {
 	});
 
 	if (args.redirect === "manual" && [301, 302, 307, 308].includes(res.status)) {
+		if (!isValidUrl(res.url)) {
+			throw new StatusError("Invalid URL", 400);
+		}
 		return res;
 	}
 
@@ -92,10 +95,6 @@ export async function getResponse(args: {
 			res.status,
 			res.statusText,
 		);
-	}
-
-	if (res.redirected && !isValidUrl(res.url)) {
-		throw new StatusError("Invalid URL", 400);
 	}
 
 	return res;
