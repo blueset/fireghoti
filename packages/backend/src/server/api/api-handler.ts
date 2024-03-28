@@ -22,8 +22,8 @@ export default (endpoint: IEndpoint, ctx: Koa.Context) =>
 		const body = ctx.is("multipart/form-data")
 			? (ctx.request as any).body
 			: ctx.method === "GET"
-			  ? ctx.query
-			  : ctx.request.body;
+				? ctx.query
+				: ctx.request.body;
 
 		const reply = (x?: any, y?: ApiError) => {
 			if (x == null) {
@@ -76,8 +76,8 @@ export default (endpoint: IEndpoint, ctx: Koa.Context) =>
 							e.httpStatusCode
 								? e.httpStatusCode
 								: e.kind === "client"
-								  ? 400
-								  : 500,
+									? 400
+									: 500,
 							e,
 						);
 					});

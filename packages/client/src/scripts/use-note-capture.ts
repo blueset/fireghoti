@@ -65,7 +65,7 @@ export function useNoteCapture(props: {
 						...(isSignedIn && body.userId === me.id
 							? {
 									isVoted: true,
-							  }
+								}
 							: {}),
 					};
 					note.value.poll.choices = choices;

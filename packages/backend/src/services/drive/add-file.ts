@@ -586,8 +586,8 @@ export async function addFile({
 		  (instance!.markLocalFilesNsfwByDefault || profile!.alwaysMarkNsfw)
 			? true
 			: sensitive != null
-			  ? sensitive
-			  : false
+				? sensitive
+				: false
 		: false;
 
 	if (url != null) {

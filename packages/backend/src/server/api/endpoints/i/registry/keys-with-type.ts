@@ -38,16 +38,16 @@ export default define(meta, paramDef, async (ps, user) => {
 			item.value === null
 				? "null"
 				: Array.isArray(item.value)
-				  ? "array"
-				  : type === "number"
-					  ? "number"
-					  : type === "string"
-						  ? "string"
-						  : type === "boolean"
-							  ? "boolean"
-							  : type === "object"
-								  ? "object"
-								  : (null as never);
+					? "array"
+					: type === "number"
+						? "number"
+						: type === "string"
+							? "string"
+							: type === "boolean"
+								? "boolean"
+								: type === "object"
+									? "object"
+									: (null as never);
 	}
 
 	return res;

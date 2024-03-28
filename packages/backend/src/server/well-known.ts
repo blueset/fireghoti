@@ -114,10 +114,10 @@ router.get(webFingerPath, async (ctx) => {
 						resource.startsWith(`${config.url.toLowerCase()}/@`)
 							? resource.split("/").pop()!
 							: resource.startsWith("acct:")
-							  ? resource.slice("acct:".length)
-							  : resource,
+								? resource.slice("acct:".length)
+								: resource,
 					),
-			  );
+				);
 
 	const fromAcct = (acct: Acct.Acct): FindOptionsWhere<User> | number =>
 		!acct.host || acct.host === config.host.toLowerCase()
@@ -125,7 +125,7 @@ router.get(webFingerPath, async (ctx) => {
 					usernameLower: acct.username,
 					host: IsNull(),
 					isSuspended: false,
-			  }
+				}
 			: 422;
 
 	if (typeof ctx.query.resource !== "string") {

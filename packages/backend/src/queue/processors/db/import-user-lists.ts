@@ -68,11 +68,11 @@ export async function importUserLists(
 				? await Users.findOneBy({
 						host: IsNull(),
 						usernameLower: username.toLowerCase(),
-				  })
+					})
 				: await Users.findOneBy({
 						host: toPuny(host!),
 						usernameLower: username.toLowerCase(),
-				  });
+					});
 
 			if (target == null) {
 				target = await resolveUser(username, host);

@@ -679,7 +679,7 @@ async function renderNoteOrRenoteActivity(data: Option, note: Note) {
 						? data.renote.uri
 						: `${config.url}/notes/${data.renote.id}`,
 					note,
-			  )
+				)
 			: renderCreate(await renderNote(note, false), note);
 
 	return renderActivity(content);

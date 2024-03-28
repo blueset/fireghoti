@@ -29,7 +29,7 @@ export const NotificationRepository = db.getRepository(Notification).extend({
 		const token = notification.appAccessTokenId
 			? await AccessTokens.findOneByOrFail({
 					id: notification.appAccessTokenId,
-			  })
+				})
 			: null;
 
 		return await awaitAll({
@@ -51,7 +51,7 @@ export const NotificationRepository = db.getRepository(Notification).extend({
 								_hint_: options._hintForEachNotes_,
 							},
 						),
-				  }
+					}
 				: {}),
 			...(notification.type === "reply"
 				? {
@@ -63,7 +63,7 @@ export const NotificationRepository = db.getRepository(Notification).extend({
 								_hint_: options._hintForEachNotes_,
 							},
 						),
-				  }
+					}
 				: {}),
 			...(notification.type === "renote"
 				? {
@@ -75,7 +75,7 @@ export const NotificationRepository = db.getRepository(Notification).extend({
 								_hint_: options._hintForEachNotes_,
 							},
 						),
-				  }
+					}
 				: {}),
 			...(notification.type === "quote"
 				? {
@@ -87,7 +87,7 @@ export const NotificationRepository = db.getRepository(Notification).extend({
 								_hint_: options._hintForEachNotes_,
 							},
 						),
-				  }
+					}
 				: {}),
 			...(notification.type === "reaction"
 				? {
@@ -100,7 +100,7 @@ export const NotificationRepository = db.getRepository(Notification).extend({
 							},
 						),
 						reaction: notification.reaction,
-				  }
+					}
 				: {}),
 			...(notification.type === "pollVote"
 				? {
@@ -113,7 +113,7 @@ export const NotificationRepository = db.getRepository(Notification).extend({
 							},
 						),
 						choice: notification.choice,
-				  }
+					}
 				: {}),
 			...(notification.type === "pollEnded"
 				? {
@@ -125,21 +125,21 @@ export const NotificationRepository = db.getRepository(Notification).extend({
 								_hint_: options._hintForEachNotes_,
 							},
 						),
-				  }
+					}
 				: {}),
 			...(notification.type === "groupInvited"
 				? {
 						invitation: UserGroupInvitations.pack(
 							notification.userGroupInvitationId!,
 						),
-				  }
+					}
 				: {}),
 			...(notification.type === "app"
 				? {
 						body: notification.customBody,
 						header: notification.customHeader || token?.name,
 						icon: notification.customIcon || token?.iconUrl,
-				  }
+					}
 				: {}),
 		});
 	},

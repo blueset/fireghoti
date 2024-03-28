@@ -126,7 +126,7 @@ export const httpAgent = config.proxy
 			scheduling: "lifo",
 			proxy: config.proxy,
 			localAddress: config.outgoingAddress,
-	  })
+		})
 	: _http;
 
 /**
@@ -141,7 +141,7 @@ export const httpsAgent = config.proxy
 			scheduling: "lifo",
 			proxy: config.proxy,
 			localAddress: config.outgoingAddress,
-	  })
+		})
 	: _https;
 
 /**

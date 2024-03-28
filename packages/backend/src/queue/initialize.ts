@@ -18,7 +18,7 @@ export function initialize<T>(name: string, limitPerSec = -1) {
 				? {
 						max: limitPerSec,
 						duration: 1000,
-				  }
+					}
 				: undefined,
 		settings: {
 			stalledInterval: 60,

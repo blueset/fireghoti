@@ -46,11 +46,11 @@ export async function importFollowing(
 					? await Users.findOneBy({
 							host: IsNull(),
 							usernameLower: username.toLowerCase(),
-					  })
+						})
 					: await Users.findOneBy({
 							host: toPuny(host!),
 							usernameLower: username.toLowerCase(),
-					  });
+						});
 
 				if (host == null && target == null) continue;
 
@@ -84,11 +84,11 @@ export async function importFollowing(
 					? await Users.findOneBy({
 							host: IsNull(),
 							usernameLower: username.toLowerCase(),
-					  })
+						})
 					: await Users.findOneBy({
 							host: toPuny(host!),
 							usernameLower: username.toLowerCase(),
-					  });
+						});
 
 				if (host == null && target == null) continue;
 

@@ -67,12 +67,12 @@ export const FollowingRepository = db.getRepository(Following).extend({
 			followee: opts.populateFollowee
 				? Users.pack(following.followee || following.followeeId, me, {
 						detail: true,
-				  })
+					})
 				: undefined,
 			follower: opts.populateFollower
 				? Users.pack(following.follower || following.followerId, me, {
 						detail: true,
-				  })
+					})
 				: undefined,
 		});
 	},

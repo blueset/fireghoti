@@ -79,7 +79,7 @@ async function composeNotification(
 											action: "follow",
 											title: t("_notification._actions.followBack"),
 										},
-								  ],
+									],
 						},
 					];
 				}
@@ -163,7 +163,7 @@ async function composeNotification(
 												action: "renote",
 												title: t("_notification._actions.renote"),
 											},
-									  ]
+										]
 									: []),
 							],
 						},

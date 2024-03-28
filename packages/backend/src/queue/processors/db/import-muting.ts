@@ -49,11 +49,11 @@ export async function importMuting(
 				? await Users.findOneBy({
 						host: IsNull(),
 						usernameLower: username.toLowerCase(),
-				  })
+					})
 				: await Users.findOneBy({
 						host: toPuny(host!),
 						usernameLower: username.toLowerCase(),
-				  });
+					});
 
 			if (host == null && target == null) continue;
 

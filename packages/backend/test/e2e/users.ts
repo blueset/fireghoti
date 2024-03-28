@@ -171,7 +171,7 @@ describe("ユーザー", () => {
 						email: user.email,
 						emailVerified: user.emailVerified,
 						securityKeysList: user.securityKeysList,
-				  }
+					}
 				: {}),
 		});
 	};

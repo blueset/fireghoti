@@ -128,7 +128,7 @@ export default define(meta, paramDef, async (ps, user) => {
 			ps.eyeCatchingImageId === null
 				? null
 				: ps.eyeCatchingImageId === undefined
-				  ? page.eyeCatchingImageId
-				  : eyeCatchingImage!.id,
+					? page.eyeCatchingImageId
+					: eyeCatchingImage!.id,
 	});
 });
