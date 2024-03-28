@@ -27,9 +27,7 @@
 		v-if="alt && showAltIndicator"
 		v-tooltip.noLabel="
 			`${i18n.ts.alt}: ${
-				alt.length > 200
-					? alt.trim().slice(0, 200) + '...'
-					: alt.trim()
+				alt.length > 200 ? alt.trim().slice(0, 200) + '...' : alt.trim()
 			}`
 		"
 	></i>
@@ -51,7 +49,7 @@ const props = withDefaults(
 		size?: number;
 		cover?: boolean;
 		largestDimension?: "width" | "height";
-		showAltIndicator?: boolean
+		showAltIndicator?: boolean;
 	}>(),
 	{
 		src: null,
@@ -60,7 +58,7 @@ const props = withDefaults(
 		title: null,
 		size: 64,
 		cover: true,
-		showAltIndicator: false
+		showAltIndicator: false,
 	},
 );
 
