@@ -1,6 +1,6 @@
-import type { Theme } from "./scripts/theme";
 import { isSignedIn, me } from "@/me";
 import { api } from "@/os";
+import type { Theme } from "./scripts/theme";
 
 const lsCacheKey = isSignedIn ? `themes:${me.id}` : "";
 

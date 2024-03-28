@@ -184,9 +184,7 @@ const remotePagination = {
 	limit: 30,
 	params: computed(() => ({
 		query:
-			queryRemote.value && queryRemote.value !== ""
-				? queryRemote.value
-				: null,
+			queryRemote.value && queryRemote.value !== "" ? queryRemote.value : null,
 		host: host.value && host.value !== "" ? host.value : null,
 	})),
 };
@@ -203,9 +201,7 @@ const selectAll = () => {
 
 const toggleSelect = (emoji) => {
 	if (selectedEmojis.value.includes(emoji.id)) {
-		selectedEmojis.value = selectedEmojis.value.filter(
-			(x) => x !== emoji.id,
-		);
+		selectedEmojis.value = selectedEmojis.value.filter((x) => x !== emoji.id);
 	} else {
 		selectedEmojis.value.push(emoji.id);
 	}
@@ -305,9 +301,7 @@ const menu = (ev: MouseEvent) => {
 				icon: `${icon("ph-upload-simple")}`,
 				text: i18n.ts.importZip,
 				action: async () => {
-					const file = await selectFile(
-						ev.currentTarget ?? ev.target,
-					);
+					const file = await selectFile(ev.currentTarget ?? ev.target);
 					os.api("admin/emoji/import-zip", {
 						fileId: file.id,
 					})
@@ -329,10 +323,7 @@ const menu = (ev: MouseEvent) => {
 				icon: `${icon("ph-info")}`,
 				text: i18n.ts.emojiPackCreator,
 				action: () => {
-					window.open(
-						"https://firefish.dev/firefish/emoji-gen",
-						"_blank",
-					);
+					window.open("https://firefish.dev/firefish/emoji-gen", "_blank");
 				},
 			},
 		],

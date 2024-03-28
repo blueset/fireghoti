@@ -254,9 +254,7 @@ const headerTabs = computed(() => [
 
 definePageMetadata(
 	computed(() => ({
-		title: file.value
-			? i18n.ts.file + ": " + file.value.name
-			: i18n.ts.file,
+		title: file.value ? i18n.ts.file + ": " + file.value.name : i18n.ts.file,
 		icon: `${icon("ph-file")}`,
 	})),
 );

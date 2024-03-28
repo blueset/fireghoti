@@ -36,11 +36,9 @@ export default defineComponent({
 		const note: Ref<Record<string, any> | null> = ref(null);
 
 		onMounted(() => {
-			os.api("notes/show", { noteId: props.block.note }).then(
-				(result) => {
-					note.value = result;
-				},
-			);
+			os.api("notes/show", { noteId: props.block.note }).then((result) => {
+				note.value = result;
+			});
 		});
 
 		return {

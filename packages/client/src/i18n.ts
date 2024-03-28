@@ -1,5 +1,5 @@
-import { markRaw } from "vue";
 import { locale } from "@/config";
+import { markRaw } from "vue";
 
 class I18n<T extends Record<string, any>> {
 	public ts: T;

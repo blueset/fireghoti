@@ -179,9 +179,7 @@ function remove(reaction, ev: MouseEvent) {
 			{
 				text: i18n.ts.remove,
 				action: () => {
-					reactions.value = reactions.value.filter(
-						(x) => x !== reaction,
-					);
+					reactions.value = reactions.value.filter((x) => x !== reaction);
 					save();
 				},
 			},
@@ -192,9 +190,7 @@ function remove(reaction, ev: MouseEvent) {
 
 function preview(ev: MouseEvent) {
 	os.popup(
-		defineAsyncComponent(
-			() => import("@/components/MkEmojiPickerDialog.vue"),
-		),
+		defineAsyncComponent(() => import("@/components/MkEmojiPickerDialog.vue")),
 		{
 			asReactionPicker: true,
 			src: ev.currentTarget ?? ev.target,

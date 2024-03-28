@@ -224,10 +224,7 @@ async function save() {
 
 	let softMutes, softMLangs, hardMWords, hardMPatterns;
 	try {
-		softMutes = parseSoftMutes(
-			softMutedWords.value,
-			i18n.ts._wordMute.soft,
-		);
+		softMutes = parseSoftMutes(softMutedWords.value, i18n.ts._wordMute.soft);
 		softMLangs = parseMutedWords(softMutedLangs.value);
 		hardMWords = parseMutedWords(hardMutedWords.value);
 		hardMPatterns = parseMutedPatterns(

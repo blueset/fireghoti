@@ -60,8 +60,7 @@ export default defineComponent({
 								value: option.props?.value,
 								disabled: option.props?.disabled,
 								modelValue: this.value,
-								"onUpdate:modelValue": (value) =>
-									(this.value = value),
+								"onUpdate:modelValue": (value) => (this.value = value),
 							},
 							option.children,
 						),

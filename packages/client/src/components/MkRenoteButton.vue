@@ -102,10 +102,7 @@ const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 				hasRenotedBefore.value = true;
 				const el =
 					ev &&
-					((ev.currentTarget ?? ev.target) as
-						| HTMLElement
-						| null
-						| undefined);
+					((ev.currentTarget ?? ev.target) as HTMLElement | null | undefined);
 				if (el) {
 					const rect = el.getBoundingClientRect();
 					const x = rect.left + el.offsetWidth / 2;
@@ -129,10 +126,7 @@ const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 				hasRenotedBefore.value = true;
 				const el =
 					ev &&
-					((ev.currentTarget ?? ev.target) as
-						| HTMLElement
-						| null
-						| undefined);
+					((ev.currentTarget ?? ev.target) as HTMLElement | null | undefined);
 				if (el) {
 					const rect = el.getBoundingClientRect();
 					const x = rect.left + el.offsetWidth / 2;
@@ -157,10 +151,7 @@ const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 				hasRenotedBefore.value = true;
 				const el =
 					ev &&
-					((ev.currentTarget ?? ev.target) as
-						| HTMLElement
-						| null
-						| undefined);
+					((ev.currentTarget ?? ev.target) as HTMLElement | null | undefined);
 				if (el) {
 					const rect = el.getBoundingClientRect();
 					const x = rect.left + el.offsetWidth / 2;
@@ -182,10 +173,7 @@ const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 				hasRenotedBefore.value = true;
 				const el =
 					ev &&
-					((ev.currentTarget ?? ev.target) as
-						| HTMLElement
-						| null
-						| undefined);
+					((ev.currentTarget ?? ev.target) as HTMLElement | null | undefined);
 				if (el) {
 					const rect = el.getBoundingClientRect();
 					const x = rect.left + el.offsetWidth / 2;
@@ -221,10 +209,7 @@ const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 				hasRenotedBefore.value = true;
 				const el =
 					ev &&
-					((ev.currentTarget ?? ev.target) as
-						| HTMLElement
-						| null
-						| undefined);
+					((ev.currentTarget ?? ev.target) as HTMLElement | null | undefined);
 				if (el) {
 					const rect = el.getBoundingClientRect();
 					const x = rect.left + el.offsetWidth / 2;

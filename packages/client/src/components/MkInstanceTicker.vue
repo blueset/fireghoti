@@ -38,9 +38,7 @@ const instance = props.instance ?? {
 	faviconUrl: Instance.faviconUrl || Instance.iconUrl || "/favicon.ico",
 	name: instanceName,
 	themeColor: (
-		document.querySelector(
-			'meta[name="theme-color-orig"]',
-		) as HTMLMetaElement
+		document.querySelector('meta[name="theme-color-orig"]') as HTMLMetaElement
 	)?.content,
 	softwareName: Instance.softwareName ?? "Firefish",
 	softwareVersion: version,
