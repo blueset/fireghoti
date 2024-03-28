@@ -1,7 +1,5 @@
-ifneq (dev,$(wildcard config.env))
-	include ./dev/config.env
-	export
-endif
+include ./dev/config.env
+export
 
 
 .PHONY: pre-commit
