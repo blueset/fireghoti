@@ -284,9 +284,7 @@ watch(q, () => {
 					keywords.every(
 						(keyword) =>
 							emoji.name.includes(keyword) ||
-							emoji.aliases.some((alias) =>
-								alias.includes(keyword),
-							),
+							emoji.aliases.some((alias) => alias.includes(keyword)),
 					)
 				) {
 					matches.add(emoji);
@@ -356,9 +354,7 @@ watch(q, () => {
 					keywords.every(
 						(keyword) =>
 							emoji.slug.includes(keyword) ||
-							emoji.keywords?.some((alias) =>
-								alias.includes(keyword),
-							),
+							emoji.keywords?.some((alias) => alias.includes(keyword)),
 					)
 				) {
 					matches.add(emoji);
@@ -375,9 +371,7 @@ watch(q, () => {
 			if (matches.size >= max) return matches;
 
 			for (const emoji of emojis) {
-				if (
-					emoji.keywords?.some((keyword) => keyword.startsWith(newQ))
-				) {
+				if (emoji.keywords?.some((keyword) => keyword.startsWith(newQ))) {
 					matches.add(emoji);
 					if (matches.size >= max) break;
 				}
@@ -428,8 +422,7 @@ function getKey(
 
 function chosen(emoji: any, ev?: MouseEvent) {
 	const el =
-		ev &&
-		((ev.currentTarget ?? ev.target) as HTMLElement | null | undefined);
+		ev && ((ev.currentTarget ?? ev.target) as HTMLElement | null | undefined);
 	if (el) {
 		const rect = el.getBoundingClientRect();
 		const x = rect.left + el.offsetWidth / 2;

@@ -147,19 +147,13 @@ function onStats(connStats) {
 		viewBoxY.value
 	} ${memPolylinePoints.value} ${viewBoxX.value},${viewBoxY.value}`;
 
-	cpuHeadX.value =
-		cpuPolylinePointsStats[cpuPolylinePointsStats.length - 1][0];
-	cpuHeadY.value =
-		cpuPolylinePointsStats[cpuPolylinePointsStats.length - 1][1];
-	memHeadX.value =
-		memPolylinePointsStats[memPolylinePointsStats.length - 1][0];
-	memHeadY.value =
-		memPolylinePointsStats[memPolylinePointsStats.length - 1][1];
+	cpuHeadX.value = cpuPolylinePointsStats[cpuPolylinePointsStats.length - 1][0];
+	cpuHeadY.value = cpuPolylinePointsStats[cpuPolylinePointsStats.length - 1][1];
+	memHeadX.value = memPolylinePointsStats[memPolylinePointsStats.length - 1][0];
+	memHeadY.value = memPolylinePointsStats[memPolylinePointsStats.length - 1][1];
 
 	cpuP.value = (connStats.cpu * 100).toFixed(0);
-	memP.value = ((connStats.mem.active / connStats.mem.total) * 100).toFixed(
-		0,
-	);
+	memP.value = ((connStats.mem.active / connStats.mem.total) * 100).toFixed(0);
 }
 
 function onStatsLog(statsLog) {

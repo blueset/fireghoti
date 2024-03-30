@@ -286,8 +286,7 @@ const align = () => {
 			left = window.innerWidth - width + window.scrollX - 1;
 		}
 
-		const underSpace =
-			window.innerHeight - MARGIN - (top - window.pageYOffset);
+		const underSpace = window.innerHeight - MARGIN - (top - window.pageYOffset);
 		const upperSpace = srcRect.top - MARGIN;
 
 		// 画面から縦にはみ出る場合
@@ -300,12 +299,7 @@ const align = () => {
 					top = window.scrollY + (upperSpace + MARGIN - height);
 				}
 			} else {
-				top =
-					window.innerHeight -
-					MARGIN -
-					height +
-					window.pageYOffset -
-					1;
+				top = window.innerHeight - MARGIN - height + window.pageYOffset - 1;
 			}
 		} else {
 			maxHeight.value = underSpace;

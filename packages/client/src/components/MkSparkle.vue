@@ -104,9 +104,7 @@ onMounted(() => {
 			};
 			particles.value.push(particle);
 			window.setTimeout(() => {
-				particles.value = particles.value.filter(
-					(x) => x.id !== particle.id,
-				);
+				particles.value = particles.value.filter((x) => x.id !== particle.id);
 			}, particle.dur - 100);
 
 			window.setTimeout(

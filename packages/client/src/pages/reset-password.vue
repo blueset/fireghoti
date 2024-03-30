@@ -56,9 +56,7 @@ async function save() {
 onMounted(() => {
 	if (props.token == null) {
 		os.popup(
-			defineAsyncComponent(
-				() => import("@/components/MkForgotPassword.vue"),
-			),
+			defineAsyncComponent(() => import("@/components/MkForgotPassword.vue")),
 			{},
 			{},
 			"closed",

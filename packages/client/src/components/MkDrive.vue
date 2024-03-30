@@ -451,9 +451,7 @@ function chooseFile(file: entities.DriveFile) {
 	const isAlreadySelected = selectedFiles.value.some((f) => f.id === file.id);
 	if (props.multiple) {
 		if (isAlreadySelected) {
-			selectedFiles.value = selectedFiles.value.filter(
-				(f) => f.id !== file.id,
-			);
+			selectedFiles.value = selectedFiles.value.filter((f) => f.id !== file.id);
 		} else {
 			selectedFiles.value.push(file);
 		}

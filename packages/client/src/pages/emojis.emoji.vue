@@ -37,14 +37,12 @@ function menu(ev) {
 				text: i18n.ts.license,
 				icon: `${icon("ph-info")}`,
 				action: () => {
-					os.apiGet("emoji", { name: props.emoji.name }).then(
-						(res) => {
-							os.alert({
-								type: "info",
-								text: `${res.license || i18n.ts.notSet}`,
-							});
-						},
-					);
+					os.apiGet("emoji", { name: props.emoji.name }).then((res) => {
+						os.alert({
+							type: "info",
+							text: `${res.license || i18n.ts.notSet}`,
+						});
+					});
 				},
 			},
 		],

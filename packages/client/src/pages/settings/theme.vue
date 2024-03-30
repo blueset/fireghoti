@@ -179,9 +179,7 @@ const instanceLightTheme = computed(() =>
 	instance.defaultLightTheme ? JSON5.parse(instance.defaultLightTheme) : null,
 );
 const installedLightThemes = computed(() =>
-	installedThemes.value.filter(
-		(t) => t.base === "light" || t.kind === "light",
-	),
+	installedThemes.value.filter((t) => t.base === "light" || t.kind === "light"),
 );
 const builtinLightThemes = computed(() =>
 	builtinThemes.value.filter((t) => t.base === "light" || t.kind === "light"),

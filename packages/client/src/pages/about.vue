@@ -276,9 +276,7 @@ function easterEgg() {
 			setTimeout(() => {
 				if (iconClicks % 6 === 0) {
 					iconSrc.value =
-						instance.iconUrl ||
-						instance.faviconUrl ||
-						"/favicon.ico";
+						instance.iconUrl || instance.faviconUrl || "/favicon.ico";
 				} else {
 					iconSrc.value = "/static-assets/woozy.png";
 				}

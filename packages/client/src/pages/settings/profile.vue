@@ -213,9 +213,7 @@ while (fields.length < 4) {
 
 function saveFields() {
 	os.apiWithDialog("i/update", {
-		fields: fields.filter(
-			(field) => field.name !== "" && field.value !== "",
-		),
+		fields: fields.filter((field) => field.name !== "" && field.value !== ""),
 	});
 }
 

@@ -99,10 +99,7 @@ const run = async () => {
 			out: (value) => {
 				logs.value.push({
 					id: Math.random().toString(),
-					text:
-						value.type === "str"
-							? value.value
-							: utils.valToString(value),
+					text: value.type === "str" ? value.value : utils.valToString(value),
 					print: true,
 				});
 			},

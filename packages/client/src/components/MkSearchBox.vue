@@ -198,9 +198,7 @@ function openDescription(kind: "words" | "users" | "range"): void {
 	};
 
 	popup(
-		defineAsyncComponent(
-			() => import("@/components/MkSimpleTextWindow.vue"),
-		),
+		defineAsyncComponent(() => import("@/components/MkSimpleTextWindow.vue")),
 		{
 			title: i18n.ts.help,
 			description: descriptions[kind],

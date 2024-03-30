@@ -78,8 +78,7 @@ const notesPagination = {
 		host: props.host == null ? undefined : getHost(props.host),
 		sinceDate:
 			props.since == null ? undefined : getUnixTime(props.since, false),
-		untilDate:
-			props.until == null ? undefined : getUnixTime(props.until, true),
+		untilDate: props.until == null ? undefined : getUnixTime(props.until, true),
 		withFiles: props.withFiles === "1",
 		searchCwAndAlt: props.searchCwAndAlt === "1",
 		channelId: props.channel,

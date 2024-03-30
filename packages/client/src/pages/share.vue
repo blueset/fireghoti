@@ -81,9 +81,7 @@ async function init() {
 				...(visibleUserIds
 					? visibleUserIds.split(",").map((userId) => ({ userId }))
 					: []),
-				...(visibleAccts
-					? visibleAccts.split(",").map(acct.parse)
-					: []),
+				...(visibleAccts ? visibleAccts.split(",").map(acct.parse) : []),
 			]
 				// TypeScriptの指示通りに変換する
 				.map((q) =>
@@ -100,9 +98,7 @@ async function init() {
 							visibleUsers.value.push(user);
 						},
 						() => {
-							console.error(
-								`Invalid user query: ${JSON.stringify(q)}`,
-							);
+							console.error(`Invalid user query: ${JSON.stringify(q)}`);
 						},
 					),
 				),

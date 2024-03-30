@@ -25,18 +25,12 @@ const SAFE_FOR_HTML_ID = "abcdefghijklmnopqrstuvwxyz";
 const computedStyle = getComputedStyle(document.documentElement);
 const idForCanvas = Array.from(Array(16))
 	.map(
-		() =>
-			SAFE_FOR_HTML_ID[
-				Math.floor(Math.random() * SAFE_FOR_HTML_ID.length)
-			],
+		() => SAFE_FOR_HTML_ID[Math.floor(Math.random() * SAFE_FOR_HTML_ID.length)],
 	)
 	.join("");
 const idForTags = Array.from(Array(16))
 	.map(
-		() =>
-			SAFE_FOR_HTML_ID[
-				Math.floor(Math.random() * SAFE_FOR_HTML_ID.length)
-			],
+		() => SAFE_FOR_HTML_ID[Math.floor(Math.random() * SAFE_FOR_HTML_ID.length)],
 	)
 	.join("");
 const available = ref(false);

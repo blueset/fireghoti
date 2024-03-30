@@ -179,8 +179,7 @@ async function renderActiveUsersChart() {
 					enabled: false,
 					callbacks: {
 						title(context) {
-							const v =
-								context[0].dataset.data[context[0].dataIndex];
+							const v = context[0].dataset.data[context[0].dataIndex];
 							return v.d;
 						},
 						label(context) {

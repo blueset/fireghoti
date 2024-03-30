@@ -102,8 +102,7 @@ function moveBySystem(to: number): Promise<void> {
 				return;
 			}
 			const nextHeight =
-				initialHeight -
-				(overHeight / RELEASE_TRANSITION_DURATION) * time;
+				initialHeight - (overHeight / RELEASE_TRANSITION_DURATION) * time;
 			if (pullDistance.value < nextHeight) return;
 			pullDistance.value = nextHeight;
 		}, 1);

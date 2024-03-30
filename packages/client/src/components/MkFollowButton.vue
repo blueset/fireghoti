@@ -112,8 +112,7 @@ if (props.user.isFollowing == null) {
 function onFollowChange(user: entities.UserDetailed) {
 	if (user.id === props.user.id) {
 		isFollowing.value = user.isFollowing;
-		hasPendingFollowRequestFromYou.value =
-			user.hasPendingFollowRequestFromYou;
+		hasPendingFollowRequestFromYou.value = user.hasPendingFollowRequestFromYou;
 	}
 }
 
@@ -172,10 +171,7 @@ async function onClick() {
 }
 
 function menu(ev) {
-	os.popupMenu(
-		getUserMenu(props.user, router),
-		ev.currentTarget ?? ev.target,
-	);
+	os.popupMenu(getUserMenu(props.user, router), ev.currentTarget ?? ev.target);
 }
 
 onMounted(() => {

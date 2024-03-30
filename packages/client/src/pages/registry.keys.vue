@@ -64,9 +64,7 @@ function fetchKeys() {
 	os.api("i/registry/keys-with-type", {
 		scope: scope.value,
 	}).then((res) => {
-		keys.value = Object.entries(res).sort((a, b) =>
-			a[0].localeCompare(b[0]),
-		);
+		keys.value = Object.entries(res).sort((a, b) => a[0].localeCompare(b[0]));
 	});
 }
 

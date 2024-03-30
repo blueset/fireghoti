@@ -196,10 +196,7 @@ function validate(profile: unknown): void {
 
 	// Check if createdAt and updatedAt is Date
 	// https://zenn.dev/lollipop_onl/articles/eoz-judge-js-invalid-date
-	if (
-		!profile.createdAt ||
-		Number.isNaN(new Date(profile.createdAt).getTime())
-	)
+	if (!profile.createdAt || Number.isNaN(new Date(profile.createdAt).getTime()))
 		throw new Error("createdAt is falsy or not Date");
 	if (profile.updatedAt) {
 		if (Number.isNaN(new Date(profile.updatedAt).getTime())) {
@@ -228,10 +225,7 @@ function getSettings(): Profile["settings"] {
 		hot,
 		cold,
 		fontSize: localStorage.getItem("fontSize"),
-		useSystemFont: localStorage.getItem("useSystemFont") as
-			| "t"
-			| "f"
-			| null,
+		useSystemFont: localStorage.getItem("useSystemFont") as "t" | "f" | null,
 		wallpaper: localStorage.getItem("wallpaper"),
 	};
 }
@@ -468,12 +462,9 @@ function menu(ev: MouseEvent, profileId: string) {
 				text: i18n.ts.download,
 				icon: `${icon("ph-download-simple")}`,
 				href: URL.createObjectURL(
-					new Blob(
-						[JSON.stringify(profiles.value[profileId], null, 2)],
-						{
-							type: "application/json",
-						},
-					),
+					new Blob([JSON.stringify(profiles.value[profileId], null, 2)], {
+						type: "application/json",
+					}),
 				),
 				download: `${profiles.value[profileId].name}.json`,
 			},
@@ -502,20 +493,17 @@ function menu(ev: MouseEvent, profileId: string) {
 
 onMounted(() => {
 	// streamingのuser storage updateイベントを監視して更新
-	connection?.on(
-		"registryUpdated",
-		({ scope: recievedScope, key, value }) => {
-			if (
-				!recievedScope ||
-				recievedScope.length !== scope.length ||
-				recievedScope[0] !== scope[0]
-			)
-				return;
-			if (!profiles.value) return;
+	connection?.on("registryUpdated", ({ scope: recievedScope, key, value }) => {
+		if (
+			!recievedScope ||
+			recievedScope.length !== scope.length ||
+			recievedScope[0] !== scope[0]
+		)
+			return;
+		if (!profiles.value) return;
 
-			profiles.value[key] = value;
-		},
-	);
+		profiles.value[key] = value;
+	});
 });
 
 onUnmounted(() => {

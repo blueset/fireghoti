@@ -51,9 +51,7 @@ const el = ref();
 
 useTooltip(el, (showing) => {
 	os.popup(
-		defineAsyncComponent(
-			() => import("@/components/MkUrlPreviewPopup.vue"),
-		),
+		defineAsyncComponent(() => import("@/components/MkUrlPreviewPopup.vue")),
 		{
 			showing,
 			url: props.url,

@@ -164,9 +164,7 @@ export default defineComponent({
 	components: {
 		XContainer,
 		MkTextarea,
-		XV: defineAsyncComponent(
-			() => import("./page-editor.script-block.vue"),
-		),
+		XV: defineAsyncComponent(() => import("./page-editor.script-block.vue")),
 	},
 
 	inject: ["getScriptBlockList"],
@@ -228,12 +226,10 @@ export default defineComponent({
 	watch: {
 		slots: {
 			handler() {
-				this.modelValue.value.slots = this.slots
-					.split("\n")
-					.map((x) => ({
-						name: x,
-						type: null,
-					}));
+				this.modelValue.value.slots = this.slots.split("\n").map((x) => ({
+					name: x,
+					type: null,
+				}));
 			},
 			deep: true,
 		},
@@ -243,9 +239,7 @@ export default defineComponent({
 		if (this.modelValue.value == null) this.modelValue.value = null;
 
 		if (this.modelValue.value && this.modelValue.value.slots)
-			this.slots = this.modelValue.value.slots
-				.map((x) => x.name)
-				.join("\n");
+			this.slots = this.modelValue.value.slots.map((x) => x.name).join("\n");
 
 		this.$watch(
 			() => this.modelValue.type,
@@ -261,10 +255,7 @@ export default defineComponent({
 					return;
 				}
 
-				if (
-					this.modelValue.type &&
-					this.modelValue.type.startsWith("fn:")
-				) {
+				if (this.modelValue.type && this.modelValue.type.startsWith("fn:")) {
 					const fnName = this.modelValue.type.split(":")[1];
 					const fn = this.hpml.getVarByName(fnName);
 
@@ -280,27 +271,17 @@ export default defineComponent({
 				if (isLiteralValue(this.modelValue)) return;
 
 				const empties = [];
-				for (
-					let i = 0;
-					i < funcDefs[this.modelValue.type].in.length;
-					i++
-				) {
+				for (let i = 0; i < funcDefs[this.modelValue.type].in.length; i++) {
 					const id = uuid();
 					empties.push({ id, type: null });
 				}
 				this.modelValue.args = empties;
 
-				for (
-					let i = 0;
-					i < funcDefs[this.modelValue.type].in.length;
-					i++
-				) {
+				for (let i = 0; i < funcDefs[this.modelValue.type].in.length; i++) {
 					const inType = funcDefs[this.modelValue.type].in[i];
 					if (typeof inType !== "number") {
-						if (inType === "number")
-							this.modelValue.args[i].type = "number";
-						if (inType === "string")
-							this.modelValue.args[i].type = "text";
+						if (inType === "number") this.modelValue.args[i].type = "number";
+						if (inType === "string") this.modelValue.args[i].type = "text";
 					}
 				}
 			},

@@ -280,8 +280,7 @@ const replies: entities.Note[] =
 	props.conversation
 		?.filter(
 			(item) =>
-				item.replyId === props.note.id ||
-				item.renoteId === props.note.id,
+				item.replyId === props.note.id || item.renoteId === props.note.id,
 		)
 		.reverse() ?? [];
 const enableEmojiReactions = defaultStore.state.enableEmojiReactions;
@@ -319,8 +318,7 @@ async function translate() {
 		lang != null &&
 		translateLang !== lang &&
 		(!translation.value ||
-			translation.value.sourceLang.toLowerCase() ===
-				translateLang.slice(0, 2))
+			translation.value.sourceLang.toLowerCase() === translateLang.slice(0, 2))
 	)
 		translation.value = await translate_(appearNote.value.id, lang);
 	translating.value = false;
@@ -421,10 +419,7 @@ function onContextmenu(ev: MouseEvent): void {
 							icon: `${icon("ph-arrows-out-simple")}`,
 							text: i18n.ts.showInPage,
 							action: () => {
-								router.push(
-									notePage(appearNote.value),
-									"forcePage",
-								);
+								router.push(notePage(appearNote.value), "forcePage");
 							},
 						}
 					: undefined,

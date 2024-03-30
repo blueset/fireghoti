@@ -280,9 +280,7 @@ function onRead(x) {
 		if (!Array.isArray(x)) x = [x];
 		for (const id of x) {
 			if (pagingComponent.value.items.some((y) => y.id === id)) {
-				const exist = pagingComponent.value.items
-					.map((y) => y.id)
-					.indexOf(id);
+				const exist = pagingComponent.value.items.map((y) => y.id).indexOf(id);
 				pagingComponent.value.items[exist] = {
 					...pagingComponent.value.items[exist],
 					isRead: true,
@@ -292,15 +290,10 @@ function onRead(x) {
 	} else if (group.value) {
 		for (const id of x.ids) {
 			if (pagingComponent.value.items.some((y) => y.id === id)) {
-				const exist = pagingComponent.value.items
-					.map((y) => y.id)
-					.indexOf(id);
+				const exist = pagingComponent.value.items.map((y) => y.id).indexOf(id);
 				pagingComponent.value.items[exist] = {
 					...pagingComponent.value.items[exist],
-					reads: [
-						...pagingComponent.value.items[exist].reads,
-						x.userId,
-					],
+					reads: [...pagingComponent.value.items[exist].reads, x.userId],
 				};
 			}
 		}

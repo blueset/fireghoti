@@ -113,7 +113,7 @@ const url =
 	props.raw || defaultStore.state.loadRawImages
 		? props.media.url
 		: defaultStore.state.disableShowingAnimatedImages &&
-			  props.media.type.startsWith("image")
+				props.media.type.startsWith("image")
 			? getStaticImageUrl(props.media.thumbnailUrl)
 			: props.media.thumbnailUrl;
 
@@ -150,8 +150,7 @@ watch(
 		hide.value =
 			defaultStore.state.nsfw === "force"
 				? true
-				: props.media.isSensitive &&
-					defaultStore.state.nsfw !== "ignore";
+				: props.media.isSensitive && defaultStore.state.nsfw !== "ignore";
 	},
 	{
 		deep: true,

@@ -311,11 +311,7 @@ function getRow(pattern: number, rowOffset: number) {
 	const ops: string[] = [];
 
 	for (let channel = 0; channel < nbChannels.value; channel++) {
-		const part = player.value.getPatternRowChannel(
-			pattern,
-			rowOffset,
-			channel,
-		);
+		const part = player.value.getPatternRowChannel(pattern, rowOffset, channel);
 
 		notes.push(part.substring(0, 3));
 		insts.push(part.substring(4, 6));
