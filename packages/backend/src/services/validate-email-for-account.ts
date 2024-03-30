@@ -21,7 +21,7 @@ export async function validateEmailForAccount(emailAddress: string): Promise<{
 				validateTypo: false, // TLDを見ているみたいだけどclubとか弾かれるので
 				validateDisposable: true, // 捨てアドかどうかチェック
 				validateSMTP: false, // 日本だと25ポートが殆どのプロバイダーで塞がれていてタイムアウトになるので
-		  })
+			})
 		: { valid: true };
 
 	const available = exist === 0 && validated.valid;
@@ -31,15 +31,15 @@ export async function validateEmailForAccount(emailAddress: string): Promise<{
 		reason: available
 			? null
 			: exist !== 0
-			  ? "used"
-			  : validated.reason === "regex"
-				  ? "format"
-				  : validated.reason === "disposable"
-					  ? "disposable"
-					  : validated.reason === "mx"
-						  ? "mx"
-						  : validated.reason === "smtp"
-							  ? "smtp"
-							  : null,
+				? "used"
+				: validated.reason === "regex"
+					? "format"
+					: validated.reason === "disposable"
+						? "disposable"
+						: validated.reason === "mx"
+							? "mx"
+							: validated.reason === "smtp"
+								? "smtp"
+								: null,
 	};
 }

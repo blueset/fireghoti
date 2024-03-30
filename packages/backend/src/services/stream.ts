@@ -34,8 +34,8 @@ class Publisher {
 			type == null
 				? value
 				: value == null
-				  ? { type: type, body: null }
-				  : { type: type, body: value };
+					? { type: type, body: null }
+					: { type: type, body: value };
 
 		redisClient.publish(
 			config.host,

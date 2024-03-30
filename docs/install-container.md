@@ -33,6 +33,13 @@ docker pull registry.firefish.dev/firefish/firefish:latest
 # or podman pull registry.firefish.dev/firefish/firefish:latest
 ```
 
+## Enable database extension
+
+```sh
+docker-compose up db --detach && sleep 5 && docker-compose exec db sh -c 'psql --user="${POSTGRES_USER}" --dbname="${POSTGRES_DB}" --command="CREATE EXTENSION pgroonga;"'
+# or podman-compose up db --detach && sleep 5 && podman-compose exec db sh -c 'psql --user="${POSTGRES_USER}" --dbname="${POSTGRES_DB}" --command="CREATE EXTENSION pgroonga;"'
+```
+
 ## Run
 
 ```sh

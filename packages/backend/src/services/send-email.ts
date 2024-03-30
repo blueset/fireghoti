@@ -30,7 +30,7 @@ export async function sendEmail(
 			? {
 					user: meta.smtpUser,
 					pass: meta.smtpPass,
-			  }
+				}
 			: undefined,
 	} as any);
 

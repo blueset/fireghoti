@@ -93,13 +93,13 @@ export default async (ctx: Router.RouterContext) => {
 				? `${partOf}?${url.query({
 						page: "true",
 						since_id: notes[0].id,
-				  })}`
+					})}`
 				: undefined,
 			notes.length
 				? `${partOf}?${url.query({
 						page: "true",
 						until_id: notes[notes.length - 1].id,
-				  })}`
+					})}`
 				: undefined,
 		);
 

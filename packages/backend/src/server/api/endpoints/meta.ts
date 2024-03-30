@@ -477,7 +477,7 @@ export default define(meta, paramDef, async (ps, me) => {
 						place: ad.place,
 						ratio: ad.ratio,
 						imageUrl: ad.imageUrl,
-				  })),
+					})),
 		enableEmail: instance.enableEmail,
 
 		enableServiceWorker: instance.enableServiceWorker,
@@ -501,7 +501,7 @@ export default define(meta, paramDef, async (ps, me) => {
 							host: IsNull(),
 							isAdmin: true,
 						})) === 0,
-			  }
+				}
 			: {}),
 	};
 

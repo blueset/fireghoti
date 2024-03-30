@@ -195,7 +195,7 @@ export default async function (ctx: Koa.Context) {
 					BigInt(file.size),
 					ranges,
 					contentType,
-			  );
+				);
 	readable.on("error", commonReadableHandlerGenerator(ctx));
 	ctx.body = readable;
 

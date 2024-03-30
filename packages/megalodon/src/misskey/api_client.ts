@@ -409,7 +409,7 @@ namespace MisskeyAPI {
 			return Object.values(r).length > 0
 				? Object.values(r).reduce(
 						(previousValue, currentValue) => previousValue + currentValue,
-				  )
+					)
 				: 0;
 		};
 

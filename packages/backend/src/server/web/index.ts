@@ -95,7 +95,7 @@ app.use(
 								`${_dirname}/../../../../../built/_client_dist_/manifest.json`,
 								"utf-8",
 							),
-					  )["src/init.ts"],
+						)["src/init.ts"],
 			config,
 		},
 	}),

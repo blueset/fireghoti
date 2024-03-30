@@ -585,11 +585,11 @@ export async function addFile({
 	file.requestHeaders = requestHeaders;
 	file.isSensitive = user
 		? Users.isLocalUser(user) &&
-		  (instance!.markLocalFilesNsfwByDefault || profile!.alwaysMarkNsfw)
+			(instance!.markLocalFilesNsfwByDefault || profile!.alwaysMarkNsfw)
 			? true
 			: sensitive != null
-			  ? sensitive
-			  : false
+				? sensitive
+				: false
 		: false;
 
 	if (url != null) {

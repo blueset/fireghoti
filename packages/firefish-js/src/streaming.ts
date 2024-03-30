@@ -220,7 +220,7 @@ export default class Stream extends EventEmitter<StreamEvents> {
 				: {
 						type: typeOrPayload,
 						body: payload,
-				  };
+					};
 
 		this.stream.send(JSON.stringify(data));
 	}

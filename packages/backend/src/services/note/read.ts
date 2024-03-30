@@ -34,7 +34,7 @@ export default async function (
 						select: ["followeeId"],
 					})
 				).map((x) => x.followeeId),
-		  );
+			);
 	const followingChannels = info?.followingChannels
 		? info.followingChannels
 		: new Set<string>(
@@ -46,7 +46,7 @@ export default async function (
 						select: ["followeeId"],
 					})
 				).map((x) => x.followeeId),
-		  );
+			);
 
 	// const myAntennas = (await getAntennas()).filter((a) => a.userId === userId);
 	const readMentions: (Note | Packed<"Note">)[] = [];

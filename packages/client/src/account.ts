@@ -252,18 +252,16 @@ export async function openAccountMenu(
 										},
 									],
 								},
-						  ]
-						: !opts.withoutProfileLink
-						  ? [
-									{
-										type: "link",
-										text: i18n.ts.profile,
-										to: `/@${me.username}`,
-										avatar: me,
-									},
-									null,
-							  ]
-						  : []),
+							]
+						: [
+								{
+									type: "link",
+									text: i18n.ts.profile,
+									to: `/@${me.username}`,
+									avatar: me,
+								},
+								null,
+							]),
 					...(opts.includeCurrentAccount ? [createItem(me)] : []),
 					...accountItemPromises,
 					...(opts.withoutProfileLink ? [null] : []),
@@ -276,7 +274,7 @@ export async function openAccountMenu(
 									to: `/@${me.username}`,
 									avatar: me,
 								},
-						  ]
+							]
 						: [
 								{
 									type: "parent",
@@ -297,7 +295,7 @@ export async function openAccountMenu(
 										},
 									],
 								},
-						  ]),
+							]),
 				],
 			],
 			ev.currentTarget ?? ev.target,

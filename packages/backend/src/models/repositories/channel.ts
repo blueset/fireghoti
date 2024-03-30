@@ -21,14 +21,14 @@ export const ChannelRepository = db.getRepository(Channel).extend({
 			? (await NoteUnreads.findOneBy({
 					noteChannelId: channel.id,
 					userId: meId,
-			  })) != null
+				})) != null
 			: undefined;
 
 		const following = meId
 			? await ChannelFollowings.findOneBy({
 					followerId: meId,
 					followeeId: channel.id,
-			  })
+				})
 			: null;
 
 		return {
@@ -48,7 +48,7 @@ export const ChannelRepository = db.getRepository(Channel).extend({
 				? {
 						isFollowing: following != null,
 						hasUnreadNote,
-				  }
+					}
 				: {}),
 		};
 	},

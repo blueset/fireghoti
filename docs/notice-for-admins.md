@@ -35,7 +35,7 @@ There are official installation instructions for many operating systems on <http
 
 ##### Ubuntu
 
-1. Add apt repository
+1. Install subdependencies and add apt repository
     ```sh
     sudo apt install -y software-properties-common
     sudo add-apt-repository -y universe
@@ -226,7 +226,7 @@ A new setting item has been added to control the log levels, so please consider 
 ### For systemd/pm2 users
 
 - Required Rust version has been bumped from v1.68 to v1.70.
-- `libvips` is no longer required (unless your server os is *BSD), so you may uninstall it from your system. Make sure to execute the following commands after that:
+- `libvips` is no longer required (unless your server OS is *BSD), so you may uninstall it from your system. Make sure to execute the following commands after that:
     ```sh
     pnpm clean-npm
     pnpm install

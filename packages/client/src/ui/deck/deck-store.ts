@@ -316,7 +316,7 @@ export function updateColumnWidget(
 			? {
 					...w,
 					data: widgetData,
-			  }
+				}
 			: w,
 	);
 	columns[columnIndex] = column;

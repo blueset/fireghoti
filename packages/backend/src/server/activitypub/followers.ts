@@ -94,7 +94,7 @@ export default async (ctx: Router.RouterContext) => {
 				? `${partOf}?${url.query({
 						page: "true",
 						cursor: followings[followings.length - 1].id,
-				  })}`
+					})}`
 				: undefined,
 		);
 

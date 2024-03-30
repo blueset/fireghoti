@@ -41,9 +41,9 @@ export const DriveFolderRepository = db.getRepository(DriveFolder).extend({
 									parent: this.pack(folder.parentId, {
 										detail: true,
 									}),
-							  }
+								}
 							: {}),
-				  }
+					}
 				: {}),
 		});
 	},

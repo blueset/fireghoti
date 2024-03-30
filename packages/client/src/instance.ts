@@ -12,7 +12,7 @@ export const instance: entities.DetailedInstanceMetadata = reactive(
 		? JSON.parse(instanceData)
 		: {
 				// TODO: set default values
-		  },
+			},
 );
 
 export async function fetchInstance() {
