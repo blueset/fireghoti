@@ -1,11 +1,11 @@
+import type { entities } from "firefish-js";
+import { defineAsyncComponent } from "vue";
+import { i18n } from "./i18n";
 import { apiUrl } from "@/config";
 import { me } from "@/me";
 import { alert, api, popup, popupMenu, waiting } from "@/os";
 import { del, get, set } from "@/scripts/idb-proxy";
 import { reloadChannel, unisonReload } from "@/scripts/unison-reload";
-import type { entities } from "firefish-js";
-import { defineAsyncComponent } from "vue";
-import { i18n } from "./i18n";
 
 // TODO: 他のタブと永続化されたstateを同期
 

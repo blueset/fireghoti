@@ -22,14 +22,14 @@
 		@load="onLoad"
 	/>
 	<i
-		class="alt-indicator"
-		:class="icon('ph-subtitles')"
 		v-if="alt && showAltIndicator"
 		v-tooltip.noLabel="
 			`${i18n.ts.alt}: ${
 				alt.length > 200 ? alt.trim().slice(0, 200) + '...' : alt.trim()
 			}`
 		"
+		class="alt-indicator"
+		:class="icon('ph-subtitles')"
 	></i>
 </template>
 

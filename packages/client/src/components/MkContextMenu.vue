@@ -33,8 +33,8 @@ const rootEl = ref<HTMLDivElement>();
 const zIndex = ref<number>(os.claimZIndex("high"));
 
 onMounted(() => {
-	let left = props.ev.pageX + 1, // 間違って右ダブルクリックした場合に意図せずアイテムがクリックされるのを防ぐため + 1
-		top = props.ev.pageY + 1; // 間違って右ダブルクリックした場合に意図せずアイテムがクリックされるのを防ぐため + 1
+	let left = props.ev.pageX + 1; // 間違って右ダブルクリックした場合に意図せずアイテムがクリックされるのを防ぐため + 1
+	let top = props.ev.pageY + 1; // 間違って右ダブルクリックした場合に意図せずアイテムがクリックされるのを防ぐため + 1
 
 	const width = rootEl.value.offsetWidth;
 	const height = rootEl.value.offsetHeight;

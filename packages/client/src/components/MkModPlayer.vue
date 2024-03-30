@@ -168,10 +168,10 @@ function load() {
 
 onMounted(load);
 
-let currentRow = 0,
-	rowHeight = 0,
-	buffer = null,
-	isSeeking = false;
+let currentRow = 0;
+let rowHeight = 0;
+let buffer = null;
+const isSeeking = false;
 
 function captionPopup() {
 	os.alert({

@@ -4,11 +4,11 @@
 </template>
 
 <script lang="ts" setup>
+import { defineAsyncComponent, onMounted, ref } from "vue";
 import * as os from "@/os";
 import { useRouter } from "@/router";
 import { userPage } from "@/filters/user";
 import { notePage } from "@/filters/note";
-import { onMounted, ref, defineAsyncComponent } from "vue";
 const XNotFound = defineAsyncComponent(() => import("./not-found.vue"));
 
 const err = ref(false);

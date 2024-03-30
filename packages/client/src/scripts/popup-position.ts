@@ -20,7 +20,8 @@ export function calcPopupPosition(
 	}
 
 	const calcPosWhenTop = () => {
-		let left: number, top: number;
+		let left: number;
+		let top: number;
 
 		if (props.anchorElement) {
 			left =
@@ -41,7 +42,8 @@ export function calcPopupPosition(
 	};
 
 	const calcPosWhenBottom = () => {
-		let left: number, top: number;
+		let left: number;
+		let top: number;
 
 		if (props.anchorElement) {
 			left =
@@ -66,7 +68,8 @@ export function calcPopupPosition(
 	};
 
 	const calcPosWhenLeft = () => {
-		let left: number, top: number;
+		let left: number;
+		let top: number;
 
 		if (props.anchorElement) {
 			left = rect.left + window.pageXOffset - contentWidth - props.innerMargin;
@@ -87,7 +90,8 @@ export function calcPopupPosition(
 	};
 
 	const calcPosWhenRight = () => {
-		let left: number, top: number;
+		let left: number;
+		let top: number;
 
 		if (props.anchorElement) {
 			left =

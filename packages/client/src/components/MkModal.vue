@@ -235,7 +235,8 @@ const align = () => {
 	const width = content.value!.offsetWidth;
 	const height = content.value!.offsetHeight;
 
-	let left, top;
+	let left;
+	let top;
 
 	const x = srcRect.left + (fixed.value ? 0 : window.pageXOffset);
 	const y = srcRect.top + (fixed.value ? 0 : window.pageYOffset);
@@ -314,8 +315,8 @@ const align = () => {
 		left = 0;
 	}
 
-	let transformOriginX = "center",
-		transformOriginY = "center";
+	let transformOriginX = "center";
+	let transformOriginY = "center";
 
 	if (
 		top >=

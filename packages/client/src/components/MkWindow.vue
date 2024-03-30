@@ -174,12 +174,12 @@ provide("inWindow", true);
 
 const rootEl = ref<HTMLElement | null>();
 const showing = ref(true);
-let beforeClickedAt = 0,
-	maximized = ref(false),
-	unMaximizedTop = "",
-	unMaximizedLeft = "",
-	unMaximizedWidth = "",
-	unMaximizedHeight = "";
+let beforeClickedAt = 0;
+const maximized = ref(false);
+let unMaximizedTop = "";
+let unMaximizedLeft = "";
+let unMaximizedWidth = "";
+let unMaximizedHeight = "";
 
 function close() {
 	showing.value = false;
@@ -280,8 +280,8 @@ function onHeaderMousedown(evt: MouseEvent) {
 	const windowHeight = main.offsetHeight;
 
 	function move(x: number, y: number) {
-		let moveLeft = x - moveBaseX,
-			moveTop = y - moveBaseY;
+		let moveLeft = x - moveBaseX;
+		let moveTop = y - moveBaseY;
 
 		// 下はみ出し
 		if (moveTop + windowHeight > browserHeight)

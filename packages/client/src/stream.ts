@@ -1,7 +1,7 @@
-import { url } from "@/config";
-import { me } from "@/me";
 import { Stream } from "firefish-js";
 import { markRaw } from "vue";
+import { url } from "@/config";
+import { me } from "@/me";
 
 let stream: Stream | null = null;
 let timeoutHeartBeat: number | null = null;

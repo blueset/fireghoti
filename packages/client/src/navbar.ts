@@ -1,3 +1,4 @@
+import { computed, reactive } from "vue";
 import { ui } from "@/config";
 import { i18n } from "@/i18n";
 import { isSignedIn, me } from "@/me";
@@ -5,7 +6,6 @@ import * as os from "@/os";
 import icon from "@/scripts/icon";
 import { search } from "@/scripts/search";
 import { unisonReload } from "@/scripts/unison-reload";
-import { computed, reactive } from "vue";
 
 export const navbarItemDef = reactive({
 	notifications: {

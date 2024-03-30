@@ -45,7 +45,7 @@ const isRefreshing = ref(false);
 const pullDistance = ref(0);
 
 let disabled = false;
-let supportPointerDesktop = false;
+const supportPointerDesktop = false;
 let startScreenY: number | null = null;
 
 const rootEl = shallowRef<HTMLDivElement>();

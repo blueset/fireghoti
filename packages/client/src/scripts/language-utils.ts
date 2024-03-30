@@ -1,6 +1,6 @@
-import { supportedLangs } from "@/scripts/langmap";
 import { detect } from "tinyld";
 import * as mfm from "mfm-js";
+import { supportedLangs } from "@/scripts/langmap";
 
 export function detectLanguage(text: string): string {
 	const nodes = mfm.parse(text);

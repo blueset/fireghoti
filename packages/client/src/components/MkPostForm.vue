@@ -331,8 +331,8 @@ import { vibrate } from "@/scripts/vibrate";
 import { langmap } from "@/scripts/langmap";
 import {
 	detectLanguage,
-	isSupportedLang,
 	isSameLanguage,
+	isSupportedLang,
 	languageContains,
 	parentLanguage,
 } from "@/scripts/language-utils";

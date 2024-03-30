@@ -166,21 +166,21 @@ const texts = computed(() => {
 	return angles;
 });
 
-let enabled = true,
-	majorGraduationColor = ref<string>(),
-	// let minorGraduationColor = $ref<string>();
-	sHandColor = ref<string>(),
-	mHandColor = ref<string>(),
-	hHandColor = ref<string>(),
-	nowColor = ref<string>(),
-	h = ref<number>(0),
-	m = ref<number>(0),
-	s = ref<number>(0),
-	hAngle = ref<number>(0),
-	mAngle = ref<number>(0),
-	sAngle = ref<number>(0),
-	disableSAnimate = ref(false),
-	sOneRound = false;
+let enabled = true;
+const majorGraduationColor = ref<string>();
+// let minorGraduationColor = $ref<string>();
+const sHandColor = ref<string>();
+const mHandColor = ref<string>();
+const hHandColor = ref<string>();
+const nowColor = ref<string>();
+const h = ref<number>(0);
+const m = ref<number>(0);
+const s = ref<number>(0);
+const hAngle = ref<number>(0);
+const mAngle = ref<number>(0);
+const sAngle = ref<number>(0);
+const disableSAnimate = ref(false);
+let sOneRound = false;
 
 function tick() {
 	const now = new Date();

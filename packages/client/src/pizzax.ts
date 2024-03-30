@@ -1,10 +1,10 @@
 // PIZZAX --- A lightweight store
 
-import { isSignedIn, me } from "@/me";
 import type { Ref } from "vue";
 import { onUnmounted, ref, watch } from "vue";
 import { api } from "./os";
 import { useStream } from "./stream";
+import { isSignedIn, me } from "@/me";
 
 type StateDef = Record<
 	string,
