@@ -215,7 +215,7 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import { shareAvailable } from "@/scripts/share-available";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
-import { isSignedIn } from "@/me";
+import { me, isSignedIn } from "@/me";
 
 const props = defineProps<{
 	pageName: string;
