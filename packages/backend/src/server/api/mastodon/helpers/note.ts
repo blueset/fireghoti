@@ -400,9 +400,9 @@ export class NoteHelpers {
 							request.poll.expires_in && request.poll.expires_in > 0
 								? new Date(
 										new Date().getTime() + request.poll.expires_in * 1000,
-								  )
+									)
 								: null,
-				  }
+					}
 				: undefined,
 			text: request.text,
 			reply: reply,
@@ -452,9 +452,9 @@ export class NoteHelpers {
 							request.poll.expires_in && request.poll.expires_in > 0
 								? new Date(
 										new Date().getTime() + request.poll.expires_in * 1000,
-								  )
+									)
 								: null,
-				  }
+					}
 				: undefined,
 			text: request.text,
 			lang: request.language,
@@ -643,8 +643,8 @@ export class NoteHelpers {
 		const provider = instance.libreTranslateApiUrl
 			? "LibreTranslate"
 			: instance.deeplAuthKey
-			  ? "DeepL"
-			  : undefined;
+				? "DeepL"
+				: undefined;
 		if (provider === undefined)
 			throw new Error("No translator is set up on this server.");
 
@@ -683,7 +683,7 @@ export class NoteHelpers {
 								return { title: await translateText(option.title) };
 							}),
 						),
-				  })
+					})
 				: null,
 			detected_source_language: sourceLang,
 			provider,

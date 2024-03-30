@@ -24,13 +24,13 @@ export default define(meta, paramDef, async (ps, me, token) => {
 		? await SwSubscriptions.findOneBy({
 				userId: me.id,
 				endpoint: ps.endpoint,
-		  })
+			})
 		: token
-		  ? await SwSubscriptions.findOneBy({
+			? await SwSubscriptions.findOneBy({
 					userId: me.id,
 					appAccessTokenId: token.id,
-			  })
-		  : null;
+				})
+			: null;
 
 	if (swSubscription === null) {
 		throw new Error("No such registration");

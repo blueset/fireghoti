@@ -63,7 +63,7 @@ export class AuthHelpers {
 				app.name === "ZonePane"
 					? convertId(app.id, IdType.MastodonId).substring(0, 6)
 					: // ZonePane only accepts a small int as app ID
-					  app.id,
+						app.id,
 			name: app.name,
 			website: app.description,
 			redirect_uri: app.callbackUrl ?? "",

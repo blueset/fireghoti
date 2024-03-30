@@ -50,7 +50,7 @@ export class SearchHelpers {
 						limit,
 						offset,
 						ctx,
-				  )
+					)
 				: [];
 		const users =
 			type === "accounts" || !type
@@ -63,7 +63,7 @@ export class SearchHelpers {
 						limit,
 						offset,
 						ctx,
-				  )
+					)
 				: [];
 		const tags =
 			type === "hashtags" || !type
@@ -221,7 +221,7 @@ export class SearchHelpers {
 					return isPost(object)
 						? createNote(getApId(object), resolver.reset(), true).then((p) =>
 								p ? [p] : [],
-						  )
+							)
 						: [];
 				}
 			} catch (e: any) {

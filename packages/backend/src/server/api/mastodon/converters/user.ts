@@ -70,14 +70,14 @@ export class UserConverter {
 
 			const avatar = u.avatarId
 				? DriveFiles.getFinalUrlMaybe(u.avatarUrl) ??
-				  DriveFiles.findOneBy({ id: u.avatarId })
+					DriveFiles.findOneBy({ id: u.avatarId })
 						.then((p) => p?.url ?? Users.getIdenticonUrl(u.id))
 						.then((p) => DriveFiles.getFinalUrl(p))
 				: Users.getIdenticonUrl(u.id);
 
 			const banner = u.bannerId
 				? DriveFiles.getFinalUrlMaybe(u.bannerUrl) ??
-				  DriveFiles.findOneBy({ id: u.bannerId })
+					DriveFiles.findOneBy({ id: u.bannerId })
 						.then(
 							(p) => p?.url ?? `${config.url}/static-assets/transparent.png`,
 						)

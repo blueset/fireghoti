@@ -248,7 +248,7 @@ export class UserHelpers {
 						? (await promiseEarlyReturn(
 								verifyLink(field.value, user.username),
 								1500,
-						  )) ?? false
+							)) ?? false
 						: undefined;
 					return {
 						...field,
@@ -313,13 +313,13 @@ export class UserHelpers {
 			? Users.findOneBy({
 					usernameLower: split[0],
 					host: split[1] ?? IsNull(),
-			  }).then((p) => {
+				}).then((p) => {
 					if (p) return p;
 					throw new MastoApiError(404);
-			  })
+				})
 			: resolveUser(split[0], split[1], "no-refresh").catch(() => {
 					throw new MastoApiError(404);
-			  });
+				});
 	}
 
 	public static async getUserMutes(

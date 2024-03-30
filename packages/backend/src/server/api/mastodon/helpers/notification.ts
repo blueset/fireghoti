@@ -31,7 +31,7 @@ export class NotificationHelpers {
 					"reaction",
 					"pollEnded",
 					"receiveFollowRequest",
-			  ];
+				];
 
 		if (excludeTypes) {
 			const excludedTypes = this.decodeTypes(excludeTypes);

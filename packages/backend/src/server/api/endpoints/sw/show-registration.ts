@@ -52,13 +52,13 @@ export default define(meta, paramDef, async (ps, me, token) => {
 		? await SwSubscriptions.findOneBy({
 				userId: me.id,
 				endpoint: ps.endpoint,
-		  })
+			})
 		: token
-		  ? await SwSubscriptions.findOneBy({
+			? await SwSubscriptions.findOneBy({
 					userId: me.id,
 					appAccessTokenId: token.id,
-			  })
-		  : null;
+				})
+			: null;
 
 	const instance = await fetchMeta(true);
 

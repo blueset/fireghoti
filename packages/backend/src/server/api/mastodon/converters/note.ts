@@ -97,11 +97,11 @@ export class NoteConverter {
 			aggregateReaction !== undefined
 				? aggregateReaction
 				: user
-				  ? NoteReactions.findOneBy({
+					? NoteReactions.findOneBy({
 							userId: user.id,
 							noteId: note.id,
-					  })
-				  : null;
+						})
+					: null;
 
 		const isFavorited = Promise.resolve(reaction).then((p) => !!p);
 
@@ -114,7 +114,7 @@ export class NoteConverter {
 							renoteId: note.id,
 							text: IsNull(),
 						},
-				  })
+					})
 				: null);
 
 		const renote =
@@ -132,7 +132,7 @@ export class NoteConverter {
 							noteId: note.id,
 						},
 						take: 1,
-				  })
+					})
 				: false);
 
 		const isMuted =
@@ -145,7 +145,7 @@ export class NoteConverter {
 							userId: user.id,
 							threadId: note.threadId || note.id,
 						},
-				  })
+					})
 				: false);
 
 		const files = DriveFiles.packMany(note.fileIds);
@@ -217,7 +217,7 @@ export class NoteConverter {
 							new Promise<null>((resolve) =>
 								setTimeout(() => resolve(null), 5000),
 							), // Timeout card generation after 5 seconds
-					  ]),
+						]),
 			);
 
 		const isPinned =
@@ -239,7 +239,7 @@ export class NoteConverter {
 						renote,
 						ctx,
 						isQuote(renote) && !isQuote(note) ? --recurseCounter : 0,
-				  )
+					)
 				: null,
 		);
 
@@ -311,7 +311,7 @@ export class NoteConverter {
 						noteEmoji.then((emojis) =>
 							PollConverter.encode(p, note.id, emojis),
 						),
-				  )
+					)
 				: null,
 			application: null, //FIXME
 			language: note.lang,
@@ -503,8 +503,8 @@ export class NoteConverter {
 		const quoteUri = note.renote
 			? isQuote(note)
 				? note.renote.url ??
-				  note.renote.uri ??
-				  `${config.url}/notes/${note.renote.id}`
+					note.renote.uri ??
+					`${config.url}/notes/${note.renote.id}`
 				: null
 			: null;
 
@@ -525,7 +525,7 @@ export class NoteConverter {
 						note.userHost,
 						false,
 						quoteUri,
-				  ).then((p) => p ?? escapeMFM(text))
+					).then((p) => p ?? escapeMFM(text))
 				: null;
 
 		if (note.user) UserConverter.prewarmCache(note.user);

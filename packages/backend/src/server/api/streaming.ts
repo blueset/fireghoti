@@ -85,7 +85,7 @@ export const initializeStreamingServer = (server: http.Server) => {
 					host,
 					accessToken,
 					prepareStream,
-			  );
+				);
 
 		const intervalId = user
 			? setInterval(

@@ -232,11 +232,11 @@ export const DriveFileRepository = db.getRepository(DriveFile).extend({
 		const meta = fetchMetaSync();
 		const baseUrl = meta
 			? meta.objectStorageBaseUrl ??
-			  `${meta.objectStorageUseSSL ? "https" : "http"}://${
+				`${meta.objectStorageUseSSL ? "https" : "http"}://${
 					meta.objectStorageEndpoint
-			  }${meta.objectStoragePort ? `:${meta.objectStoragePort}` : ""}/${
+				}${meta.objectStoragePort ? `:${meta.objectStoragePort}` : ""}/${
 					meta.objectStorageBucket
-			  }`
+				}`
 			: null;
 		if (baseUrl !== null && url.startsWith(baseUrl)) return url;
 

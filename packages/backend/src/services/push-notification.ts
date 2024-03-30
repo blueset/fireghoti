@@ -88,7 +88,7 @@ export async function pushNotification<T extends keyof pushNotificationsTypes>(
 					subscription,
 					type,
 					body,
-			  )
+				)
 			: {
 					type,
 					body:
@@ -97,7 +97,7 @@ export async function pushNotification<T extends keyof pushNotificationsTypes>(
 							: body,
 					userId,
 					dateTime: new Date().getTime(),
-			  };
+				};
 
 		console.log(
 			"Push notification, pushSubscription:",

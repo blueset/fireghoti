@@ -33,7 +33,7 @@ export class NotificationConverter {
 		const account = notification.notifierId
 			? UserHelpers.getUserCached(notification.notifierId, ctx).then((p) =>
 					UserConverter.encode(p, ctx),
-			  )
+				)
 			: UserConverter.encode(localUser, ctx);
 
 		let result = {
@@ -54,7 +54,7 @@ export class NotificationConverter {
 			const encodedNote = isPureRenote
 				? getNote(note.renoteId!, localUser).then((note) =>
 						NoteConverter.encode(note, ctx),
-				  )
+					)
 				: NoteConverter.encode(note, ctx);
 			result = Object.assign(result, {
 				status: encodedNote,
@@ -214,10 +214,12 @@ export class NotificationConverter {
 				(notificationBody.user?.username &&
 					`@${notificationBody.user?.username}`) ||
 				"Someone";
-			const username = (notificationBody.user?.host &&
-				`@${notificationBody.user?.username}@${notificationBody.user?.host}`) ||
-			(notificationBody.user?.username &&
-				`@${notificationBody.user?.username}`) || "";
+			const username =
+				(notificationBody.user?.host &&
+					`@${notificationBody.user?.username}@${notificationBody.user?.host}`) ||
+				(notificationBody.user?.username &&
+					`@${notificationBody.user?.username}`) ||
+				"";
 
 			switch (notificationBody.type) {
 				case "mention":
