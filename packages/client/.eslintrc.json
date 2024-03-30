@@ -4,6 +4,7 @@
 	"ignorePatterns": ["**/*.json5"],
 	"rules": {
 		"file-progress/activate": 1,
-		"prettier/prettier": 0
+		"prettier/prettier": 0,
+		"one-var": ["error", "never"]
 	}
 }
