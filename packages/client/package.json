@@ -5,7 +5,7 @@
 	"scripts": {
 		"watch": "pnpm vite build --watch --mode development",
 		"build": "pnpm vite build",
-		"build:debug": "pnpm run build",
+		"build:debug": "pnpm run build --sourcemap inline --minify false",
 		"lint": "pnpm biome check **/*.ts --apply ; pnpm run lint:vue",
 		"lint:vue": "pnpm eslint src --fix '**/*.vue' --cache ; pnpm run format",
 		"format": "pnpm biome format * --write && pnpm prettier --write '**/*.{scss,vue}' --cache --cache-strategy metadata"
