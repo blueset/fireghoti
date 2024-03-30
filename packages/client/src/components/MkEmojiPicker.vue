@@ -113,19 +113,19 @@
 					<header>{{ i18n.ts.emoji }}</header>
 					<XSection
 						v-for="category in unicodeEmojiCategories"
-						:key="category"
-						:skin-tone-selector="category === 'people'"
+						:key="category.slug"
+						:skin-tone-selector="category.slug === 'people_body'"
 						:skin-tones="unicodeEmojiSkinTones"
 						:skin-tone-labels="unicodeEmojiSkinToneLabels"
 						:emojis="
 							emojilist
-								.filter((e) => e.category === category)
+								.filter(
+									(e) => e.category_slug === category.slug,
+								)
 								.map((e) => e.emoji)
 						"
 						@chosen="chosen"
-						>{{
-							getNicelyLabeledCategory(category) || category
-						}}</XSection
+						>{{ category.name }}</XSection
 					>
 				</div>
 			</div>
@@ -169,11 +169,7 @@ import type { entities } from "firefish-js";
 import { FocusTrap } from "focus-trap-vue";
 import XSection from "@/components/MkEmojiPicker.section.vue";
 import type { UnicodeEmojiDef } from "@/scripts/emojilist";
-import {
-	emojilist,
-	getNicelyLabeledCategory,
-	unicodeEmojiCategories,
-} from "@/scripts/emojilist";
+import { emojilist, unicodeEmojiCategories } from "@/scripts/emojilist";
 import { getStaticImageUrl } from "@/scripts/get-static-image-url";
 import Ripple from "@/components/MkRipple.vue";
 import * as os from "@/os";
