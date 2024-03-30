@@ -1016,7 +1016,7 @@ function deleteDraft() {
 /**
  * @returns whether the file is described
  */
- function openFileDescriptionWindow(file: entities.DriveFile) {
+function openFileDescriptionWindow(file: entities.DriveFile) {
 	return new Promise<boolean>((resolve, reject) => {
 		os.popup(
 			XMediaCaption,
@@ -1034,22 +1034,23 @@ function deleteDraft() {
 						resolve(false);
 						return;
 					}
-					const comment =
-						result.result.length === 0 ? null : result.result;
- 					os.api("drive/files/update", {
+					const comment = result.result.length === 0 ? null : result.result;
+					os.api("drive/files/update", {
 						fileId: file.id,
 						comment,
-					}).then(() => {
-						resolve(true);
-						file.comment = comment;
-					}).catch((err: unknown) => {
-						reject(err);
-					});
+					})
+						.then(() => {
+							resolve(true);
+							file.comment = comment;
+						})
+						.catch((err: unknown) => {
+							reject(err);
+						});
 				},
 			},
 			"closed",
 		);
-	})
+	});
 }
 
 async function post() {
@@ -1101,7 +1102,9 @@ async function post() {
 			}
 			isFirstPostAttempt = false;
 			// Continue if all files have alt-text added.
-			if (files.value.some((f) => f.comment == null || f.comment.length === 0)) {
+			if (
+				files.value.some((f) => f.comment == null || f.comment.length === 0)
+			) {
 				return;
 			}
 		}
@@ -1130,7 +1133,9 @@ async function post() {
 				}
 			}
 			// Continue if all files have alt-text added.
-			if (files.value.some((f) => f.comment == null || f.comment.length === 0)) {
+			if (
+				files.value.some((f) => f.comment == null || f.comment.length === 0)
+			) {
 				return;
 			}
 		}
