@@ -47,7 +47,6 @@
 										v-tooltip="i18n.ts._pages.viewSource"
 										:to="`/@${username}/pages/${pageName}/view-source`"
 										class="menu _button"
-										style="transform: translateY(2px)"
 										><i :class="icon('ph-code')"
 									/></MkA>
 									<template
@@ -59,7 +58,6 @@
 											v-tooltip="i18n.ts._pages.editPage"
 											class="menu _button"
 											:to="`/pages/edit/${page.id}`"
-											style="transform: translateY(2px)"
 											><i :class="icon('ph-pencil')"
 										/></MkA>
 										<button
@@ -381,6 +379,7 @@ definePageMetadata(
 						color: #fff;
 						text-shadow: 0 0 8px var(--shadow);
 						font-size: 16px;
+						display: inline-flex;
 					}
 
 					> .koudoku {
