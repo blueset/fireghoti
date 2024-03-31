@@ -2,6 +2,9 @@ import { db } from "@/db/postgre.js";
 import { NoteEdit } from "@/models/entities/note-edit.js";
 import { awaitAll } from "@/prelude/await-all.js";
 import type { Packed } from "@/misc/schema.js";
+import {
+	DriveFiles,
+} from "../index.js";
 
 export const NoteEditRepository = db.getRepository(NoteEdit).extend({
 	async pack(
@@ -14,6 +17,7 @@ export const NoteEditRepository = db.getRepository(NoteEdit).extend({
 			text: noteEdit.text,
 			cw: noteEdit.cw,
 			fileIds: noteEdit.fileIds,
+			files: DriveFiles.packMany(noteEdit.fileIds),
 		})
 
 		return packed;

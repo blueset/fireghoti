@@ -87,18 +87,28 @@ onMounted(() => {
 });
 
 function convertNoteEditsToNotes(noteEdits: NoteEdit[]) {
-	return [note.value].concat(
-		noteEdits.map(e => convertNoteEditToNote(e))
-	);
-}
+	const now: NoteEdit = {
+		id: note.value.id,
+		noteId: note.value.id,
+		updatedAt: note.value.createdAt,
+		text: note.value.text,
+		cw: note.value.cw,
+		files: note.value.files,
+		fileIds: note.value.fileIds,
+	};
 
-function convertNoteEditToNote(noteEdit: NoteEdit): Note {
-	return Object.assign({}, note.value, {
-		id: crypto.randomUUID(), // Don't use noteId
-		createdAt: noteEdit.updatedAt,
-		text: noteEdit.text,
-		cw: noteEdit.cw,
-		_shouldInsertAd_: false,
+	return [now].concat(noteEdits).map((noteEdit: NoteEdit, index, arr): Note => {
+		return Object.assign({}, note.value, {
+			id: crypto.randomUUID(), // Don't use noteId
+			// Conversion from updatedAt to createdAt
+			// The createdAt of a edition's content is actually the updatedAt of the previous one.
+			createdAt: arr[(index + 1) % arr.length].updatedAt,
+			text: noteEdit.text,
+			cw: noteEdit.cw,
+			_shouldInsertAd_: false,
+			files: noteEdit.files,
+			fileIds: noteEdit.fileIds,
+		});
 	});
 }
 </script>

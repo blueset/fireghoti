@@ -39,10 +39,21 @@ export const packedNoteEdit = {
 		fileIds: {
 			type: "array",
 			optional: true,
-			nullable: true,
+			nullable: false,
 			items: {
 				type: "string",
 				format: "id",
+			},
+		},
+		files: {
+			type: "array",
+			optional: true,
+			nullable: false,
+			items: {
+				type: "object",
+				optional: false,
+				nullable: false,
+				ref: "DriveFile",
 			},
 		},
 	},

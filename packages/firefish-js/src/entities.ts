@@ -182,7 +182,8 @@ export type NoteEdit = {
 	text: string | null;
 	cw: string | null;
 	updatedAt: string;
-	fileIds: DriveFile["id"];
+	fileIds: DriveFile["id"][];
+	files: DriveFile[];
 }
 
 export type NoteReaction = {
