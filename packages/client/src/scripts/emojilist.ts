@@ -6,35 +6,17 @@ import { defaultStore } from "@/store";
 
 export interface UnicodeEmojiDef {
 	emoji: string;
-	category: (typeof unicodeEmojiCategories)[number];
+	category: (typeof unicodeEmojiCategories)[number]["name"];
+	category_slug: (typeof unicodeEmojiCategories)[number]["slug"];
 	skin_tone_support: boolean;
 	slug: string;
 	keywords?: string[];
 }
 
-export const unicodeEmojiCategories = [
-	"emotion",
-	"people",
-	"animals_and_nature",
-	"food_and_drink",
-	"activity",
-	"travel_and_places",
-	"objects",
-	"symbols",
-	"flags",
-] as const;
-
-export const categoryMapping = {
-	"Smileys & Emotion": "emotion",
-	"People & Body": "people",
-	"Animals & Nature": "animals_and_nature",
-	"Food & Drink": "food_and_drink",
-	Activities: "activity",
-	"Travel & Places": "travel_and_places",
-	Objects: "objects",
-	Symbols: "symbols",
-	Flags: "flags",
-} as const;
+export const unicodeEmojiCategories = data.map((categories) => ({
+	slug: categories.slug,
+	name: categories.name,
+}));
 
 export function addSkinTone(emoji: string, skinTone?: number) {
 	const chosenSkinTone = skinTone || defaultStore.state.reactionPickerSkinTone;
@@ -57,41 +39,20 @@ export function addSkinTone(emoji: string, skinTone?: number) {
 	}
 }
 
-const newData = {};
-
-for (const originalCategory of Object.keys(data)) {
-	const newCategory = categoryMapping[originalCategory];
-	if (newCategory) {
-		newData[newCategory] = newData[newCategory] || [];
-		for (const emojiIndex of Object.keys(data[originalCategory])) {
-			const emojiObj = { ...data[originalCategory][emojiIndex] };
-			emojiObj.category = newCategory;
-			emojiObj.keywords = keywordSet[emojiObj.emoji];
-			newData[newCategory].push(emojiObj);
-		}
-	}
-}
-
-export const emojilist: UnicodeEmojiDef[] = Object.keys(newData).reduce(
-	(acc, category) => {
-		const categoryItems = newData[category].map((item) => {
-			return {
-				emoji: item.emoji,
-				slug: item.slug,
-				category: item.category,
-				skin_tone_support: item.skin_tone_support || false,
-				keywords: item.keywords || [],
-			};
-		});
-		return acc.concat(categoryItems);
-	},
-	[],
-);
-
-export function getNicelyLabeledCategory(internalName) {
-	return (
-		Object.keys(categoryMapping).find(
-			(key) => categoryMapping[key] === internalName,
-		) || internalName
-	);
-}
+export const emojilist: UnicodeEmojiDef[] = data
+	.flatMap((category) =>
+		category.emojis.map((emoji) => ({
+			...emoji,
+			category: category.name,
+			category_slug: category.slug,
+			keywords: keywordSet[emoji.emoji],
+		})),
+	)
+	.map((item) => ({
+		emoji: item.emoji,
+		slug: item.slug,
+		category: item.category,
+		category_slug: item.category_slug,
+		skin_tone_support: item.skin_tone_support || false,
+		keywords: item.keywords || [],
+	}));
