@@ -856,7 +856,7 @@ more: Més!
 featured: Destacat
 usernameOrUserId: Nom o ID d'usuari
 noSuchUser: No s'ha trobat l'usuari
-lookup: Cerca
+lookup: Ves a
 attachFile: Afegeix fitxers
 currentPassword: Contrasenya actual
 newPassword: Nova contrasenya
@@ -2210,7 +2210,7 @@ squareCatAvatars: Mostrar avatars quadrats per a comptes de gats
 replaceChatButtonWithAccountButton: Canviar el botó de xats amb el botó de canvi de
   compte
 replaceWidgetsButtonWithReloadButton: Canviar el botó de ginys amb el botó de recarregar
-searchEngine: Motor de cerca fet servir anla barra MFM
+searchEngine: Motor de cerca fet servir a la barra MFM
 postSearch: Posar els resultats en aquest servidor
 showBigPostButton: Mostrar un botó gegant al formulari de publicació
 _emojiModPerm:
@@ -2238,7 +2238,7 @@ enableTimelineStreaming: Actualitza les línies de temps automàticament
 enablePullToRefresh: Activa "Baixa per actualitzar"
 pullDownToReload: Baixa per actualitzar
 pullToRefreshThreshold: Distancia de baixada per actualitzar
-searchWords: Paraules / ID o adreça a URL a buscar
+searchWords: Paraules / ID o adreça a URL a cercar
 noSentFollowRequests: No tens cap sol·licitud de seguiment enviada
 sentFollowRequests: Enviar sol·licituds de seguiment
 replyMute: Silencia les respostes a les línies de temps
@@ -2251,7 +2251,7 @@ searchWordsDescription: "Per cercar publicacions, escriu el terme a buscar. Sepa
   Si vols cercar per una seqüencia de paraules (per exemple una frase) has d'escriure-les
   entre cometes dobles, per no fer una cerca amb condicionant AND: \"Avui he aprés\"\
   \n \nSi vols anar a una pàgina d'usuari o publicació en concret, escriu la adreça
-  URL o la ID en aquest camp i fes clic al botó 'Trobar'. Fent clic a 'Cercar' trobarà
+  URL o la ID en aquest camp i fes clic al botó 'Ves a'. Fent clic a 'Cerca' trobarà
   publicacions que, literalment , continguin la ID/adreça URL."
 searchPostsWithFiles: Només publicacions amb fitxers
 searchCwAndAlt: Inclou avisos de contingut i arxius amb descripcions
