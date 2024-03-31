@@ -236,6 +236,10 @@ export class UserHelpers {
 		}
 
 		if (formData.fields_attributes) {
+			// Some clients send field_attributes in format of {"0": {"name": "a", "value": "b"}} instead of [{"name": "a", "value": "b"}]
+			if (!Array.isArray(formData.fields_attributes)) {
+				formData.fields_attributes = Object.values(formData.fields_attributes);
+			}
 			profileUpdates.fields = await Promise.all(
 				formData.fields_attributes.map(async (field) => {
 					if (!(field.name.trim() === "" && field.value.trim() === "")) {
