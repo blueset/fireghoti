@@ -60,7 +60,7 @@ const isRefreshing = ref(false);
 const pullDistance = ref(0);
 
 let disabled = false;
-let supportPointerDesktop = false;
+const supportPointerDesktop = false;
 let startScreenY: number | null = null;
 
 const rootEl = shallowRef<HTMLDivElement>();
@@ -110,8 +110,7 @@ function moveBySystem(to: number): Promise<void> {
 				return;
 			}
 			const nextHeight =
-				initialHeight -
-				(overHeight / RELEASE_TRANSITION_DURATION) * time;
+				initialHeight - (overHeight / RELEASE_TRANSITION_DURATION) * time;
 			if (pullDistance.value < nextHeight) return;
 			pullDistance.value = nextHeight;
 		}, 1);

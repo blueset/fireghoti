@@ -74,8 +74,7 @@ const closed = computed(() => remaining.value === 0);
 const isLocal = computed(() => !props.note.uri);
 const isVoted = computed(
 	() =>
-		!props.note.poll.multiple &&
-		props.note.poll.choices.some((c) => c.isVoted),
+		!props.note.poll.multiple && props.note.poll.choices.some((c) => c.isVoted),
 );
 const timer = computed(() =>
 	i18n.t(
@@ -101,10 +100,8 @@ const showResult = ref(props.readOnly || isVoted.value);
 if (props.note.poll.expiresAt) {
 	const tick = () => {
 		remaining.value = Math.floor(
-			Math.max(
-				new Date(props.note.poll.expiresAt).getTime() - Date.now(),
-				0,
-			) / 1000,
+			Math.max(new Date(props.note.poll.expiresAt).getTime() - Date.now(), 0) /
+				1000,
 		);
 		if (remaining.value === 0) {
 			showResult.value = true;

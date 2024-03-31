@@ -60,13 +60,10 @@ function star(ev?: MouseEvent): void {
 	os.api("notes/reactions/create", {
 		noteId: props.note.id,
 		reaction:
-			defaultStore.state.woozyMode === true
-				? "🥴"
-				: instance.defaultReaction,
+			defaultStore.state.woozyMode === true ? "🥴" : instance.defaultReaction,
 	});
 	const el =
-		ev &&
-		((ev.currentTarget ?? ev.target) as HTMLElement | null | undefined);
+		ev && ((ev.currentTarget ?? ev.target) as HTMLElement | null | undefined);
 	if (el) {
 		const rect = el.getBoundingClientRect();
 		const x = rect.left + el.offsetWidth / 2;

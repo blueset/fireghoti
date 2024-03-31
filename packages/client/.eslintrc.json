@@ -1,8 +1,19 @@
 {
   "extends": ["@eslint-sets/vue3", "@eslint-sets/vue3-ts"],
-	"plugins": ["file-progress", "prettier"],
+	"plugins": ["file-progress"],
 	"ignorePatterns": ["**/*.json5"],
 	"rules": {
-		"file-progress/activate": 1
+		"file-progress/activate": 1,
+		"prettier/prettier": 0,
+		"one-var": ["error", "never"],
+		"@typescript-eslint/no-unused-vars": [
+			"error",
+			{
+				"argsIgnorePattern": "^_",
+				"varsIgnorePattern": "^_",
+				"caughtErrorsIgnorePattern": "^_",
+				"destructuredArrayIgnorePattern": "^_"
+			}
+		]
 	}
 }

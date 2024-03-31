@@ -70,8 +70,7 @@ const note = ref(props.note);
 
 const showTicker =
 	defaultStore.state.instanceTicker === "always" ||
-	(defaultStore.state.instanceTicker === "remote" &&
-		note.value.user.instance);
+	(defaultStore.state.instanceTicker === "remote" && note.value.user.instance);
 
 function openServerInfo() {
 	if (!props.canOpenServerInfo || !defaultStore.state.openServerInfo) return;

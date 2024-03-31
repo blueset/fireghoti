@@ -94,17 +94,14 @@ const pushRegistrationInServer = ref<
 >();
 
 function subscribe() {
-	if (!registration.value || !supported.value || !instance.swPublickey)
-		return;
+	if (!registration.value || !supported.value || !instance.swPublickey) return;
 
 	// SEE: https://developer.mozilla.org/en-US/docs/Web/API/PushManager/subscribe#Parameters
 	return promiseDialog(
 		registration.value.pushManager
 			.subscribe({
 				userVisibleOnly: true,
-				applicationServerKey: urlBase64ToUint8Array(
-					instance.swPublickey,
-				),
+				applicationServerKey: urlBase64ToUint8Array(instance.swPublickey),
 			})
 			.then(
 				async (subscription) => {
@@ -121,9 +118,7 @@ function subscribe() {
 					// When subscribe failed
 					// 通知が許可されていなかったとき
 					if (err?.name === "NotAllowedError") {
-						console.info(
-							"User denied the notification permission request.",
-						);
+						console.info("User denied the notification permission request.");
 						return;
 					}
 
@@ -171,9 +166,7 @@ function encode(buffer: ArrayBuffer | null) {
  */
 function urlBase64ToUint8Array(base64String: string): Uint8Array {
 	const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-	const base64 = (base64String + padding)
-		.replace(/-/g, "+")
-		.replace(/_/g, "/");
+	const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
 
 	const rawData = window.atob(base64);
 	const outputArray = new Uint8Array(rawData.length);

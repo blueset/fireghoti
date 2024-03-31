@@ -166,8 +166,7 @@ onMounted(() => {
 		window.addEventListener(
 			"resize",
 			() => {
-				if (window.innerWidth >= DESKTOP_THRESHOLD)
-					isDesktop.value = true;
+				if (window.innerWidth >= DESKTOP_THRESHOLD) isDesktop.value = true;
 			},
 			{ passive: true },
 		);

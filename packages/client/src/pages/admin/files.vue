@@ -103,9 +103,7 @@ const pagination = {
 		userId: userId.value && userId.value !== "" ? userId.value : null,
 		origin: origin.value,
 		hostname:
-			searchHost.value && searchHost.value !== ""
-				? searchHost.value
-				: null,
+			searchHost.value && searchHost.value !== "" ? searchHost.value : null,
 	})),
 };
 

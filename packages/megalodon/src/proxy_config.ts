@@ -1,5 +1,11 @@
-import { HttpsProxyAgent, HttpsProxyAgentOptions } from "https-proxy-agent";
-import { SocksProxyAgent, SocksProxyAgentOptions } from "socks-proxy-agent";
+import {
+	HttpsProxyAgent,
+	type HttpsProxyAgentOptions,
+} from "https-proxy-agent";
+import {
+	SocksProxyAgent,
+	type SocksProxyAgentOptions,
+} from "socks-proxy-agent";
 
 export type ProxyConfig = {
 	host: string;

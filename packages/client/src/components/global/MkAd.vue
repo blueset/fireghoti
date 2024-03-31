@@ -88,9 +88,7 @@ const choseAd = (): Ad | null => {
 		return widgetAds;
 	} else if (ads.length === 0) {
 		if (lowPriorityAds.length !== 0) {
-			return lowPriorityAds[
-				Math.floor(Math.random() * lowPriorityAds.length)
-			];
+			return lowPriorityAds[Math.floor(Math.random() * lowPriorityAds.length)];
 		} else {
 			return null;
 		}

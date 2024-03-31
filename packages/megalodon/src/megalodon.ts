@@ -1,10 +1,10 @@
-import Response from "./response";
-import OAuth from "./oauth";
-import proxyAgent, { ProxyConfig } from "./proxy_config";
-import Entity from "./entity";
-import axios, { AxiosRequestConfig } from "axios";
-import Misskey from "./misskey";
+import axios, { type AxiosRequestConfig } from "axios";
 import { DEFAULT_UA } from "./default";
+import type Entity from "./entity";
+import Misskey from "./misskey";
+import type OAuth from "./oauth";
+import proxyAgent, { type ProxyConfig } from "./proxy_config";
+import type Response from "./response";
 
 export interface WebSocketInterface {
 	start(): void;

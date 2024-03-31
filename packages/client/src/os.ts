@@ -779,8 +779,8 @@ type AwaitType<T> = T extends Promise<infer U>
 	: T extends (...args: any[]) => Promise<infer V>
 		? V
 		: T;
-let openingEmojiPicker: AwaitType<ReturnType<typeof popup>> | null = null,
-	activeTextarea: HTMLTextAreaElement | HTMLInputElement | null = null;
+let openingEmojiPicker: AwaitType<ReturnType<typeof popup>> | null = null;
+let activeTextarea: HTMLTextAreaElement | HTMLInputElement | null = null;
 export async function openEmojiPicker(
 	src?: HTMLElement,
 	opts,

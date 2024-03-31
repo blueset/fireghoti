@@ -107,8 +107,7 @@ async function install() {
 		return;
 	}
 
-	const { name, version, author, description, permissions, config } =
-		metadata;
+	const { name, version, author, description, permissions, config } = metadata;
 	if (name == null || version == null || author == null) {
 		os.alert({
 			type: "error",
@@ -123,29 +122,22 @@ async function install() {
 			: await new Promise((res, rej) => {
 					os.popup(
 						defineAsyncComponent(
-							() =>
-								import(
-									"@/components/MkTokenGenerateWindow.vue"
-								),
+							() => import("@/components/MkTokenGenerateWindow.vue"),
 						),
 						{
 							title: i18n.ts.tokenRequested,
-							information:
-								i18n.ts.pluginTokenRequestedDescription,
+							information: i18n.ts.pluginTokenRequestedDescription,
 							initialName: name,
 							initialPermissions: permissions,
 						},
 						{
 							done: async (result) => {
 								const { name, permissions } = result;
-								const { token } = await os.api(
-									"miauth/gen-token",
-									{
-										session: null,
-										name,
-										permission: permissions,
-									},
-								);
+								const { token } = await os.api("miauth/gen-token", {
+									session: null,
+									name,
+									permission: permissions,
+								});
 								res(token);
 							},
 						},

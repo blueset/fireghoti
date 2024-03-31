@@ -64,8 +64,8 @@ const imgUrl = `${url}/proxy/image.webp?${query({
 })}`;
 const dialogEl = ref<InstanceType<typeof XModalWindow>>();
 const imgEl = ref<HTMLImageElement>();
-let cropper: Cropper | null = null,
-	loading = ref(true);
+let cropper: Cropper | null = null;
+const loading = ref(true);
 
 const ok = async () => {
 	const promise = new Promise<entities.DriveFile>(async (res) => {

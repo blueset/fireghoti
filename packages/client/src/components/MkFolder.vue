@@ -58,9 +58,7 @@ export default defineComponent({
 			showBody:
 				this.persistKey &&
 				localStorage.getItem(localStoragePrefix + this.persistKey)
-					? localStorage.getItem(
-							localStoragePrefix + this.persistKey,
-						) === "t"
+					? localStorage.getItem(localStoragePrefix + this.persistKey) === "t"
 					: this.expanded,
 			animation: defaultStore.state.animation,
 		};

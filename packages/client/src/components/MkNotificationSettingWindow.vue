@@ -84,9 +84,7 @@ function ok() {
 	} else {
 		emit("done", {
 			includingTypes: (
-				Object.keys(
-					typesMap.value,
-				) as (typeof notificationTypes)[number][]
+				Object.keys(typesMap.value) as (typeof notificationTypes)[number][]
 			).filter((type) => typesMap.value[type]),
 		});
 	}

@@ -32,14 +32,9 @@ export default defineComponent({
 							role: "tab",
 							key: option.key,
 							"aria-selected":
-								this.modelValue === option.props?.value
-									? "true"
-									: "false",
+								this.modelValue === option.props?.value ? "true" : "false",
 							onClick: () => {
-								this.$emit(
-									"update:modelValue",
-									option.props?.value,
-								);
+								this.$emit("update:modelValue", option.props?.value);
 							},
 						},
 						option.children,

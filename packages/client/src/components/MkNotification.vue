@@ -310,7 +310,8 @@ const defaultReaction = ["⭐", "👍", "❤️"].includes(instance.defaultReact
 	? instance.defaultReaction
 	: "⭐";
 
-let readObserver: IntersectionObserver | undefined, connection;
+let readObserver: IntersectionObserver | undefined;
+let connection;
 
 onMounted(() => {
 	if (!props.notification.isRead) {

@@ -90,8 +90,7 @@ const draftKey = computed(() =>
 	props.user ? "user:" + props.user.id : "group:" + props.group?.id,
 );
 const canSend = computed(
-	() =>
-		(text.value != null && text.value.trim() !== "") || file.value != null,
+	() => (text.value != null && text.value.trim() !== "") || file.value != null,
 );
 
 watch([text, file], saveDraft);

@@ -530,7 +530,8 @@ function isValidHttpUrl(src: string) {
 function parseMoreUrls(src: string): { name: string; url: string }[] {
 	const toReturn: { name: string; url: string }[] = [];
 	const pattern = /"(.+)"\s*:\s*(http.+)/;
-	src.trim()
+	src
+		.trim()
 		.split("\n")
 		.forEach((line) => {
 			const match = pattern.exec(line);
@@ -590,9 +591,7 @@ async function init() {
 	defaultReaction.value = ["⭐", "👍", "❤️"].includes(meta.defaultReaction)
 		? meta.defaultReaction
 		: "custom";
-	defaultReactionCustom.value = ["⭐", "👍", "❤️"].includes(
-		meta.defaultReaction,
-	)
+	defaultReactionCustom.value = ["⭐", "👍", "❤️"].includes(meta.defaultReaction)
 		? ""
 		: meta.defaultReaction;
 	enableServerMachineStats.value = meta.enableServerMachineStats;

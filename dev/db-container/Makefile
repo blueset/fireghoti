@@ -1,9 +1,11 @@
-.PHONY: init up down
-init: down up
+.PHONY: up down init
 up:
 	$(COMPOSE) up --detach
 down:
 	$(COMPOSE) down
+init:
+	$(COMPOSE) down --volumes
+	$(COMPOSE) up --detach
 
 .PHONY: psql redis-cli
 psql:

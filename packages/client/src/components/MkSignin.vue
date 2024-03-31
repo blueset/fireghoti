@@ -205,13 +205,11 @@ function queryKey() {
 		.get({
 			publicKey: {
 				challenge: byteify(challengeData.value.challenge, "base64"),
-				allowCredentials: challengeData.value.securityKeys.map(
-					(key) => ({
-						id: byteify(key.id, "hex"),
-						type: "public-key",
-						transports: ["usb", "nfc", "ble", "internal"],
-					}),
-				),
+				allowCredentials: challengeData.value.securityKeys.map((key) => ({
+					id: byteify(key.id, "hex"),
+					type: "public-key",
+					transports: ["usb", "nfc", "ble", "internal"],
+				})),
 				timeout: 60 * 1000,
 			},
 		})
@@ -226,9 +224,7 @@ function queryKey() {
 				username: username.value,
 				password: password.value,
 				signature: hexify(credential.response.signature),
-				authenticatorData: hexify(
-					credential.response.authenticatorData,
-				),
+				authenticatorData: hexify(credential.response.authenticatorData),
 				clientDataJSON: hexify(credential.response.clientDataJSON),
 				credentialId: credential.id,
 				challengeId: challengeData.value.challengeId,
@@ -277,9 +273,7 @@ function onSubmit() {
 			"hcaptcha-response": hCaptchaResponse.value,
 			"g-recaptcha-response": reCaptchaResponse.value,
 			token:
-				user.value && user.value.twoFactorEnabled
-					? token.value
-					: undefined,
+				user.value && user.value.twoFactorEnabled ? token.value : undefined,
 		})
 			.then((res) => {
 				emit("login", res);

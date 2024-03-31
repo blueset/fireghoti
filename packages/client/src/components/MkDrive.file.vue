@@ -83,9 +83,7 @@ function getMenu() {
 			text: props.file.isSensitive
 				? i18n.ts.unmarkAsSensitive
 				: i18n.ts.markAsSensitive,
-			icon: props.file.isSensitive
-				? "ph-eye ph-lg"
-				: "ph-eye-slash ph-lg",
+			icon: props.file.isSensitive ? "ph-eye ph-lg" : "ph-eye-slash ph-lg",
 			action: toggleSensitive,
 		},
 		{
@@ -129,9 +127,7 @@ function onClick(ev: MouseEvent) {
 	} else {
 		os.popupMenu(
 			getMenu(),
-			(ev.currentTarget ?? ev.target ?? undefined) as
-				| HTMLElement
-				| undefined,
+			(ev.currentTarget ?? ev.target ?? undefined) as HTMLElement | undefined,
 		);
 	}
 }

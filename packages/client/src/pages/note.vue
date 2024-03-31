@@ -175,20 +175,15 @@ definePageMetadata(
 		appearNote.value
 			? {
 					title: i18n.t("noteOf", {
-						user:
-							appearNote.value.user.name ||
-							appearNote.value.user.username,
+						user: appearNote.value.user.name || appearNote.value.user.username,
 					}),
-					subtitle: new Date(
-						appearNote.value.createdAt,
-					).toLocaleString(),
+					subtitle: new Date(appearNote.value.createdAt).toLocaleString(),
 					avatar: appearNote.value.user,
 					path: `/notes/${appearNote.value.id}`,
 					share: {
 						title: i18n.t("noteOf", {
 							user:
-								appearNote.value.user.name ||
-								appearNote.value.user.username,
+								appearNote.value.user.name || appearNote.value.user.username,
 						}),
 						text: appearNote.value.text,
 					},

@@ -128,20 +128,20 @@ const getColor = (i) => {
 };
 
 const now = new Date();
-let chartInstance: Chart = null,
-	chartData: {
-		series: {
-			name: string;
-			type: "line" | "area";
-			color?: string;
-			dashed?: boolean;
-			hidden?: boolean;
-			data: {
-				x: number;
-				y: number;
-			}[];
+let chartInstance: Chart = null;
+let chartData: {
+	series: {
+		name: string;
+		type: "line" | "area";
+		color?: string;
+		dashed?: boolean;
+		hidden?: boolean;
+		data: {
+			x: number;
+			y: number;
 		}[];
-	} = null;
+	}[];
+} = null;
 
 const chartEl = ref<HTMLCanvasElement>(null);
 const fetching = ref(true);
