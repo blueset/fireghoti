@@ -174,6 +174,8 @@ export type Note = {
 	url?: string;
 	updatedAt?: DateString;
 	isHidden?: boolean;
+	/** if the note is a history */
+	historyId?: ID;
 };
 
 export type NoteEdit = {

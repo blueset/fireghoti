@@ -10,21 +10,22 @@
 			<MkPagination
 				v-else
 				ref="pagingComponent"
-				v-slot="{ items: noteEdits }"
+				v-slot="{ items }: { items: NoteEdit[] }"
 				:pagination="pagination"
 			>
 				<div ref="tlEl" class="giivymft noGap">
 					<XList
-						v-slot="{ item: noteEdit }"
-						:items="convertNoteEditsToNotes(noteEdits as NoteEdit[])"
+						v-slot="{item} : {item: Note}"
+						:items="convertNoteEditsToNotes(items)"
 						class="notes"
 						:no-gap="true"
 					>
 						<XNote
-							:key="noteEdit.id"
+							:key="item.id"
 							class="qtqtichx"
-							:note="noteEdit"
+							:note="item"
 							:hide-footer="true"
+							:detailed-view="true"
 						/>
 					</XList>
 				</div>
@@ -88,7 +89,7 @@ onMounted(() => {
 
 function convertNoteEditsToNotes(noteEdits: NoteEdit[]) {
 	const now: NoteEdit = {
-		id: note.value.id,
+		id: "EditionNow",
 		noteId: note.value.id,
 		updatedAt: note.value.createdAt,
 		text: note.value.text,
@@ -99,7 +100,7 @@ function convertNoteEditsToNotes(noteEdits: NoteEdit[]) {
 
 	return [now].concat(noteEdits).map((noteEdit: NoteEdit, index, arr): Note => {
 		return Object.assign({}, note.value, {
-			id: crypto.randomUUID(), // Don't use noteId
+			historyId: noteEdit.id,
 			// Conversion from updatedAt to createdAt
 			// The createdAt of a edition's content is actually the updatedAt of the previous one.
 			createdAt: arr[(index + 1) % arr.length].updatedAt,

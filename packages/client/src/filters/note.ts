@@ -8,5 +8,8 @@ export function notePage(
 	if (options?.historyPage) {
 		return `/notes/${note.id}/history`;
 	}
+	if (note.historyId) {
+		return `/notes/${note.id}/history#${note.historyId}`
+	}
 	return `/notes/${note.id}`;
 };
