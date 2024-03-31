@@ -75,6 +75,12 @@ export async function pushNotification<T extends keyof pushNotificationsTypes>(
 			!subscription.sendReadMessage
 		)
 			continue;
+		if (
+			(type === "notification" &&
+				(body as Packed<"Notification">).type === "followRequestAccepted") && // TODO: filter notification type by registered types
+			!subscription.appAccessTokenId) {
+			continue;
+		}
 
 		const pushSubscription = {
 			endpoint: subscription.endpoint,
