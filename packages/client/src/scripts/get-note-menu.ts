@@ -373,7 +373,7 @@ export function getNoteMenu(props: {
 				: undefined,
 			isEdited
 				? {
-						icon: `${icon('ph-clock-countdown')}`,
+						icon: `${icon("ph-clock-countdown")}`,
 						text: i18n.ts.noteEditHistory,
 						action: () => showEditHistory(),
 					}

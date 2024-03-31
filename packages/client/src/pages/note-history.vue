@@ -1,11 +1,9 @@
 <template>
 	<MkStickyContainer>
 		<template #header
-			><MkPageHeader
-				:display-back-button="true"
+			><MkPageHeader :display-back-button="true"
 		/></template>
 		<MkSpacer :content-max="800">
-			
 			<MkLoading v-if="!loaded" />
 			<MkPagination
 				v-else
@@ -15,7 +13,7 @@
 			>
 				<div ref="tlEl" class="giivymft noGap">
 					<XList
-						v-slot="{item} : {item: Note}"
+						v-slot="{ item }: { item: Note }"
 						:items="convertNoteEditsToNotes(items)"
 						class="notes"
 						:no-gap="true"
@@ -30,15 +28,14 @@
 					</XList>
 				</div>
 			</MkPagination>
-				
 		</MkSpacer>
 	</MkStickyContainer>
 </template>
 
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
-import MkPagination from "@/components/MkPagination.vue"
-import type { Paging } from "@/components/MkPagination.vue"
+import MkPagination from "@/components/MkPagination.vue";
+import type { Paging } from "@/components/MkPagination.vue";
 import { api } from "@/os";
 import XList from "@/components/MkDateSeparatedList.vue";
 import XNote from "@/components/MkNote.vue";
@@ -58,7 +55,7 @@ const pagination: Paging = {
 	limit: 10,
 	offsetMode: true,
 	params: computed(() => ({
-		noteId: props.noteId
+		noteId: props.noteId,
 	})),
 };
 
@@ -81,7 +78,7 @@ onMounted(() => {
 		res.renoteId = null;
 		res.reply = undefined;
 		res.replyId = null;
-		
+
 		note.value = res;
 		loaded.value = true;
 	});
@@ -98,19 +95,21 @@ function convertNoteEditsToNotes(noteEdits: NoteEdit[]) {
 		fileIds: note.value.fileIds,
 	};
 
-	return [now].concat(noteEdits).map((noteEdit: NoteEdit, index, arr): Note => {
-		return Object.assign({}, note.value, {
-			historyId: noteEdit.id,
-			// Conversion from updatedAt to createdAt
-			// The createdAt of a edition's content is actually the updatedAt of the previous one.
-			createdAt: arr[(index + 1) % arr.length].updatedAt,
-			text: noteEdit.text,
-			cw: noteEdit.cw,
-			_shouldInsertAd_: false,
-			files: noteEdit.files,
-			fileIds: noteEdit.fileIds,
+	return [now]
+		.concat(noteEdits)
+		.map((noteEdit: NoteEdit, index, arr): Note => {
+			return Object.assign({}, note.value, {
+				historyId: noteEdit.id,
+				// Conversion from updatedAt to createdAt
+				// The createdAt of a edition's content is actually the updatedAt of the previous one.
+				createdAt: arr[(index + 1) % arr.length].updatedAt,
+				text: noteEdit.text,
+				cw: noteEdit.cw,
+				_shouldInsertAd_: false,
+				files: noteEdit.files,
+				fileIds: noteEdit.fileIds,
+			});
 		});
-	});
 }
 </script>
 

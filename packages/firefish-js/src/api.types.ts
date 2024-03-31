@@ -664,7 +664,7 @@ export type Endpoints = {
 			limit?: number;
 			offset?: number;
 		};
-		res: NoteEdit[]
+		res: NoteEdit[];
 	};
 	"notes/recommended-timeline": {
 		req: {

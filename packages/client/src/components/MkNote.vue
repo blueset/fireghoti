@@ -158,7 +158,7 @@
 					>
 				</div>
 				<footer
-					v-show="!hideFooter" 
+					v-show="!hideFooter"
 					ref="footerEl"
 					class="footer"
 					tabindex="-1"
