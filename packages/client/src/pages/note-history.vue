@@ -8,12 +8,12 @@
 			<MkPagination
 				v-else
 				ref="pagingComponent"
-				v-slot="{ items }: { items: NoteEdit[] }"
+				v-slot="{ items }: { items: entities.NoteEdit[] }"
 				:pagination="pagination"
 			>
 				<div ref="tlEl" class="giivymft noGap">
 					<XList
-						v-slot="{ item }: { item: Note }"
+						v-slot="{ item }: { item: entities.Note }"
 						:items="convertNoteEditsToNotes(items)"
 						class="notes"
 						:no-gap="true"
@@ -42,7 +42,7 @@ import XNote from "@/components/MkNote.vue";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
-import type { Note, NoteEdit } from "firefish-js/src/entities";
+import type { entities } from "firefish-js";
 
 const pagingComponent = ref<InstanceType<typeof MkPagination>>();
 
@@ -66,7 +66,7 @@ definePageMetadata(
 	})),
 );
 
-const note = ref<Note>({} as Note);
+const note = ref<entities.Note>({} as entities.Note);
 const loaded = ref(false);
 
 onMounted(() => {
@@ -84,8 +84,8 @@ onMounted(() => {
 	});
 });
 
-function convertNoteEditsToNotes(noteEdits: NoteEdit[]) {
-	const now: NoteEdit = {
+function convertNoteEditsToNotes(noteEdits: entities.NoteEdit[]) {
+	const now: entities.NoteEdit = {
 		id: "EditionNow",
 		noteId: note.value.id,
 		updatedAt: note.value.createdAt,
@@ -96,20 +96,22 @@ function convertNoteEditsToNotes(noteEdits: NoteEdit[]) {
 		emojis: note.value.emojis,
 	};
 
-	return [now].concat(noteEdits).map((noteEdit: NoteEdit, index, arr): Note => {
-		return Object.assign({}, note.value, {
-			historyId: noteEdit.id,
-			// Conversion from updatedAt to createdAt
-			// The createdAt of a edition's content is actually the updatedAt of the previous one.
-			createdAt: arr[(index + 1) % arr.length].updatedAt,
-			text: noteEdit.text,
-			cw: noteEdit.cw,
-			_shouldInsertAd_: false,
-			files: noteEdit.files,
-			fileIds: noteEdit.fileIds,
-			emojis: note.value.emojis.concat(noteEdit.emojis),
+	return [now]
+		.concat(noteEdits)
+		.map((noteEdit: entities.NoteEdit, index, arr): entities.Note => {
+			return Object.assign({}, note.value, {
+				historyId: noteEdit.id,
+				// Conversion from updatedAt to createdAt
+				// The createdAt of a edition's content is actually the updatedAt of the previous one.
+				createdAt: arr[(index + 1) % arr.length].updatedAt,
+				text: noteEdit.text,
+				cw: noteEdit.cw,
+				_shouldInsertAd_: false,
+				files: noteEdit.files,
+				fileIds: noteEdit.fileIds,
+				emojis: note.value.emojis.concat(noteEdit.emojis),
+			});
 		});
-	});
 }
 </script>
 
