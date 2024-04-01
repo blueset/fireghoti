@@ -1279,11 +1279,11 @@ onMounted(() => {
 		}
 
 		// Inherit language settings when quoting or replying
-		if (props.renote) {
-			language.value = props.renote.lang ?? null;
+		if (props.renote?.lang) {
+			language.value = props.renote.lang;
 		}
-		if (props.reply) {
-			language.value = props.reply.lang ?? null;
+		if (props.reply?.lang) {
+			language.value = props.reply.lang;
 		}
 
 		nextTick(() => watchForDraft());
