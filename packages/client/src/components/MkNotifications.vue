@@ -71,9 +71,7 @@ const pagination: Paging = {
 	limit: 10,
 	params: computed(() => ({
 		includeTypes: props.includeTypes ?? undefined,
-		excludeTypes: props.includeTypes
-			? undefined
-			: me.mutingNotificationTypes,
+		excludeTypes: props.includeTypes ? undefined : me.mutingNotificationTypes,
 		unreadOnly: props.unreadOnly,
 	})),
 };
@@ -114,20 +112,12 @@ onMounted(() => {
 	connection.on("readNotifications", (notificationIds) => {
 		if (pagingComponent.value) {
 			for (let i = 0; i < pagingComponent.value.queue.length; i++) {
-				if (
-					notificationIds.includes(pagingComponent.value.queue[i].id)
-				) {
+				if (notificationIds.includes(pagingComponent.value.queue[i].id)) {
 					pagingComponent.value.queue[i].isRead = true;
 				}
 			}
-			for (
-				let i = 0;
-				i < (pagingComponent.value.items || []).length;
-				i++
-			) {
-				if (
-					notificationIds.includes(pagingComponent.value.items[i].id)
-				) {
+			for (let i = 0; i < (pagingComponent.value.items || []).length; i++) {
+				if (notificationIds.includes(pagingComponent.value.items[i].id)) {
 					pagingComponent.value.items[i].isRead = true;
 				}
 			}

@@ -1,6 +1,6 @@
 {
 	"name": "firefish",
-	"version": "20240326",
+	"version": "20240401",
 	"repository": {
 		"type": "git",
 		"url": "https://firefish.dev/firefish/firefish.git"
@@ -20,7 +20,7 @@
 		"watch": "pnpm run dev",
 		"dev": "pnpm node ./scripts/dev.mjs",
 		"dev:staging": "NODE_OPTIONS=--max_old_space_size=3072 NODE_ENV=development pnpm run build && pnpm run start",
-		"lint": "pnpm -r --parallel run lint",
+		"lint": "pnpm --filter !megalodon --filter !firefish-js -r --parallel run lint",
 		"debug": "pnpm run build:debug && pnpm run start",
 		"build:debug": "pnpm run clean && pnpm node ./scripts/dev-build.mjs && pnpm run gulp",
 		"mocha": "pnpm --filter backend run mocha",

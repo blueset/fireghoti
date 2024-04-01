@@ -164,14 +164,10 @@ const init = async (): Promise<void> => {
 					res.length > (props.pagination.limit || 10)
 				) {
 					res.pop();
-					items.value = props.pagination.reversed
-						? [...res].reverse()
-						: res;
+					items.value = props.pagination.reversed ? [...res].reverse() : res;
 					more.value = true;
 				} else {
-					items.value = props.pagination.reversed
-						? [...res].reverse()
-						: res;
+					items.value = props.pagination.reversed ? [...res].reverse() : res;
 					more.value = false;
 				}
 				offset.value = res.length;
@@ -381,8 +377,7 @@ const prepend = (item: Item): void => {
 
 		const isTop =
 			isBackTop.value ||
-			(document.body.contains(rootEl.value) &&
-				isTopVisible(rootEl.value));
+			(document.body.contains(rootEl.value) && isTopVisible(rootEl.value));
 
 		if (isTop) {
 			// Prepend the item

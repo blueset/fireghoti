@@ -1,7 +1,5 @@
-ifneq (dev,$(wildcard config.env))
-	include ./dev/config.env
-	export
-endif
+include ./dev/config.env
+export
 
 
 .PHONY: pre-commit
@@ -29,13 +27,13 @@ build:
 	pnpm run migrate
 
 
-.PHONY: db.init db.up db.down
-db.init:
-	$(MAKE) -C ./dev/db-container init
+.PHONY: db.up db.down db.init
 db.up:
 	$(MAKE) -C ./dev/db-container up
 db.down:
 	$(MAKE) -C ./dev/db-container down
+db.init:
+	$(MAKE) -C ./dev/db-container init
 
 .PHONY: psql redis-cli
 psql:

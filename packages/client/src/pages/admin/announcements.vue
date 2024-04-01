@@ -97,9 +97,7 @@ function remove(announcement) {
 		text: i18n.t("removeAreYouSure", { x: announcement.title }),
 	}).then(({ canceled }) => {
 		if (canceled) return;
-		announcements.value = announcements.value.filter(
-			(x) => x !== announcement,
-		);
+		announcements.value = announcements.value.filter((x) => x !== announcement);
 		os.api("admin/announcements/delete", announcement);
 	});
 }

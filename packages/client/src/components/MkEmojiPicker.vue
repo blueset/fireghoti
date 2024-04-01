@@ -113,19 +113,19 @@
 					<header>{{ i18n.ts.emoji }}</header>
 					<XSection
 						v-for="category in unicodeEmojiCategories"
-						:key="category"
-						:skin-tone-selector="category === 'people'"
+						:key="category.slug"
+						:skin-tone-selector="category.slug === 'people_body'"
 						:skin-tones="unicodeEmojiSkinTones"
 						:skin-tone-labels="unicodeEmojiSkinToneLabels"
 						:emojis="
 							emojilist
-								.filter((e) => e.category === category)
+								.filter(
+									(e) => e.category_slug === category.slug,
+								)
 								.map((e) => e.emoji)
 						"
 						@chosen="chosen"
-						>{{
-							getNicelyLabeledCategory(category) || category
-						}}</XSection
+						>{{ category.name }}</XSection
 					>
 				</div>
 			</div>
@@ -169,11 +169,7 @@ import type { entities } from "firefish-js";
 import { FocusTrap } from "focus-trap-vue";
 import XSection from "@/components/MkEmojiPicker.section.vue";
 import type { UnicodeEmojiDef } from "@/scripts/emojilist";
-import {
-	emojilist,
-	getNicelyLabeledCategory,
-	unicodeEmojiCategories,
-} from "@/scripts/emojilist";
+import { emojilist, unicodeEmojiCategories } from "@/scripts/emojilist";
 import { getStaticImageUrl } from "@/scripts/get-static-image-url";
 import Ripple from "@/components/MkRipple.vue";
 import * as os from "@/os";
@@ -284,9 +280,7 @@ watch(q, () => {
 					keywords.every(
 						(keyword) =>
 							emoji.name.includes(keyword) ||
-							emoji.aliases.some((alias) =>
-								alias.includes(keyword),
-							),
+							emoji.aliases.some((alias) => alias.includes(keyword)),
 					)
 				) {
 					matches.add(emoji);
@@ -356,9 +350,7 @@ watch(q, () => {
 					keywords.every(
 						(keyword) =>
 							emoji.slug.includes(keyword) ||
-							emoji.keywords?.some((alias) =>
-								alias.includes(keyword),
-							),
+							emoji.keywords?.some((alias) => alias.includes(keyword)),
 					)
 				) {
 					matches.add(emoji);
@@ -375,9 +367,7 @@ watch(q, () => {
 			if (matches.size >= max) return matches;
 
 			for (const emoji of emojis) {
-				if (
-					emoji.keywords?.some((keyword) => keyword.startsWith(newQ))
-				) {
+				if (emoji.keywords?.some((keyword) => keyword.startsWith(newQ))) {
 					matches.add(emoji);
 					if (matches.size >= max) break;
 				}
@@ -428,8 +418,7 @@ function getKey(
 
 function chosen(emoji: any, ev?: MouseEvent) {
 	const el =
-		ev &&
-		((ev.currentTarget ?? ev.target) as HTMLElement | null | undefined);
+		ev && ((ev.currentTarget ?? ev.target) as HTMLElement | null | undefined);
 	if (el) {
 		const rect = el.getBoundingClientRect();
 		const x = rect.left + el.offsetWidth / 2;

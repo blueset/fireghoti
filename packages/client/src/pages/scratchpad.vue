@@ -89,10 +89,7 @@ async function run() {
 			out: (value) => {
 				logs.value.push({
 					id: Math.random(),
-					text:
-						value.type === "str"
-							? value.value
-							: utils.valToString(value),
+					text: value.type === "str" ? value.value : utils.valToString(value),
 					print: true,
 				});
 			},

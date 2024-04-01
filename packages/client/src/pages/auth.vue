@@ -72,11 +72,9 @@ onMounted(() => {
 			fetching.value = false;
 
 			if (session.value.app.isAuthorized) {
-				os.api("auth/accept", { token: session.value.token }).then(
-					() => {
-						accepted();
-					},
-				);
+				os.api("auth/accept", { token: session.value.token }).then(() => {
+					accepted();
+				});
 			} else {
 				state.value = "waiting";
 			}

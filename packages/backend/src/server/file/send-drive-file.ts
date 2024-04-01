@@ -54,6 +54,8 @@ export default async function (ctx: Koa.Context) {
 		return;
 	}
 
+	ctx.set("X-Content-Type-Options", "nosniff");
+
 	const isThumbnail = file.thumbnailAccessKey === key;
 	const isWebpublic = file.webpublicAccessKey === key;
 

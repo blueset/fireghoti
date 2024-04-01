@@ -58,9 +58,7 @@ export default {
 						{
 							class: $style.text,
 							style: {
-								animationDirection: reverse
-									? "reverse"
-									: undefined,
+								animationDirection: reverse ? "reverse" : undefined,
 							},
 						},
 						$slots.default(),

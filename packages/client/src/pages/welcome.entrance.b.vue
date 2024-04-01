@@ -168,10 +168,7 @@ export default defineComponent({
 						text: i18n.ts.help,
 						icon: `${icon("ph-question")}`,
 						action: () => {
-							window.open(
-								`https://misskey-hub.net/help.md`,
-								"_blank",
-							);
+							window.open(`https://misskey-hub.net/help.md`, "_blank");
 						},
 					},
 				],

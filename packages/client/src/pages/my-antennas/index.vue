@@ -72,8 +72,8 @@ const headerTabs = computed(() => []);
 
 const list = ref<typeof MkPagination | null>(null);
 
-let isCached = false,
-	refreshTimer: number | null = null;
+let isCached = false;
+let refreshTimer: number | null = null;
 
 const refresh = () => {
 	if (isCached) {

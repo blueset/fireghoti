@@ -75,8 +75,7 @@ const audioEl = ref<HTMLAudioElement | null>();
 const hide = ref(true);
 
 function volumechange() {
-	if (audioEl.value)
-		ColdDeviceStorage.set("mediaVolume", audioEl.value.volume);
+	if (audioEl.value) ColdDeviceStorage.set("mediaVolume", audioEl.value.volume);
 }
 
 onMounted(() => {

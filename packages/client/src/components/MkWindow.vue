@@ -174,12 +174,12 @@ provide("inWindow", true);
 
 const rootEl = ref<HTMLElement | null>();
 const showing = ref(true);
-let beforeClickedAt = 0,
-	maximized = ref(false),
-	unMaximizedTop = "",
-	unMaximizedLeft = "",
-	unMaximizedWidth = "",
-	unMaximizedHeight = "";
+let beforeClickedAt = 0;
+const maximized = ref(false);
+let unMaximizedTop = "";
+let unMaximizedLeft = "";
+let unMaximizedWidth = "";
+let unMaximizedHeight = "";
 
 function close() {
 	showing.value = false;
@@ -203,9 +203,7 @@ function onContextmenu(ev: MouseEvent) {
 // 最前面へ移動
 function top() {
 	if (rootEl.value) {
-		rootEl.value.style.zIndex = os.claimZIndex(
-			props.front ? "middle" : "low",
-		);
+		rootEl.value.style.zIndex = os.claimZIndex(props.front ? "middle" : "low");
 	}
 }
 
@@ -282,8 +280,8 @@ function onHeaderMousedown(evt: MouseEvent) {
 	const windowHeight = main.offsetHeight;
 
 	function move(x: number, y: number) {
-		let moveLeft = x - moveBaseX,
-			moveTop = y - moveBaseY;
+		let moveLeft = x - moveBaseX;
+		let moveTop = y - moveBaseY;
 
 		// 下はみ出し
 		if (moveTop + windowHeight > browserHeight)
@@ -310,13 +308,9 @@ function onHeaderMousedown(evt: MouseEvent) {
 	// 動かした時
 	dragListen((me) => {
 		const x =
-			me.touches && me.touches.length > 0
-				? me.touches[0].clientX
-				: me.clientX;
+			me.touches && me.touches.length > 0 ? me.touches[0].clientX : me.clientX;
 		const y =
-			me.touches && me.touches.length > 0
-				? me.touches[0].clientY
-				: me.clientY;
+			me.touches && me.touches.length > 0 ? me.touches[0].clientY : me.clientY;
 
 		move(x, y);
 	});

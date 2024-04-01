@@ -182,8 +182,7 @@ function onMessage(message): void {
 				!(
 					(m.recipientId === message.recipientId &&
 						m.userId === message.userId) ||
-					(m.recipientId === message.userId &&
-						m.userId === message.recipientId)
+					(m.recipientId === message.userId && m.userId === message.recipientId)
 				),
 		);
 
@@ -267,8 +266,7 @@ onMounted(() => {
 					const _messages = userMessages.concat(groupMessages);
 					_messages.sort(
 						(a, b) =>
-							new Date(b.createdAt).getTime() -
-							new Date(a.createdAt).getTime(),
+							new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
 					);
 					messages.value = _messages;
 				},

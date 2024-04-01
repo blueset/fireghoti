@@ -2,9 +2,10 @@ import * as http from "node:http";
 import * as https from "node:https";
 import type { URL } from "node:url";
 import CacheableLookup from "cacheable-lookup";
-import fetch from "node-fetch";
+import fetch, { RequestRedirect } from "node-fetch";
 import { HttpProxyAgent, HttpsProxyAgent } from "hpagent";
 import config from "@/config/index.js";
+import { isValidUrl } from "./is-valid-url.js";
 
 export async function getJson(
 	url: string,
@@ -57,7 +58,12 @@ export async function getResponse(args: {
 	headers: Record<string, string>;
 	timeout?: number;
 	size?: number;
+	redirect?: RequestRedirect;
 }) {
+	if (!isValidUrl(args.url)) {
+		throw new StatusError("Invalid URL", 400);
+	}
+
 	const timeout = args.timeout || 10 * 1000;
 
 	const controller = new AbortController();
@@ -73,7 +79,15 @@ export async function getResponse(args: {
 		size: args.size || 10 * 1024 * 1024,
 		agent: getAgentByUrl,
 		signal: controller.signal,
+		redirect: args.redirect,
 	});
+
+	if (args.redirect === "manual" && [301, 302, 307, 308].includes(res.status)) {
+		if (!isValidUrl(res.url)) {
+			throw new StatusError("Invalid URL", 400);
+		}
+		return res;
+	}
 
 	if (!res.ok) {
 		throw new StatusError(

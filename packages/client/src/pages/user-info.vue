@@ -414,8 +414,7 @@ function createFetcher() {
 				emojiModPerm.value = info.value.emojiModPerm;
 				silenced.value = info.value.isSilenced;
 				suspended.value = info.value.isSuspended;
-				driveCapacityOverrideMb.value =
-					user.value.driveCapacityOverrideMb;
+				driveCapacityOverrideMb.value = user.value.driveCapacityOverrideMb;
 				moderationNote.value = info.value.moderationNote;
 
 				watch(moderationNote, async () => {

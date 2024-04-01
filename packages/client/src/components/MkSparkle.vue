@@ -79,8 +79,8 @@ const el = ref<HTMLElement>();
 const width = ref(0);
 const height = ref(0);
 const colors = ["#eb6f92", "#9ccfd8", "#f6c177", "#f6c177", "#f6c177"];
-let stop = false,
-	ro: ResizeObserver | undefined;
+let stop = false;
+let ro: ResizeObserver | undefined;
 
 onMounted(() => {
 	if (!reducedMotion()) {
@@ -104,9 +104,7 @@ onMounted(() => {
 			};
 			particles.value.push(particle);
 			window.setTimeout(() => {
-				particles.value = particles.value.filter(
-					(x) => x.id !== particle.id,
-				);
+				particles.value = particles.value.filter((x) => x.id !== particle.id);
 			}, particle.dur - 100);
 
 			window.setTimeout(

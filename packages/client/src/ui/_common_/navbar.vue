@@ -178,8 +178,7 @@ const otherMenuItemIndicated = computed(() => {
 
 const calcViewState = () => {
 	iconOnly.value =
-		window.innerWidth <= 1279 ||
-		defaultStore.state.menuDisplay === "sideIcon";
+		window.innerWidth <= 1279 || defaultStore.state.menuDisplay === "sideIcon";
 };
 
 calcViewState();

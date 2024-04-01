@@ -93,8 +93,8 @@ export class Router extends EventEmitter<{
 	}
 
 	public resolve(path: string): Resolved | null {
-		let queryString: string | null = null,
-			hash: string | null = null;
+		let queryString: string | null = null;
+		let hash: string | null = null;
 		if (path[0] === "/") path = path.substring(1);
 		if (path.includes("#")) {
 			hash = path.substring(path.indexOf("#") + 1);

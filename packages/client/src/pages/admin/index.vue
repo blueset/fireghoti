@@ -221,31 +221,25 @@ const menuDef = computed(() => [
 							icon: `${icon("ph-gear-six")}`,
 							text: i18n.ts.general,
 							to: "/admin/settings",
-							active:
-								currentPage.value?.route.name === "settings",
+							active: currentPage.value?.route.name === "settings",
 						},
 						{
 							icon: `${icon("ph-envelope-simple-open")}`,
 							text: i18n.ts.emailServer,
 							to: "/admin/email-settings",
-							active:
-								currentPage.value?.route.name ===
-								"email-settings",
+							active: currentPage.value?.route.name === "email-settings",
 						},
 						{
 							icon: `${icon("ph-cloud")}`,
 							text: i18n.ts.objectStorage,
 							to: "/admin/object-storage",
-							active:
-								currentPage.value?.route.name ===
-								"object-storage",
+							active: currentPage.value?.route.name === "object-storage",
 						},
 						{
 							icon: `${icon("ph-lock")}`,
 							text: i18n.ts.security,
 							to: "/admin/security",
-							active:
-								currentPage.value?.route.name === "security",
+							active: currentPage.value?.route.name === "security",
 						},
 						{
 							icon: `${icon("ph-arrows-merge")}`,
@@ -257,38 +251,31 @@ const menuDef = computed(() => [
 							icon: `${icon("ph-prohibit")}`,
 							text: i18n.ts.instanceBlocking,
 							to: "/admin/instance-block",
-							active:
-								currentPage.value?.route.name ===
-								"instance-block",
+							active: currentPage.value?.route.name === "instance-block",
 						},
 						{
 							icon: `${icon("ph-hash")}`,
 							text: i18n.ts.hiddenTags,
 							to: "/admin/hashtags",
-							active:
-								currentPage.value?.route.name === "hashtags",
+							active: currentPage.value?.route.name === "hashtags",
 						},
 						{
 							icon: `${icon("ph-ghost")}`,
 							text: i18n.ts.proxyAccount,
 							to: "/admin/proxy-account",
-							active:
-								currentPage.value?.route.name ===
-								"proxy-account",
+							active: currentPage.value?.route.name === "proxy-account",
 						},
 						{
 							icon: `${icon("ph-database")}`,
 							text: i18n.ts.database,
 							to: "/admin/database",
-							active:
-								currentPage.value?.route.name === "database",
+							active: currentPage.value?.route.name === "database",
 						},
 						{
 							icon: `${icon("ph-flask")}`,
 							text: i18n.ts._experiments.title,
 							to: "/admin/experiments",
-							active:
-								currentPage.value?.route.name === "experiments",
+							active: currentPage.value?.route.name === "experiments",
 						},
 					],
 				},

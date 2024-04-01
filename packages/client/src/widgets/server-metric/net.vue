@@ -112,10 +112,8 @@ function onStats(connStats) {
 
 	inHeadX.value = inPolylinePointsStats[inPolylinePointsStats.length - 1][0];
 	inHeadY.value = inPolylinePointsStats[inPolylinePointsStats.length - 1][1];
-	outHeadX.value =
-		outPolylinePointsStats[outPolylinePointsStats.length - 1][0];
-	outHeadY.value =
-		outPolylinePointsStats[outPolylinePointsStats.length - 1][1];
+	outHeadX.value = outPolylinePointsStats[outPolylinePointsStats.length - 1][0];
+	outHeadY.value = outPolylinePointsStats[outPolylinePointsStats.length - 1][1];
 
 	inRecent.value = connStats.net.rx;
 	outRecent.value = connStats.net.tx;

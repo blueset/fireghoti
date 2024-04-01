@@ -140,8 +140,7 @@ export default defineComponent({
 			window.addEventListener(
 				"resize",
 				() => {
-					if (window.innerWidth >= DESKTOP_THRESHOLD)
-						this.isDesktop = true;
+					if (window.innerWidth >= DESKTOP_THRESHOLD) this.isDesktop = true;
 				},
 				{ passive: true },
 			);

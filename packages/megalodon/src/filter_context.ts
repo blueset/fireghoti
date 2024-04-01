@@ -1,4 +1,4 @@
-import Entity from "./entity";
+import type Entity from "./entity";
 
 namespace FilterContext {
 	export const Home: Entity.FilterContext = "home";

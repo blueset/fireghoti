@@ -5,6 +5,15 @@ Critical security updates are indicated by the :warning: icon.
 - Server administrators should check [notice-for-admins.md](./notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](./api-change.md) as well.
 
+## [v20240401](https://firefish.dev/firefish/firefish/-/merge_requests/10724/commits)
+
+- Fix bugs
+
+## :warning: [v20240330](https://firefish.dev/firefish/firefish/-/merge_requests/10719/commits)
+
+- Fix bugs (including a critical security issue)
+	- We are very thankful to Oneric (the reporter of the security issue) and Laura Hausmann (Iceshrimp maintainer) for kindly and securely sharing the information to fix the issue.
+
 ## [v20240326](https://firefish.dev/firefish/firefish/-/merge_requests/10713/commits)
 
 - Fix bugs

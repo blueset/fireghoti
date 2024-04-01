@@ -63,10 +63,7 @@ export default defineComponent({
 					const formData = new FormData();
 					formData.append("file", blob);
 					if (this.defaultStore.state.uploadFolder) {
-						formData.append(
-							"folderId",
-							this.defaultStore.state.uploadFolder,
-						);
+						formData.append("folderId", this.defaultStore.state.uploadFolder);
 					}
 
 					fetch(apiUrl + "/drive/files/create", {
@@ -87,9 +84,7 @@ export default defineComponent({
 		},
 		async post() {
 			this.posting = true;
-			const file = this.block.attachCanvasImage
-				? await this.upload()
-				: null;
+			const file = this.block.attachCanvasImage ? await this.upload() : null;
 			os.apiWithDialog("notes/create", {
 				text: this.text === "" ? null : this.text,
 				fileIds: file ? [file.id] : undefined,

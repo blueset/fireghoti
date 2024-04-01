@@ -94,10 +94,7 @@ export default defineComponent({
 
 	methods: {
 		search() {
-			if (
-				(this.q === "" || this.q == null) &&
-				this.selectedTags.size === 0
-			) {
+			if ((this.q === "" || this.q == null) && this.selectedTags.size === 0) {
 				this.searchEmojis = null;
 				return;
 			}
@@ -105,17 +102,13 @@ export default defineComponent({
 			if (this.selectedTags.size === 0) {
 				this.searchEmojis = this.customEmojis.filter(
 					(emoji) =>
-						emoji.name.includes(this.q) ||
-						emoji.aliases.includes(this.q),
+						emoji.name.includes(this.q) || emoji.aliases.includes(this.q),
 				);
 			} else {
 				this.searchEmojis = this.customEmojis.filter(
 					(emoji) =>
-						(emoji.name.includes(this.q) ||
-							emoji.aliases.includes(this.q)) &&
-						[...this.selectedTags].every((t) =>
-							emoji.aliases.includes(t),
-						),
+						(emoji.name.includes(this.q) || emoji.aliases.includes(this.q)) &&
+						[...this.selectedTags].every((t) => emoji.aliases.includes(t)),
 				);
 			}
 		},

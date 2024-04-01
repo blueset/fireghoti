@@ -331,8 +331,8 @@ import { vibrate } from "@/scripts/vibrate";
 import { langmap } from "@/scripts/langmap";
 import {
 	detectLanguage,
-	isSupportedLang,
 	isSameLanguage,
+	isSupportedLang,
 	languageContains,
 	parentLanguage,
 } from "@/scripts/language-utils";
@@ -527,9 +527,7 @@ if (
 		(props.reply.user.host != null && props.reply.user.host !== host))
 ) {
 	text.value = `@${props.reply.user.username}${
-		props.reply.user.host != null
-			? "@" + toASCII(props.reply.user.host)
-			: ""
+		props.reply.user.host != null ? "@" + toASCII(props.reply.user.host) : ""
 	} `;
 }
 
@@ -589,11 +587,9 @@ if (
 		}
 
 		if (props.reply.userId !== me.id) {
-			os.api("users/show", { userId: props.reply.userId }).then(
-				(user) => {
-					pushVisibleUser(user);
-				},
-			);
+			os.api("users/show", { userId: props.reply.userId }).then((user) => {
+				pushVisibleUser(user);
+			});
 		}
 	}
 }
@@ -732,9 +728,7 @@ function setVisibility() {
 	}
 
 	os.popup(
-		defineAsyncComponent(
-			() => import("@/components/MkVisibilityPicker.vue"),
-		),
+		defineAsyncComponent(() => import("@/components/MkVisibilityPicker.vue")),
 		{
 			currentVisibility: visibility.value,
 			currentLocalOnly: localOnly.value,
@@ -834,8 +828,7 @@ function setLanguage() {
 
 	for (const lang of langs) {
 		if (lang === language.value) continue;
-		if (defaultStore.state.recentlyUsedPostLanguages.includes(lang))
-			continue;
+		if (defaultStore.state.recentlyUsedPostLanguages.includes(lang)) continue;
 		actions.push({
 			text: langmap[lang].nativeName,
 			danger: false,
@@ -1072,8 +1065,7 @@ async function post() {
 	let postData = {
 		editId: props.editId ? props.editId : undefined,
 		text: processedText === "" ? undefined : processedText,
-		fileIds:
-			files.value.length > 0 ? files.value.map((f) => f.id) : undefined,
+		fileIds: files.value.length > 0 ? files.value.map((f) => f.id) : undefined,
 		replyId: props.reply ? props.reply.id : undefined,
 		renoteId: props.renote
 			? props.renote.id
@@ -1085,8 +1077,7 @@ async function post() {
 		cw: useCw.value ? cw.value || "" : undefined,
 		lang: language.value ? language.value : undefined,
 		localOnly: localOnly.value,
-		visibility:
-			visibility.value === "private" ? "specified" : visibility.value,
+		visibility: visibility.value === "private" ? "specified" : visibility.value,
 		visibleUserIds:
 			visibility.value === "private"
 				? []
@@ -1101,9 +1092,7 @@ async function post() {
 			.split(" ")
 			.map((x) => (x.startsWith("#") ? x : "#" + x))
 			.join(" ");
-		postData.text = postData.text
-			? `${postData.text} ${hashtags_}`
-			: hashtags_;
+		postData.text = postData.text ? `${postData.text} ${hashtags_}` : hashtags_;
 	}
 
 	// plugin
@@ -1117,9 +1106,7 @@ async function post() {
 
 	if (postAccount.value) {
 		const storedAccounts = await getAccounts();
-		token = storedAccounts.find(
-			(x) => x.id === postAccount.value.id,
-		)?.token;
+		token = storedAccounts.find((x) => x.id === postAccount.value.id)?.token;
 	}
 
 	posting.value = true;
@@ -1165,14 +1152,9 @@ async function post() {
 			"recentlyUsedPostLanguages",
 			[language.value]
 				.concat(
-					defaultStore.state.recentlyUsedPostLanguages.filter(
-						(lang) => {
-							return (
-								lang !== language.value &&
-								languages.includes(lang)
-							);
-						},
-					),
+					defaultStore.state.recentlyUsedPostLanguages.filter((lang) => {
+						return lang !== language.value && languages.includes(lang);
+					}),
 				)
 				.slice(0, maxLength),
 		);
@@ -1268,9 +1250,7 @@ onMounted(() => {
 				visibility.value = draft.data.visibility;
 				localOnly.value = draft.data.localOnly;
 				language.value = draft.data.lang;
-				files.value = (draft.data.files || []).filter(
-					(draftFile) => draftFile,
-				);
+				files.value = (draft.data.files || []).filter((draftFile) => draftFile);
 				if (draft.data.poll) {
 					poll.value = draft.data.poll;
 				}
@@ -1296,6 +1276,14 @@ onMounted(() => {
 			localOnly.value = init.localOnly;
 			language.value = init.lang;
 			quoteId.value = init.renote ? init.renote.id : null;
+		}
+
+		// Inherit language settings when quoting or replying
+		if (props.renote) {
+			language.value = props.renote.lang ?? null;
+		}
+		if (props.reply) {
+			language.value = props.reply.lang ?? null;
 		}
 
 		nextTick(() => watchForDraft());

@@ -412,8 +412,7 @@ async function translate() {
 		lang != null &&
 		translateLang !== lang &&
 		(!translation.value ||
-			translation.value.sourceLang.toLowerCase() ===
-				translateLang.slice(0, 2))
+			translation.value.sourceLang.toLowerCase() === translateLang.slice(0, 2))
 	)
 		translation.value = await translate_(appearNote.value.id, lang);
 	translating.value = false;
@@ -515,10 +514,7 @@ function onContextmenu(ev: MouseEvent): void {
 							icon: `${icon("ph-arrows-out-simple")}`,
 							text: i18n.ts.showInPage,
 							action: () => {
-								router.push(
-									notePage(appearNote.value),
-									"forcePage",
-								);
+								router.push(notePage(appearNote.value), "forcePage");
 							},
 						}
 					: undefined,
@@ -542,10 +538,7 @@ function onContextmenu(ev: MouseEvent): void {
 							type: "a",
 							icon: `${icon("ph-arrow-square-up-right")}`,
 							text: i18n.ts.showOnRemote,
-							href:
-								appearNote.value.url ??
-								appearNote.value.uri ??
-								"",
+							href: appearNote.value.url ?? appearNote.value.uri ?? "",
 							target: "_blank",
 						}
 					: undefined,
