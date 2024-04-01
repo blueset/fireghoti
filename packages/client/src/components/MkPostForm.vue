@@ -1278,6 +1278,14 @@ onMounted(() => {
 			quoteId.value = init.renote ? init.renote.id : null;
 		}
 
+		// Inherit language settings when quoting or replying
+		if (props.renote) {
+			language.value = props.renote.lang ?? null;
+		}
+		if (props.reply) {
+			language.value = props.reply.lang ?? null;
+		}
+
 		nextTick(() => watchForDraft());
 		nextTick(() => autosize.update(textareaEl.value));
 	});
