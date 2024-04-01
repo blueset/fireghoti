@@ -429,7 +429,7 @@ const keymap = {
 	s: () => showContent.value !== showContent.value,
 };
 
-if (!appearNote.value.historyId) {
+if (appearNote.value.historyId == null) {
 	useNoteCapture({
 		rootEl: el,
 		note: appearNote,
