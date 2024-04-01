@@ -63,5 +63,5 @@ export default define(meta, paramDef, async (ps, user) => {
 		},
 	});
 
-	return await NoteEdits.packMany(history);
+	return await NoteEdits.packMany(history, note);
 });

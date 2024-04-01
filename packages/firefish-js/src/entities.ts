@@ -186,6 +186,10 @@ export type NoteEdit = {
 	updatedAt: string;
 	fileIds: DriveFile["id"][];
 	files: DriveFile[];
+	emojis: {
+		name: string;
+		url: string;
+	}[];
 };
 
 export type NoteReaction = {

@@ -56,5 +56,10 @@ export const packedNoteEdit = {
 				ref: "DriveFile",
 			},
 		},
+		emojis: {
+			type: "object",
+			optional: true,
+			nullable: true,
+		},
 	},
 } as const;

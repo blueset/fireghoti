@@ -93,6 +93,7 @@ function convertNoteEditsToNotes(noteEdits: NoteEdit[]) {
 		cw: note.value.cw,
 		files: note.value.files,
 		fileIds: note.value.fileIds,
+		emojis: note.value.emojis,
 	};
 
 	return [now]
@@ -108,6 +109,7 @@ function convertNoteEditsToNotes(noteEdits: NoteEdit[]) {
 				_shouldInsertAd_: false,
 				files: noteEdit.files,
 				fileIds: noteEdit.fileIds,
+				emojis: note.value.emojis.concat(noteEdit.emojis),
 			});
 		});
 }

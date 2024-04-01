@@ -621,6 +621,7 @@ export default define(meta, paramDef, async (ps, user) => {
 			cw: note.cw,
 			fileIds: note.fileIds,
 			updatedAt: new Date(),
+			emojis: note.emojis,
 		});
 
 		publishing = true;
