@@ -31,9 +31,9 @@ psql (PostgreSQL) 16.1
 
 In this case, your PostgreSQL major version is `16`.
 
-There are official installation instructions for many operating systems on <https://pgroonga.github.io/install>, so please follow the instructions on this page. However, since many users are using Ubuntu, and there are no instructions for Arch Linux and Fedora, we explicitly list the instructions for Ubuntu, Arch Linux and Fedora here. Please keep in mind that this is not official information and the procedures may change.
+There are official installation instructions for many operating systems on <https://pgroonga.github.io/install>, so please follow the instructions on this page. However, since many users are using Ubuntu or Debian, and there are no instructions for Arch Linux and Fedora, we explicitly list the instructions for Ubuntu, Debian, Arch Linux and Fedora here. Please keep in mind that this is not official information and the procedures may change.
 
-##### Ubuntu
+##### Ubuntu 22.04 LTS or 20.04 LTS
 
 1. Install subdependencies and add apt repository
     ```sh
@@ -43,8 +43,23 @@ There are official installation instructions for many operating systems on <http
     sudo apt install -y wget lsb-release
     wget https://packages.groonga.org/ubuntu/groonga-apt-source-latest-$(lsb_release --codename --short).deb
     sudo apt install -y -V ./groonga-apt-source-latest-$(lsb_release --codename --short).deb
-    echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release --codename --short)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
-    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+    sudo apt update
+    ```
+2. Install PGroonga
+    ```sh
+    # Please replace "16" with your PostgreSQL major version
+    sudo apt install postgresql-16-pgdg-pgroonga
+    ```
+
+##### Debian 12 or 11
+
+1. Install subdependencies and add apt repository
+    ```sh
+    sudo apt install -y -V ca-certificates lsb-release wget
+    wget https://apache.jfrog.io/artifactory/arrow/$(lsb_release --id --short | tr 'A-Z' 'a-z')/apache-arrow-apt-source-latest-$(lsb_release --codename --short).deb
+    sudo apt install -y -V ./apache-arrow-apt-source-latest-$(lsb_release --codename --short).deb
+    wget https://packages.groonga.org/debian/groonga-apt-source-latest-$(lsb_release --codename --short).deb
+    sudo apt install -y -V ./groonga-apt-source-latest-$(lsb_release --codename --short).deb
     sudo apt update
     ```
 2. Install PGroonga
