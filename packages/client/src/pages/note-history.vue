@@ -96,22 +96,20 @@ function convertNoteEditsToNotes(noteEdits: NoteEdit[]) {
 		emojis: note.value.emojis,
 	};
 
-	return [now]
-		.concat(noteEdits)
-		.map((noteEdit: NoteEdit, index, arr): Note => {
-			return Object.assign({}, note.value, {
-				historyId: noteEdit.id,
-				// Conversion from updatedAt to createdAt
-				// The createdAt of a edition's content is actually the updatedAt of the previous one.
-				createdAt: arr[(index + 1) % arr.length].updatedAt,
-				text: noteEdit.text,
-				cw: noteEdit.cw,
-				_shouldInsertAd_: false,
-				files: noteEdit.files,
-				fileIds: noteEdit.fileIds,
-				emojis: note.value.emojis.concat(noteEdit.emojis),
-			});
+	return [now].concat(noteEdits).map((noteEdit: NoteEdit, index, arr): Note => {
+		return Object.assign({}, note.value, {
+			historyId: noteEdit.id,
+			// Conversion from updatedAt to createdAt
+			// The createdAt of a edition's content is actually the updatedAt of the previous one.
+			createdAt: arr[(index + 1) % arr.length].updatedAt,
+			text: noteEdit.text,
+			cw: noteEdit.cw,
+			_shouldInsertAd_: false,
+			files: noteEdit.files,
+			fileIds: noteEdit.fileIds,
+			emojis: note.value.emojis.concat(noteEdit.emojis),
 		});
+	});
 }
 </script>
 
