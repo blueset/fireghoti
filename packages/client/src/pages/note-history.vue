@@ -61,7 +61,7 @@ const pagination: Paging = {
 
 definePageMetadata(
 	computed(() => ({
-		title: i18n.t("noteEditHistory"),
+		title: i18n.ts.noteEditHistory,
 		icon: `${icon("ph-clock-countdown")}`,
 	})),
 );
