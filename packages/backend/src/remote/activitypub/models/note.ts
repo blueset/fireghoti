@@ -773,6 +773,7 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 			cw: note.cw,
 			fileIds: note.fileIds,
 			updatedAt: update.updatedAt,
+			emojis: note.emojis,
 		});
 
 		publishing = true;

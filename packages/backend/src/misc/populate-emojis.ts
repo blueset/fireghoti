@@ -8,6 +8,7 @@ import { decodeReaction } from "./reaction-lib.js";
 import config from "@/config/index.js";
 import { query } from "@/prelude/url.js";
 import { redisClient } from "@/db/redis.js";
+import type { NoteEdit } from "@/models/entities/note-edit.js";
 
 const cache = new Cache<Emoji | null>("populateEmojis", 60 * 60 * 12);
 
@@ -110,6 +111,23 @@ export async function populateEmojis(
 	return emojis.filter((x): x is PopulatedEmoji => x != null);
 }
 
+export function aggregateNoteEditEmojis(
+	noteEdits: NoteEdit[],
+	sourceHost: string | null,
+) {
+	let emojis: string[] = [];
+	for (const noteEdit of noteEdits) {
+		emojis = emojis.concat(noteEdit.emojis);
+	}
+	emojis = Array.from(new Set(emojis));
+	return emojis
+		.map((e) => parseEmojiStr(e, sourceHost))
+		.filter((x) => x.name != null) as {
+		name: string;
+		host: string | null;
+	}[];
+}
+
 export function aggregateNoteEmojis(notes: Note[]) {
 	let emojis: { name: string | null; host: string | null }[] = [];
 	for (const note of notes) {
@@ -145,7 +163,7 @@ export function aggregateNoteEmojis(notes: Note[]) {
 }
 
 /**
- * 与えられた絵文字のリストをデータベースから取得し、キャッシュに追加します
+ * Get the given list of emojis from the database and adds them to the cache
  */
 export async function prefetchEmojis(
 	emojis: { name: string; host: string | null }[],

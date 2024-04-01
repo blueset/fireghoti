@@ -621,6 +621,7 @@ export default define(meta, paramDef, async (ps, user) => {
 			cw: note.cw,
 			fileIds: note.fileIds,
 			updatedAt: new Date(),
+			emojis: note.emojis,
 		});
 
 		publishing = true;
@@ -639,7 +640,7 @@ export default define(meta, paramDef, async (ps, user) => {
 
 		(async () => {
 			const noteActivity = await renderNote(note, false);
-			noteActivity.updated = note.updatedAt.toISOString();
+			noteActivity.updated = new Date().toISOString();
 			const updateActivity = renderUpdate(noteActivity, user);
 			updateActivity.to = noteActivity.to;
 			updateActivity.cc = noteActivity.cc;

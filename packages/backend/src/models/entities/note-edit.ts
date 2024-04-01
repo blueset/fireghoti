@@ -50,4 +50,11 @@ export class NoteEdit {
 		comment: "The updated date of the Note.",
 	})
 	public updatedAt: Date;
+
+	@Column("varchar", {
+		length: 128,
+		array: true,
+		default: "{}",
+	})
+	public emojis: string[];
 }

@@ -16,6 +16,7 @@ pub struct Model {
     pub file_ids: Vec<String>,
     #[sea_orm(column_name = "updatedAt")]
     pub updated_at: DateTimeWithTimeZone,
+    pub emojis: Vec<String>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

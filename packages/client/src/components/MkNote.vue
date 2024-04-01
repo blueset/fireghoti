@@ -2,7 +2,7 @@
 	<div
 		v-if="!muted.muted"
 		v-show="!isDeleted"
-		:id="appearNote.id"
+		:id="appearNote.historyId || appearNote.id"
 		ref="el"
 		v-hotkey="keymap"
 		v-size="{ max: [500, 350] }"
@@ -91,6 +91,9 @@
 			:style="{
 				cursor: expandOnNoteClick && !detailedView ? 'pointer' : '',
 			}"
+			:class="{
+				history: appearNote.historyId,
+			}"
 			@contextmenu.stop="onContextmenu"
 			@click="noteClick"
 		>
@@ -154,7 +157,12 @@
 						{{ appearNote.channel.name }}</MkA
 					>
 				</div>
-				<footer ref="footerEl" class="footer" tabindex="-1">
+				<footer
+					v-show="!hideFooter"
+					ref="footerEl"
+					class="footer"
+					tabindex="-1"
+				>
 					<XReactionsViewer
 						v-if="enableEmojiReactions"
 						ref="reactionsViewer"
@@ -312,6 +320,7 @@ const props = defineProps<{
 	pinned?: boolean;
 	detailedView?: boolean;
 	collapsedReply?: boolean;
+	hideFooter?: boolean;
 }>();
 
 const inChannel = inject("inChannel", null);
@@ -420,11 +429,13 @@ const keymap = {
 	s: () => showContent.value !== showContent.value,
 };
 
-useNoteCapture({
-	rootEl: el,
-	note: appearNote,
-	isDeletedRef: isDeleted,
-});
+if (appearNote.value.historyId == null) {
+	useNoteCapture({
+		rootEl: el,
+		note: appearNote,
+		isDeletedRef: isDeleted,
+	});
+}
 
 function reply(viaKeyboard = false): void {
 	pleaseLogin();
@@ -851,6 +862,9 @@ defineExpose({
 		overflow: clip;
 		padding: 20px 32px 10px;
 		margin-top: -16px;
+		&.history {
+			margin-top: -90px !important;
+		}
 
 		&:first-child,
 		&:nth-child(2) {

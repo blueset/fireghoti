@@ -240,6 +240,7 @@ import * as ep___notes_conversation from "./endpoints/notes/conversation.js";
 import * as ep___notes_create from "./endpoints/notes/create.js";
 import * as ep___notes_delete from "./endpoints/notes/delete.js";
 import * as ep___notes_edit from "./endpoints/notes/edit.js";
+import * as ep___notes_history from "./endpoints/notes/history.js";
 import * as ep___notes_favorites_create from "./endpoints/notes/favorites/create.js";
 import * as ep___notes_favorites_delete from "./endpoints/notes/favorites/delete.js";
 import * as ep___notes_featured from "./endpoints/notes/featured.js";
@@ -583,6 +584,7 @@ const eps = [
 	["notes/create", ep___notes_create],
 	["notes/delete", ep___notes_delete],
 	["notes/edit", ep___notes_edit],
+	["notes/history", ep___notes_history],
 	["notes/favorites/create", ep___notes_favorites_create],
 	["notes/favorites/delete", ep___notes_favorites_delete],
 	["notes/featured", ep___notes_featured],
