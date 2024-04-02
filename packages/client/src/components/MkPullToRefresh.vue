@@ -21,8 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				/>
 				<i
 					v-else
-					class="ti ti-arrow-bar-to-down"
-					:class="[$style.icon, { [$style.refresh]: pullEnded }]"
+					:class="[$style.icon, icon('ph-arrow-down'), { [$style.refresh]: pullEnded }]"
 				></i>
 				<div :class="$style.text">
 					<template v-if="pullEnded">{{
@@ -44,12 +43,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, shallowRef } from "vue";
 import { i18n } from "@/i18n";
+import { defaultStore } from "@/store";
 import { getScrollContainer } from "@/scripts/scroll";
-import { isHorizontalSwipeSwiping } from "@/scripts/touch";
+import { isDuringHorizontalSwipe } from "@/scripts/touch";
+import icon from "@/scripts/icon";
 
 const SCROLL_STOP = 10;
 const MAX_PULL_DISTANCE = Infinity;
-const FIRE_THRESHOLD = 230;
+const FIRE_THRESHOLD = defaultStore.state.pullToRefreshThreshold;
 const RELEASE_TRANSITION_DURATION = 200;
 const PULL_BRAKE_BASE = 1.5;
 const PULL_BRAKE_FACTOR = 170;
@@ -150,7 +151,7 @@ function moving(event: TouchEvent | PointerEvent) {
 			(supportPointerDesktop
 				? SCROLL_STOP
 				: SCROLL_STOP + pullDistance.value) ||
-		isHorizontalSwipeSwiping.value
+		isDuringHorizontalSwipe.value
 	) {
 		pullDistance.value = 0;
 		pullEnded.value = false;
@@ -202,7 +203,7 @@ function onScrollContainerScroll() {
 function registerEventListenersForReadyToPull() {
 	if (rootEl.value == null) return;
 	rootEl.value.addEventListener("touchstart", moveStart, { passive: true });
-	rootEl.value.addEventListener("touchmove", moving, { passive: false }); // passive: falseにしないとpreventDefaultが使えない
+	rootEl.value.addEventListener("touchmove", moving, { passive: false }); // setting passive to false to allow preventDefault
 }
 
 function unregisterEventListenersForReadyToPull() {
@@ -227,8 +228,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-	if (scrollEl)
-		scrollEl.removeEventListener("scroll", onScrollContainerScroll);
+	if (scrollEl) scrollEl.removeEventListener("scroll", onScrollContainerScroll);
 
 	unregisterEventListenersForReadyToPull();
 });

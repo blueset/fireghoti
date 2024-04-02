@@ -40,6 +40,11 @@ export const routes = [
 		component: page(() => import("./pages/note.vue")),
 	},
 	{
+		name: "note-history",
+		path: "/notes/:noteId/history",
+		component: page(() => import("./pages/note-history.vue")),
+	},
+	{
 		path: "/clips/:clipId",
 		component: page(() => import("./pages/clip.vue")),
 	},

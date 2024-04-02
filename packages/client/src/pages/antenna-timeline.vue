@@ -3,7 +3,11 @@
 		<template #header
 			><MkPageHeader :actions="headerActions" :tabs="headerTabs"
 		/></template>
-		<div ref="rootEl" v-hotkey.global="keymap" class="tqmomfks">
+		<div
+			ref="rootEl"
+			v-hotkey.global="keymap"
+			class="tqmomfks"
+		>
 			<div class="tl _block">
 				<XTimeline
 					ref="tlEl"

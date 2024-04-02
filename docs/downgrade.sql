@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'ExpandNoteEdit1711936358554',
     'markLocalFilesNsfwByDefault1709305200000',
     'FixMutingIndices1710690239308',
     'NoteFile1710304584214',
@@ -19,6 +20,9 @@ DELETE FROM "migrations" WHERE name IN (
     'RemoveNativeUtilsMigration1705877093218',
     'SwSubscriptionAccessToken1709395223611'
 );
+
+-- expand-note-edit
+ALTER TABLE "note_edit" DROP COLUMN "emojis";
 
 -- markLocalFilesNsfwByDefault
 ALTER TABLE "meta" DROP COLUMN "markLocalFilesNsfwByDefault";

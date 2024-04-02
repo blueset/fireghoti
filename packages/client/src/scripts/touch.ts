@@ -1,8 +1,3 @@
-/*
- * SPDX-FileCopyrightText: syuilo and misskey-project
- * SPDX-License-Identifier: AGPL-3.0-only
- */
-
 import { ref } from "vue";
 import { deviceKind } from "@/scripts/device-kind.js";
 
@@ -16,13 +11,13 @@ if (isTouchSupported && !isTouchUsing) {
 	window.addEventListener(
 		"touchstart",
 		() => {
-			// maxTouchPointsなどでの判定だけだと、「タッチ機能付きディスプレイを使っているがマウスでしか操作しない」場合にも
-			// タッチで使っていると判定されてしまうため、実際に一度でもタッチされたらtrueにする
+			// maxTuochPoints reflects the property of the display, but there are cases where the display has touch functionality but the user uses a mouse.
+			// Therefore, we need to check if the user actually uses touch functionality.
 			isTouchUsing = true;
 		},
 		{ passive: true },
 	);
 }
 
-/** (MkHorizontalSwipe) 横スワイプ中か？ */
-export const isHorizontalSwipeSwiping = ref(false);
+/** (MkHorizontalSwipe) is during horizontal swipe? */
+export const isDuringHorizontalSwipe = ref(false);

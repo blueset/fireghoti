@@ -118,10 +118,9 @@ const emit = defineEmits<{
 	(ev: "status", error: boolean): void;
 }>();
 
-interface Item {
+type Item = Endpoints[typeof props.pagination.endpoint]["res"] & {
 	id: string;
-	[another: string]: unknown;
-}
+};
 
 const rootEl = ref<HTMLElement>();
 const items = ref<Item[]>([]);
