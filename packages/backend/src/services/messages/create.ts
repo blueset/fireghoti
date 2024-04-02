@@ -7,7 +7,7 @@ import {
 	Mutings,
 	Users,
 } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import type { MessagingMessage } from "@/models/entities/messaging-message.js";
 import {
 	publishMessagingStream,

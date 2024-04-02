@@ -1,6 +1,6 @@
 import type { User } from "@/models/entities/user.js";
 import { Hashtags, Users } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import type { Hashtag } from "@/models/entities/hashtag.js";
 import { normalizeForSearch } from "@/misc/normalize-for-search.js";
 

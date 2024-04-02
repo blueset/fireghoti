@@ -310,7 +310,7 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { AntennaSrcEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, nativeRandomStr, IdConvertType, convertId, nativeGetTimestamp, nativeCreateId, nativeInitIdGenerator } = nativeBinding
+const { AntennaSrcEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, secureRndstr, IdConvertType, convertId, getTimestamp, genId, initIdGenerator } = nativeBinding
 
 module.exports.AntennaSrcEnum = AntennaSrcEnum
 module.exports.MutedNoteReasonEnum = MutedNoteReasonEnum
@@ -322,9 +322,9 @@ module.exports.RelayStatusEnum = RelayStatusEnum
 module.exports.UserEmojimodpermEnum = UserEmojimodpermEnum
 module.exports.UserProfileFfvisibilityEnum = UserProfileFfvisibilityEnum
 module.exports.UserProfileMutingnotificationtypesEnum = UserProfileMutingnotificationtypesEnum
-module.exports.nativeRandomStr = nativeRandomStr
+module.exports.secureRndstr = secureRndstr
 module.exports.IdConvertType = IdConvertType
 module.exports.convertId = convertId
-module.exports.nativeGetTimestamp = nativeGetTimestamp
-module.exports.nativeCreateId = nativeCreateId
-module.exports.nativeInitIdGenerator = nativeInitIdGenerator
+module.exports.getTimestamp = getTimestamp
+module.exports.genId = genId
+module.exports.initIdGenerator = initIdGenerator

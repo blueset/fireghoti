@@ -4,7 +4,7 @@ import { User } from "@/models/entities/user.js";
 import { Users, UsedUsernames } from "@/models/index.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
 import { IsNull } from "typeorm";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { toPunyNullable } from "@/misc/convert-host.js";
 import { UserKeypair } from "@/models/entities/user-keypair.js";
 import { UsedUsername } from "@/models/entities/used-username.js";

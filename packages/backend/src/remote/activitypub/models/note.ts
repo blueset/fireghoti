@@ -33,7 +33,7 @@ import {
 	getApType,
 } from "../type.js";
 import type { Emoji } from "@/models/entities/emoji.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { getApLock } from "@/misc/app-lock.js";
 import { createMessage } from "@/services/messages/create.js";
 import { parseAudience } from "../audience.js";

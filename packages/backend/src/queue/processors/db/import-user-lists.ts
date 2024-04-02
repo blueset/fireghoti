@@ -12,7 +12,7 @@ import {
 	UserLists,
 	UserListJoinings,
 } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import type { DbUserImportJobData } from "@/queue/types.js";
 import { IsNull } from "typeorm";
 import { inspect } from "node:util";

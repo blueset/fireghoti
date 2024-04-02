@@ -1,5 +1,5 @@
 import { PromoReads } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { getNote } from "@/server/api/common/getters.js";

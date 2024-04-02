@@ -37,7 +37,7 @@ import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { App } from "@/models/entities/app.js";
 import { Not, In } from "typeorm";
 import type { User, ILocalUser, IRemoteUser } from "@/models/entities/user.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { activeUsersChart } from "@/services/chart/index.js";
 import type { IPoll } from "@/models/entities/poll.js";
 import { Poll } from "@/models/entities/poll.js";

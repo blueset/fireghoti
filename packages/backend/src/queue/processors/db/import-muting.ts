@@ -8,7 +8,7 @@ import { isSelfHost, toPuny } from "@/misc/convert-host.js";
 import { Users, DriveFiles, Mutings } from "@/models/index.js";
 import type { DbUserImportJobData } from "@/queue/types.js";
 import type { User } from "@/models/entities/user.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { IsNull } from "typeorm";
 import { inspect } from "node:util";
 

@@ -4,7 +4,7 @@ import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import { deliver } from "@/queue/index.js";
 import type { User } from "@/models/entities/user.js";
 import { Blockings, FollowRequests, Users } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 import config from "@/config/index.js";
 

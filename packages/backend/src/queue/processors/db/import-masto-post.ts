@@ -9,7 +9,7 @@ import { uploadFromUrl } from "@/services/drive/upload-from-url.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import { Notes, NoteEdits } from "@/models/index.js";
 import type { Note } from "@/models/entities/note.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 
 const logger = queueLogger.createSubLogger("import-masto-post");
 

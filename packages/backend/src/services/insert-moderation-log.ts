@@ -1,5 +1,5 @@
 import { ModerationLogs } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import type { User } from "@/models/entities/user.js";
 
 export async function insertModerationLog(

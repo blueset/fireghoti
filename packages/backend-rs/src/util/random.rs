@@ -10,9 +10,9 @@ pub fn gen_string(length: u16) -> String {
 }
 
 #[cfg(feature = "napi")]
-#[napi_derive::napi]
-pub fn native_random_str(length: u16) -> String {
-    gen_string(length)
+#[napi_derive::napi(js_name = "secureRndstr")]
+pub fn native_random_str(length: Option<u16>) -> String {
+    gen_string(length.unwrap_or(32))
 }
 
 #[cfg(test)]

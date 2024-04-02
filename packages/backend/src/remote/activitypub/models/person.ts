@@ -16,7 +16,7 @@ import type { IRemoteUser, CacheableUser } from "@/models/entities/user.js";
 import { User } from "@/models/entities/user.js";
 import type { Emoji } from "@/models/entities/emoji.js";
 import { UserNotePining } from "@/models/entities/user-note-pining.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { UserPublickey } from "@/models/entities/user-publickey.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
 import { isSameOrigin, toPuny } from "@/misc/convert-host.js";
