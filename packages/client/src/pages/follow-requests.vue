@@ -59,14 +59,14 @@
 								<div class="actions">
 									<button
 										class="_button"
-										:aria-label="i18n.t('accept')"
+										:aria-label="i18n.ts.accept"
 										@click="accept(req.follower)"
 									>
 										<i :class="icon('ph-check')"></i>
 									</button>
 									<button
 										class="_button"
-										:aria-label="i18n.t('reject')"
+										:aria-label="i18n.ts.reject"
 										@click="reject(req.follower)"
 									>
 										<i :class="icon('ph-x')"></i>

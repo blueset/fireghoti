@@ -104,7 +104,7 @@
 			<XV
 				v-if="modelValue.value.expression"
 				v-model="modelValue.value.expression"
-				:title="i18n.t(`_pages.script.blocks._fn.arg1`)"
+				:title="i18n.ts._pages.script.blocks._fn.arg1"
 				:get-expected-type="() => null"
 				:hpml="hpml"
 				:fn-slots="modelValue.value.slots"

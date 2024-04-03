@@ -11,7 +11,7 @@
 	>
 		<header>
 			<button v-if="!fixed" class="cancel _button" @click="cancel">
-				<i :class="icon('ph-x')" :aria-label="i18n.t('close')"></i>
+				<i :class="icon('ph-x')" :aria-label="i18n.ts.close"></i>
 			</button>
 			<button
 				v-if="$props.editId == null"
@@ -108,7 +108,7 @@
 				{{ i18n.ts.quoteAttached
 				}}<button
 					class="_button"
-					:aria-label="i18n.t('removeQuote')"
+					:aria-label="i18n.ts.removeQuote"
 					@click="quoteId = null"
 				>
 					<i :class="icon('ph-x')"></i>
@@ -121,7 +121,7 @@
 						<MkAcct :user="u" />
 						<button
 							class="_button"
-							:aria-label="i18n.t('removeRecipient')"
+							:aria-label="i18n.ts.removeRecipient"
 							@click="removeVisibleUser(u)"
 						>
 							<i :class="icon('ph-x')"></i>

@@ -35,7 +35,7 @@
 		<div v-if="isMobile" class="buttons">
 			<button
 				v-vibrate="5"
-				:aria-label="i18n.t('menu')"
+				:aria-label="i18n.ts.menu"
 				class="button nav _button"
 				@click="drawerMenuShowing = true"
 			>
@@ -53,7 +53,7 @@
 			</button>
 			<button
 				v-vibrate="5"
-				:aria-label="i18n.t('home')"
+				:aria-label="i18n.ts.home"
 				class="button home _button"
 				@click="
 					mainRouter.currentRoute.value.name === 'index'
@@ -71,7 +71,7 @@
 			</button>
 			<button
 				v-vibrate="5"
-				:aria-label="i18n.t('notifications')"
+				:aria-label="i18n.ts.notifications"
 				class="button notifications _button"
 				@click="
 					mainRouter.push('/my/notifications');
@@ -96,7 +96,7 @@
 			</button>
 			<button
 				v-if="replaceChatButtonWithAccountButton"
-				:aria-label="i18n.t('accounts')"
+				:aria-label="i18n.ts.accounts"
 				class="button messaging _button"
 				@click="openAccountMenu"
 			>
@@ -107,7 +107,7 @@
 			<button
 				v-else
 				v-vibrate="5"
-				:aria-label="i18n.t('messaging')"
+				:aria-label="i18n.ts.messaging"
 				class="button messaging _button"
 				@click="
 					mainRouter.push('/my/messaging');
@@ -142,7 +142,7 @@
 			<button
 				v-else
 				v-vibrate="5"
-				:aria-label="i18n.t('_deck._columns.widgets')"
+				:aria-label="i18n.ts._deck._columns.widgets"
 				class="button widget _button"
 				@click="widgetsShowing = true"
 			>
@@ -156,7 +156,7 @@
 			v-if="isMobile && mainRouter.currentRoute.value.name === 'index'"
 			ref="postButton"
 			v-vibrate="5"
-			:aria-label="i18n.t('note')"
+			:aria-label="i18n.ts.note"
 			class="postButton button post _button"
 			@click="os.post()"
 		>
@@ -168,7 +168,7 @@
 			"
 			ref="postButton"
 			class="postButton button post _button"
-			:aria-label="i18n.t('startMessaging')"
+			:aria-label="i18n.ts.startMessaging"
 			@click="messagingStart"
 		>
 			<i :class="icon('ph-user-plus')"></i>

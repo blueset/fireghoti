@@ -28,7 +28,7 @@
 						<button
 							v-tooltip="i18n.ts.remove"
 							class="remove _button"
-							:aria-label="i18n.t('remove')"
+							:aria-label="i18n.ts.remove"
 							@click="remove(file)"
 						>
 							<i :class="icon('ph-x')"></i>

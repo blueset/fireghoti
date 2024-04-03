@@ -28,7 +28,7 @@
 				</span>
 				<button
 					class="_button"
-					:aria-label="i18n.t('close')"
+					:aria-label="i18n.ts.close"
 					@click="$refs.modal.close()"
 				>
 					<i :class="icon('ph-x')"></i>
