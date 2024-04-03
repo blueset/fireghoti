@@ -66,7 +66,7 @@ export function openHelpMenu_(ev: MouseEvent) {
 			{
 				type: "button",
 				text: i18n.ts._mfm.cheatSheet,
-				icon: "ph-question ph-bold ph-lg",
+				icon: `${icon("ph-question")}`,
 				action: async () => {
 					os.popup(XCheatSheet, {}, {}, "closed");
 				},

@@ -101,7 +101,7 @@
 				@click="openAccountMenu"
 			>
 				<div class="button-wrapper">
-					<i class="ph-users ph-bold ph-lg"></i>
+					<i :class="icon('ph-users')"></i>
 				</div>
 			</button>
 			<button
@@ -136,7 +136,7 @@
 				@click="reload"
 			>
 				<div class="button-wrapper">
-					<i class="ph-arrows-clockwise ph-bold ph-lg"></i>
+					<i :class="icon('ph-arrows-clockwise')"></i>
 				</div>
 			</button>
 			<button

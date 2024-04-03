@@ -6,6 +6,7 @@ import { me } from "@/me";
 import { alert, api, popup, popupMenu, waiting } from "@/os";
 import { del, get, set } from "@/scripts/idb-proxy";
 import { reloadChannel, unisonReload } from "@/scripts/unison-reload";
+import icon from "@/scripts/icon";
 
 // TODO: 他のタブと永続化されたstateを同期
 
@@ -234,7 +235,7 @@ export async function openAccountMenu(
 						? [
 								{
 									type: "parent",
-									icon: "ph-plus ph-bold ph-lg",
+									icon: `${icon("ph-plus")}`,
 									text: i18n.ts.addAccount,
 									children: [
 										{
@@ -276,7 +277,7 @@ export async function openAccountMenu(
 						: [
 								{
 									type: "parent",
-									icon: "ph-plus ph-bold ph-lg",
+									icon: `${icon("ph-plus")}`,
 									text: i18n.ts.addAccount,
 									children: [
 										{
