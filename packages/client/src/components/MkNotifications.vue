@@ -43,7 +43,7 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, ref } from "vue";
-import type { entities, notificationTypes } from "firefish-js";
+import type { StreamTypes, entities, notificationTypes } from "firefish-js";
 import MkPagination from "@/components/MkPagination.vue";
 import XNotification from "@/components/MkNotification.vue";
 import XList from "@/components/MkDateSeparatedList.vue";
@@ -98,7 +98,7 @@ const onNotification = (notification: entities.Notification) => {
 	}
 };
 
-let connection;
+let connection: StreamTypes.ChannelOf<"main"> | undefined;
 
 onMounted(() => {
 	connection = stream.useChannel("main");

@@ -10,6 +10,7 @@ import type {
 	User,
 	UserGroup,
 } from "./entities";
+import type { Connection } from "./streaming";
 
 type FIXME = any;
 
@@ -199,3 +200,5 @@ export type BroadcastEvents = {
 		emoji: CustomEmoji;
 	}) => void;
 };
+
+export type ChannelOf<C extends keyof Channels> = Connection<Channels[C]>;

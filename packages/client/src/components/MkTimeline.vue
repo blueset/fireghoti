@@ -44,7 +44,7 @@
 
 <script lang="ts" setup>
 import { computed, onUnmounted, provide, ref } from "vue";
-import type { entities } from "firefish-js";
+import type { entities, StreamTypes } from "firefish-js";
 import MkPullToRefresh from "@/components/MkPullToRefresh.vue";
 import XNotes from "@/components/MkNotes.vue";
 import MkInfo from "@/components/MkInfo.vue";
@@ -97,13 +97,16 @@ let query: {
 } = {};
 
 // FIXME: The type defination is wrong here, need fix
-let connection: {
-	on: (
-		arg0: string,
-		arg1: { (note: any): void; (note: any): void; (note: any): void },
-	) => void;
-	dispose: () => void;
-};
+let connection: 
+	| StreamTypes.ChannelOf<"antenna">
+	| StreamTypes.ChannelOf<"homeTimeline">
+	| StreamTypes.ChannelOf<"recommendedTimeline">
+	| StreamTypes.ChannelOf<"hybridTimeline">
+	| StreamTypes.ChannelOf<"globalTimeline">
+	| StreamTypes.ChannelOf<"main">
+	| StreamTypes.ChannelOf<"userList">
+	| StreamTypes.ChannelOf<"channel">
+
 let connection2: { dispose: () => void } | null;
 
 let tlHint: string;
