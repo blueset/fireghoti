@@ -313,7 +313,7 @@ const isSilenced = ref(false);
 const faviconUrl = ref<string | null>(null);
 
 const usersPagination = {
-	endpoint: isAdmin ? "admin/show-users" : ("users" as const),
+	endpoint: isAdmin ? ("admin/show-users" as const) : ("users" as const),
 	limit: 10,
 	params: {
 		sort: "+updatedAt",

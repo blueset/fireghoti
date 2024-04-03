@@ -38,6 +38,8 @@ import type {
 	UserSorting,
 } from "./entities";
 
+import type * as consts from "./consts";
+
 type TODO = Record<string, any> | null;
 
 type NoParams = Record<string, never>;
@@ -84,7 +86,7 @@ export type Endpoints = {
 	"admin/server-info": { req: TODO; res: TODO };
 	"admin/show-moderation-logs": { req: TODO; res: TODO };
 	"admin/show-user": { req: TODO; res: TODO };
-	"admin/show-users": { req: TODO; res: TODO };
+	"admin/show-users": { req: TODO; res: User[] };
 	"admin/silence-user": { req: TODO; res: TODO };
 	"admin/suspend-user": { req: TODO; res: TODO };
 	"admin/unsilence-user": { req: TODO; res: TODO };
@@ -101,7 +103,18 @@ export type Endpoints = {
 	"admin/announcements/update": { req: TODO; res: TODO };
 	"admin/drive/clean-remote-files": { req: TODO; res: TODO };
 	"admin/drive/cleanup": { req: TODO; res: TODO };
-	"admin/drive/files": { req: TODO; res: TODO };
+	"admin/drive/files": {
+		req: {
+			limit?: number;
+			sinceId?: DriveFile["id"];
+			untilId?: DriveFile["id"];
+			userId?: User["id"];
+			type?: string;
+			origin?: "combined" | "local" | "remote";
+			hostname?: string;
+		};
+		res: DriveFile[];
+	};
 	"admin/drive/show-file": { req: TODO; res: TODO };
 	"admin/emoji/add": { req: TODO; res: TODO };
 	"admin/emoji/copy": { req: TODO; res: TODO };
@@ -200,7 +213,7 @@ export type Endpoints = {
 	"channels/owned": { req: TODO; res: TODO };
 	"channels/pin-note": { req: TODO; res: TODO };
 	"channels/show": { req: TODO; res: TODO };
-	"channels/timeline": { req: TODO; res: TODO };
+	"channels/timeline": { req: TODO; res: Note[] };
 	"channels/unfollow": { req: TODO; res: TODO };
 	"channels/update": { req: TODO; res: TODO };
 
@@ -238,7 +251,7 @@ export type Endpoints = {
 		};
 		res: DriveFile[];
 	};
-	"drive/files/attached-notes": { req: TODO; res: TODO };
+	"drive/files/attached-notes": { req: TODO; res: Note[] };
 	"drive/files/check-existence": { req: TODO; res: TODO };
 	"drive/files/create": { req: TODO; res: TODO };
 	"drive/files/delete": { req: { fileId: DriveFile["id"] }; res: null };
@@ -360,25 +373,7 @@ export type Endpoints = {
 			publishing?: boolean | null;
 			limit?: number;
 			offset?: number;
-			sort?:
-				| "+pubSub"
-				| "-pubSub"
-				| "+notes"
-				| "-notes"
-				| "+users"
-				| "-users"
-				| "+following"
-				| "-following"
-				| "+followers"
-				| "-followers"
-				| "+caughtAt"
-				| "-caughtAt"
-				| "+lastCommunicatedAt"
-				| "-lastCommunicatedAt"
-				| "+driveUsage"
-				| "-driveUsage"
-				| "+driveFiles"
-				| "-driveFiles";
+			sort?: (typeof consts.instanceSortParam)[number];
 		};
 		res: Instance[];
 	};

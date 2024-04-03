@@ -13,6 +13,10 @@ import type {
 
 type FIXME = any;
 
+type TimelineParams = {
+	withReplies?: boolean;
+};
+
 export type Channels = {
 	main: {
 		params: null;
@@ -56,35 +60,35 @@ export type Channels = {
 		receives: null;
 	};
 	homeTimeline: {
-		params: null;
+		params?: TimelineParams;
 		events: {
 			note: (payload: Note) => void;
 		};
 		receives: null;
 	};
 	localTimeline: {
-		params: null;
+		params: TimelineParams;
 		events: {
 			note: (payload: Note) => void;
 		};
 		receives: null;
 	};
 	hybridTimeline: {
-		params: null;
+		params: TimelineParams;
 		events: {
 			note: (payload: Note) => void;
 		};
 		receives: null;
 	};
 	recommendedTimeline: {
-		params: null;
+		params: TimelineParams;
 		events: {
 			note: (payload: Note) => void;
 		};
 		receives: null;
 	};
 	globalTimeline: {
-		params: null;
+		params: TimelineParams;
 		events: {
 			note: (payload: Note) => void;
 		};

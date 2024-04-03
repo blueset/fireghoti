@@ -113,10 +113,11 @@ import MkInstanceCardMini from "@/components/MkInstanceCardMini.vue";
 import FormSplit from "@/components/form/split.vue";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
+import type { instanceSortParam } from "firefish-js";
 
 const host = ref("");
 const state = ref("federating");
-const sort = ref("+pubSub");
+const sort = ref<(typeof instanceSortParam)[number]>("+pubSub");
 const pagination = {
 	endpoint: "federation/instances" as const,
 	limit: 10,

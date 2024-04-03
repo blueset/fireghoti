@@ -44,7 +44,7 @@
 
 <script lang="ts" setup>
 import { computed, onUnmounted, provide, ref } from "vue";
-import type { Endpoints } from "firefish-js";
+import type { entities } from "firefish-js";
 import MkPullToRefresh from "@/components/MkPullToRefresh.vue";
 import XNotes from "@/components/MkNotes.vue";
 import MkInfo from "@/components/MkInfo.vue";
@@ -54,10 +54,23 @@ import { isSignedIn, me } from "@/me";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
-import type { Paging } from "@/components/MkPagination.vue";
+import type { EndpointsOf } from "@/components/MkPagination.vue";
+
+export type TimelineSource =
+	| "antenna"
+	| "home"
+	| "local"
+	| "recommended"
+	| "social"
+	| "global"
+	| "mentions"
+	| "directs"
+	| "list"
+	| "channel"
+	| "file";
 
 const props = defineProps<{
-	src: string;
+	src: TimelineSource;
 	list?: string;
 	antenna?: string;
 	channel?: string;
@@ -73,7 +86,7 @@ const emit = defineEmits<{
 const tlComponent = ref<InstanceType<typeof XNotes>>();
 const pullToRefreshComponent = ref<InstanceType<typeof MkPullToRefresh>>();
 
-let endpoint = ""; // keyof Endpoints
+let endpoint: EndpointsOf<entities.Note[]>; // keyof Endpoints
 let query: {
 	antennaId?: string | undefined;
 	withReplies?: boolean;
@@ -81,7 +94,9 @@ let query: {
 	listId?: string | undefined;
 	channelId?: string | undefined;
 	fileId?: string | undefined;
-};
+} = {};
+
+// FIXME: The type defination is wrong here, need fix
 let connection: {
 	on: (
 		arg0: string,
@@ -96,14 +111,14 @@ let tlHintClosed: boolean;
 let tlNotesCount = 0;
 const queue = ref(0);
 
-const prepend = (note) => {
+const prepend = (note: entities.Note) => {
 	tlNotesCount++;
 	tlComponent.value?.pagingComponent?.prepend(note);
 
 	emit("note");
 
 	if (props.sound) {
-		sound.play(isSignedIn && note.userId === me.id ? "noteMy" : "note");
+		sound.play(isSignedIn && note.userId === me?.id ? "noteMy" : "note");
 	}
 };
 
@@ -169,14 +184,17 @@ if (props.src === "antenna") {
 	query = {
 		fileId: props.fileId,
 	};
+} else {
+	throw "NoEndpointError";
 }
 
 const stream = useStream();
 
 function connectChannel() {
 	if (props.src === "antenna") {
+		if (!props.antenna) throw "NoAntennaProvided";
 		connection = stream.useChannel("antenna", {
-			antennaId: props.antenna!,
+			antennaId: props.antenna,
 		});
 	} else if (props.src === "home") {
 		connection = stream.useChannel("homeTimeline", {
@@ -265,8 +283,8 @@ function reloadTimeline() {
 	});
 }
 
-const pagination: Paging = {
-	endpoint: endpoint as keyof Endpoints,
+const pagination = {
+	endpoint,
 	limit: 10,
 	params: query,
 };

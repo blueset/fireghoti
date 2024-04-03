@@ -19,12 +19,8 @@
 				:no-gap="true"
 			>
 				<XNote
-					v-if="
-						['reply', 'quote', 'mention'].includes(
-							notification.type,
-						)
-					"
-					:key="notification.id"
+					v-if="isNoteNotification(notification)"
+					:key="'nn-' + notification.id"
 					:note="notification.note"
 					:collapsed-reply="
 						notification.type === 'reply' ||
@@ -34,7 +30,7 @@
 				/>
 				<XNotification
 					v-else
-					:key="notification.id"
+					:key="'n-' + notification.id"
 					:notification="notification"
 					:with-time="true"
 					:full="true"
@@ -47,8 +43,7 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, ref } from "vue";
-import type { notificationTypes } from "firefish-js";
-import type { Paging } from "@/components/MkPagination.vue";
+import type { entities, notificationTypes } from "firefish-js";
 import MkPagination from "@/components/MkPagination.vue";
 import XNotification from "@/components/MkNotification.vue";
 import XList from "@/components/MkDateSeparatedList.vue";
@@ -66,20 +61,29 @@ const stream = useStream();
 
 const pagingComponent = ref<InstanceType<typeof MkPagination>>();
 
-const pagination: Paging = {
+const pagination = {
 	endpoint: "i/notifications" as const,
 	limit: 10,
 	params: computed(() => ({
 		includeTypes: props.includeTypes ?? undefined,
-		excludeTypes: props.includeTypes ? undefined : me.mutingNotificationTypes,
+		excludeTypes: props.includeTypes ? undefined : me?.mutingNotificationTypes,
 		unreadOnly: props.unreadOnly,
 	})),
 };
 
-const onNotification = (notification) => {
+function isNoteNotification(
+	n: entities.Notification,
+): n is
+	| entities.ReplyNotification
+	| entities.QuoteNotification
+	| entities.MentionNotification {
+	return n.type === "reply" || n.type === "quote" || n.type === "mention";
+}
+
+const onNotification = (notification: entities.Notification) => {
 	const isMuted = props.includeTypes
 		? !props.includeTypes.includes(notification.type)
-		: me.mutingNotificationTypes.includes(notification.type);
+		: me?.mutingNotificationTypes.includes(notification.type);
 	if (isMuted || document.visibilityState === "visible") {
 		stream.send("readNotification", {
 			id: notification.id,

@@ -66,10 +66,10 @@
 	</transition>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup generic="E extends keyof Endpoints">
 import type { ComputedRef } from "vue";
 import { computed, isRef, onActivated, onDeactivated, ref, watch } from "vue";
-import type { Endpoints } from "firefish-js";
+import type { Endpoints, TypeUtils } from "firefish-js";
 import * as os from "@/os";
 import {
 	getScrollContainer,
@@ -100,11 +100,13 @@ export interface Paging<E extends keyof Endpoints = keyof Endpoints> {
 	offsetMode?: boolean;
 }
 
+export type PagingOf<T> = Paging<TypeUtils.EndpointsOf<T[]>>;
+
 const SECOND_FETCH_LIMIT = 30;
 
 const props = withDefaults(
 	defineProps<{
-		pagination: Paging;
+		pagination: Paging<E>;
 		disableAutoLoad?: boolean;
 		displayLimit?: number;
 	}>(),
@@ -113,14 +115,17 @@ const props = withDefaults(
 	},
 );
 
+const slots = defineSlots<{
+	default(props: { items: Item[] }): unknown;
+	empty(props: null): never;
+}>();
+
 const emit = defineEmits<{
 	(ev: "queue", count: number): void;
 	(ev: "status", error: boolean): void;
 }>();
 
-type Item = Endpoints[typeof props.pagination.endpoint]["res"] & {
-	id: string;
-};
+type Item = Endpoints[E]["res"][number];
 
 const rootEl = ref<HTMLElement>();
 const items = ref<Item[]>([]);
