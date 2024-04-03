@@ -174,6 +174,25 @@ if (props.src === "antenna") {
 const stream = useStream();
 
 function connectChannel() {
+	if (props.src === "mentions") {
+		connection = stream.useChannel("main");
+		connection.on("mention", prepend);
+		return;
+	}
+	if (props.src === "directs") {
+		const onNote = (note) => {
+			if (note.visibility === "specified") {
+				prepend(note);
+			}
+		};
+		connection = stream.useChannel("main");
+		connection.on("mention", onNote);
+		return;
+	}
+	if (props.src === "file") {
+		return;
+	}
+
 	if (props.src === "antenna") {
 		connection = stream.useChannel("antenna", {
 			antennaId: props.antenna!,
@@ -199,17 +218,6 @@ function connectChannel() {
 		connection = stream.useChannel("globalTimeline", {
 			withReplies: defaultStore.state.showTimelineReplies,
 		});
-	} else if (props.src === "mentions") {
-		connection = stream.useChannel("main");
-		connection.on("mention", prepend);
-	} else if (props.src === "directs") {
-		const onNote = (note) => {
-			if (note.visibility === "specified") {
-				prepend(note);
-			}
-		};
-		connection = stream.useChannel("main");
-		connection.on("mention", onNote);
 	} else if (props.src === "list") {
 		connection = stream.useChannel("userList", {
 			listId: props.list,
@@ -219,12 +227,7 @@ function connectChannel() {
 			channelId: props.channel,
 		});
 	}
-	if (
-		props.src !== "directs" &&
-		props.src !== "mentions" &&
-		props.src !== "file"
-	)
-		connection.on("note", prepend);
+	connection.on("note", prepend);
 }
 
 provide(
