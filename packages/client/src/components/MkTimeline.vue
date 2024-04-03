@@ -219,7 +219,11 @@ function connectChannel() {
 			channelId: props.channel,
 		});
 	}
-	if (props.src !== "directs" && props.src !== "mentions")
+	if (
+		props.src !== "directs" &&
+		props.src !== "mentions" &&
+		props.src !== "file"
+	)
 		connection.on("note", prepend);
 }
 
