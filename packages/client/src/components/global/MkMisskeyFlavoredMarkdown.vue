@@ -28,7 +28,7 @@ const props = withDefaults(
 		author?: any;
 		customEmojis?: any;
 		isNote?: boolean;
-		advancedMfm: boolean;
+		advancedMfm?: boolean;
 		lang?: string;
 	}>(),
 	{
