@@ -81,7 +81,7 @@ import MkButton from "@/components/MkButton.vue";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 
-// biome-ignore lint/suspicious/noExplicitAny: 
+// biome-ignore lint/suspicious/noExplicitAny:
 export type PagingKey = TypeUtils.EndpointsOf<any[]>;
 
 export interface Paging<E extends PagingKey = PagingKey> {
@@ -146,7 +146,7 @@ const error = ref(false);
 const init = async (): Promise<void> => {
 	queue.value = [];
 	fetching.value = true;
-	
+
 	const params = props.pagination.params
 		? isRef<Param>(props.pagination.params)
 			? props.pagination.params.value

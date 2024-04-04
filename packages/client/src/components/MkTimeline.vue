@@ -97,7 +97,7 @@ let query: {
 } = {};
 
 // FIXME: The type defination is wrong here, need fix
-let connection: 
+let connection:
 	| StreamTypes.ChannelOf<"antenna">
 	| StreamTypes.ChannelOf<"homeTimeline">
 	| StreamTypes.ChannelOf<"recommendedTimeline">
@@ -105,7 +105,7 @@ let connection:
 	| StreamTypes.ChannelOf<"globalTimeline">
 	| StreamTypes.ChannelOf<"main">
 	| StreamTypes.ChannelOf<"userList">
-	| StreamTypes.ChannelOf<"channel">
+	| StreamTypes.ChannelOf<"channel">;
 
 let connection2: { dispose: () => void } | null;
 

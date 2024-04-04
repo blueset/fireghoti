@@ -342,7 +342,12 @@ class SharedConnection<
 		return this.pool.id;
 	}
 
-	constructor(stream: Stream, channel: keyof Channels, pool: Pool, name?: string) {
+	constructor(
+		stream: Stream,
+		channel: keyof Channels,
+		pool: Pool,
+		name?: string,
+	) {
 		super(stream, channel, name);
 
 		this.pool = pool;
