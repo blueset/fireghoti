@@ -27,7 +27,7 @@ const props = withDefaults(
 
 const _time =
 	props.time == null
-		? NaN
+		? Number.NaN
 		: typeof props.time === "number"
 			? props.time
 			: (props.time instanceof Date

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, h } from "vue";
+import { type VNode, defineComponent, h } from "vue";
 import MkRadio from "./radio.vue";
 
 export default defineComponent({
@@ -22,13 +22,17 @@ export default defineComponent({
 		},
 	},
 	render() {
-		let options = this.$slots.default();
-		const label = this.$slots.label && this.$slots.label();
-		const caption = this.$slots.caption && this.$slots.caption();
+		let options = this.$slots.default!();
+		const label = this.$slots.label && this.$slots.label!();
+		const caption = this.$slots.caption && this.$slots.caption!();
 
 		// なぜかFragmentになることがあるため
-		if (options.length === 1 && options[0].props == null)
-			options = options[0].children;
+		if (
+			options.length === 1 &&
+			options[0].props == null &&
+			Array.isArray(options[0].children)
+		)
+			options = options[0].children as VNode[];
 
 		return h(
 			"fieldset",
@@ -60,7 +64,10 @@ export default defineComponent({
 								value: option.props?.value,
 								disabled: option.props?.disabled,
 								modelValue: this.value,
-								"onUpdate:modelValue": (value) => (this.value = value),
+								"onUpdate:modelValue": (value) => {
+									this.value = value;
+									return value;
+								},
 							},
 							option.children,
 						),
@@ -83,7 +90,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .novjtcto {
 	border: 0;
 	padding: 0;

@@ -36,7 +36,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(ev: "update:modelValue", v: boolean): void;
+	"update:modelValue": [v: boolean];
 }>();
 
 const button = ref<HTMLElement>();
@@ -46,9 +46,9 @@ const toggle = () => {
 	emit("update:modelValue", !checked.value);
 
 	if (!checked.value) {
-		const rect = button.value.getBoundingClientRect();
-		const x = rect.left + button.value.offsetWidth / 2;
-		const y = rect.top + button.value.offsetHeight / 2;
+		const rect = button.value!.getBoundingClientRect();
+		const x = rect.left + button.value!.offsetWidth / 2;
+		const y = rect.top + button.value!.offsetHeight / 2;
 		os.popup(Ripple, { x, y, particle: false }, {}, "end");
 	}
 };
