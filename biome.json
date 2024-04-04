@@ -18,7 +18,8 @@
 			"linter": {
 				"rules": {
 					"style": {
-						"useImportType": "warn"
+						"useImportType": "warn",
+						"useShorthandFunctionType": "warn"
 					}
 				}
 			}
