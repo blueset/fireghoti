@@ -11,5 +11,17 @@
 				"noUselessElse": "off"
 			}
 		}
-	}
+	},
+	"overrides": [
+		{
+			"include": ["*.vue"],
+			"linter": {
+				"rules": {
+					"style": {
+						"useImportType": "warn"
+					}
+				}
+			}
+		}
+	]
 }
