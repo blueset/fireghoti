@@ -321,6 +321,11 @@ export type CustomEmoji = {
 	aliases: string[];
 };
 
+export type EmojiLite = {
+	name: string;
+	url: string;
+};
+
 export type LiteInstanceMetadata = {
 	maintainerName: string | null;
 	maintainerEmail: string | null;

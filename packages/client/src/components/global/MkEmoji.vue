@@ -32,7 +32,7 @@ const props = defineProps<{
 	emoji: string;
 	normal?: boolean;
 	noStyle?: boolean;
-	customEmojis?: entities.CustomEmoji[];
+	customEmojis?: entities.EmojiLite[];
 	isReaction?: boolean;
 }>();
 
