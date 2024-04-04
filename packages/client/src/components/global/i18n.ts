@@ -38,13 +38,14 @@ export default defineComponent({
 
 		return h(
 			this.tag,
-			parsed.map((x) =>
-				typeof x === "string"
-					? this.textTag
-						? h(this.textTag, x)
-						: x
-					: this.$slots[x.arg](),
-			),
+			parsed.map((x) => {
+				if (typeof x === "string") {
+					return this.textTag ? h(this.textTag, x) : x;
+				} else {
+					const t = this.$slots[x.arg];
+					return t ? t() : `I18n[${x.arg}]`;
+				}
+			}),
 		);
 	},
 });
