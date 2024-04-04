@@ -1577,7 +1577,7 @@ cannotUploadBecauseInappropriate: Aquest fitxer no s'ha pogut carregar perquè s
 cannotUploadBecauseNoFreeSpace: La pujada ha fallat a causa de la manca d'espai al
   Disc.
 enableAutoSensitive: Marcatge automàtic NSFW
-moveTo: Mou el compte actual al compte nou
+moveTo: Mou aquest compte a un compte nou
 customKaTeXMacro: Macros KaTeX personalitzats
 _aboutFirefish:
   contributors: Col·laboradors principals
@@ -1762,7 +1762,7 @@ customSplashIconsDescription: Les URLS de les icones personalitzades a la pantal
   de benvinguda separades per salts de línia. Es mostraran aleatòriament cada vegada
   que un usuari carrega/recarrega la pàgina. Si us plau, assegureu-vos que les imatges
   estiguin en una URL estàtica, preferiblement amb imatges amb la de 192 x 192.
-moveFrom: Mou a aquest compte des d'un compte anterior
+moveFrom: Mou-te a aquest compte des d'un compte anterior
 moveFromLabel: 'Compte des del qual us moveu:'
 migrationConfirm: "Esteu absolutament segur que voleu migrar el vostre compte a {account}?
   Un cop ho feu, no podreu revertir-ho i no podreu tornar a utilitzar el vostre compte
