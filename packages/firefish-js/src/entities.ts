@@ -6,7 +6,7 @@ export type DateString = string;
 type TODO = Record<string, any>;
 
 // NOTE: 極力この型を使うのは避け、UserLite か UserDetailed か明示するように
-export type User = UserLite | UserDetailed;
+export type User = UserLite & Partial<UserDetailed>;
 
 export type UserLite = {
 	id: ID;
