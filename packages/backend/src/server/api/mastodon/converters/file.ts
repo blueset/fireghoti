@@ -12,6 +12,12 @@ export class FileConverter {
 			meta: {
 				width: f.properties.width,
 				height: f.properties.height,
+				original: {
+					width: f.properties.width,
+					height: f.properties.height,
+					size: f.properties.width && f.properties.height ? `${f.properties.width}x${f.properties.height}` : undefined,
+					aspect: f.properties.width && f.properties.height ? f.properties.width / f.properties.height : undefined,
+				}
 			},
 			description: f.comment,
 			blurhash: f.blurhash,
