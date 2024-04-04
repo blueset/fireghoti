@@ -19,7 +19,8 @@
 				"rules": {
 					"style": {
 						"useImportType": "warn",
-						"useShorthandFunctionType": "warn"
+						"useShorthandFunctionType": "warn",
+						"useTemplate": "warn"
 					}
 				}
 			}
