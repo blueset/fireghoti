@@ -5,6 +5,9 @@ import { fetchMeta } from "@/misc/fetch-meta.js";
 import type { PostLanguage } from "@/misc/langmap";
 import * as deepl from "deepl-node";
 
+// DeepL translate and LibreTranslate don't provide
+// zh-Hant-TW translations, so we convert zh-Hans-CN
+// translations into zh-Hant-TW using opencc-js.
 function convertChinese(convert: boolean, src: string) {
 	if (!convert) return src;
 	const converter = Converter({ from: "cn", to: "twp" });
@@ -78,6 +81,8 @@ export async function translate(
 	const result = await deeplTranslator.translateText(
 		text,
 		source as deepl.SourceLanguageCode | null,
+		// DeepL API requires us to specify "en-US" or "en-GB" for English
+		// translations ("en" does not work), so we need to address it
 		(target === "en" ? to : target) as deepl.TargetLanguageCode,
 	);
 
