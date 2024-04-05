@@ -81,7 +81,7 @@ import MkButton from "@/components/MkButton.vue";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 
-// biome-ignore lint/suspicious/noExplicitAny:
+// biome-ignore lint/suspicious/noExplicitAny: Used Intentionally
 export type PagingKey = TypeUtils.EndpointsOf<any[]>;
 
 export interface Paging<E extends PagingKey = PagingKey> {

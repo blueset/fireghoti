@@ -60,6 +60,7 @@ export default defineComponent({
 						h(
 							MkRadio,
 							{
+								// FIXME: It seems that there is a type error
 								key: option.key,
 								value: option.props?.value,
 								disabled: option.props?.disabled,

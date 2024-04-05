@@ -39,7 +39,7 @@ export default defineComponent({
 
 	props: {
 		p: {
-			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+			// biome-ignore lint/suspicious/noExplicitAny: FIXME
 			type: Function as PropType<() => Promise<any>>,
 			required: true,
 		},

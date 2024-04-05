@@ -16,7 +16,7 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 
-// biome-ignore lint/suspicious/noExplicitAny:
+// biome-ignore lint/suspicious/noExplicitAny: FIXME
 type ValueType = any;
 
 const props = defineProps<{
