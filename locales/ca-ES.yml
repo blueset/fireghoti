@@ -1724,7 +1724,7 @@ deleteConfirm: De veritat ho vols esborrar?
 receiveAnnouncementFromInstance: Rep notificacions d'aquest servidor
 emailNotification: Notificacions per correu electrònic
 publish: Publicar
-inChannelSearch: Buscar al canal
+inChannelSearch: Cerca al canal
 useReactionPickerForContextMenu: Obrir el selector de reaccions al fer click esquerra
 typingUsers: L'{users} està escrivint
 oneDay: Un dia
@@ -2211,7 +2211,7 @@ replaceChatButtonWithAccountButton: Canviar el botó de xats amb el botó de can
   compte
 replaceWidgetsButtonWithReloadButton: Canviar el botó de ginys amb el botó de recarregar
 searchEngine: Motor de cerca fet servir a la barra MFM
-postSearch: Posar els resultats en aquest servidor
+postSearch: Publicar els resultats en aquest servidor
 showBigPostButton: Mostrar un botó gegant al formulari de publicació
 _emojiModPerm:
   unauthorized: Res
@@ -2238,7 +2238,7 @@ enableTimelineStreaming: Actualitza les línies de temps automàticament
 enablePullToRefresh: Activa "Baixa per actualitzar"
 pullDownToReload: Baixa per actualitzar
 pullToRefreshThreshold: Distancia de baixada per actualitzar
-searchWords: Paraules / ID o adreça a URL a cercar
+searchWords: Paraules / ID o adreça URL que vols cercar
 noSentFollowRequests: No tens cap sol·licitud de seguiment enviada
 sentFollowRequests: Enviar sol·licituds de seguiment
 replyMute: Silencia les respostes a les línies de temps
@@ -2256,7 +2256,7 @@ searchWordsDescription: "Per cercar publicacions, escriu el terme a buscar. Sepa
 searchPostsWithFiles: Només publicacions amb fitxers
 searchCwAndAlt: Inclou avisos de contingut i arxius amb descripcions
 searchUsers: Publicat per (opcional)
-searchRange: Publicat dintre de (opcional)
+searchRange: Publicat entre les dates (opcional)
 publishTimelines: Publica línies de temps per visitants
 toPost: Publicar
 publishTimelinesDescription: Si està activat, les línies de temps Global i Local es
