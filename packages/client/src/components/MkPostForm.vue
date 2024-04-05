@@ -85,8 +85,17 @@
 					data-cy-open-post-form-submit
 					@click="post"
 				>
-					{{ submitText
-					}}<i
+					{{ submitText }}
+					<!-- 1.3333 is the em of .ph-lg -->
+					<MkLoading
+						v-if="posting"
+						class="spinner"
+						:em="true"
+						:colored="false"
+						:size-em="1.3333"
+					/>
+					<i
+						v-else
 						:class="
 							icon(
 								reply
@@ -1399,6 +1408,7 @@ onMounted(() => {
 					opacity: 0.7;
 				}
 
+				> .spinner,
 				> i {
 					margin-left: 6px;
 				}
