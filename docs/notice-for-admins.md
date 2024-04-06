@@ -2,6 +2,22 @@
 
 You can skip intermediate versions when upgrading from an old version, but please read the notices and follow the instructions for each intermediate version before [upgrading](./upgrade.md).
 
+## Unreleased
+
+### For all users
+
+Upgrading may take a long time due to the large changes in the database. Please make sure to perform the operations when you have time.
+
+The time required to upgrade varies greatly depending on the database size and the environment. For reference, on a server with 2 GB of RAM storing 10 million posts, the process took approximately 30 minutes. The number of posts stored on the server can be found at `https://yourserver.example.com/admin/database` (or `notesCount` of `stats` API response).
+
+### For systemd/pm2 users
+
+Please do not terminate `pnpm run migrate` even if it appears to be frozen.
+
+### For Docker/Podman users
+
+You may not be able to access your server for a while after starting the container.
+
 ## v20240326
 
 ### For Docker/Podman users
