@@ -16,13 +16,13 @@ export class Channel {
 	public id: string;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the Channel.",
 	})
 	public createdAt: Date;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		nullable: true,
 	})
 	public lastNotedAt: Date | null;

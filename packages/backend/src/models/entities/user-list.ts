@@ -14,7 +14,7 @@ export class UserList {
 	@PrimaryColumn(id())
 	public id: string;
 
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the UserList.",
 	})
 	public createdAt: Date;

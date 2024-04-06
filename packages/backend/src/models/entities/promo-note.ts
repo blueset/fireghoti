@@ -21,7 +21,7 @@ export class PromoNote {
 	@JoinColumn()
 	public note: Note | null;
 
-	@Column("timestamp with time zone")
+	@Column("timestamp without time zone")
 	public expiresAt: Date;
 
 	//#region Denormalized fields

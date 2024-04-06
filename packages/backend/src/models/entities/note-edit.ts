@@ -46,7 +46,7 @@ export class NoteEdit {
 	})
 	public fileIds: DriveFile["id"][];
 
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The updated date of the Note.",
 	})
 	public updatedAt: Date;

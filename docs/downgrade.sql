@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'DropTimeZone1712425488543',
     'ExpandNoteEdit1711936358554',
     'markLocalFilesNsfwByDefault1709305200000',
     'FixMutingIndices1710690239308',
@@ -19,6 +20,83 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- drop-time-zone
+ALTER TABLE "abuse_user_report" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "access_token" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "access_token" ALTER "lastUsedAt" TYPE timestamp with time zone;
+ALTER TABLE "ad" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "ad" ALTER "expiresAt" TYPE timestamp with time zone;
+ALTER TABLE "announcement" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "announcement" ALTER "updatedAt" TYPE timestamp with time zone;
+ALTER TABLE "announcement_read" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "antenna" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "app" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "attestation_challenge" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "auth_session" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "blocking" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "channel" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "channel" ALTER "lastNotedAt" TYPE timestamp with time zone;
+ALTER TABLE "channel_following" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "channel_note_pining" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "clip" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "drive_file" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "drive_folder" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "emoji" ALTER "updatedAt" TYPE timestamp with time zone;
+ALTER TABLE "following" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "follow_request" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "gallery_like" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "gallery_post" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "gallery_post" ALTER "updatedAt" TYPE timestamp with time zone;
+ALTER TABLE "instance" ALTER "caughtAt" TYPE timestamp with time zone;
+ALTER TABLE "instance" ALTER "infoUpdatedAt" TYPE timestamp with time zone;
+ALTER TABLE "instance" ALTER "lastCommunicatedAt" TYPE timestamp with time zone;
+ALTER TABLE "instance" ALTER "latestRequestReceivedAt" TYPE timestamp with time zone;
+ALTER TABLE "instance" ALTER "latestRequestSentAt" TYPE timestamp with time zone;
+ALTER TABLE "messaging_message" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "moderation_log" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "muting" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "muting" ALTER "expiresAt" TYPE timestamp with time zone;
+ALTER TABLE "note" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "note" ALTER "updatedAt" TYPE timestamp with time zone;
+ALTER TABLE "note_edit" ALTER "updatedAt" TYPE timestamp with time zone;
+ALTER TABLE "note_favorite" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "note_reaction" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "note_thread_muting" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "note_watching" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "notification" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "page" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "page" ALTER "updatedAt" TYPE timestamp with time zone;
+ALTER TABLE "page_like" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "password_reset_request" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "poll" ALTER "expiresAt" TYPE timestamp with time zone;
+ALTER TABLE "poll_vote" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "promo_note" ALTER "expiresAt" TYPE timestamp with time zone;
+ALTER TABLE "promo_read" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "registration_ticket" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "registry_item" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "registry_item" ALTER "updatedAt" TYPE timestamp with time zone;
+ALTER TABLE "renote_muting" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "reply_muting" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "signin" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "sw_subscription" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "used_username" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "user" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "user" ALTER "lastActiveDate" TYPE timestamp with time zone;
+ALTER TABLE "user" ALTER "lastFetchedAt" TYPE timestamp with time zone;
+ALTER TABLE "user" ALTER "updatedAt" TYPE timestamp with time zone;
+ALTER TABLE "user_group" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "user_group_invitation" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "user_group_invite" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "user_group_joining" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "user_ip" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "user_list" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "user_list_joining" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "user_note_pining" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "user_pending" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "user_security_key" ALTER "lastUsed" TYPE timestamp with time zone;
+ALTER TABLE "webhook" ALTER "createdAt" TYPE timestamp with time zone;
+ALTER TABLE "webhook" ALTER "latestSentAt" TYPE timestamp with time zone;
 
 -- expand-note-edit
 ALTER TABLE "note_edit" DROP COLUMN "emojis";

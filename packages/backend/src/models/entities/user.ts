@@ -18,25 +18,25 @@ export class User {
 	public id: string;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the User.",
 	})
 	public createdAt: Date;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		nullable: true,
 		comment: "The updated date of the User.",
 	})
 	public updatedAt: Date | null;
 
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		nullable: true,
 	})
 	public lastFetchedAt: Date | null;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		nullable: true,
 	})
 	public lastActiveDate: Date | null;

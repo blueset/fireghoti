@@ -16,7 +16,7 @@ export class Blocking {
 	public id: string;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the Blocking.",
 	})
 	public createdAt: Date;

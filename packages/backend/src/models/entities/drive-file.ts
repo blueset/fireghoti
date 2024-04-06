@@ -23,7 +23,7 @@ export class DriveFile {
 	public id: string;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the DriveFile.",
 	})
 	public createdAt: Date;

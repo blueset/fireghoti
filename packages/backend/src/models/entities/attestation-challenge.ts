@@ -31,7 +31,7 @@ export class AttestationChallenge {
 	})
 	public challenge: string;
 
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The date challenge was created for expiry purposes.",
 	})
 	public createdAt: Date;
