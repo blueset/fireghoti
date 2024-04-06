@@ -4,6 +4,7 @@ use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "user_security_key")]
+#[cfg_attr(feature = "napi", napi_derive::napi(object, js_name = "UserSecurityKey", use_nullable = true))]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,
@@ -12,7 +13,7 @@ pub struct Model {
     #[sea_orm(column_name = "publicKey")]
     pub public_key: String,
     #[sea_orm(column_name = "lastUsed")]
-    pub last_used: DateTimeWithTimeZone,
+    pub last_used: DateTime,
     pub name: String,
 }
 

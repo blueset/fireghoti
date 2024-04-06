@@ -4,11 +4,12 @@ use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "access_token")]
+#[cfg_attr(feature = "napi", napi_derive::napi(object, js_name = "AccessToken", use_nullable = true))]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,
     #[sea_orm(column_name = "createdAt")]
-    pub created_at: DateTimeWithTimeZone,
+    pub created_at: DateTime,
     pub token: String,
     pub hash: String,
     #[sea_orm(column_name = "userId")]
@@ -16,7 +17,7 @@ pub struct Model {
     #[sea_orm(column_name = "appId")]
     pub app_id: Option<String>,
     #[sea_orm(column_name = "lastUsedAt")]
-    pub last_used_at: Option<DateTimeWithTimeZone>,
+    pub last_used_at: Option<DateTime>,
     pub session: Option<String>,
     pub name: Option<String>,
     pub description: Option<String>,

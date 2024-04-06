@@ -4,6 +4,7 @@ use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "migrations")]
+#[cfg_attr(feature = "napi", napi_derive::napi(object, js_name = "Migrations", use_nullable = true))]
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i32,

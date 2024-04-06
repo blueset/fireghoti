@@ -4,6 +4,7 @@ use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "note_edit")]
+#[cfg_attr(feature = "napi", napi_derive::napi(object, js_name = "NoteEdit", use_nullable = true))]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,
@@ -15,7 +16,7 @@ pub struct Model {
     #[sea_orm(column_name = "fileIds")]
     pub file_ids: Vec<String>,
     #[sea_orm(column_name = "updatedAt")]
-    pub updated_at: DateTimeWithTimeZone,
+    pub updated_at: DateTime,
     pub emojis: Vec<String>,
 }
 

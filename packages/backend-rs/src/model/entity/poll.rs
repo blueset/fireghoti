@@ -5,11 +5,12 @@ use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "poll")]
+#[cfg_attr(feature = "napi", napi_derive::napi(object, js_name = "Poll", use_nullable = true))]
 pub struct Model {
     #[sea_orm(column_name = "noteId", primary_key, auto_increment = false, unique)]
     pub note_id: String,
     #[sea_orm(column_name = "expiresAt")]
-    pub expires_at: Option<DateTimeWithTimeZone>,
+    pub expires_at: Option<DateTime>,
     pub multiple: bool,
     pub choices: Vec<String>,
     pub votes: Vec<i32>,

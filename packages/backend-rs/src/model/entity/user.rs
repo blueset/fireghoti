@@ -5,15 +5,16 @@ use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "user")]
+#[cfg_attr(feature = "napi", napi_derive::napi(object, js_name = "User", use_nullable = true))]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,
     #[sea_orm(column_name = "createdAt")]
-    pub created_at: DateTimeWithTimeZone,
+    pub created_at: DateTime,
     #[sea_orm(column_name = "updatedAt")]
-    pub updated_at: Option<DateTimeWithTimeZone>,
+    pub updated_at: Option<DateTime>,
     #[sea_orm(column_name = "lastFetchedAt")]
-    pub last_fetched_at: Option<DateTimeWithTimeZone>,
+    pub last_fetched_at: Option<DateTime>,
     pub username: String,
     #[sea_orm(column_name = "usernameLower")]
     pub username_lower: String,
@@ -57,7 +58,7 @@ pub struct Model {
     #[sea_orm(column_name = "followersUri")]
     pub followers_uri: Option<String>,
     #[sea_orm(column_name = "lastActiveDate")]
-    pub last_active_date: Option<DateTimeWithTimeZone>,
+    pub last_active_date: Option<DateTime>,
     #[sea_orm(column_name = "hideOnlineStatus")]
     pub hide_online_status: bool,
     #[sea_orm(column_name = "isDeleted")]
