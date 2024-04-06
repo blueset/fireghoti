@@ -36,8 +36,6 @@ pub struct Model {
     pub icon_url: Option<String>,
     #[sea_orm(column_name = "cacheRemoteFiles")]
     pub cache_remote_files: bool,
-    #[sea_orm(column_name = "markLocalFilesNsfwByDefault")]
-    pub always_make_server_file_nsfw: bool,
     #[sea_orm(column_name = "enableRecaptcha")]
     pub enable_recaptcha: bool,
     #[sea_orm(column_name = "recaptchaSiteKey")]
@@ -169,6 +167,8 @@ pub struct Model {
     pub donation_link: Option<String>,
     #[sea_orm(column_name = "moreUrls", column_type = "JsonBinary")]
     pub more_urls: Json,
+    #[sea_orm(column_name = "markLocalFilesNsfwByDefault")]
+    pub mark_local_files_nsfw_by_default: bool,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
