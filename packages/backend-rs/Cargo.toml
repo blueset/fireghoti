@@ -28,7 +28,7 @@ thiserror = "1.0.58"
 tokio = { version = "1.36.0", features = ["full"] }
 
 # Default enable napi4 feature, see https://nodejs.org/api/n-api.html#node-api-version-matrix
-napi = { version = "2.16.1", default-features = false, features = ["napi9", "tokio_rt"], optional = true }
+napi = { version = "2.16.1", default-features = false, features = ["napi9", "tokio_rt", "chrono_date", "serde-json"], optional = true }
 napi-derive = { version = "2.16.1", optional = true }
 basen = "0.1.0"
 
