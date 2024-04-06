@@ -295,8 +295,18 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { nativeRandomStr, IdConvertType, convertId, nativeGetTimestamp, nativeCreateId, nativeInitIdGenerator } = nativeBinding
+const { AntennaSrcEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, nativeRandomStr, IdConvertType, convertId, nativeGetTimestamp, nativeCreateId, nativeInitIdGenerator } = nativeBinding
 
+module.exports.AntennaSrcEnum = AntennaSrcEnum
+module.exports.MutedNoteReasonEnum = MutedNoteReasonEnum
+module.exports.NoteVisibilityEnum = NoteVisibilityEnum
+module.exports.NotificationTypeEnum = NotificationTypeEnum
+module.exports.PageVisibilityEnum = PageVisibilityEnum
+module.exports.PollNotevisibilityEnum = PollNotevisibilityEnum
+module.exports.RelayStatusEnum = RelayStatusEnum
+module.exports.UserEmojimodpermEnum = UserEmojimodpermEnum
+module.exports.UserProfileFfvisibilityEnum = UserProfileFfvisibilityEnum
+module.exports.UserProfileMutingnotificationtypesEnum = UserProfileMutingnotificationtypesEnum
 module.exports.nativeRandomStr = nativeRandomStr
 module.exports.IdConvertType = IdConvertType
 module.exports.convertId = convertId
