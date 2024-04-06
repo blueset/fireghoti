@@ -2324,3 +2324,4 @@ markLocalFilesNsfwByDefault: Marquer tous les nouveaux fichiers locaux comme sen
 markLocalFilesNsfwByDefaultDescription: Indépendamment de ce réglage, les utilisateurs
   peuvent supprimer le drapeau « sensible » (NSFW) eux-mêmes. Les fichiers existants
   ne sont pas affectés.
+noteEditHistory: Historique des publications
