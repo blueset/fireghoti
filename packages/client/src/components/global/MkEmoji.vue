@@ -12,8 +12,8 @@
 		v-else-if="char && !useOsNativeEmojis"
 		class="mk-emoji"
 		:src="url"
-		:alt="alt || undefined"
-		:title="alt || undefined"
+		:alt="alt!"
+		:title="alt!"
 		decoding="async"
 	/>
 	<span v-else-if="char && useOsNativeEmojis">{{ char }}</span>
@@ -50,7 +50,6 @@ const customEmoji = computed(() =>
 		: null,
 );
 const url = computed(() => {
-	if (!customEmoji.value) return undefined;
 	if (char.value) {
 		return char2filePath(char.value);
 	} else {
