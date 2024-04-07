@@ -1,13 +1,14 @@
 import { Packed } from "@/misc/schema.js";
+import { MastoContext } from "..";
 
 export class FileConverter {
-	public static encode(f: Packed<"DriveFile">): MastodonEntity.Attachment {
+	public static encode(f: Packed<"DriveFile">, ctx?: MastoContext): MastodonEntity.Attachment {
 		return {
 			id: f.id,
 			type: this.encodefileType(f.type),
 			url: f.url ?? "",
 			remote_url: f.url,
-			preview_url: f.thumbnailUrl ?? "", // fix compat: Mastodon for Android does not accept null preview_url
+			preview_url: f.thumbnailUrl ?? null,
 			text_url: f.url,
 			meta: {
 				width: f.properties.width,
