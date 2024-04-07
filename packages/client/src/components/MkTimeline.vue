@@ -44,7 +44,7 @@
 
 <script lang="ts" setup>
 import { computed, onUnmounted, provide, ref } from "vue";
-import type { entities, StreamTypes } from "firefish-js";
+import type { entities, StreamTypes, TypeUtils } from "firefish-js";
 import MkPullToRefresh from "@/components/MkPullToRefresh.vue";
 import XNotes from "@/components/MkNotes.vue";
 import MkInfo from "@/components/MkInfo.vue";
@@ -54,7 +54,6 @@ import { isSignedIn, me } from "@/me";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
-import type { EndpointsOf } from "@/components/MkPagination.vue";
 
 export type TimelineSource =
 	| "antenna"
@@ -86,7 +85,7 @@ const emit = defineEmits<{
 const tlComponent = ref<InstanceType<typeof XNotes>>();
 const pullToRefreshComponent = ref<InstanceType<typeof MkPullToRefresh>>();
 
-let endpoint: EndpointsOf<entities.Note[]>; // keyof Endpoints
+let endpoint: TypeUtils.EndpointsOf<entities.Note[]>; // keyof Endpoints
 let query: {
 	antennaId?: string | undefined;
 	withReplies?: boolean;
