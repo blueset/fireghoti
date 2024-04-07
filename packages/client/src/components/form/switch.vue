@@ -2,7 +2,7 @@
 	<label class="ziffeomt">
 		<input
 			type="checkbox"
-			:checked="modelValue"
+			:checked="toValue(modelValue)"
 			:disabled="disabled"
 			@change="(x) => toggle(x)"
 		/>
@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { Ref } from "vue";
+import { type Ref, toValue } from "vue";
 
 const props = defineProps<{
 	modelValue: boolean | Ref<boolean>;
@@ -26,12 +26,12 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(ev: "update:modelValue", v: boolean): void;
+	"update:modelValue": [v: boolean];
 }>();
 
-function toggle(x) {
+function toggle(x: Event) {
 	if (props.disabled) return;
-	emit("update:modelValue", x.target.checked);
+	emit("update:modelValue", (x.target as HTMLInputElement).checked);
 }
 </script>
 

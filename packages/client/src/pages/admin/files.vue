@@ -94,7 +94,7 @@ const origin = ref("local");
 const type = ref(null);
 const searchHost = ref("");
 const userId = ref("");
-const viewMode = ref("grid");
+const viewMode = ref<"list" | "grid">("grid");
 const pagination = {
 	endpoint: "admin/drive/files" as const,
 	limit: 10,

@@ -16,19 +16,22 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 
+// biome-ignore lint/suspicious/noExplicitAny: FIXME
+type ValueType = any;
+
 const props = defineProps<{
-	modelValue: any;
-	value: any;
+	modelValue: ValueType;
+	value: ValueType;
 	disabled: boolean;
 }>();
 
 const emit = defineEmits<{
-	(ev: "update:modelValue", value: any): void;
+	"update:modelValue": [value: ValueType];
 }>();
 
 const checked = computed(() => props.modelValue === props.value);
 
-function toggle(x) {
+function toggle(_ev: Event) {
 	if (props.disabled) return;
 	emit("update:modelValue", props.value);
 }

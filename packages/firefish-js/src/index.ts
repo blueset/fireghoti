@@ -4,6 +4,7 @@ import { Endpoints } from "./api.types";
 import * as consts from "./consts";
 import Stream, { Connection } from "./streaming";
 import * as StreamTypes from "./streaming.types";
+import type * as TypeUtils from "./type-utils";
 
 export {
 	Endpoints,
@@ -12,6 +13,7 @@ export {
 	StreamTypes,
 	acct,
 	type Acct,
+	type TypeUtils,
 };
 
 export const permissions = consts.permissions;
@@ -20,6 +22,7 @@ export const noteVisibilities = consts.noteVisibilities;
 export const mutedNoteReasons = consts.mutedNoteReasons;
 export const languages = consts.languages;
 export const ffVisibility = consts.ffVisibility;
+export const instanceSortParam = consts.instanceSortParam;
 
 // api extractor not supported yet
 //export * as api from './api';

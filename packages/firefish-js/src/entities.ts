@@ -1,10 +1,12 @@
+import type * as consts from "./consts";
+
 export type ID = string;
 export type DateString = string;
 
 type TODO = Record<string, any>;
 
 // NOTE: 極力この型を使うのは避け、UserLite か UserDetailed か明示するように
-export type User = UserLite | UserDetailed;
+export type User = UserLite & Partial<UserDetailed>;
 
 export type UserLite = {
 	id: ID;
@@ -108,7 +110,7 @@ export type MeDetailed = UserDetailed & {
 	isExplorable: boolean;
 	mutedWords: string[][];
 	mutedPatterns: string[];
-	mutingNotificationTypes: string[];
+	mutingNotificationTypes: (typeof consts.notificationTypes)[number][];
 	noCrawle: boolean;
 	preventAiLearning: boolean;
 	receiveAnnouncementEmail: boolean;
@@ -129,6 +131,8 @@ export type DriveFile = {
 	blurhash: string;
 	comment: string | null;
 	properties: Record<string, any>;
+	userId?: User["id"];
+	user?: User;
 };
 
 export type DriveFolder = TODO;
@@ -152,7 +156,8 @@ export type Note = {
 	visibleUserIds?: User["id"][];
 	lang?: string;
 	localOnly?: boolean;
-	channel?: Channel["id"];
+	channelId?: Channel["id"];
+	channel?: Channel;
 	myReaction?: string;
 	reactions: Record<string, number>;
 	renoteCount: number;
@@ -199,82 +204,98 @@ export type NoteReaction = {
 	type: string;
 };
 
-export type Notification = {
+interface BaseNotification {
 	id: ID;
 	createdAt: DateString;
 	isRead: boolean;
-} & (
-	| {
-			type: "reaction";
-			reaction: string;
-			user: User;
-			userId: User["id"];
-			note: Note;
-	  }
-	| {
-			type: "reply";
-			user: User;
-			userId: User["id"];
-			note: Note;
-	  }
-	| {
-			type: "renote";
-			user: User;
-			userId: User["id"];
-			note: Note;
-	  }
-	| {
-			type: "quote";
-			user: User;
-			userId: User["id"];
-			note: Note;
-	  }
-	| {
-			type: "mention";
-			user: User;
-			userId: User["id"];
-			note: Note;
-	  }
-	| {
-			type: "pollVote";
-			user: User;
-			userId: User["id"];
-			note: Note;
-	  }
-	| {
-			type: "pollEnded";
-			user: User;
-			userId: User["id"];
-			note: Note;
-	  }
-	| {
-			type: "follow";
-			user: User;
-			userId: User["id"];
-	  }
-	| {
-			type: "followRequestAccepted";
-			user: User;
-			userId: User["id"];
-	  }
-	| {
-			type: "receiveFollowRequest";
-			user: User;
-			userId: User["id"];
-	  }
-	| {
-			type: "groupInvited";
-			invitation: UserGroup;
-			user: User;
-			userId: User["id"];
-	  }
-	| {
-			type: "app";
-			header?: string | null;
-			body: string;
-			icon?: string | null;
-	  }
-);
+	type: (typeof consts.notificationTypes)[number];
+}
+
+export interface ReactionNotification extends BaseNotification {
+	type: "reaction";
+	reaction: string;
+	user: User;
+	userId: User["id"];
+	note: Note;
+}
+export interface ReplyNotification extends BaseNotification {
+	type: "reply";
+	user: User;
+	userId: User["id"];
+	note: Note;
+}
+export interface RenoteNotification extends BaseNotification {
+	type: "renote";
+	user: User;
+	userId: User["id"];
+	note: Note;
+}
+export interface QuoteNotification extends BaseNotification {
+	type: "quote";
+	user: User;
+	userId: User["id"];
+	note: Note;
+}
+export interface MentionNotification extends BaseNotification {
+	type: "mention";
+	user: User;
+	userId: User["id"];
+	note: Note;
+}
+export interface PollVoteNotification extends BaseNotification {
+	type: "pollVote";
+	user: User;
+	userId: User["id"];
+	note: Note;
+}
+export interface PollEndedNotification extends BaseNotification {
+	type: "pollEnded";
+	user: User;
+	userId: User["id"];
+	note: Note;
+}
+export interface FollowNotification extends BaseNotification {
+	type: "follow";
+	user: User;
+	userId: User["id"];
+}
+
+export interface FollowRequestAcceptedNotification extends BaseNotification {
+	type: "followRequestAccepted";
+	user: User;
+	userId: User["id"];
+}
+export interface ReceiveFollowRequestNotification extends BaseNotification {
+	type: "receiveFollowRequest";
+	user: User;
+	userId: User["id"];
+}
+export interface GroupInvitedNotification extends BaseNotification {
+	type: "groupInvited";
+	invitation: UserGroup;
+	user: User;
+	userId: User["id"];
+}
+export interface AppNotification extends BaseNotification {
+	type: "app";
+	header?: string | null;
+	body: string;
+	icon?: string | null;
+}
+
+export type Notification =
+	| ReactionNotification
+	| ReplyNotification
+	| RenoteNotification
+	| QuoteNotification
+	| MentionNotification
+	| PollVoteNotification
+	| PollEndedNotification
+	| FollowNotification
+	| FollowRequestAcceptedNotification
+	| ReceiveFollowRequestNotification
+	| GroupInvitedNotification
+	| AppNotification;
 
 export type MessagingMessage = {
 	id: ID;
@@ -298,6 +319,11 @@ export type CustomEmoji = {
 	url: string;
 	category: string;
 	aliases: string[];
+};
+
+export type EmojiLite = {
+	name: string;
+	url: string;
 };
 
 export type LiteInstanceMetadata = {
@@ -449,6 +475,7 @@ export type FollowRequest = {
 
 export type Channel = {
 	id: ID;
+	name: string;
 	// TODO
 };
 

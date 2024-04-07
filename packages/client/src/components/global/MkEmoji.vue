@@ -4,16 +4,16 @@
 		class="mk-emoji custom"
 		:class="{ normal, noStyle }"
 		:src="url"
-		:alt="alt"
-		:title="alt"
+		:alt="alt || undefined"
+		:title="alt || undefined"
 		decoding="async"
 	/>
 	<img
 		v-else-if="char && !useOsNativeEmojis"
 		class="mk-emoji"
 		:src="url"
-		:alt="alt"
-		:title="alt"
+		:alt="alt || undefined"
+		:title="alt || undefined"
 		decoding="async"
 	/>
 	<span v-else-if="char && useOsNativeEmojis">{{ char }}</span>
@@ -32,7 +32,7 @@ const props = defineProps<{
 	emoji: string;
 	normal?: boolean;
 	noStyle?: boolean;
-	customEmojis?: entities.CustomEmoji[];
+	customEmojis?: entities.EmojiLite[];
 	isReaction?: boolean;
 }>();
 
@@ -50,6 +50,7 @@ const customEmoji = computed(() =>
 		: null,
 );
 const url = computed(() => {
+	if (!customEmoji.value) return undefined;
 	if (char.value) {
 		return char2filePath(char.value);
 	} else {

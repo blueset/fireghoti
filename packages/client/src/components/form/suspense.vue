@@ -39,12 +39,13 @@ export default defineComponent({
 
 	props: {
 		p: {
+			// biome-ignore lint/suspicious/noExplicitAny: FIXME
 			type: Function as PropType<() => Promise<any>>,
 			required: true,
 		},
 	},
 
-	setup(props, context) {
+	setup(props, _context) {
 		const pending = ref(true);
 		const resolved = ref(false);
 		const rejected = ref(false);

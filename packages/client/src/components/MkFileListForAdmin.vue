@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<MkPagination
-			v-slot="{ items }"
+			v-slot="{ items }: { items: entities.DriveFile[]}"
 			:pagination="pagination"
 			class="urempief"
 			:class="{ grid: viewMode === 'grid' }"
@@ -53,13 +53,15 @@
 
 <script lang="ts" setup>
 import { acct } from "firefish-js";
+import type { entities } from "firefish-js";
 import MkPagination from "@/components/MkPagination.vue";
+import type { PagingOf } from "@/components/MkPagination.vue";
 import MkDriveFileThumbnail from "@/components/MkDriveFileThumbnail.vue";
 import bytes from "@/filters/bytes";
 import { i18n } from "@/i18n";
 
 defineProps<{
-	pagination: any;
+	pagination: PagingOf<entities.DriveFile>;
 	viewMode: "grid" | "list";
 }>();
 </script>

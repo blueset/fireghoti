@@ -8,6 +8,7 @@
 		"build:debug": "pnpm run build",
 		"lint": "pnpm biome check **/*.ts --apply ; pnpm run lint:vue",
 		"lint:vue": "pnpm eslint src --fix '**/*.vue' --cache ; pnpm run format",
+		"types:check": "pnpm vue-tsc --noEmit",
 		"format": "pnpm biome format * --write"
 	},
 	"devDependencies": {
@@ -86,6 +87,7 @@
 		"vue": "3.4.21",
 		"vue-draggable-plus": "^0.3.5",
 		"vue-plyr": "^7.0.0",
-		"vue-prism-editor": "2.0.0-alpha.2"
+		"vue-prism-editor": "2.0.0-alpha.2",
+		"vue-tsc": "2.0.6"
 	}
 }

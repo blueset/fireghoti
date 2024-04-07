@@ -14,6 +14,7 @@
 				"caughtErrorsIgnorePattern": "^_",
 				"destructuredArrayIgnorePattern": "^_"
 			}
-		]
+		],
+		"vue/no-setup-props-destructure": "off"
 	}
 }

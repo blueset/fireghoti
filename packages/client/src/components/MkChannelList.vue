@@ -24,13 +24,14 @@
 
 <script lang="ts" setup>
 import MkChannelPreview from "@/components/MkChannelPreview.vue";
-import type { Paging } from "@/components/MkPagination.vue";
+import type { PagingOf } from "@/components/MkPagination.vue";
 import MkPagination from "@/components/MkPagination.vue";
 import { i18n } from "@/i18n";
+import type { entities } from "firefish-js";
 
 const props = withDefaults(
 	defineProps<{
-		pagination: Paging;
+		pagination: PagingOf<entities.Channel>;
 		noGap?: boolean;
 		extractor?: (item: any) => any;
 	}>(),
