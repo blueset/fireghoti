@@ -152,7 +152,7 @@ interface Tab {
 }
 
 const props = defineProps<{
-	tabs?: Tab[];
+	tabs?: Tab[] | null;
 	tab?: string;
 	actions?: {
 		text: string;
