@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class refineAbuseUserReport1603094348345 implements MigrationInterface {
 	async up(queryRunner: QueryRunner): Promise<void> {

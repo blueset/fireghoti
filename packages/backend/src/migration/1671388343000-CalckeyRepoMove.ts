@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 /* "FirefishRepoMove1671388343000" is a class that updates the "useStarForReactionFallback" column in
 the "meta" table to TRUE */

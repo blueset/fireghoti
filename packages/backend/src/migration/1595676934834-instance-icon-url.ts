@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class instanceIconUrl1595676934834 implements MigrationInterface {
 	async up(queryRunner: QueryRunner): Promise<void> {

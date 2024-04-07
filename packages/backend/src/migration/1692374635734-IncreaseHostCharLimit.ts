@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class IncreaseHostCharLimit1692374635734 implements MigrationInterface {
 	async up(queryRunner: QueryRunner): Promise<void> {

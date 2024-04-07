@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class objectStorageS3ForcePathStyle1611547387175
 	implements MigrationInterface

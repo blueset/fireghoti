@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class addFkAbuseUserReportTargetUserIdToUserId1671199573000
 	implements MigrationInterface

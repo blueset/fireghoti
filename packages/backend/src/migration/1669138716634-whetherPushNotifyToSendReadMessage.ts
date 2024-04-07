@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class whetherPushNotifyToSendReadMessage1669138716634
 	implements MigrationInterface

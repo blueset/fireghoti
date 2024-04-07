@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class FixMutingIndices1710690239308 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {
