@@ -4,7 +4,10 @@ use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "promo_note")]
-#[cfg_attr(feature = "napi", napi_derive::napi(object, js_name = "PromoNote", use_nullable = true))]
+#[cfg_attr(
+    feature = "napi",
+    napi_derive::napi(object, js_name = "PromoNote", use_nullable = true)
+)]
 pub struct Model {
     #[sea_orm(column_name = "noteId", primary_key, auto_increment = false, unique)]
     pub note_id: String,
