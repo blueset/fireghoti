@@ -17,13 +17,13 @@ export class Page {
 	public id: string;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the Page.",
 	})
 	public createdAt: Date;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The updated date of the Page.",
 	})
 	public updatedAt: Date;

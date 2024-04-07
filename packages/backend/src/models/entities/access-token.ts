@@ -15,12 +15,12 @@ export class AccessToken {
 	@PrimaryColumn(id())
 	public id: string;
 
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the AccessToken.",
 	})
 	public createdAt: Date;
 
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		nullable: true,
 	})
 	public lastUsedAt: Date | null;

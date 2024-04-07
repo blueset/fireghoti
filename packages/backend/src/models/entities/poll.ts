@@ -22,7 +22,7 @@ export class Poll {
 	@JoinColumn()
 	public note: Note | null;
 
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		nullable: true,
 	})
 	public expiresAt: Date | null;

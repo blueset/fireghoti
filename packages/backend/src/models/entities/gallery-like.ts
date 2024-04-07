@@ -16,7 +16,7 @@ export class GalleryLike {
 	@PrimaryColumn(id())
 	public id: string;
 
-	@Column("timestamp with time zone")
+	@Column("timestamp without time zone")
 	public createdAt: Date;
 
 	@Index()

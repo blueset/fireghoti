@@ -4,6 +4,10 @@ use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "user_publickey")]
+#[cfg_attr(
+    feature = "napi",
+    napi_derive::napi(object, js_name = "UserPublickey", use_nullable = true)
+)]
 pub struct Model {
     #[sea_orm(column_name = "userId", primary_key, auto_increment = false, unique)]
     pub user_id: String,

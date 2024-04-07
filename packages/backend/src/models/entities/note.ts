@@ -26,7 +26,7 @@ export class Note {
 	public id: string;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the Note.",
 	})
 	public createdAt: Date;
@@ -292,7 +292,7 @@ export class Note {
 	})
 	public renoteUserHost: string | null;
 
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		nullable: true,
 		comment: "The updated date of the Note.",
 	})

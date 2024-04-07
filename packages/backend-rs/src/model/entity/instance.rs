@@ -4,11 +4,15 @@ use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "instance")]
+#[cfg_attr(
+    feature = "napi",
+    napi_derive::napi(object, js_name = "Instance", use_nullable = true)
+)]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,
     #[sea_orm(column_name = "caughtAt")]
-    pub caught_at: DateTimeWithTimeZone,
+    pub caught_at: DateTime,
     pub host: String,
     #[sea_orm(column_name = "usersCount")]
     pub users_count: i32,
@@ -19,13 +23,13 @@ pub struct Model {
     #[sea_orm(column_name = "followersCount")]
     pub followers_count: i32,
     #[sea_orm(column_name = "latestRequestSentAt")]
-    pub latest_request_sent_at: Option<DateTimeWithTimeZone>,
+    pub latest_request_sent_at: Option<DateTime>,
     #[sea_orm(column_name = "latestStatus")]
     pub latest_status: Option<i32>,
     #[sea_orm(column_name = "latestRequestReceivedAt")]
-    pub latest_request_received_at: Option<DateTimeWithTimeZone>,
+    pub latest_request_received_at: Option<DateTime>,
     #[sea_orm(column_name = "lastCommunicatedAt")]
-    pub last_communicated_at: DateTimeWithTimeZone,
+    pub last_communicated_at: DateTime,
     #[sea_orm(column_name = "isNotResponding")]
     pub is_not_responding: bool,
     #[sea_orm(column_name = "softwareName")]
@@ -41,7 +45,7 @@ pub struct Model {
     #[sea_orm(column_name = "maintainerEmail")]
     pub maintainer_email: Option<String>,
     #[sea_orm(column_name = "infoUpdatedAt")]
-    pub info_updated_at: Option<DateTimeWithTimeZone>,
+    pub info_updated_at: Option<DateTime>,
     #[sea_orm(column_name = "isSuspended")]
     pub is_suspended: bool,
     #[sea_orm(column_name = "iconUrl")]

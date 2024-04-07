@@ -10,7 +10,7 @@ export class Instance {
 	 * このインスタンスを捕捉した日時
 	 */
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The caught date of the Instance.",
 	})
 	public caughtAt: Date;
@@ -62,7 +62,7 @@ export class Instance {
 	/**
 	 * 直近のリクエスト送信日時
 	 */
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		nullable: true,
 	})
 	public latestRequestSentAt: Date | null;
@@ -78,7 +78,7 @@ export class Instance {
 	/**
 	 * 直近のリクエスト受信日時
 	 */
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		nullable: true,
 	})
 	public latestRequestReceivedAt: Date | null;
@@ -86,7 +86,7 @@ export class Instance {
 	/**
 	 * このインスタンスと最後にやり取りした日時
 	 */
-	@Column("timestamp with time zone")
+	@Column("timestamp without time zone")
 	public lastCommunicatedAt: Date;
 
 	/**
@@ -166,7 +166,7 @@ export class Instance {
 	})
 	public themeColor: string | null;
 
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		nullable: true,
 	})
 	public infoUpdatedAt: Date | null;
