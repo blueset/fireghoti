@@ -322,6 +322,7 @@ export type CustomEmoji = {
 };
 
 export type EmojiLite = {
+	id: string;
 	name: string;
 	url: string;
 };
