@@ -27,11 +27,11 @@
 		<p class="name">
 			<span>{{
 				file.name.lastIndexOf(".") != -1
-					? file.name.substr(0, file.name.lastIndexOf("."))
+					? file.name.substring(0, file.name.lastIndexOf("."))
 					: file.name
 			}}</span>
 			<span v-if="file.name.lastIndexOf('.') != -1" class="ext">{{
-				file.name.substr(file.name.lastIndexOf("."))
+				file.name.substring(file.name.lastIndexOf("."))
 			}}</span>
 		</p>
 	</div>

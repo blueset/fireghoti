@@ -306,7 +306,7 @@ export default abstract class Chart<T extends Schema> {
 			k.startsWith(columnPrefix),
 		) as (keyof Columns<T>)[]) {
 			kvs[
-				(k as string).substr(columnPrefix.length).split(columnDot).join(".")
+				(k as string).substring(columnPrefix.length).split(columnDot).join(".")
 			] = x[k];
 		}
 		return kvs as KVs<T>;

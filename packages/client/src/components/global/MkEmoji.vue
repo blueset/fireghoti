@@ -45,7 +45,7 @@ const ce = computed(() => props.customEmojis ?? instance.emojis ?? []);
 const customEmoji = computed(() =>
 	isCustom.value
 		? ce.value.find(
-				(x) => x.name === props.emoji.substr(1, props.emoji.length - 2),
+				(x) => x.name === props.emoji.substring(1, props.emoji.length - 1),
 			)
 		: null,
 );
