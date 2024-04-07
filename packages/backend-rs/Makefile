@@ -1,3 +1,9 @@
+recursive_wildcard = $(foreach d, $(wildcard $(1:=/*)), $(call recursive_wildcard, $d, $2) $(filter $(subst *, %, $2), $d))
+
+SRC := Cargo.toml
+SRC += $(call recursive_wildcard, src, *)
+
+
 .PHONY: regenerate-entities
 regenerate-entities:
 	sea-orm-cli generate entity \
@@ -15,7 +21,7 @@ regenerate-entities:
 	  src/model/entity/sea_orm_active_enums.rs
 	pnpm run format
 
-index.js:
+index.js: $(SRC)
 	NODE_OPTIONS='--max_old_space_size=3072' pnpm run build:debug
 	[ -f built/index.js ]
 	rm --force index.js
