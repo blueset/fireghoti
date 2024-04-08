@@ -2,7 +2,7 @@ import * as http from "node:http";
 import * as https from "node:https";
 import type { URL } from "node:url";
 import CacheableLookup from "cacheable-lookup";
-import fetch, { RequestRedirect } from "node-fetch";
+import fetch, { type RequestRedirect } from "node-fetch";
 import { HttpProxyAgent, HttpsProxyAgent } from "hpagent";
 import config from "@/config/index.js";
 import { isValidUrl } from "./is-valid-url.js";
