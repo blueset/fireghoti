@@ -1,6 +1,19 @@
 import { Entity, PrimaryColumn, Index, Column } from "typeorm";
 import { id } from "../id.js";
 
+export const MAX_LENGTH_INSTANCE = {
+	host: 512,
+	softwareName: 64,
+	softwareVersion: 64,
+	name: 256,
+	description: 4096,
+	maintainerName: 128,
+	maintainerEmail: 256,
+	iconUrl: 4096,
+	faviconUrl: 4096,
+	themeColor: 64,
+};
+
 @Entity()
 export class Instance {
 	@PrimaryColumn(id())
@@ -20,7 +33,7 @@ export class Instance {
 	 */
 	@Index({ unique: true })
 	@Column("varchar", {
-		length: 512,
+		length: MAX_LENGTH_INSTANCE.host,
 		comment: "The host of the Instance.",
 	})
 	public host: string;
@@ -107,14 +120,14 @@ export class Instance {
 	public isSuspended: boolean;
 
 	@Column("varchar", {
-		length: 64,
+		length: MAX_LENGTH_INSTANCE.softwareName,
 		nullable: true,
 		comment: "The software of the Instance.",
 	})
 	public softwareName: string | null;
 
 	@Column("varchar", {
-		length: 64,
+		length: MAX_LENGTH_INSTANCE.softwareVersion,
 		nullable: true,
 	})
 	public softwareVersion: string | null;
@@ -125,43 +138,43 @@ export class Instance {
 	public openRegistrations: boolean | null;
 
 	@Column("varchar", {
-		length: 256,
+		length: MAX_LENGTH_INSTANCE.name,
 		nullable: true,
 	})
 	public name: string | null;
 
 	@Column("varchar", {
-		length: 4096,
+		length: MAX_LENGTH_INSTANCE.description,
 		nullable: true,
 	})
 	public description: string | null;
 
 	@Column("varchar", {
-		length: 128,
+		length: MAX_LENGTH_INSTANCE.maintainerName,
 		nullable: true,
 	})
 	public maintainerName: string | null;
 
 	@Column("varchar", {
-		length: 256,
+		length: MAX_LENGTH_INSTANCE.maintainerEmail,
 		nullable: true,
 	})
 	public maintainerEmail: string | null;
 
 	@Column("varchar", {
-		length: 4096,
+		length: MAX_LENGTH_INSTANCE.iconUrl,
 		nullable: true,
 	})
 	public iconUrl: string | null;
 
 	@Column("varchar", {
-		length: 4096,
+		length: MAX_LENGTH_INSTANCE.faviconUrl,
 		nullable: true,
 	})
 	public faviconUrl: string | null;
 
 	@Column("varchar", {
-		length: 64,
+		length: MAX_LENGTH_INSTANCE.themeColor,
 		nullable: true,
 	})
 	public themeColor: string | null;
