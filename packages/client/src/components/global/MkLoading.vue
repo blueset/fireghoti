@@ -101,7 +101,7 @@ withDefaults(
 		display: inline-block;
 		vertical-align: middle;
 		padding: 0;
-		--size: v-bind(sizeEm);
+		--size: v-bind(`${sizeEm}em`);
 	}
 }
 
