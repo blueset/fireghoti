@@ -118,7 +118,7 @@ const props = withDefaults(
 	}>(),
 	{
 		manualShowing: null,
-		src: null,
+		src: undefined,
 		anchor: () => ({ x: "center", y: "bottom" }),
 		preferType: "auto",
 		zPriority: "low",
@@ -190,7 +190,7 @@ const transitionDuration = computed(() =>
 let contentClicking = false;
 
 const focusedElement = document.activeElement;
-function close(ev, opts: { useSendAnimation?: boolean } = {}) {
+function close(_ev, opts: { useSendAnimation?: boolean } = {}) {
 	// removeEventListener("popstate", close);
 	// if (props.preferType == "dialog") {
 	// 	history.forward();
@@ -235,8 +235,8 @@ const align = () => {
 	const width = content.value!.offsetWidth;
 	const height = content.value!.offsetHeight;
 
-	let left;
-	let top;
+	let left: number;
+	let top: number;
 
 	const x = srcRect.left + (fixed.value ? 0 : window.scrollX);
 	const y = srcRect.top + (fixed.value ? 0 : window.scrollY);
@@ -341,8 +341,8 @@ const align = () => {
 
 	transformOrigin.value = `${transformOriginX} ${transformOriginY}`;
 
-	content.value.style.left = left + "px";
-	content.value.style.top = top + "px";
+	content.value.style.left = `${left}px`;
+	content.value.style.top = `${top}px`;
 };
 
 const onOpened = () => {
