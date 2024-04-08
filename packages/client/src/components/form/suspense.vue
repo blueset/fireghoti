@@ -12,11 +12,11 @@
 		<div v-else>
 			<div class="wszdbhzo">
 				<div>
-					<i :class="iconClass('ph-warning')"></i>
+					<i :class="iconify('ph-warning')"></i>
 					{{ i18n.ts.somethingHappened }}
 				</div>
 				<MkButton inline class="retry" @click="retry">
-					<i :class="iconClass('ph-arrow-clockwise')"></i>
+					<i :class="iconify('ph-arrow-clockwise')"></i>
 					{{ i18n.ts.retry }}</MkButton
 				>
 			</div>
@@ -30,7 +30,7 @@ import { defineComponent, ref, watch } from "vue";
 import MkButton from "@/components/MkButton.vue";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
-import iconClass from "@/scripts/icon";
+import iconify from "@/scripts/icon";
 
 export default defineComponent({
 	components: {
@@ -92,7 +92,7 @@ export default defineComponent({
 			retry,
 			i18n,
 			defaultStore,
-			iconClass,
+			iconify,
 		};
 	},
 });

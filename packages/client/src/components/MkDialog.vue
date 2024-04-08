@@ -15,26 +15,26 @@
 			>
 				<i
 					v-if="type === 'success'"
-					:class="[$style.iconInner, iconClass('ph-check')]"
+					:class="[$style.iconInner, iconify('ph-check')]"
 				></i>
 				<i
 					v-else-if="type === 'error'"
 					:class="[
 						$style.iconInner,
-						iconClass('ph-circle-wavy-warning'),
+						iconify('ph-circle-wavy-warning'),
 					]"
 				></i>
 				<i
 					v-else-if="type === 'warning'"
-					:class="[$style.iconInner, iconClass('ph-warning')]"
+					:class="[$style.iconInner, iconify('ph-warning')]"
 				></i>
 				<i
 					v-else-if="type === 'info'"
-					:class="[$style.iconInner, iconClass('ph-info')]"
+					:class="[$style.iconInner, iconify('ph-info')]"
 				></i>
 				<i
 					v-else-if="type === 'question'"
-					:class="[$style.iconInner, iconClass('ph-question')]"
+					:class="[$style.iconInner, iconify('ph-question')]"
 				></i>
 				<MkLoading
 					v-else-if="type === 'waiting'"
@@ -73,7 +73,7 @@
 				@keydown="onInputKeydown"
 			>
 				<template v-if="input.type === 'password'" #prefix
-					><i :class="iconClass('ph-password')"></i
+					><i :class="iconify('ph-password')"></i
 				></template>
 				<template #caption>
 					<span
@@ -201,7 +201,7 @@ import MkInput from "@/components/form/input.vue";
 import MkTextarea from "@/components/form/textarea.vue";
 import MkSelect from "@/components/form/select.vue";
 import { i18n } from "@/i18n";
-import iconClass from "@/scripts/icon";
+import iconify from "@/scripts/icon";
 
 interface Input {
 	type: HTMLInputElement["type"];
