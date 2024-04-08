@@ -34,7 +34,6 @@ searchWith: 'Търсене: {q}'
 smtpUser: Потребителско име
 notificationType: Тип известие
 searchResult: Резултати от търсенето
-searchByGoogle: Търсене
 markAsReadAllNotifications: Маркиране на всички известия като прочетени
 settingGuide: Препоръчителни настройки
 smtpPass: Парола

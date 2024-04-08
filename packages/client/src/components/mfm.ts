@@ -8,12 +8,11 @@ import MkEmoji from "@/components/global/MkEmoji.vue";
 import { concat } from "@/scripts/array";
 import MkFormula from "@/components/MkFormula.vue";
 import MkCode from "@/components/MkCode.vue";
-import MkGoogle from "@/components/MkGoogle.vue";
+import MkSearchBar from "@/components/MkSearchBar.vue";
 import MkSparkle from "@/components/MkSparkle.vue";
 import MkA from "@/components/global/MkA.vue";
 import { host } from "@/config";
 import { reducedMotion } from "@/scripts/reduced-motion";
-import { defaultStore } from "@/store";
 import type { entities } from "firefish-js";
 
 export default defineComponent({
@@ -543,7 +542,7 @@ export default defineComponent({
 							}
 
 							return [
-								h(MkGoogle, {
+								h(MkSearchBar, {
 									key: Math.random(),
 									q: token.props.query,
 								}),

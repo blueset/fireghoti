@@ -135,7 +135,6 @@ userList: "Llistes"
 smtpUser: "Nom d'usuari"
 smtpPass: "Contrasenya"
 user: "Usuari"
-searchByGoogle: "Cerca"
 file: "Fitxer"
 _email:
   _follow:

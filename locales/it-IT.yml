@@ -859,7 +859,6 @@ useDrawerReactionPickerForMobile: "Mostra sul drawer da dispositivo mobile"
 welcomeBackWithName: "Ciao {name}"
 clickToFinishEmailVerification: "Fai click su [{ok}] per completare la verifica dell'indirizzo
   email."
-searchByGoogle: "Cerca"
 indefinitely: "Senza scadenza"
 tenMinutes: "10 minuti"
 oneHour: "1 ora"

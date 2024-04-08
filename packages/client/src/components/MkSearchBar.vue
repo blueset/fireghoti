@@ -1,9 +1,9 @@
 <template>
-	<div class="mk-google" @click.stop>
+	<div class="mk-search" @click.stop>
 		<input v-model="query" type="search" :placeholder="q" />
 		<button @click="search">
 			<i :class="icon('ph-magnifying-glass')"></i>
-			{{ i18n.ts.searchByGoogle }}
+			{{ i18n.ts.search }}
 		</button>
 	</div>
 </template>
@@ -31,7 +31,7 @@ const search = () => {
 </script>
 
 <style lang="scss" scoped>
-.mk-google {
+.mk-search {
 	display: flex;
 	margin: 8px 0;
 

@@ -948,7 +948,6 @@ clickToFinishEmailVerification: Klikkaa [{ok}] viimeistelläksesi sähköpostiva
 overridedDeviceKind: Laitetyyppi
 tablet: Tabletti
 numberOfColumn: Sarakkeiden määrä
-searchByGoogle: Etsi
 mutePeriod: Vaiennuksen kesto
 indefinitely: Pysyvästi
 tenMinutes: 10 minuuttia
