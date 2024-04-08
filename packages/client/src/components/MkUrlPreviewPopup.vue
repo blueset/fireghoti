@@ -36,8 +36,8 @@ onMounted(() => {
 	const rect = props.source.getBoundingClientRect();
 	const x =
 		Math.max(rect.left + props.source.offsetWidth / 2 - 300 / 2, 6) +
-		window.pageXOffset;
-	const y = rect.top + props.source.offsetHeight + window.pageYOffset;
+		window.scrollX;
+	const y = rect.top + props.source.offsetHeight + window.scrollY;
 
 	top.value = y;
 	left.value = x;

@@ -238,8 +238,8 @@ const align = () => {
 	let left;
 	let top;
 
-	const x = srcRect.left + (fixed.value ? 0 : window.pageXOffset);
-	const y = srcRect.top + (fixed.value ? 0 : window.pageYOffset);
+	const x = srcRect.left + (fixed.value ? 0 : window.scrollX);
+	const y = srcRect.top + (fixed.value ? 0 : window.scrollY);
 
 	if (props.anchor.x === "center") {
 		left = x + props.src.offsetWidth / 2 - width / 2;
@@ -287,7 +287,7 @@ const align = () => {
 			left = window.innerWidth - width + window.scrollX - 1;
 		}
 
-		const underSpace = window.innerHeight - MARGIN - (top - window.pageYOffset);
+		const underSpace = window.innerHeight - MARGIN - (top - window.scrollY);
 		const upperSpace = srcRect.top - MARGIN;
 
 		// 画面から縦にはみ出る場合
@@ -300,7 +300,7 @@ const align = () => {
 					top = window.scrollY + (upperSpace + MARGIN - height);
 				}
 			} else {
-				top = window.innerHeight - MARGIN - height + window.pageYOffset - 1;
+				top = window.innerHeight - MARGIN - height + window.scrollY - 1;
 			}
 		} else {
 			maxHeight.value = underSpace;
@@ -320,28 +320,21 @@ const align = () => {
 
 	if (
 		top >=
-		srcRect.top +
-			props.src.offsetHeight +
-			(fixed.value ? 0 : window.pageYOffset)
+		srcRect.top + props.src.offsetHeight + (fixed.value ? 0 : window.scrollY)
 	) {
 		transformOriginY = "top";
-	} else if (
-		top + height <=
-		srcRect.top + (fixed.value ? 0 : window.pageYOffset)
-	) {
+	} else if (top + height <= srcRect.top + (fixed.value ? 0 : window.scrollY)) {
 		transformOriginY = "bottom";
 	}
 
 	if (
 		left >=
-		srcRect.left +
-			props.src.offsetWidth +
-			(fixed.value ? 0 : window.pageXOffset)
+		srcRect.left + props.src.offsetWidth + (fixed.value ? 0 : window.scrollX)
 	) {
 		transformOriginX = "left";
 	} else if (
 		left + width <=
-		srcRect.left + (fixed.value ? 0 : window.pageXOffset)
+		srcRect.left + (fixed.value ? 0 : window.scrollX)
 	) {
 		transformOriginX = "right";
 	}
