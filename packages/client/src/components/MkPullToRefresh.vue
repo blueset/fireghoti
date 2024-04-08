@@ -9,13 +9,8 @@
 			}px;`"
 		>
 			<div :class="$style.frameContent">
-				<MkLoading
-					v-if="isRefreshing"
-					:class="$style.loader"
-					:em="true"
-				/>
 				<i
-					v-else
+					v-if="!isRefreshing"
 					:class="[$style.icon, icon('ph-arrow-down'), { [$style.refresh]: pullEnded }]"
 				></i>
 				<div :class="$style.text">
@@ -44,7 +39,7 @@ import { isDuringHorizontalSwipe } from "@/scripts/touch";
 import icon from "@/scripts/icon";
 
 const SCROLL_STOP = 10;
-const MAX_PULL_DISTANCE = Infinity;
+const MAX_PULL_DISTANCE = Number.POSITIVE_INFINITY;
 const FIRE_THRESHOLD = defaultStore.state.pullToRefreshThreshold;
 const RELEASE_TRANSITION_DURATION = 200;
 const PULL_BRAKE_BASE = 1.5;
@@ -71,9 +66,7 @@ const props = withDefaults(
 	},
 );
 
-const emits = defineEmits<{
-	(ev: "refresh"): void;
-}>();
+const emits = defineEmits<(ev: "refresh") => void>();
 
 function getScreenY(event) {
 	if (supportPointerDesktop) return event.screenY;
