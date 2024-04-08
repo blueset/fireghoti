@@ -117,10 +117,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	});
 
 	// Expired challenge (> 5min old)
-	if (
-		new Date().getTime() - attestationChallenge.createdAt.getTime() >=
-		5 * 60 * 1000
-	) {
+	if (Date.now() - attestationChallenge.createdAt.getTime() >= 5 * 60 * 1000) {
 		throw new Error("expired challenge");
 	}
 

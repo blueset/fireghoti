@@ -158,7 +158,7 @@ mastoRouter.post("/oauth/token", async (ctx) => {
 			access_token: uuid(),
 			token_type: "Bearer",
 			scope: "read",
-			created_at: Math.floor(new Date().getTime() / 1000),
+			created_at: Math.floor(Date.now() / 1000),
 		};
 		ctx.body = ret;
 		return;
@@ -193,7 +193,7 @@ mastoRouter.post("/oauth/token", async (ctx) => {
 			access_token: atData.accessToken,
 			token_type: "Bearer",
 			scope: body.scope || "read write follow push",
-			created_at: Math.floor(new Date().getTime() / 1000),
+			created_at: Math.floor(Date.now() / 1000),
 		};
 		serverLogger.info("token-response", ret);
 		ctx.body = ret;
