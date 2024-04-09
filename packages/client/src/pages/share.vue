@@ -54,8 +54,16 @@ const url = urlParams.get("url");
 const initialText = ref(null as string | null);
 const reply = ref(null as entities.Note | null);
 const renote = ref(null as entities.Note | null);
+
+function isVisibility(
+	v: string | null,
+): v is (typeof noteVisibilities)[number] {
+	if (v == null) return false;
+	return (noteVisibilities as readonly string[]).includes(v);
+}
+
 const visibility = ref(
-	noteVisibilities.includes(visibilityQuery) ? visibilityQuery : null,
+	isVisibility(visibilityQuery) ? visibilityQuery : undefined,
 );
 const localOnly = ref(
 	localOnlyQuery === "0" ? false : localOnlyQuery === "1" ? true : null,

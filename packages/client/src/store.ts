@@ -1,6 +1,7 @@
 import { markRaw, ref } from "vue";
 import { isSignedIn } from "./me";
 import { Storage } from "./pizzax";
+import type { noteVisibilities } from "firefish-js";
 
 export const postFormActions = [];
 export const userActions = [];
@@ -75,7 +76,7 @@ export const defaultStore = markRaw(
 		},
 		defaultNoteVisibility: {
 			where: "account",
-			default: "public",
+			default: "public" as (typeof noteVisibilities)[number],
 		},
 		defaultNoteLocalOnly: {
 			where: "account",
@@ -123,12 +124,7 @@ export const defaultStore = markRaw(
 		},
 		visibility: {
 			where: "deviceAccount",
-			default: "public" as
-				| "public"
-				| "home"
-				| "followers"
-				| "specified"
-				| "private",
+			default: "public" as (typeof noteVisibilities)[number],
 		},
 		localOnly: {
 			where: "deviceAccount",

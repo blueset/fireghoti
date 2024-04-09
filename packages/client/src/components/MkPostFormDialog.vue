@@ -32,7 +32,7 @@ const props = defineProps<{
 	mention?: entities.User;
 	specified?: entities.User;
 	initialText?: string;
-	initialVisibility?: typeof noteVisibilities;
+	initialVisibility?: (typeof noteVisibilities)[number];
 	initialLanguage?: typeof languages;
 	initialFiles?: entities.DriveFile[];
 	initialLocalOnly?: boolean;
