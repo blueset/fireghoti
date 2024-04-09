@@ -876,7 +876,7 @@ fromDrive: Des del Disc
 uploadFromUrl: Puja des d'una adreça URL
 uploadFromUrlDescription: Adreça URL del fitxer que vols pujar
 uploadFromUrlRequested: Pujada demanada
-noMoreHistory: No hi ha res més a l'historial
+noMoreHistory: No hi ha més historial
 tos: Condicions d'ús
 start: Comença
 startMessaging: Comença una conversa
@@ -2293,5 +2293,5 @@ markLocalFilesNsfwByDefaultDescription: Independentment d'aquest ajust, els usua
   afectats.
 autocorrectNoteLanguage: Mostra un avís si l'idioma de la publicació no coincideix
   amb el resultat de l'idioma detectat automàticament
-noteEditHistory: Historial d'edició de la publicació
+noteEditHistory: Historial d'edicions
 media: Multimèdia
