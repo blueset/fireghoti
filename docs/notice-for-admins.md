@@ -8,7 +8,14 @@ You can skip intermediate versions when upgrading from an old version, but pleas
 
 Upgrading may take a long time due to the large changes in the database. Please make sure to perform the operations when you have time.
 
-The time required to upgrade varies greatly depending on the database size and the environment. For reference, on a server with 2 GB of RAM storing 10 million posts, the process took approximately 30 minutes. The number of posts stored on the server can be found at `https://yourserver.example.com/admin/database` (or `notesCount` of `stats` API response).
+The time required to upgrade varies greatly depending on the database size and the environment. For reference, we have checked that the database migration takes
+
+- 70 seconds if the database stores 600,000 posts
+- 28 minutes if the database stores 12,000,000 posts
+
+on a server with 2 GB of RAM. You may want to tweak your database configuration (`postgres.conf`) if the process is significantly slower than our experimental result.
+
+The number of posts stored on your database can be found at `https://yourserver.example.com/admin/database` (or `notesCount` of `stats` API response).
 
 ### For systemd/pm2 users
 
