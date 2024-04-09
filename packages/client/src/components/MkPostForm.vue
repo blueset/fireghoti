@@ -304,7 +304,7 @@ import insertTextAtCursor from "insert-text-at-cursor";
 import { length } from "stringz";
 import { toASCII } from "punycode/";
 import { acct } from "firefish-js";
-import type { entities, languages, noteVisibilities } from "firefish-js";
+import type { entities, languages } from "firefish-js";
 import { throttle } from "throttle-debounce";
 import XNoteSimple from "@/components/MkNoteSimple.vue";
 import XNotePreview from "@/components/MkNotePreview.vue";
@@ -340,6 +340,7 @@ import {
 import type { MenuItem } from "@/types/menu";
 import icon from "@/scripts/icon";
 import MkVisibilityPicker from "@/components/MkVisibilityPicker.vue";
+import type { NoteVisibility } from "@/types/client-types";
 
 const modal = inject("modal");
 
@@ -351,7 +352,7 @@ const props = withDefaults(
 		mention?: entities.User;
 		specified?: entities.User;
 		initialText?: string;
-		initialVisibility?: (typeof noteVisibilities)[number];
+		initialVisibility?: NoteVisibility;
 		initialLanguage?: typeof languages;
 		initialFiles?: entities.DriveFile[];
 		initialLocalOnly?: boolean;

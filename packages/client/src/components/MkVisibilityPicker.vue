@@ -142,16 +142,16 @@
 
 <script lang="ts" setup>
 import { nextTick, ref, shallowRef, watch } from "vue";
-import type { noteVisibilities } from "firefish-js";
 import MkModal from "@/components/MkModal.vue";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
+import type { NoteVisibility } from "@/types/client-types";
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 
 const props = withDefaults(
 	defineProps<{
-		currentVisibility: (typeof noteVisibilities)[number];
+		currentVisibility: NoteVisibility;
 		currentLocalOnly: boolean;
 		src?: HTMLElement;
 	}>(),
@@ -159,7 +159,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	(ev: "changeVisibility", v: (typeof noteVisibilities)[number]): void;
+	(ev: "changeVisibility", v: NoteVisibility): void;
 	(ev: "changeLocalOnly", v: boolean): void;
 	(ev: "closed"): void;
 }>();
@@ -172,7 +172,7 @@ watch(localOnly, () => {
 });
 
 function choose(
-	visibility: (typeof noteVisibilities)[number] | "private",
+	visibility: NoteVisibility,
 ): void {
 	v.value = visibility;
 	emit("changeVisibility", visibility);

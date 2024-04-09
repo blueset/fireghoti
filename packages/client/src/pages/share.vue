@@ -34,7 +34,7 @@ import { computed, ref } from "vue";
 
 // SPECIFICATION: https://misskey-hub.net/docs/features/share-form.html
 import type { entities } from "firefish-js";
-import { acct, noteVisibilities } from "firefish-js";
+import { acct } from "firefish-js";
 import MkButton from "@/components/MkButton.vue";
 import XPostForm from "@/components/MkPostForm.vue";
 import * as os from "@/os";
@@ -42,6 +42,8 @@ import { mainRouter } from "@/router";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
+import type { NoteVisibility } from "@/types/client-types";
+import { noteVisibilitiesClient } from "@/types/consts";
 
 const urlParams = new URLSearchParams(window.location.search);
 const localOnlyQuery = urlParams.get("localOnly");
@@ -57,9 +59,9 @@ const renote = ref(null as entities.Note | null);
 
 function isVisibility(
 	v: string | null,
-): v is (typeof noteVisibilities)[number] {
+): v is NoteVisibility {
 	if (v == null) return false;
-	return (noteVisibilities as readonly string[]).includes(v);
+	return (noteVisibilitiesClient as readonly string[]).includes(v);
 }
 
 const visibility = ref(

@@ -1,7 +1,6 @@
 import { markRaw, ref } from "vue";
 import { isSignedIn } from "./me";
 import { Storage } from "./pizzax";
-import type { noteVisibilities } from "firefish-js";
 
 export const postFormActions = [];
 export const userActions = [];
@@ -76,7 +75,7 @@ export const defaultStore = markRaw(
 		},
 		defaultNoteVisibility: {
 			where: "account",
-			default: "public" as (typeof noteVisibilities)[number],
+			default: "public" as NoteVisibility,
 		},
 		defaultNoteLocalOnly: {
 			where: "account",
@@ -124,7 +123,7 @@ export const defaultStore = markRaw(
 		},
 		visibility: {
 			where: "deviceAccount",
-			default: "public" as (typeof noteVisibilities)[number],
+			default: "public" as NoteVisibility,
 		},
 		localOnly: {
 			where: "deviceAccount",
@@ -453,6 +452,7 @@ import darkTheme from "@/themes/d-rosepine.json5";
  * Storage for configuration information that does not need to be constantly loaded into memory (non-reactive)
  */
 import lightTheme from "@/themes/l-rosepinedawn.json5";
+import { NoteVisibility } from "./types/client-types";
 
 export class ColdDeviceStorage {
 	public static default = {

@@ -21,9 +21,10 @@
 <script lang="ts" setup>
 import { shallowRef } from "vue";
 
-import type { entities, languages, noteVisibilities } from "firefish-js";
+import type { entities, languages } from "firefish-js";
 import MkModal from "@/components/MkModal.vue";
 import MkPostForm from "@/components/MkPostForm.vue";
+import type { NoteVisibility } from "@/types/client-types";
 
 const props = defineProps<{
 	reply?: entities.Note;
@@ -32,7 +33,7 @@ const props = defineProps<{
 	mention?: entities.User;
 	specified?: entities.User;
 	initialText?: string;
-	initialVisibility?: (typeof noteVisibilities)[number];
+	initialVisibility?: NoteVisibility;
 	initialLanguage?: typeof languages;
 	initialFiles?: entities.DriveFile[];
 	initialLocalOnly?: boolean;
