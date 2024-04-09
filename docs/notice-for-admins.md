@@ -13,7 +13,7 @@ The time required to upgrade varies greatly depending on the database size and t
 - 70 seconds if the database stores 600,000 posts
 - 28 minutes if the database stores 12,000,000 posts
 
-on a server with 2 GB of RAM. You may want to tweak your database configuration (`postgres.conf`) if the process is significantly slower than our experimental result.
+(i.e., it takes roughly (n * 0.23) minutes if there are (n * 100,000) posts) on a server with 2 GB of RAM. You may want to tweak your database configuration (`postgres.conf`) if the process is significantly slower than our experimental result.
 
 The number of posts stored on your database can be found at `https://yourserver.example.com/admin/database` (or `notesCount` of `stats` API response).
 
