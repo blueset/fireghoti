@@ -2272,3 +2272,4 @@ markLocalFilesNsfwByDefault: Tandai semua berkas lokal baru sensitif secara bawa
 markLocalFilesNsfwByDefaultDescription: Terlepas dari pengaturan ini, pengguna dapat
   menghapus sendiri tanda NSFW. Berkas yang ada tidak berpengaruh.
 noteEditHistory: Riwayat penyuntingan kiriman
+media: Media
