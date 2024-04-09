@@ -43,7 +43,7 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 import type { NoteVisibility } from "@/types/client-types";
-import { noteVisibilitiesClient } from "@/types/consts";
+import { noteVisibilitiesClient } from "@/scripts/consts";
 
 const urlParams = new URLSearchParams(window.location.search);
 const localOnlyQuery = urlParams.get("localOnly");
