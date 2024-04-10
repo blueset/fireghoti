@@ -93,8 +93,9 @@ if (loaded) {
 				src: src.value,
 			}),
 		)
-	// biome-ignore lint/suspicious/noAssignInExpressions: assign it intentially
-	).addEventListener("load", () => (available.value = true));
+	)
+		// biome-ignore lint/suspicious/noAssignInExpressions: assign it intentially
+		.addEventListener("load", () => (available.value = true));
 }
 
 function reset() {
