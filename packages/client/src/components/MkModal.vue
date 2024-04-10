@@ -190,7 +190,7 @@ const transitionDuration = computed(() =>
 let contentClicking = false;
 
 const focusedElement = document.activeElement;
-function close(_ev, opts: { useSendAnimation?: boolean } = {}) {
+function close(_ev?, opts: { useSendAnimation?: boolean } = {}) {
 	// removeEventListener("popstate", close);
 	// if (props.preferType == "dialog") {
 	// 	history.forward();
