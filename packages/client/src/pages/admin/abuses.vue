@@ -99,12 +99,13 @@ import XAbuseReport from "@/components/MkAbuseReport.vue";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
+import type { entities } from "firefish-js";
 
 const reports = ref<InstanceType<typeof MkPagination>>();
 
 const state = ref("unresolved");
-const reporterOrigin = ref("combined");
-const targetUserOrigin = ref("combined");
+const reporterOrigin = ref<entities.OriginType>("combined");
+const targetUserOrigin = ref<entities.OriginType>("combined");
 // const searchUsername = ref("");
 // const searchHost = ref("");
 

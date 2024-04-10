@@ -72,13 +72,14 @@ import MkSwitch from "@/components/form/switch.vue";
 import MkKeyValue from "@/components/MkKeyValue.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import type { entities } from "firefish-js";
 
 const props = defineProps<{
-	report: any;
+	report: entities.AbuseUserReport;
 }>();
 
 const emit = defineEmits<{
-	(ev: "resolved", reportId: string): void;
+	resolved: [reportId: string];
 }>();
 
 const forward = ref(props.report.forwarded);

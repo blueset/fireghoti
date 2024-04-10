@@ -1,4 +1,5 @@
 import type {
+	AbuseUserReport,
 	Ad,
 	Announcement,
 	Antenna,
@@ -68,7 +69,18 @@ type NoteSubmitReq = {
 
 export type Endpoints = {
 	// admin
-	"admin/abuse-user-reports": { req: TODO; res: TODO };
+	"admin/abuse-user-reports": {
+		req: {
+			limit?: number;
+			sinceId?: AbuseUserReport["id"];
+			untilId?: AbuseUserReport["id"];
+			state?: string;
+			reporterOrigin?: OriginType;
+			targetUserOrigin?: OriginType;
+			forwarded?: boolean;
+		};
+		res: AbuseUserReport[];
+	};
 	"admin/delete-all-files-of-a-user": {
 		req: { userId: User["id"] };
 		res: null;

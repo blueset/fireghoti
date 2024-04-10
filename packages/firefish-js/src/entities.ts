@@ -18,10 +18,7 @@ export type UserLite = {
 	avatarBlurhash: string;
 	alsoKnownAs: string[];
 	movedToUri: any;
-	emojis: {
-		name: string;
-		url: string;
-	}[];
+	emojis: EmojiLite[];
 	instance?: {
 		name: Instance["name"];
 		softwareName: Instance["softwareName"];
@@ -171,10 +168,7 @@ export type Note = {
 			votes: number;
 		}[];
 	};
-	emojis: {
-		name: string;
-		url: string;
-	}[];
+	emojis: EmojiLite[];
 	uri?: string;
 	url?: string;
 	updatedAt?: DateString;
@@ -191,10 +185,7 @@ export type NoteEdit = {
 	updatedAt: string;
 	fileIds: DriveFile["id"][];
 	files: DriveFile[];
-	emojis: {
-		name: string;
-		url: string;
-	}[];
+	emojis: EmojiLite[];
 };
 
 export type NoteReaction = {
@@ -325,6 +316,8 @@ export type EmojiLite = {
 	id: string;
 	name: string;
 	url: string;
+	width: number | null;
+	height: number | null;
 };
 
 export type LiteInstanceMetadata = {
@@ -547,3 +540,17 @@ export type UserSorting =
 	| "+updatedAt"
 	| "-updatedAt";
 export type OriginType = "combined" | "local" | "remote";
+
+export type AbuseUserReport = {
+	id: string;
+	createdAt: DateString;
+	comment: string;
+	resolved: boolean;
+	reporterId: User["id"];
+	targetUserId: User["id"];
+	assigneeId: User["id"] | null;
+	reporter: UserDetailed;
+	targetUser: UserDetailed;
+	assignee?: UserDetailed | null;
+	forwarded: boolean;
+};
