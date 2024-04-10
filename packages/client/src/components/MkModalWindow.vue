@@ -97,7 +97,7 @@ const modal = shallowRef<InstanceType<typeof MkModal>>();
 const rootEl = shallowRef<HTMLElement>();
 const headerEl = shallowRef<HTMLElement>();
 
-const close = (ev) => {
+const close = (ev?) => {
 	modal.value?.close(ev);
 };
 
