@@ -22,7 +22,7 @@ import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
-		to: string;
+		to?: string;
 		activeClass?: null | string;
 		behavior?: null | "window" | "browser" | "modalWindow";
 	}>(),

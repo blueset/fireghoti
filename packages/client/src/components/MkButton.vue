@@ -47,7 +47,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(ev: "click", payload: MouseEvent): void;
+	click: [payload: MouseEvent];
 }>();
 
 const el = ref<HTMLElement | null>(null);
@@ -61,11 +61,19 @@ onMounted(() => {
 	}
 });
 
-function distance(p, q): number {
+function distance(
+	p: { x: number; y: number },
+	q: { x: number; y: number },
+): number {
 	return Math.hypot(p.x - q.x, p.y - q.y);
 }
 
-function calcCircleScale(boxW, boxH, circleCenterX, circleCenterY): number {
+function calcCircleScale(
+	boxW: number,
+	boxH: number,
+	circleCenterX: number,
+	circleCenterY: number,
+): number {
 	const origin = { x: circleCenterX, y: circleCenterY };
 	const dist1 = distance({ x: 0, y: 0 }, origin);
 	const dist2 = distance({ x: boxW, y: 0 }, origin);
@@ -79,8 +87,8 @@ function onMousedown(evt: MouseEvent): void {
 	const rect = target.getBoundingClientRect();
 
 	const ripple = document.createElement("div");
-	ripple.style.top = (evt.clientY - rect.top - 1).toString() + "px";
-	ripple.style.left = (evt.clientX - rect.left - 1).toString() + "px";
+	ripple.style.top = `${(evt.clientY - rect.top - 1).toString()}px`;
+	ripple.style.left = `${(evt.clientX - rect.left - 1).toString()}px`;
 
 	ripples.value!.appendChild(ripple);
 
@@ -97,7 +105,7 @@ function onMousedown(evt: MouseEvent): void {
 	vibrate(10);
 
 	window.setTimeout(() => {
-		ripple.style.transform = "scale(" + scale / 2 + ")";
+		ripple.style.transform = `scale(${scale / 2})`;
 	}, 1);
 	window.setTimeout(() => {
 		ripple.style.transition = "all 1s ease";
