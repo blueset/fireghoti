@@ -76,7 +76,9 @@ export type UserDetailed = UserLite & {
 	url: string | null;
 };
 
-export type UserGroup = TODO;
+export type UserGroup = {
+	id: ID;
+} & Record<string, TODO>;
 
 export type UserList = {
 	id: ID;

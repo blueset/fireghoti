@@ -4,14 +4,14 @@
 		:class="{
 			isMe: isMe(message),
 			isRead: message.groupId
-				? message.reads.includes(me?.id)
+				? message.reads.includes(me!.id)
 				: message.isRead,
 		}"
 		:to="
 			message.groupId
 				? `/my/messaging/group/${message.groupId}`
 				: `/my/messaging/${acct.toString(
-						isMe(message) ? message.recipient : message.user,
+						isMe(message) ? message.recipient! : message.user,
 					)}`
 		"
 	>
@@ -22,27 +22,27 @@
 					message.groupId
 						? message.user
 						: isMe(message)
-							? message.recipient
+							? message.recipient!
 							: message.user
 				"
 				:show-indicator="true"
 				disable-link
 			/>
 			<header v-if="message.groupId">
-				<span class="name">{{ message.group.name }}</span>
+				<span class="name">{{ message.group!.name }}</span>
 				<MkTime :time="message.createdAt" class="time" />
 			</header>
 			<header v-else>
 				<span class="name"
 					><MkUserName
 						:user="
-							isMe(message) ? message.recipient : message.user
+							isMe(message) ? message.recipient! : message.user
 						"
 				/></span>
 				<span class="username"
 					>@{{
 						acct.toString(
-							isMe(message) ? message.recipient : message.user,
+							isMe(message) ? message.recipient! : message.user,
 						)
 					}}</span
 				>
@@ -65,16 +65,20 @@
 </template>
 
 <script lang="ts" setup>
-import { acct } from "firefish-js";
+import { acct, type entities } from "firefish-js";
 import { i18n } from "@/i18n";
 import { me } from "@/me";
 
+if (me == null) {
+	throw "No me";
+}
+
 defineProps<{
-	message: Record<string, any>;
+	message: entities.MessagingMessage;
 }>();
 
-function isMe(message): boolean {
-	return message.userId === me?.id;
+function isMe(message: entities.MessagingMessage): boolean {
+	return message.userId === me!.id;
 }
 </script>
 
