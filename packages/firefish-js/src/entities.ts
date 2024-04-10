@@ -329,6 +329,7 @@ export type LiteInstanceMetadata = {
 	name: string | null;
 	uri: string;
 	description: string | null;
+	donationLink?: string;
 	tosUrl: string | null;
 	disableRegistration: boolean;
 	disableLocalTimeline: boolean;

@@ -48,7 +48,7 @@ const toggle = () => {
 };
 
 function focus() {
-	el.value.focus();
+	el.value?.focus();
 }
 
 defineExpose({
