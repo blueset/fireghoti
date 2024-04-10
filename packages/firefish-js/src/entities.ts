@@ -471,8 +471,17 @@ export type FollowRequest = {
 
 export type Channel = {
 	id: ID;
+	createdAt: DateString;
+	lastNotedAt: DateString | null;
 	name: string;
-	// TODO
+	description: string | null;
+	bannerId: DriveFile["id"];
+	bannerUrl: string | null;
+	notesCount: number;
+	usersCount: number;
+	isFollowing?: boolean;
+	userId: User["id"] | null;
+	hasUnreadNote?: boolean;
 };
 
 export type Following = {

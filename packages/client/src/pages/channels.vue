@@ -125,6 +125,7 @@ import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
 import "swiper/scss";
 import "swiper/scss/virtual";
+import type { Swiper as SwiperType } from "swiper/types";
 
 const router = useRouter();
 
@@ -216,18 +217,18 @@ definePageMetadata(
 	})),
 );
 
-let swiperRef = null;
+let swiperRef: SwiperType | null = null;
 
-function setSwiperRef(swiper) {
+function setSwiperRef(swiper: SwiperType) {
 	swiperRef = swiper;
 	syncSlide(tabs.indexOf(tab.value));
 }
 
 function onSlideChange() {
-	tab.value = tabs[swiperRef.activeIndex];
+	tab.value = tabs[swiperRef!.activeIndex];
 }
 
-function syncSlide(index) {
-	swiperRef.slideTo(index);
+function syncSlide(index: number) {
+	swiperRef!.slideTo(index);
 }
 </script>

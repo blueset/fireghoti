@@ -54,9 +54,10 @@
 import { computed } from "vue";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
+import type { entities } from "firefish-js";
 
 const props = defineProps<{
-	channel: Record<string, any>;
+	channel: entities.Channel;
 }>();
 
 const bannerStyle = computed(() => {

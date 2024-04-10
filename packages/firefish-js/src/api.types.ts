@@ -218,16 +218,31 @@ export type Endpoints = {
 	};
 
 	// channels
-	"channels/create": { req: TODO; res: TODO };
-	"channels/featured": { req: TODO; res: TODO };
+	"channels/create": {
+		req: {
+			name: string;
+			description?: string;
+			bannerId: DriveFile["id"] | null;
+		};
+		res: Channel;
+	};
+	"channels/featured": { req: TODO; res: Channel[] };
 	"channels/follow": { req: TODO; res: TODO };
-	"channels/followed": { req: TODO; res: TODO };
-	"channels/owned": { req: TODO; res: TODO };
+	"channels/followed": { req: TODO; res: Channel[] };
+	"channels/owned": { req: TODO; res: Channel[] };
 	"channels/pin-note": { req: TODO; res: TODO };
-	"channels/show": { req: TODO; res: TODO };
+	"channels/show": { req: TODO; res: Channel };
 	"channels/timeline": { req: TODO; res: Note[] };
 	"channels/unfollow": { req: TODO; res: TODO };
-	"channels/update": { req: TODO; res: TODO };
+	"channels/update": {
+		req: {
+			channelId: Channel["id"];
+			name: string;
+			description?: string;
+			bannerId: DriveFile["id"] | null;
+		};
+		res: Channel;
+	};
 
 	// charts
 	"charts/active-users": {

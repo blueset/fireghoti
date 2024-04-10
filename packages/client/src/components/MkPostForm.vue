@@ -354,7 +354,7 @@ const props = withDefaults(
 	defineProps<{
 		reply?: entities.Note;
 		renote?: entities.Note;
-		channel?: any; // TODO
+		channel?: entities.Channel;
 		mention?: entities.User;
 		specified?: entities.User;
 		initialText?: string;
