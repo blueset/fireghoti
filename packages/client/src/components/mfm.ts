@@ -1,6 +1,6 @@
 import { defineComponent, h } from "vue";
 import * as mfm from "mfm-js";
-import type { VNode, PropType } from "vue";
+import type { PropType, VNodeArrayChildren } from "vue";
 import MkUrl from "@/components/global/MkUrl.vue";
 import MkLink from "@/components/MkLink.vue";
 import MkMention from "@/components/MkMention.vue";
@@ -30,11 +30,12 @@ export default defineComponent({
 			default: false,
 		},
 		author: {
-			type: Object,
+			type: Object as PropType<entities.User>,
 			default: null,
 		},
+		// TODO: This variable is not used in the code and may be removed
 		i: {
-			type: Object,
+			type: Object as PropType<entities.User>,
 			default: null,
 		},
 		customEmojis: {
@@ -58,14 +59,16 @@ export default defineComponent({
 
 		const ast = (isPlain ? mfm.parseSimple : mfm.parse)(this.text);
 
-		const validTime = (t: string | null | undefined) => {
+		const validTime = (t: string | null | undefined | boolean) => {
 			if (t == null) return null;
+			if (typeof t !== "string") return null;
 			return t.match(/^[0-9.]+s$/) ? t : null;
 		};
 
-		const validNumber = (n: string | null | undefined) => {
+		const validNumber = (n: string | null | undefined | boolean) => {
 			if (n == null) return null;
-			const parsed = parseFloat(n);
+			if (typeof n !== "string") return null;
+			const parsed = Number.parseFloat(n);
 			return !Number.isNaN(parsed) && Number.isFinite(parsed) && parsed > 0;
 		};
 		// const validEase = (e: string | null | undefined) => {
@@ -77,13 +80,13 @@ export default defineComponent({
 
 		const genEl = (ast: mfm.MfmNode[]) =>
 			concat(
-				ast.map((token, index): VNode[] => {
+				ast.map((token, index): VNodeArrayChildren => {
 					switch (token.type) {
 						case "text": {
 							const text = token.props.text.replace(/(\r\n|\n|\r)/g, "\n");
 
 							if (!this.plain) {
-								const res = [];
+								const res: VNodeArrayChildren = [];
 								for (const t of text.split("\n")) {
 									res.push(h("br"));
 									res.push(t);
@@ -104,18 +107,20 @@ export default defineComponent({
 						}
 
 						case "italic": {
-							return h(
-								"i",
-								{
-									style: "font-style: oblique;",
-								},
-								genEl(token.children),
-							);
+							return [
+								h(
+									"i",
+									{
+										style: "font-style: oblique;",
+									},
+									genEl(token.children),
+								),
+							];
 						}
 
 						case "fn": {
 							// TODO: CSSを文字列で組み立てていくと token.props.args.~~~ 経由でCSSインジェクションできるのでよしなにやる
-							let style: string;
+							let style: string | null = null;
 							switch (token.props.name) {
 								case "tada": {
 									const speed = validTime(token.props.args.speed) || "1s";
@@ -188,7 +193,7 @@ export default defineComponent({
 									if (reducedMotion()) {
 										return genEl(token.children);
 									}
-									return h(MkSparkle, {}, genEl(token.children));
+									return [h(MkSparkle, {}, genEl(token.children))];
 								}
 								case "fade": {
 									const direction = token.props.args.out
@@ -211,31 +216,37 @@ export default defineComponent({
 									break;
 								}
 								case "x2": {
-									return h(
-										"span",
-										{
-											class: "mfm-x2",
-										},
-										genEl(token.children),
-									);
+									return [
+										h(
+											"span",
+											{
+												class: "mfm-x2",
+											},
+											genEl(token.children),
+										),
+									];
 								}
 								case "x3": {
-									return h(
-										"span",
-										{
-											class: "mfm-x3",
-										},
-										genEl(token.children),
-									);
+									return [
+										h(
+											"span",
+											{
+												class: "mfm-x3",
+											},
+											genEl(token.children),
+										),
+									];
 								}
 								case "x4": {
-									return h(
-										"span",
-										{
-											class: "mfm-x4",
-										},
-										genEl(token.children),
-									);
+									return [
+										h(
+											"span",
+											{
+												class: "mfm-x4",
+											},
+											genEl(token.children),
+										),
+									];
 								}
 								case "font": {
 									const family = token.props.args.serif
@@ -255,13 +266,15 @@ export default defineComponent({
 									break;
 								}
 								case "blur": {
-									return h(
-										"span",
-										{
-											class: "_blur_text",
-										},
-										genEl(token.children),
-									);
+									return [
+										h(
+											"span",
+											{
+												class: "_blur_text",
+											},
+											genEl(token.children),
+										),
+									];
 								}
 								case "rotate": {
 									const rotate = token.props.args.x
@@ -269,77 +282,105 @@ export default defineComponent({
 										: token.props.args.y
 											? "perspective(128px) rotateY"
 											: "rotate";
-									const degrees = parseFloat(token.props.args.deg ?? "90");
+									const degrees = Number.parseFloat(
+										token.props.args.deg.toString() ?? "90",
+									);
 									style = `transform: ${rotate}(${degrees}deg); transform-origin: center center;`;
 									break;
 								}
 								case "position": {
-									const x = parseFloat(token.props.args.x ?? "0");
-									const y = parseFloat(token.props.args.y ?? "0");
+									const x = Number.parseFloat(
+										token.props.args.x.toString() ?? "0",
+									);
+									const y = Number.parseFloat(
+										token.props.args.y.toString() ?? "0",
+									);
 									style = `transform: translateX(${x}em) translateY(${y}em);`;
 									break;
 								}
 								case "crop": {
-									const top = parseFloat(token.props.args.top ?? "0");
-									const right = parseFloat(token.props.args.right ?? "0");
-									const bottom = parseFloat(token.props.args.bottom ?? "0");
-									const left = parseFloat(token.props.args.left ?? "0");
+									const top = Number.parseFloat(
+										token.props.args.top.toString() ?? "0",
+									);
+									const right = Number.parseFloat(
+										token.props.args.right.toString() ?? "0",
+									);
+									const bottom = Number.parseFloat(
+										token.props.args.bottom.toString() ?? "0",
+									);
+									const left = Number.parseFloat(
+										token.props.args.left.toString() ?? "0",
+									);
 									style = `clip-path: inset(${top}% ${right}% ${bottom}% ${left}%);`;
 									break;
 								}
 								case "scale": {
-									const x = Math.min(parseFloat(token.props.args.x ?? "1"), 5);
-									const y = Math.min(parseFloat(token.props.args.y ?? "1"), 5);
+									const x = Math.min(
+										Number.parseFloat(token.props.args.x.toString() ?? "1"),
+										5,
+									);
+									const y = Math.min(
+										Number.parseFloat(token.props.args.y.toString() ?? "1"),
+										5,
+									);
 									style = `transform: scale(${x}, ${y});`;
 									break;
 								}
 								case "fg": {
 									let color = token.props.args.color;
-									if (!/^[0-9a-f]{3,6}$/i.test(color)) color = "f00";
+									if (!/^[0-9a-f]{3,6}$/i.test(color.toString())) color = "f00";
 									style = `color: #${color};`;
 									break;
 								}
 								case "bg": {
 									let color = token.props.args.color;
-									if (!/^[0-9a-f]{3,6}$/i.test(color)) color = "f00";
+									if (!/^[0-9a-f]{3,6}$/i.test(color.toString())) color = "f00";
 									style = `background-color: #${color};`;
 									break;
 								}
 								case "small": {
-									return h(
-										"small",
-										{
-											style: "opacity: 0.7;",
-										},
-										genEl(token.children),
-									);
+									return [
+										h(
+											"small",
+											{
+												style: "opacity: 0.7;",
+											},
+											genEl(token.children),
+										),
+									];
 								}
 								case "center": {
-									return h(
-										"div",
-										{
-											style: "text-align: center;",
-										},
-										genEl(token.children),
-									);
+									return [
+										h(
+											"div",
+											{
+												style: "text-align: center;",
+											},
+											genEl(token.children),
+										),
+									];
 								}
 							}
 							if (style == null) {
-								return h("span", {}, [
-									"$[",
-									token.props.name,
-									" ",
-									...genEl(token.children),
-									"]",
-								]);
+								return [
+									h("span", {}, [
+										"$[",
+										token.props.name,
+										" ",
+										...genEl(token.children),
+										"]",
+									]),
+								];
 							} else {
-								return h(
-									"span",
-									{
-										style: `display: inline-block;${style}`,
-									},
-									genEl(token.children),
-								);
+								return [
+									h(
+										"span",
+										{
+											style: `display: inline-block;${style}`,
+										},
+										genEl(token.children),
+									),
+								];
 							}
 						}
 
@@ -425,7 +466,7 @@ export default defineComponent({
 								h(MkCode, {
 									key: Math.random(),
 									code: token.props.code,
-									lang: token.props.lang,
+									lang: token.props.lang ?? undefined,
 								}),
 							];
 						}
@@ -506,13 +547,15 @@ export default defineComponent({
 								const ast2 = (isPlain ? mfm.parseSimple : mfm.parse)(
 									token.props.content.slice(0, -6) + sentinel,
 								);
+								function isMfmText(n: mfm.MfmNode): n is mfm.MfmText {
+									return n.type === "text";
+								}
+								const txtNode = ast2[ast2.length - 1];
 								if (
-									ast2[ast2.length - 1].type === "text" &&
-									ast2[ast2.length - 1].props.text.endsWith(sentinel)
+									isMfmText(txtNode) &&
+									txtNode.props.text.endsWith(sentinel)
 								) {
-									ast2[ast2.length - 1].props.text = ast2[
-										ast2.length - 1
-									].props.text.slice(0, -1);
+									txtNode.props.text = txtNode.props.text.slice(0, -1);
 								} else {
 									// I don't think this scope is reachable
 									console.warn(
@@ -554,8 +597,10 @@ export default defineComponent({
 						}
 
 						default: {
-							console.error("unrecognized ast type:", token.type);
-
+							console.error(
+								"unrecognized ast type:",
+								(token as { type: never }).type,
+							);
 							return [];
 						}
 					}
