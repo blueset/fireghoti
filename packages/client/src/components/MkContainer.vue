@@ -68,13 +68,13 @@ import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
-		showHeader?: boolean,
-		thin?: boolean,
-		naked?: boolean,
-		foldable?: boolean,
-		expanded?: boolean,
-		scrollable?: boolean,
-		maxHeight?: number | null,
+		showHeader?: boolean;
+		thin?: boolean;
+		naked?: boolean;
+		foldable?: boolean;
+		expanded?: boolean;
+		scrollable?: boolean;
+		maxHeight?: number | null;
 	}>(),
 	{
 		showHeader: true,
@@ -84,7 +84,7 @@ const props = withDefaults(
 		expanded: true,
 		scrollable: false,
 		maxHeight: null,
-	}
+	},
 );
 
 const showBody = ref(props.expanded);
@@ -123,9 +123,7 @@ onMounted(() => {
 	watch(
 		showBody,
 		(showBody) => {
-			const headerHeight = props.showHeader
-				? header.value!.offsetHeight
-				: 0;
+			const headerHeight = props.showHeader ? header.value!.offsetHeight : 0;
 			el.value!.style.minHeight = `${headerHeight}px`;
 			if (showBody) {
 				el.value!.style.flexBasis = "auto";
@@ -135,7 +133,7 @@ onMounted(() => {
 		},
 		{
 			immediate: true,
-		}
+		},
 	);
 
 	if (props.maxHeight != null) {
