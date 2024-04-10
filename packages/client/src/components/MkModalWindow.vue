@@ -54,7 +54,10 @@
 					</button>
 				</div>
 				<div class="body">
-					<slot></slot>
+					<slot
+						:width="width"
+						:height="height"
+					></slot>
 				</div>
 			</div>
 		</FocusTrap>

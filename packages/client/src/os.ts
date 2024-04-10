@@ -125,12 +125,12 @@ export const apiWithDialog = ((
 	return promise;
 }) as typeof api;
 
-export function promiseDialog<T extends Promise<any>>(
-	promise: T,
-	onSuccess?: ((res: any) => void) | null,
+export function promiseDialog<T>(
+	promise: Promise<T>,
+	onSuccess?: ((res: T) => void) | null,
 	onFailure?: ((err: Error) => void) | null,
 	text?: string,
-): T {
+): Promise<T> {
 	const showing = ref(true);
 	const success = ref(false);
 
