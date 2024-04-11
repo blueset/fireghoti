@@ -21,7 +21,8 @@ const TIME_2000: i64 = 946_684_800_000;
 const TIMESTAMP_LENGTH: u16 = 8;
 
 /// Initializes Cuid2 generator. Must be called before any [create_id].
-pub fn init_id(length: u16, fingerprint: &str) {
+#[cfg_attr(feature = "napi", crate::export)]
+pub fn init_id_generator(length: u16, fingerprint: &str) {
     FINGERPRINT.get_or_init(move || format!("{}{}", fingerprint, cuid2::create_id()));
     GENERATOR.get_or_init(move || {
         cuid2::CuidConstructor::new()
@@ -47,6 +48,7 @@ pub fn create_id(datetime: &NaiveDateTime) -> Result<String, ErrorUninitialized>
     }
 }
 
+#[cfg_attr(feature = "napi", crate::export)]
 pub fn get_timestamp(id: &str) -> i64 {
     let n: Option<u64> = BASE36.decode_var_len(&id[0..8]);
     match n {
@@ -57,14 +59,7 @@ pub fn get_timestamp(id: &str) -> i64 {
 
 cfg_if! {
     if #[cfg(feature = "napi")] {
-        use napi_derive::napi;
         use chrono::{DateTime, Utc};
-
-        /// Calls [init_id] inside. Must be called before [native_create_id].
-        #[napi(js_name = "initIdGenerator")]
-        pub fn native_init_id_generator(length: u16, fingerprint: String) {
-            init_id(length, &fingerprint);
-        }
 
         /// The generated ID results in the form of `[8 chars timestamp] + [cuid2]`.
         /// The minimum and maximum lengths are 16 and 24, respectively.
@@ -72,14 +67,9 @@ cfg_if! {
         /// in the same millisecond to reach 50% chance of collision.
         ///
         /// Ref: https://github.com/paralleldrive/cuid2#parameterized-length
-        #[napi]
+        #[napi_derive::napi]
         pub fn gen_id(date: Option<DateTime<Utc>>) -> String {
-            create_id(&date.unwrap_or_else(|| Utc::now()).naive_utc()).unwrap()
-        }
-
-        #[napi(js_name = "getTimestamp")]
-        pub fn native_get_timestamp(id: String) -> i64 {
-            get_timestamp(&id)
+            create_id(&date.unwrap_or_else(Utc::now).naive_utc()).unwrap()
         }
     }
 }
@@ -95,7 +85,7 @@ mod unit_test {
     fn can_create_and_decode_id() {
         let now = Utc::now().naive_utc();
         assert_eq!(id::create_id(&now), Err(id::ErrorUninitialized));
-        id::init_id(16, "");
+        id::init_id_generator(16, "");
         assert_eq!(id::create_id(&now).unwrap().len(), 16);
         assert_ne!(id::create_id(&now).unwrap(), id::create_id(&now).unwrap());
         let id1 = thread::spawn(move || id::create_id(&now).unwrap());
