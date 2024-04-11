@@ -94,7 +94,6 @@ const el = ref<HTMLElement | null>(null);
 const header = ref<HTMLElement | null>(null);
 const content = ref<HTMLElement | null>(null);
 
-// FIXME: This function is not used, why?
 function toggleContent(show: boolean) {
 	if (!props.foldable) return;
 	showBody.value = show;
@@ -157,6 +156,14 @@ onMounted(() => {
 	new ResizeObserver((_entries, _observer) => {
 		calcOmit();
 	}).observe(content.value!);
+});
+
+defineExpose({
+	toggleContent,
+	enter,
+	afterEnter,
+	leave,
+	afterLeave,
 });
 </script>
 
