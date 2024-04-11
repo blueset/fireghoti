@@ -1,7 +1,7 @@
 import { IsNull } from "typeorm";
 import { Users } from "@/models/index.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
-import * as Acct from "@/misc/acct.js";
+import { stringToAcct } from "backend-rs";
 import type { User } from "@/models/entities/user.js";
 import define from "@/server/api/define.js";
 
@@ -35,7 +35,7 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	const users = await Promise.all(
 		meta.pinnedUsers
-			.map((acct) => Acct.parse(acct))
+			.map((acct) => stringToAcct(acct))
 			.map((acct) =>
 				Users.findOneBy({
 					usernameLower: acct.username.toLowerCase(),

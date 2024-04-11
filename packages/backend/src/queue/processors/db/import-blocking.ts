@@ -1,7 +1,7 @@
 import type Bull from "bull";
 
 import { queueLogger } from "../../logger.js";
-import * as Acct from "@/misc/acct.js";
+import { stringToAcct } from "backend-rs";
 import { resolveUser } from "@/remote/resolve-user.js";
 import { downloadTextFile } from "@/misc/download-text-file.js";
 import { isSelfHost, toPuny } from "@/misc/convert-host.js";
@@ -42,7 +42,7 @@ export async function importBlocking(
 
 		try {
 			const acct = line.split(",")[0].trim();
-			const { username, host } = Acct.parse(acct);
+			const { username, host } = stringToAcct(acct);
 
 			let target = isSelfHost(host!)
 				? await Users.findOneBy({

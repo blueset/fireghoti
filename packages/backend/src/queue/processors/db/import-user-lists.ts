@@ -1,7 +1,6 @@
 import type Bull from "bull";
 
 import { queueLogger } from "../../logger.js";
-import * as Acct from "@/misc/acct.js";
 import { resolveUser } from "@/remote/resolve-user.js";
 import { pushUserToUserList } from "@/services/user-list/push.js";
 import { downloadTextFile } from "@/misc/download-text-file.js";
@@ -12,7 +11,7 @@ import {
 	UserLists,
 	UserListJoinings,
 } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genId, stringToAcct } from "backend-rs";
 import type { DbUserImportJobData } from "@/queue/types.js";
 import { IsNull } from "typeorm";
 import { inspect } from "node:util";
@@ -48,7 +47,7 @@ export async function importUserLists(
 
 		try {
 			const listName = line.split(",")[0].trim();
-			const { username, host } = Acct.parse(line.split(",")[1].trim());
+			const { username, host } = stringToAcct(line.split(",")[1].trim());
 
 			let list = await UserLists.findOneBy({
 				userId: user.id,

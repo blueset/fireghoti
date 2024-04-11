@@ -1,7 +1,7 @@
 import Router from "@koa/router";
 
 import config from "@/config/index.js";
-import * as Acct from "@/misc/acct.js";
+import { type Acct, stringToAcct } from "backend-rs";
 import { links } from "./nodeinfo.js";
 import { escapeAttribute, escapeValue } from "@/prelude/xml.js";
 import { Users } from "@/models/index.js";
@@ -110,7 +110,7 @@ router.get(webFingerPath, async (ctx) => {
 		resource.startsWith(`${config.url.toLowerCase()}/users/`)
 			? fromId(resource.split("/").pop()!)
 			: fromAcct(
-					Acct.parse(
+					stringToAcct(
 						resource.startsWith(`${config.url.toLowerCase()}/@`)
 							? resource.split("/").pop()!
 							: resource.startsWith("acct:")
@@ -119,7 +119,7 @@ router.get(webFingerPath, async (ctx) => {
 					),
 				);
 
-	const fromAcct = (acct: Acct.Acct): FindOptionsWhere<User> | number =>
+	const fromAcct = (acct: Acct): FindOptionsWhere<User> | number =>
 		!acct.host || acct.host === config.host.toLowerCase()
 			? {
 					usernameLower: acct.username,
