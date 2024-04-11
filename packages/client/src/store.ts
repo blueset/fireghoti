@@ -1,7 +1,7 @@
 import { markRaw, ref } from "vue";
 import { isSignedIn } from "./me";
 import { Storage } from "./pizzax";
-import type { NoteVisibility } from "@/types/note/note";
+import type { NoteVisibility } from "@/types/note";
 
 export const postFormActions = [];
 export const userActions = [];
