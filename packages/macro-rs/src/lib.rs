@@ -146,6 +146,13 @@ fn napi_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
     // append "_napi" to function name
     item_fn_sig.ident = syn::parse_str(&format!("{}_napi", &ident)).unwrap();
 
+    // append `.await` to function call in async function
+    if item_fn_sig.asyncness.is_some() {
+        function_call_modifiers.push(quote! {
+            .await
+        });
+    }
+
     // convert return type `...::Result<T, ...>` to `napi::Result<T>`
     if let syn::ReturnType::Type(_, ref mut return_type) = item_fn_sig.output {
         if let Some(result_generic_type) = (|| {
@@ -348,5 +355,23 @@ mod tests {
                 }
             }
         );
+    }
+
+    #[test]
+    fn async_function() {
+        test_macro!(
+            quote! {
+                pub async fn async_add_one(x: i32) -> i32 {
+                    x + 1
+                }
+            },
+            quote! {
+                #[napi_derive::napi(js_name = "asyncAddOne")]
+                pub async fn async_add_one_napi(x: i32) -> i32 {
+                    async_add_one(x)
+                        .await
+                }
+            }
+        )
     }
 }
