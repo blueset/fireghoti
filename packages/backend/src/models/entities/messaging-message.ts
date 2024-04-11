@@ -97,7 +97,7 @@ export class MessagingMessage {
 	public group: Relation<UserGroup | null>;
 
 	@ManyToOne(() => DriveFile, {
-		onDelete: "CASCADE", // TODO: change this to SET NULL
+		onDelete: "SET NULL",
 		nullable: true,
 	})
 	@JoinColumn()

@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'FixChatFileConstraint1712855579316',
     'DropTimeZone1712425488543',
     'ExpandNoteEdit1711936358554',
     'markLocalFilesNsfwByDefault1709305200000',
@@ -20,6 +21,10 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- fix-chat-file-constraint
+ALTER TABLE "messaging_message" DROP CONSTRAINT "FK_535def119223ac05ad3fa9ef64b";
+ALTER TABLE "messaging_message" ADD CONSTRAINT "FK_535def119223ac05ad3fa9ef64b" FOREIGN KEY ("fileId") REFERENCES "drive_file"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- drop-time-zone
 ALTER TABLE "abuse_user_report" ALTER "createdAt" TYPE timestamp with time zone;
