@@ -106,6 +106,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
+import type { instanceSortParam } from "firefish-js";
 import MkInput from "@/components/form/input.vue";
 import MkSelect from "@/components/form/select.vue";
 import MkPagination from "@/components/MkPagination.vue";
@@ -113,7 +114,6 @@ import MkInstanceCardMini from "@/components/MkInstanceCardMini.vue";
 import FormSplit from "@/components/form/split.vue";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
-import type { instanceSortParam } from "firefish-js";
 
 const host = ref("");
 const state = ref("federating");

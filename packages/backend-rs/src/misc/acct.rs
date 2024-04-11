@@ -10,7 +10,7 @@ pub fn string_to_acct(acct: &str) -> Acct {
     let split: Vec<&str> = if let Some(stripped) = acct.strip_prefix('@') {
         stripped
     } else {
-        &acct
+        acct
     }
     .split('@')
     .collect();

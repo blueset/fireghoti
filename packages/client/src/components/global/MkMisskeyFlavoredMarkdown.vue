@@ -17,9 +17,9 @@
 
 <script lang="ts" setup>
 import {} from "vue";
+import type { entities } from "firefish-js";
 import MfmCore from "@/components/mfm";
 import { defaultStore } from "@/store";
-import type { entities } from "firefish-js";
 
 withDefaults(
 	defineProps<{

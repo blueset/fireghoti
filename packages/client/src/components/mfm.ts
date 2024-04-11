@@ -1,6 +1,7 @@
 import { defineComponent, h } from "vue";
 import * as mfm from "mfm-js";
-import type { VNode, PropType } from "vue";
+import type { PropType, VNode } from "vue";
+import type { entities } from "firefish-js";
 import MkUrl from "@/components/global/MkUrl.vue";
 import MkLink from "@/components/MkLink.vue";
 import MkMention from "@/components/MkMention.vue";
@@ -13,7 +14,6 @@ import MkSparkle from "@/components/MkSparkle.vue";
 import MkA from "@/components/global/MkA.vue";
 import { host } from "@/config";
 import { reducedMotion } from "@/scripts/reduced-motion";
-import type { entities } from "firefish-js";
 
 export default defineComponent({
 	props: {

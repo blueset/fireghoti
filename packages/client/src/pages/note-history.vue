@@ -34,6 +34,7 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
+import type { entities } from "firefish-js";
 import MkPagination from "@/components/MkPagination.vue";
 import { api } from "@/os";
 import XList from "@/components/MkDateSeparatedList.vue";
@@ -41,7 +42,6 @@ import XNote from "@/components/MkNote.vue";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
-import type { entities } from "firefish-js";
 
 const pagingComponent = ref<InstanceType<typeof MkPagination>>();
 
