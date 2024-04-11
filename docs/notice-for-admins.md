@@ -19,7 +19,7 @@ The number of posts stored on your database can be found at `https://yourserver.
 
 ### For systemd/pm2 users
 
-- You can remove `packages/backend-rs/target`.
+- Please remove `packages/backend-rs/target` before building Firefish.
     ```sh
 		rm --recursive --force packages/backend-rs/target
 		```
