@@ -69,10 +69,6 @@ import { acct, type entities } from "firefish-js";
 import { i18n } from "@/i18n";
 import { me } from "@/me";
 
-if (me == null) {
-	throw "No me";
-}
-
 defineProps<{
 	message: entities.MessagingMessage;
 }>();
