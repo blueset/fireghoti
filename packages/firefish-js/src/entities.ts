@@ -371,7 +371,40 @@ export type LiteInstanceMetadata = {
 };
 
 export type DetailedInstanceMetadata = LiteInstanceMetadata & {
-	features: Record<string, any>;
+	features: {
+		registration: boolean;
+		localTimeLine: boolean;
+		recommendedTimeLine: boolean;
+		globalTimeLine: boolean;
+		searchFilters: boolean;
+		hcaptcha: boolean;
+		recaptcha: boolean;
+		objectStorage: boolean;
+		serviceWorker: boolean;
+		miauth?: boolean;
+	};
+	langs: string[];
+	moreUrls: object;
+	repositoryUrl: string;
+	feedbackUrl: string;
+	defaultDarkTheme: string | null;
+	defaultLightTheme: string | null;
+	enableGuestTimeline: boolean;
+	cacheRemoteFiles: boolean;
+	emailRequiredForSignup: boolean;
+	mascotImageUrl: string;
+	bannerUrl: string;
+	errorImageUrl: string;
+	iconUrl: string | null;
+	maxCaptionTextLength: number;
+	requireSetup: boolean;
+	translatorAvailable: boolean;
+	proxyAccountName: string | null;
+	secureMode?: boolean;
+	privateMode?: boolean;
+	defaultReaction: string;
+	donationLink?: string | null;
+	enableServerMachineStats?: boolean;
 };
 
 export type InstanceMetadata = LiteInstanceMetadata | DetailedInstanceMetadata;

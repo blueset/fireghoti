@@ -35,12 +35,12 @@ const ticker = ref<HTMLElement | null>(null);
 
 // if no instance data is given, this is for the local instance
 const instance = props.instance ?? {
-	faviconUrl: Instance.faviconUrl || Instance.iconUrl || "/favicon.ico",
+	faviconUrl: Instance.iconUrl || "/favicon.ico",
 	name: instanceName,
 	themeColor: (
 		document.querySelector('meta[name="theme-color-orig"]') as HTMLMetaElement
 	)?.content,
-	softwareName: Instance.softwareName ?? "Firefish",
+	softwareName: "Firefish",
 	softwareVersion: version,
 };
 
@@ -67,7 +67,7 @@ const commonNames = new Map<string, string>([
 	["wxwclub", "wxwClub"],
 ]);
 
-const capitalize = (s: string) => {
+const capitalize = (s?: string | null) => {
 	if (s == null) return "Unknown";
 	if (commonNames.has(s)) return commonNames.get(s);
 	return s[0].toUpperCase() + s.slice(1);

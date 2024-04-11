@@ -63,7 +63,7 @@ export function useChartTooltip(
 		} else if (opts.position === "middle") {
 			tooltipY.value = rect.top + window.scrollY + context.tooltip.caretY;
 		}
-	}
+	};
 
 	return {
 		handler,
