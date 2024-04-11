@@ -198,7 +198,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	chosen: [v: string, ev?: MouseEvent],
+	chosen: [v: string, ev?: MouseEvent];
 }>();
 
 const search = ref<HTMLInputElement>();
@@ -415,9 +415,7 @@ function reset() {
 	q.value = "";
 }
 
-function getKey(
-	emoji: EmojiDef,
-): string {
+function getKey(emoji: EmojiDef): string {
 	if (typeof emoji === "string") {
 		return emoji;
 	}
@@ -457,7 +455,7 @@ async function paste(event: ClipboardEvent) {
 		// Use native api
 		try {
 			pasteStr = await window.navigator.clipboard.readText();
-		} catch(_err) {
+		} catch (_err) {
 			// Reading the clipboard requires permission, and the user did not give it
 		}
 	}
