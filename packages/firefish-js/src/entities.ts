@@ -425,8 +425,8 @@ export type Announcement = {
 	title: string;
 	imageUrl: string | null;
 	isRead?: boolean;
-	isGoodNews?: boolean;
-	showPopUp?: boolean;
+	isGoodNews: boolean;
+	showPopUp: boolean;
 };
 
 export type Antenna = {
