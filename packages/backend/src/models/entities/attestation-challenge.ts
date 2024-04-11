@@ -5,6 +5,7 @@ import {
 	Column,
 	ManyToOne,
 	Index,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
@@ -17,12 +18,6 @@ export class AttestationChallenge {
 	@Index()
 	@PrimaryColumn(id())
 	public userId: User["id"];
-
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
 
 	@Index()
 	@Column("varchar", {
@@ -42,6 +37,14 @@ export class AttestationChallenge {
 		default: false,
 	})
 	public registrationChallenge: boolean;
+
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public user: Relation<User>;
+	//#endregion
 
 	constructor(data: Partial<AttestationChallenge>) {
 		if (data == null) return;

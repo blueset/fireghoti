@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
@@ -29,12 +30,6 @@ export class ChannelFollowing {
 	})
 	public followeeId: Channel["id"];
 
-	@ManyToOne((type) => Channel, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public followee: Channel | null;
-
 	@Index()
 	@Column({
 		...id(),
@@ -42,9 +37,17 @@ export class ChannelFollowing {
 	})
 	public followerId: User["id"];
 
-	@ManyToOne((type) => User, {
+	//#region Relations
+	@ManyToOne(() => Channel, {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	public follower: User | null;
+	public followee: Relation<Channel>;
+
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public follower: Relation<User>;
+	//#endregion
 }

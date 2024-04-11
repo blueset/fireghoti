@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
@@ -27,24 +28,12 @@ export class FollowRequest {
 	})
 	public followeeId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public followee: User | null;
-
 	@Index()
 	@Column({
 		...id(),
 		comment: "The follower user ID.",
 	})
 	public followerId: User["id"];
-
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public follower: User | null;
 
 	@Column("varchar", {
 		length: 128,
@@ -95,5 +84,19 @@ export class FollowRequest {
 		comment: "[Denormalized]",
 	})
 	public followeeSharedInbox: string | null;
+	//#endregion
+
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public followee: Relation<User>;
+
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public follower: Relation<User>;
 	//#endregion
 }

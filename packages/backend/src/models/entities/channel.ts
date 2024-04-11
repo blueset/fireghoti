@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
@@ -35,12 +36,6 @@ export class Channel {
 	})
 	public userId: User["id"] | null;
 
-	@ManyToOne((type) => User, {
-		onDelete: "SET NULL",
-	})
-	@JoinColumn()
-	public user: User | null;
-
 	@Column("varchar", {
 		length: 128,
 		comment: "The name of the Channel.",
@@ -61,12 +56,6 @@ export class Channel {
 	})
 	public bannerId: DriveFile["id"] | null;
 
-	@ManyToOne((type) => DriveFile, {
-		onDelete: "SET NULL",
-	})
-	@JoinColumn()
-	public banner: DriveFile | null;
-
 	@Index()
 	@Column("integer", {
 		default: 0,
@@ -80,4 +69,18 @@ export class Channel {
 		comment: "The count of users.",
 	})
 	public usersCount: number;
+
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "SET NULL",
+	})
+	@JoinColumn()
+	public user: Relation<User>;
+
+	@ManyToOne(() => DriveFile, {
+		onDelete: "SET NULL",
+	})
+	@JoinColumn()
+	public banner: Relation<DriveFile>;
+	//#endregion
 }

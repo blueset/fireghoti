@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
@@ -24,33 +25,15 @@ export class AbuseUserReport {
 	@Column(id())
 	public targetUserId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public targetUser: User | null;
-
 	@Index()
 	@Column(id())
 	public reporterId: User["id"];
-
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public reporter: User | null;
 
 	@Column({
 		...id(),
 		nullable: true,
 	})
 	public assigneeId: User["id"] | null;
-
-	@ManyToOne((type) => User, {
-		onDelete: "SET NULL",
-	})
-	@JoinColumn()
-	public assignee: User | null;
 
 	@Index()
 	@Column("boolean", {
@@ -84,5 +67,26 @@ export class AbuseUserReport {
 		comment: "[Denormalized]",
 	})
 	public reporterHost: string | null;
+	//#endregion
+
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public targetUser: Relation<User>;
+
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public reporter: Relation<User>;
+
+	@ManyToOne(() => User, {
+		onDelete: "SET NULL",
+		nullable: true,
+	})
+	@JoinColumn()
+	public assignee: Relation<User | null>;
 	//#endregion
 }

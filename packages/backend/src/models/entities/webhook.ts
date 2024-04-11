@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
@@ -36,12 +37,6 @@ export class Webhook {
 		comment: "The owner ID.",
 	})
 	public userId: User["id"];
-
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
 
 	@Column("varchar", {
 		length: 128,
@@ -88,4 +83,12 @@ export class Webhook {
 		nullable: true,
 	})
 	public latestStatus: number | null;
+
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public user: Relation<User>;
+	//#endregion
 }

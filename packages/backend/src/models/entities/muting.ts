@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
@@ -34,12 +35,6 @@ export class Muting {
 	})
 	public muteeId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public mutee: User | null;
-
 	@Index()
 	@Column({
 		...id(),
@@ -47,9 +42,17 @@ export class Muting {
 	})
 	public muterId: User["id"];
 
-	@ManyToOne((type) => User, {
+	//#region Relations
+	@ManyToOne(() => User, {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	public muter: User | null;
+	public mutee: Relation<User>;
+
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public muter: Relation<User>;
+	//#endregion
 }

@@ -206,55 +206,6 @@ export class Note {
 	})
 	public channelId: Channel["id"] | null;
 
-	//#region Relations
-	@OneToMany(
-		() => NoteFile,
-		(noteFile: NoteFile) => noteFile.note,
-	)
-	public noteFiles: Relation<NoteFile[]>;
-
-	@ManyToMany(
-		() => DriveFile,
-		(file: DriveFile) => file.notes,
-	)
-	@JoinTable({
-		name: "note_file",
-		joinColumn: {
-			name: "noteId",
-			referencedColumnName: "id",
-		},
-		inverseJoinColumn: {
-			name: "fileId",
-			referencedColumnName: "id",
-		},
-	})
-	public files: Relation<DriveFile[]>;
-
-	@ManyToOne(() => Note, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public reply: Note | null;
-
-	@ManyToOne(() => Note, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public renote: Note | null;
-
-	@ManyToOne(() => Channel, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public channel: Channel | null;
-
-	@ManyToOne(() => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
-	//#endregion Relations
-
 	//#region Denormalized fields
 	@Index()
 	@Column("varchar", {
@@ -298,6 +249,59 @@ export class Note {
 	})
 	public updatedAt: Date | null;
 	//#endregion
+
+	//#region Relations
+	@OneToMany(
+		() => NoteFile,
+		(noteFile: NoteFile) => noteFile.note,
+	)
+	public noteFiles: Relation<NoteFile[]>;
+
+	@ManyToMany(
+		() => DriveFile,
+		(file: DriveFile) => file.notes,
+	)
+	@JoinTable({
+		name: "note_file",
+		joinColumn: {
+			name: "noteId",
+			referencedColumnName: "id",
+		},
+		inverseJoinColumn: {
+			name: "fileId",
+			referencedColumnName: "id",
+		},
+	})
+	public files: Relation<DriveFile[]>;
+
+	@ManyToOne(() => Note, {
+		onDelete: "CASCADE",
+		nullable: true,
+	})
+	@JoinColumn()
+	public reply: Relation<Note | null>;
+
+	@ManyToOne(() => Note, {
+		onDelete: "CASCADE",
+		nullable: true,
+	})
+	@JoinColumn()
+	public renote: Relation<Note | null>;
+
+	@ManyToOne(() => Channel, {
+		onDelete: "CASCADE",
+		nullable: true,
+	})
+	@JoinColumn()
+	public channel: Relation<Channel | null>;
+
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+		nullable: true,
+	})
+	@JoinColumn()
+	public user: Relation<User | null>;
+	//#endregion Relations
 
 	constructor(data: Partial<Note>) {
 		if (data == null) return;

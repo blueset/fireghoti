@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { Note } from "./note.js";
@@ -26,22 +27,24 @@ export class PollVote {
 	@Column(id())
 	public userId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
-
 	@Index()
 	@Column(id())
 	public noteId: Note["id"];
 
-	@ManyToOne((type) => Note, {
+	@Column("integer")
+	public choice: number;
+
+	//#region Relations
+	@ManyToOne(() => User, {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	public note: Note | null;
+	public user: Relation<User>;
 
-	@Column("integer")
-	public choice: number;
+	@ManyToOne(() => Note, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public note: Relation<Note>;
+	//#endregion
 }

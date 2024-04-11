@@ -5,22 +5,17 @@ import {
 	JoinColumn,
 	Column,
 	OneToOne,
+	type Relation,
 } from "typeorm";
 import { id } from "../id.js";
 import { Note } from "./note.js";
 import type { User } from "./user.js";
-import { noteVisibilities } from "../../types.js";
+import { noteVisibilities } from "@/types.js";
 
 @Entity()
 export class Poll {
 	@PrimaryColumn(id())
 	public noteId: Note["id"];
-
-	@OneToOne((type) => Note, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public note: Note | null;
 
 	@Column("timestamp without time zone", {
 		nullable: true,
@@ -63,6 +58,14 @@ export class Poll {
 		comment: "[Denormalized]",
 	})
 	public userHost: string | null;
+	//#endregion
+
+	//#region Relations
+	@OneToOne(() => Note, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public note: Relation<Note>;
 	//#endregion
 
 	constructor(data: Partial<Poll>) {

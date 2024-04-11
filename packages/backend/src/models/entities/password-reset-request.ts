@@ -5,6 +5,7 @@ import {
 	Column,
 	ManyToOne,
 	JoinColumn,
+	type Relation,
 } from "typeorm";
 import { id } from "../id.js";
 import { User } from "./user.js";
@@ -29,9 +30,11 @@ export class PasswordResetRequest {
 	})
 	public userId: User["id"];
 
-	@ManyToOne((type) => User, {
+	//#region Relations
+	@ManyToOne(() => User, {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	public user: User | null;
+	public user: Relation<User>;
+	//#endregion
 }

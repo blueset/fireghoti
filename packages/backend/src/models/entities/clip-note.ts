@@ -5,6 +5,7 @@ import {
 	Column,
 	ManyToOne,
 	PrimaryColumn,
+	type Relation,
 } from "typeorm";
 import { Note } from "./note.js";
 import { Clip } from "./clip.js";
@@ -23,12 +24,6 @@ export class ClipNote {
 	})
 	public noteId: Note["id"];
 
-	@ManyToOne((type) => Note, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public note: Note | null;
-
 	@Index()
 	@Column({
 		...id(),
@@ -36,9 +31,17 @@ export class ClipNote {
 	})
 	public clipId: Clip["id"];
 
-	@ManyToOne((type) => Clip, {
+	//#region Relations
+	@ManyToOne(() => Note, {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	public clip: Clip | null;
+	public note: Relation<Note>;
+
+	@ManyToOne(() => Clip, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public clip: Relation<Clip>;
+	//#endregion
 }
