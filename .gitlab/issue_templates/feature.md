@@ -15,3 +15,6 @@
 By submitting this issue, you agree to follow our [Contribution Guidelines](https://firefish.dev/firefish/firefish/-/blob/develop/CONTRIBUTING.md)
 - [ ] I agree to follow this project's Contribution Guidelines
 - [ ] I have searched the issue tracker for similar requests, and this is not a duplicate.
+
+**Can you implement this feature?** (optional)
+- [ ] Yes. I will implement this feature and open a merge request if the change is agreed upon.
