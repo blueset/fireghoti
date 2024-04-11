@@ -16,6 +16,7 @@ pub fn dummy_macro(
 ///
 /// The types of the function arguments is converted with following rules:
 /// - `&str` and `&mut str` are converted to `String`
+/// - `&[T]` and `&mut [T]` are converted to `Vec<T>`
 /// - `&T` and `&mut T` are converted to `T`
 /// - Other `T` remains `T`
 ///
@@ -64,6 +65,28 @@ pub fn dummy_macro(
 /// #[napi_derive::napi(js_name = "concatenateString")]
 /// pub fn concatenate_string_napi(str1: String, str2: String) -> String {
 ///     concatenate_string(&str1, &str2)
+/// }
+/// ```
+///
+/// ## Example with `&[String]` argument
+/// ```
+/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
+/// #[macro_rs::napi]
+/// pub fn string_array_length(array: &[String]) -> u32 {
+///     array.len() as u32
+/// }
+/// ```
+///
+/// generates
+///
+/// ```
+/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
+/// # pub fn string_array_length(array: &[String]) -> u32 {
+/// #     array.len() as u32
+/// # }
+/// #[napi_derive::napi(js_name = "stringArrayLength")]
+/// pub fn string_array_length_napi(array: Vec<String>) -> u32 {
+///     string_array_length(&array)
 /// }
 /// ```
 ///
@@ -220,14 +243,21 @@ fn napi_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
                                 // (1) add `mut` token to `&mut` type
                                 ident.mutability = r.mutability;
                                 // (2) remove reference
-                                let elem_tokens = r.elem.to_token_stream();
-                                *arg.ty =
-                                    syn::Type::Verbatim(match elem_tokens.to_string().as_str() {
-                                        // &str => String
-                                        "str" => quote! { String },
-                                        // &T => T
-                                        _ => elem_tokens,
-                                    });
+                                *arg.ty = syn::Type::Verbatim(match &*r.elem {
+                                    syn::Type::Slice(slice) => {
+                                        let ty = &*slice.elem;
+                                        quote! { Vec<#ty> }
+                                    }
+                                    _ => {
+                                        let elem_tokens = r.elem.to_token_stream();
+                                        match elem_tokens.to_string().as_str() {
+                                            // &str => String
+                                            "str" => quote! { String },
+                                            // &T => T
+                                            _ => elem_tokens,
+                                        }
+                                    }
+                                });
 
                                 // return arguments in function call
                                 tokens
@@ -370,6 +400,23 @@ mod tests {
                 pub async fn async_add_one_napi(x: i32) -> i32 {
                     async_add_one(x)
                         .await
+                }
+            }
+        )
+    }
+
+    #[test]
+    fn slice_type() {
+        test_macro!(
+            quote! {
+                pub fn string_array_length(array: &[String]) -> u32 {
+                    array.len() as u32
+                }
+            },
+            quote! {
+                #[napi_derive::napi(js_name = "stringArrayLength")]
+                pub fn string_array_length_napi(array: Vec<String>) -> u32 {
+                    string_array_length(&array)
                 }
             }
         )
