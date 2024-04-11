@@ -19,7 +19,7 @@ regenerate-entities:
 	done
 	sed -i 's/#\[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum)\]/#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]\n#[cfg_attr(not(feature = "napi"), derive(Clone))]\n#[cfg_attr(feature = "napi", napi_derive::napi)]/' \
 	  src/model/entity/sea_orm_active_enums.rs
-	pnpm run format
+	cargo fmt --all --
 
 index.js: $(SRC)
 	NODE_OPTIONS='--max_old_space_size=3072' pnpm run build:debug
