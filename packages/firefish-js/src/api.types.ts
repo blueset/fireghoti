@@ -432,7 +432,12 @@ export type Endpoints = {
 	"gallery/posts/create": { req: TODO; res: TODO };
 	"gallery/posts/delete": { req: { postId: GalleryPost["id"] }; res: null };
 	"gallery/posts/like": { req: TODO; res: TODO };
-	"gallery/posts/show": { req: TODO; res: TODO };
+	"gallery/posts/show": {
+		req: {
+			postId: GalleryPost["id"];
+		};
+		res: GalleryPost;
+	};
 	"gallery/posts/unlike": { req: TODO; res: TODO };
 	"gallery/posts/update": { req: TODO; res: TODO };
 
@@ -474,7 +479,14 @@ export type Endpoints = {
 		res: NoteFavorite[];
 	};
 	"i/gallery/likes": { req: TODO; res: TODO };
-	"i/gallery/posts": { req: TODO; res: TODO };
+	"i/gallery/posts": {
+		req: {
+			limit?: number;
+			sinceId?: NoteFavorite["id"];
+			untilId?: NoteFavorite["id"];
+		};
+		res: GalleryPost[];
+	};
 	"i/get-word-muted-notes-count": { req: TODO; res: TODO };
 	"i/import-following": { req: TODO; res: TODO };
 	"i/import-user-lists": { req: TODO; res: TODO };
@@ -890,7 +902,15 @@ export type Endpoints = {
 		};
 		res: FollowingFolloweePopulated[];
 	};
-	"users/gallery/posts": { req: TODO; res: TODO };
+	"users/gallery/posts": {
+		req: {
+			userId: User["id"];
+			limit?: number;
+			sinceId?: NoteFavorite["id"];
+			untilId?: NoteFavorite["id"];
+		};
+		res: GalleryPost[];
+	};
 	"users/get-frequently-replied-users": { req: TODO; res: TODO };
 	"users/groups/create": { req: TODO; res: TODO };
 	"users/groups/delete": { req: { groupId: UserGroup["id"] }; res: null };

@@ -2,10 +2,24 @@
 	<MkA :to="`/gallery/${post.id}`" class="ttasepnz _panel">
 		<div class="thumbnail">
 			<ImgWithBlurhash
+				v-if="post.files && post.files.length > 0"
 				class="img"
 				:src="post.files[0].thumbnailUrl"
 				:hash="post.files[0].blurhash"
 			/>
+			<div
+				v-else
+				class="_fullinfo"
+			>
+				<!-- If there is no picture
+					This can happen if the user deletes the image in the drive
+				-->
+				<img
+					src="/static-assets/badges/not-found.webp"
+					class="img"
+					:alt="i18n.ts.notFound"
+				/>
+			</div>
 		</div>
 		<article>
 			<header>
@@ -20,9 +34,11 @@
 
 <script lang="ts" setup>
 import ImgWithBlurhash from "@/components/MkImgWithBlurhash.vue";
+import { i18n } from "@/i18n";
+import type { entities } from "firefish-js";
 
-const props = defineProps<{
-	post: any;
+defineProps<{
+	post: entities.GalleryPost;
 }>();
 </script>
 
