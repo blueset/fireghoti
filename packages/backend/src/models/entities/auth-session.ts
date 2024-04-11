@@ -47,6 +47,6 @@ export class AuthSession {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	public app: App;
+	public app: Relation<App>;
 	//#endregion
 }
