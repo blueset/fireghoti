@@ -196,6 +196,7 @@ dependencies = [
  "chrono",
  "cuid2",
  "jsonschema",
+ "macro_rs",
  "napi",
  "napi-build",
  "napi-derive",
@@ -1210,6 +1211,16 @@ name = "log"
 version = "0.4.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "90ed8c1e510134f979dbc4f070f87d4313098b704861a105fe34231c70a3901c"
+
+[[package]]
+name = "macro_rs"
+version = "0.0.0"
+dependencies = [
+ "convert_case",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.58",
+]
 
 [[package]]
 name = "md-5"

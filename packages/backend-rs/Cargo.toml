@@ -12,6 +12,8 @@ napi = ["dep:napi", "dep:napi-derive"]
 crate-type = ["cdylib", "lib"]
 
 [dependencies]
+macro_rs = { workspace = true }
+
 napi = { workspace = true, optional = true, default-features = false, features = ["napi9", "tokio_rt", "chrono_date", "serde-json"] }
 napi-derive = { workspace = true, optional = true }
 
