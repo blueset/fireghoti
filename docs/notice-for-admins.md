@@ -19,7 +19,11 @@ The number of posts stored on your database can be found at `https://yourserver.
 
 ### For systemd/pm2 users
 
-Please do not terminate `pnpm run migrate` even if it appears to be frozen.
+- You can remove `packages/backend-rs/target`.
+    ```sh
+		rm --recursive --force packages/backend-rs/target
+		```
+- Please do not terminate `pnpm run migrate` even if it appears to be frozen.
 
 ### For Docker/Podman users
 

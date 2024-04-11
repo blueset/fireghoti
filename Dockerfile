@@ -8,8 +8,9 @@ RUN curl --proto '=https' --tlsv1.2 --silent --show-error --fail https://sh.rust
 ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Copy only the cargo dependency-related files first, to cache efficiently
+COPY Cargo.toml Cargo.toml
+COPY Cargo.lock Cargo.lock
 COPY packages/backend-rs/Cargo.toml packages/backend-rs/Cargo.toml
-COPY packages/backend-rs/Cargo.lock packages/backend-rs/Cargo.lock
 COPY packages/backend-rs/src/lib.rs packages/backend-rs/src/
 
 # Install cargo dependencies
