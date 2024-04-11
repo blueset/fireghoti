@@ -42,7 +42,7 @@ import { mainRouter } from "@/router";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
-import type { NoteVisibility } from "@/types/client-types";
+import type { NoteVisibility } from "@/types/note";
 import { noteVisibilitiesClient } from "@/scripts/consts";
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -57,9 +57,7 @@ const initialText = ref(null as string | null);
 const reply = ref(null as entities.Note | null);
 const renote = ref(null as entities.Note | null);
 
-function isVisibility(
-	v: string | null,
-): v is NoteVisibility {
+function isVisibility(v: string | null): v is NoteVisibility {
 	if (v == null) return false;
 	return (noteVisibilitiesClient as readonly string[]).includes(v);
 }

@@ -1,5 +1,5 @@
 import { noteVisibilities } from "firefish-js";
-import type { NoteVisibility } from "../types/client-types";
+import type { NoteVisibility } from "@/types/note";
 
 export const noteVisibilitiesClient = (
 	noteVisibilities as readonly NoteVisibility[]

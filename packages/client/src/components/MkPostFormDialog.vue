@@ -24,7 +24,7 @@ import { shallowRef } from "vue";
 import type { entities, languages } from "firefish-js";
 import MkModal from "@/components/MkModal.vue";
 import MkPostForm from "@/components/MkPostForm.vue";
-import type { NoteVisibility } from "@/types/client-types";
+import type { NoteVisibility } from "@/types/note";
 
 const props = defineProps<{
 	reply?: entities.Note;

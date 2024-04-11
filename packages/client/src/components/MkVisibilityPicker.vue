@@ -145,7 +145,7 @@ import { nextTick, ref, shallowRef, watch } from "vue";
 import MkModal from "@/components/MkModal.vue";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
-import type { NoteVisibility } from "@/types/client-types";
+import type { NoteVisibility } from "@/types/note";
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 
@@ -171,9 +171,7 @@ watch(localOnly, () => {
 	emit("changeLocalOnly", localOnly.value);
 });
 
-function choose(
-	visibility: NoteVisibility,
-): void {
+function choose(visibility: NoteVisibility): void {
 	v.value = visibility;
 	emit("changeVisibility", visibility);
 	nextTick(() => {

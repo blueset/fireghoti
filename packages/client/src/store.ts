@@ -1,6 +1,7 @@
 import { markRaw, ref } from "vue";
 import { isSignedIn } from "./me";
 import { Storage } from "./pizzax";
+import type { NoteVisibility } from "@/types/note/note";
 
 export const postFormActions = [];
 export const userActions = [];
@@ -452,7 +453,6 @@ import darkTheme from "@/themes/d-rosepine.json5";
  * Storage for configuration information that does not need to be constantly loaded into memory (non-reactive)
  */
 import lightTheme from "@/themes/l-rosepinedawn.json5";
-import { NoteVisibility } from "./types/client-types";
 
 export class ColdDeviceStorage {
 	public static default = {

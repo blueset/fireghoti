@@ -340,7 +340,7 @@ import {
 import type { MenuItem } from "@/types/menu";
 import icon from "@/scripts/icon";
 import MkVisibilityPicker from "@/components/MkVisibilityPicker.vue";
-import type { NoteVisibility } from "@/types/client-types";
+import type { NoteVisibility } from "@/types/note";
 
 const modal = inject("modal");
 
