@@ -539,6 +539,8 @@ export type Instance = {
 	lastCommunicatedAt: DateString;
 	isNotResponding: boolean;
 	isSuspended: boolean;
+	isBlocked: boolean;
+	isSilenced: boolean;
 	softwareName: string | null;
 	softwareVersion: string | null;
 	openRegistrations: boolean | null;

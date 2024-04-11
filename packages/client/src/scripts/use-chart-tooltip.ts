@@ -1,6 +1,13 @@
 import { onDeactivated, onUnmounted, ref } from "vue";
 import * as os from "@/os";
 import MkChartTooltip from "@/components/MkChartTooltip.vue";
+import type { Color, TooltipOptions } from "chart.js";
+
+type ToolTipSerie = {
+	backgroundColor: Color;
+	borderColor: Color;
+	text: string;
+};
 
 export function useChartTooltip(
 	opts: { position: "top" | "middle" } = { position: "top" },
@@ -8,9 +15,9 @@ export function useChartTooltip(
 	const tooltipShowing = ref(false);
 	const tooltipX = ref(0);
 	const tooltipY = ref(0);
-	const tooltipTitle = ref(null);
-	const tooltipSeries = ref(null);
-	let disposeTooltipComponent;
+	const tooltipTitle = ref<string | null>(null);
+	const tooltipSeries = ref<ToolTipSerie[] | null>(null);
+	let disposeTooltipComponent: () => void;
 
 	os.popup(
 		MkChartTooltip,
@@ -34,7 +41,7 @@ export function useChartTooltip(
 		tooltipShowing.value = false;
 	});
 
-	function handler(context) {
+	const handler: TooltipOptions["external"] = (context) => {
 		if (context.tooltip.opacity === 0) {
 			tooltipShowing.value = false;
 			return;

@@ -65,14 +65,14 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 
 const emit = defineEmits<{
-	(ev: "ok", selected: entities.Instance): void;
-	(ev: "cancel"): void;
-	(ev: "closed"): void;
+	ok: [selected: entities.Instance];
+	cancel: [];
+	closed: [];
 }>();
 
 const hostname = ref("");
 const instances = ref<entities.Instance[]>([]);
-const selected = ref<entities.Instance | null>();
+const selected = ref<entities.Instance | null>(null);
 const dialogEl = ref<InstanceType<typeof XModalWindow>>();
 
 let searchOrderLatch = 0;

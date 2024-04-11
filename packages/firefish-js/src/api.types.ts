@@ -405,6 +405,17 @@ export type Endpoints = {
 		res: Instance[];
 	};
 	"federation/show-instance": { req: { host: string }; res: Instance };
+	"federation/stats": {
+		req: {
+			limit?: number;
+		};
+		res: {
+			topSubInstances: Instance[];
+			otherFollowersCount: number;
+			topPubInstances: Instance[];
+			otherFollowingCount: number;
+		};
+	};
 	"federation/update-remote-user": { req: { userId: User["id"] }; res: null };
 	"federation/users": {
 		req: {

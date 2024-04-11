@@ -6,7 +6,7 @@
 		:anchor="anchor"
 		:transparent-bg="true"
 		:src="src"
-		@click="modal.close()"
+		@click="modal!.close()"
 		@closed="emit('closed')"
 	>
 		<div
@@ -109,7 +109,7 @@ const items = Object.keys(navbarItemDef)
 	}));
 
 function close() {
-	modal.value.close();
+	modal.value!.close();
 }
 </script>
 
