@@ -14,6 +14,12 @@ pub fn dummy_macro(
 
 /// Creates extra wrapper function for napi.
 ///
+/// The macro is simply converted into `napi_derive::napi(...)`
+/// if it is not applied to a function.
+///
+/// If `js_name` is not specified,
+/// `js_name` will be set to the camelCase version of the original function name.
+///
 /// The types of the function arguments is converted with following rules:
 /// - `&str` and `&mut str` are converted to `String`
 /// - `&[T]` and `&mut [T]` are converted to `Vec<T>`
@@ -24,7 +30,46 @@ pub fn dummy_macro(
 /// Note that `E` must implement `std::string::ToString` trait.
 ///
 /// # Examples
-/// ## Example with `i32` argument
+/// ## Applying the macro to a struct
+/// ```
+/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
+/// #[macro_rs::napi]
+/// struct Person {
+///   id: i32,
+///   name: String,
+/// }
+/// ```
+/// simply becomes
+/// ```
+/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
+/// #[napi_derive::napi]
+/// struct Person {
+///   id: i32,
+///   name: String,
+/// }
+/// ```
+///
+/// ## Function with explicitly specified `js_name`
+/// ```
+/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
+/// #[macro_rs::napi(js_name = "add1")]
+/// pub fn add_one(x: i32) -> i32 {
+///     x + 1
+/// }
+/// ```
+/// generates
+/// ```
+/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
+/// # pub fn add_one(x: i32) -> i32 {
+/// #     x + 1
+/// # }
+/// #[napi_derive::napi(js_name = "add1")]
+/// pub fn add_one_napi(x: i32) -> i32 {
+///     add_one(x)
+/// }
+/// ```
+///
+/// ## Function with `i32` argument
 /// ```
 /// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// #[macro_rs::napi]
@@ -32,9 +77,7 @@ pub fn dummy_macro(
 ///     x + 1
 /// }
 /// ```
-///
 /// generates
-///
 /// ```
 /// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// # pub fn add_one(x: i32) -> i32 {
@@ -46,7 +89,7 @@ pub fn dummy_macro(
 /// }
 /// ```
 ///
-/// ## Example with `&str` argument
+/// ## Function with `&str` argument
 /// ```
 /// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// #[macro_rs::napi]
@@ -54,9 +97,7 @@ pub fn dummy_macro(
 ///     str1.to_owned() + str2
 /// }
 /// ```
-///
 /// generates
-///
 /// ```
 /// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// # pub fn concatenate_string(str1: &str, str2: &str) -> String {
@@ -68,7 +109,7 @@ pub fn dummy_macro(
 /// }
 /// ```
 ///
-/// ## Example with `&[String]` argument
+/// ## Function with `&[String]` argument
 /// ```
 /// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// #[macro_rs::napi]
@@ -76,9 +117,7 @@ pub fn dummy_macro(
 ///     array.len() as u32
 /// }
 /// ```
-///
 /// generates
-///
 /// ```
 /// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// # pub fn string_array_length(array: &[String]) -> u32 {
@@ -90,7 +129,7 @@ pub fn dummy_macro(
 /// }
 /// ```
 ///
-/// ## Example with `Result<T, E>` return type
+/// ## Function with `Result<T, E>` return type
 /// ```
 /// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// #[derive(thiserror::Error, Debug)]
@@ -112,9 +151,7 @@ pub fn dummy_macro(
 ///     }
 /// }
 /// ```
-///
 /// generates
-///
 /// ```
 /// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// # #[derive(thiserror::Error, Debug)]
@@ -147,20 +184,18 @@ pub fn napi(
 ) -> proc_macro::TokenStream {
     napi_impl(attr.into(), item.into()).into()
 }
-fn napi_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
+fn napi_impl(mut macro_attr: TokenStream, item: TokenStream) -> TokenStream {
     let item: syn::Item = syn::parse2(item).expect("Failed to parse TokenStream to syn::Item");
     // handle functions only
     let syn::Item::Fn(item_fn) = item else {
         // fallback to use napi_derive
         return quote! {
-          #[napi_derive::napi(#attr)]
+          #[napi_derive::napi(#macro_attr)]
           #item
         };
     };
 
     let ident = &item_fn.sig.ident;
-    let js_name = ident.to_string().to_case(Case::Camel);
-
     let item_fn_attrs = &item_fn.attrs;
     let item_fn_vis = &item_fn.vis;
     let mut item_fn_sig = item_fn.sig.clone();
@@ -272,11 +307,26 @@ fn napi_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
         })
         .collect();
 
-    // TODO handle macro attr
+    // handle macro attr
+    // append js_name if not specified
+    if !macro_attr
+        .clone()
+        .into_iter()
+        .any(|token| matches!(token, proc_macro2::TokenTree::Ident(ident) if ident == "js_name"))
+    {
+        // append "," first if other macro attr exists
+        if !macro_attr.is_empty() {
+            quote! { , }.to_tokens(&mut macro_attr);
+        }
+        // append js_name
+        let js_name = ident.to_string().to_case(Case::Camel);
+        quote! { js_name = #js_name }.to_tokens(&mut macro_attr);
+    }
+
     quote! {
       #item_fn
 
-      #[napi_derive::napi(js_name = #js_name)]
+      #[napi_derive::napi(#macro_attr)]
       #(#item_fn_attrs)*
       #item_fn_vis #item_fn_sig {
         #ident(#(#called_args),*)
@@ -290,10 +340,31 @@ mod tests {
     use proc_macro2::TokenStream;
     use quote::quote;
 
-    macro_rules! test_macro {
+    macro_rules! test_macro_becomes {
         ($source:expr, $generated:expr) => {
             assert_eq!(
                 super::napi_impl(TokenStream::new(), $source).to_string(),
+                $generated.to_string(),
+            )
+        };
+        ($macro_attr:expr, $source:expr, $generated:expr) => {
+            assert_eq!(
+                super::napi_impl($macro_attr, $source).to_string(),
+                $generated.to_string(),
+            )
+        };
+    }
+
+    macro_rules! test_macro_generates {
+        ($source:expr, $generated:expr) => {
+            assert_eq!(
+                super::napi_impl(TokenStream::new(), $source).to_string(),
+                format!("{} {}", $source, $generated),
+            )
+        };
+        ($macro_attr:expr, $source:expr, $generated:expr) => {
+            assert_eq!(
+                super::napi_impl($macro_attr, $source).to_string(),
                 format!("{} {}", $source, $generated),
             )
         };
@@ -301,7 +372,7 @@ mod tests {
 
     #[test]
     fn primitive_argument() {
-        test_macro!(
+        test_macro_generates!(
             quote! {
                 pub fn add_one(x: i32) -> i32 {
                     x + 1
@@ -318,7 +389,7 @@ mod tests {
 
     #[test]
     fn str_ref_argument() {
-        test_macro!(
+        test_macro_generates!(
             quote! {
                 pub fn concatenate_string(str1: &str, str2: &str) -> String {
                     str1.to_owned() + str2
@@ -335,7 +406,7 @@ mod tests {
 
     #[test]
     fn mut_ref_argument() {
-        test_macro!(
+        test_macro_generates!(
             quote! {
                 pub fn append_string_and_clone(
                     base_str: &mut String,
@@ -359,7 +430,7 @@ mod tests {
 
     #[test]
     fn result_return_type() {
-        test_macro!(
+        test_macro_generates!(
             quote! {
                 pub fn integer_divide(
                     dividend: i64,
@@ -389,7 +460,7 @@ mod tests {
 
     #[test]
     fn async_function() {
-        test_macro!(
+        test_macro_generates!(
             quote! {
                 pub async fn async_add_one(x: i32) -> i32 {
                     x + 1
@@ -407,7 +478,7 @@ mod tests {
 
     #[test]
     fn slice_type() {
-        test_macro!(
+        test_macro_generates!(
             quote! {
                 pub fn string_array_length(array: &[String]) -> u32 {
                     array.len() as u32
@@ -417,6 +488,84 @@ mod tests {
                 #[napi_derive::napi(js_name = "stringArrayLength")]
                 pub fn string_array_length_napi(array: Vec<String>) -> u32 {
                     string_array_length(&array)
+                }
+            }
+        )
+    }
+
+    #[test]
+    fn non_fn() {
+        test_macro_becomes!(
+            quote! { object },
+            quote! {
+                struct Person {
+                    id: i32,
+                    name: String,
+                }
+            },
+            quote! {
+                #[napi_derive::napi(object)]
+                struct Person {
+                    id: i32,
+                    name: String,
+                }
+            }
+        )
+    }
+
+    #[test]
+    fn macro_attr() {
+        test_macro_generates!(
+            quote! {
+                ts_return_type = "number"
+            },
+            quote! {
+                pub fn add_one(x: i32) -> i32 {
+                    x + 1
+                }
+            },
+            quote! {
+                #[napi_derive::napi(ts_return_type = "number", js_name = "addOne")]
+                pub fn add_one_napi(x: i32) -> i32 {
+                    add_one(x)
+                }
+            }
+        )
+    }
+
+    #[test]
+    fn explicitly_specified_js_name() {
+        test_macro_generates!(
+            quote! {
+                js_name = "add1"
+            },
+            quote! {
+                pub fn add_one(x: i32) -> i32 {
+                    x + 1
+                }
+            },
+            quote! {
+                #[napi_derive::napi(js_name = "add1")]
+                pub fn add_one_napi(x: i32) -> i32 {
+                    add_one(x)
+                }
+            }
+        )
+    }
+
+    #[test]
+    fn explicitly_specified_js_name_and_other_macro_attr() {
+        test_macro_generates!(
+            quote! { ts_return_type = "number", js_name = "add1" },
+            quote! {
+                pub fn add_one(x: i32) -> i32 {
+                    x + 1
+                }
+            },
+            quote! {
+                #[napi_derive::napi(ts_return_type = "number", js_name = "add1")]
+                pub fn add_one_napi(x: i32) -> i32 {
+                    add_one(x)
                 }
             }
         )
