@@ -1217,9 +1217,11 @@ name = "macro_rs"
 version = "0.0.0"
 dependencies = [
  "convert_case",
+ "napi",
  "proc-macro2",
  "quote",
  "syn 2.0.58",
+ "thiserror",
 ]
 
 [[package]]
