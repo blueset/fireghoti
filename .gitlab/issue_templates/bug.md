@@ -27,3 +27,6 @@
 By submitting this issue, you agree to follow our [Contribution Guidelines](https://firefish.dev/firefish/firefish/-/blob/develop/CONTRIBUTING.md)
 - [ ] I agree to follow this project's Contribution Guidelines
 - [ ] I have searched the issue tracker for similar issues, and this is not a duplicate.
+
+**Can you fix this bug?** (optional)
+- [ ] Yes. I will fix this bug and open a merge request if the change is agreed upon.

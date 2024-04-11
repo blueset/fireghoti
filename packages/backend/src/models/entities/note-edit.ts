@@ -8,7 +8,7 @@ import {
 } from "typeorm";
 import { Note } from "./note.js";
 import { id } from "../id.js";
-import { DriveFile } from "./drive-file.js";
+import type { DriveFile } from "./drive-file.js";
 
 @Entity()
 export class NoteEdit {
@@ -21,12 +21,6 @@ export class NoteEdit {
 		comment: "The ID of note.",
 	})
 	public noteId: Note["id"];
-
-	@ManyToOne((type) => Note, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public note: Note | null;
 
 	@Column("text", {
 		nullable: true,
@@ -57,4 +51,12 @@ export class NoteEdit {
 		default: "{}",
 	})
 	public emojis: string[];
+
+	//#region Relations
+	@ManyToOne(() => Note, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public note: Note;
+	//#endregion
 }

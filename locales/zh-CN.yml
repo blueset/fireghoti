@@ -2060,3 +2060,4 @@ showNoAltTextWarning: 当您尝试发布没有描述的帖子附件时显示警�
 autocorrectNoteLanguage: 当帖子语言不符合自动检测的结果的时候显示警告
 incorrectLanguageWarning: "看上去您帖子使用的语言是{detected}，但您选择的语言是{current}。\n要改为以{detected}发帖吗？"
 noteEditHistory: "帖子编辑历史"
+media: 媒体

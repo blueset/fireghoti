@@ -5,6 +5,7 @@ import {
 	Column,
 	ManyToOne,
 	PrimaryColumn,
+	type Relation,
 } from "typeorm";
 import { Note } from "./note.js";
 import { User } from "./user.js";
@@ -24,24 +25,12 @@ export class MutedNote {
 	})
 	public noteId: Note["id"];
 
-	@ManyToOne((type) => Note, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public note: Note | null;
-
 	@Index()
 	@Column({
 		...id(),
 		comment: "The user ID.",
 	})
 	public userId: User["id"];
-
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
 
 	/**
 	 * ミュートされた理由。
@@ -52,4 +41,18 @@ export class MutedNote {
 		comment: "The reason of the MutedNote.",
 	})
 	public reason: (typeof mutedNoteReasons)[number];
+
+	//#region Relations
+	@ManyToOne(() => Note, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public note: Relation<Note>;
+
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public user: Relation<User>;
+	//#endregion
 }

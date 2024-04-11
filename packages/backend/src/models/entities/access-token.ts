@@ -5,6 +5,7 @@ import {
 	Column,
 	ManyToOne,
 	JoinColumn,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { App } from "./app.js";
@@ -48,23 +49,11 @@ export class AccessToken {
 	@Column(id())
 	public userId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
-
 	@Column({
 		...id(),
 		nullable: true,
 	})
 	public appId: App["id"] | null;
-
-	@ManyToOne((type) => App, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public app: App | null;
 
 	@Column("varchar", {
 		length: 128,
@@ -95,4 +84,18 @@ export class AccessToken {
 		default: false,
 	})
 	public fetched: boolean;
+
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public user: Relation<User>;
+
+	@ManyToOne(() => App, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public app: Relation<App>;
+	//#endregion
 }

@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from "typeorm";
+import {
+	Entity,
+	Column,
+	PrimaryColumn,
+	ManyToOne,
+	JoinColumn,
+	type Relation,
+} from "typeorm";
 import { id } from "../id.js";
 import { User } from "./user.js";
 import type { Clip } from "./clip.js";
@@ -217,12 +224,6 @@ export class Meta {
 		nullable: true,
 	})
 	public proxyAccountId: User["id"] | null;
-
-	@ManyToOne((type) => User, {
-		onDelete: "SET NULL",
-	})
-	@JoinColumn()
-	public proxyAccount: User | null;
 
 	@Column("boolean", {
 		default: false,
@@ -500,4 +501,13 @@ export class Meta {
 		nullable: true,
 	})
 	public donationLink: string | null;
+
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "SET NULL",
+		nullable: true,
+	})
+	@JoinColumn()
+	public proxyAccount: Relation<User | null>;
+	//#endregion
 }

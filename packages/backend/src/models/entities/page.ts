@@ -5,6 +5,7 @@ import {
 	Column,
 	PrimaryColumn,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
@@ -68,23 +69,11 @@ export class Page {
 	})
 	public userId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
-
 	@Column({
 		...id(),
 		nullable: true,
 	})
 	public eyeCatchingImageId: DriveFile["id"] | null;
-
-	@ManyToOne((type) => DriveFile, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public eyeCatchingImage: DriveFile | null;
 
 	@Column("jsonb", {
 		default: [],
@@ -122,6 +111,20 @@ export class Page {
 		default: 0,
 	})
 	public likedCount: number;
+
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public user: Relation<User>;
+
+	@ManyToOne(() => DriveFile, {
+		onDelete: "CASCADE", // TODO: this should be SET NULL
+	})
+	@JoinColumn()
+	public eyeCatchingImage: Relation<DriveFile | null>;
+	//#endregion
 
 	constructor(data: Partial<Page>) {
 		if (data == null) return;

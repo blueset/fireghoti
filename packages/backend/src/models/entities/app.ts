@@ -1,4 +1,11 @@
-import { Entity, PrimaryColumn, Column, Index, ManyToOne } from "typeorm";
+import {
+	Entity,
+	PrimaryColumn,
+	Column,
+	Index,
+	ManyToOne,
+	type Relation,
+} from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
 
@@ -20,12 +27,6 @@ export class App {
 		comment: "The owner ID.",
 	})
 	public userId: User["id"] | null;
-
-	@ManyToOne((type) => User, {
-		onDelete: "SET NULL",
-		nullable: true,
-	})
-	public user: User | null;
 
 	@Index()
 	@Column("varchar", {
@@ -59,4 +60,12 @@ export class App {
 		comment: "The callbackUrl of the App.",
 	})
 	public callbackUrl: string | null;
+
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "SET NULL",
+		nullable: true,
+	})
+	public user: Relation<User | null>;
+	//#endregion
 }

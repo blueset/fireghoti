@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { Note } from "./note.js";
 import { User } from "./user.js";
@@ -25,18 +26,20 @@ export class UserNotePining {
 	@Column(id())
 	public userId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
-
 	@Column(id())
 	public noteId: Note["id"];
 
-	@ManyToOne((type) => Note, {
+	//#region Relations
+	@ManyToOne(() => User, {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	public note: Note | null;
+	public user: Relation<User>;
+
+	@ManyToOne(() => Note, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public note: Relation<Note>;
+	//#endregion
 }

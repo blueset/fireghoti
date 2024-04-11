@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { Note } from "./note.js";
@@ -26,21 +27,9 @@ export class NoteReaction {
 	@Column(id())
 	public userId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user?: User | null;
-
 	@Index()
 	@Column(id())
 	public noteId: Note["id"];
-
-	@ManyToOne((type) => Note, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public note?: Note | null;
 
 	// TODO: 対象noteのuserIdを非正規化したい(「受け取ったリアクション一覧」のようなものを(JOIN無しで)実装したいため)
 
@@ -48,4 +37,18 @@ export class NoteReaction {
 		length: 260,
 	})
 	public reaction: string;
+
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public user: Relation<User>;
+
+	@ManyToOne(() => Note, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public note: Relation<Note>;
+	//#endregion
 }

@@ -5,6 +5,7 @@ import {
 	Column,
 	ManyToOne,
 	JoinColumn,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { App } from "./app.js";
@@ -32,19 +33,20 @@ export class AuthSession {
 	})
 	public userId: User["id"] | null;
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-		nullable: true,
-	})
-	@JoinColumn()
-	public user: User | null;
-
 	@Column(id())
 	public appId: App["id"];
 
-	@ManyToOne((type) => App, {
+	//#region Relations
+	@ManyToOne(() => User, {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	public app: App | null;
+	public user: Relation<User>;
+
+	@ManyToOne(() => App, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public app: App;
+	//#endregion
 }

@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { UserGroup } from "./user-group.js";
@@ -28,12 +29,6 @@ export class UserGroupJoining {
 	})
 	public userId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
-
 	@Index()
 	@Column({
 		...id(),
@@ -41,9 +36,17 @@ export class UserGroupJoining {
 	})
 	public userGroupId: UserGroup["id"];
 
-	@ManyToOne((type) => UserGroup, {
+	//#region Relations
+	@ManyToOne(() => User, {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	public userGroup: UserGroup | null;
+	public user: Relation<User>;
+
+	@ManyToOne(() => UserGroup, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public userGroup: Relation<UserGroup>;
+	//#endregion
 }

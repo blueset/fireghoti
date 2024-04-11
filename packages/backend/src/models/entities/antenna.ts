@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
@@ -28,12 +29,6 @@ export class Antenna {
 	})
 	public userId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
-
 	@Column("varchar", {
 		length: 128,
 		comment: "The name of the Antenna.",
@@ -51,23 +46,11 @@ export class Antenna {
 	})
 	public userListId: UserList["id"] | null;
 
-	@ManyToOne((type) => UserList, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public userList: UserList | null;
-
 	@Column({
 		...id(),
 		nullable: true,
 	})
 	public userGroupJoiningId: UserGroupJoining["id"] | null;
-
-	@ManyToOne((type) => UserGroupJoining, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public userGroupJoining: UserGroupJoining | null;
 
 	@Column("varchar", {
 		length: 1024,
@@ -112,4 +95,27 @@ export class Antenna {
 
 	@Column("boolean")
 	public notify: boolean;
+
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+		nullable: true,
+	})
+	@JoinColumn()
+	public user: Relation<User | null>;
+
+	@ManyToOne(() => UserList, {
+		onDelete: "CASCADE",
+		nullable: true,
+	})
+	@JoinColumn()
+	public userList: Relation<UserList | null>;
+
+	@ManyToOne(() => UserGroupJoining, {
+		onDelete: "CASCADE",
+		nullable: true,
+	})
+	@JoinColumn()
+	public userGroupJoining: Relation<UserGroupJoining | null>;
+	//#endregion
 }

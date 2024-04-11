@@ -4,6 +4,7 @@
 
 **Contribution Guidelines**
 By submitting this merge request, you agree to follow our [Contribution Guidelines](https://firefish.dev/firefish/firefish/-/blob/develop/CONTRIBUTING.md)
+- [ ] This change is reviewed in an issue / This is a minor bug fix
 - [ ] I agree to follow this project's Contribution Guidelines
 - [ ] I have made sure to test this pull request
 - [ ] I have made sure to run `pnpm run format` before submitting this pull request
@@ -12,4 +13,4 @@ If this merge request makes changes to the Firefish API, please update `docs/api
 - [ ] I updated the document / This merge request doesn't include API changes
 
 <!-- Uncomment if your merge request has multiple authors -->
-<!-- Co-authored-by: Name <email@email.com> -->
+<!-- Co-authored-by: Name <email@example.com> -->
