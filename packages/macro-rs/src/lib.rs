@@ -7,13 +7,14 @@ pub fn export(
     attr: proc_macro::TokenStream,
     item: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
-	let attr: TokenStream = attr.into();
-	let item: TokenStream = item.into();
+    let attr: TokenStream = attr.into();
+    let item: TokenStream = item.into();
 
-	quote! {
-		#[cfg_attr(feature = "napi", macro_rs::napi(#attr))]
-		#item
-	}.into()
+    quote! {
+        #[cfg_attr(feature = "napi", macro_rs::napi(#attr))]
+        #item
+    }
+    .into()
 }
 
 /// Creates extra wrapper function for napi.
