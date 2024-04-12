@@ -1,7 +1,5 @@
 import type { MigrationInterface, QueryRunner } from "typeorm";
 
-import RE2 from "re2";
-
 export class convertHardMutes1644010796173 implements MigrationInterface {
 	async up(queryRunner: QueryRunner): Promise<void> {
 		let entries = await queryRunner.query(
@@ -15,7 +13,7 @@ export class convertHardMutes1644010796173 implements MigrationInterface {
 					if (regexp) {
 						// convert regexp's
 						try {
-							new RE2(regexp[1], regexp[2]);
+							new RegExp(regexp[1], regexp[2]);
 							return `/${regexp[1]}/${regexp[2]}`;
 						} catch (err) {
 							// invalid regex, ignore it
