@@ -6,13 +6,9 @@ use chrono::NaiveDateTime;
 use once_cell::sync::OnceCell;
 use std::cmp;
 
-use crate::impl_into_napi_error;
-
 #[derive(thiserror::Error, Debug, PartialEq, Eq)]
 #[error("ID generator has not been initialized yet")]
 pub struct ErrorUninitialized;
-
-impl_into_napi_error!(ErrorUninitialized);
 
 static FINGERPRINT: OnceCell<String> = OnceCell::new();
 static GENERATOR: OnceCell<cuid2::CuidConstructor> = OnceCell::new();

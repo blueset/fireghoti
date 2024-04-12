@@ -1,7 +1,6 @@
 pub use macro_rs::napi as export;
 
 pub mod database;
-pub mod macros;
 pub mod misc;
 pub mod model;
 pub mod util;

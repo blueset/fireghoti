@@ -1,5 +1,3 @@
-use crate::impl_into_napi_error;
-
 #[derive(thiserror::Error, Debug, PartialEq, Eq)]
 pub enum Error {
     #[error("Failed to parse string: {0}")]
@@ -11,5 +9,3 @@ pub enum Error {
     #[error("Requested entity not found")]
     NotFound,
 }
-
-impl_into_napi_error!(Error);
