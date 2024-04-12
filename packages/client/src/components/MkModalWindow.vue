@@ -15,7 +15,7 @@
 					height: scroll
 						? height
 							? `${props.height}px`
-							: null
+							: undefined
 						: height
 							? `min(${props.height}px, 100%)`
 							: '100%',
@@ -65,7 +65,7 @@
 </template>
 
 <script lang="ts" setup>
-import { shallowRef } from "vue";
+import { ref, shallowRef } from "vue";
 
 import { FocusTrap } from "focus-trap-vue";
 import MkModal from "./MkModal.vue";
@@ -95,6 +95,9 @@ const emit = defineEmits<{
 	(event: "closed"): void;
 	(event: "ok"): void;
 }>();
+
+// FIXME: seems that this is not used
+const isActive = ref();
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 const rootEl = shallowRef<HTMLElement>();
