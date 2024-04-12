@@ -12,6 +12,8 @@ COPY Cargo.toml Cargo.toml
 COPY Cargo.lock Cargo.lock
 COPY packages/backend-rs/Cargo.toml packages/backend-rs/Cargo.toml
 COPY packages/backend-rs/src/lib.rs packages/backend-rs/src/
+COPY packages/macro-rs/Cargo.toml packages/macro-rs/Cargo.toml
+COPY packages/macro-rs/src/lib.rs packages/macro-rs/src/
 
 # Install cargo dependencies
 RUN cargo fetch --locked --manifest-path /firefish/packages/backend-rs/Cargo.toml
