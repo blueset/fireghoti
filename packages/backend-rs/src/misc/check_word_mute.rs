@@ -31,21 +31,27 @@ async fn all_texts(note: NoteLike) -> Result<Vec<String>, DbErr> {
             .select_only()
             .column(drive_file::Column::Comment)
             .filter(drive_file::Column::Id.is_in(note.file_ids))
-            .into_tuple::<String>()
+            .into_tuple::<Option<String>>()
             .all(db)
-            .await?,
+            .await?
+            .into_iter()
+            .flatten(),
     );
 
     if let Some(renote_id) = note.renote_id {
         if let Some((text, cw)) = note::Entity::find_by_id(renote_id)
             .select_only()
             .columns([note::Column::Text, note::Column::Cw])
-            .into_tuple::<(String, String)>()
+            .into_tuple::<(Option<String>, Option<String>)>()
             .one(db)
             .await?
         {
-            texts.push(text);
-            texts.push(cw);
+            if let Some(t) = text {
+                texts.push(t);
+            }
+            if let Some(c) = cw {
+                texts.push(c);
+            }
         }
     }
 
@@ -53,12 +59,16 @@ async fn all_texts(note: NoteLike) -> Result<Vec<String>, DbErr> {
         if let Some((text, cw)) = note::Entity::find_by_id(reply_id)
             .select_only()
             .columns([note::Column::Text, note::Column::Cw])
-            .into_tuple::<(String, String)>()
+            .into_tuple::<(Option<String>, Option<String>)>()
             .one(db)
             .await?
         {
-            texts.push(text);
-            texts.push(cw);
+            if let Some(t) = text {
+                texts.push(t);
+            }
+            if let Some(c) = cw {
+                texts.push(c);
+            }
         }
     }
 
