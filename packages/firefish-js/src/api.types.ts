@@ -279,6 +279,12 @@ export type Endpoints = {
 		res: DriveFile[];
 	};
 	"drive/files/attached-notes": { req: TODO; res: Note[] };
+	"drive/files/caption-image": {
+		req: {
+			url: string,
+		}
+		res: string,
+	};
 	"drive/files/check-existence": { req: TODO; res: TODO };
 	"drive/files/create": { req: TODO; res: TODO };
 	"drive/files/delete": { req: { fileId: DriveFile["id"] }; res: null };
