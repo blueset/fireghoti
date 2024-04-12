@@ -21,8 +21,13 @@ regenerate-entities:
 	  src/model/entity/sea_orm_active_enums.rs
 	cargo fmt --all --
 
-index.js: $(SRC)
+.PHONY: update-index
+update-index: index.js index.d.ts
+
+index.js index.d.ts: $(SRC)
 	NODE_OPTIONS='--max_old_space_size=3072' pnpm run build:debug
-	[ -f built/index.js ]
-	rm --force index.js
+	[ -f built/index.js ] && [ -f built/index.d.ts ]
+	rm --force index.js index.d.ts
 	cp built/index.js index.js
+	cp built/index.d.ts index.d.ts
+	sed -i 's/^ \*r"/ */g' index.d.ts
