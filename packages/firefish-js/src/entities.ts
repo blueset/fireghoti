@@ -19,14 +19,7 @@ export type UserLite = {
 	alsoKnownAs: string[];
 	movedToUri: any;
 	emojis: EmojiLite[];
-	instance?: {
-		name: Instance["name"];
-		softwareName: Instance["softwareName"];
-		softwareVersion: Instance["softwareVersion"];
-		iconUrl: Instance["iconUrl"];
-		faviconUrl: Instance["faviconUrl"];
-		themeColor: Instance["themeColor"];
-	};
+	instance?: InstanceLite;
 };
 
 export type UserDetailed = UserLite & {
@@ -554,6 +547,15 @@ export type Blocking = {
 	createdAt: DateString;
 	blockeeId: User["id"];
 	blockee: UserDetailed;
+};
+
+export type InstanceLite = {
+	name: Instance["name"];
+	softwareName: Instance["softwareName"];
+	softwareVersion: Instance["softwareVersion"];
+	iconUrl: Instance["iconUrl"];
+	faviconUrl: Instance["faviconUrl"];
+	themeColor: Instance["themeColor"];
 };
 
 export type Instance = {

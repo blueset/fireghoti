@@ -36,6 +36,7 @@ import type {
 	UserDetailed,
 	UserGroup,
 	UserList,
+	UserLite,
 	UserSorting,
 } from "./entities";
 
@@ -686,7 +687,14 @@ export type Endpoints = {
 		res: Note[];
 	};
 	"notes/clips": { req: TODO; res: TODO };
-	"notes/conversation": { req: TODO; res: TODO };
+	"notes/conversation": {
+		req: {
+			noteId: string;
+			limit?: number;
+			offset?: number;
+		};
+		res: Note[];
+	};
 	"notes/create": {
 		req: NoteSubmitReq;
 		res: { createdNote: Note };
@@ -789,7 +797,24 @@ export type Endpoints = {
 		res: Note[];
 	};
 	"notes/search-by-tag": { req: TODO; res: TODO };
-	"notes/search": { req: TODO; res: TODO };
+	"notes/search": {
+		req: {
+			query: string;
+			sinceId?: string;
+			untilId?: string;
+			sinceDate?: number;
+			untilDate?: number;
+			limit?: number;
+			offset?: number;
+			host?: string;
+			userId?: string;
+			withFiles?: boolean;
+			searchCwAndAlt?: boolean;
+			channelId?: string;
+			order?: "chronological" | "relevancy";
+		};
+		res: Note[];
+	};
 	"notes/show": { req: { noteId: Note["id"] }; res: Note };
 	"notes/state": { req: TODO; res: TODO };
 	"notes/timeline": {
@@ -801,6 +826,16 @@ export type Endpoints = {
 			untilDate?: number;
 		};
 		res: Note[];
+	};
+	"notes/translate": {
+		req: {
+			noteId: string;
+			targetLang: string;
+		};
+		res: {
+			sourceLang: string;
+			text: string;
+		};
 	};
 	"notes/unrenote": { req: { noteId: Note["id"] }; res: null };
 	"notes/user-list-timeline": {
@@ -972,7 +1007,16 @@ export type Endpoints = {
 	"users/relation": { req: TODO; res: TODO };
 	"users/report-abuse": { req: TODO; res: TODO };
 	"users/search-by-username-and-host": { req: TODO; res: TODO };
-	"users/search": { req: TODO; res: TODO };
+	"users/search": {
+		req: {
+			query: string;
+			offset?: number;
+			limit?: number;
+			origin?: "local" | "remote" | "combined";
+			detail?: true; // FIXME: when false, returns UserLite
+		};
+		res: UserDetailed[];
+	};
 	"users/show": {
 		req: ShowUserReq | { userIds: User["id"][] };
 		res: {

@@ -77,7 +77,7 @@ const hasRenotedBefore = ref(false);
 if (isSignedIn) {
 	os.api("notes/renotes", {
 		noteId: props.note.id,
-		userId: me.id,
+		userId: me!.id,
 		limit: 1,
 	}).then((res) => {
 		hasRenotedBefore.value = res.length > 0;
@@ -251,6 +251,10 @@ const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 
 	os.popupMenu(buttonActions, buttonRef.value, { viaKeyboard });
 };
+
+defineExpose({
+	renote,
+});
 </script>
 
 <style lang="scss" scoped>

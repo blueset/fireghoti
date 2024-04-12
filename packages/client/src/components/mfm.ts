@@ -30,7 +30,7 @@ export default defineComponent({
 			default: false,
 		},
 		author: {
-			type: Object as PropType<entities.User>,
+			type: Object as PropType<entities.User | null>,
 			default: null,
 		},
 		// TODO: This variable is not used in the code and may be removed

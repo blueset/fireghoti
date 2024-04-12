@@ -67,7 +67,7 @@
 </template>
 
 <script lang="ts" setup generic="E extends PagingKey">
-import type { ComputedRef } from "vue";
+import type { ComponentPublicInstance, ComputedRef } from "vue";
 import { computed, isRef, onActivated, onDeactivated, ref, watch } from "vue";
 import type { Endpoints, TypeUtils } from "firefish-js";
 import * as os from "@/os";
@@ -81,8 +81,30 @@ import MkButton from "@/components/MkButton.vue";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 
+/**
+ * ref type of MkPagination<E>
+ * Due to Vue's incomplete type support for generic components,
+ * we have to manually maintain this type instead of
+ * using `InstanceType<typeof MkPagination>`
+ */
+export type MkPaginationType<
+	E extends PagingKey,
+	Item = Endpoints[E]["res"][number],
+> = ComponentPublicInstance & {
+	items: Item[];
+	queue: Item[];
+	backed: boolean;
+	reload: () => Promise<void>;
+	refresh: () => Promise<void>;
+	prepend: (item: Item) => Promise<void>;
+	append: (item: Item) => Promise<void>;
+	removeItem: (finder: (item: Item) => boolean) => boolean;
+	updateItem: (id: string, replacer: (old: Item) => Item) => boolean;
+};
+
+export type PagingKeyOf<T> = TypeUtils.EndpointsOf<T[]>;
 // biome-ignore lint/suspicious/noExplicitAny: Used Intentionally
-export type PagingKey = TypeUtils.EndpointsOf<any[]>;
+export type PagingKey = PagingKeyOf<any>;
 
 export interface Paging<E extends PagingKey = PagingKey> {
 	endpoint: E;

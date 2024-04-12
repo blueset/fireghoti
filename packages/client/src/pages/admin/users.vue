@@ -126,7 +126,9 @@
 import { computed, ref } from "vue";
 import MkInput from "@/components/form/input.vue";
 import MkSelect from "@/components/form/select.vue";
-import MkPagination from "@/components/MkPagination.vue";
+import MkPagination, {
+	type MkPaginationType,
+} from "@/components/MkPagination.vue";
 import * as os from "@/os";
 import { lookupUser } from "@/scripts/lookup-user";
 import { i18n } from "@/i18n";
@@ -134,7 +136,9 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import MkUserCardMini from "@/components/MkUserCardMini.vue";
 import icon from "@/scripts/icon";
 
-const paginationComponent = ref<InstanceType<typeof MkPagination>>();
+const paginationComponent = ref<MkPaginationType<
+	typeof pagination.endpoint
+> | null>(null);
 
 const sort = ref("+createdAt");
 const state = ref("all");

@@ -3,11 +3,24 @@ import { isSignedIn } from "./me";
 import { Storage } from "./pizzax";
 import type { NoteVisibility } from "@/types/note";
 
-export const postFormActions = [];
-export const userActions = [];
-export const noteActions = [];
-export const noteViewInterruptors = [];
-export const notePostInterruptors = [];
+export const postFormActions: {
+	title: string;
+	handler: (note: entities.Note) => void | Promise<void>;
+}[] = [];
+export const userActions: {
+	title: string;
+	handler: (note: entities.Note) => void | Promise<void>;
+}[] = [];
+export const noteActions: {
+	title: string;
+	handler: (note: entities.Note) => void | Promise<void>;
+}[] = [];
+export const noteViewInterruptors: {
+	handler: (note: entities.Note) => Promise<entities.Note>;
+}[] = [];
+export const notePostInterruptors: {
+	handler: (note: entities.Note) => Promise<entities.Note>;
+}[] = [];
 
 const menuOptions = [
 	"notifications",
@@ -453,6 +466,7 @@ import darkTheme from "@/themes/d-rosepine.json5";
  * Storage for configuration information that does not need to be constantly loaded into memory (non-reactive)
  */
 import lightTheme from "@/themes/l-rosepinedawn.json5";
+import { entities } from "firefish-js";
 
 export class ColdDeviceStorage {
 	public static default = {

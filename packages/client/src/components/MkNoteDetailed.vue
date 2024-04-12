@@ -6,7 +6,7 @@
 		v-hotkey="keymap"
 		v-size="{ max: [500, 350, 300] }"
 		class="lxwezrsl _block"
-		:tabindex="!isDeleted ? '-1' : null"
+		:tabindex="!isDeleted ? '-1' : undefined"
 		:class="{ renote: isRenote }"
 	>
 		<MkNoteSub
@@ -64,7 +64,7 @@
 					)
 				}}
 			</option>
-			<option v-if="directQuotes?.length > 0" value="quotes">
+			<option v-if="directQuotes && directQuotes.length > 0" value="quotes">
 				<!-- <i :class="icon('ph-quotes')"></i> -->
 				{{
 					wordWithCount(
@@ -102,7 +102,7 @@
 			:detailed-view="true"
 			:parent-id="note.id"
 		/>
-		<MkLoading v-else-if="tab === 'quotes' && directQuotes.length > 0" />
+		<MkLoading v-else-if="tab === 'quotes' && directQuotes && directQuotes.length > 0" />
 
 		<!-- <MkPagination
 			v-if="tab === 'renotes'"
@@ -225,12 +225,12 @@ if (noteViewInterruptors.length > 0) {
 	});
 }
 
-const el = ref<HTMLElement>();
+const el = ref<HTMLElement | null>(null);
 const noteEl = ref();
 const menuButton = ref<HTMLElement>();
 const renoteButton = ref<InstanceType<typeof XRenoteButton>>();
 const reactButton = ref<HTMLElement>();
-const showContent = ref(false);
+// const showContent = ref(false);
 const isDeleted = ref(false);
 const muted = ref(
 	getWordSoftMute(
@@ -248,7 +248,8 @@ const directReplies = ref<null | entities.Note[]>([]);
 const directQuotes = ref<null | entities.Note[]>([]);
 const clips = ref();
 const renotes = ref();
-let isScrolling;
+const isRenote = ref(note.value.renoteId != null);
+let isScrolling: boolean;
 
 const reactionsCount = Object.values(props.note.reactions).reduce(
 	(x, y) => x + y,
@@ -258,10 +259,10 @@ const reactionsCount = Object.values(props.note.reactions).reduce(
 const keymap = {
 	r: () => reply(true),
 	"e|a|plus": () => react(true),
-	q: () => renoteButton.value.renote(true),
+	q: () => renoteButton.value!.renote(true),
 	esc: blur,
 	"m|o": () => menu(true),
-	s: () => showContent.value !== showContent.value,
+	// s: () => showContent.value !== showContent.value,
 };
 
 useNoteCapture({
@@ -270,21 +271,21 @@ useNoteCapture({
 	isDeletedRef: isDeleted,
 });
 
-function reply(viaKeyboard = false): void {
+function reply(_viaKeyboard = false): void {
 	pleaseLogin();
 	os.post({
 		reply: note.value,
-		animation: !viaKeyboard,
+		// animation: !viaKeyboard,
 	}).then(() => {
 		focus();
 	});
 }
 
-function react(viaKeyboard = false): void {
+function react(_viaKeyboard = false): void {
 	pleaseLogin();
 	blur();
 	reactionPicker.show(
-		reactButton.value,
+		reactButton.value!,
 		(reaction) => {
 			os.api("notes/reactions/create", {
 				noteId: note.value.id,
@@ -297,13 +298,13 @@ function react(viaKeyboard = false): void {
 	);
 }
 
-function undoReact(note): void {
-	const oldReaction = note.myReaction;
-	if (!oldReaction) return;
-	os.api("notes/reactions/delete", {
-		noteId: note.id,
-	});
-}
+// function undoReact(note): void {
+// 	const oldReaction = note.myReaction;
+// 	if (!oldReaction) return;
+// 	os.api("notes/reactions/delete", {
+// 		noteId: note.id,
+// 	});
+// }
 
 function onContextmenu(ev: MouseEvent): void {
 	const isLink = (el: HTMLElement) => {
@@ -312,8 +313,8 @@ function onContextmenu(ev: MouseEvent): void {
 			return isLink(el.parentElement);
 		}
 	};
-	if (isLink(ev.target)) return;
-	if (window.getSelection().toString() !== "") return;
+	if (isLink(ev.target as HTMLElement)) return;
+	if (window.getSelection()?.toString() !== "") return;
 
 	if (defaultStore.state.useReactionPickerForContextMenu) {
 		ev.preventDefault();
@@ -362,12 +363,17 @@ os.api("notes/children", {
 	limit: 30,
 	depth: 12,
 }).then((res) => {
-	res = res.reduce((acc, resNote) => {
-		if (resNote.userId == note.value.userId) {
-			return [...acc, resNote];
-		}
-		return [resNote, ...acc];
-	}, []);
+	// biome-ignore lint/style/noParameterAssign: assign it intentially
+	res = res
+		.filter((n) => n.userId !== note.value.userId)
+		.reverse()
+		.concat(res.filter((n) => n.userId === note.value.userId));
+	// res = res.reduce((acc: entities.Note[], resNote) => {
+	// 	if (resNote.userId === note.value.userId) {
+	// 		return [...acc, resNote];
+	// 	}
+	// 	return [resNote, ...acc];
+	// }, []);
 	replies.value = res;
 	directReplies.value = res
 		.filter((resNote) => resNote.replyId === note.value.id)
@@ -438,7 +444,7 @@ async function onNoteUpdated(
 	}
 
 	switch (type) {
-		case "replied":
+		case "replied": {
 			const { id: createdId } = body;
 			const replyNote = await os.api("notes/show", {
 				noteId: createdId,
@@ -446,10 +452,10 @@ async function onNoteUpdated(
 
 			replies.value.splice(found, 0, replyNote);
 			if (found === 0) {
-				directReplies.value.push(replyNote);
+				directReplies.value!.push(replyNote);
 			}
 			break;
-
+		}
 		case "deleted":
 			if (found === 0) {
 				isDeleted.value = true;

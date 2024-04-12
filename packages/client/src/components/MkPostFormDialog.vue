@@ -2,7 +2,7 @@
 	<MkModal
 		ref="modal"
 		:prefer-type="'dialog'"
-		@click="modal.close()"
+		@click="modal!.close()"
 		@closed="onModalClosed()"
 	>
 		<MkPostForm
@@ -12,8 +12,8 @@
 			autofocus
 			freeze-after-posted
 			@posted="onPosted"
-			@cancel="modal.close()"
-			@esc="modal.close()"
+			@cancel="modal!.close()"
+			@esc="modal!.close()"
 		/>
 	</MkModal>
 </template>

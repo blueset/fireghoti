@@ -26,7 +26,7 @@ withDefaults(
 		text: string;
 		plain?: boolean;
 		nowrap?: boolean;
-		author?: entities.User;
+		author?: entities.User | null;
 		customEmojis?: entities.EmojiLite[];
 		isNote?: boolean;
 		advancedMfm?: boolean;

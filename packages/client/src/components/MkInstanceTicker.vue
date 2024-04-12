@@ -20,15 +20,10 @@ import { ref } from "vue";
 import { instanceName, version } from "@/config";
 import { instance as Instance } from "@/instance";
 import { getProxiedImageUrlNullable } from "@/scripts/media-proxy";
+import type { entities } from "firefish-js";
 
 const props = defineProps<{
-	instance?: {
-		faviconUrl?: string;
-		name: string;
-		themeColor?: string;
-		softwareName?: string;
-		softwareVersion?: string;
-	};
+	instance?: entities.InstanceLite;
 }>();
 
 const ticker = ref<HTMLElement | null>(null);

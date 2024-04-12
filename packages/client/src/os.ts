@@ -22,7 +22,7 @@ const apiClient = new firefishApi.APIClient({
 
 export const api = ((
 	endpoint: string,
-	data: Record<string, any> = {},
+	data: Record<string, unknown> = {},
 	token?: string | null | undefined,
 	useToken = true,
 ) => {
@@ -174,13 +174,14 @@ export function promiseDialog<T>(
 }
 
 let popupIdCount = 0;
-export const popups = ref<
-	{
-		id: number;
-		component: Component;
-		props: Record<string, unknown>;
-	}[]
->([]);
+
+type PopupType = {
+	id: number;
+	component: Component;
+	props: Record<string, unknown>;
+	events: Record<string, unknown>;
+};
+export const popups = ref<PopupType[]>([]);
 
 const zIndexes = {
 	low: 1000000,
@@ -922,18 +923,27 @@ export function contextMenu(
 	});
 }
 
-export function post(props: Record<string, any> = {}) {
-	return new Promise((resolve, reject) => {
+export function post(
+	props: InstanceType<typeof MkPostFormDialog>["$props"] = {},
+	onClosed?: () => void,
+) {
+	return new Promise<void>((resolve, reject) => {
 		// NOTE: MkPostFormDialogをdynamic importするとiOSでテキストエリアに自動フォーカスできない
 		// NOTE: ただ、dynamic importしない場合、MkPostFormDialogインスタンスが使いまわされ、
 		//       Vueが渡されたコンポーネントに内部的に__propsというプロパティを生やす影響で、
 		//       複数のpost formを開いたときに場合によってはエラーになる
 		//       もちろん複数のpost formを開けること自体Misskeyサイドのバグなのだが
-		let dispose;
+		// NOTE: Text area cannot be auto-focused on iOS when dynamically importing MkPostFormDialog
+		// NOTE: However, if you do not dynamically import, the MkPostFormDialog instance will be reused,
+		// Due to the effect that Vue internally creates a property called __props on the passed component,
+		// Sometimes an error occurs when opening multiple post forms
+		// Of course, opening multiple post forms is itself a bug on Misskey's side.
+		let dispose: () => void;
 		popup(MkPostFormDialog, props, {
 			closed: () => {
 				resolve();
 				dispose();
+				onClosed?.();
 			},
 		}).then((res) => {
 			dispose = res.dispose;

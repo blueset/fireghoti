@@ -13,16 +13,17 @@ import { getUserMenu } from "@/scripts/get-user-menu";
 import icon from "@/scripts/icon";
 import { useRouter } from "@/router";
 import { notePage } from "@/filters/note";
+import type { NoteTranslation } from "@/types/note";
 
 const router = useRouter();
 
 export function getNoteMenu(props: {
 	note: entities.Note;
 	menuButton: Ref<HTMLElement | undefined>;
-	translation: Ref<any>;
+	translation: Ref<NoteTranslation | null>;
 	translating: Ref<boolean>;
 	isDeleted: Ref<boolean>;
-	currentClipPage?: Ref<entities.Clip>;
+	currentClipPage?: Ref<entities.Clip> | null;
 }) {
 	const isRenote =
 		props.note.renote != null &&
