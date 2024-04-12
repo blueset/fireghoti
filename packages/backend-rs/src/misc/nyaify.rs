@@ -82,6 +82,7 @@ pub fn nyaify(text: &str, lang: Option<&str>) -> String {
 #[cfg(test)]
 mod unit_test {
     use super::nyaify;
+    use pretty_assertions::assert_eq;
 
     #[test]
     fn can_nyaify() {

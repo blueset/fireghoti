@@ -36,6 +36,7 @@ pub fn acct_to_string(acct: &Acct) -> String {
 #[cfg(test)]
 mod unit_test {
     use super::{acct_to_string, string_to_acct, Acct};
+    use pretty_assertions::assert_eq;
 
     #[test]
     fn test_acct_to_string() {
