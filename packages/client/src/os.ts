@@ -5,9 +5,6 @@ import { type entities, api as firefishApi } from "firefish-js";
 import insertTextAtCursor from "insert-text-at-cursor";
 import type {
 	Component,
-	ComponentPublicInstance,
-	DefineComponent,
-	EmitsOptions,
 	Ref,
 } from "vue";
 import { defineAsyncComponent, markRaw, ref } from "vue";
@@ -180,13 +177,11 @@ export function promiseDialog<T>(
 }
 
 let popupIdCount = 0;
-export const popups = ref([]) as Ref<
-	{
-		id: any;
-		component: any;
-		props: Record<string, any>;
-	}[]
->;
+export const popups = ref<{
+	id: number;
+	component: Component;
+	props: Record<string, unknown>;
+}[]>([]);
 
 const zIndexes = {
 	low: 1000000,
