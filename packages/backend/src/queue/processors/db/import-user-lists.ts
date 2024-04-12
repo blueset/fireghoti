@@ -4,14 +4,13 @@ import { queueLogger } from "../../logger.js";
 import { resolveUser } from "@/remote/resolve-user.js";
 import { pushUserToUserList } from "@/services/user-list/push.js";
 import { downloadTextFile } from "@/misc/download-text-file.js";
-import { isSelfHost, toPuny } from "@/misc/convert-host.js";
 import {
 	DriveFiles,
 	Users,
 	UserLists,
 	UserListJoinings,
 } from "@/models/index.js";
-import { genId, stringToAcct } from "backend-rs";
+import { genId, isSelfHost, stringToAcct, toPuny } from "backend-rs";
 import type { DbUserImportJobData } from "@/queue/types.js";
 import { IsNull } from "typeorm";
 import { inspect } from "node:util";

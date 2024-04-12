@@ -3,7 +3,7 @@ import { Emojis } from "@/models/index.js";
 import type { Emoji } from "@/models/entities/emoji.js";
 import type { Note } from "@/models/entities/note.js";
 import { Cache } from "./cache.js";
-import { isSelfHost, toPunyNullable } from "./convert-host.js";
+import { isSelfHost, toPuny } from "backend-rs";
 import { decodeReaction } from "./reaction-lib.js";
 import config from "@/config/index.js";
 import { query } from "@/prelude/url.js";
@@ -27,7 +27,7 @@ function normalizeHost(
 	noteUserHost: string | null,
 ): string | null {
 	// クエリに使うホスト
-	let host =
+	const host =
 		src === "."
 			? null // .はローカルホスト (ここがマッチするのはリアクションのみ)
 			: src === undefined
@@ -36,9 +36,7 @@ function normalizeHost(
 					? null // 自ホスト指定
 					: src || noteUserHost; // 指定されたホスト || ノートなどの所有者のホスト (こっちがリアクションにマッチすることはない)
 
-	host = toPunyNullable(host);
-
-	return host;
+	return host == null ? null : toPuny(host);
 }
 
 function parseEmojiStr(emojiName: string, noteUserHost: string | null) {
@@ -46,11 +44,7 @@ function parseEmojiStr(emojiName: string, noteUserHost: string | null) {
 	if (!match) return { name: null, host: null };
 
 	const name = match[1];
-
-	// ホスト正規化
-	const host = toPunyNullable(normalizeHost(match[2], noteUserHost));
-
-	return { name, host };
+	return { name, host: normalizeHost(match[2], noteUserHost) };
 }
 
 /**

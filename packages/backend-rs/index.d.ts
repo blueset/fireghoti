@@ -127,6 +127,11 @@ export interface NoteLike {
   replyId: string | null
 }
 export function checkWordMute(note: NoteLike, mutedWordLists: Array<Array<string>>, mutedPatterns: Array<string>): Promise<boolean>
+export function getFullApAccount(username: string, host?: string | undefined | null): string
+export function isSelfHost(host?: string | undefined | null): boolean
+export function isSameOrigin(uri: string): boolean
+export function extractHost(uri: string): string
+export function toPuny(host: string): string
 export function nyaify(text: string, lang?: string | undefined | null): string
 export interface AbuseUserReport {
   id: string

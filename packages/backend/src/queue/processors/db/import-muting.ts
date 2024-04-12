@@ -3,11 +3,10 @@ import type Bull from "bull";
 import { queueLogger } from "../../logger.js";
 import { resolveUser } from "@/remote/resolve-user.js";
 import { downloadTextFile } from "@/misc/download-text-file.js";
-import { isSelfHost, toPuny } from "@/misc/convert-host.js";
 import { Users, DriveFiles, Mutings } from "@/models/index.js";
 import type { DbUserImportJobData } from "@/queue/types.js";
 import type { User } from "@/models/entities/user.js";
-import { genId, stringToAcct } from "backend-rs";
+import { genId, isSelfHost, stringToAcct, toPuny } from "backend-rs";
 import { IsNull } from "typeorm";
 import { inspect } from "node:util";
 

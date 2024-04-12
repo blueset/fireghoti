@@ -9,7 +9,7 @@ import renderKey from "@/remote/activitypub/renderer/key.js";
 import { renderPerson } from "@/remote/activitypub/renderer/person.js";
 import renderEmoji from "@/remote/activitypub/renderer/emoji.js";
 import { inbox as processInbox } from "@/queue/index.js";
-import { isSelfHost } from "@/misc/convert-host.js";
+import { isSelfHost } from "backend-rs";
 import {
 	Notes,
 	Users,

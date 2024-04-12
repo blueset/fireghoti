@@ -3,8 +3,7 @@ import type { Note } from "@/models/entities/note.js";
 import type { User } from "@/models/entities/user.js";
 import type { UserProfile } from "@/models/entities/user-profile.js";
 import { Blockings, Followings, UserProfiles } from "@/models/index.js";
-import { getFullApAccount } from "@/misc/convert-host.js";
-import { checkWordMute, stringToAcct } from "backend-rs";
+import { checkWordMute, getFullApAccount, stringToAcct } from "backend-rs";
 import type { Packed } from "@/misc/schema.js";
 import { Cache } from "@/misc/cache.js";
 

@@ -13,7 +13,7 @@ import { extractPollFromQuestion } from "./question.js";
 import vote from "@/services/note/polls/vote.js";
 import { apLogger } from "../logger.js";
 import { DriveFile } from "@/models/entities/drive-file.js";
-import { extractDbHost, isSameOrigin, toPuny } from "@/misc/convert-host.js";
+import { extractHost, isSameOrigin, toPuny } from "backend-rs";
 import {
 	Emojis,
 	Polls,
@@ -54,7 +54,7 @@ import { inspect } from "node:util";
 const logger = apLogger;
 
 export function validateNote(object: any, uri: string) {
-	const expectHost = extractDbHost(uri);
+	const expectHost = extractHost(uri);
 
 	if (object == null) {
 		return new Error("invalid Note: object is null");
@@ -64,9 +64,9 @@ export function validateNote(object: any, uri: string) {
 		return new Error(`invalid Note: invalid object type ${getApType(object)}`);
 	}
 
-	if (object.id && extractDbHost(object.id) !== expectHost) {
+	if (object.id && extractHost(object.id) !== expectHost) {
 		return new Error(
-			`invalid Note: id has different host. expected: ${expectHost}, actual: ${extractDbHost(
+			`invalid Note: id has different host. expected: ${expectHost}, actual: ${extractHost(
 				object.id,
 			)}`,
 		);
@@ -74,10 +74,10 @@ export function validateNote(object: any, uri: string) {
 
 	if (
 		object.attributedTo &&
-		extractDbHost(getOneApId(object.attributedTo)) !== expectHost
+		extractHost(getOneApId(object.attributedTo)) !== expectHost
 	) {
 		return new Error(
-			`invalid Note: attributedTo has different host. expected: ${expectHost}, actual: ${extractDbHost(
+			`invalid Note: attributedTo has different host. expected: ${expectHost}, actual: ${extractHost(
 				object.attributedTo,
 			)}`,
 		);
@@ -420,11 +420,11 @@ export async function resolveNote(
 	if (uri == null) throw new Error("missing uri");
 
 	// Abort if origin host is blocked
-	if (await shouldBlockInstance(extractDbHost(uri)))
+	if (await shouldBlockInstance(extractHost(uri)))
 		throw new StatusError(
 			"host blocked",
 			451,
-			`host ${extractDbHost(uri)} is blocked`,
+			`host ${extractHost(uri)} is blocked`,
 		);
 
 	const lock = await getApLock(uri);

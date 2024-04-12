@@ -170,7 +170,12 @@ pub fn read_server_config() -> ServerConfig {
     let cwd = env::current_dir().unwrap();
     let yml = fs::File::open(cwd.join("../../.config/default.yml"))
         .expect("Failed to open '.config/default.yml'");
-    serde_yaml::from_reader(yml).expect("Failed to parse yaml")
+    let mut data: ServerConfig = serde_yaml::from_reader(yml).expect("Failed to parse yaml");
+    data.url = url::Url::parse(&data.url)
+        .expect("Config url is invalid")
+        .origin()
+        .ascii_serialization();
+    data
 }
 
 pub static SERVER_CONFIG: Lazy<ServerConfig> = Lazy::new(read_server_config);

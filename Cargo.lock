@@ -195,6 +195,7 @@ dependencies = [
  "cfg-if",
  "chrono",
  "cuid2",
+ "idna",
  "jsonschema",
  "macro_rs",
  "napi",
@@ -212,6 +213,7 @@ dependencies = [
  "serde_yaml",
  "thiserror",
  "tokio",
+ "url",
  "urlencoding",
 ]
 

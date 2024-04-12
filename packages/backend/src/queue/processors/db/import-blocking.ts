@@ -1,10 +1,9 @@
 import type Bull from "bull";
 
 import { queueLogger } from "../../logger.js";
-import { stringToAcct } from "backend-rs";
+import { isSelfHost, stringToAcct, toPuny } from "backend-rs";
 import { resolveUser } from "@/remote/resolve-user.js";
 import { downloadTextFile } from "@/misc/download-text-file.js";
-import { isSelfHost, toPuny } from "@/misc/convert-host.js";
 import { Users, DriveFiles } from "@/models/index.js";
 import type { DbUserImportJobData } from "@/queue/types.js";
 import block from "@/services/blocking/create.js";
