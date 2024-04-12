@@ -3,7 +3,13 @@
 import { EventEmitter } from "eventemitter3";
 import { type entities, api as firefishApi } from "firefish-js";
 import insertTextAtCursor from "insert-text-at-cursor";
-import type { Component, Ref } from "vue";
+import type {
+	Component,
+	ComponentPublicInstance,
+	DefineComponent,
+	EmitsOptions,
+	Ref,
+} from "vue";
 import { defineAsyncComponent, markRaw, ref } from "vue";
 import { i18n } from "./i18n";
 import MkDialog from "@/components/MkDialog.vue";
@@ -196,13 +202,23 @@ export function claimZIndex(
 
 let uniqueId = 0;
 export function getUniqueId(): string {
-	return uniqueId++ + "";
+	return String(uniqueId++);
 }
 
-export async function popup(
-	component: Component,
-	props: Record<string, any>,
-	events = {},
+interface VueComponentConstructor<P, E> {
+	__isFragment?: never;
+	__isTeleport?: never;
+	__isSuspense?: never;
+	new (): {
+		$props: P;
+	};
+	emits?: E;
+}
+
+export async function popup<Props, Emits>(
+	component: VueComponentConstructor<Props, Emits>,
+	props: Props & Record<string, unknown>,
+	events: Partial<NonNullable<Emits>> | Record<string, never> = {},
 	disposeEvent?: string,
 ) {
 	markRaw(component);
