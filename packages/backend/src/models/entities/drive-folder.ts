@@ -5,6 +5,7 @@ import {
 	PrimaryColumn,
 	Index,
 	Column,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
@@ -15,7 +16,7 @@ export class DriveFolder {
 	public id: string;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the DriveFolder.",
 	})
 	public createdAt: Date;
@@ -34,12 +35,6 @@ export class DriveFolder {
 	})
 	public userId: User["id"] | null;
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
-
 	@Index()
 	@Column({
 		...id(),
@@ -49,9 +44,19 @@ export class DriveFolder {
 	})
 	public parentId: DriveFolder["id"] | null;
 
-	@ManyToOne((type) => DriveFolder, {
-		onDelete: "SET NULL",
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+		nullable: true,
 	})
 	@JoinColumn()
-	public parent: DriveFolder | null;
+	public user: Relation<User | null>;
+
+	@ManyToOne(() => DriveFolder, {
+		onDelete: "SET NULL",
+		nullable: true,
+	})
+	@JoinColumn()
+	public parent: Relation<DriveFolder | null>;
+	//#endregion
 }

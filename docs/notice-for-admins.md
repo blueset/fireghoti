@@ -2,6 +2,29 @@
 
 You can skip intermediate versions when upgrading from an old version, but please read the notices and follow the instructions for each intermediate version before [upgrading](./upgrade.md).
 
+## Unreleased
+
+### For all users
+
+Upgrading may take a long time due to the large changes in the database. Please make sure to perform the operations when you have time.
+
+The time required to upgrade varies greatly depending on the database size and the environment. For reference, we have checked that the database migration takes
+
+- 70 seconds if the database stores 600,000 posts
+- 28 minutes if the database stores 12,000,000 posts
+
+(i.e., it takes roughly (𝑛 / 470,000) minutes where 𝑛 is the number of posts) on a server with 2 GB of RAM. You may want to tweak your database configuration (`postgres.conf`) if the process is significantly slower than our experimental result.
+
+The number of posts stored on your database can be found at `https://yourserver.example.com/admin/database` (or `notesCount` of `stats` API response).
+
+### For systemd/pm2 users
+
+Please do not terminate `pnpm run migrate` even if it appears to be frozen.
+
+### For Docker/Podman users
+
+You may not be able to access your server for a while after starting the container.
+
 ## v20240326
 
 ### For Docker/Podman users
@@ -31,11 +54,11 @@ psql (PostgreSQL) 16.1
 
 In this case, your PostgreSQL major version is `16`.
 
-There are official installation instructions for many operating systems on <https://pgroonga.github.io/install>, so please follow the instructions on this page. However, since many users are using Ubuntu, and there are no instructions for Arch Linux and Fedora, we explicitly list the instructions for Ubuntu, Arch Linux and Fedora here. Please keep in mind that this is not official information and the procedures may change.
+There are official installation instructions for many operating systems on <https://pgroonga.github.io/install>, so please follow the instructions on this page. However, since many users are using Ubuntu LTS or Debian, and there are no instructions for Arch Linux and Fedora, we explicitly list the instructions for Ubuntu LTS, Debian, Arch Linux and Fedora here. Please keep in mind that this is not official information and the procedures may change.
 
-##### Ubuntu
+##### Ubuntu LTS
 
-1. Install subdependencies and add apt repository
+1. Install subdependencies
     ```sh
     sudo apt install -y software-properties-common
     sudo add-apt-repository -y universe
@@ -43,14 +66,35 @@ There are official installation instructions for many operating systems on <http
     sudo apt install -y wget lsb-release
     wget https://packages.groonga.org/ubuntu/groonga-apt-source-latest-$(lsb_release --codename --short).deb
     sudo apt install -y -V ./groonga-apt-source-latest-$(lsb_release --codename --short).deb
-    echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release --codename --short)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
-    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-    sudo apt update
     ```
-2. Install PGroonga
+2. Install PGroonga (replace `16` with your PostgreSQL version)
     ```sh
-    # Please replace "16" with your PostgreSQL major version
     sudo apt install postgresql-16-pgdg-pgroonga
+
+    # Depending on your PostgreSQL installation method,
+    # the above command may fail and you need to run
+    # the following instead:
+    # sudo apt install postgresql-16-pgroonga
+    ```
+
+##### Debian
+
+1. Install subdependencies
+    ```sh
+    sudo apt install -y -V ca-certificates lsb-release wget
+    wget https://apache.jfrog.io/artifactory/arrow/$(lsb_release --id --short | tr 'A-Z' 'a-z')/apache-arrow-apt-source-latest-$(lsb_release --codename --short).deb
+    sudo apt install -y -V ./apache-arrow-apt-source-latest-$(lsb_release --codename --short).deb
+    wget https://packages.groonga.org/debian/groonga-apt-source-latest-$(lsb_release --codename --short).deb
+    sudo apt install -y -V ./groonga-apt-source-latest-$(lsb_release --codename --short).deb
+    ```
+2. Install PGroonga (replace `16` with your PostgreSQL version)
+    ```sh
+    sudo apt install postgresql-16-pgdg-pgroonga
+
+    # Depending on your PostgreSQL installation method,
+    # the above command may fail and you need to run
+    # the following instead:
+    # sudo apt install postgresql-16-pgroonga
     ```
 
 ##### Arch Linux

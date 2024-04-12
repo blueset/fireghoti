@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class NoteFile1710304584214 implements MigrationInterface {
 	name = "NoteFile1710304584214";

@@ -4,6 +4,10 @@ use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "meta")]
+#[cfg_attr(
+    feature = "napi",
+    napi_derive::napi(object, js_name = "Meta", use_nullable = true)
+)]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,
@@ -36,8 +40,6 @@ pub struct Model {
     pub icon_url: Option<String>,
     #[sea_orm(column_name = "cacheRemoteFiles")]
     pub cache_remote_files: bool,
-    #[sea_orm(column_name = "markLocalFilesNsfwByDefault")]
-    pub always_make_server_file_nsfw: bool,
     #[sea_orm(column_name = "enableRecaptcha")]
     pub enable_recaptcha: bool,
     #[sea_orm(column_name = "recaptchaSiteKey")]
@@ -169,6 +171,8 @@ pub struct Model {
     pub donation_link: Option<String>,
     #[sea_orm(column_name = "moreUrls", column_type = "JsonBinary")]
     pub more_urls: Json,
+    #[sea_orm(column_name = "markLocalFilesNsfwByDefault")]
+    pub mark_local_files_nsfw_by_default: bool,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

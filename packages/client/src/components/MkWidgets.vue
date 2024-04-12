@@ -39,7 +39,7 @@
 						</button>
 						<button
 							class="remove _button"
-							:aria-label="i18n.t('close')"
+							:aria-label="i18n.ts.close"
 							@click.prevent.stop="removeWidget(element)"
 						>
 							<i :class="icon('ph-x')"></i>

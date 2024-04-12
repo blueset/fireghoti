@@ -3,8 +3,8 @@
 		v-if="show"
 		ref="el"
 		class="fdidabkb"
-		:class="{ thin: thin_, tabs: tabs?.length > 0 }"
-		:style="{ background: bg }"
+		:class="{ thin: thin_, tabs: isTabs(tabs)}"
+		:style="{ background: bg || undefined }"
 		@click="onClick"
 	>
 		<div class="left">
@@ -70,14 +70,14 @@
 		</div>
 		<template v-if="metadata">
 			<nav
-				v-if="hasTabs"
+				v-if="isTabs(tabs)"
 				ref="tabsEl"
 				class="tabs"
-				:class="{ collapse: hasTabs && tabs.length > 3 }"
+				:class="{ collapse: tabs.length > 3 }"
 			>
 				<button
 					v-for="tab in tabs"
-					:ref="(el) => (tabRefs[tab.key] = el)"
+					:ref="(el) => (tab.key && (tabRefs[tab.key] = el))"
 					v-tooltip.noDelay="tab.title"
 					v-vibrate="5"
 					class="tab _button"
@@ -152,11 +152,12 @@ interface Tab {
 }
 
 const props = defineProps<{
-	tabs?: Tab[];
+	tabs?: Tab[] | null;
 	tab?: string;
 	actions?: {
 		text: string;
 		icon: string;
+		highlighted?: boolean;
 		handler: (ev: MouseEvent) => void;
 	}[];
 	thin?: boolean;
@@ -171,7 +172,7 @@ const displayBackButton =
 	inject("shouldBackButton", true);
 
 const emit = defineEmits<{
-	(ev: "update:tab", key: string);
+	"update:tab": [key: string];
 }>();
 
 const metadata = injectPageMetadata();
@@ -183,9 +184,14 @@ const el = ref<HTMLElement | null>(null);
 const tabRefs = {};
 const tabHighlightEl = ref<HTMLElement | null>(null);
 const tabsEl = ref<HTMLElement | null>(null);
-const bg = ref(null);
+const bg = ref<string | null | number>(null);
 const narrow = ref(false);
 const hasTabs = computed(() => props.tabs && props.tabs.length > 0);
+
+function isTabs(t: Tab[] | undefined): t is Tab[] {
+	return t != null && t.length > 0;
+}
+
 const hasActions = computed(() => props.actions && props.actions.length > 0);
 const show = computed(() => {
 	return !hideTitle || hasTabs.value || hasActions.value;
@@ -201,7 +207,7 @@ const openAccountMenu = (ev: MouseEvent) => {
 };
 
 const showTabsPopup = (ev: MouseEvent) => {
-	if (!hasTabs.value) return;
+	if (!isTabs(props.tabs)) return;
 	if (!narrow.value) return;
 	ev.preventDefault();
 	ev.stopPropagation();
@@ -213,7 +219,7 @@ const showTabsPopup = (ev: MouseEvent) => {
 			onTabClick(tab, ev);
 		},
 	}));
-	popupMenu(menu, ev.currentTarget ?? ev.target);
+	popupMenu(menu, (ev.currentTarget ?? ev.target) as HTMLElement);
 };
 
 const preventDrag = (ev: TouchEvent) => {
@@ -224,7 +230,9 @@ const onClick = () => {
 	if (props.to) {
 		location.href = props.to;
 	} else {
-		scrollToTop(el.value, { behavior: "smooth" });
+		if (el.value) {
+			scrollToTop(el.value, { behavior: "smooth" });
+		}
 	}
 };
 
@@ -257,6 +265,8 @@ onMounted(() => {
 		() => [props.tab, props.tabs],
 		() => {
 			nextTick(() => {
+				if (props.tab == null) return;
+				if (!isTabs(props.tabs)) return;
 				const tabEl = tabRefs[props.tab];
 				if (tabEl && tabHighlightEl.value) {
 					// offsetWidth や offsetLeft は少数を丸めてしまうため getBoundingClientRect を使う必要がある
@@ -266,7 +276,8 @@ onMounted(() => {
 						tabEl.style = `--width: ${tabSizeX}px`;
 					}
 					setTimeout(() => {
-						tabHighlightEl.value.style.width = tabSizeX + "px";
+						if (tabHighlightEl.value == null) return;
+						tabHighlightEl.value.style.width = `${tabSizeX}px`;
 						tabHighlightEl.value.style.transform = `translateX(${tabEl.offsetLeft}px)`;
 						window.requestAnimationFrame(() => {
 							tabsEl.value?.scrollTo({
@@ -283,10 +294,10 @@ onMounted(() => {
 		},
 	);
 
-	if (el.value && el.value.parentElement) {
+	if (el.value?.parentElement) {
 		narrow.value = el.value.parentElement.offsetWidth < 500;
-		ro = new ResizeObserver((entries, observer) => {
-			if (el.value.parentElement && document.body.contains(el.value)) {
+		ro = new ResizeObserver((_entries, _observer) => {
+			if (el.value?.parentElement && document.body.contains(el.value)) {
 				narrow.value = el.value.parentElement.offsetWidth < 500;
 			}
 		});

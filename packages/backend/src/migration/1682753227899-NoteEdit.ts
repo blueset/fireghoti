@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class NoteEdit1682753227899 implements MigrationInterface {
 	async up(queryRunner: QueryRunner): Promise<void> {

@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class pollEndedNotification1646549089451 implements MigrationInterface {
 	async up(queryRunner: QueryRunner): Promise<void> {

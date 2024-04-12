@@ -14,7 +14,7 @@
 		>
 			<i
 				v-if="success"
-				:class="[$style.icon, $style.success, iconClass('ph-check')]"
+				:class="[$style.icon, $style.success, iconify('ph-check')]"
 			></i>
 			<MkLoading
 				v-else
@@ -31,7 +31,7 @@
 <script lang="ts" setup>
 import { shallowRef, watch } from "vue";
 import MkModal from "@/components/MkModal.vue";
-import iconClass from "@/scripts/icon";
+import iconify from "@/scripts/icon";
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 

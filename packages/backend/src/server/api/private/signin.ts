@@ -185,7 +185,7 @@ export default async (ctx: Koa.Context) => {
 			id: body.challengeId,
 		});
 
-		if (new Date().getTime() - challenge.createdAt.getTime() >= 5 * 60 * 1000) {
+		if (Date.now() - challenge.createdAt.getTime() >= 5 * 60 * 1000) {
 			await fail(403, {
 				id: "2715a88a-2125-4013-932f-aa6fe72792da",
 			});

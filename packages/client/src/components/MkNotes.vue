@@ -40,17 +40,18 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import type { Paging } from "@/components/MkPagination.vue";
+import type { PagingOf } from "@/components/MkPagination.vue";
 import XNote from "@/components/MkNote.vue";
 import XList from "@/components/MkDateSeparatedList.vue";
 import MkPagination from "@/components/MkPagination.vue";
 import { i18n } from "@/i18n";
 import { scroll } from "@/scripts/scroll";
+import type { entities } from "firefish-js";
 
 const tlEl = ref<HTMLElement>();
 
 defineProps<{
-	pagination: Paging;
+	pagination: PagingOf<entities.Note>;
 	noGap?: boolean;
 	disableAutoLoad?: boolean;
 }>();

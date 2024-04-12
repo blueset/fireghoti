@@ -239,7 +239,7 @@ function changeAvatar(ev) {
 
 			const { canceled } = await os.yesno({
 				type: "question",
-				text: i18n.t("cropImageAsk"),
+				text: i18n.ts.cropImageAsk,
 			});
 
 			if (!canceled) {
@@ -264,7 +264,7 @@ function changeBanner(ev) {
 
 			const { canceled } = await os.yesno({
 				type: "question",
-				text: i18n.t("cropImageAsk"),
+				text: i18n.ts.cropImageAsk,
 			});
 
 			if (!canceled) {

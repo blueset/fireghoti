@@ -10,8 +10,13 @@ import type {
 	User,
 	UserGroup,
 } from "./entities";
+import type { Connection } from "./streaming";
 
 type FIXME = any;
+
+type TimelineParams = {
+	withReplies?: boolean;
+};
 
 export type Channels = {
 	main: {
@@ -56,35 +61,35 @@ export type Channels = {
 		receives: null;
 	};
 	homeTimeline: {
-		params: null;
+		params?: TimelineParams;
 		events: {
 			note: (payload: Note) => void;
 		};
 		receives: null;
 	};
 	localTimeline: {
-		params: null;
+		params: TimelineParams;
 		events: {
 			note: (payload: Note) => void;
 		};
 		receives: null;
 	};
 	hybridTimeline: {
-		params: null;
+		params: TimelineParams;
 		events: {
 			note: (payload: Note) => void;
 		};
 		receives: null;
 	};
 	recommendedTimeline: {
-		params: null;
+		params: TimelineParams;
 		events: {
 			note: (payload: Note) => void;
 		};
 		receives: null;
 	};
 	globalTimeline: {
-		params: null;
+		params: TimelineParams;
 		events: {
 			note: (payload: Note) => void;
 		};
@@ -195,3 +200,5 @@ export type BroadcastEvents = {
 		emoji: CustomEmoji;
 	}) => void;
 };
+
+export type ChannelOf<C extends keyof Channels> = Connection<Channels[C]>;

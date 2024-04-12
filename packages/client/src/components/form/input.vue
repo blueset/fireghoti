@@ -26,7 +26,7 @@
 					@input="onInput"
 				/>
 				<datalist v-if="datalist" :id="id">
-					<option v-for="data in datalist" :value="data" />
+					<option v-for="data in datalist" :key="data" :value="data" />
 				</datalist>
 				<div ref="suffixEl" class="suffix">
 					<slot name="suffix"></slot>
@@ -47,7 +47,7 @@
 
 <script lang="ts" setup>
 import { nextTick, onMounted, ref, toRefs, watch } from "vue";
-import { debounce } from "throttle-debounce";
+import { debounce as Debounce } from "throttle-debounce";
 import MkButton from "@/components/MkButton.vue";
 import { useInterval } from "@/scripts/use-interval";
 import { i18n } from "@/i18n";
@@ -72,7 +72,7 @@ const props = defineProps<{
 	autofocus?: boolean;
 	autocomplete?: string;
 	spellcheck?: boolean;
-	step?: any;
+	step?: number | string;
 	datalist?: string[];
 	inline?: boolean;
 	debounce?: boolean;
@@ -82,10 +82,10 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(ev: "change", _ev: KeyboardEvent): void;
+	(ev: "change", _ev: Event): void;
 	(ev: "keydown", _ev: KeyboardEvent): void;
 	(ev: "enter"): void;
-	(ev: "update:modelValue", value: string | number): void;
+	(ev: "update:modelValue", value: string | number | null): void;
 }>();
 
 const { modelValue, type, autofocus } = toRefs(props);
@@ -94,14 +94,15 @@ const id = Math.random().toString(); // TODO: uuid?
 const focused = ref(false);
 const changed = ref(false);
 const invalid = ref(false);
-const inputEl = ref<HTMLElement>();
+const inputEl = ref<HTMLInputElement>();
 const prefixEl = ref<HTMLElement>();
 const suffixEl = ref<HTMLElement>();
 const height = props.small ? 36 : props.large ? 40 : 38;
 
-const focus = () => inputEl.value.focus();
-const selectRange = (start, end) => inputEl.value.setSelectionRange(start, end);
-const onInput = (ev: KeyboardEvent) => {
+const focus = () => inputEl.value!.focus();
+const selectRange = (start, end) =>
+	inputEl.value!.setSelectionRange(start, end);
+const onInput = (ev: Event) => {
 	changed.value = true;
 	emit("change", ev);
 };
@@ -116,13 +117,13 @@ const onKeydown = (ev: KeyboardEvent) => {
 const updated = () => {
 	changed.value = false;
 	if (type.value === "number") {
-		emit("update:modelValue", parseFloat(v.value));
+		emit("update:modelValue", Number.parseFloat(v.value as string));
 	} else {
 		emit("update:modelValue", v.value);
 	}
 };
 
-const debouncedUpdated = debounce(1000, updated);
+const debouncedUpdated = Debounce(1000, updated);
 
 watch(modelValue, (newValue) => {
 	v.value = newValue;
@@ -137,7 +138,7 @@ watch(v, (_) => {
 		}
 	}
 
-	invalid.value = inputEl.value.validity.badInput;
+	invalid.value = inputEl.value!.validity.badInput;
 });
 
 // このコンポーネントが作成された時、非表示状態である場合がある
@@ -146,12 +147,12 @@ useInterval(
 	() => {
 		if (prefixEl.value) {
 			if (prefixEl.value.offsetWidth) {
-				inputEl.value.style.paddingLeft = prefixEl.value.offsetWidth + "px";
+				inputEl.value!.style.paddingLeft = `${prefixEl.value.offsetWidth}px`;
 			}
 		}
 		if (suffixEl.value) {
 			if (suffixEl.value.offsetWidth) {
-				inputEl.value.style.paddingRight = suffixEl.value.offsetWidth + "px";
+				inputEl.value!.style.paddingRight = `${suffixEl.value.offsetWidth}px`;
 			}
 		}
 	},

@@ -5,6 +5,7 @@ import {
 	OneToOne,
 	JoinColumn,
 	PrimaryColumn,
+	type Relation,
 } from "typeorm";
 import { ffVisibility, notificationTypes } from "@/types.js";
 import { id } from "../id.js";
@@ -18,12 +19,6 @@ import type { IMentionedRemoteUsers } from "./note.js";
 export class UserProfile {
 	@PrimaryColumn(id())
 	public userId: User["id"];
-
-	@OneToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
 
 	@Column("varchar", {
 		length: 128,
@@ -250,6 +245,14 @@ export class UserProfile {
 		comment: "[Denormalized]",
 	})
 	public userHost: string | null;
+	//#endregion
+
+	//#region Relations
+	@OneToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public user: Relation<User>;
 	//#endregion
 
 	constructor(data: Partial<UserProfile>) {

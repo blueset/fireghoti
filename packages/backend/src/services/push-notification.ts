@@ -102,9 +102,9 @@ export async function pushNotification<T extends keyof pushNotificationsTypes>(
 							? truncateNotification(body as Packed<"Notification">)
 							: body,
 					userId,
-					dateTime: new Date().getTime(),
+					dateTime: Date.now(),
 				};
-
+				
 		console.log(
 			"Push notification, pushSubscription:",
 			pushSubscription,

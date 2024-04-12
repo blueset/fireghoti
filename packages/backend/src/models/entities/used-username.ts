@@ -7,7 +7,7 @@ export class UsedUsername {
 	})
 	public username: string;
 
-	@Column("timestamp with time zone")
+	@Column("timestamp without time zone")
 	public createdAt: Date;
 
 	constructor(data: Partial<UsedUsername>) {

@@ -123,7 +123,7 @@
 
 		<div v-if="isMobile" class="buttons">
 			<button
-				:aria-label="i18n.t('menu')"
+				:aria-label="i18n.ts.menu"
 				class="button nav _button"
 				@click="drawerMenuShowing = true"
 			>
@@ -138,14 +138,14 @@
 				></span>
 			</button>
 			<button
-				:aria-label="i18n.t('home')"
+				:aria-label="i18n.ts.home"
 				class="button home _button"
 				@click="mainRouter.push('/')"
 			>
 				<i :class="icon('ph-house')"></i>
 			</button>
 			<button
-				:aria-label="i18n.t('notifications')"
+				:aria-label="i18n.ts.notifications"
 				class="button notifications _button"
 				@click="mainRouter.push('/my/notifications')"
 			>
@@ -160,7 +160,7 @@
 				></span>
 			</button>
 			<button
-				:aria-label="i18n.t('note')"
+				:aria-label="i18n.ts.note"
 				class="button post _button"
 				@click="os.post()"
 			>

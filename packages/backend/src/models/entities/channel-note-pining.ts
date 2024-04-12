@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { Note } from "./note.js";
 import { Channel } from "./channel.js";
@@ -16,7 +17,7 @@ export class ChannelNotePining {
 	@PrimaryColumn(id())
 	public id: string;
 
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the ChannelNotePining.",
 	})
 	public createdAt: Date;
@@ -25,18 +26,20 @@ export class ChannelNotePining {
 	@Column(id())
 	public channelId: Channel["id"];
 
-	@ManyToOne((type) => Channel, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public channel: Channel | null;
-
 	@Column(id())
 	public noteId: Note["id"];
 
-	@ManyToOne((type) => Note, {
+	//#region Relations
+	@ManyToOne(() => Channel, {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	public note: Note | null;
+	public channel: Relation<Channel>;
+
+	@ManyToOne(() => Note, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public note: Relation<Note>;
+	//#endregion
 }

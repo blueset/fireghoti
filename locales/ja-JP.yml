@@ -638,6 +638,7 @@ display: "表示"
 copy: "コピー"
 metrics: "メトリクス"
 overview: "概要"
+media: "メディア"
 logs: "ログ"
 delayed: "遅延"
 database: "データベース"
@@ -885,7 +886,6 @@ socialTimeline: "ソーシャルタイムライン"
 themeColor: "テーマカラー"
 size: "サイズ"
 numberOfColumn: "列の数"
-searchByGoogle: "検索"
 instanceDefaultLightTheme: "サーバーの標準ライトテーマ"
 instanceDefaultDarkTheme: "サーバーの標準ダークテーマ"
 instanceDefaultThemeDescription: "オブジェクト形式のテーマコードを記入します。"
@@ -1011,11 +1011,11 @@ searchWordsDescription: "投稿を検索するには、ここに検索語句を�
   「(朝 OR 夜) 眠い」のように、AND検索とOR検索を同時に行うこともできます。\n空白を含む文字列をAND検索ではなくそのまま検索したい場合、\"明日 買うもの\"\
   \ のように二重引用符 (\") で囲む必要があります。\n\n特定のユーザーや投稿のページに飛びたい場合には、この欄にID (@user@example.com)
   や投稿のURLを入力し「照会」を押してください。「検索」を押すとそのIDやURLが文字通り含まれる投稿を検索します。"
-searchUsers: "投稿元（オプション）"
+searchUsers: "投稿元（省略可）"
 searchUsersDescription: "投稿検索で投稿者を絞りたい場合、@user@example.com（ローカルユーザーなら @user）の形式で投稿者のIDを入力してください。ユーザーIDではなくドメイン名
   (example.com) を指定すると、そのサーバーの投稿を検索します。\n\nme とだけ入力すると、自分の投稿を検索します。この検索結果には未収載・フォロワー限定・ダイレクト・秘密を含む全ての投稿が含まれます。\n
   \nlocal とだけ入力すると、ローカルサーバーの投稿を検索します。"
-searchRange: "投稿期間（オプション）"
+searchRange: "投稿期間（省略可）"
 searchRangeDescription: "投稿検索で投稿期間を絞りたい場合、20220615-20231031 のような形式で投稿期間を入力してください。今年の日付を指定する場合には年の指定を省略できます（0105-0106
   や 20231105-0110 のように）。\n\n開始日と終了日のどちらか一方は省略可能です。例えば -0102 とすると今年1月2日までの投稿のみを、20231026-
   とすると2023年10月26日以降の投稿のみを検索します。"
@@ -2060,3 +2060,4 @@ autocorrectNoteLanguage: 設定した投稿言語が自動検出されたもの�
 incorrectLanguageWarning: "この投稿は{detected}で書かれていると判定されました。\n投稿言語を{current}ではなく{detected}にしますか？"
 markLocalFilesNsfwByDefault: このサーバーの全てのファイルをデフォルトでNSFWに設定する
 markLocalFilesNsfwByDefaultDescription: この設定が有効でも、ユーザーは自分でNSFWのフラグを外すことができます。また、この設定は既存のファイルには影響しません。
+noteEditHistory: 編集履歴

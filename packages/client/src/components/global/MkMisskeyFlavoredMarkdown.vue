@@ -19,22 +19,22 @@
 import {} from "vue";
 import MfmCore from "@/components/mfm";
 import { defaultStore } from "@/store";
+import type { entities } from "firefish-js";
 
-const props = withDefaults(
+withDefaults(
 	defineProps<{
 		text: string;
 		plain?: boolean;
 		nowrap?: boolean;
-		author?: any;
-		customEmojis?: any;
+		author?: entities.User;
+		customEmojis?: entities.EmojiLite[];
 		isNote?: boolean;
-		advancedMfm: boolean;
+		advancedMfm?: boolean;
 		lang?: string;
 	}>(),
 	{
 		plain: false,
 		nowrap: false,
-		author: null,
 		isNote: true,
 	},
 );

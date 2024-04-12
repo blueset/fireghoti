@@ -18,7 +18,7 @@ nativeInitIdGenerator(length, fingerprint);
  * Ref: https://github.com/paralleldrive/cuid2#parameterized-length
  */
 export function genId(date?: Date): string {
-	return nativeCreateId((date ?? new Date()).getTime());
+	return nativeCreateId(date?.getTime() ?? Date.now());
 }
 
 export function getTimestamp(id: string): number {

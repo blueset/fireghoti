@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
@@ -16,25 +17,27 @@ export class GalleryLike {
 	@PrimaryColumn(id())
 	public id: string;
 
-	@Column("timestamp with time zone")
+	@Column("timestamp without time zone")
 	public createdAt: Date;
 
 	@Index()
 	@Column(id())
 	public userId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
-
 	@Column(id())
 	public postId: GalleryPost["id"];
 
-	@ManyToOne((type) => GalleryPost, {
+	//#region Relations
+	@ManyToOne(() => User, {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	public post: GalleryPost | null;
+	public user: Relation<User>;
+
+	@ManyToOne(() => GalleryPost, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public post: Relation<GalleryPost>;
+	//#endregion
 }

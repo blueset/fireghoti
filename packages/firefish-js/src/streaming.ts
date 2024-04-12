@@ -236,14 +236,14 @@ export default class Stream extends EventEmitter<StreamEvents> {
 // TODO: これらのクラスを Stream クラスの内部クラスにすれば余計なメンバをpublicにしないで済むかも？
 // もしくは @internal を使う？ https://www.typescriptlang.org/tsconfig#stripInternal
 class Pool {
-	public channel: string;
+	public channel: keyof Channels;
 	public id: string;
 	protected stream: Stream;
 	public users = 0;
 	private disposeTimerId: any;
 	private isConnected = false;
 
-	constructor(stream: Stream, channel: string, id: string) {
+	constructor(stream: Stream, channel: keyof Channels, id: string) {
 		this.channel = channel;
 		this.stream = stream;
 		this.id = id;
@@ -301,7 +301,7 @@ class Pool {
 export abstract class Connection<
 	Channel extends AnyOf<Channels> = any,
 > extends EventEmitter<Channel["events"]> {
-	public channel: string;
+	public channel: keyof Channels;
 	protected stream: Stream;
 	public abstract id: string;
 
@@ -309,7 +309,7 @@ export abstract class Connection<
 	public inCount = 0; // for debug
 	public outCount = 0; // for debug
 
-	constructor(stream: Stream, channel: string, name?: string) {
+	constructor(stream: Stream, channel: keyof Channels, name?: string) {
 		super();
 
 		this.stream = stream;
@@ -342,7 +342,12 @@ class SharedConnection<
 		return this.pool.id;
 	}
 
-	constructor(stream: Stream, channel: string, pool: Pool, name?: string) {
+	constructor(
+		stream: Stream,
+		channel: keyof Channels,
+		pool: Pool,
+		name?: string,
+	) {
 		super(stream, channel, name);
 
 		this.pool = pool;
@@ -364,7 +369,7 @@ class NonSharedConnection<
 
 	constructor(
 		stream: Stream,
-		channel: string,
+		channel: keyof Channels,
 		id: string,
 		params: Channel["params"],
 	) {

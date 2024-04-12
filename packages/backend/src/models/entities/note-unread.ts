@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { Note } from "./note.js";
@@ -21,21 +22,9 @@ export class NoteUnread {
 	@Column(id())
 	public userId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
-
 	@Index()
 	@Column(id())
 	public noteId: Note["id"];
-
-	@ManyToOne((type) => Note, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public note: Note | null;
 
 	/**
 	 * メンションか否か
@@ -66,5 +55,19 @@ export class NoteUnread {
 		comment: "[Denormalized]",
 	})
 	public noteChannelId: Channel["id"] | null;
+	//#endregion
+
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public user: Relation<User>;
+
+	@ManyToOne(() => Note, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public note: Relation<Note>;
 	//#endregion
 }

@@ -8,12 +8,12 @@
 			<MkPagination
 				v-else
 				ref="pagingComponent"
-				v-slot="{ items }: { items: entities.NoteEdit[] }"
+				v-slot="{ items }"
 				:pagination="pagination"
 			>
 				<div ref="tlEl" class="giivymft noGap">
 					<XList
-						v-slot="{ item }: { item: entities.Note }"
+						v-slot="{ item }"
 						:items="convertNoteEditsToNotes(items)"
 						class="notes"
 						:no-gap="true"
@@ -35,7 +35,6 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
 import MkPagination from "@/components/MkPagination.vue";
-import type { Paging } from "@/components/MkPagination.vue";
 import { api } from "@/os";
 import XList from "@/components/MkDateSeparatedList.vue";
 import XNote from "@/components/MkNote.vue";
@@ -50,7 +49,7 @@ const props = defineProps<{
 	noteId: string;
 }>();
 
-const pagination: Paging = {
+const pagination = {
 	endpoint: "notes/history" as const,
 	limit: 10,
 	offsetMode: true,

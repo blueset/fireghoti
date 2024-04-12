@@ -1,6 +1,19 @@
 import { Entity, PrimaryColumn, Index, Column } from "typeorm";
 import { id } from "../id.js";
 
+export const MAX_LENGTH_INSTANCE = {
+	host: 512,
+	softwareName: 64,
+	softwareVersion: 64,
+	name: 256,
+	description: 4096,
+	maintainerName: 128,
+	maintainerEmail: 256,
+	iconUrl: 4096,
+	faviconUrl: 4096,
+	themeColor: 64,
+};
+
 @Entity()
 export class Instance {
 	@PrimaryColumn(id())
@@ -10,7 +23,7 @@ export class Instance {
 	 * このインスタンスを捕捉した日時
 	 */
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The caught date of the Instance.",
 	})
 	public caughtAt: Date;
@@ -20,7 +33,7 @@ export class Instance {
 	 */
 	@Index({ unique: true })
 	@Column("varchar", {
-		length: 512,
+		length: MAX_LENGTH_INSTANCE.host,
 		comment: "The host of the Instance.",
 	})
 	public host: string;
@@ -62,7 +75,7 @@ export class Instance {
 	/**
 	 * 直近のリクエスト送信日時
 	 */
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		nullable: true,
 	})
 	public latestRequestSentAt: Date | null;
@@ -78,7 +91,7 @@ export class Instance {
 	/**
 	 * 直近のリクエスト受信日時
 	 */
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		nullable: true,
 	})
 	public latestRequestReceivedAt: Date | null;
@@ -86,7 +99,7 @@ export class Instance {
 	/**
 	 * このインスタンスと最後にやり取りした日時
 	 */
-	@Column("timestamp with time zone")
+	@Column("timestamp without time zone")
 	public lastCommunicatedAt: Date;
 
 	/**
@@ -107,14 +120,14 @@ export class Instance {
 	public isSuspended: boolean;
 
 	@Column("varchar", {
-		length: 64,
+		length: MAX_LENGTH_INSTANCE.softwareName,
 		nullable: true,
 		comment: "The software of the Instance.",
 	})
 	public softwareName: string | null;
 
 	@Column("varchar", {
-		length: 64,
+		length: MAX_LENGTH_INSTANCE.softwareVersion,
 		nullable: true,
 	})
 	public softwareVersion: string | null;
@@ -125,48 +138,48 @@ export class Instance {
 	public openRegistrations: boolean | null;
 
 	@Column("varchar", {
-		length: 256,
+		length: MAX_LENGTH_INSTANCE.name,
 		nullable: true,
 	})
 	public name: string | null;
 
 	@Column("varchar", {
-		length: 4096,
+		length: MAX_LENGTH_INSTANCE.description,
 		nullable: true,
 	})
 	public description: string | null;
 
 	@Column("varchar", {
-		length: 128,
+		length: MAX_LENGTH_INSTANCE.maintainerName,
 		nullable: true,
 	})
 	public maintainerName: string | null;
 
 	@Column("varchar", {
-		length: 256,
+		length: MAX_LENGTH_INSTANCE.maintainerEmail,
 		nullable: true,
 	})
 	public maintainerEmail: string | null;
 
 	@Column("varchar", {
-		length: 4096,
+		length: MAX_LENGTH_INSTANCE.iconUrl,
 		nullable: true,
 	})
 	public iconUrl: string | null;
 
 	@Column("varchar", {
-		length: 4096,
+		length: MAX_LENGTH_INSTANCE.faviconUrl,
 		nullable: true,
 	})
 	public faviconUrl: string | null;
 
 	@Column("varchar", {
-		length: 64,
+		length: MAX_LENGTH_INSTANCE.themeColor,
 		nullable: true,
 	})
 	public themeColor: string | null;
 
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		nullable: true,
 	})
 	public infoUpdatedAt: Date | null;

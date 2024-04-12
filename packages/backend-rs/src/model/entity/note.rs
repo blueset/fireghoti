@@ -5,11 +5,15 @@ use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "note")]
+#[cfg_attr(
+    feature = "napi",
+    napi_derive::napi(object, js_name = "Note", use_nullable = true)
+)]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,
     #[sea_orm(column_name = "createdAt")]
-    pub created_at: DateTimeWithTimeZone,
+    pub created_at: DateTime,
     #[sea_orm(column_name = "replyId")]
     pub reply_id: Option<String>,
     #[sea_orm(column_name = "renoteId")]
@@ -60,7 +64,7 @@ pub struct Model {
     #[sea_orm(column_name = "threadId")]
     pub thread_id: Option<String>,
     #[sea_orm(column_name = "updatedAt")]
-    pub updated_at: Option<DateTimeWithTimeZone>,
+    pub updated_at: Option<DateTime>,
     pub lang: Option<String>,
 }
 

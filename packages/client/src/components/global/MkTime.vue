@@ -25,8 +25,9 @@ const props = withDefaults(
 	},
 );
 
-function getDateSafe(n: Date | string | number) {
+function getDateSafe(n: Date | string | number | null) {
 	try {
+		if (n === null) return null;
 		if (n instanceof Date) {
 			return n;
 		}
@@ -39,16 +40,14 @@ function getDateSafe(n: Date | string | number) {
 	}
 }
 
-const _time =
-	props.time == null ? Number.NaN : getDateSafe(props.time).getTime();
-const _timeIso =
-	props.time == null ? undefined : getDateSafe(props.time).toISOString();
+const _time = getDateSafe(props.time)?.getTime() ?? Number.NaN;
+const _timeIso = getDateSafe(props.time)?.toISOString();
 const invalid = Number.isNaN(_time);
 const absolute = !invalid
 	? dateTimeFormat.format(_time).replaceAll("GMT", "UTC")
 	: i18n.ts._ago.invalid;
 
-const now = ref((props.origin ?? new Date()).getTime());
+const now = ref(props.origin?.getTime() ?? Date.now());
 const relative = computed<string>(() => {
 	if (props.mode === "absolute") return ""; // absoluteではrelativeを使わないので計算しない
 	if (invalid) return i18n.ts._ago.invalid;
@@ -88,7 +87,7 @@ const relative = computed<string>(() => {
 let tickId: number;
 
 function tick() {
-	const _now = new Date().getTime();
+	const _now = Date.now();
 	const agoPrev = (now.value - _time) / 1000; /* ms */ // 現状のinterval
 
 	now.value = _now;

@@ -1,7 +1,7 @@
 import { i18n } from "@/i18n";
 import { api, popup, promiseDialog } from "@/os";
 import { mainRouter } from "@/router";
-import MkSearchBox from "@/components/MkSearchBox.vue";
+import MkPostSearch from "@/components/MkPostSearch.vue";
 
 export async function search() {
 	const { canceled, result } = await new Promise<
@@ -26,7 +26,7 @@ export async function search() {
 		  }
 	>((resolve, _) => {
 		popup(
-			MkSearchBox,
+			MkPostSearch,
 			{},
 			{
 				done: (result) => {

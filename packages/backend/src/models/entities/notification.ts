@@ -5,6 +5,7 @@ import {
 	ManyToOne,
 	Column,
 	PrimaryColumn,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
@@ -20,7 +21,7 @@ export class Notification {
 	public id: string;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the Notification.",
 	})
 	public createdAt: Date;
@@ -35,12 +36,6 @@ export class Notification {
 	})
 	public notifieeId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public notifiee: User | null;
-
 	/**
 	 * Notification sender (initiator)
 	 */
@@ -51,12 +46,6 @@ export class Notification {
 		comment: "The ID of sender user of the Notification.",
 	})
 	public notifierId: User["id"] | null;
-
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public notifier: User | null;
 
 	/**
 	 * Notification types:
@@ -96,35 +85,17 @@ export class Notification {
 	})
 	public noteId: Note["id"] | null;
 
-	@ManyToOne((type) => Note, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public note: Note | null;
-
 	@Column({
 		...id(),
 		nullable: true,
 	})
 	public followRequestId: FollowRequest["id"] | null;
 
-	@ManyToOne((type) => FollowRequest, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public followRequest: FollowRequest | null;
-
 	@Column({
 		...id(),
 		nullable: true,
 	})
 	public userGroupInvitationId: UserGroupInvitation["id"] | null;
-
-	@ManyToOne((type) => UserGroupInvitation, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public userGroupInvitation: UserGroupInvitation | null;
 
 	@Column("varchar", {
 		length: 128,
@@ -176,9 +147,46 @@ export class Notification {
 	})
 	public appAccessTokenId: AccessToken["id"] | null;
 
-	@ManyToOne((type) => AccessToken, {
+	//#region Relations
+	@ManyToOne(() => User, {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	public appAccessToken: AccessToken | null;
+	public notifiee: Relation<User>;
+
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+		nullable: true,
+	})
+	@JoinColumn()
+	public notifier: Relation<User | null>;
+
+	@ManyToOne(() => Note, {
+		onDelete: "CASCADE",
+		nullable: true,
+	})
+	@JoinColumn()
+	public note: Relation<Note | null>;
+
+	@ManyToOne(() => FollowRequest, {
+		onDelete: "CASCADE",
+		nullable: true,
+	})
+	@JoinColumn()
+	public followRequest: Relation<FollowRequest | null>;
+
+	@ManyToOne(() => UserGroupInvitation, {
+		onDelete: "CASCADE",
+		nullable: true,
+	})
+	@JoinColumn()
+	public userGroupInvitation: Relation<UserGroupInvitation | null>;
+
+	@ManyToOne(() => AccessToken, {
+		onDelete: "CASCADE",
+		nullable: true,
+	})
+	@JoinColumn()
+	public appAccessToken: Relation<AccessToken | null>;
+	//#endregion
 }

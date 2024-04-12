@@ -2,8 +2,11 @@ import { URL } from "node:url";
 import { Window } from "happy-dom";
 import fetch from "node-fetch";
 import tinycolor from "tinycolor2";
-import { getJson, getAgentByUrl, getHtml } from "@/misc/fetch.js";
-import type { Instance } from "@/models/entities/instance.js";
+import { getJson, getAgentByUrl } from "@/misc/fetch.js";
+import {
+	type Instance,
+	MAX_LENGTH_INSTANCE,
+} from "@/models/entities/instance.js";
 import { Instances } from "@/models/index.js";
 import { getFetchInstanceMetadataLock } from "@/misc/app-lock.js";
 import Logger from "@/services/logger.js";
@@ -53,26 +56,52 @@ export async function fetchInstanceMetadata(
 		} as Record<string, any>;
 
 		if (info) {
-			updates.softwareName = info.software?.name?.toLowerCase() || null;
-			updates.softwareVersion = info.software?.version;
+			updates.softwareName =
+				info.software?.name
+					?.toLowerCase()
+					.substring(0, MAX_LENGTH_INSTANCE.softwareName) || null;
+			updates.softwareVersion =
+				info.software?.version?.substring(
+					0,
+					MAX_LENGTH_INSTANCE.softwareVersion,
+				) || null;
 			updates.openRegistrations = info.openRegistrations;
 			updates.maintainerName = info.metadata
 				? info.metadata.maintainer
-					? info.metadata.maintainer.name || null
+					? info.metadata.maintainer.name?.substring(
+							0,
+							MAX_LENGTH_INSTANCE.maintainerName,
+						) || null
 					: null
 				: null;
 			updates.maintainerEmail = info.metadata
 				? info.metadata.maintainer
-					? info.metadata.maintainer.email || null
+					? info.metadata.maintainer.email?.substring(
+							0,
+							MAX_LENGTH_INSTANCE.maintainerEmail,
+						) || null
 					: null
 				: null;
 		}
 
-		if (name) updates.name = name;
-		if (description) updates.description = description;
-		if (icon || favicon) updates.iconUrl = icon || favicon;
-		if (favicon) updates.faviconUrl = favicon;
-		if (themeColor) updates.themeColor = themeColor;
+		if (name) updates.name = name.substring(0, MAX_LENGTH_INSTANCE.name);
+		if (description)
+			updates.description = description.substring(
+				0,
+				MAX_LENGTH_INSTANCE.description,
+			);
+		if (icon || favicon)
+			updates.iconUrl = (icon || favicon)?.substring(
+				0,
+				MAX_LENGTH_INSTANCE.iconUrl,
+			);
+		if (favicon)
+			updates.faviconUrl = favicon.substring(0, MAX_LENGTH_INSTANCE.faviconUrl);
+		if (themeColor)
+			updates.themeColor = themeColor.substring(
+				0,
+				MAX_LENGTH_INSTANCE.themeColor,
+			);
 
 		await Instances.update(instance.id, updates);
 

@@ -135,7 +135,6 @@ userList: "Llistes"
 smtpUser: "Nom d'usuari"
 smtpPass: "Contrasenya"
 user: "Usuari"
-searchByGoogle: "Cerca"
 file: "Fitxer"
 _email:
   _follow:
@@ -877,7 +876,7 @@ fromDrive: Des del Disc
 uploadFromUrl: Puja des d'una adreça URL
 uploadFromUrlDescription: Adreça URL del fitxer que vols pujar
 uploadFromUrlRequested: Pujada demanada
-noMoreHistory: No hi ha res més a l'historial
+noMoreHistory: No hi ha més historial
 tos: Condicions d'ús
 start: Comença
 startMessaging: Comença una conversa
@@ -1577,7 +1576,7 @@ cannotUploadBecauseInappropriate: Aquest fitxer no s'ha pogut carregar perquè s
 cannotUploadBecauseNoFreeSpace: La pujada ha fallat a causa de la manca d'espai al
   Disc.
 enableAutoSensitive: Marcatge automàtic NSFW
-moveTo: Mou el compte actual al compte nou
+moveTo: Mou aquest compte a un compte nou
 customKaTeXMacro: Macros KaTeX personalitzats
 _aboutFirefish:
   contributors: Col·laboradors principals
@@ -1724,7 +1723,7 @@ deleteConfirm: De veritat ho vols esborrar?
 receiveAnnouncementFromInstance: Rep notificacions d'aquest servidor
 emailNotification: Notificacions per correu electrònic
 publish: Publicar
-inChannelSearch: Buscar al canal
+inChannelSearch: Cerca al canal
 useReactionPickerForContextMenu: Obrir el selector de reaccions al fer click esquerra
 typingUsers: L'{users} està escrivint
 oneDay: Un dia
@@ -1762,7 +1761,7 @@ customSplashIconsDescription: Les URLS de les icones personalitzades a la pantal
   de benvinguda separades per salts de línia. Es mostraran aleatòriament cada vegada
   que un usuari carrega/recarrega la pàgina. Si us plau, assegureu-vos que les imatges
   estiguin en una URL estàtica, preferiblement amb imatges amb la de 192 x 192.
-moveFrom: Mou a aquest compte des d'un compte anterior
+moveFrom: Mou-te a aquest compte des d'un compte anterior
 moveFromLabel: 'Compte des del qual us moveu:'
 migrationConfirm: "Esteu absolutament segur que voleu migrar el vostre compte a {account}?
   Un cop ho feu, no podreu revertir-ho i no podreu tornar a utilitzar el vostre compte
@@ -2211,7 +2210,7 @@ replaceChatButtonWithAccountButton: Canviar el botó de xats amb el botó de can
   compte
 replaceWidgetsButtonWithReloadButton: Canviar el botó de ginys amb el botó de recarregar
 searchEngine: Motor de cerca fet servir a la barra MFM
-postSearch: Posar els resultats en aquest servidor
+postSearch: Publicar els resultats en aquest servidor
 showBigPostButton: Mostrar un botó gegant al formulari de publicació
 _emojiModPerm:
   unauthorized: Res
@@ -2238,7 +2237,7 @@ enableTimelineStreaming: Actualitza les línies de temps automàticament
 enablePullToRefresh: Activa "Baixa per actualitzar"
 pullDownToReload: Baixa per actualitzar
 pullToRefreshThreshold: Distancia de baixada per actualitzar
-searchWords: Paraules / ID o adreça a URL a cercar
+searchWords: Paraules / ID o adreça URL que vols cercar
 noSentFollowRequests: No tens cap sol·licitud de seguiment enviada
 sentFollowRequests: Enviar sol·licituds de seguiment
 replyMute: Silencia les respostes a les línies de temps
@@ -2256,7 +2255,7 @@ searchWordsDescription: "Per cercar publicacions, escriu el terme a buscar. Sepa
 searchPostsWithFiles: Només publicacions amb fitxers
 searchCwAndAlt: Inclou avisos de contingut i arxius amb descripcions
 searchUsers: Publicat per (opcional)
-searchRange: Publicat dintre de (opcional)
+searchRange: Publicat entre les dates (opcional)
 publishTimelines: Publica línies de temps per visitants
 toPost: Publicar
 publishTimelinesDescription: Si està activat, les línies de temps Global i Local es
@@ -2294,3 +2293,5 @@ markLocalFilesNsfwByDefaultDescription: Independentment d'aquest ajust, els usua
   afectats.
 autocorrectNoteLanguage: Mostra un avís si l'idioma de la publicació no coincideix
   amb el resultat de l'idioma detectat automàticament
+noteEditHistory: Historial d'edicions
+media: Multimèdia

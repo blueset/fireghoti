@@ -98,7 +98,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	(ev: "click", v: MouseEvent): void;
+	click: [v: MouseEvent];
 }>();
 
 const url = computed(() =>
@@ -123,18 +123,18 @@ watch(
 	},
 );
 
-const gallery = ref(null);
+const gallery = ref<HTMLElement | null>(null);
 
 onMounted(() => {
 	const lightbox = new PhotoSwipeLightbox({
 		dataSource: [
 			{
-				src: url,
+				src: url.value,
 				w: 300,
 				h: 300,
 			},
 		],
-		gallery: gallery.value,
+		gallery: gallery.value || undefined,
 		children: ".avatar",
 		thumbSelector: ".avatar",
 		loop: false,
@@ -174,7 +174,7 @@ onMounted(() => {
 		history.pushState(null, "", location.href);
 		addEventListener("popstate", close);
 		// This is a workaround. Not sure why, but when clicking to open, it doesn't move focus to the photoswipe. Preventing using esc to close. However when using keyboard to open it already focuses the lightbox fine.
-		lightbox.pswp.element.focus();
+		lightbox.pswp?.element?.focus();
 	});
 	lightbox.on("close", () => {
 		removeEventListener("popstate", close);
@@ -186,7 +186,7 @@ onMounted(() => {
 	function close() {
 		removeEventListener("popstate", close);
 		history.forward();
-		lightbox.pswp.close();
+		lightbox.pswp?.close();
 	}
 });
 </script>

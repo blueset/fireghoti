@@ -123,7 +123,7 @@ async function onClick() {
 		if (isBlocking.value) {
 			const { canceled } = await os.confirm({
 				type: "warning",
-				text: i18n.t("unblockConfirm"),
+				text: i18n.ts.unblockConfirm,
 			});
 			if (canceled) return;
 

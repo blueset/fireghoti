@@ -17,7 +17,7 @@
 		>
 		<template #func>
 			<button class="_button" @click="changeType()">
-				<i :class="iconClass('ph-pencil')"></i>
+				<i :class="iconify('ph-pencil')"></i>
 			</button>
 		</template>
 
@@ -104,7 +104,7 @@
 			<XV
 				v-if="modelValue.value.expression"
 				v-model="modelValue.value.expression"
-				:title="i18n.t(`_pages.script.blocks._fn.arg1`)"
+				:title="i18n.ts._pages.script.blocks._fn.arg1"
 				:get-expected-type="() => null"
 				:hpml="hpml"
 				:fn-slots="modelValue.value.slots"
@@ -158,7 +158,7 @@ import * as os from "@/os";
 import { isLiteralValue } from "@/scripts/hpml/expr";
 import { funcDefs } from "@/scripts/hpml/lib";
 import { i18n } from "@/i18n";
-import iconClass from "@/scripts/icon";
+import iconify from "@/scripts/icon";
 
 export default defineComponent({
 	components: {
@@ -205,7 +205,7 @@ export default defineComponent({
 			warn: null,
 			slots: "",
 			i18n,
-			iconClass,
+			iconify,
 		};
 	},
 

@@ -58,6 +58,7 @@ import * as os from "@/os";
 import { useInterval } from "@/scripts/use-interval";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
+import type { MenuItem } from "@/types/menu";
 
 const props = defineProps<{
 	modelValue: string | null;
@@ -85,13 +86,13 @@ const focused = ref(false);
 const opening = ref(false);
 const changed = ref(false);
 const invalid = ref(false);
-const inputEl = ref(null);
-const prefixEl = ref(null);
-const suffixEl = ref(null);
-const container = ref(null);
+const inputEl = ref<HTMLInputElement | null>(null);
+const prefixEl = ref<HTMLElement | null>(null);
+const suffixEl = ref<HTMLElement | null>(null);
+const container = ref<HTMLElement | null>(null);
 const height = props.small ? 33 : props.large ? 39 : 36;
 
-const focus = () => inputEl.value.focus();
+const focus = () => inputEl.value!.focus();
 const onInput = (ev) => {
 	changed.value = true;
 	emit("change", ev);
@@ -106,26 +107,27 @@ watch(modelValue, (newValue) => {
 	v.value = newValue;
 });
 
-watch(v, (newValue) => {
+watch(v, (_newValue) => {
 	if (!props.manualSave) {
 		updated();
 	}
 
-	invalid.value = inputEl.value.validity.badInput;
+	invalid.value = inputEl.value!.validity.badInput;
 });
 
 // このコンポーネントが作成された時、非表示状態である場合がある
 // 非表示状態だと要素の幅などは0になってしまうので、定期的に計算する
 useInterval(
 	() => {
+		if (inputEl.value == null) return;
 		if (prefixEl.value) {
 			if (prefixEl.value.offsetWidth) {
-				inputEl.value.style.paddingLeft = prefixEl.value.offsetWidth + "px";
+				inputEl.value.style.paddingLeft = `${prefixEl.value.offsetWidth}px`;
 			}
 		}
 		if (suffixEl.value) {
 			if (suffixEl.value.offsetWidth) {
-				inputEl.value.style.paddingRight = suffixEl.value.offsetWidth + "px";
+				inputEl.value.style.paddingRight = `${suffixEl.value.offsetWidth}px`;
 			}
 		}
 	},
@@ -144,19 +146,19 @@ onMounted(() => {
 	});
 });
 
-function show(ev: MouseEvent) {
+function show(_ev: MouseEvent) {
 	focused.value = true;
 	opening.value = true;
 
-	const menu = [];
+	const menu: MenuItem[] = [];
 	const options = slots.default!();
 
 	const pushOption = (option: VNode) => {
 		menu.push({
-			text: option.children,
-			active: computed(() => v.value === option.props.value),
+			text: option.children as string,
+			active: computed(() => v.value === option.props?.value).value,
 			action: () => {
-				v.value = option.props.value;
+				v.value = option.props?.value;
 			},
 		});
 	};
@@ -167,13 +169,13 @@ function show(ev: MouseEvent) {
 				const optgroup = vnode;
 				menu.push({
 					type: "label",
-					text: optgroup.props.label,
+					text: optgroup.props?.label,
 				});
-				scanOptions(optgroup.children);
+				scanOptions(optgroup.children as VNode[]);
 			} else if (Array.isArray(vnode.children)) {
 				// 何故かフラグメントになってくることがある
 				const fragment = vnode;
-				scanOptions(fragment.children);
+				scanOptions(fragment.children as VNode[]);
 			} else if (vnode.props == null) {
 				// v-if で条件が false のときにこうなる
 				// nop?
@@ -186,12 +188,13 @@ function show(ev: MouseEvent) {
 
 	scanOptions(options);
 
-	os.popupMenu(menu, container.value, {
-		width: container.value.offsetWidth,
-		onClosing: () => {
-			opening.value = false;
-		},
+	os.popupMenu(menu, container.value!, {
+		width: container.value!.offsetWidth,
+		// onClosing: () => {
+		// 	opening.value = false;
+		// },
 	}).then(() => {
+		opening.value = false;
 		focused.value = false;
 	});
 }

@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class userHideOnlineStatus1618639857000 implements MigrationInterface {
 	async up(queryRunner: QueryRunner): Promise<void> {

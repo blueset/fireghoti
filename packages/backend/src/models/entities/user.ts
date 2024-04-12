@@ -5,6 +5,7 @@ import {
 	OneToOne,
 	JoinColumn,
 	PrimaryColumn,
+	type Relation,
 } from "typeorm";
 import { id } from "../id.js";
 import { DriveFile } from "./drive-file.js";
@@ -18,25 +19,25 @@ export class User {
 	public id: string;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the User.",
 	})
 	public createdAt: Date;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		nullable: true,
 		comment: "The updated date of the User.",
 	})
 	public updatedAt: Date | null;
 
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		nullable: true,
 	})
 	public lastFetchedAt: Date | null;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		nullable: true,
 	})
 	public lastActiveDate: Date | null;
@@ -106,24 +107,12 @@ export class User {
 	})
 	public avatarId: DriveFile["id"] | null;
 
-	@OneToOne((type) => DriveFile, {
-		onDelete: "SET NULL",
-	})
-	@JoinColumn()
-	public avatar: DriveFile | null;
-
 	@Column({
 		...id(),
 		nullable: true,
 		comment: "The ID of banner DriveFile.",
 	})
 	public bannerId: DriveFile["id"] | null;
-
-	@OneToOne((type) => DriveFile, {
-		onDelete: "SET NULL",
-	})
-	@JoinColumn()
-	public banner: DriveFile | null;
 
 	@Index()
 	@Column("varchar", {
@@ -285,6 +274,22 @@ export class User {
 		comment: "Whether the User is indexable.",
 	})
 	public isIndexable: boolean;
+
+	//#region Relations
+	@OneToOne(() => DriveFile, {
+		onDelete: "SET NULL",
+		nullable: true,
+	})
+	@JoinColumn()
+	public avatar: Relation<DriveFile | null>;
+
+	@OneToOne(() => DriveFile, {
+		onDelete: "SET NULL",
+		nullable: true,
+	})
+	@JoinColumn()
+	public banner: Relation<DriveFile | null>;
+	//#endregion
 
 	constructor(data: Partial<User>) {
 		if (data == null) return;

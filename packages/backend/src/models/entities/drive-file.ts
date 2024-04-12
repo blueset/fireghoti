@@ -23,7 +23,7 @@ export class DriveFile {
 	public id: string;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the DriveFile.",
 	})
 	public createdAt: Date;
@@ -214,12 +214,14 @@ export class DriveFile {
 
 	@ManyToOne(() => User, {
 		onDelete: "SET NULL",
+		nullable: true,
 	})
 	@JoinColumn()
 	public user: User | null;
 
 	@ManyToOne(() => DriveFolder, {
 		onDelete: "SET NULL",
+		nullable: true,
 	})
 	@JoinColumn()
 	public folder: DriveFolder | null;

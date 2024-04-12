@@ -151,3 +151,24 @@ export const languages = [
 	"yi",
 	"zh",
 ] as const;
+
+export const instanceSortParam = [
+	"+pubSub",
+	"-pubSub",
+	"+notes",
+	"-notes",
+	"+users",
+	"-users",
+	"+following",
+	"-following",
+	"+followers",
+	"-followers",
+	"+caughtAt",
+	"-caughtAt",
+	"+lastCommunicatedAt",
+	"-lastCommunicatedAt",
+	"+driveUsage",
+	"-driveUsage",
+	"+driveFiles",
+	"-driveFiles",
+] as const;

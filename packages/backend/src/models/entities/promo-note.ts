@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	OneToOne,
+	type Relation,
 } from "typeorm";
 import { Note } from "./note.js";
 import type { User } from "./user.js";
@@ -15,13 +16,7 @@ export class PromoNote {
 	@PrimaryColumn(id())
 	public noteId: Note["id"];
 
-	@OneToOne((type) => Note, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public note: Note | null;
-
-	@Column("timestamp with time zone")
+	@Column("timestamp without time zone")
 	public expiresAt: Date;
 
 	//#region Denormalized fields
@@ -31,5 +26,13 @@ export class PromoNote {
 		comment: "[Denormalized]",
 	})
 	public userId: User["id"];
+	//#endregion
+
+	//#region Relations
+	@OneToOne(() => Note, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public note: Relation<Note>;
 	//#endregion
 }

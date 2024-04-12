@@ -21,7 +21,7 @@
 					@mouseleave="tooltipHide"
 					@input="
 						(x) => {
-							inputVal = x.target.value;
+							inputVal = Number((x.target as HTMLInputElement).value);
 							if (instant) onChange(x);
 						}
 					"
@@ -29,6 +29,7 @@
 				<datalist v-if="showTicks && steps" :id="id">
 					<option
 						v-for="i in steps"
+						:key="`step-${i}`"
 						:value="i + min"
 						:label="(i + min).toString()"
 					></option>
@@ -69,11 +70,11 @@ const props = withDefaults(
 	},
 );
 
-const inputEl = ref<HTMLElement>();
+const inputEl = ref<HTMLInputElement>();
 const inputVal = ref(props.modelValue);
 
 const emit = defineEmits<{
-	(ev: "update:modelValue", value: number): void;
+	"update:modelValue": [value: number];
 }>();
 
 const steps = computed(() => {
@@ -84,7 +85,7 @@ const steps = computed(() => {
 	}
 });
 
-function onChange(x) {
+function onChange(_x) {
 	emit("update:modelValue", inputVal.value);
 }
 

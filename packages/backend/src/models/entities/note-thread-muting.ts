@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
@@ -15,7 +16,7 @@ export class NoteThreadMuting {
 	@PrimaryColumn(id())
 	public id: string;
 
-	@Column("timestamp with time zone", {})
+	@Column("timestamp without time zone", {})
 	public createdAt: Date;
 
 	@Index()
@@ -24,15 +25,17 @@ export class NoteThreadMuting {
 	})
 	public userId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
-
 	@Index()
 	@Column("varchar", {
 		length: 256,
 	})
 	public threadId: string;
+
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public user: Relation<User>;
+	//#endregion
 }

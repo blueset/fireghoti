@@ -497,7 +497,6 @@ smtpPass: "Senha"
 clearCache: "Limpar memória transitória"
 info: "Informações"
 user: "Usuários"
-searchByGoogle: "Buscar"
 file: "Ficheiros"
 _email:
   _follow:

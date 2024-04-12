@@ -22,7 +22,7 @@
 							<div class="action">
 								<button
 									class="_button"
-									:aria-label="i18n.t('removeMember')"
+									:aria-label="i18n.ts.removeMember"
 									@click="removeUser(user)"
 								>
 									<i :class="icon('ph-x')"></i>

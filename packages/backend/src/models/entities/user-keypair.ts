@@ -1,4 +1,11 @@
-import { PrimaryColumn, Entity, JoinColumn, Column, OneToOne } from "typeorm";
+import {
+	PrimaryColumn,
+	Entity,
+	JoinColumn,
+	Column,
+	OneToOne,
+	type Relation,
+} from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
 
@@ -6,12 +13,6 @@ import { id } from "../id.js";
 export class UserKeypair {
 	@PrimaryColumn(id())
 	public userId: User["id"];
-
-	@OneToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
 
 	@Column("varchar", {
 		length: 8192,
@@ -22,6 +23,14 @@ export class UserKeypair {
 		length: 8192,
 	})
 	public privateKey: string;
+
+	//#region Relations
+	@OneToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public user: Relation<User>;
+	//#endregion
 
 	constructor(data: Partial<UserKeypair>) {
 		if (data == null) return;

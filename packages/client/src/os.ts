@@ -858,8 +858,8 @@ export function popupMenu(
 		noReturnFocus?: boolean;
 	},
 ) {
-	return new Promise((resolve, reject) => {
-		let dispose;
+	return new Promise<void>((resolve, _reject) => {
+		let dispose: () => void;
 		popup(
 			defineAsyncComponent({
 				loader: () => import("@/components/MkPopupMenu.vue"),

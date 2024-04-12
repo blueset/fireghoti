@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class SpeakAsCat1680426269172 implements MigrationInterface {
 	async up(queryRunner: QueryRunner): Promise<void> {

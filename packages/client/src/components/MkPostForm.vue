@@ -11,7 +11,7 @@
 	>
 		<header>
 			<button v-if="!fixed" class="cancel _button" @click="cancel">
-				<i :class="icon('ph-x')" :aria-label="i18n.t('close')"></i>
+				<i :class="icon('ph-x')" :aria-label="i18n.ts.close"></i>
 			</button>
 			<button
 				v-if="$props.editId == null"
@@ -85,8 +85,17 @@
 					data-cy-open-post-form-submit
 					@click="post"
 				>
-					{{ submitText
-					}}<i
+					{{ submitText }}
+					<!-- 1.3333 is the em of .ph-lg -->
+					<MkLoading
+						v-if="posting"
+						class="spinner"
+						:em="true"
+						:colored="false"
+						:size-em="1.3333"
+					/>
+					<i
+						v-else
 						:class="
 							icon(
 								reply
@@ -108,7 +117,7 @@
 				{{ i18n.ts.quoteAttached
 				}}<button
 					class="_button"
-					:aria-label="i18n.t('removeQuote')"
+					:aria-label="i18n.ts.removeQuote"
 					@click="quoteId = null"
 				>
 					<i :class="icon('ph-x')"></i>
@@ -121,7 +130,7 @@
 						<MkAcct :user="u" />
 						<button
 							class="_button"
-							:aria-label="i18n.t('removeRecipient')"
+							:aria-label="i18n.ts.removeRecipient"
 							@click="removeVisibleUser(u)"
 						>
 							<i :class="icon('ph-x')"></i>
@@ -288,22 +297,14 @@
 </template>
 
 <script lang="ts" setup>
-import {
-	computed,
-	defineAsyncComponent,
-	inject,
-	nextTick,
-	onMounted,
-	ref,
-	watch,
-} from "vue";
+import { computed, inject, nextTick, onMounted, ref, watch } from "vue";
 import * as mfm from "mfm-js";
 import autosize from "autosize";
 import insertTextAtCursor from "insert-text-at-cursor";
 import { length } from "stringz";
 import { toASCII } from "punycode/";
 import { acct } from "firefish-js";
-import type { entities, languages, noteVisibilities } from "firefish-js";
+import type { entities, languages } from "firefish-js";
 import { throttle } from "throttle-debounce";
 import XNoteSimple from "@/components/MkNoteSimple.vue";
 import XNotePreview from "@/components/MkNotePreview.vue";
@@ -338,6 +339,8 @@ import {
 } from "@/scripts/language-utils";
 import type { MenuItem } from "@/types/menu";
 import icon from "@/scripts/icon";
+import MkVisibilityPicker from "@/components/MkVisibilityPicker.vue";
+import type { NoteVisibility } from "@/types/note";
 
 const modal = inject("modal");
 
@@ -349,7 +352,7 @@ const props = withDefaults(
 		mention?: entities.User;
 		specified?: entities.User;
 		initialText?: string;
-		initialVisibility?: typeof noteVisibilities;
+		initialVisibility?: NoteVisibility;
 		initialLanguage?: typeof languages;
 		initialFiles?: entities.DriveFile[];
 		initialLocalOnly?: boolean;
@@ -403,10 +406,9 @@ const localOnly = ref<boolean>(
 );
 const visibility = ref(
 	props.initialVisibility ??
-		((defaultStore.state.rememberNoteVisibility
+		(defaultStore.state.rememberNoteVisibility
 			? defaultStore.state.visibility
-			: defaultStore.state
-					.defaultNoteVisibility) as (typeof noteVisibilities)[number]),
+			: defaultStore.state.defaultNoteVisibility),
 );
 
 const visibleUsers = ref([]);
@@ -728,7 +730,7 @@ function setVisibility() {
 	}
 
 	os.popup(
-		defineAsyncComponent(() => import("@/components/MkVisibilityPicker.vue")),
+		MkVisibilityPicker,
 		{
 			currentVisibility: visibility.value,
 			currentLocalOnly: localOnly.value,
@@ -1399,6 +1401,7 @@ onMounted(() => {
 					opacity: 0.7;
 				}
 
+				> .spinner,
 				> i {
 					margin-left: 6px;
 				}

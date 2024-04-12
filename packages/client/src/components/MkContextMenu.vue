@@ -39,12 +39,12 @@ onMounted(() => {
 	const width = rootEl.value.offsetWidth;
 	const height = rootEl.value.offsetHeight;
 
-	if (left + width - window.pageXOffset > window.innerWidth) {
-		left = window.innerWidth - width + window.pageXOffset;
+	if (left + width - window.scrollX > window.innerWidth) {
+		left = window.innerWidth - width + window.scrollX;
 	}
 
-	if (top + height - window.pageYOffset > window.innerHeight) {
-		top = window.innerHeight - height + window.pageYOffset;
+	if (top + height - window.scrollY > window.innerHeight) {
+		top = window.innerHeight - height + window.scrollY;
 	}
 
 	if (top < 0) {

@@ -28,8 +28,8 @@ const parentStickyTop = inject<Ref<number>>(CURRENT_STICKY_TOP, ref(0));
 provide(CURRENT_STICKY_TOP, childStickyTop);
 
 const calc = () => {
-	childStickyTop.value = parentStickyTop.value + headerEl.value.offsetHeight;
-	headerHeight.value = headerEl.value.offsetHeight.toString();
+	childStickyTop.value = parentStickyTop.value + headerEl.value!.offsetHeight;
+	headerHeight.value = headerEl.value!.offsetHeight.toString();
 };
 
 const observer = new ResizeObserver(() => {
@@ -46,7 +46,7 @@ onMounted(() => {
 	watch(
 		childStickyTop,
 		() => {
-			bodyEl.value.style.setProperty(
+			bodyEl.value!.style.setProperty(
 				"--stickyTop",
 				`${childStickyTop.value}px`,
 			);
@@ -56,7 +56,7 @@ onMounted(() => {
 		},
 	);
 
-	observer.observe(headerEl.value);
+	observer.observe(headerEl.value!);
 });
 
 onUnmounted(() => {
