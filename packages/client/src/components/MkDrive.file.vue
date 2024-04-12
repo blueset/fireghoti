@@ -181,12 +181,15 @@ function describe() {
 			image: props.file,
 		},
 		{
-			done: (result) => {
+			done: (result: {
+				canceled: boolean,
+				result?: string | null,
+			}) => {
 				if (!result || result.canceled) return;
 				const comment = result.result;
 				os.api("drive/files/update", {
 					fileId: props.file.id,
-					comment: comment.length === 0 ? null : comment,
+					comment: comment || null,
 				});
 			},
 		},

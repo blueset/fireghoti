@@ -21,7 +21,8 @@
 						"useImportType": "warn",
 						"useShorthandFunctionType": "warn",
 						"useTemplate": "warn",
-						"noNonNullAssertion": "off"
+						"noNonNullAssertion": "off",
+						"useNodejsImportProtocol": "off"
 					}
 				}
 			}

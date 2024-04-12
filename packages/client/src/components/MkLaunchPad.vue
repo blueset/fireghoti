@@ -73,7 +73,10 @@ import { deviceKind } from "@/scripts/device-kind";
 const props = withDefaults(
 	defineProps<{
 		src?: HTMLElement;
-		anchor?: { x: string; y: string };
+		anchor?: { 
+			x: "left" | "center" | "right";
+			y: "top" | "center" | "bottom";
+		};
 	}>(),
 	{
 		anchor: () => ({ x: "right", y: "center" }),

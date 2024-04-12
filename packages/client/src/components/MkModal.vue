@@ -108,8 +108,11 @@ type ModalTypes = "popup" | "dialog" | "dialog:top" | "drawer";
 const props = withDefaults(
 	defineProps<{
 		manualShowing?: boolean | null;
-		anchor?: { x: string; y: string };
-		src?: HTMLElement;
+		anchor?: { 
+			x: "left" | "center" | "right";
+			y: "top" | "center" | "bottom";
+		};
+		src?: HTMLElement | null;
 		preferType?: ModalTypes | "auto";
 		zPriority?: "low" | "middle" | "high";
 		noOverlap?: boolean;
@@ -118,7 +121,7 @@ const props = withDefaults(
 	}>(),
 	{
 		manualShowing: null,
-		src: undefined,
+		src: null,
 		anchor: () => ({ x: "center", y: "bottom" }),
 		preferType: "auto",
 		zPriority: "low",
@@ -138,6 +141,9 @@ const emit = defineEmits<{
 }>();
 
 provide("modal", true);
+
+// FIXME: this may not used
+const isActive = ref();
 
 const maxHeight = ref<number>();
 const fixed = ref(false);
@@ -189,7 +195,7 @@ const transitionDuration = computed(() =>
 
 let contentClicking = false;
 
-const focusedElement = document.activeElement;
+const focusedElement = document.activeElement as HTMLElement;
 function close(_ev?, opts: { useSendAnimation?: boolean } = {}) {
 	// removeEventListener("popstate", close);
 	// if (props.preferType == "dialog") {
@@ -204,7 +210,7 @@ function close(_ev?, opts: { useSendAnimation?: boolean } = {}) {
 	showing.value = false;
 	emit("close");
 	if (!props.noReturnFocus) {
-		focusedElement.focus();
+		focusedElement?.focus();
 	}
 }
 
@@ -235,8 +241,8 @@ const align = () => {
 	const width = content.value!.offsetWidth;
 	const height = content.value!.offsetHeight;
 
-	let left: number;
-	let top: number;
+	let left = 0;
+	let top = MARGIN;
 
 	const x = srcRect.left + (fixed.value ? 0 : window.scrollX);
 	const y = srcRect.top + (fixed.value ? 0 : window.scrollY);

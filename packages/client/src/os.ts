@@ -213,7 +213,7 @@ interface VueComponentConstructor<P, E> {
 export async function popup<Props, Emits>(
 	component: VueComponentConstructor<Props, Emits>,
 	props: Props & Record<string, unknown>,
-	events: Partial<NonNullable<Emits>> | Record<string, never> = {},
+	events: Partial<Emits> = {},
 	disposeEvent?: string,
 ) {
 	markRaw(component);
@@ -858,7 +858,7 @@ export async function openEmojiPicker(
 
 export function popupMenu(
 	items: MenuItem[] | Ref<MenuItem[]>,
-	src?: HTMLElement,
+	src?: HTMLElement | null,
 	options?: {
 		align?: string;
 		width?: number;

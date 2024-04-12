@@ -100,7 +100,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	done: [v: { canceled: boolean; result?: string | null }];
+	done: [result: { canceled: boolean; result?: string | null }];
 	closed: [];
 }>();
 
