@@ -1,5 +1,5 @@
 use convert_case::{Case, Casing};
-use proc_macro2::TokenStream;
+use proc_macro2::{TokenStream, TokenTree};
 use quote::{quote, ToTokens};
 
 // FIXME
@@ -17,8 +17,9 @@ pub fn dummy_macro(
 /// The macro is simply converted into `napi_derive::napi(...)`
 /// if it is not applied to a function.
 ///
-/// If `js_name` is not specified,
-/// `js_name` will be set to the camelCase version of the original function name.
+/// The macro sets the following attributes by default if not specified:
+/// - `use_nullable = true` (if `object` or `constructor` attribute is specified)
+/// - `js_name` to the camelCase version of the original function name (for functions)
 ///
 /// The types of the function arguments is converted with following rules:
 /// - `&str` and `&mut str` are converted to `String`
@@ -33,7 +34,7 @@ pub fn dummy_macro(
 /// ## Applying the macro to a struct
 /// ```
 /// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
-/// #[macro_rs::napi]
+/// #[macro_rs::napi(object)]
 /// struct Person {
 ///   id: i32,
 ///   name: String,
@@ -42,7 +43,7 @@ pub fn dummy_macro(
 /// simply becomes
 /// ```
 /// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
-/// #[napi_derive::napi]
+/// #[napi_derive::napi(use_nullable = true, object)]
 /// struct Person {
 ///   id: i32,
 ///   name: String,
@@ -63,7 +64,7 @@ pub fn dummy_macro(
 /// # pub fn add_one(x: i32) -> i32 {
 /// #     x + 1
 /// # }
-/// #[napi_derive::napi(js_name = "add1")]
+/// #[napi_derive::napi(js_name = "add1",)]
 /// pub fn add_one_napi(x: i32) -> i32 {
 ///     add_one(x)
 /// }
@@ -83,7 +84,7 @@ pub fn dummy_macro(
 /// # pub fn add_one(x: i32) -> i32 {
 /// #     x + 1
 /// # }
-/// #[napi_derive::napi(js_name = "addOne")]
+/// #[napi_derive::napi(js_name = "addOne",)]
 /// pub fn add_one_napi(x: i32) -> i32 {
 ///     add_one(x)
 /// }
@@ -103,7 +104,7 @@ pub fn dummy_macro(
 /// # pub fn concatenate_string(str1: &str, str2: &str) -> String {
 /// #     str1.to_owned() + str2
 /// # }
-/// #[napi_derive::napi(js_name = "concatenateString")]
+/// #[napi_derive::napi(js_name = "concatenateString",)]
 /// pub fn concatenate_string_napi(str1: String, str2: String) -> String {
 ///     concatenate_string(&str1, &str2)
 /// }
@@ -123,7 +124,7 @@ pub fn dummy_macro(
 /// # pub fn string_array_length(array: &[String]) -> u32 {
 /// #     array.len() as u32
 /// # }
-/// #[napi_derive::napi(js_name = "stringArrayLength")]
+/// #[napi_derive::napi(js_name = "stringArrayLength",)]
 /// pub fn string_array_length_napi(array: Vec<String>) -> u32 {
 ///     string_array_length(&array)
 /// }
@@ -170,13 +171,11 @@ pub fn dummy_macro(
 /// #         },
 /// #     }
 /// # }
-/// #[napi_derive::napi(js_name = "integerDivide")]
+/// #[napi_derive::napi(js_name = "integerDivide",)]
 /// pub fn integer_divide_napi(dividend: i64, divisor: i64) -> napi::Result<i64> {
 ///     integer_divide(dividend, divisor).map_err(|err| napi::Error::from_reason(err.to_string()))
 /// }
 /// ```
-///
-/// TODO: macro attributes are ignored
 #[proc_macro_attribute]
 pub fn napi(
     attr: proc_macro::TokenStream,
@@ -184,17 +183,32 @@ pub fn napi(
 ) -> proc_macro::TokenStream {
     napi_impl(attr.into(), item.into()).into()
 }
-fn napi_impl(mut macro_attr: TokenStream, item: TokenStream) -> TokenStream {
-    let item: syn::Item = syn::parse2(item).expect("Failed to parse TokenStream to syn::Item");
-    // handle functions only
+
+fn napi_impl(macro_attr: TokenStream, item: TokenStream) -> TokenStream {
+    let macro_attr_tokens: Vec<TokenTree> = macro_attr.clone().into_iter().collect();
+    // generated extra macro attr TokenStream (prepended before original input `macro_attr`)
+    let mut extra_macro_attr = TokenStream::new();
+
+    let item: syn::Item =
+        syn::parse2(item).expect("Failed to parse input TokenStream to syn::Item");
+
+    // handle non-functions
     let syn::Item::Fn(item_fn) = item else {
-        // fallback to use napi_derive
+        // append `use_nullable = true` if `object` or `constructor` present but not `use_nullable`
+        if macro_attr_tokens.iter().any(|token| {
+            matches!(token, TokenTree::Ident(ident) if ident == "object" || ident == "constructor")
+        }) && !macro_attr_tokens.iter().any(|token| {
+            matches!(token, TokenTree::Ident(ident) if ident == "use_nullable")
+        }) {
+            quote! { use_nullable = true, }.to_tokens(&mut extra_macro_attr);
+        }
         return quote! {
-          #[napi_derive::napi(#macro_attr)]
+          #[napi_derive::napi(#extra_macro_attr #macro_attr)]
           #item
         };
     };
 
+    // handle functions
     let ident = &item_fn.sig.ident;
     let item_fn_attrs = &item_fn.attrs;
     let item_fn_vis = &item_fn.vis;
@@ -309,24 +323,18 @@ fn napi_impl(mut macro_attr: TokenStream, item: TokenStream) -> TokenStream {
 
     // handle macro attr
     // append js_name if not specified
-    if !macro_attr
-        .clone()
-        .into_iter()
-        .any(|token| matches!(token, proc_macro2::TokenTree::Ident(ident) if ident == "js_name"))
+    if !macro_attr_tokens
+        .iter()
+        .any(|token| matches!(token, TokenTree::Ident(ident) if ident == "js_name"))
     {
-        // append "," first if other macro attr exists
-        if !macro_attr.is_empty() {
-            quote! { , }.to_tokens(&mut macro_attr);
-        }
-        // append js_name
         let js_name = ident.to_string().to_case(Case::Camel);
-        quote! { js_name = #js_name }.to_tokens(&mut macro_attr);
+        quote! { js_name = #js_name, }.to_tokens(&mut extra_macro_attr);
     }
 
     quote! {
       #item_fn
 
-      #[napi_derive::napi(#macro_attr)]
+      #[napi_derive::napi(#extra_macro_attr #macro_attr)]
       #(#item_fn_attrs)*
       #item_fn_vis #item_fn_sig {
         #ident(#(#called_args),*)
@@ -379,7 +387,7 @@ mod tests {
                 }
             },
             quote! {
-                #[napi_derive::napi(js_name = "addOne")]
+                #[napi_derive::napi(js_name = "addOne", )]
                 pub fn add_one_napi(x: i32) -> i32 {
                     add_one(x)
                 }
@@ -396,7 +404,7 @@ mod tests {
                 }
             },
             quote! {
-                #[napi_derive::napi(js_name = "concatenateString")]
+                #[napi_derive::napi(js_name = "concatenateString", )]
                 pub fn concatenate_string_napi(str1: String, str2: String) -> String {
                     concatenate_string(&str1, &str2)
                 }
@@ -417,7 +425,7 @@ mod tests {
                 }
             },
             quote! {
-                #[napi_derive::napi(js_name = "appendStringAndClone")]
+                #[napi_derive::napi(js_name = "appendStringAndClone", )]
                 pub fn append_string_and_clone_napi(
                     mut base_str: String,
                     appended_str: String,
@@ -446,7 +454,7 @@ mod tests {
                 }
             },
             quote! {
-                #[napi_derive::napi(js_name = "integerDivide")]
+                #[napi_derive::napi(js_name = "integerDivide", )]
                 pub fn integer_divide_napi(
                     dividend: i64,
                     divisor: i64,
@@ -467,7 +475,7 @@ mod tests {
                 }
             },
             quote! {
-                #[napi_derive::napi(js_name = "asyncAddOne")]
+                #[napi_derive::napi(js_name = "asyncAddOne", )]
                 pub async fn async_add_one_napi(x: i32) -> i32 {
                     async_add_one(x)
                         .await
@@ -485,7 +493,7 @@ mod tests {
                 }
             },
             quote! {
-                #[napi_derive::napi(js_name = "stringArrayLength")]
+                #[napi_derive::napi(js_name = "stringArrayLength", )]
                 pub fn string_array_length_napi(array: Vec<String>) -> u32 {
                     string_array_length(&array)
                 }
@@ -494,20 +502,40 @@ mod tests {
     }
 
     #[test]
-    fn non_fn() {
+    fn object() {
         test_macro_becomes!(
             quote! { object },
             quote! {
                 struct Person {
                     id: i32,
-                    name: String,
+                    name: Option<String>,
                 }
             },
             quote! {
-                #[napi_derive::napi(object)]
+                #[napi_derive::napi(use_nullable = true, object)]
                 struct Person {
                     id: i32,
-                    name: String,
+                    name: Option<String>,
+                }
+            }
+        )
+    }
+
+    #[test]
+    fn object_with_explicitly_set_use_nullable() {
+        test_macro_becomes!(
+            quote! { object, use_nullable = false },
+            quote! {
+                struct Person {
+                    id: i32,
+                    name: Option<String>,
+                }
+            },
+            quote! {
+                #[napi_derive::napi(object, use_nullable = false)]
+                struct Person {
+                    id: i32,
+                    name: Option<String>,
                 }
             }
         )
@@ -525,7 +553,7 @@ mod tests {
                 }
             },
             quote! {
-                #[napi_derive::napi(ts_return_type = "number", js_name = "addOne")]
+                #[napi_derive::napi(js_name = "addOne", ts_return_type = "number")]
                 pub fn add_one_napi(x: i32) -> i32 {
                     add_one(x)
                 }
