@@ -1,5 +1,5 @@
 import Router from "@koa/router";
-import { convertId, IdType } from "@/server/api/index.js";
+import { fromMastodonId } from "backend-rs";
 import { getClient } from "../ApiMastodonCompatibleService.js";
 import { convertTimelinesArgsId } from "./timeline.js";
 import { convertNotification } from "../converters.js";
@@ -46,7 +46,7 @@ export function apiNotificationsMastodon(router: Router): void {
 		const body: any = ctx.request.body;
 		try {
 			const dataRaw = await client.getNotification(
-				convertId(ctx.params.id, IdType.FirefishId),
+				fromMastodonId(ctx.params.id),
 			);
 			const data = convertNotification(dataRaw.data);
 			ctx.body = data;
@@ -86,7 +86,7 @@ export function apiNotificationsMastodon(router: Router): void {
 		const body: any = ctx.request.body;
 		try {
 			const data = await client.dismissNotification(
-				convertId(ctx.params.id, IdType.FirefishId),
+				fromMastodonId(ctx.params.id),
 			);
 			ctx.body = data.data;
 		} catch (e: any) {

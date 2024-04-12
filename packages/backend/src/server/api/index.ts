@@ -23,12 +23,7 @@ import verifyEmail from "./private/verify-email.js";
 import { koaBody } from "koa-body";
 import { convertAttachment } from "./mastodon/converters.js";
 import { apiLogger } from "./logger.js";
-
-import { convertId, IdConvertType as IdType } from "backend-rs";
 import { inspect } from "node:util";
-
-// re-export native rust id conversion (function and enum)
-export { IdType, convertId };
 
 // Init app
 const app = new Koa();

@@ -1,10 +1,10 @@
 import { Entity } from "megalodon";
-import { convertId, IdType } from "@/server/api/index.js";
+import { toMastodonId } from "backend-rs";
 
 function simpleConvert(data: any) {
 	// copy the object to bypass weird pass by reference bugs
 	const result = Object.assign({}, data);
-	result.id = convertId(data.id, IdType.MastodonId);
+	result.id = toMastodonId(data.id);
 	return result;
 }
 
@@ -29,7 +29,7 @@ export function convertFeaturedTag(tag: Entity.FeaturedTag) {
 
 export function convertNotification(notification: Entity.Notification) {
 	notification.account = convertAccount(notification.account);
-	notification.id = convertId(notification.id, IdType.MastodonId);
+	notification.id = toMastodonId(notification.id);
 	if (notification.status)
 		notification.status = convertStatus(notification.status);
 	if (notification.reaction)
@@ -52,20 +52,17 @@ export function convertRelationship(relationship: Entity.Relationship) {
 
 export function convertStatus(status: Entity.Status) {
 	status.account = convertAccount(status.account);
-	status.id = convertId(status.id, IdType.MastodonId);
+	status.id = toMastodonId(status.id);
 	if (status.in_reply_to_account_id)
-		status.in_reply_to_account_id = convertId(
-			status.in_reply_to_account_id,
-			IdType.MastodonId,
-		);
+		status.in_reply_to_account_id = toMastodonId(status.in_reply_to_account_id);
 	if (status.in_reply_to_id)
-		status.in_reply_to_id = convertId(status.in_reply_to_id, IdType.MastodonId);
+		status.in_reply_to_id = toMastodonId(status.in_reply_to_id);
 	status.media_attachments = status.media_attachments.map((attachment) =>
 		convertAttachment(attachment),
 	);
 	status.mentions = status.mentions.map((mention) => ({
 		...mention,
-		id: convertId(mention.id, IdType.MastodonId),
+		id: toMastodonId(mention.id),
 	}));
 	if (status.poll) status.poll = convertPoll(status.poll);
 	if (status.reblog) status.reblog = convertStatus(status.reblog);
@@ -76,7 +73,7 @@ export function convertStatus(status: Entity.Status) {
 }
 
 export function convertConversation(conversation: Entity.Conversation) {
-	conversation.id = convertId(conversation.id, IdType.MastodonId);
+	conversation.id = toMastodonId(conversation.id);
 	conversation.accounts = conversation.accounts.map(convertAccount);
 	if (conversation.last_status) {
 		conversation.last_status = convertStatus(conversation.last_status);

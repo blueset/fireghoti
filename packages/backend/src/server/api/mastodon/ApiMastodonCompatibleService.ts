@@ -13,7 +13,7 @@ import {
 	convertAnnouncement,
 	convertFilter,
 } from "./converters.js";
-import { convertId, IdType } from "@/server/api/index.js";
+import { fromMastodonId } from "backend-rs";
 import { Users } from "@/models/index.js";
 import { IsNull } from "typeorm";
 import { apiLogger } from "../logger.js";
@@ -105,7 +105,7 @@ export function apiMastodonCompatible(router: Router): void {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.dismissInstanceAnnouncement(
-					convertId(ctx.params.id, IdType.FirefishId),
+					fromMastodonId(ctx.params.id),
 				);
 				ctx.body = data.data;
 			} catch (e: any) {

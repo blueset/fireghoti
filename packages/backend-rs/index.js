@@ -310,7 +310,7 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { readServerConfig, stringToAcct, acctToString, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, nyaify, AntennaSrcEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initIdGenerator, getTimestamp, genId, secureRndstr, IdConvertType, convertId } = nativeBinding
+const { readServerConfig, stringToAcct, acctToString, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, toMastodonId, fromMastodonId, nyaify, AntennaSrcEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
 
 module.exports.readServerConfig = readServerConfig
 module.exports.stringToAcct = stringToAcct
@@ -321,6 +321,8 @@ module.exports.isSelfHost = isSelfHost
 module.exports.isSameOrigin = isSameOrigin
 module.exports.extractHost = extractHost
 module.exports.toPuny = toPuny
+module.exports.toMastodonId = toMastodonId
+module.exports.fromMastodonId = fromMastodonId
 module.exports.nyaify = nyaify
 module.exports.AntennaSrcEnum = AntennaSrcEnum
 module.exports.MutedNoteReasonEnum = MutedNoteReasonEnum
@@ -336,5 +338,3 @@ module.exports.initIdGenerator = initIdGenerator
 module.exports.getTimestamp = getTimestamp
 module.exports.genId = genId
 module.exports.secureRndstr = secureRndstr
-module.exports.IdConvertType = IdConvertType
-module.exports.convertId = convertId

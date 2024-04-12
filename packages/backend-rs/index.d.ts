@@ -132,6 +132,8 @@ export function isSelfHost(host?: string | undefined | null): boolean
 export function isSameOrigin(uri: string): boolean
 export function extractHost(uri: string): string
 export function toPuny(host: string): string
+export function toMastodonId(firefishId: string): string | null
+export function fromMastodonId(mastodonId: string): string | null
 export function nyaify(text: string, lang?: string | undefined | null): string
 export interface AbuseUserReport {
   id: string
@@ -996,8 +998,3 @@ export function getTimestamp(id: string): number
  */
 export function genId(date?: Date | undefined | null): string
 export function secureRndstr(length?: number | undefined | null): string
-export const enum IdConvertType {
-  MastodonId = 0,
-  FirefishId = 1
-}
-export function convertId(inId: string, idConvertType: IdConvertType): string
