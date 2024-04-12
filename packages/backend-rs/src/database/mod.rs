@@ -1,12 +1,9 @@
-pub mod error;
-
 use crate::config::server::SERVER_CONFIG;
-use error::Error;
-use sea_orm::{Database, DbConn};
+use sea_orm::{Database, DbConn, DbErr};
 
 static DB_CONN: once_cell::sync::OnceCell<DbConn> = once_cell::sync::OnceCell::new();
 
-async fn init_database() -> Result<&'static DbConn, Error> {
+async fn init_database() -> Result<&'static DbConn, DbErr> {
     let database_uri = format!(
         "postgres://{}:{}@{}:{}/{}",
         SERVER_CONFIG.db.user,
@@ -19,7 +16,7 @@ async fn init_database() -> Result<&'static DbConn, Error> {
     Ok(DB_CONN.get_or_init(move || conn))
 }
 
-pub async fn db_conn() -> Result<&'static DbConn, Error> {
+pub async fn db_conn() -> Result<&'static DbConn, DbErr> {
     match DB_CONN.get() {
         Some(conn) => Ok(conn),
         None => init_database().await,

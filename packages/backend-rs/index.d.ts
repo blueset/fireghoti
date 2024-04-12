@@ -118,6 +118,15 @@ export interface Acct {
 }
 export function stringToAcct(acct: string): Acct
 export function acctToString(acct: Acct): string
+export interface NoteLike {
+  fileIds: Array<string>
+  userId: string | null
+  text: string | null
+  cw: string | null
+  renoteId: string | null
+  replyId: string | null
+}
+export function checkWordMute(note: NoteLike, mutedWordLists: Array<Array<string>>, mutedPatterns: Array<string>): Promise<boolean>
 export function nyaify(text: string, lang?: string | undefined | null): string
 export interface AbuseUserReport {
   id: string

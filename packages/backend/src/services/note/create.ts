@@ -44,7 +44,7 @@ import { Poll } from "@/models/entities/poll.js";
 import { createNotification } from "@/services/create-notification.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
 import { checkHitAntenna } from "@/misc/check-hit-antenna.js";
-import { getWordHardMute } from "@/misc/check-word-mute.js";
+import { checkWordMute } from "backend-rs";
 import { addNoteToAntenna } from "@/services/add-note-to-antenna.js";
 import { countSameRenotes } from "@/misc/count-same-renotes.js";
 import { deliverToRelays, getCachedRelays } from "../relay.js";
@@ -380,7 +380,7 @@ export default async (
 			.then((us) => {
 				for (const u of us) {
 					if (u.userId === user.id) return;
-					getWordHardMute(note, u.mutedWords, u.mutedPatterns).then(
+					checkWordMute(note, u.mutedWords, u.mutedPatterns).then(
 						(shouldMute: boolean) => {
 							if (shouldMute) {
 								MutedNotes.insert({

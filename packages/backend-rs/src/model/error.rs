@@ -2,10 +2,8 @@
 pub enum Error {
     #[error("Failed to parse string: {0}")]
     ParseError(#[from] parse_display::ParseError),
-    #[error("Failed to get database connection: {0}")]
-    DbConnError(#[from] crate::database::error::Error),
-    #[error("Database operation error: {0}")]
-    DbOperationError(#[from] sea_orm::DbErr),
+    #[error("Database error: {0}")]
+    DbError(#[from] sea_orm::DbErr),
     #[error("Requested entity not found")]
     NotFound,
 }

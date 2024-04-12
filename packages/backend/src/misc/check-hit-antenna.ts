@@ -4,8 +4,7 @@ import type { User } from "@/models/entities/user.js";
 import type { UserProfile } from "@/models/entities/user-profile.js";
 import { Blockings, Followings, UserProfiles } from "@/models/index.js";
 import { getFullApAccount } from "@/misc/convert-host.js";
-import { stringToAcct } from "backend-rs";
-import { getWordHardMute } from "@/misc/check-word-mute.js";
+import { checkWordMute, stringToAcct } from "backend-rs";
 import type { Packed } from "@/misc/schema.js";
 import { Cache } from "@/misc/cache.js";
 
@@ -124,7 +123,7 @@ export async function checkHitAntenna(
 		mutes.mutedWords != null &&
 		mutes.mutedPatterns != null &&
 		antenna.userId !== note.userId &&
-		(await getWordHardMute(note, mutes.mutedWords, mutes.mutedPatterns))
+		(await checkWordMute(note, mutes.mutedWords, mutes.mutedPatterns))
 	)
 		return false;
 
