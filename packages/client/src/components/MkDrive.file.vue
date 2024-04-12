@@ -182,8 +182,8 @@ function describe() {
 		},
 		{
 			done: (result: {
-				canceled: boolean,
-				result?: string | null,
+				canceled: boolean;
+				result?: string | null;
 			}) => {
 				if (!result || result.canceled) return;
 				const comment = result.result;

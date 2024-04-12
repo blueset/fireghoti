@@ -12,6 +12,7 @@ export interface PageMetadata {
 	avatar?: entities.UserDetailed | null;
 	userName?: entities.User | null;
 	bg?: string;
+	hideHeader?: boolean;
 }
 
 export function definePageMetadata(

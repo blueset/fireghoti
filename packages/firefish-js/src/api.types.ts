@@ -281,9 +281,9 @@ export type Endpoints = {
 	"drive/files/attached-notes": { req: TODO; res: Note[] };
 	"drive/files/caption-image": {
 		req: {
-			url: string,
-		}
-		res: string,
+			url: string;
+		};
+		res: string;
 	};
 	"drive/files/check-existence": { req: TODO; res: TODO };
 	"drive/files/create": { req: TODO; res: TODO };

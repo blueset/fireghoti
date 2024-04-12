@@ -108,7 +108,7 @@ type ModalTypes = "popup" | "dialog" | "dialog:top" | "drawer";
 const props = withDefaults(
 	defineProps<{
 		manualShowing?: boolean | null;
-		anchor?: { 
+		anchor?: {
 			x: "left" | "center" | "right";
 			y: "top" | "center" | "bottom";
 		};

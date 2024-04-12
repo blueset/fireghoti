@@ -3,10 +3,7 @@
 import { EventEmitter } from "eventemitter3";
 import { type entities, api as firefishApi } from "firefish-js";
 import insertTextAtCursor from "insert-text-at-cursor";
-import type {
-	Component,
-	Ref,
-} from "vue";
+import type { Component, Ref } from "vue";
 import { defineAsyncComponent, markRaw, ref } from "vue";
 import { i18n } from "./i18n";
 import MkDialog from "@/components/MkDialog.vue";
@@ -177,11 +174,13 @@ export function promiseDialog<T>(
 }
 
 let popupIdCount = 0;
-export const popups = ref<{
-	id: number;
-	component: Component;
-	props: Record<string, unknown>;
-}[]>([]);
+export const popups = ref<
+	{
+		id: number;
+		component: Component;
+		props: Record<string, unknown>;
+	}[]
+>([]);
 
 const zIndexes = {
 	low: 1000000,
