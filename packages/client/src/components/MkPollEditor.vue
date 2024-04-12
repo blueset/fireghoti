@@ -147,7 +147,7 @@ function get() {
 	};
 
 	const calcAfter = () => {
-		let base = parseInt(after.value);
+		let base = Number.parseInt(after.value);
 		switch (unit.value) {
 			case "day":
 				base *= 24;
