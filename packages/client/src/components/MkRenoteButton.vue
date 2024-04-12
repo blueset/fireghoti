@@ -46,7 +46,7 @@ const buttonRef = ref<HTMLElement>();
 const canRenote = computed(
 	() =>
 		["public", "home"].includes(props.note.visibility) ||
-		props.note.userId === me.id,
+		props.note.userId === me?.id,
 );
 
 useTooltip(buttonRef, async (showing) => {

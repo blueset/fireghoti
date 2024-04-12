@@ -3,7 +3,7 @@
 		:to="`/@${page.user.username}/pages/${page.name}`"
 		class="vhpxefrj _block"
 		tabindex="-1"
-		:behavior="`${ui === 'deck' ? 'window' : null}`"
+		:behavior="ui === 'deck' ? 'window' : null"
 	>
 		<div
 			v-if="page.eyeCatchingImage"
@@ -36,9 +36,10 @@
 <script lang="ts" setup>
 import { userName } from "@/filters/user";
 import { ui } from "@/config";
+import type { entities } from "firefish-js";
 
 defineProps<{
-	page: any;
+	page: entities.Page;
 }>();
 </script>
 

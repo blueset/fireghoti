@@ -210,11 +210,13 @@ interface VueComponentConstructor<P, E> {
 	emits?: E;
 }
 
+type NonArrayAble<A> = A extends Array<unknown> ? never : A;
+
 export async function popup<Props, Emits>(
 	component: VueComponentConstructor<Props, Emits>,
-	props: Props & Record<string, unknown>,
-	events: Partial<Emits> = {},
-	disposeEvent?: string,
+	props: Props,
+	events: Partial<NonArrayAble<NonNullable<Emits>>> = {},
+	disposeEvent?: keyof Partial<NonArrayAble<NonNullable<Emits>>>,
 ) {
 	markRaw(component);
 
@@ -227,7 +229,7 @@ export async function popup<Props, Emits>(
 	};
 	const state = {
 		component,
-		props,
+		props: props as Record<string, unknown>,
 		events: disposeEvent
 			? {
 					...events,

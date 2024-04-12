@@ -16,7 +16,7 @@
 		v-else
 		class="bghgjjyj _button"
 		:class="{ inline, primary, gradate, danger, rounded, full, mini }"
-		:to="to"
+		:to="to!"
 		@mousedown="onMousedown"
 	>
 		<div ref="ripples" class="ripples"></div>
@@ -36,6 +36,7 @@ const props = defineProps<{
 	gradate?: boolean;
 	rounded?: boolean;
 	inline?: boolean;
+	// FIXME: if `link`, `to` is necessary
 	link?: boolean;
 	to?: string;
 	autofocus?: boolean;

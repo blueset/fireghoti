@@ -104,7 +104,7 @@
 			</MkInput>
 			<MkTextarea
 				v-if="input && input.type === 'paragraph'"
-				v-model="inputValue"
+				v-model="(inputValue as string)"
 				autofocus
 				type="paragraph"
 				:placeholder="input.placeholder || undefined"
@@ -204,7 +204,16 @@ import { i18n } from "@/i18n";
 import iconify from "@/scripts/icon";
 
 interface Input {
-	type: HTMLInputElement["type"];
+	type?:
+		| "text"
+		| "number"
+		| "password"
+		| "email"
+		| "url"
+		| "date"
+		| "time"
+		| "search"
+		| "paragraph";
 	placeholder?: string | null;
 	autocomplete?: string;
 	default: string | number | null;
@@ -237,8 +246,8 @@ const props = withDefaults(
 			| "question"
 			| "waiting"
 			| "search";
-		title: string;
-		text?: string;
+		title?: string | null;
+		text?: string | null;
 		isPlaintext?: boolean;
 		input?: Input;
 		select?: Select;
@@ -246,7 +255,7 @@ const props = withDefaults(
 		actions?: {
 			text: string;
 			primary?: boolean;
-			callback: (...args: any[]) => void;
+			callback: () => void;
 		}[];
 		showOkButton?: boolean;
 		showCancelButton?: boolean;
@@ -268,7 +277,10 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	(ev: "done", v: { canceled: boolean; result: any }): void;
+	(
+		ev: "done",
+		v: { canceled: boolean; result?: string | number | boolean | null },
+	): void;
 	(ev: "closed"): void;
 }>();
 
@@ -306,7 +318,7 @@ const okButtonDisabled = computed<boolean>(() => {
 
 const inputEl = ref<typeof MkInput>();
 
-function done(canceled: boolean, result?) {
+function done(canceled: boolean, result?: string | number | boolean | null) {
 	emit("done", { canceled, result });
 	modal.value?.close(null);
 }
@@ -342,12 +354,12 @@ function onInputKeydown(evt: KeyboardEvent) {
 	}
 }
 
-function formatDateToYYYYMMDD(date) {
-	const year = date.getFullYear();
-	const month = ("0" + (date.getMonth() + 1)).slice(-2);
-	const day = ("0" + (date.getDate() + 1)).slice(-2);
-	return `${year}-${month}-${day}`;
-}
+// function formatDateToYYYYMMDD(date) {
+// 	const year = date.getFullYear();
+// 	const month = ("0" + (date.getMonth() + 1)).slice(-2);
+// 	const day = ("0" + (date.getDate() + 1)).slice(-2);
+// 	return `${year}-${month}-${day}`;
+// }
 
 /**
  * Appends a new search parameter to the value in the input field.
@@ -355,18 +367,18 @@ function formatDateToYYYYMMDD(date) {
  * begin typing a new criteria.
  * @param value The value to append.
  */
-function appendFilter(value: string) {
-	return (
-		[
-			typeof inputValue.value === "string"
-				? inputValue.value.trim()
-				: inputValue.value,
-			value,
-		]
-			.join(" ")
-			.trim() + " "
-	);
-}
+// function appendFilter(value: string) {
+// 	return (
+// 		[
+// 			typeof inputValue.value === "string"
+// 				? inputValue.value.trim()
+// 				: inputValue.value,
+// 			value,
+// 		]
+// 			.join(" ")
+// 			.trim() + " "
+// 	);
+// }
 
 onMounted(() => {
 	document.addEventListener("keydown", onKeydown);

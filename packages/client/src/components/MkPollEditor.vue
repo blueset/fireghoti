@@ -94,15 +94,14 @@ const props = defineProps<{
 	};
 }>();
 const emit = defineEmits<{
-	(
-		ev: "update:modelValue",
+	"update:modelValue": [
 		v: {
-			expiresAt: string;
-			expiredAfter: number;
+			expiresAt?: number;
+			expiredAfter?: number | null;
 			choices: string[];
 			multiple: boolean;
 		},
-	): void;
+	];
 }>();
 
 const choices = ref(props.modelValue.choices);
@@ -147,19 +146,19 @@ function get() {
 	};
 
 	const calcAfter = () => {
-		let base = Number.parseInt(after.value);
+		let base = Number.parseInt(after.value.toString());
 		switch (unit.value) {
+			// biome-ignore lint/suspicious/noFallthroughSwitchClause: Fallthrough intentially
 			case "day":
 				base *= 24;
-			// fallthrough
+			// biome-ignore lint/suspicious/noFallthroughSwitchClause: Fallthrough intentially
 			case "hour":
 				base *= 60;
-			// fallthrough
+			// biome-ignore lint/suspicious/noFallthroughSwitchClause: Fallthrough intentially
 			case "minute":
 				base *= 60;
-			// fallthrough
 			case "second":
-				return (base *= 1000);
+				return base * 1000;
 			default:
 				return null;
 		}

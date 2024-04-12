@@ -4,6 +4,7 @@
 		:target-element="targetElement"
 		:max-width="250"
 		@closed="emit('closed')"
+		:showing="showing"
 	>
 		<div class="beaffaef">
 			<div v-for="u in users" :key="u.id" class="user">
@@ -18,12 +19,15 @@
 </template>
 
 <script lang="ts" setup>
+import type { Ref } from "vue";
 import MkTooltip from "./MkTooltip.vue";
+import type { entities } from "firefish-js";
 
 defineProps<{
-	users: any[]; // TODO
+	showing: Ref<boolean>;
+	users: entities.User[];
 	count: number;
-	targetElement: HTMLElement;
+	targetElement?: HTMLElement;
 }>();
 
 const emit = defineEmits<{

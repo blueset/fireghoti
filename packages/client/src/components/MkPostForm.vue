@@ -1136,11 +1136,11 @@ async function post() {
 				nextTick(() => autosize.update(textareaEl.value));
 			});
 		})
-		.catch((err) => {
+		.catch((err: { message: string; id: string }) => {
 			posting.value = false;
 			os.alert({
 				type: "error",
-				text: err.message + "\n" + (err as any).id,
+				text: `${err.message}\n${err.id}`,
 			});
 		});
 	vibrate([10, 20, 10, 20, 10, 20, 60]);

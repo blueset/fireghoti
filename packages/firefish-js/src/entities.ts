@@ -20,6 +20,16 @@ export type UserLite = {
 	movedToUri: any;
 	emojis: EmojiLite[];
 	instance?: InstanceLite;
+	avatarColor: null;
+	emojiModPerm: "unauthorized" | "add" | "mod" | "full";
+	isAdmin?: boolean;
+	isModerator?: boolean;
+	isBot?: boolean;
+	isLocked: boolean;
+	isIndexable: boolean;
+	isCat?: boolean;
+	speakAsCat?: boolean;
+	driveCapacityOverrideMb: number | null,
 };
 
 export type UserDetailed = UserLite & {
@@ -46,7 +56,6 @@ export type UserDetailed = UserLite & {
 	isCat: boolean;
 	isFollowed: boolean;
 	isFollowing: boolean;
-	isLocked: boolean;
 	isModerator: boolean;
 	isMuted: boolean;
 	isRenoteMuted: boolean;
@@ -228,7 +237,10 @@ export interface RenoteNotification extends BaseNotification {
 	type: "renote";
 	user: User;
 	userId: User["id"];
-	note: Note;
+	note: Note & {
+		renote: Note,
+		renoteId: string,
+	};
 }
 export interface QuoteNotification extends BaseNotification {
 	type: "quote";
