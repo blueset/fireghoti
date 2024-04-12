@@ -58,6 +58,7 @@ pub struct ServerConfig {
 }
 
 #[derive(Clone, Debug, PartialEq, Deserialize)]
+#[serde(rename_all = "camelCase")]
 #[crate::export(object, use_nullable = false)]
 pub struct DbConfig {
     pub host: String,
@@ -70,6 +71,7 @@ pub struct DbConfig {
 }
 
 #[derive(Clone, Debug, PartialEq, Deserialize)]
+#[serde(rename_all = "camelCase")]
 #[crate::export(object, use_nullable = false)]
 pub struct RedisConfig {
     pub host: String,
