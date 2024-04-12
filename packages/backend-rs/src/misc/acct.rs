@@ -1,11 +1,11 @@
 #[derive(Debug, PartialEq)]
-#[cfg_attr(feature = "napi", crate::export(object, use_nullable = true))]
+#[crate::export(object)]
 pub struct Acct {
     pub username: String,
     pub host: Option<String>,
 }
 
-#[cfg_attr(feature = "napi", crate::export)]
+#[crate::export]
 pub fn string_to_acct(acct: &str) -> Acct {
     let split: Vec<&str> = if let Some(stripped) = acct.strip_prefix('@') {
         stripped
@@ -25,7 +25,7 @@ pub fn string_to_acct(acct: &str) -> Acct {
     }
 }
 
-#[cfg_attr(feature = "napi", crate::export)]
+#[crate::export]
 pub fn acct_to_string(acct: &Acct) -> String {
     match &acct.host {
         Some(host) => format!("{}@{}", acct.username, host),

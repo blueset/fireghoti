@@ -9,7 +9,7 @@ pub fn gen_string(length: u16) -> String {
         .collect()
 }
 
-#[cfg_attr(feature = "napi", crate::export(js_name = "secureRndstr"))]
+#[crate::export(js_name = "secureRndstr")]
 pub fn native_random_str(length: Option<u16>) -> String {
     gen_string(length.unwrap_or(32))
 }

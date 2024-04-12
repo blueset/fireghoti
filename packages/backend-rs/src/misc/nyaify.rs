@@ -1,7 +1,7 @@
 use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
 
-#[cfg_attr(feature = "napi", crate::export)]
+#[crate::export]
 pub fn nyaify(text: &str, lang: Option<&str>) -> String {
     let mut to_return = text.to_owned();
 

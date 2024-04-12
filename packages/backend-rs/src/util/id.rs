@@ -17,7 +17,7 @@ const TIME_2000: i64 = 946_684_800_000;
 const TIMESTAMP_LENGTH: u16 = 8;
 
 /// Initializes Cuid2 generator. Must be called before any [create_id].
-#[cfg_attr(feature = "napi", crate::export)]
+#[crate::export]
 pub fn init_id_generator(length: u16, fingerprint: &str) {
     FINGERPRINT.get_or_init(move || format!("{}{}", fingerprint, cuid2::create_id()));
     GENERATOR.get_or_init(move || {
@@ -44,7 +44,7 @@ pub fn create_id(datetime: &NaiveDateTime) -> Result<String, ErrorUninitialized>
     }
 }
 
-#[cfg_attr(feature = "napi", crate::export)]
+#[crate::export]
 pub fn get_timestamp(id: &str) -> i64 {
     let n: Option<u64> = BASE36.decode_var_len(&id[0..8]);
     match n {

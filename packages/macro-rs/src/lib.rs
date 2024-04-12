@@ -2,14 +2,18 @@ use convert_case::{Case, Casing};
 use proc_macro2::{TokenStream, TokenTree};
 use quote::{quote, ToTokens};
 
-// FIXME
-/// For doctest only
 #[proc_macro_attribute]
-pub fn dummy_macro(
-    _attr: proc_macro::TokenStream,
+pub fn export(
+    attr: proc_macro::TokenStream,
     item: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
-    item
+	let attr: TokenStream = attr.into();
+	let item: TokenStream = item.into();
+
+	quote! {
+		#[cfg_attr(feature = "napi", macro_rs::napi(#attr))]
+		#item
+	}.into()
 }
 
 /// Creates extra wrapper function for napi.
@@ -341,6 +345,16 @@ fn napi_impl(macro_attr: TokenStream, item: TokenStream) -> TokenStream {
         #(#function_call_modifiers)*
       }
     }
+}
+
+// FIXME
+/// For doctest only
+#[proc_macro_attribute]
+pub fn dummy_macro(
+    _attr: proc_macro::TokenStream,
+    item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+    item
 }
 
 #[cfg(test)]

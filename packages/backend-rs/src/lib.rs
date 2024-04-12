@@ -1,4 +1,4 @@
-pub use macro_rs::napi as export;
+pub use macro_rs::export;
 
 pub mod database;
 pub mod misc;
