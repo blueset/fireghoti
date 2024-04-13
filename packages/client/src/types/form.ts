@@ -54,18 +54,18 @@ export type FormItemSwitch = BaseFormItem & {
 };
 export type FormItemSelect = BaseFormItem & {
 	type: "enum";
-	default?: string | null;
+	default?: string | number | symbol | null;
 	enum: {
-		value: string | number | symbol | undefined;
+		value: string | number | symbol;
 		label: string;
 	}[];
 };
 export type FormItemRadios = BaseFormItem & {
 	type: "radio";
-	default?: string | number | symbol | undefined | null;
+	default?: string | number | symbol | null;
 	options: {
 		label: string;
-		value: string | number | symbol | undefined;
+		value: string | number | symbol;
 	}[];
 };
 export type FormItemRange = BaseFormItem & {
@@ -114,10 +114,25 @@ export type FormItemInput = FormItemInputArray[number];
 
 export type FormItemType = FormItemTypeArray[number];
 
-export type GetFormItemByType<T extends FormItemType["type"], F extends FormItemType = FormItemType> = F extends {type: T} ? F : never;
+export type Form = Record<string, FormItemType>;
+
+export type GetFormItemByType<
+	T extends FormItemType["type"],
+	F extends FormItemType = FormItemType,
+> = F extends { type: T } ? F : never;
 
 type NonUndefindAble<T> = T extends undefined ? never : T;
+type NonNullAble<T> = T extends null ? never : T;
 
-export type GetFormResultType<T extends FormItemType["type"], I extends FormItemType = GetFormItemByType<T>> = NonUndefindAble<
+export type GetFormItemResultType<
+	T extends FormItemType["type"],
+	I extends FormItemType = GetFormItemByType<T>,
+> = NonUndefindAble<
 	"__result_typedef" extends keyof I ? I["__result_typedef"] : I["default"]
->
+>;
+
+export type GetFormResultType<F extends Form> = {
+	[K in keyof F]: F[K]["required"] extends false
+		? GetFormItemResultType<F[K]["type"]>
+		: NonNullAble<GetFormItemResultType<F[K]["type"]>>;
+};

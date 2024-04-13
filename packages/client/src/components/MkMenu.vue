@@ -254,8 +254,7 @@ const isActive = ref();
 watch(
 	() => props.items,
 	() => {
-		// FIXME: what's this?
-		const items: (MenuItem | MenuPending)[] = [...props.items].filter(
+		const items: (MenuItem | MenuPending)[] = props.items.filter(
 			(item) => item !== undefined,
 		);
 

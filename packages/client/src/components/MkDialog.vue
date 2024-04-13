@@ -216,25 +216,32 @@ interface Input {
 		| "paragraph";
 	placeholder?: string | null;
 	autocomplete?: string;
-	default: string | number | null;
+	default?: string | number | null;
 	minLength?: number;
 	maxLength?: number;
 }
 
-interface Select {
-	items: {
-		value: string;
-		text: string;
-	}[];
-	groupedItems: {
-		label: string;
-		items: {
-			value: string;
-			text: string;
-		}[];
-	}[];
-	default: string | null;
-}
+type Select = {
+	default?: string | null;
+} & (
+	| {
+			items: {
+				value: string;
+				text: string;
+			}[];
+			groupedItems?: undefined;
+	  }
+	| {
+			items?: undefined;
+			groupedItems: {
+				label: string;
+				items: {
+					value: string;
+					text: string;
+				}[];
+			}[];
+	  }
+);
 
 const props = withDefaults(
 	defineProps<{

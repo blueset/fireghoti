@@ -36,6 +36,7 @@ import type {
 	UserDetailed,
 	UserGroup,
 	UserList,
+	UserLite,
 	UserSorting,
 } from "./entities";
 

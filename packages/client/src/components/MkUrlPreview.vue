@@ -181,10 +181,10 @@ function adjustTweetHeight(message: any) {
 	if (height) tweetHeight.value = height;
 }
 
-(window as any).addEventListener("message", adjustTweetHeight);
+window.addEventListener("message", adjustTweetHeight);
 
 onUnmounted(() => {
-	(window as any).removeEventListener("message", adjustTweetHeight);
+	window.removeEventListener("message", adjustTweetHeight);
 });
 </script>
 

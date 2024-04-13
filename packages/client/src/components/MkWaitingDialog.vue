@@ -13,7 +13,7 @@
 			]"
 		>
 			<i
-				v-if="success"
+				v-if="unref(success)"
 				:class="[$style.icon, $style.success, iconify('ph-check')]"
 			></i>
 			<MkLoading
@@ -29,15 +29,15 @@
 </template>
 
 <script lang="ts" setup>
-import { shallowRef, watch } from "vue";
+import { MaybeRef, shallowRef, watch, unref } from "vue";
 import MkModal from "@/components/MkModal.vue";
 import iconify from "@/scripts/icon";
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 
 const props = defineProps<{
-	success: boolean;
-	showing: boolean;
+	success: MaybeRef<boolean>;
+	showing: MaybeRef<boolean>;
 	text?: string;
 }>();
 
