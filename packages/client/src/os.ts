@@ -13,6 +13,7 @@ import MkWaitingDialog from "@/components/MkWaitingDialog.vue";
 import { apiUrl, url } from "@/config";
 import { me } from "@/me";
 import type { MenuItem } from "@/types/menu";
+import type { FormItemType, GetFormResultType } from "@/types/form";
 
 export const pendingApiRequestsCount = ref(0);
 
@@ -611,8 +612,16 @@ export function waiting(): Promise<void> {
 	});
 }
 
-export function form(title, form) {
-	return new Promise((resolve, reject) => {
+export function form<T extends Record<string, FormItemType>>(
+	title: string,
+	form: T,
+) {
+	return new Promise<{
+		result?: {
+			[K in keyof T]: GetFormResultType<T[K]["type"]>;
+		};
+		canceled?: true;
+	}>((resolve, _reject) => {
 		popup(
 			defineAsyncComponent({
 				loader: () => import("@/components/MkFormDialog.vue"),
@@ -622,7 +631,7 @@ export function form(title, form) {
 			{ title, form },
 			{
 				done: (result) => {
-					resolve(result);
+					resolve(result as never);
 				},
 			},
 			"closed",
@@ -631,7 +640,7 @@ export function form(title, form) {
 }
 
 export async function selectUser() {
-	return new Promise((resolve, reject) => {
+	return new Promise<entities.UserDetailed>((resolve, reject) => {
 		popup(
 			defineAsyncComponent({
 				loader: () => import("@/components/MkUserSelectDialog.vue"),
