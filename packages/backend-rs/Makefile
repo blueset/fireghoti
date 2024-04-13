@@ -7,9 +7,9 @@ SRC += $(call recursive_wildcard, src, *)
 .PHONY: regenerate-entities
 regenerate-entities:
 	sea-orm-cli generate entity \
-		--output-dir='src/model/entity' \
-		--database-url='postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@localhost:25432/$(POSTGRES_DB)' \
-		--date-time-crate='chrono' \
+	  --output-dir='src/model/entity' \
+	  --database-url='postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@localhost:25432/$(POSTGRES_DB)' \
+	  --date-time-crate='chrono' \
 	  --model-extra-attributes='NAPI_EXTRA_ATTR_PLACEHOLDER' && \
 	for file in src/model/entity/*; do \
 	  base=$$(basename -- "$${file}"); \
