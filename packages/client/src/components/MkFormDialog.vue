@@ -55,6 +55,29 @@
 							formItem.description
 						}}</template>
 					</FormInput>
+					<FormInput
+						v-else-if="
+							formItem.type === 'email' ||
+							formItem.type === 'password' ||
+							formItem.type === 'url' ||
+							formItem.type === 'date' ||
+							formItem.type === 'time' ||
+							formItem.type === 'search'
+						"
+						v-model="values[formItemName]"
+						:type="formItem.type"
+						class="_formBlock"
+					>
+						<template #label
+							><span v-text="formItem.label || formItemName"></span
+							><span v-if="formItem.required === false">
+								({{ i18n.ts.optional }})</span
+							></template
+						>
+						<template v-if="formItem.description" #caption>{{
+							formItem.description
+						}}</template>
+					</FormInput>
 					<FormTextarea
 						v-else-if="
 							formItem.type === 'string' && formItem.multiline
