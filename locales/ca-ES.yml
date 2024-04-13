@@ -2084,9 +2084,9 @@ _experiments:
   release: Publicà
   title: Experiments
   enablePostImports: Activar l'importació de publicacions
-  postImportsCaption: Permet els usuaris importar publicacions desde comptes a Firefish,
+  postImportsCaption: Permet als usuaris importar publicacions des de comptes de Firefish,
     Misskey, Mastodon, Akkoma i Pleroma. Pot fer que el servidor vagi més lent durant
-    la càrrega si tens un coll d'ampolla a la cua.
+    la importació si la teva cua de feina és saturada.
 noGraze: Si us plau, desactiva l'extensió del navegador "Graze for Mastodon", ja que
   interfereix amb Firefish.
 accessibility: Accessibilitat
