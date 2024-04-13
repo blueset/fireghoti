@@ -20,12 +20,10 @@ export default defineComponent({
 	},
 	computed: {
 		compiledFormula(): any {
-			const katexString = katex.renderToString(this.formula, {
+			return katex.renderToString(this.formula, {
 				throwOnError: false,
+				displayMode: this.block,
 			} as any);
-			return this.block
-				? `<div style="text-align:center">${katexString}</div>`
-				: katexString;
 		},
 	},
 });
