@@ -1109,14 +1109,10 @@ _aboutFirefish:
   source: "ソースコード"
   translation: "Firefishを翻訳"
   donate: "Firefishに寄付"
-  morePatrons: "他にも多くの方が支援してくれています。ありがとうございます！ 🥰"
-  patrons: "支援者"
-  patronsList: 寄付額ではなく時系列順に並んでいます。上記のリンクから寄付を行ってここにあなたのIDを載せましょう！
   pleaseDonateToFirefish: Firefish開発への寄付をご検討ください。
   pleaseDonateToHost: また、このサーバー {host} の運営者への寄付もご検討ください。
   donateHost: '{host} に寄付する'
   donateTitle: Firefishを気に入りましたか？
-  sponsors: Firefish の支援者
 _nsfw:
   respect: "閲覧注意のメディアは隠す"
   ignore: "閲覧注意のメディアを隠さない"
