@@ -18,11 +18,6 @@ import signin from "./private/signin.js";
 import signupPending from "./private/signup-pending.js";
 import verifyEmail from "./private/verify-email.js";
 
-import { convertId, IdConvertType as IdType } from "backend-rs";
-
-// re-export native rust id conversion (function and enum)
-export { IdType, convertId };
-
 // Init app
 const app = new Koa();
 

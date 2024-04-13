@@ -1,4 +1,4 @@
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { RenoteMutings } from "@/models/index.js";
 import { RenoteMuting } from "@/models/entities/renote-muting.js";
 import define from "@/server/api/define.js";

@@ -17,7 +17,7 @@ import {
 } from "@/models/index.js";
 import { DriveFile } from "@/models/entities/drive-file.js";
 import type { IRemoteUser, User } from "@/models/entities/user.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
 import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";

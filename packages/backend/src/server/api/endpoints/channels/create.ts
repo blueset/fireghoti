@@ -2,7 +2,7 @@ import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { Channels, DriveFiles } from "@/models/index.js";
 import type { Channel } from "@/models/entities/channel.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 
 export const meta = {
 	tags: ["channels"],

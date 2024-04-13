@@ -4,7 +4,7 @@ import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instanc
 import Logger from "@/services/logger.js";
 import { Instances } from "@/models/index.js";
 import { fetchInstanceMetadata } from "@/services/fetch-instance-metadata.js";
-import { toPuny } from "@/misc/convert-host.js";
+import { toPuny } from "backend-rs";
 import { StatusError } from "@/misc/fetch.js";
 import { shouldSkipInstance } from "@/misc/skipped-instances.js";
 import type { DeliverJobData } from "@/queue/types.js";

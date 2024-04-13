@@ -2,7 +2,7 @@ import { URL } from "url";
 import httpSignature, { IParsedSignature } from "@peertube/http-signature";
 import config from "@/config/index.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
-import { toPuny } from "@/misc/convert-host.js";
+import { toPuny } from "backend-rs";
 import DbResolver from "@/remote/activitypub/db-resolver.js";
 import { getApId } from "@/remote/activitypub/type.js";
 import { shouldBlockInstance } from "@/misc/should-block-instance.js";

@@ -8,7 +8,7 @@ import {
 	Users,
 	Followings,
 } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import type { User } from "@/models/entities/user.js";
 import type { Notification } from "@/models/entities/notification.js";
 import { sendEmailNotification } from "./send-email-notification.js";

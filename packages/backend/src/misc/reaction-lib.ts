@@ -1,7 +1,7 @@
 import { emojiRegex } from "./emoji-regex.js";
 import { fetchMeta } from "./fetch-meta.js";
 import { Emojis } from "@/models/index.js";
-import { toPunyNullable } from "./convert-host.js";
+import { toPuny } from "backend-rs";
 import { IsNull } from "typeorm";
 
 export function convertReactions(reactions: Record<string, number>) {
@@ -23,7 +23,7 @@ export async function toDbReaction(
 ): Promise<string> {
 	if (!reaction) return (await fetchMeta()).defaultReaction;
 
-	reacterHost = toPunyNullable(reacterHost);
+	reacterHost = reacterHost == null ? null : toPuny(reacterHost);
 
 	if (reaction.includes("❤") || reaction.includes("♥️")) return "❤️";
 

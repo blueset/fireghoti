@@ -14,6 +14,9 @@ packages/backend/.idea/vcs.xml
 node_modules
 report.*.json
 
+# Cargo
+/target
+
 # Cypress
 cypress/screenshots
 cypress/videos

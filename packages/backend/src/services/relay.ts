@@ -8,7 +8,7 @@ import renderUndo from "@/remote/activitypub/renderer/undo.js";
 import { deliver } from "@/queue/index.js";
 import type { ILocalUser, User } from "@/models/entities/user.js";
 import { Users, Relays } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { Cache } from "@/misc/cache.js";
 import type { Relay } from "@/models/entities/relay.js";
 import { createSystemUser } from "@/services/create-system-user.js";

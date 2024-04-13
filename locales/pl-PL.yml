@@ -990,9 +990,6 @@ _aboutFirefish:
   source: "Kod źródłowy"
   translation: "Tłumacz Firefish"
   donate: "Przekaż darowiznę na Firefish"
-  morePatrons: "Naprawdę doceniam wsparcie ze strony wielu niewymienionych tu osób.
-    Dziękuję! 🥰"
-  patrons: "Wspierający"
 _nsfw:
   respect: "Ukrywaj media NSFW"
   ignore: "Nie ukrywaj mediów NSFW"

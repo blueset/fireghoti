@@ -4,7 +4,7 @@ import { getApId, isQuestion } from "../type.js";
 import { apLogger } from "../logger.js";
 import { Notes, Polls } from "@/models/index.js";
 import type { IPoll } from "@/models/entities/poll.js";
-import { isSameOrigin } from "@/misc/convert-host.js";
+import { isSameOrigin } from "backend-rs";
 
 export async function extractPollFromQuestion(
 	source: string | IObject,

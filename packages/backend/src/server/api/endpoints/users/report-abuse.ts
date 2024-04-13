@@ -2,7 +2,7 @@ import * as mfm from "mfm-js";
 import sanitizeHtml from "sanitize-html";
 import { publishAdminStream } from "@/services/stream.js";
 import { AbuseUserReports, UserProfiles, Users } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { sendEmail } from "@/services/send-email.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
 import { getUser } from "@/server/api/common/getters.js";

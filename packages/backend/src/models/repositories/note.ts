@@ -13,7 +13,7 @@ import {
 	UserProfiles,
 } from "../index.js";
 import type { Packed } from "@/misc/schema.js";
-import { nyaify } from "@/misc/nyaify.js";
+import { nyaify } from "backend-rs";
 import { awaitAll } from "@/prelude/await-all.js";
 import { convertReactions, decodeReaction } from "@/misc/reaction-lib.js";
 import type { NoteReaction } from "@/models/entities/note-reaction.js";

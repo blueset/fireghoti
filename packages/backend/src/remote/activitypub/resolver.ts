@@ -2,7 +2,7 @@ import config from "@/config/index.js";
 import type { ILocalUser } from "@/models/entities/user.js";
 import { getInstanceActor } from "@/services/instance-actor.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
-import { extractDbHost, isSelfHost } from "@/misc/convert-host.js";
+import { extractHost, isSelfHost } from "backend-rs";
 import { apGet } from "./request.js";
 import type { IObject, ICollection, IOrderedCollection } from "./type.js";
 import { isCollectionOrOrderedCollection, getApId } from "./type.js";
@@ -68,7 +68,7 @@ export default class Resolver {
 		if (typeof value !== "string") {
 			apLogger.debug("Object to resolve is not a string");
 			if (typeof value.id !== "undefined") {
-				const host = extractDbHost(getApId(value));
+				const host = extractHost(getApId(value));
 				if (await shouldBlockInstance(host)) {
 					throw new Error("instance is blocked");
 				}
@@ -95,7 +95,7 @@ export default class Resolver {
 		}
 		this.history.add(value);
 
-		const host = extractDbHost(value);
+		const host = extractHost(value);
 		if (isSelfHost(host)) {
 			return await this.resolveLocal(value);
 		}

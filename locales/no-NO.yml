@@ -987,8 +987,6 @@ _aboutFirefish:
   pleaseDonateToFirefish: Du kan vurdere å donere en slant til Firefish for å støtte
     videre utvikling og feilretting.
   donateHost: Donér til {host}
-  morePatrons: Vi er også takknemlige for bidragene fra mange andre som ikke er listet
-    her. Takk til dere alle! 🥰
   contributors: Hovedutviklere
   source: Kildekode
   allContributors: Alle bidragsytere
@@ -996,10 +994,6 @@ _aboutFirefish:
   pleaseDonateToHost: Du kan også vurdere å donere til hjemme-tjeneren din, {host},
     for å hjelpe dem med driftskostnadene for tjenesten.
   about: Firefish ble opprettet av ThatOneCalculator i 2022, basert på Misskey.
-  sponsors: Firefishs sponsorer
-  patrons: Firefishs patroner
-  patronsList: Listen er kronologisk, ikke etter donert beløp. Doner med lenken over
-    for å få navnet ditt her!
 isBot: Denne kontoen er en bot
 _nsfw:
   respect: Skjul NSFW-merket media

@@ -38,7 +38,7 @@ import block from "./block/index.js";
 import flag from "./flag/index.js";
 import move from "./move/index.js";
 import type { IObject, IActivity } from "../type.js";
-import { extractDbHost } from "@/misc/convert-host.js";
+import { extractHost } from "backend-rs";
 import { shouldBlockInstance } from "@/misc/should-block-instance.js";
 import { inspect } from "node:util";
 
@@ -70,7 +70,7 @@ async function performOneActivity(
 	if (actor.isSuspended) return;
 
 	if (typeof activity.id !== "undefined") {
-		const host = extractDbHost(getApId(activity));
+		const host = extractHost(getApId(activity));
 		if (await shouldBlockInstance(host)) return;
 	}
 

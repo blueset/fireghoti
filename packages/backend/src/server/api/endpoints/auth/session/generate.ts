@@ -3,7 +3,7 @@ import config from "@/config/index.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { Apps, AuthSessions } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 
 export const meta = {
 	tags: ["auth"],

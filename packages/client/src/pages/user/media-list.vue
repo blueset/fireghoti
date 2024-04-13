@@ -1,5 +1,5 @@
 <template>
-	<MkSpacer :contentMax="1100">
+	<MkSpacer :content-max="1100">
 		<div :class="$style.root">
 			<MkPagination v-slot="{items}" :pagination="pagination">
 				<div :class="$style.stream">
@@ -11,10 +11,10 @@
 </template>
 
 <script lang="ts" setup>
-import MkNoteMediaList from "@/components/MkNoteMediaList.vue";
-import MkPagination from "@/components/MkPagination.vue";
 import { computed } from "vue";
 import type { entities } from "firefish-js";
+import MkNoteMediaList from "@/components/MkNoteMediaList.vue";
+import MkPagination from "@/components/MkPagination.vue";
 
 const props = defineProps<{
 	user: entities.UserDetailed;

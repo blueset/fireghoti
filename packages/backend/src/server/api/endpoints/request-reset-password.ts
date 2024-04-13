@@ -3,7 +3,7 @@ import { IsNull } from "typeorm";
 import config from "@/config/index.js";
 import { Users, UserProfiles, PasswordResetRequests } from "@/models/index.js";
 import { sendEmail } from "@/services/send-email.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import define from "@/server/api/define.js";
 import { HOUR } from "@/const.js";
 

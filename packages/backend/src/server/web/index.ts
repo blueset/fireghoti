@@ -28,7 +28,7 @@ import {
 	Emojis,
 	GalleryPosts,
 } from "@/models/index.js";
-import * as Acct from "@/misc/acct.js";
+import { stringToAcct } from "backend-rs";
 import { getNoteSummary } from "@/misc/get-note-summary.js";
 import { queues } from "@/queue/queues.js";
 import { genOpenapiSpec } from "../api/openapi/gen-spec.js";
@@ -330,7 +330,7 @@ const getFeed = async (
 	if (meta.privateMode) {
 		return;
 	}
-	const { username, host } = Acct.parse(acct);
+	const { username, host } = stringToAcct(acct);
 	const user = await Users.findOneBy({
 		usernameLower: username.toLowerCase(),
 		host: host ?? IsNull(),
@@ -461,7 +461,7 @@ const jsonFeed: Router.Middleware = async (ctx) => {
 const userPage: Router.Middleware = async (ctx, next) => {
 	const userParam = ctx.params.user;
 	const subParam = ctx.params.sub;
-	const { username, host } = Acct.parse(userParam);
+	const { username, host } = stringToAcct(userParam);
 
 	const user = await Users.findOneBy({
 		usernameLower: username.toLowerCase(),
@@ -580,7 +580,7 @@ router.get("/posts/:note", async (ctx, next) => {
 
 // Page
 router.get("/@:user/pages/:page", async (ctx, next) => {
-	const { username, host } = Acct.parse(ctx.params.user);
+	const { username, host } = stringToAcct(ctx.params.user);
 	const user = await Users.findOneBy({
 		usernameLower: username.toLowerCase(),
 		host: host ?? IsNull(),

@@ -2,7 +2,7 @@
 
 You can skip intermediate versions when upgrading from an old version, but please read the notices and follow the instructions for each intermediate version before [upgrading](./upgrade.md).
 
-## Unreleased
+## v20240413
 
 ### For all users
 
@@ -19,7 +19,11 @@ The number of posts stored on your database can be found at `https://yourserver.
 
 ### For systemd/pm2 users
 
-Please do not terminate `pnpm run migrate` even if it appears to be frozen.
+- Please remove `packages/backend-rs/target` before building Firefish.
+    ```sh
+    rm --recursive --force packages/backend-rs/target
+    ```
+- Please do not terminate `pnpm run migrate` even if it appears to be frozen.
 
 ### For Docker/Podman users
 

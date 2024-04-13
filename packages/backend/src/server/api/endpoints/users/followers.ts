@@ -1,6 +1,6 @@
 import { IsNull } from "typeorm";
 import { Users, Followings, UserProfiles } from "@/models/index.js";
-import { toPunyNullable } from "@/misc/convert-host.js";
+import { toPuny } from "backend-rs";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
@@ -80,7 +80,7 @@ export default define(meta, paramDef, async (ps, me) => {
 			? { id: ps.userId }
 			: {
 					usernameLower: ps.username!.toLowerCase(),
-					host: toPunyNullable(ps.host) ?? IsNull(),
+					host: ps.host == null ? IsNull() : toPuny(ps.host),
 				},
 	);
 

@@ -12,31 +12,34 @@ napi = ["dep:napi", "dep:napi-derive"]
 crate-type = ["cdylib", "lib"]
 
 [dependencies]
-async-trait = "0.1.79"
-cfg-if = "1.0.0"
-chrono = "0.4.37"
-cuid2 = "0.1.2"
-jsonschema = "0.17.1"
-once_cell = "1.19.0"
-parse-display = "0.9.0"
-rand = "0.8.5"
-schemars = { version = "0.8.16", features = ["chrono"] }
-sea-orm = { version = "0.12.15", features = ["sqlx-postgres", "runtime-tokio-rustls"] }
-serde = { version = "1.0.197", features = ["derive"] }
-serde_json = "1.0.115"
-thiserror = "1.0.58"
-tokio = { version = "1.37.0", features = ["full"] }
+macro_rs = { workspace = true }
 
-# Default enable napi4 feature, see https://nodejs.org/api/n-api.html#node-api-version-matrix
-napi = { version = "2.16.2", default-features = false, features = ["napi9", "tokio_rt", "chrono_date", "serde-json"], optional = true }
-napi-derive = { version = "2.16.2", optional = true }
-basen = "0.1.0"
+napi = { workspace = true, optional = true, default-features = false, features = ["napi9", "tokio_rt", "chrono_date", "serde-json"] }
+napi-derive = { workspace = true, optional = true }
+
+async-trait = { workspace = true }
+basen = { workspace = true }
+cfg-if = { workspace = true }
+chrono = { workspace = true }
+cuid2 = { workspace = true }
+idna = { workspace = true }
+jsonschema = { workspace = true }
+once_cell = { workspace = true }
+parse-display = { workspace = true }
+rand = { workspace = true }
+regex = { workspace = true }
+schemars = { workspace = true, features = ["chrono"] }
+sea-orm = { workspace = true, features = ["sqlx-postgres", "runtime-tokio-rustls"] }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+serde_yaml = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true, features = ["full"] }
+url = { workspace = true }
+urlencoding = { workspace = true }
 
 [dev-dependencies]
-pretty_assertions = "1.4.0"
+pretty_assertions = { workspace = true }
 
 [build-dependencies]
-napi-build = "2.1.2"
-
-[profile.release]
-lto = true
+napi-build = { workspace = true }

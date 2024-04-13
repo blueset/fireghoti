@@ -8,9 +8,12 @@ RUN curl --proto '=https' --tlsv1.2 --silent --show-error --fail https://sh.rust
 ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Copy only the cargo dependency-related files first, to cache efficiently
+COPY Cargo.toml Cargo.toml
+COPY Cargo.lock Cargo.lock
 COPY packages/backend-rs/Cargo.toml packages/backend-rs/Cargo.toml
-COPY packages/backend-rs/Cargo.lock packages/backend-rs/Cargo.lock
 COPY packages/backend-rs/src/lib.rs packages/backend-rs/src/
+COPY packages/macro-rs/Cargo.toml packages/macro-rs/Cargo.toml
+COPY packages/macro-rs/src/lib.rs packages/macro-rs/src/
 
 # Install cargo dependencies
 RUN cargo fetch --locked --manifest-path /firefish/packages/backend-rs/Cargo.toml

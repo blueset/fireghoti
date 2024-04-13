@@ -992,10 +992,6 @@ _aboutFirefish:
   source: "소스 코드"
   translation: "Firefish를 번역하기"
   donate: "Firefish에 기부하기"
-  morePatrons: "이 외에도 다른 많은 분들이 도움을 주시고 계십니다. 감사합니다🥰"
-  patrons: "후원자"
-  patronsList: 기부 금액이 아닌 시간 순서로 정렬합니다. 위 링크를 통해 후원하여 당신의 이름을 새겨 보세요!
-  sponsors: Firefish 스폰서
   pleaseDonateToHost: 또한, 이 서버 {host} 의 운영자에게 기부하는 것도 검토하여 주십시오.
   pleaseDonateToFirefish: Firefish의 개발에 후원하는 것을 검토하여 주십시오.
   donateHost: '{host} 에게 기부하기'

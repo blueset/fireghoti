@@ -6,7 +6,6 @@
   "scripts": {
     "build": "tsc -p ./",
 		"build:debug": "pnpm run build",
-    "lint": "pnpm biome check **/*.ts --apply",
 		"format": "pnpm biome format --write src/**/*.ts",
     "doc": "typedoc --out ../docs ./src",
     "test": "NODE_ENV=test jest -u --maxWorkers=3"
