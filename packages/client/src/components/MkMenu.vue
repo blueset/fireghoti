@@ -202,12 +202,12 @@
 
 <script lang="ts" setup>
 import {
+	type Ref,
 	defineAsyncComponent,
 	onBeforeUnmount,
 	onMounted,
 	ref,
 	watch,
-	shallowRef,
 } from "vue";
 import { FocusTrap } from "focus-trap-vue";
 import FormSwitch from "@/components/form/switch.vue";
@@ -242,7 +242,12 @@ const emit = defineEmits<{
 
 const itemsEl = ref<HTMLDivElement>();
 
-const items2 = shallowRef<InnerMenuItem[]>([]);
+/**
+ * Strictly speaking, this type conversion is wrong
+ * because `ref` will deeply unpack the `ref` in `MenuSwitch`.  
+ * But it performs correctly, so who cares?
+ */
+const items2 = ref([]) as Ref<InnerMenuItem[]>;
 
 const child = ref<InstanceType<typeof XChild>>();
 
