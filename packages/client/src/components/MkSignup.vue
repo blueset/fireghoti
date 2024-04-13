@@ -305,12 +305,12 @@ const host = toUnicode(config.host);
 const hcaptcha = ref();
 const recaptcha = ref();
 
-const username: string = ref("");
-const password: string = ref("");
-const retypedPassword: string = ref("");
-const invitationCode: string = ref("");
+const username = ref<string>("");
+const password = ref<string>("");
+const retypedPassword = ref<string>("");
+const invitationCode = ref<string>("");
 const email = ref("");
-const usernameState:
+const usernameState = ref<
 	| null
 	| "wait"
 	| "ok"
@@ -318,9 +318,10 @@ const usernameState:
 	| "error"
 	| "invalid-format"
 	| "min-range"
-	| "max-range" = ref(null);
-const invitationState: null | "entered" = ref(null);
-const emailState:
+	| "max-range"
+	>(null);
+const invitationState = ref<null | "entered">(null);
+const emailState = ref<
 	| null
 	| "wait"
 	| "ok"
@@ -330,11 +331,11 @@ const emailState:
 	| "unavailable:mx"
 	| "unavailable:smtp"
 	| "unavailable"
-	| "error" = ref(null);
-const passwordStrength: "" | "low" | "medium" | "high" = ref("");
-const passwordRetypeState: null | "match" | "not-match" = ref(null);
-const submitting: boolean = ref(false);
-const ToSAgreement: boolean = ref(false);
+	| "error">(null);
+const passwordStrength = ref<"" | "low" | "medium" | "high">("");
+const passwordRetypeState = ref<null | "match" | "not-match" >(null);
+const submitting = ref(false);
+const ToSAgreement = ref(false);
 const hCaptchaResponse = ref(null);
 const reCaptchaResponse = ref(null);
 

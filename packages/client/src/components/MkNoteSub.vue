@@ -414,7 +414,7 @@ function onContextmenu(ev: MouseEvent): void {
 						os.pageWindow(notePage(appearNote.value));
 					},
 				},
-				notePage(appearNote.value) != location.pathname
+				notePage(appearNote.value) !== location.pathname
 					? {
 							icon: `${icon("ph-arrows-out-simple")}`,
 							text: i18n.ts.showInPage,
