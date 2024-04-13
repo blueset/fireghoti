@@ -3,8 +3,8 @@ import {
 	MAX_LENGTH_INSTANCE,
 } from "@/models/entities/instance.js";
 import { Instances } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
-import { toPuny } from "@/misc/convert-host.js";
+import { genId } from "backend-rs";
+import { toPuny } from "backend-rs";
 import { Cache } from "@/misc/cache.js";
 import Logger from "@/services/logger.js";
 

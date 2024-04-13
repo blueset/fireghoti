@@ -1,7 +1,7 @@
 import { db } from "@/db/postgre.js";
 import { DriveFile } from "@/models/entities/drive-file.js";
 import type { User } from "@/models/entities/user.js";
-import { toPuny } from "@/misc/convert-host.js";
+import { toPuny } from "backend-rs";
 import { awaitAll } from "@/prelude/await-all.js";
 import type { Packed } from "@/misc/schema.js";
 import config from "@/config/index.js";

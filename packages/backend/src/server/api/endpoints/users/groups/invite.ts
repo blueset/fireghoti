@@ -3,7 +3,7 @@ import {
 	UserGroupJoinings,
 	UserGroupInvitations,
 } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import type { UserGroupInvitation } from "@/models/entities/user-group-invitation.js";
 import { createNotification } from "@/services/create-notification.js";
 import { getUser } from "@/server/api/common/getters.js";

@@ -1,5 +1,5 @@
 import { UserGroupJoinings, UserGroupInvitations } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import type { UserGroupJoining } from "@/models/entities/user-group-joining.js";
 import { ApiError } from "@/server/api/error.js";
 import define from "@/server/api/define.js";

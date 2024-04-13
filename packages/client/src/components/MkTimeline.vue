@@ -44,7 +44,7 @@
 
 <script lang="ts" setup>
 import { computed, onUnmounted, provide, ref } from "vue";
-import type { entities, StreamTypes, TypeUtils } from "firefish-js";
+import type { StreamTypes, TypeUtils, entities } from "firefish-js";
 import MkPullToRefresh from "@/components/MkPullToRefresh.vue";
 import XNotes from "@/components/MkNotes.vue";
 import MkInfo from "@/components/MkInfo.vue";

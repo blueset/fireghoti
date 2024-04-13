@@ -2,7 +2,7 @@ import type { Note } from "@/models/entities/note.js";
 import { publishMainStream } from "@/services/stream.js";
 import type { User } from "@/models/entities/user.js";
 import { Mutings, NoteThreadMutings, NoteUnreads } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 
 export async function insertNoteUnread(
 	userId: User["id"],

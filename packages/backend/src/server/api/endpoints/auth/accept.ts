@@ -2,8 +2,7 @@ import * as crypto from "node:crypto";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { AuthSessions, AccessTokens, Apps } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
-import { secureRndstr } from "@/misc/secure-rndstr.js";
+import { genId, secureRndstr } from "backend-rs";
 
 export const meta = {
 	tags: ["auth"],
@@ -38,7 +37,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	}
 
 	// Generate access token
-	const accessToken = secureRndstr(32, true);
+	const accessToken = secureRndstr(32);
 
 	// Fetch exist access token
 	const exist = await AccessTokens.exist({

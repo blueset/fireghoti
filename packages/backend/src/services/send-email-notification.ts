@@ -2,7 +2,7 @@
 import type { User } from "@/models/entities/user.js";
 // import { sendEmail } from "./send-email.js";
 // import { I18n } from "@/misc/i18n.js";
-// import * as Acct from "@/misc/acct.js";
+// import { acctToString } from "backend-rs";
 // TODO
 //const locales = await import('../../../../locales/index.js');
 
@@ -15,7 +15,7 @@ async function follow(userId: User["id"], follower: User) {
 	const locale = locales['en-US'];
 	const i18n = new I18n(locale);
 	// TODO: render user information html
-	sendEmail(userProfile.email, i18n.t('_email._follow.title'), `${follower.name} (@${Acct.toString(follower)})`, `${follower.name} (@${Acct.toString(follower)})`);
+	sendEmail(userProfile.email, i18n.t('_email._follow.title'), `${follower.name} (@${acctToString(follower)})`, `${follower.name} (@${acctToString(follower)})`);
 	*/
 }
 
@@ -26,7 +26,7 @@ async function receiveFollowRequest(userId: User["id"], follower: User) {
 	const locale = locales['en-US'];
 	const i18n = new I18n(locale);
 	// TODO: render user information html
-	sendEmail(userProfile.email, i18n.t('_email._receiveFollowRequest.title'), `${follower.name} (@${Acct.toString(follower)})`, `${follower.name} (@${Acct.toString(follower)})`);
+	sendEmail(userProfile.email, i18n.t('_email._receiveFollowRequest.title'), `${follower.name} (@${acctToString(follower)})`, `${follower.name} (@${acctToString(follower)})`);
 	*/
 }
 

@@ -26,7 +26,7 @@ import { concat } from "@/prelude/array.js";
 import { extractHashtags } from "@/misc/extract-hashtags.js";
 import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
 import { extractMentionedUsers } from "@/services/note/create.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { publishNoteStream } from "@/services/stream.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";

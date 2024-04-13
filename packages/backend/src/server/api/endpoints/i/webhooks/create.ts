@@ -1,5 +1,5 @@
 import define from "@/server/api/define.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { Webhooks } from "@/models/index.js";
 import { publishInternalEvent } from "@/services/stream.js";
 import { webhookEventTypes } from "@/models/entities/webhook.js";

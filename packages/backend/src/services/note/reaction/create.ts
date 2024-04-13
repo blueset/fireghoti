@@ -14,7 +14,7 @@ import {
 	Blockings,
 } from "@/models/index.js";
 import { IsNull, Not } from "typeorm";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 import deleteReaction from "./delete.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";

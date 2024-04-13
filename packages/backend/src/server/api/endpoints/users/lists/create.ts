@@ -1,5 +1,5 @@
 import { UserLists } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import type { UserList } from "@/models/entities/user-list.js";
 import define from "@/server/api/define.js";
 

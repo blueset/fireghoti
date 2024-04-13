@@ -9,7 +9,7 @@ import type Bull from "bull";
 import { createImportCkPostJob } from "@/queue/index.js";
 import { Notes, NoteEdits } from "@/models/index.js";
 import type { Note } from "@/models/entities/note.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 
 const logger = queueLogger.createSubLogger("import-firefish-post");
 

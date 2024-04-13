@@ -1,7 +1,7 @@
 import define from "@/server/api/define.js";
 import { ClipNotes, Clips } from "@/models/index.js";
 import { ApiError } from "@/server/api/error.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { getNote } from "@/server/api/common/getters.js";
 
 export const meta = {

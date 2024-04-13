@@ -3,7 +3,7 @@ import type { CacheableUser } from "@/models/entities/user.js";
 import type { Note } from "@/models/entities/note.js";
 import { PollVotes, NoteWatchings, Polls, Blockings } from "@/models/index.js";
 import { Not } from "typeorm";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 
 export default async function (

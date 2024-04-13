@@ -3,7 +3,7 @@
 		<template #header
 			><MkPageHeader :actions="headerActions" :tabs="headerTabs"
 		/></template>
-		<MkSpacer :content-max="800" v-hotkey.global="keymap">
+		<MkSpacer v-hotkey.global="keymap" :content-max="800">
 			<div class="tl _block">
 				<XTimeline
 					ref="tlEl"

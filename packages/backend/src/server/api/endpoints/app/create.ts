@@ -1,8 +1,7 @@
 import define from "@/server/api/define.js";
 import { Apps } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId, secureRndstr } from "backend-rs";
 import { unique } from "@/prelude/array.js";
-import { secureRndstr } from "@/misc/secure-rndstr.js";
 
 export const meta = {
 	tags: ["app"],
@@ -41,7 +40,7 @@ export default define(meta, paramDef, async (ps, user) => {
 			includeSecret: true,
 		});
 	// Generate secret
-	const secret = secureRndstr(32, true);
+	const secret = secureRndstr(32);
 
 	// for backward compatibility
 	const permission = unique(

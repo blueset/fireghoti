@@ -4,7 +4,7 @@ import { createNote, fetchNote } from "../../models/note.js";
 import type { IObject, ICreate } from "../../type.js";
 import { getApId } from "../../type.js";
 import { getApLock } from "@/misc/app-lock.js";
-import { extractDbHost } from "@/misc/convert-host.js";
+import { extractHost } from "backend-rs";
 import { StatusError } from "@/misc/fetch.js";
 
 /**
@@ -25,7 +25,7 @@ export default async function (
 		}
 
 		if (typeof note.id === "string") {
-			if (extractDbHost(actor.uri) !== extractDbHost(note.id)) {
+			if (extractHost(actor.uri) !== extractHost(note.id)) {
 				return "skip: host in actor.uri !== note.id";
 			}
 		}

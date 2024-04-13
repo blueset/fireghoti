@@ -1,5 +1,5 @@
 import { fetchMeta } from "@/misc/fetch-meta.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { SwSubscriptions } from "@/models/index.js";
 import define from "@/server/api/define.js";
 

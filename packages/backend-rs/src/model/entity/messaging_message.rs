@@ -35,7 +35,7 @@ pub enum Relation {
         from = "Column::FileId",
         to = "super::drive_file::Column::Id",
         on_update = "NoAction",
-        on_delete = "Cascade"
+        on_delete = "SetNull"
     )]
     DriveFile,
     #[sea_orm(

@@ -224,17 +224,32 @@ switch (platform) {
         }
         break
       case 'arm':
-        localFileExisted = existsSync(
-          join(__dirname, 'backend-rs.linux-arm-gnueabihf.node')
-        )
-        try {
-          if (localFileExisted) {
-            nativeBinding = require('./backend-rs.linux-arm-gnueabihf.node')
-          } else {
-            nativeBinding = require('backend-rs-linux-arm-gnueabihf')
+        if (isMusl()) {
+          localFileExisted = existsSync(
+            join(__dirname, 'backend-rs.linux-arm-musleabihf.node')
+          )
+          try {
+            if (localFileExisted) {
+              nativeBinding = require('./backend-rs.linux-arm-musleabihf.node')
+            } else {
+              nativeBinding = require('backend-rs-linux-arm-musleabihf')
+            }
+          } catch (e) {
+            loadError = e
           }
-        } catch (e) {
-          loadError = e
+        } else {
+          localFileExisted = existsSync(
+            join(__dirname, 'backend-rs.linux-arm-gnueabihf.node')
+          )
+          try {
+            if (localFileExisted) {
+              nativeBinding = require('./backend-rs.linux-arm-gnueabihf.node')
+            } else {
+              nativeBinding = require('backend-rs-linux-arm-gnueabihf')
+            }
+          } catch (e) {
+            loadError = e
+          }
         }
         break
       case 'riscv64':
@@ -295,8 +310,20 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { AntennaSrcEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, nativeRandomStr, IdConvertType, convertId, nativeGetTimestamp, nativeCreateId, nativeInitIdGenerator } = nativeBinding
+const { readServerConfig, stringToAcct, acctToString, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, toMastodonId, fromMastodonId, nyaify, AntennaSrcEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
 
+module.exports.readServerConfig = readServerConfig
+module.exports.stringToAcct = stringToAcct
+module.exports.acctToString = acctToString
+module.exports.checkWordMute = checkWordMute
+module.exports.getFullApAccount = getFullApAccount
+module.exports.isSelfHost = isSelfHost
+module.exports.isSameOrigin = isSameOrigin
+module.exports.extractHost = extractHost
+module.exports.toPuny = toPuny
+module.exports.toMastodonId = toMastodonId
+module.exports.fromMastodonId = fromMastodonId
+module.exports.nyaify = nyaify
 module.exports.AntennaSrcEnum = AntennaSrcEnum
 module.exports.MutedNoteReasonEnum = MutedNoteReasonEnum
 module.exports.NoteVisibilityEnum = NoteVisibilityEnum
@@ -307,9 +334,7 @@ module.exports.RelayStatusEnum = RelayStatusEnum
 module.exports.UserEmojimodpermEnum = UserEmojimodpermEnum
 module.exports.UserProfileFfvisibilityEnum = UserProfileFfvisibilityEnum
 module.exports.UserProfileMutingnotificationtypesEnum = UserProfileMutingnotificationtypesEnum
-module.exports.nativeRandomStr = nativeRandomStr
-module.exports.IdConvertType = IdConvertType
-module.exports.convertId = convertId
-module.exports.nativeGetTimestamp = nativeGetTimestamp
-module.exports.nativeCreateId = nativeCreateId
-module.exports.nativeInitIdGenerator = nativeInitIdGenerator
+module.exports.initIdGenerator = initIdGenerator
+module.exports.getTimestamp = getTimestamp
+module.exports.genId = genId
+module.exports.secureRndstr = secureRndstr

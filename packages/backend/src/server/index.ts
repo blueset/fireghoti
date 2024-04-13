@@ -19,7 +19,7 @@ import { Users } from "@/models/index.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
 import { genIdenticon } from "@/misc/gen-identicon.js";
 import { createTemp } from "@/misc/create-temp.js";
-import * as Acct from "@/misc/acct.js";
+import { stringToAcct } from "backend-rs";
 import { envOption } from "@/env.js";
 import megalodon, { MegalodonInterface } from "megalodon";
 import activityPub from "./activitypub.js";
@@ -108,7 +108,7 @@ router.use(nodeinfo.routes());
 router.use(wellKnown.routes());
 
 router.get("/avatar/@:acct", async (ctx) => {
-	const { username, host } = Acct.parse(ctx.params.acct);
+	const { username, host } = stringToAcct(ctx.params.acct);
 	const user = await Users.findOne({
 		where: {
 			usernameLower: username.toLowerCase(),

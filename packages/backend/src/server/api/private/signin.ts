@@ -10,7 +10,7 @@ import {
 	AttestationChallenges,
 } from "@/models/index.js";
 import type { ILocalUser } from "@/models/entities/user.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import {
 	comparePassword,
 	hashPassword,

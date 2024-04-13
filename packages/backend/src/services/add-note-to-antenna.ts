@@ -1,6 +1,6 @@
 import type { Antenna } from "@/models/entities/antenna.js";
 import type { Note } from "@/models/entities/note.js";
-import { getTimestamp } from "@/misc/gen-id.js";
+import { getTimestamp } from "backend-rs";
 import { redisClient } from "@/db/redis.js";
 import { publishAntennaStream } from "@/services/stream.js";
 import type { User } from "@/models/entities/user.js";

@@ -1,10 +1,9 @@
 import { IsNull } from "typeorm";
 import follow from "@/services/following/create.js";
 
-import * as Acct from "@/misc/acct.js";
+import { isSelfHost, stringToAcct, toPuny } from "backend-rs";
 import { resolveUser } from "@/remote/resolve-user.js";
 import { downloadTextFile } from "@/misc/download-text-file.js";
-import { isSelfHost, toPuny } from "@/misc/convert-host.js";
 import { Users, DriveFiles } from "@/models/index.js";
 import type { DbUserImportJobData } from "@/queue/types.js";
 import { queueLogger } from "../../logger.js";
@@ -40,7 +39,7 @@ export async function importFollowing(
 	if (file.type.endsWith("json")) {
 		for (const acct of JSON.parse(csv)) {
 			try {
-				const { username, host } = Acct.parse(acct);
+				const { username, host } = stringToAcct(acct);
 
 				let target = isSelfHost(host!)
 					? await Users.findOneBy({
@@ -78,7 +77,7 @@ export async function importFollowing(
 
 			try {
 				const acct = line.split(",")[0].trim();
-				const { username, host } = Acct.parse(acct);
+				const { username, host } = stringToAcct(acct);
 
 				let target = isSelfHost(host!)
 					? await Users.findOneBy({

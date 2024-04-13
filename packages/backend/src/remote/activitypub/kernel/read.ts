@@ -1,7 +1,7 @@
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
 import type { IRead } from "../type.js";
 import { getApId } from "../type.js";
-import { isSelfHost, extractDbHost } from "@/misc/convert-host.js";
+import { isSelfHost, extractHost } from "backend-rs";
 import { MessagingMessages } from "@/models/index.js";
 import { readUserMessagingMessage } from "@/server/api/common/read-messaging-message.js";
 
@@ -11,7 +11,7 @@ export const performReadActivity = async (
 ): Promise<string> => {
 	const id = await getApId(activity.object);
 
-	if (!isSelfHost(extractDbHost(id))) {
+	if (!isSelfHost(extractHost(id))) {
 		return `skip: Read to foreign host (${id})`;
 	}
 

@@ -7,7 +7,7 @@ import {
 	Mutings,
 	Users,
 } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId, toPuny } from "backend-rs";
 import type { MessagingMessage } from "@/models/entities/messaging-message.js";
 import {
 	publishMessagingStream,
@@ -22,7 +22,6 @@ import renderNote from "@/remote/activitypub/renderer/note.js";
 import renderCreate from "@/remote/activitypub/renderer/create.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import { deliver } from "@/queue/index.js";
-import { toPuny } from "@/misc/convert-host.js";
 import { Instances } from "@/models/index.js";
 
 export async function createMessage(

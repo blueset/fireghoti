@@ -4,9 +4,9 @@ import { i18n } from "./i18n";
 import { apiUrl } from "@/config";
 import { me } from "@/me";
 import { alert, api, popup, popupMenu, waiting } from "@/os";
+import icon from "@/scripts/icon";
 import { del, get, set } from "@/scripts/idb-proxy";
 import { reloadChannel, unisonReload } from "@/scripts/unison-reload";
-import icon from "@/scripts/icon";
 
 // TODO: 他のタブと永続化されたstateを同期
 

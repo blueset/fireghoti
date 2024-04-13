@@ -5,7 +5,7 @@ import type { IAnnounce } from "../../type.js";
 import { getApId } from "../../type.js";
 import { fetchNote, resolveNote } from "../../models/note.js";
 import { apLogger } from "../../logger.js";
-import { extractDbHost } from "@/misc/convert-host.js";
+import { extractHost } from "backend-rs";
 import { getApLock } from "@/misc/app-lock.js";
 import { parseAudience } from "../../audience.js";
 import { StatusError } from "@/misc/fetch.js";
@@ -31,7 +31,7 @@ export default async function (
 	}
 
 	// Interrupt if you block the announcement destination
-	if (await shouldBlockInstance(extractDbHost(uri))) return;
+	if (await shouldBlockInstance(extractHost(uri))) return;
 
 	const lock = await getApLock(uri);
 

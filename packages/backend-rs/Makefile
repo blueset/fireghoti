@@ -19,10 +19,15 @@ regenerate-entities:
 	done
 	sed -i 's/#\[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum)\]/#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]\n#[cfg_attr(not(feature = "napi"), derive(Clone))]\n#[cfg_attr(feature = "napi", napi_derive::napi)]/' \
 	  src/model/entity/sea_orm_active_enums.rs
-	pnpm run format
+	cargo fmt --all --
 
-index.js: $(SRC)
+.PHONY: update-index
+update-index: index.js index.d.ts
+
+index.js index.d.ts: $(SRC)
 	NODE_OPTIONS='--max_old_space_size=3072' pnpm run build:debug
-	[ -f built/index.js ]
-	rm --force index.js
+	[ -f built/index.js ] && [ -f built/index.d.ts ]
+	rm --force index.js index.d.ts
 	cp built/index.js index.js
+	cp built/index.d.ts index.d.ts
+	sed -i 's/^ \*r"/ */g' index.d.ts
