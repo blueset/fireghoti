@@ -8,6 +8,9 @@ Critical security updates are indicated by the :warning: icon.
 ## Unreleased
 
 - Add "Media" tab to user page
+- Improve federation and rendering of mathematical expressions
+- Remove donor information from the web client
+	- See also: https://info.firefish.dev/notes/9s1n283sb10rh869
 - Fix bugs
 
 ## [v20240405](https://firefish.dev/firefish/firefish/-/merge_requests/10733/commits)
