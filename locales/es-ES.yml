@@ -1073,17 +1073,11 @@ _aboutFirefish:
   source: "Código fuente"
   translation: "Traducir Firefish"
   donate: "Donar a Firefish"
-  morePatrons: "También apreciamos el apoyo de muchos más que no están enlistados
-    aquí. ¡Gracias! 🥰"
-  patrons: "Mecenas de Firefish"
   pleaseDonateToFirefish: Por favor considera donar a Firefish para apollar su desarrollo.
   donateHost: Dona a {host}
-  patronsList: Listados cronológicamente no por monto de la donación. ¡Dona con el
-    vínculo de arriba para que tu nombre aparezca aquí!
   donateTitle: ¿Te gusta Firefish?
   pleaseDonateToHost: También considera donar a tu propio servidor , {host}, para
     ayudar con los costos de operación.
-  sponsors: Patrocinadores de Firefish
   misskeyContributors: Contribuidores de Misskey
 _nsfw:
   respect: "Ocultar medios NSFW"
