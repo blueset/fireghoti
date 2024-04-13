@@ -126,6 +126,11 @@ export const meta = {
 				optional: false,
 				nullable: false,
 			},
+			antennaLimit: {
+				type: "number",
+				optional: false,
+				nullable: false,
+			},
 			cacheRemoteFiles: {
 				type: "boolean",
 				optional: false,
@@ -445,6 +450,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		enableGuestTimeline: instance.enableGuestTimeline,
 		driveCapacityPerLocalUserMb: instance.localDriveCapacityMb,
 		driveCapacityPerRemoteUserMb: instance.remoteDriveCapacityMb,
+		antennaLimit: instance.antennaLimit,
 		emailRequiredForSignup: instance.emailRequiredForSignup,
 		enableHcaptcha: instance.enableHcaptcha,
 		hcaptchaSiteKey: instance.hcaptchaSiteKey,
