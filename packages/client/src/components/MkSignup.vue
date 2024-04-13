@@ -319,7 +319,7 @@ const usernameState = ref<
 	| "invalid-format"
 	| "min-range"
 	| "max-range"
-	>(null);
+>(null);
 const invitationState = ref<null | "entered">(null);
 const emailState = ref<
 	| null
@@ -331,9 +331,10 @@ const emailState = ref<
 	| "unavailable:mx"
 	| "unavailable:smtp"
 	| "unavailable"
-	| "error">(null);
+	| "error"
+>(null);
 const passwordStrength = ref<"" | "low" | "medium" | "high">("");
-const passwordRetypeState = ref<null | "match" | "not-match" >(null);
+const passwordRetypeState = ref<null | "match" | "not-match">(null);
 const submitting = ref(false);
 const ToSAgreement = ref(false);
 const hCaptchaResponse = ref(null);

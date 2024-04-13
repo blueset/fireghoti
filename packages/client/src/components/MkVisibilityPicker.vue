@@ -153,7 +153,7 @@ const props = withDefaults(
 	defineProps<{
 		currentVisibility: NoteVisibility;
 		currentLocalOnly: boolean;
-		src?: HTMLElement;
+		src?: HTMLElement | null;
 	}>(),
 	{},
 );

@@ -2,14 +2,15 @@ import { markRaw, ref } from "vue";
 import { isSignedIn } from "./me";
 import { Storage } from "./pizzax";
 import type { NoteVisibility } from "@/types/note";
+import type { entities, ApiTypes } from "firefish-js";
 
 export const postFormActions: {
 	title: string;
-	handler: (note: entities.Note) => void | Promise<void>;
+	handler: (from, update) => void | Promise<void>;
 }[] = [];
 export const userActions: {
 	title: string;
-	handler: (note: entities.Note) => void | Promise<void>;
+	handler: (user: entities.User) => void | Promise<void>;
 }[] = [];
 export const noteActions: {
 	title: string;
@@ -19,7 +20,7 @@ export const noteViewInterruptors: {
 	handler: (note: entities.Note) => Promise<entities.Note>;
 }[] = [];
 export const notePostInterruptors: {
-	handler: (note: entities.Note) => Promise<entities.Note>;
+	handler: (note: ApiTypes.NoteSubmitReq) => Promise<ApiTypes.NoteSubmitReq>;
 }[] = [];
 
 const menuOptions = [
@@ -466,7 +467,6 @@ import darkTheme from "@/themes/d-rosepine.json5";
  * Storage for configuration information that does not need to be constantly loaded into memory (non-reactive)
  */
 import lightTheme from "@/themes/l-rosepinedawn.json5";
-import { entities } from "firefish-js";
 
 export class ColdDeviceStorage {
 	public static default = {

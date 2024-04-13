@@ -36,7 +36,6 @@ import type {
 	UserDetailed,
 	UserGroup,
 	UserList,
-	UserLite,
 	UserSorting,
 } from "./entities";
 
@@ -46,11 +45,13 @@ type TODO = Record<string, any> | null;
 
 type NoParams = Record<string, never>;
 
-type ShowUserReq = { username: string; host?: string } | { userId: User["id"] };
+type ShowUserReq =
+	| { username: string; host?: string | null }
+	| { userId: User["id"] };
 
-type NoteSubmitReq = {
+export type NoteSubmitReq = {
 	editId?: null | Note["id"];
-	visibility?: "public" | "home" | "followers" | "specified";
+	visibility?: (typeof consts.noteVisibilities)[number];
 	visibleUserIds?: User["id"][];
 	text?: null | string;
 	cw?: null | string;
@@ -62,10 +63,11 @@ type NoteSubmitReq = {
 	channelId?: null | Channel["id"];
 	poll?: null | {
 		choices: string[];
-		multiple?: boolean;
-		expiresAt?: null | number;
-		expiredAfter?: null | number;
+		multiple: boolean;
+		expiresAt: string | null;
+		expiredAfter: number | null;
 	};
+	lang?: string;
 };
 
 export type Endpoints = {

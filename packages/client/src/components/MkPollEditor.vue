@@ -84,14 +84,10 @@ import { formatDateTimeString } from "@/scripts/format-time-string";
 import { addTime } from "@/scripts/time";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
+import type { PollType } from "@/types/post-form";
 
 const props = defineProps<{
-	modelValue: {
-		expiresAt: string;
-		expiredAfter: number;
-		choices: string[];
-		multiple: boolean;
-	};
+	modelValue: PollType;
 }>();
 const emit = defineEmits<{
 	"update:modelValue": [

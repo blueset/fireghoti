@@ -29,7 +29,7 @@ export type UserLite = {
 	isIndexable: boolean;
 	isCat?: boolean;
 	speakAsCat?: boolean;
-	driveCapacityOverrideMb: number | null,
+	driveCapacityOverrideMb: number | null;
 };
 
 export type UserDetailed = UserLite & {
@@ -238,8 +238,8 @@ export interface RenoteNotification extends BaseNotification {
 	user: User;
 	userId: User["id"];
 	note: Note & {
-		renote: Note,
-		renoteId: string,
+		renote: Note;
+		renoteId: string;
 	};
 }
 export interface QuoteNotification extends BaseNotification {
