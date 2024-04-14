@@ -194,6 +194,7 @@ export class NoteConverter {
 											note.userHost,
 											false,
 											quoteUri,
+											ctx,
 										),
 									)
 									.then((p) => p ?? escapeMFM(text))
@@ -487,56 +488,6 @@ export class NoteConverter {
 		const ctx = getStubMastoContext(user, filterContext);
 		NoteHelpers.fixupEventNote(note);
 		return NoteConverter.encode(note, ctx);
-	}
-
-	public static async prewarmCache(note: Note): Promise<void> {
-		if (!config.htmlCache?.prewarm) return;
-		const identifier = `${note.id}:${(
-			note.updatedAt ?? note.createdAt
-		).getTime()}`;
-		if ((await this.noteContentHtmlCache.get(identifier)) !== undefined) return;
-
-		if (note.renoteId !== null && !note.renote) {
-			note.renote = await Notes.findOneBy({ id: note.renoteId });
-		}
-
-		const quoteUri = note.renote
-			? isQuote(note)
-				? note.renote.url ??
-					note.renote.uri ??
-					`${config.url}/notes/${note.renote.id}`
-				: null
-			: null;
-
-		const text =
-			note.text !== null
-				? quoteUri !== null
-					? note.text
-							.replaceAll(`RE: ${quoteUri}`, "")
-							.replaceAll(quoteUri, "")
-							.trimEnd()
-					: note.text
-				: null;
-		const content =
-			text !== null
-				? MfmHelpers.toHtml(
-						mfm.parse(text),
-						JSON.parse(note.mentionedRemoteUsers),
-						note.userHost,
-						false,
-						quoteUri,
-					).then((p) => p ?? escapeMFM(text))
-				: null;
-
-		if (note.user) UserConverter.prewarmCache(note.user);
-		else if (note.userId) UserConverter.prewarmCacheById(note.userId);
-
-		if (note.replyUserId) UserConverter.prewarmCacheById(note.replyUserId);
-		if (note.renoteUserId) UserConverter.prewarmCacheById(note.renoteUserId);
-		this.noteContentHtmlCache.set(identifier, await content);
-
-		// if (config.htmlCache?.dbFallback)
-		//     HtmlNoteCacheEntries.upsert({ noteId: note.id, updatedAt: note.updatedAt ?? note.createdAt, content: await content }, ["noteId"]);
 	}
 
 	private static removeHash(x: string) {

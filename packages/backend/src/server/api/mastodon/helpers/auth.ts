@@ -1,7 +1,7 @@
 import OAuth from "@/server/api/mastodon/entities/oauth/oauth.js";
-import { secureRndstr } from "@/misc/secure-rndstr.js";
+import { secureRndstr } from "backend-rs";
 import { Apps, AccessTokens } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { fetchMeta } from "@/misc/fetch-meta.js";
 import { MastoContext } from "@/server/api/mastodon/index.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
@@ -9,7 +9,7 @@ import { difference, toSingleLast, unique } from "@/prelude/array.js";
 import { ILocalUser } from "@/models/entities/user.js";
 import { splitCamelCaseIntoWords } from "@redocly/openapi-core/lib/utils";
 import { App } from "@/models/entities/app";
-import { convertId, IdConvertType as IdType } from "backend-rs";
+import { toMastodonId } from "backend-rs";
 
 export class AuthHelpers {
 	public static async registerApp(
@@ -23,8 +23,8 @@ export class AuthHelpers {
 			| string[]
 			| undefined;
 		const client_name = body.client_name;
-		const website = body.website;
-
+		const website = body.website || "";
+		
 		if (client_name == null)
 			throw new MastoApiError(400, "Missing client_name param");
 		if (redirect_uris == null || redirect_uris.length < 1)
@@ -61,7 +61,7 @@ export class AuthHelpers {
 		return {
 			id:
 				app.name === "ZonePane"
-					? convertId(app.id, IdType.MastodonId).substring(0, 6)
+					? toMastodonId(app.id).substring(0, 6)
 					: // ZonePane only accepts a small int as app ID
 						app.id,
 			name: app.name,
@@ -163,29 +163,53 @@ export class AuthHelpers {
 		);
 
 		if (clientId == null) throw invalidClientError;
-		if (code == null) throw new MastoApiError(401, "Invalid code");
-
+		
 		const app = await Apps.findOneBy({ id: clientId });
-		const token = await AccessTokens.findOneBy({ token: code });
-
+		
 		this.validateRedirectUri(body.redirect_uri);
-		if (body.grant_type !== "authorization_code")
+		if (body.grant_type === "authorization_code") {
+			if (code == null) throw new MastoApiError(401, "Invalid code");
+			const token = await AccessTokens.findOneBy({ token: code });
+			if (!app || body.client_secret !== app.secret) throw invalidClientError;
+			if (!token || app.id !== token.appId)
+				throw new MastoApiError(401, "Invalid code");
+			if (difference(scopes, app.permission).length > 0) throw invalidScopeError;
+			if (!app.callbackUrl?.split("\n").includes(body.redirect_uri))
+				throw new MastoApiError(400, "Redirect URI not in list");
+	
+			await AccessTokens.update(token.id, { fetched: true });
+	
+			return {
+				access_token: token.token,
+				token_type: "Bearer",
+				scope: app.permission.join(" "),
+				created_at: Math.floor(token.createdAt.getTime() / 1000),
+			};
+		} else if (body.grant_type === "client_credentials") {
+			if (!app || body.client_secret !== app.secret) throw invalidClientError;
+			if (difference(scopes, app.permission).length > 0) throw invalidScopeError;
+	
+			const secret = secureRndstr(32);
+			const token = await AccessTokens.insert({
+				id: genId(),
+				token: secret,
+				hash: secret,
+				appId: app.id,
+				userId: null,
+				permission: scopes,
+				createdAt: new Date(),
+				fetched: false,
+			}).then((x) => AccessTokens.findOneByOrFail(x.identifiers[0]));
+	
+			return {
+				access_token: token.token,
+				token_type: "Bearer",
+				scope: app.permission.join(" "),
+				created_at: Math.floor(token.createdAt.getTime() / 1000),
+			};
+		} else {
 			throw new MastoApiError(400, "Invalid grant_type");
-		if (!app || body.client_secret !== app.secret) throw invalidClientError;
-		if (!token || app.id !== token.appId)
-			throw new MastoApiError(401, "Invalid code");
-		if (difference(scopes, app.permission).length > 0) throw invalidScopeError;
-		if (!app.callbackUrl?.split("\n").includes(body.redirect_uri))
-			throw new MastoApiError(400, "Redirect URI not in list");
-
-		await AccessTokens.update(token.id, { fetched: true });
-
-		return {
-			access_token: token.token,
-			token_type: "Bearer",
-			scope: app.permission.join(" "),
-			created_at: Math.floor(token.createdAt.getTime() / 1000),
-		};
+		}
 	}
 
 	public static async revokeAuthToken(ctx: MastoContext) {

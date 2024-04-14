@@ -1,19 +1,21 @@
-import { Announcement } from "@/models/entities/announcement.js";
 import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
 import mfm from "mfm-js";
+import type { Announcement } from "@/models/entities/announcement.js";
+import type { MastoContext } from "..";
 
 export class AnnouncementConverter {
 	public static async encode(
 		announcement: Announcement,
 		isRead: boolean,
+		ctx: MastoContext,
 	): Promise<MastodonEntity.Announcement> {
 		return {
 			id: announcement.id,
 			content: `<h1>${
-				(await MfmHelpers.toHtml(mfm.parse(announcement.title), [], null)) ??
+				(await MfmHelpers.toHtml(mfm.parse(announcement.title), [], null, false, null, ctx)) ??
 				"Announcement"
 			}</h1>${
-				(await MfmHelpers.toHtml(mfm.parse(announcement.text), [], null)) ?? ""
+				(await MfmHelpers.toHtml(mfm.parse(announcement.text), [], null, false, null, ctx)) ?? ""
 			}`,
 			starts_at: null,
 			ends_at: null,

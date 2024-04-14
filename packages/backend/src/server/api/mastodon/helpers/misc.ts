@@ -16,8 +16,7 @@ import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { Announcement } from "@/models/entities/announcement.js";
 import { ILocalUser, User } from "@/models/entities/user.js";
 import { AnnouncementConverter } from "@/server/api/mastodon/converters/announcement.js";
-import { genId } from "@/misc/gen-id.js";
-import * as Acct from "@/misc/acct.js";
+import { genId, stringToAcct } from "backend-rs";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { generateMutedUserQueryForUsers } from "@/server/api/common/generate-muted-user-query.js";
 import { generateBlockQueryForUsers } from "@/server/api/common/generate-block-query.js";
@@ -254,7 +253,7 @@ export class MiscHelpers {
 		const pinned = fetchMeta().then((meta) =>
 			Promise.all(
 				meta.pinnedUsers
-					.map((acct) => Acct.parse(acct))
+					.map((acct) => stringToAcct(acct))
 					.map((acct) =>
 						Users.findOneBy({
 							usernameLower: acct.username.toLowerCase(),

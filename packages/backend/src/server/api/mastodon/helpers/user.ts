@@ -27,7 +27,7 @@ import deleteFollowing from "@/services/following/delete.js";
 import cancelFollowRequest from "@/services/following/requests/cancel.js";
 import createBlocking from "@/services/blocking/create.js";
 import deleteBlocking from "@/services/blocking/delete.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { Muting } from "@/models/entities/muting.js";
 import { publishUserEvent } from "@/services/stream.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";

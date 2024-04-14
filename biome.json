@@ -22,6 +22,9 @@
 						"useShorthandFunctionType": "warn",
 						"useTemplate": "warn",
 						"noNonNullAssertion": "off"
+					},
+					"complexity": {
+						"noStaticOnlyClass": "off"
 					}
 				}
 			}

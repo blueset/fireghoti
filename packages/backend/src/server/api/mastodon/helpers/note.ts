@@ -20,7 +20,7 @@ import deleteReaction from "@/services/note/reaction/delete.js";
 import createNote, { extractMentionedUsers } from "@/services/note/create.js";
 import editNote from "@/services/note/edit.js";
 import deleteNote from "@/services/note/delete.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
@@ -262,6 +262,9 @@ export class NoteHelpers {
 					mfm.parse(edit.text ?? ""),
 					JSON.parse(note.mentionedRemoteUsers),
 					note.userHost,
+					false,
+					null,
+					ctx,
 				).then((p) => p ?? ""),
 				created_at: lastDate.toISOString(),
 				emojis: [],

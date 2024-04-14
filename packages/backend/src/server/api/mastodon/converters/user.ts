@@ -62,6 +62,9 @@ export class UserConverter {
 						mfm.parse(profile?.description ?? ""),
 						profile?.mentions,
 						u.host,
+						false,
+						null,
+						ctx,
 					)
 						.then((p) => p ?? escapeMFM(profile?.description ?? ""))
 						.then((p) => (p !== "<p></p>" ? p : null));
@@ -266,95 +269,14 @@ export class UserConverter {
 		f: Field,
 		host: string | null,
 		mentions: IMentionedRemoteUsers,
+		ctx?: MastoContext,
 	): Promise<MastodonEntity.Field> {
 		return {
 			name: f.name,
 			value:
-				(await MfmHelpers.toHtml(mfm.parse(f.value), mentions, host, true)) ??
+				(await MfmHelpers.toHtml(mfm.parse(f.value), mentions, host, true, null,ctx)) ??
 				escapeMFM(f.value),
 			verified_at: f.verified ? new Date().toISOString() : null,
 		};
-	}
-
-	public static async prewarmCache(
-		user: User,
-		profile?: UserProfile | null,
-		oldProfile?: UserProfile | null,
-	): Promise<void> {
-		const identifier = `${user.id}:${(
-			user.lastFetchedAt ?? user.createdAt
-		).getTime()}`;
-		if (profile !== null) {
-			if (config.htmlCache?.dbFallback) {
-				if (profile === undefined) {
-					profile = await UserProfiles.findOneBy({ userId: user.id });
-				}
-				if (
-					oldProfile !== undefined &&
-					profile?.fields === oldProfile?.fields &&
-					profile?.description === oldProfile?.description
-				) {
-					HtmlUserCacheEntries.update(
-						{ userId: user.id },
-						{ updatedAt: user.lastFetchedAt ?? user.createdAt },
-					);
-					return;
-				}
-			}
-
-			if (!config.htmlCache?.prewarm) return;
-
-			if (profile === undefined) {
-				profile = await UserProfiles.findOneBy({ userId: user.id });
-			}
-
-			if ((await this.userBioHtmlCache.get(identifier)) === undefined) {
-				const bio = MfmHelpers.toHtml(
-					mfm.parse(profile?.description ?? ""),
-					profile?.mentions,
-					user.host,
-				)
-					.then((p) => p ?? escapeMFM(profile?.description ?? ""))
-					.then((p) => (p !== "<p></p>" ? p : null));
-
-				this.userBioHtmlCache.set(identifier, await bio);
-
-				if (config.htmlCache?.dbFallback)
-					HtmlUserCacheEntries.upsert(
-						{
-							userId: user.id,
-							updatedAt: user.lastFetchedAt ?? user.createdAt,
-							bio: await bio,
-						},
-						["userId"],
-					);
-			}
-
-			if ((await this.userFieldsHtmlCache.get(identifier)) === undefined) {
-				const fields = await Promise.all(
-					profile!.fields.map(async (p) =>
-						this.encodeField(p, user.host, profile!.mentions),
-					) ?? [],
-				);
-				this.userFieldsHtmlCache.set(identifier, fields);
-
-				if (config.htmlCache?.dbFallback)
-					HtmlUserCacheEntries.upsert(
-						{
-							userId: user.id,
-							updatedAt: user.lastFetchedAt ?? user.createdAt,
-							fields: fields,
-						},
-						["userId"],
-					);
-			}
-		}
-	}
-
-	public static async prewarmCacheById(
-		userId: string,
-		oldProfile?: UserProfile | null,
-	): Promise<void> {
-		await this.prewarmCache(await getUser(userId), undefined, oldProfile);
 	}
 }

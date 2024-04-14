@@ -21,7 +21,7 @@ import {
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import { In } from "typeorm";
 import type { ILocalUser, IRemoteUser } from "@/models/entities/user.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import type { IPoll } from "@/models/entities/poll.js";
 import { deliverToRelays } from "../relay.js";
 import renderUpdate from "@/remote/activitypub/renderer/update.js";

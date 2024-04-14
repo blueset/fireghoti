@@ -27,7 +27,7 @@ import { generatePaginationData } from "@/server/api/mastodon/middleware/paginat
 import { MastoContext } from "@/server/api/mastodon/index.js";
 import { generateListQuery } from "@/server/api/common/generate-list-query.js";
 import { generateFollowingQuery } from "@/server/api/common/generate-following-query.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 
 export class TimelineHelpers {
 	public static async getHomeTimeline(

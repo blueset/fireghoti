@@ -10,7 +10,7 @@ import {
 	PollVotes,
 	Users,
 } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { publishNoteStream } from "@/services/stream.js";
 import { createNotification } from "@/services/create-notification.js";
 import { deliver } from "@/queue/index.js";

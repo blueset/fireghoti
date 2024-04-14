@@ -1,7 +1,7 @@
 import { User } from "@/models/entities/user.js";
 import { Note } from "@/models/entities/note.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
-import { getWordHardMute } from "@/misc/check-word-mute.js";
+import { checkWordMute } from "backend-rs";
 import { Cache } from "@/misc/cache.js";
 import { unique } from "@/prelude/array.js";
 import config from "@/config/index.js";
@@ -36,6 +36,6 @@ export async function isFiltered(
 	const identifier =
 		(typeof ts === "string" ? new Date(ts) : ts)?.getTime() ?? "0";
 	return filteredNoteCache.fetch(`${note.id}:${identifier}:${user.id}`, () =>
-		getWordHardMute(note, user, unique(profile!.mutedWords)),
+		checkWordMute(note, user, unique(profile!.mutedWords)),
 	);
 }

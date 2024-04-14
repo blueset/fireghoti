@@ -156,17 +156,7 @@ if (me) {
 		});
 }
 
-const getUrlParams = () =>
-	window.location.search
-		.substring(1)
-		.split("&")
-		.reduce((result, query) => {
-			const [k, v] = query.split("=");
-			result[k] = decodeURIComponent(v);
-			return result;
-		}, {});
-
-const redirectUri = getUrlParams()["redirect_uri"];
+const redirectUri = new URLSearchParams(window.location.search).get("redirect_uri");
 if (redirectUri !== props.redirect_uri)
 	console.warn(
 		`Mismatching redirect_uris between props (${props.redirect_uri}) and getUrlParams (${redirectUri})`,

@@ -1,21 +1,25 @@
-import { IMentionedRemoteUsers } from "@/models/entities/note.js";
 import { Window as HappyDom } from "happy-dom";
 import config from "@/config/index.js";
 import { intersperse } from "@/prelude/array.js";
-import mfm from "mfm-js";
 import { resolveMentionFromCache } from "@/remote/resolve-user.js";
+import type { IMentionedRemoteUsers } from "@/models/entities/note.js";
+import type mfm from "mfm-js";
+import type { MastoContext } from "..";
 
 export class MfmHelpers {
 	public static async toHtml(
 		nodes: mfm.MfmNode[] | null,
 		mentionedRemoteUsers: IMentionedRemoteUsers = [],
-		objectHost: string | null,
-		inline: boolean = false,
+		objectHost: string | null = null,
+		inline = false,
 		quoteUri: string | null = null,
+		ctx?: MastoContext,
 	) {
 		if (nodes == null) {
 			return null;
 		}
+
+		const mastodonApp: string | null = ctx?.tokenApp?.name;
 
 		const { window } = new HappyDom();
 
@@ -108,7 +112,7 @@ export class MfmHelpers {
 						const rubyEl = doc.createElement("ruby");
 						const rtEl = doc.createElement("rt");
 
-						// ruby未対応のHTMLサニタイザーを通したときにルビが「劉備（りゅうび）」となるようにする
+						// ruby未対応のHTMLサニタイザーを通したときにルビが「劉備(りゅうび)」となるようにする
 						const rpStartEl = doc.createElement("rp");
 						rpStartEl.appendChild(doc.createTextNode("("));
 						const rpEndEl = doc.createElement("rp");
