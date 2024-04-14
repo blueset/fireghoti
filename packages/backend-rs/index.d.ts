@@ -132,6 +132,8 @@ export function isSelfHost(host?: string | undefined | null): boolean
 export function isSameOrigin(uri: string): boolean
 export function extractHost(uri: string): string
 export function toPuny(host: string): string
+/** Convert milliseconds to a human readable string */
+export function formatMilliseconds(milliseconds: number): string
 export function toMastodonId(firefishId: string): string | null
 export function fromMastodonId(mastodonId: string): string | null
 export function nyaify(text: string, lang?: string | undefined | null): string

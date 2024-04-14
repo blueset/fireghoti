@@ -310,7 +310,7 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { readServerConfig, stringToAcct, acctToString, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, toMastodonId, fromMastodonId, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, AntennaSrcEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
+const { readServerConfig, stringToAcct, acctToString, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, formatMilliseconds, toMastodonId, fromMastodonId, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, AntennaSrcEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
 
 module.exports.readServerConfig = readServerConfig
 module.exports.stringToAcct = stringToAcct
@@ -321,6 +321,7 @@ module.exports.isSelfHost = isSelfHost
 module.exports.isSameOrigin = isSameOrigin
 module.exports.extractHost = extractHost
 module.exports.toPuny = toPuny
+module.exports.formatMilliseconds = formatMilliseconds
 module.exports.toMastodonId = toMastodonId
 module.exports.fromMastodonId = fromMastodonId
 module.exports.nyaify = nyaify
