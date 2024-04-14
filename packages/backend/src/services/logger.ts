@@ -56,7 +56,6 @@ export default class Logger {
 		subDomains: Domain[] = [],
 		store = true,
 	): void {
-		if (envOption.quiet) return;
 		if (
 			!(typeof config.logLevel === "undefined") &&
 			!config.logLevel.includes(level)

@@ -76,9 +76,7 @@ cluster.on("exit", (worker) => {
 });
 
 // Display detail of unhandled promise rejection
-if (!envOption.quiet) {
-	process.on("unhandledRejection", console.dir);
-}
+process.on("unhandledRejection", console.dir);
 
 // Display detail of uncaught exception
 process.on("uncaughtException", (err) => {
