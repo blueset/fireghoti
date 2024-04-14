@@ -6,7 +6,7 @@ import {
 import generateUserToken from "@/server/api/common/generate-native-user-token.js";
 import define from "@/server/api/define.js";
 import { Users, UserProfiles } from "@/models/index.js";
-import { comparePassword } from "@/misc/password.js";
+import { verifyPassword } from "backend-rs";
 
 export const meta = {
 	requireCredential: true,
@@ -28,8 +28,8 @@ export default define(meta, paramDef, async (ps, user) => {
 
 	const profile = await UserProfiles.findOneByOrFail({ userId: user.id });
 
-	// Compare password
-	const same = await comparePassword(ps.password, profile.password!);
+	// Compare passwords
+	const same = verifyPassword(ps.password, profile.password!);
 
 	if (!same) {
 		throw new Error("incorrect password");

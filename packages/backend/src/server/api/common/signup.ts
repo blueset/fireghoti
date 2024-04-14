@@ -4,12 +4,11 @@ import { User } from "@/models/entities/user.js";
 import { Users, UsedUsernames } from "@/models/index.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
 import { IsNull } from "typeorm";
-import { genId, toPuny } from "backend-rs";
+import { genId, hashPassword, toPuny } from "backend-rs";
 import { UserKeypair } from "@/models/entities/user-keypair.js";
 import { UsedUsername } from "@/models/entities/used-username.js";
 import { db } from "@/db/postgre.js";
 import config from "@/config/index.js";
-import { hashPassword } from "@/misc/password.js";
 
 export async function signup(opts: {
 	username: User["username"];
@@ -40,7 +39,7 @@ export async function signup(opts: {
 		}
 
 		// Generate hash of password
-		hash = await hashPassword(password);
+		hash = hashPassword(password);
 	}
 
 	// Generate secret

@@ -9,8 +9,10 @@ napi = { version = "2.16.2", default-features = false }
 napi-derive = "2.16.2"
 napi-build = "2.1.2"
 
+argon2 = "0.5.3"
 async-trait = "0.1.80"
 basen = "0.1.0"
+bcrypt = "0.15.1"
 cfg-if = "1.0.0"
 chrono = "0.4.37"
 convert_case = "0.6.0"

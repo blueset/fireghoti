@@ -310,7 +310,7 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { readServerConfig, stringToAcct, acctToString, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, toMastodonId, fromMastodonId, nyaify, AntennaSrcEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
+const { readServerConfig, stringToAcct, acctToString, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, toMastodonId, fromMastodonId, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, AntennaSrcEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
 
 module.exports.readServerConfig = readServerConfig
 module.exports.stringToAcct = stringToAcct
@@ -324,6 +324,9 @@ module.exports.toPuny = toPuny
 module.exports.toMastodonId = toMastodonId
 module.exports.fromMastodonId = fromMastodonId
 module.exports.nyaify = nyaify
+module.exports.hashPassword = hashPassword
+module.exports.verifyPassword = verifyPassword
+module.exports.isOldPasswordAlgorithm = isOldPasswordAlgorithm
 module.exports.AntennaSrcEnum = AntennaSrcEnum
 module.exports.MutedNoteReasonEnum = MutedNoteReasonEnum
 module.exports.NoteVisibilityEnum = NoteVisibilityEnum

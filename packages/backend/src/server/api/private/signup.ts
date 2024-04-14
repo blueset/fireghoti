@@ -6,10 +6,8 @@ import { Users, RegistrationTickets, UserPendings } from "@/models/index.js";
 import { signup } from "@/server/api/common/signup.js";
 import config from "@/config/index.js";
 import { sendEmail } from "@/services/send-email.js";
-import { genId } from "backend-rs";
+import { genId, hashPassword } from "backend-rs";
 import { validateEmailForAccount } from "@/services/validate-email-for-account.js";
-import { hashPassword } from "@/misc/password.js";
-import { inspect } from "node:util";
 
 export default async (ctx: Koa.Context) => {
 	const body = ctx.request.body;
@@ -85,7 +83,7 @@ export default async (ctx: Koa.Context) => {
 		const code = rndstr("a-z0-9", 16);
 
 		// Generate hash of password
-		const hash = await hashPassword(password);
+		const hash = hashPassword(password);
 
 		await UserPendings.insert({
 			id: genId(),

@@ -4,17 +4,16 @@ import { genRsaKeyPair } from "@/misc/gen-key-pair.js";
 import { User } from "@/models/entities/user.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
 import { IsNull } from "typeorm";
-import { genId } from "backend-rs";
+import { genId, hashPassword } from "backend-rs";
 import { UserKeypair } from "@/models/entities/user-keypair.js";
 import { UsedUsername } from "@/models/entities/used-username.js";
 import { db } from "@/db/postgre.js";
-import { hashPassword } from "@/misc/password.js";
 
 export async function createSystemUser(username: string) {
 	const password = uuid();
 
 	// Generate hash of password
-	const hash = await hashPassword(password);
+	const hash = hashPassword(password);
 
 	// Generate secret
 	const secret = generateNativeUserToken();

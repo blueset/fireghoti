@@ -135,6 +135,9 @@ export function toPuny(host: string): string
 export function toMastodonId(firefishId: string): string | null
 export function fromMastodonId(mastodonId: string): string | null
 export function nyaify(text: string, lang?: string | undefined | null): string
+export function hashPassword(password: string): string
+export function verifyPassword(password: string, hash: string): boolean
+export function isOldPasswordAlgorithm(hash: string): boolean
 export interface AbuseUserReport {
   id: string
   createdAt: Date
