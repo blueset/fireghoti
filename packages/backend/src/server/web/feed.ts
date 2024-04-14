@@ -8,12 +8,9 @@ import getNoteHtml from "@/remote/activitypub/misc/get-note-html.js";
 
 /**
  * If there is this part in the note, it will cause CDATA to be terminated early.
- * So I inserted two zero-width spaces in the middle, which doesn't make a visual difference
- * Although this is not a good solution, there seems no other way.
- * Anyway, it is not common to encounter such extreme situations.
  */
 function escapeCDATA(str: string) {
-	return str.replaceAll("]]>", "]​]​>");
+	return str.replaceAll("]]>", "]]]]><![CDATA[>");
 }
 
 export default async function (
