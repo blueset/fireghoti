@@ -1,7 +1,6 @@
 import { emojiRegex } from "./emoji-regex.js";
-import { fetchMeta } from "backend-rs";
+import { fetchMeta, toPuny } from "backend-rs";
 import { Emojis } from "@/models/index.js";
-import { toPuny } from "backend-rs";
 import { IsNull } from "typeorm";
 
 export function convertReactions(reactions: Record<string, number>) {
