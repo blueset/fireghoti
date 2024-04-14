@@ -16,7 +16,7 @@ import { IsNull } from "typeorm";
 import config from "@/config/index.js";
 import Logger from "@/services/logger.js";
 import { Users } from "@/models/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { genIdenticon } from "@/misc/gen-identicon.js";
 import { createTemp } from "@/misc/create-temp.js";
 import { stringToAcct } from "backend-rs";
@@ -126,7 +126,7 @@ router.get("/avatar/@:acct", async (ctx) => {
 });
 
 router.get("/identicon/:x", async (ctx) => {
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 	if (meta.enableIdenticonGeneration) {
 		const [temp, cleanup] = await createTemp();
 		await genIdenticon(ctx.params.x, fs.createWriteStream(temp));

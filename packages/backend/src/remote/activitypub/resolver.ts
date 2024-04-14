@@ -1,7 +1,7 @@
 import config from "@/config/index.js";
 import type { ILocalUser } from "@/models/entities/user.js";
 import { getInstanceActor } from "@/services/instance-actor.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { extractHost, isSelfHost } from "backend-rs";
 import { apGet } from "./request.js";
 import type { IObject, ICollection, IOrderedCollection } from "./type.js";
@@ -100,7 +100,7 @@ export default class Resolver {
 			return await this.resolveLocal(value);
 		}
 
-		const meta = await fetchMeta();
+		const meta = await fetchMeta(true);
 		if (await shouldBlockInstance(host, meta)) {
 			throw new Error("Instance is blocked");
 		}

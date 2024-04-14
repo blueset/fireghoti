@@ -1,18 +1,17 @@
 import type Koa from "koa";
 import rndstr from "rndstr";
-import { fetchMeta } from "@/misc/fetch-meta.js";
 import { verifyHcaptcha, verifyRecaptcha } from "@/misc/captcha.js";
 import { Users, RegistrationTickets, UserPendings } from "@/models/index.js";
 import { signup } from "@/server/api/common/signup.js";
 import config from "@/config/index.js";
 import { sendEmail } from "@/services/send-email.js";
-import { genId, hashPassword } from "backend-rs";
+import { fetchMeta, genId, hashPassword } from "backend-rs";
 import { validateEmailForAccount } from "@/services/validate-email-for-account.js";
 
 export default async (ctx: Koa.Context) => {
 	const body = ctx.request.body;
 
-	const instance = await fetchMeta(true);
+	const instance = await fetchMeta(false);
 
 	// Verify *Captcha
 	// ただしテスト時はこの機構は障害となるため無効にする

@@ -1,5 +1,5 @@
 import { emojiRegex } from "./emoji-regex.js";
-import { fetchMeta } from "./fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { Emojis } from "@/models/index.js";
 import { toPuny } from "backend-rs";
 import { IsNull } from "typeorm";
@@ -21,7 +21,7 @@ export async function toDbReaction(
 	reaction?: string | null,
 	reacterHost?: string | null,
 ): Promise<string> {
-	if (!reaction) return (await fetchMeta()).defaultReaction;
+	if (!reaction) return (await fetchMeta(true)).defaultReaction;
 
 	reacterHost = reacterHost == null ? null : toPuny(reacterHost);
 
@@ -45,7 +45,7 @@ export async function toDbReaction(
 		if (emoji) return reacterHost ? `:${name}@${reacterHost}:` : `:${name}:`;
 	}
 
-	return (await fetchMeta()).defaultReaction;
+	return (await fetchMeta(true)).defaultReaction;
 }
 
 type DecodedReaction = {

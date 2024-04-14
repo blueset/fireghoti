@@ -136,6 +136,19 @@ export function toPuny(host: string): string
 export function formatMilliseconds(milliseconds: number): string
 export function toMastodonId(firefishId: string): string | null
 export function fromMastodonId(mastodonId: string): string | null
+export function fetchMeta(useCache: boolean): Promise<Meta>
+export interface PugArgs {
+  img: string | null
+  title: string
+  instanceName: string
+  desc: string | null
+  icon: string | null
+  splashIcon: string | null
+  themeColor: string | null
+  randomMotd: string
+  privateMode: boolean | null
+}
+export function metaToPugArgs(meta: Meta): PugArgs
 export function nyaify(text: string, lang?: string | undefined | null): string
 export function hashPassword(password: string): string
 export function verifyPassword(password: string, hash: string): boolean

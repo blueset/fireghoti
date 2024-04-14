@@ -1,6 +1,6 @@
 import { Brackets } from "typeorm";
 import define from "@/server/api/define.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { Notes } from "@/models/index.js";
 import type { Note } from "@/models/entities/note.js";
 import { safeForSql } from "@/misc/safe-for-sql.js";
@@ -67,7 +67,7 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async () => {
-	const instance = await fetchMeta(true);
+	const instance = await fetchMeta(false);
 	const hiddenTags = instance.hiddenTags.map((t) => normalizeForSearch(t));
 
 	const now = new Date(); // 5分単位で丸めた現在日時

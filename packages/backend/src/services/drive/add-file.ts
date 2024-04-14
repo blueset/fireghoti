@@ -6,7 +6,7 @@ import type S3 from "aws-sdk/clients/s3.js"; // TODO: migrate to SDK v3
 import sharp from "sharp";
 import { IsNull } from "typeorm";
 import { publishMainStream, publishDriveStream } from "@/services/stream.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { contentDisposition } from "@/misc/content-disposition.js";
 import { getFileInfo } from "@/misc/get-file-info.js";
 import {
@@ -77,7 +77,7 @@ async function save(
 	// thunbnail, webpublic を必要なら生成
 	const alts = await generateAlts(path, type, !file.uri);
 
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 
 	if (meta.useObjectStorage) {
 		//#region ObjectStorage params
@@ -360,7 +360,7 @@ async function upload(
 	if (type === "image/apng") type = "image/png";
 	if (!FILE_TYPE_BROWSERSAFE.includes(type)) type = "application/octet-stream";
 
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 
 	const params = {
 		Bucket: meta.objectStorageBucket,
@@ -495,7 +495,7 @@ export async function addFile({
 		const usage = await DriveFiles.calcDriveUsageOf(user);
 		const u = await Users.findOneBy({ id: user.id });
 
-		const instance = await fetchMeta();
+		const instance = await fetchMeta(true);
 		let driveCapacity =
 			1024 *
 			1024 *
@@ -567,7 +567,7 @@ export async function addFile({
 		: null;
 
 	const folder = await fetchFolder();
-	const instance = await fetchMeta();
+	const instance = await fetchMeta(true);
 
 	let file = new DriveFile();
 	file.id = genId();

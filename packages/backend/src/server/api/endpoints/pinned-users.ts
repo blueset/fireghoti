@@ -1,6 +1,6 @@
 import { IsNull } from "typeorm";
 import { Users } from "@/models/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { stringToAcct } from "backend-rs";
 import type { User } from "@/models/entities/user.js";
 import define from "@/server/api/define.js";
@@ -31,7 +31,7 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, me) => {
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 
 	const users = await Promise.all(
 		meta.pinnedUsers

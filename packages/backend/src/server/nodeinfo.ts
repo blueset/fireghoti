@@ -1,6 +1,6 @@
 import Router from "@koa/router";
 import config from "@/config/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { Users, Notes } from "@/models/index.js";
 import { IsNull, MoreThan } from "typeorm";
 import { MAX_NOTE_TEXT_LENGTH, MAX_CAPTION_TEXT_LENGTH } from "@/const.js";
@@ -27,7 +27,7 @@ const nodeinfo2 = async () => {
 	const now = Date.now();
 	const [meta, total, activeHalfyear, activeMonth, localPosts] =
 		await Promise.all([
-			fetchMeta(true),
+			fetchMeta(false),
 			Users.count({ where: { host: IsNull() } }),
 			Users.count({
 				where: {
