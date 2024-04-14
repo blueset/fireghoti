@@ -7,7 +7,7 @@ macro_rs = { path = "packages/macro-rs" }
 
 napi = { version = "2.16.2", default-features = false }
 napi-derive = "2.16.2"
-napi-build = "2.1.2"
+napi-build = "2.1.3"
 
 argon2 = "0.5.3"
 async-trait = "0.1.80"
