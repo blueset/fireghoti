@@ -1,6 +1,7 @@
 pub mod acct;
 pub mod check_word_mute;
 pub mod convert_host;
+pub mod emoji;
 pub mod escape_sql;
 pub mod format_milliseconds;
 pub mod mastodon_id;

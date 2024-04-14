@@ -33,7 +33,6 @@
 		"@peertube/http-signature": "1.7.0",
 		"@redocly/openapi-core": "1.11.0",
 		"@sinonjs/fake-timers": "11.2.2",
-		"@twemoji/parser": "^15.1.1",
 		"adm-zip": "0.5.10",
 		"ajv": "8.12.0",
 		"archiver": "7.0.1",

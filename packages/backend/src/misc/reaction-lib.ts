@@ -1,5 +1,4 @@
-import { emojiRegex } from "./emoji-regex.js";
-import { fetchMeta, toPuny } from "backend-rs";
+import { fetchMeta, isUnicodeEmoji, toPuny } from "backend-rs";
 import { Emojis } from "@/models/index.js";
 import { IsNull } from "typeorm";
 
@@ -22,16 +21,14 @@ export async function toDbReaction(
 ): Promise<string> {
 	if (!reaction) return (await fetchMeta(true)).defaultReaction;
 
-	reacterHost = reacterHost == null ? null : toPuny(reacterHost);
-
 	if (reaction.includes("❤") || reaction.includes("♥️")) return "❤️";
 
 	// Allow unicode reactions
-	const match = emojiRegex.exec(reaction);
-	if (match) {
-		const unicode = match[0];
-		return unicode;
+	if (isUnicodeEmoji(reaction)) {
+		return reaction;
 	}
+
+	reacterHost = reacterHost == null ? null : toPuny(reacterHost);
 
 	const custom = reaction.match(/^:([\w+-]+)(?:@\.)?:$/);
 	if (custom) {

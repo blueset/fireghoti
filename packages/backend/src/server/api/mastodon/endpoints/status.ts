@@ -1,10 +1,9 @@
 import Router from "@koa/router";
 import { getClient } from "../ApiMastodonCompatibleService.js";
-import { emojiRegexAtStartToEnd } from "@/misc/emoji-regex.js";
 import querystring from "node:querystring";
 import qs from "qs";
 import { convertTimelinesArgsId, limitToInt } from "./timeline.js";
-import { fetchMeta, fromMastodonId } from "backend-rs";
+import { fetchMeta, fromMastodonId, isUnicodeEmoji } from "backend-rs";
 import {
 	convertAccount,
 	convertAttachment,
@@ -37,7 +36,7 @@ export function apiStatusMastodon(router: Router): void {
 			}
 			const text = body.status;
 			const removed = text.replace(/@\S+/g, "").replace(/\s|​/g, "");
-			const isDefaultEmoji = emojiRegexAtStartToEnd.test(removed);
+			const isDefaultEmoji = isUnicodeEmoji(removed);
 			const isCustomEmoji = /^:[a-zA-Z0-9@_]+:$/.test(removed);
 			if ((body.in_reply_to_id && isDefaultEmoji) || isCustomEmoji) {
 				const a = await client.createEmojiReaction(

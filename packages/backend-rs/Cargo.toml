@@ -24,6 +24,7 @@ bcrypt = { workspace = true }
 cfg-if = { workspace = true }
 chrono = { workspace = true }
 cuid2 = { workspace = true }
+emojis = { workspace = true }
 idna = { workspace = true }
 jsonschema = { workspace = true }
 once_cell = { workspace = true }
