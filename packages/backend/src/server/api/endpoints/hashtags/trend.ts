@@ -1,9 +1,8 @@
 import { Brackets } from "typeorm";
 import define from "@/server/api/define.js";
-import { fetchMeta } from "backend-rs";
+import { fetchMeta, safeForSql } from "backend-rs";
 import { Notes } from "@/models/index.js";
 import type { Note } from "@/models/entities/note.js";
-import { safeForSql } from "@/misc/safe-for-sql.js";
 import { normalizeForSearch } from "@/misc/normalize-for-search.js";
 
 /*
