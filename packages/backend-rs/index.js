@@ -310,7 +310,7 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { readServerConfig, stringToAcct, acctToString, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, AntennaSrcEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
+const { readServerConfig, stringToAcct, acctToString, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, AntennaSrcEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
 
 module.exports.readServerConfig = readServerConfig
 module.exports.stringToAcct = stringToAcct
@@ -333,6 +333,9 @@ module.exports.nyaify = nyaify
 module.exports.hashPassword = hashPassword
 module.exports.verifyPassword = verifyPassword
 module.exports.isOldPasswordAlgorithm = isOldPasswordAlgorithm
+module.exports.decodeReaction = decodeReaction
+module.exports.countReactions = countReactions
+module.exports.toDbReaction = toDbReaction
 module.exports.AntennaSrcEnum = AntennaSrcEnum
 module.exports.MutedNoteReasonEnum = MutedNoteReasonEnum
 module.exports.NoteVisibilityEnum = NoteVisibilityEnum

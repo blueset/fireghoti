@@ -12,9 +12,8 @@ import {
 	Channels,
 } from "../index.js";
 import type { Packed } from "@/misc/schema.js";
-import { nyaify } from "backend-rs";
+import { countReactions, decodeReaction, nyaify } from "backend-rs";
 import { awaitAll } from "@/prelude/await-all.js";
-import { convertReactions, decodeReaction } from "@/misc/reaction-lib.js";
 import type { NoteReaction } from "@/models/entities/note-reaction.js";
 import {
 	aggregateNoteEmojis,
@@ -214,7 +213,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 				note.visibility === "specified" ? note.visibleUserIds : undefined,
 			renoteCount: note.renoteCount,
 			repliesCount: note.repliesCount,
-			reactions: convertReactions(note.reactions),
+			reactions: countReactions(note.reactions),
 			reactionEmojis: reactionEmoji,
 			emojis: noteEmoji,
 			tags: note.tags.length > 0 ? note.tags : undefined,

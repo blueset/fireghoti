@@ -156,6 +156,14 @@ export function nyaify(text: string, lang?: string | undefined | null): string
 export function hashPassword(password: string): string
 export function verifyPassword(password: string, hash: string): boolean
 export function isOldPasswordAlgorithm(hash: string): boolean
+export interface DecodedReaction {
+  reaction: string
+  name: string | null
+  host: string | null
+}
+export function decodeReaction(reaction: string): DecodedReaction
+export function countReactions(reactions: Record<string, number>): Record<string, number>
+export function toDbReaction(reaction?: string | undefined | null, host?: string | undefined | null): Promise<string>
 export interface AbuseUserReport {
   id: string
   createdAt: Date

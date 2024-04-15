@@ -8,3 +8,4 @@ pub mod mastodon_id;
 pub mod meta;
 pub mod nyaify;
 pub mod password;
+pub mod reaction;
