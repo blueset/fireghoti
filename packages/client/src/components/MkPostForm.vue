@@ -363,6 +363,11 @@ const props = withDefaults(
 		autofocus?: boolean;
 		showMfmCheatSheet?: boolean;
 		editId?: entities.Note["id"];
+		selectRange?: [
+			start: number,
+			end: number,
+			direction?: "forward" | "backward" | "none",
+		];
 	}>(),
 	{
 		initialVisibleUsers: () => [],
@@ -683,10 +688,14 @@ function togglePoll() {
 function focus() {
 	if (textareaEl.value) {
 		textareaEl.value.focus();
-		textareaEl.value.setSelectionRange(
-			textareaEl.value.value.length,
-			textareaEl.value.value.length,
-		);
+		if (props.selectRange) {
+			textareaEl.value.setSelectionRange(...props.selectRange);
+		} else {
+			textareaEl.value.setSelectionRange(
+				textareaEl.value.value.length,
+				textareaEl.value.value.length,
+			);
+		}
 	}
 }
 
