@@ -55,6 +55,7 @@ export default function load() {
 	mixin.userAgent = `Firefish/${meta.version} (${config.url})`;
 	mixin.clientEntry = clientManifest["src/init.ts"];
 
+	if (config.proxyRemoteFiles == null) config.proxyRemoteFiles = true;
 	if (!config.redis.prefix) config.redis.prefix = mixin.hostname;
 	if (config.cacheServer && !config.cacheServer.prefix)
 		config.cacheServer.prefix = mixin.hostname;

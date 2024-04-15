@@ -178,7 +178,7 @@ logLevel: [
 # Media Proxy
 #mediaProxy: https://example.com/proxy
 
-# Proxy remote files (default: false)
+# Proxy remote files (default: true)
 #proxyRemoteFiles: true
 
 #allowedPrivateNetworks: [
