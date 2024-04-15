@@ -10,7 +10,7 @@ import semver from "semver";
 import Logger from "@/services/logger.js";
 import loadConfig from "@/config/load.js";
 import type { Config } from "@/config/types.js";
-import { envOption } from "@/env.js";
+import { envOption } from "@/config/index.js";
 import { showMachineInfo } from "@/misc/show-machine-info.js";
 import { db, initDb } from "@/db/postgre.js";
 import { inspect } from "node:util";
