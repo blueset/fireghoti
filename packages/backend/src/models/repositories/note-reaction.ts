@@ -2,7 +2,7 @@ import { db } from "@/db/postgre.js";
 import { NoteReaction } from "@/models/entities/note-reaction.js";
 import { Notes, Users } from "../index.js";
 import type { Packed } from "@/misc/schema.js";
-import { decodeReaction } from "@/misc/reaction-lib.js";
+import { decodeReaction } from "backend-rs";
 import type { User } from "@/models/entities/user.js";
 
 export const NoteReactionRepository = db.getRepository(NoteReaction).extend({

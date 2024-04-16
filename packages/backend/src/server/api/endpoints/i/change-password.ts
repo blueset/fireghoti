@@ -1,6 +1,6 @@
 import define from "@/server/api/define.js";
 import { UserProfiles } from "@/models/index.js";
-import { hashPassword, comparePassword } from "@/misc/password.js";
+import { hashPassword, verifyPassword } from "backend-rs";
 
 export const meta = {
 	requireCredential: true,
@@ -20,8 +20,8 @@ export const paramDef = {
 export default define(meta, paramDef, async (ps, user) => {
 	const profile = await UserProfiles.findOneByOrFail({ userId: user.id });
 
-	// Compare password
-	const same = await comparePassword(ps.currentPassword, profile.password!);
+	// Compare passwords
+	const same = verifyPassword(ps.currentPassword, profile.password!);
 
 	if (!same) {
 		throw new Error("incorrect password");

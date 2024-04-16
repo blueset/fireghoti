@@ -1,5 +1,5 @@
 import config from "@/config/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { MAX_NOTE_TEXT_LENGTH, MAX_CAPTION_TEXT_LENGTH } from "@/const.js";
 import define from "@/server/api/define.js";
 
@@ -466,7 +466,7 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async () => {
-	const instance = await fetchMeta(true);
+	const instance = await fetchMeta(false);
 
 	return {
 		maintainerName: instance.maintainerName,

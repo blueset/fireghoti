@@ -1,7 +1,7 @@
 import si from "systeminformation";
 import Xev from "xev";
 import * as osUtils from "os-utils";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 
 const ev = new Xev();
 
@@ -20,7 +20,7 @@ export default function () {
 		ev.emit(`serverStatsLog:${x.id}`, log.slice(0, x.length || 50));
 	});
 
-	fetchMeta().then((meta) => {
+	fetchMeta(true).then((meta) => {
 		if (!meta.enableServerMachineStats) return;
 	});
 

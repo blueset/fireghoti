@@ -1,7 +1,7 @@
 import JSON5 from "json5";
 import { IsNull, MoreThan } from "typeorm";
 import config from "@/config/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { Ads, Emojis, Users } from "@/models/index.js";
 import { MAX_NOTE_TEXT_LENGTH, MAX_CAPTION_TEXT_LENGTH } from "@/const.js";
 import define from "@/server/api/define.js";
@@ -398,7 +398,7 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, me) => {
-	const instance = await fetchMeta(true);
+	const instance = await fetchMeta(false);
 
 	const emojis = await Emojis.find({
 		where: {

@@ -2,8 +2,7 @@ import cluster from "node:cluster";
 import chalk from "chalk";
 import { default as convertColor } from "color-convert";
 import { format as dateFormat } from "date-fns";
-import { envOption } from "@/env.js";
-import config from "@/config/index.js";
+import config, { envOption } from "@/config/index.js";
 
 import * as SyslogPro from "syslog-pro";
 
@@ -56,7 +55,6 @@ export default class Logger {
 		subDomains: Domain[] = [],
 		store = true,
 	): void {
-		if (envOption.quiet) return;
 		if (
 			!(typeof config.logLevel === "undefined") &&
 			!config.logLevel.includes(level)

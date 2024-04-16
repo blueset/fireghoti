@@ -1,7 +1,7 @@
 import push from "web-push";
 import config from "@/config/index.js";
 import { SwSubscriptions } from "@/models/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import type { Packed } from "@/misc/schema.js";
 import { getNoteSummary } from "@/misc/get-note-summary.js";
 
@@ -45,7 +45,7 @@ export async function pushNotification<T extends keyof pushNotificationsTypes>(
 	type: T,
 	body: pushNotificationsTypes[T],
 ) {
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 
 	if (
 		!meta.enableServiceWorker ||

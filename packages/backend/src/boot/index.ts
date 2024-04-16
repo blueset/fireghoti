@@ -3,7 +3,7 @@ import chalk from "chalk";
 import Xev from "xev";
 
 import Logger from "@/services/logger.js";
-import { envOption } from "../env.js";
+import { envOption } from "@/config/index.js";
 import { inspect } from "node:util";
 
 // for typeorm
@@ -76,9 +76,7 @@ cluster.on("exit", (worker) => {
 });
 
 // Display detail of unhandled promise rejection
-if (!envOption.quiet) {
-	process.on("unhandledRejection", console.dir);
-}
+process.on("unhandledRejection", console.dir);
 
 // Display detail of uncaught exception
 process.on("uncaughtException", (err) => {

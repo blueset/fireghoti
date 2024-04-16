@@ -2,7 +2,7 @@ import { Brackets } from "typeorm";
 import { Followings, Users } from "@/models/index.js";
 import type { User } from "@/models/entities/user.js";
 import define from "@/server/api/define.js";
-import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
+import { sqlLikeEscape } from "backend-rs";
 
 export const meta = {
 	tags: ["users"],

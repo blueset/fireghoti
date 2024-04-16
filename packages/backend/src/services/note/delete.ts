@@ -38,7 +38,6 @@ async function recalculateNotesCountOfLocalUser(user: {
 export default async function (
 	user: { id: User["id"]; uri: User["uri"]; host: User["host"] },
 	note: Note,
-	quiet = false,
 	deleteFromDb = true,
 ) {
 	const deletedAt = new Date();
@@ -67,87 +66,80 @@ export default async function (
 	}
 	const instanceNotesCountDecreasement: Record<string, number> = {};
 
-	if (!quiet) {
-		// Only broadcast "deleted" to local if the note is deleted from db
+	// Only broadcast "deleted" to local if the note is deleted from db
+	if (deleteFromDb) {
+		publishNoteStream(note.id, "deleted", {
+			deletedAt: deletedAt,
+		});
+	}
+
+	//#region ローカルの投稿なら削除アクティビティを配送
+	if (Users.isLocalUser(user) && !note.localOnly) {
+		let renote: Note | null = null;
+
+		// if deletd note is renote
+		if (
+			note.renoteId &&
+			note.text == null &&
+			!note.hasPoll &&
+			(note.fileIds == null || note.fileIds.length === 0)
+		) {
+			renote = await Notes.findOneBy({
+				id: note.renoteId,
+			});
+		}
+
+		const content = renderActivity(
+			renote
+				? renderUndo(
+						renderAnnounce(
+							renote.uri || `${config.url}/notes/${renote.id}`,
+							note,
+						),
+						user,
+					)
+				: renderDelete(renderTombstone(`${config.url}/notes/${note.id}`), user),
+		);
+
+		deliverToConcerned(user, note, content);
+	}
+
+	// also deliever delete activity to cascaded notes
+	for (const cascadingNote of cascadingNotes) {
 		if (deleteFromDb) {
-			publishNoteStream(note.id, "deleted", {
+			// For other notes, publishNoteStream is also required.
+			publishNoteStream(cascadingNote.id, "deleted", {
 				deletedAt: deletedAt,
 			});
 		}
 
-		//#region ローカルの投稿なら削除アクティビティを配送
-		if (Users.isLocalUser(user) && !note.localOnly) {
-			let renote: Note | null = null;
-
-			// if deletd note is renote
-			if (
-				note.renoteId &&
-				note.text == null &&
-				!note.hasPoll &&
-				(note.fileIds == null || note.fileIds.length === 0)
-			) {
-				renote = await Notes.findOneBy({
-					id: note.renoteId,
-				});
-			}
-
-			const content = renderActivity(
-				renote
-					? renderUndo(
-							renderAnnounce(
-								renote.uri || `${config.url}/notes/${renote.id}`,
-								note,
-							),
-							user,
-						)
-					: renderDelete(
-							renderTombstone(`${config.url}/notes/${note.id}`),
-							user,
-						),
-			);
-
-			deliverToConcerned(user, note, content);
+		if (!cascadingNote.user) continue;
+		if (!Users.isLocalUser(cascadingNote.user)) {
+			if (!Users.isRemoteUser(cascadingNote.user)) continue;
+			instanceNotesCountDecreasement[cascadingNote.user.host] ??= 0;
+			instanceNotesCountDecreasement[cascadingNote.user.host]++;
+			continue; // filter out remote users
 		}
+		affectedLocalUsers[cascadingNote.user.id] ??= cascadingNote.user;
+		if (cascadingNote.localOnly) continue; // filter out local-only notes
+		const content = renderActivity(
+			renderDelete(
+				renderTombstone(`${config.url}/notes/${cascadingNote.id}`),
+				cascadingNote.user,
+			),
+		);
+		deliverToConcerned(cascadingNote.user, cascadingNote, content);
+	}
+	//#endregion
 
-		// also deliever delete activity to cascaded notes
-		for (const cascadingNote of cascadingNotes) {
-			if (deleteFromDb) {
-				// For other notes, publishNoteStream is also required.
-				publishNoteStream(cascadingNote.id, "deleted", {
-					deletedAt: deletedAt,
-				});
-			}
-
-			if (!cascadingNote.user) continue;
-			if (!Users.isLocalUser(cascadingNote.user)) {
-				if (!Users.isRemoteUser(cascadingNote.user)) continue;
-				instanceNotesCountDecreasement[cascadingNote.user.host] ??= 0;
-				instanceNotesCountDecreasement[cascadingNote.user.host]++;
-				continue; // filter out remote users
-			}
-			affectedLocalUsers[cascadingNote.user.id] ??= cascadingNote.user;
-			if (cascadingNote.localOnly) continue; // filter out local-only notes
-			const content = renderActivity(
-				renderDelete(
-					renderTombstone(`${config.url}/notes/${cascadingNote.id}`),
-					cascadingNote.user,
-				),
-			);
-			deliverToConcerned(cascadingNote.user, cascadingNote, content);
-		}
-		//#endregion
-
-		if (Users.isRemoteUser(user)) {
-			instanceNotesCountDecreasement[user.host] ??= 0;
-			instanceNotesCountDecreasement[user.host]++;
-		}
-		for (const [host, count] of Object.entries(
-			instanceNotesCountDecreasement,
-		)) {
-			registerOrFetchInstanceDoc(host).then((i) => {
-				Instances.decrement({ id: i.id }, "notesCount", count);
-			});
-		}
+	if (Users.isRemoteUser(user)) {
+		instanceNotesCountDecreasement[user.host] ??= 0;
+		instanceNotesCountDecreasement[user.host]++;
+	}
+	for (const [host, count] of Object.entries(instanceNotesCountDecreasement)) {
+		registerOrFetchInstanceDoc(host).then((i) => {
+			Instances.decrement({ id: i.id }, "notesCount", count);
+		});
 	}
 
 	if (deleteFromDb) {
