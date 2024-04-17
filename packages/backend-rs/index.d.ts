@@ -128,7 +128,8 @@ export interface Acct {
 }
 export function stringToAcct(acct: string): Acct
 export function acctToString(acct: Acct): string
-export interface NoteLike {
+/** TODO: handle name collisions better */
+export interface NoteLikeForCheckWordMute {
   fileIds: Array<string>
   userId: string | null
   text: string | null
@@ -136,7 +137,7 @@ export interface NoteLike {
   renoteId: string | null
   replyId: string | null
 }
-export function checkWordMute(note: NoteLike, mutedWordLists: Array<Array<string>>, mutedPatterns: Array<string>): Promise<boolean>
+export function checkWordMute(note: NoteLikeForCheckWordMute, mutedWordLists: Array<Array<string>>, mutedPatterns: Array<string>): Promise<boolean>
 export function getFullApAccount(username: string, host?: string | undefined | null): string
 export function isSelfHost(host?: string | undefined | null): boolean
 export function isSameOrigin(uri: string): boolean
@@ -147,6 +148,14 @@ export function sqlLikeEscape(src: string): string
 export function safeForSql(src: string): boolean
 /** Convert milliseconds to a human readable string */
 export function formatMilliseconds(milliseconds: number): string
+/** TODO: handle name collisions better */
+export interface NoteLikeForGetNoteSummary {
+  fileIds: Array<string>
+  text: string | null
+  cw: string | null
+  hasPoll: boolean
+}
+export function getNoteSummary(note: NoteLikeForGetNoteSummary): string
 export function toMastodonId(firefishId: string): string | null
 export function fromMastodonId(mastodonId: string): string | null
 export function fetchMeta(useCache: boolean): Promise<Meta>
