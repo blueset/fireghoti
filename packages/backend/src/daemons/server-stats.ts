@@ -13,16 +13,15 @@ const round = (num: number) => Math.round(num * 10) / 10;
 /**
  * Report server stats regularly
  */
-export default function () {
+export default async function () {
 	const log = [] as any[];
 
 	ev.on("requestServerStatsLog", (x) => {
 		ev.emit(`serverStatsLog:${x.id}`, log.slice(0, x.length || 50));
 	});
 
-	fetchMeta(true).then((meta) => {
-		if (!meta.enableServerMachineStats) return;
-	});
+	const meta = await fetchMeta(true);
+	if (!meta.enableServerMachineStats) return;
 
 	async function tick() {
 		const cpu = await cpuUsage();
