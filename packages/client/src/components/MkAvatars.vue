@@ -9,12 +9,13 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import * as os from "@/os";
+import type { entities } from "firefish-js";
 
 const props = defineProps<{
 	userIds: string[];
 }>();
 
-const users = ref([]);
+const users = ref<entities.UserDetailed[]>([]);
 
 onMounted(async () => {
 	users.value = await os.api("users/show", {

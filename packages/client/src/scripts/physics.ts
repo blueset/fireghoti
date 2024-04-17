@@ -65,10 +65,10 @@ export function physics(container: HTMLElement) {
 	const objs = [];
 	for (const objEl of objEls) {
 		const left = objEl.dataset.physicsX
-			? parseInt(objEl.dataset.physicsX)
+			? Number.parseInt(objEl.dataset.physicsX)
 			: objEl.offsetLeft;
 		const top = objEl.dataset.physicsY
-			? parseInt(objEl.dataset.physicsY)
+			? Number.parseInt(objEl.dataset.physicsY)
 			: objEl.offsetTop;
 
 		let obj;
@@ -90,7 +90,7 @@ export function physics(container: HTMLElement) {
 				objEl.offsetHeight,
 				{
 					chamfer: {
-						radius: parseInt(style.borderRadius || "0", 10),
+						radius: Number.parseInt(style.borderRadius || "0", 10),
 					},
 					restitution: 0.5,
 				},

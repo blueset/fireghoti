@@ -19,7 +19,9 @@ export const GalleryPostRepository = db.getRepository(GalleryPost).extend({
 			createdAt: post.createdAt.toISOString(),
 			updatedAt: post.updatedAt.toISOString(),
 			userId: post.userId,
-			user: Users.pack(post.user || post.userId, me),
+			user: Users.pack(post.user || post.userId, me, {
+				detail: true,
+			}),
 			title: post.title,
 			description: post.description,
 			fileIds: post.fileIds,

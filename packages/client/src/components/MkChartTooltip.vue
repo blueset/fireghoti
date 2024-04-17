@@ -28,11 +28,11 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import type { Ref } from "vue";
 import MkTooltip from "./MkTooltip.vue";
 
 const props = defineProps<{
-	showing: boolean;
+	showing: Ref<boolean>;
 	x: number;
 	y: number;
 	title?: string;

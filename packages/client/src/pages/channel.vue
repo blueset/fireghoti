@@ -33,7 +33,7 @@
 						:style="{
 							backgroundImage: channel.bannerUrl
 								? `url(${channel.bannerUrl})`
-								: null,
+								: undefined,
 						}"
 						class="banner"
 					>
@@ -88,8 +88,6 @@
 					class="_gap"
 					src="channel"
 					:channel="channelId"
-					@before="before"
-					@after="after"
 				/>
 			</div>
 		</MkSpacer>
@@ -107,6 +105,7 @@ import { me } from "@/me";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
+import type { entities } from "firefish-js";
 
 const router = useRouter();
 
@@ -114,7 +113,11 @@ const props = defineProps<{
 	channelId: string;
 }>();
 
-const channel = ref(null);
+const channel = ref<entities.Channel>(
+	await os.api("channels/show", {
+		channelId: props.channelId,
+	}),
+);
 const showBanner = ref(true);
 
 watch(
@@ -124,7 +127,6 @@ watch(
 			channelId: props.channelId,
 		});
 	},
-	{ immediate: true },
 );
 
 function edit() {

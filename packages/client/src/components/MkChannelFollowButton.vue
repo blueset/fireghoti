@@ -27,10 +27,11 @@ import { ref } from "vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
+import type { entities } from "firefish-js";
 
 const props = withDefaults(
 	defineProps<{
-		channel: Record<string, any>;
+		channel: entities.Channel;
 		full?: boolean;
 	}>(),
 	{
@@ -38,7 +39,7 @@ const props = withDefaults(
 	},
 );
 
-const isFollowing = ref<boolean>(props.channel.isFollowing);
+const isFollowing = ref<boolean>(props.channel.isFollowing ?? false);
 const wait = ref(false);
 
 async function onClick() {

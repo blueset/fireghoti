@@ -1,4 +1,5 @@
 import type {
+	AbuseUserReport,
 	Ad,
 	Announcement,
 	Antenna,
@@ -35,6 +36,7 @@ import type {
 	UserDetailed,
 	UserGroup,
 	UserList,
+	UserLite,
 	UserSorting,
 } from "./entities";
 
@@ -44,11 +46,13 @@ type TODO = Record<string, any> | null;
 
 type NoParams = Record<string, never>;
 
-type ShowUserReq = { username: string; host?: string } | { userId: User["id"] };
+type ShowUserReq =
+	| { username: string; host?: string | null }
+	| { userId: User["id"] };
 
-type NoteSubmitReq = {
+export type NoteSubmitReq = {
 	editId?: null | Note["id"];
-	visibility?: "public" | "home" | "followers" | "specified";
+	visibility?: (typeof consts.noteVisibilities)[number];
 	visibleUserIds?: User["id"][];
 	text?: null | string;
 	cw?: null | string;
@@ -60,15 +64,27 @@ type NoteSubmitReq = {
 	channelId?: null | Channel["id"];
 	poll?: null | {
 		choices: string[];
-		multiple?: boolean;
-		expiresAt?: null | number;
-		expiredAfter?: null | number;
+		multiple: boolean;
+		expiresAt: string | null;
+		expiredAfter: number | null;
 	};
+	lang?: string;
 };
 
 export type Endpoints = {
 	// admin
-	"admin/abuse-user-reports": { req: TODO; res: TODO };
+	"admin/abuse-user-reports": {
+		req: {
+			limit?: number;
+			sinceId?: AbuseUserReport["id"];
+			untilId?: AbuseUserReport["id"];
+			state?: string;
+			reporterOrigin?: OriginType;
+			targetUserOrigin?: OriginType;
+			forwarded?: boolean;
+		};
+		res: AbuseUserReport[];
+	};
 	"admin/delete-all-files-of-a-user": {
 		req: { userId: User["id"] };
 		res: null;
@@ -206,16 +222,31 @@ export type Endpoints = {
 	};
 
 	// channels
-	"channels/create": { req: TODO; res: TODO };
-	"channels/featured": { req: TODO; res: TODO };
+	"channels/create": {
+		req: {
+			name: string;
+			description?: string;
+			bannerId: DriveFile["id"] | null;
+		};
+		res: Channel;
+	};
+	"channels/featured": { req: TODO; res: Channel[] };
 	"channels/follow": { req: TODO; res: TODO };
-	"channels/followed": { req: TODO; res: TODO };
-	"channels/owned": { req: TODO; res: TODO };
+	"channels/followed": { req: TODO; res: Channel[] };
+	"channels/owned": { req: TODO; res: Channel[] };
 	"channels/pin-note": { req: TODO; res: TODO };
-	"channels/show": { req: TODO; res: TODO };
+	"channels/show": { req: TODO; res: Channel };
 	"channels/timeline": { req: TODO; res: Note[] };
 	"channels/unfollow": { req: TODO; res: TODO };
-	"channels/update": { req: TODO; res: TODO };
+	"channels/update": {
+		req: {
+			channelId: Channel["id"];
+			name: string;
+			description?: string;
+			bannerId: DriveFile["id"] | null;
+		};
+		res: Channel;
+	};
 
 	// charts
 	"charts/active-users": {
@@ -252,6 +283,12 @@ export type Endpoints = {
 		res: DriveFile[];
 	};
 	"drive/files/attached-notes": { req: TODO; res: Note[] };
+	"drive/files/caption-image": {
+		req: {
+			url: string;
+		};
+		res: string;
+	};
 	"drive/files/check-existence": { req: TODO; res: TODO };
 	"drive/files/create": { req: TODO; res: TODO };
 	"drive/files/delete": { req: { fileId: DriveFile["id"] }; res: null };
@@ -378,6 +415,17 @@ export type Endpoints = {
 		res: Instance[];
 	};
 	"federation/show-instance": { req: { host: string }; res: Instance };
+	"federation/stats": {
+		req: {
+			limit?: number;
+		};
+		res: {
+			topSubInstances: Instance[];
+			otherFollowersCount: number;
+			topPubInstances: Instance[];
+			otherFollowingCount: number;
+		};
+	};
 	"federation/update-remote-user": { req: { userId: User["id"] }; res: null };
 	"federation/users": {
 		req: {
@@ -405,7 +453,12 @@ export type Endpoints = {
 	"gallery/posts/create": { req: TODO; res: TODO };
 	"gallery/posts/delete": { req: { postId: GalleryPost["id"] }; res: null };
 	"gallery/posts/like": { req: TODO; res: TODO };
-	"gallery/posts/show": { req: TODO; res: TODO };
+	"gallery/posts/show": {
+		req: {
+			postId: GalleryPost["id"];
+		};
+		res: GalleryPost;
+	};
 	"gallery/posts/unlike": { req: TODO; res: TODO };
 	"gallery/posts/update": { req: TODO; res: TODO };
 
@@ -447,7 +500,14 @@ export type Endpoints = {
 		res: NoteFavorite[];
 	};
 	"i/gallery/likes": { req: TODO; res: TODO };
-	"i/gallery/posts": { req: TODO; res: TODO };
+	"i/gallery/posts": {
+		req: {
+			limit?: number;
+			sinceId?: NoteFavorite["id"];
+			untilId?: NoteFavorite["id"];
+		};
+		res: GalleryPost[];
+	};
 	"i/get-word-muted-notes-count": { req: TODO; res: TODO };
 	"i/import-following": { req: TODO; res: TODO };
 	"i/import-user-lists": { req: TODO; res: TODO };
@@ -630,7 +690,14 @@ export type Endpoints = {
 		res: Note[];
 	};
 	"notes/clips": { req: TODO; res: TODO };
-	"notes/conversation": { req: TODO; res: TODO };
+	"notes/conversation": {
+		req: {
+			noteId: string;
+			limit?: number;
+			offset?: number;
+		};
+		res: Note[];
+	};
 	"notes/create": {
 		req: NoteSubmitReq;
 		res: { createdNote: Note };
@@ -733,7 +800,24 @@ export type Endpoints = {
 		res: Note[];
 	};
 	"notes/search-by-tag": { req: TODO; res: TODO };
-	"notes/search": { req: TODO; res: TODO };
+	"notes/search": {
+		req: {
+			query: string;
+			sinceId?: string;
+			untilId?: string;
+			sinceDate?: number;
+			untilDate?: number;
+			limit?: number;
+			offset?: number;
+			host?: string;
+			userId?: string;
+			withFiles?: boolean;
+			searchCwAndAlt?: boolean;
+			channelId?: string;
+			order?: "chronological" | "relevancy";
+		};
+		res: Note[];
+	};
 	"notes/show": { req: { noteId: Note["id"] }; res: Note };
 	"notes/state": { req: TODO; res: TODO };
 	"notes/timeline": {
@@ -745,6 +829,16 @@ export type Endpoints = {
 			untilDate?: number;
 		};
 		res: Note[];
+	};
+	"notes/translate": {
+		req: {
+			noteId: string;
+			targetLang: string;
+		};
+		res: {
+			sourceLang: string;
+			text: string;
+		};
 	};
 	"notes/unrenote": { req: { noteId: Note["id"] }; res: null };
 	"notes/user-list-timeline": {
@@ -863,7 +957,15 @@ export type Endpoints = {
 		};
 		res: FollowingFolloweePopulated[];
 	};
-	"users/gallery/posts": { req: TODO; res: TODO };
+	"users/gallery/posts": {
+		req: {
+			userId: User["id"];
+			limit?: number;
+			sinceId?: NoteFavorite["id"];
+			untilId?: NoteFavorite["id"];
+		};
+		res: GalleryPost[];
+	};
 	"users/get-frequently-replied-users": { req: TODO; res: TODO };
 	"users/groups/create": { req: TODO; res: TODO };
 	"users/groups/delete": { req: { groupId: UserGroup["id"] }; res: null };
@@ -908,7 +1010,16 @@ export type Endpoints = {
 	"users/relation": { req: TODO; res: TODO };
 	"users/report-abuse": { req: TODO; res: TODO };
 	"users/search-by-username-and-host": { req: TODO; res: TODO };
-	"users/search": { req: TODO; res: TODO };
+	"users/search": {
+		req: {
+			query: string;
+			offset?: number;
+			limit?: number;
+			origin?: "local" | "remote" | "combined";
+			detail?: true; // FIXME: when false, returns UserLite
+		};
+		res: UserDetailed[];
+	};
 	"users/show": {
 		req: ShowUserReq | { userIds: User["id"][] };
 		res: {

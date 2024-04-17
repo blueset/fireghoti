@@ -89,7 +89,8 @@
 						></span>
 					</a>
 					<button
-						v-else-if="item.type === 'user' && !items.hidden"
+						v-else-if="item.type === 'user'"
+						v-show="!item.hidden"
 						class="_button item"
 						:class="{ active: item.active }"
 						:disabled="item.active"
@@ -201,6 +202,7 @@
 
 <script lang="ts" setup>
 import {
+	type Ref,
 	defineAsyncComponent,
 	onBeforeUnmount,
 	onMounted,
@@ -213,6 +215,7 @@ import type {
 	InnerMenuItem,
 	MenuAction,
 	MenuItem,
+	MenuParent,
 	MenuPending,
 } from "@/types/menu";
 import * as os from "@/os";
@@ -234,21 +237,29 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(ev: "close", actioned?: boolean): void;
+	close: [actioned?: boolean];
 }>();
 
 const itemsEl = ref<HTMLDivElement>();
 
-const items2: InnerMenuItem[] = ref([]);
+/**
+ * Strictly speaking, this type conversion is wrong
+ * because `ref` will deeply unpack the `ref` in `MenuSwitch`.  
+ * But it performs correctly, so who cares?
+ */
+const items2 = ref([]) as Ref<InnerMenuItem[]>;
 
 const child = ref<InstanceType<typeof XChild>>();
 
 const childShowingItem = ref<MenuItem | null>();
 
+// FIXME: this is not used
+const isActive = ref();
+
 watch(
 	() => props.items,
 	() => {
-		const items: (MenuItem | MenuPending)[] = [...props.items].filter(
+		const items: (MenuItem | MenuPending)[] = props.items.filter(
 			(item) => item !== undefined,
 		);
 
@@ -288,29 +299,29 @@ function onGlobalMousedown(event: MouseEvent) {
 	if (
 		childTarget.value &&
 		(event.target === childTarget.value ||
-			childTarget.value.contains(event.target))
+			childTarget.value.contains(event.target as Node))
 	)
 		return;
-	if (child.value && child.value.checkHit(event)) return;
+	if (child.value?.checkHit(event)) return;
 	closeChild();
 }
 
 let childCloseTimer: null | number = null;
-function onItemMouseEnter(item) {
+function onItemMouseEnter(_item) {
 	childCloseTimer = window.setTimeout(() => {
 		closeChild();
 	}, 300);
 }
-function onItemMouseLeave(item) {
+function onItemMouseLeave(_item) {
 	if (childCloseTimer) window.clearTimeout(childCloseTimer);
 }
 
-async function showChildren(item: MenuItem, ev: MouseEvent) {
+async function showChildren(item: MenuParent, ev: MouseEvent) {
 	if (props.asDrawer) {
-		os.popupMenu(item.children, ev.currentTarget ?? ev.target);
+		os.popupMenu(item.children, (ev.currentTarget ?? ev.target) as HTMLElement);
 		close();
 	} else {
-		childTarget.value = ev.currentTarget ?? ev.target;
+		childTarget.value = (ev.currentTarget ?? ev.target) as HTMLElement;
 		childMenu.value = item.children;
 		childShowingItem.value = item;
 	}

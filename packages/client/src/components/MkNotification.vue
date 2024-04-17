@@ -12,12 +12,12 @@
 				:user="notification.note.user"
 			/>
 			<MkAvatar
-				v-else-if="notification.user"
+				v-else-if="'user' in notification"
 				class="icon"
 				:user="notification.user"
 			/>
 			<img
-				v-else-if="notification.icon"
+				v-else-if="'icon' in notification && notification.icon"
 				class="icon"
 				:src="notification.icon"
 				alt=""
@@ -95,7 +95,7 @@
 					i18n.ts._notification.pollEnded
 				}}</span>
 				<MkA
-					v-else-if="notification.user"
+					v-else-if="'user' in notification"
 					v-user-preview="notification.user.id"
 					class="name"
 					:to="userPage(notification.user)"
@@ -133,7 +133,7 @@
 					:plain="true"
 					:nowrap="!full"
 					:lang="notification.note.lang"
-					:custom-emojis="notification.note.renote.emojis"
+					:custom-emojis="notification.note.renote!.emojis"
 				/>
 			</MkA>
 			<MkA
@@ -212,6 +212,7 @@
 				style="opacity: 0.7"
 				>{{ i18n.ts.youGotNewFollower }}
 				<div v-if="full && !hideFollowButton">
+					<!-- FIXME: Provide a UserDetailed here -->
 					<MkFollowButton
 						:user="notification.user"
 						:full="true"
@@ -269,7 +270,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, watch } from "vue";
+import { onMounted, onUnmounted, ref, toRef, watch } from "vue";
 import type { entities } from "firefish-js";
 import XReactionIcon from "@/components/MkReactionIcon.vue";
 import MkFollowButton from "@/components/MkFollowButton.vue";
@@ -284,6 +285,8 @@ import { useTooltip } from "@/scripts/use-tooltip";
 import { defaultStore } from "@/store";
 import { instance } from "@/instance";
 import icon from "@/scripts/icon";
+import type { Connection } from "firefish-js/src/streaming";
+import type { Channels } from "firefish-js/src/streaming.types";
 
 const props = withDefaults(
 	defineProps<{
@@ -299,8 +302,8 @@ const props = withDefaults(
 
 const stream = useStream();
 
-const elRef = ref<HTMLElement>(null);
-const reactionRef = ref(null);
+const elRef = ref<HTMLElement | null>(null);
+const reactionRef = ref<InstanceType<typeof XReactionIcon> | null>(null);
 
 const hideFollowButton = defaultStore.state.hideFollowButtons;
 const showEmojiReactions =
@@ -311,7 +314,7 @@ const defaultReaction = ["⭐", "👍", "❤️"].includes(instance.defaultReact
 	: "⭐";
 
 let readObserver: IntersectionObserver | undefined;
-let connection;
+let connection: Connection<Channels["main"]> | null = null;
 
 onMounted(() => {
 	if (!props.notification.isRead) {
@@ -323,13 +326,13 @@ onMounted(() => {
 			observer.disconnect();
 		});
 
-		readObserver.observe(elRef.value);
+		readObserver.observe(elRef.value!);
 
 		connection = stream.useChannel("main");
-		connection.on("readAllNotifications", () => readObserver.disconnect());
+		connection.on("readAllNotifications", () => readObserver!.disconnect());
 
-		watch(props.notification.isRead, () => {
-			readObserver.disconnect();
+		watch(toRef(props.notification.isRead), () => {
+			readObserver!.disconnect();
 		});
 	}
 });
@@ -344,38 +347,47 @@ const groupInviteDone = ref(false);
 
 const acceptFollowRequest = () => {
 	followRequestDone.value = true;
-	os.api("following/requests/accept", { userId: props.notification.user.id });
+	os.api("following/requests/accept", {
+		userId: (props.notification as entities.ReceiveFollowRequestNotification)
+			.user.id,
+	});
 };
 
 const rejectFollowRequest = () => {
 	followRequestDone.value = true;
-	os.api("following/requests/reject", { userId: props.notification.user.id });
+	os.api("following/requests/reject", {
+		userId: (props.notification as entities.ReceiveFollowRequestNotification)
+			.user.id,
+	});
 };
 
 const acceptGroupInvitation = () => {
 	groupInviteDone.value = true;
 	os.apiWithDialog("users/groups/invitations/accept", {
-		invitationId: props.notification.invitation.id,
+		invitationId: (props.notification as entities.GroupInvitedNotification)
+			.invitation.id,
 	});
 };
 
 const rejectGroupInvitation = () => {
 	groupInviteDone.value = true;
 	os.api("users/groups/invitations/reject", {
-		invitationId: props.notification.invitation.id,
+		invitationId: (props.notification as entities.GroupInvitedNotification)
+			.invitation.id,
 	});
 };
 
 useTooltip(reactionRef, (showing) => {
+	const n = props.notification as entities.ReactionNotification;
 	os.popup(
 		XReactionTooltip,
 		{
 			showing,
-			reaction: props.notification.reaction
-				? props.notification.reaction.replace(/^:(\w+):$/, ":$1@.:")
-				: props.notification.reaction,
-			emojis: props.notification.note.emojis,
-			targetElement: reactionRef.value.$el,
+			reaction: n.reaction
+				? n.reaction.replace(/^:(\w+):$/, ":$1@.:")
+				: n.reaction,
+			emojis: n.note.emojis,
+			targetElement: reactionRef.value!.$el,
 		},
 		{},
 		"closed",

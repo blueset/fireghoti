@@ -140,7 +140,7 @@ const patternShow = ref(false);
 const modPattern = ref<HTMLDivElement>();
 const progress = ref<typeof FormRange>();
 const position = ref(0);
-const patData = shallowRef([] as ModRow[][]);
+const patData = shallowRef<readonly ModRow[][]>([]);
 const currentPattern = ref(0);
 const nbChannels = ref(0);
 const length = ref(1);
@@ -159,7 +159,7 @@ function load() {
 			error.value = false;
 			fetching.value = false;
 		})
-		.catch((e: any) => {
+		.catch((e: unknown) => {
 			console.error(e);
 			error.value = true;
 			fetching.value = false;
@@ -293,12 +293,13 @@ function isRowActive(i: number) {
 		}
 		return true;
 	}
+	return false;
 }
 
 function indexText(i: number) {
 	let rowText = i.toString(16);
 	if (rowText.length === 1) {
-		rowText = "0" + rowText;
+		rowText = `0${rowText}`;
 	}
 	return rowText;
 }

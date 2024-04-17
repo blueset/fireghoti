@@ -1,4 +1,4 @@
-export const packedChannelSchema = {
+export const packedAbuseUserReportSchema = {
 	type: "object",
 	properties: {
 		id: {
@@ -14,59 +14,55 @@ export const packedChannelSchema = {
 			nullable: false,
 			format: "date-time",
 		},
-		lastNotedAt: {
-			type: "string",
-			optional: false,
-			nullable: true,
-			format: "date-time",
-		},
-		name: {
+		comment: {
 			type: "string",
 			optional: false,
 			nullable: false,
 		},
-		description: {
-			type: "string",
-			nullable: true,
+		resolved: {
+			type: "boolean",
 			optional: false,
+			nullable: false,
 		},
-		bannerUrl: {
+		reporterId: {
 			type: "string",
-			format: "url",
-			nullable: true,
 			optional: false,
+			nullable: false,
+			format: "id",
 		},
-		bannerId: {
+		targetUserId: {
+			type: "string",
+			optional: false,
+			nullable: false,
+			format: "id",
+		},
+		assigneeId: {
 			type: "string",
 			optional: false,
 			nullable: true,
 			format: "id",
-			example: "xxxxxxxxxx",
 		},
-		notesCount: {
-			type: "number",
-			nullable: false,
+		reporter: {
+			type: "object",
 			optional: false,
-		},
-		usersCount: {
-			type: "number",
 			nullable: false,
-			optional: false,
+			ref: "UserDetailed",
 		},
-		isFollowing: {
-			type: "boolean",
+		targetUser: {
+			type: "object",
+			optional: false,
+			nullable: false,
+			ref: "UserDetailed",
+		},
+		assignee: {
+			type: "object",
 			optional: true,
-			nullable: false,
-		},
-		userId: {
-			type: "string",
 			nullable: true,
-			optional: false,
-			format: "id",
+			ref: "UserDetailed",
 		},
-		hasUnreadNote: {
+		forwarded: {
 			type: "boolean",
-			optional: true,
+			optional: false,
 			nullable: false,
 		},
 	},

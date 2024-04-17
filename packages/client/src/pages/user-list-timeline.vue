@@ -58,8 +58,8 @@ async function timetravel() {
 		title: i18n.ts.date,
 	});
 	if (canceled) return;
-
-	tlEl.value.timetravel(date);
+	// FIXME:
+	tlEl.value!.timetravel(date);
 }
 
 const headerActions = computed(() =>

@@ -54,7 +54,7 @@
 
 <script lang="ts" setup>
 import { computed, onActivated, onDeactivated, ref } from "vue";
-import MkPagination from "@/components/MkPagination.vue";
+import MkPagination, { MkPaginationType } from "@/components/MkPagination.vue";
 import MkButton from "@/components/MkButton.vue";
 import MkInfo from "@/components/MkInfo.vue";
 import { i18n } from "@/i18n";
@@ -70,7 +70,7 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-const list = ref<typeof MkPagination | null>(null);
+const list = ref<MkPaginationType<typeof pagination.endpoint> | null>(null);
 
 let isCached = false;
 let refreshTimer: number | null = null;

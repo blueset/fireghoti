@@ -2,12 +2,26 @@ import { markRaw, ref } from "vue";
 import { isSignedIn } from "./me";
 import { Storage } from "./pizzax";
 import type { NoteVisibility } from "@/types/note";
+import type { entities, ApiTypes } from "firefish-js";
 
-export const postFormActions = [];
-export const userActions = [];
-export const noteActions = [];
-export const noteViewInterruptors = [];
-export const notePostInterruptors = [];
+export const postFormActions: {
+	title: string;
+	handler: (from, update) => void | Promise<void>;
+}[] = [];
+export const userActions: {
+	title: string;
+	handler: (user: entities.User) => void | Promise<void>;
+}[] = [];
+export const noteActions: {
+	title: string;
+	handler: (note: entities.Note) => void | Promise<void>;
+}[] = [];
+export const noteViewInterruptors: {
+	handler: (note: entities.Note) => Promise<entities.Note>;
+}[] = [];
+export const notePostInterruptors: {
+	handler: (note: ApiTypes.NoteSubmitReq) => Promise<ApiTypes.NoteSubmitReq>;
+}[] = [];
 
 const menuOptions = [
 	"notifications",

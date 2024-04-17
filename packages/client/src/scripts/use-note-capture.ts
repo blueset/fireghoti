@@ -6,7 +6,7 @@ import { isSignedIn, me } from "@/me";
 import * as os from "@/os";
 
 export function useNoteCapture(props: {
-	rootEl: Ref<HTMLElement>;
+	rootEl: Ref<HTMLElement | null>;
 	note: Ref<entities.Note>;
 	isDeletedRef: Ref<boolean>;
 }) {

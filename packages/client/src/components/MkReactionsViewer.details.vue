@@ -4,6 +4,7 @@
 		:target-element="targetElement"
 		:max-width="340"
 		@closed="emit('closed')"
+		:showing="showing"
 	>
 		<div class="bqxuuuey">
 			<div class="reaction">
@@ -29,15 +30,18 @@
 </template>
 
 <script lang="ts" setup>
+import type { Ref } from "vue";
 import MkTooltip from "./MkTooltip.vue";
 import XReactionIcon from "@/components/MkReactionIcon.vue";
+import type { entities } from "firefish-js";
 
 defineProps<{
+	showing: Ref<boolean>;
 	reaction: string;
-	users: any[]; // TODO
+	users: entities.User[]; // TODO
 	count: number;
-	emojis: any[]; // TODO
-	targetElement: HTMLElement;
+	emojis: entities.EmojiLite[]; // TODO
+	targetElement?: HTMLElement;
 }>();
 
 const emit = defineEmits<{

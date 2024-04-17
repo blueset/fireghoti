@@ -5,13 +5,13 @@
 		@after-leave="emit('closed')"
 	>
 		<div
-			v-show="showing"
+			v-show="unref(showing)"
 			ref="el"
 			class="buebdbiu _acrylic _shadow"
 			:style="{ zIndex, maxWidth: maxWidth + 'px' }"
 		>
 			<slot>
-				<Mfm v-if="asMfm" :text="text" />
+				<Mfm v-if="asMfm" :text="text!" />
 				<span v-else>{{ text }}</span>
 			</slot>
 		</div>
@@ -19,15 +19,22 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, onUnmounted, ref } from "vue";
+import {
+	type MaybeRef,
+	nextTick,
+	onMounted,
+	onUnmounted,
+	ref,
+	unref,
+} from "vue";
 import * as os from "@/os";
 import { calcPopupPosition } from "@/scripts/popup-position";
 import { defaultStore } from "@/store";
 
 const props = withDefaults(
 	defineProps<{
-		showing: boolean;
-		targetElement?: HTMLElement;
+		showing: MaybeRef<boolean>;
+		targetElement?: HTMLElement | null;
 		x?: number;
 		y?: number;
 		text?: string;
@@ -40,6 +47,7 @@ const props = withDefaults(
 		maxWidth: 250,
 		direction: "top",
 		innerMargin: 0,
+		targetElement: null,
 	},
 );
 
@@ -51,7 +59,7 @@ const el = ref<HTMLElement>();
 const zIndex = os.claimZIndex("high");
 
 function setPosition() {
-	const data = calcPopupPosition(el.value, {
+	const data = calcPopupPosition(el.value!, {
 		anchorElement: props.targetElement,
 		direction: props.direction,
 		align: "center",
@@ -60,12 +68,12 @@ function setPosition() {
 		y: props.y,
 	});
 
-	el.value.style.transformOrigin = data.transformOrigin;
-	el.value.style.left = data.left + "px";
-	el.value.style.top = data.top + "px";
+	el.value!.style.transformOrigin = data.transformOrigin;
+	el.value!.style.left = `${data.left}px`;
+	el.value!.style.top = `${data.top}px`;
 }
 
-let loopHandler;
+let loopHandler: number;
 
 onMounted(() => {
 	nextTick(() => {
