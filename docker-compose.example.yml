@@ -17,6 +17,7 @@ services:
 #     - web
     environment:
       NODE_ENV: production
+      NODE_OPTIONS: --max-old-space-size=3072
     volumes:
       - ./custom:/firefish/custom:ro
       - ./files:/firefish/files
