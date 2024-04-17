@@ -44,9 +44,7 @@ export default define(meta, paramDef, async (ps, me) => {
 			),
 	);
 
-	return await Users.packMany(
-		users.filter((x) => (x != null)) as User[],
-		me,
-		{ detail: true },
-	);
+	return await Users.packMany(users.filter((x) => x != null) as User[], me, {
+		detail: true,
+	});
 });
