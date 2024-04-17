@@ -5,11 +5,15 @@
 
 ## What feature would you like implemented? <!-- Please give us a brief description of what you'd like. -->
 
+
 ## Why should we add this feature? <!-- Please give us a brief description of why your feature is important. -->
+
 
 ## Version <!-- What version of firefish is your instance running? You can find this by clicking your instance's logo at the bottom left and then clicking instance information. -->
 
+
 ## Instance <!-- What instance of firefish are you using? -->
+
 
 ## Contribution Guidelines
 By submitting this issue, you agree to follow our [Contribution Guidelines](https://firefish.dev/firefish/firefish/-/blob/develop/CONTRIBUTING.md)
