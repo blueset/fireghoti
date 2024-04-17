@@ -27,8 +27,7 @@ import {
 	Emojis,
 	GalleryPosts,
 } from "@/models/index.js";
-import { stringToAcct } from "backend-rs";
-import { getNoteSummary } from "@/misc/get-note-summary.js";
+import { getNoteSummary, stringToAcct } from "backend-rs";
 import { queues } from "@/queue/queues.js";
 import { genOpenapiSpec } from "../api/openapi/gen-spec.js";
 import { urlPreviewHandler } from "./url-preview.js";
@@ -517,8 +516,8 @@ router.get("/notes/:note", async (ctx, next) => {
 	});
 
 	try {
-		if (note) {
-			const _note = await Notes.pack(note);
+		if (note != null) {
+			const packedNote = await Notes.pack(note);
 
 			const profile = await UserProfiles.findOneByOrFail({
 				userId: note.userId,
@@ -526,13 +525,13 @@ router.get("/notes/:note", async (ctx, next) => {
 			const meta = await fetchMeta(true);
 			await ctx.render("note", {
 				...metaToPugArgs(meta),
-				note: _note,
+				note: packedNote,
 				profile,
 				avatarUrl: await Users.getAvatarUrl(
 					await Users.findOneByOrFail({ id: note.userId }),
 				),
 				// TODO: Let locale changeable by instance setting
-				summary: getNoteSummary(_note),
+				summary: getNoteSummary(note),
 			});
 
 			ctx.set("Cache-Control", "public, max-age=15");

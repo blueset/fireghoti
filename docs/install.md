@@ -154,7 +154,7 @@ sudo apt install ffmpeg
 1. Build
     ```sh
     pnpm install --frozen-lockfile
-    NODE_ENV=production pnpm run build
+    NODE_ENV=production NODE_OPTIONS='--max-old-space-size=3072' pnpm run build
     ```
 1. Execute database migrations
     ```sh
@@ -242,6 +242,7 @@ In this instruction, we use [Caddy](https://caddyserver.com/) to make the Firefi
     WorkingDirectory=/home/firefish/firefish
     Environment="NODE_ENV=production"
     Environment="npm_config_cache=/tmp"
+		Environment="NODE_OPTIONS=--max-old-space-size=3072"
     # uncomment the following line if you use jemalloc (note that the path varies on different environments)
     # Environment="LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2"
     StandardOutput=journal

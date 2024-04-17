@@ -4,6 +4,7 @@ pub mod convert_host;
 pub mod emoji;
 pub mod escape_sql;
 pub mod format_milliseconds;
+pub mod get_note_summary;
 pub mod mastodon_id;
 pub mod meta;
 pub mod nyaify;
