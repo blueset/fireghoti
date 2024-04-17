@@ -1,9 +1,9 @@
-export type BaseFormItem = {
+export interface BaseFormItem {
 	hidden?: boolean;
 	label?: string;
 	description?: string;
 	required?: boolean;
-};
+}
 
 export type FormItemTextInput = BaseFormItem & {
 	type: "string";

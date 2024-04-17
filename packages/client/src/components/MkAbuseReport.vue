@@ -67,12 +67,12 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
+import type { entities } from "firefish-js";
 import MkButton from "@/components/MkButton.vue";
 import MkSwitch from "@/components/form/switch.vue";
 import MkKeyValue from "@/components/MkKeyValue.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
-import type { entities } from "firefish-js";
 
 const props = defineProps<{
 	report: entities.AbuseUserReport;

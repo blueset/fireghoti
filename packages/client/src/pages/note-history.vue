@@ -34,10 +34,10 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
+import type { entities } from "firefish-js";
 import MkPagination, {
 	type MkPaginationType,
 } from "@/components/MkPagination.vue";
-import type { entities } from "firefish-js";
 import { api } from "@/os";
 import XList from "@/components/MkDateSeparatedList.vue";
 import XNote from "@/components/MkNote.vue";

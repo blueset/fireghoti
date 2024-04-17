@@ -29,7 +29,8 @@
 </template>
 
 <script lang="ts" setup>
-import { MaybeRef, shallowRef, watch, unref } from "vue";
+import type { MaybeRef } from "vue";
+import { shallowRef, unref, watch } from "vue";
 import MkModal from "@/components/MkModal.vue";
 import iconify from "@/scripts/icon";
 

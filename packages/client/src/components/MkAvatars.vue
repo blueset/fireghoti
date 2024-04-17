@@ -8,8 +8,8 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
-import * as os from "@/os";
 import type { entities } from "firefish-js";
+import * as os from "@/os";
 
 const props = defineProps<{
 	userIds: string[];

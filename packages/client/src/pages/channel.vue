@@ -96,6 +96,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from "vue";
+import type { entities } from "firefish-js";
 import XPostForm from "@/components/MkPostForm.vue";
 import XTimeline from "@/components/MkTimeline.vue";
 import XChannelFollowButton from "@/components/MkChannelFollowButton.vue";
@@ -105,7 +106,6 @@ import { me } from "@/me";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
-import type { entities } from "firefish-js";
 
 const router = useRouter();
 

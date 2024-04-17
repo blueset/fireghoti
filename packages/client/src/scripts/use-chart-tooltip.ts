@@ -1,13 +1,13 @@
 import { onDeactivated, onUnmounted, ref } from "vue";
+import type { Color, TooltipOptions } from "chart.js";
 import * as os from "@/os";
 import MkChartTooltip from "@/components/MkChartTooltip.vue";
-import type { Color, TooltipOptions } from "chart.js";
 
-type ToolTipSerie = {
+interface ToolTipSerie {
 	backgroundColor: Color;
 	borderColor: Color;
 	text: string;
-};
+}
 
 export function useChartTooltip(
 	opts: { position: "top" | "middle" } = { position: "top" },

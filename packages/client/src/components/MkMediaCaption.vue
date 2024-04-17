@@ -69,6 +69,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import insertTextAtCursor from "insert-text-at-cursor";
 import { length } from "stringz";
+import type { entities } from "firefish-js";
 import * as os from "@/os";
 import MkModal from "@/components/MkModal.vue";
 import MkButton from "@/components/MkButton.vue";
@@ -76,7 +77,6 @@ import bytes from "@/filters/bytes";
 import number from "@/filters/number";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
-import type { entities } from "firefish-js";
 
 const props = withDefaults(
 	defineProps<{

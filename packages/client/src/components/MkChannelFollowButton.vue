@@ -24,10 +24,10 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
+import type { entities } from "firefish-js";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
-import type { entities } from "firefish-js";
 
 const props = withDefaults(
 	defineProps<{

@@ -93,6 +93,7 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 
+import type { entities } from "firefish-js";
 import MkSelect from "@/components/form/select.vue";
 import MkPagination, {
 	type MkPaginationType,
@@ -101,7 +102,6 @@ import XAbuseReport from "@/components/MkAbuseReport.vue";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
-import type { entities } from "firefish-js";
 
 const reports = ref<MkPaginationType<typeof pagination.endpoint> | null>(null);
 

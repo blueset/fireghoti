@@ -40,12 +40,12 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
+import type { entities } from "firefish-js";
 import type {
 	MkPaginationType,
 	PagingKeyOf,
 	PagingOf,
 } from "@/components/MkPagination.vue";
-import type { entities } from "firefish-js";
 import XNote from "@/components/MkNote.vue";
 import XList from "@/components/MkDateSeparatedList.vue";
 import MkPagination from "@/components/MkPagination.vue";

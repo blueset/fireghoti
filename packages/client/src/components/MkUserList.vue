@@ -26,6 +26,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
+import type { entities } from "firefish-js";
 import MkUserInfo from "@/components/MkUserInfo.vue";
 import type {
 	MkPaginationType,
@@ -34,7 +35,6 @@ import type {
 } from "@/components/MkPagination.vue";
 import MkPagination from "@/components/MkPagination.vue";
 import { i18n } from "@/i18n";
-import type { entities } from "firefish-js";
 
 defineProps<{
 	pagination: PagingOf<entities.UserDetailed>;

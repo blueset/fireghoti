@@ -112,6 +112,7 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
+import type { Swiper as SwiperType } from "swiper/types";
 import MkChannelList from "@/components/MkChannelList.vue";
 import MkInput from "@/components/form/input.vue";
 import MkRadios from "@/components/form/radios.vue";
@@ -125,7 +126,6 @@ import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
 import "swiper/scss";
 import "swiper/scss/virtual";
-import type { Swiper as SwiperType } from "swiper/types";
 
 const router = useRouter();
 

@@ -16,10 +16,10 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
+import type { entities } from "firefish-js";
 import XNotification from "@/components/MkNotification.vue";
 import * as os from "@/os";
 import { defaultStore } from "@/store";
-import type { entities } from "firefish-js";
 
 defineProps<{
 	notification: entities.Notification;

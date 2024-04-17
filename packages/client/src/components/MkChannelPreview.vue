@@ -52,9 +52,9 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
+import type { entities } from "firefish-js";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
-import type { entities } from "firefish-js";
 
 const props = defineProps<{
 	channel: entities.Channel;

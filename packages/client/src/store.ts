@@ -1,8 +1,8 @@
 import { markRaw, ref } from "vue";
+import type { ApiTypes, entities } from "firefish-js";
 import { isSignedIn } from "./me";
 import { Storage } from "./pizzax";
 import type { NoteVisibility } from "@/types/note";
-import type { entities, ApiTypes } from "firefish-js";
 
 export const postFormActions: {
 	title: string;

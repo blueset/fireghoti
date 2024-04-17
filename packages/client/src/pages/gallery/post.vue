@@ -150,6 +150,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from "vue";
+import type { entities } from "firefish-js";
 import MkButton from "@/components/MkButton.vue";
 import * as os from "@/os";
 import MkContainer from "@/components/MkContainer.vue";
@@ -164,7 +165,6 @@ import { shareAvailable } from "@/scripts/share-available";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
 import { isSignedIn, me } from "@/me";
-import type { entities } from "firefish-js";
 
 const router = useRouter();
 

@@ -136,6 +136,7 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from "vue";
 import { toUnicode } from "punycode/";
+import type { entities } from "firefish-js";
 import MkButton from "@/components/MkButton.vue";
 import MkInput from "@/components/form/input.vue";
 import MkInfo from "@/components/MkInfo.vue";
@@ -145,7 +146,6 @@ import * as os from "@/os";
 import { signIn } from "@/account";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
-import type { entities } from "firefish-js";
 
 const signing = ref(false);
 const user = ref<entities.UserDetailed | null>(null);

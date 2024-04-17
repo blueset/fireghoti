@@ -44,6 +44,7 @@
 <script lang="ts" setup>
 import { onMounted, ref, shallowRef } from "vue";
 import { Chart } from "chart.js";
+import type { entities } from "firefish-js";
 import MkSelect from "@/components/form/select.vue";
 import MkChart from "@/components/MkChart.vue";
 import { useChartTooltip } from "@/scripts/use-chart-tooltip";
@@ -52,7 +53,6 @@ import { i18n } from "@/i18n";
 import MkActiveUsersHeatmap from "@/components/MkActiveUsersHeatmap.vue";
 import MkFolder from "@/components/MkFolder.vue";
 import { initChart } from "@/scripts/init-chart";
-import type { entities } from "firefish-js";
 
 initChart();
 

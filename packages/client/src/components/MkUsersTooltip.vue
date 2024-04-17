@@ -3,8 +3,8 @@
 		ref="tooltip"
 		:target-element="targetElement"
 		:max-width="250"
-		@closed="emit('closed')"
 		:showing="showing"
+		@closed="emit('closed')"
 	>
 		<div class="beaffaef">
 			<div v-for="u in users" :key="u.id" class="user">
@@ -20,8 +20,8 @@
 
 <script lang="ts" setup>
 import type { Ref } from "vue";
-import MkTooltip from "./MkTooltip.vue";
 import type { entities } from "firefish-js";
+import MkTooltip from "./MkTooltip.vue";
 
 defineProps<{
 	showing: Ref<boolean>;

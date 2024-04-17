@@ -17,10 +17,10 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
+import type { entities } from "firefish-js";
 import { instanceName, version } from "@/config";
 import { instance as Instance } from "@/instance";
 import { getProxiedImageUrlNullable } from "@/scripts/media-proxy";
-import type { entities } from "firefish-js";
 
 const props = defineProps<{
 	instance?: entities.InstanceLite;

@@ -272,6 +272,8 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, toRef, watch } from "vue";
 import type { entities } from "firefish-js";
+import type { Connection } from "firefish-js/src/streaming";
+import type { Channels } from "firefish-js/src/streaming.types";
 import XReactionIcon from "@/components/MkReactionIcon.vue";
 import MkFollowButton from "@/components/MkFollowButton.vue";
 import XReactionTooltip from "@/components/MkReactionTooltip.vue";
@@ -285,8 +287,6 @@ import { useTooltip } from "@/scripts/use-tooltip";
 import { defaultStore } from "@/store";
 import { instance } from "@/instance";
 import icon from "@/scripts/icon";
-import type { Connection } from "firefish-js/src/streaming";
-import type { Channels } from "firefish-js/src/streaming.types";
 
 const props = withDefaults(
 	defineProps<{

@@ -41,6 +41,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from "vue";
+import type { entities } from "firefish-js";
 import MkTextarea from "@/components/form/textarea.vue";
 import MkButton from "@/components/MkButton.vue";
 import MkInput from "@/components/form/input.vue";
@@ -50,7 +51,6 @@ import { useRouter } from "@/router";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
-import type { entities } from "firefish-js";
 
 const router = useRouter();
 

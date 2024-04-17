@@ -34,9 +34,9 @@
 </template>
 
 <script lang="ts" setup>
+import type { entities } from "firefish-js";
 import { userName } from "@/filters/user";
 import { ui } from "@/config";
-import type { entities } from "firefish-js";
 
 defineProps<{
 	page: entities.Page;

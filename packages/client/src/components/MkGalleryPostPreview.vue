@@ -33,9 +33,9 @@
 </template>
 
 <script lang="ts" setup>
+import type { entities } from "firefish-js";
 import ImgWithBlurhash from "@/components/MkImgWithBlurhash.vue";
 import { i18n } from "@/i18n";
-import type { entities } from "firefish-js";
 
 defineProps<{
 	post: entities.GalleryPost;

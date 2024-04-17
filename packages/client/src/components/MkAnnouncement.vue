@@ -30,12 +30,12 @@
 
 <script lang="ts" setup>
 import { shallowRef } from "vue";
+import type { entities } from "firefish-js";
 import MkModal from "@/components/MkModal.vue";
 import MkSparkle from "@/components/MkSparkle.vue";
 import MkButton from "@/components/MkButton.vue";
 import { i18n } from "@/i18n";
 import * as os from "@/os";
-import type { entities } from "firefish-js";
 
 const props = defineProps<{
 	announcement: entities.Announcement;

@@ -1,5 +1,6 @@
 <template>
 	<div
+		ref="el"
 		v-size="{ max: [380] }"
 		class="ukygtjoj _panel"
 		:class="{
@@ -9,7 +10,6 @@
 			scrollable,
 			closed: !showBody,
 		}"
-		ref="el"
 	>
 		<header v-if="showHeader" ref="header">
 			<div class="title"><slot name="header"></slot></div>
