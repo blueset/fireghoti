@@ -1,4 +1,4 @@
-import { Entity } from "megalodon";
+import type { Entity } from "megalodon";
 import { toMastodonId } from "backend-rs";
 
 function simpleConvert(data: any) {
@@ -15,7 +15,19 @@ export function convertAnnouncement(announcement: Entity.Announcement) {
 	return simpleConvert(announcement);
 }
 export function convertAttachment(attachment: Entity.Attachment) {
-	return simpleConvert(attachment);
+	const converted = simpleConvert(attachment);
+	// ref: https://github.com/whitescent/Mastify/pull/102
+	if (converted.meta == null) return converted;
+	const result = {
+		...converted,
+		meta: {
+			...converted.meta,
+			original: {
+				...converted.meta,
+			},
+		},
+	};
+	return result;
 }
 export function convertFilter(filter: Entity.Filter) {
 	return simpleConvert(filter);
