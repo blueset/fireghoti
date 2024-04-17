@@ -244,7 +244,7 @@ const itemsEl = ref<HTMLDivElement>();
 
 /**
  * Strictly speaking, this type conversion is wrong
- * because `ref` will deeply unpack the `ref` in `MenuSwitch`.  
+ * because `ref` will deeply unpack the `ref` in `MenuSwitch`.
  * But it performs correctly, so who cares?
  */
 const items2 = ref([]) as Ref<InnerMenuItem[]>;
