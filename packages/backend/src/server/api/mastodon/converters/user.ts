@@ -72,19 +72,19 @@ export class UserConverter {
 				.then((p) => p ?? "<p></p>");
 
 			const avatar = u.avatarId
-				? DriveFiles.getFinalUrlMaybe(u.avatarUrl) ??
+				? DriveFiles.getFinalUrlMaybe(u.avatarUrl).then(url => url ??
 					DriveFiles.findOneBy({ id: u.avatarId })
 						.then((p) => p?.url ?? Users.getIdenticonUrl(u.id))
-						.then((p) => DriveFiles.getFinalUrl(p))
+						.then((p) => DriveFiles.getFinalUrl(p)))
 				: Users.getIdenticonUrl(u.id);
 
 			const banner = u.bannerId
-				? DriveFiles.getFinalUrlMaybe(u.bannerUrl) ??
+				? DriveFiles.getFinalUrlMaybe(u.bannerUrl).then(url => url ??
 					DriveFiles.findOneBy({ id: u.bannerId })
 						.then(
 							(p) => p?.url ?? `${config.url}/static-assets/transparent.png`,
 						)
-						.then((p) => DriveFiles.getFinalUrl(p))
+						.then((p) => DriveFiles.getFinalUrl(p)))
 				: `${config.url}/static-assets/transparent.png`;
 
 			const isFollowedOrSelf =

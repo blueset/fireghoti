@@ -250,7 +250,7 @@ export class MiscHelpers {
 		const user = ctx.user as ILocalUser;
 		const results: Promise<MastodonEntity.SuggestedAccount[]>[] = [];
 
-		const pinned = fetchMeta().then((meta) =>
+		const pinned = fetchMeta(true).then((meta) =>
 			Promise.all(
 				meta.pinnedUsers
 					.map((acct) => stringToAcct(acct))

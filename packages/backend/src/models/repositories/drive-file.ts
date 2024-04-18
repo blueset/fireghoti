@@ -229,7 +229,7 @@ export const DriveFileRepository = db.getRepository(DriveFile).extend({
 		if (url.startsWith(`${config.url}/identicon`)) return url;
 		if (url.startsWith(`${config.url}/avatar`)) return url;
 
-		const meta = await fetchMeta();
+		const meta = await fetchMeta(true);
 		const baseUrl = meta
 			? meta.objectStorageBaseUrl ??
 				`${meta.objectStorageUseSSL ? "https" : "http"}://${

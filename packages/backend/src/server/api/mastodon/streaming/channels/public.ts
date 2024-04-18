@@ -26,7 +26,7 @@ export class MastodonStreamPublic extends MastodonStream {
 	}
 
 	public async init() {
-		const meta = await fetchMeta();
+		const meta = await fetchMeta(true);
 		if (meta.disableGlobalTimeline) {
 			if (this.user == null || !(this.user.isAdmin || this.user.isModerator))
 				return;
