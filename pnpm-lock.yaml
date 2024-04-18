@@ -96,9 +96,6 @@ importers:
       archiver:
         specifier: 7.0.1
         version: 7.0.1
-      argon2:
-        specifier: ^0.40.1
-        version: 0.40.1
       async-lock:
         specifier: 1.4.0
         version: 1.4.0
@@ -383,9 +380,6 @@ importers:
       '@types/async-lock':
         specifier: 1.4.0
         version: 1.4.0
-      '@types/bcryptjs':
-        specifier: 2.4.6
-        version: 2.4.6
       '@types/color-convert':
         specifier: ^2.0.3
         version: 2.0.3
