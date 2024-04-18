@@ -180,6 +180,11 @@ import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
 
+// FIXME: This variable doesn't seem to be used at all. I don't know why it was here.
+const isActive = ref<boolean>();
+
+type EmojiDef = string | entities.CustomEmoji | UnicodeEmojiDef;
+
 const props = withDefaults(
 	defineProps<{
 		showPinned?: boolean;
@@ -193,7 +198,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	(ev: "chosen", v: string, ev: MouseEvent): void;
+	chosen: [v: string, ev?: MouseEvent];
 }>();
 
 const search = ref<HTMLInputElement>();
@@ -410,13 +415,17 @@ function reset() {
 	q.value = "";
 }
 
-function getKey(
-	emoji: string | entities.CustomEmoji | UnicodeEmojiDef,
-): string {
-	return typeof emoji === "string" ? emoji : emoji.emoji || `:${emoji.name}:`;
+function getKey(emoji: EmojiDef): string {
+	if (typeof emoji === "string") {
+		return emoji;
+	}
+	if ("emoji" in emoji) {
+		return emoji.emoji;
+	}
+	return `:${emoji.name}:`;
 }
 
-function chosen(emoji: any, ev?: MouseEvent) {
+function chosen(emoji: EmojiDef, ev?: MouseEvent) {
 	const el =
 		ev && ((ev.currentTarget ?? ev.target) as HTMLElement | null | undefined);
 	if (el) {
@@ -432,22 +441,33 @@ function chosen(emoji: any, ev?: MouseEvent) {
 	// 最近使った絵文字更新
 	if (!pinned.value.includes(key)) {
 		let recents = defaultStore.state.recentlyUsedEmojis;
-		recents = recents.filter((emoji: any) => emoji !== key);
+		recents = recents.filter((emoji) => emoji !== key);
 		recents.unshift(key);
 		defaultStore.set("recentlyUsedEmojis", recents.splice(0, 32));
 	}
 }
 
-function paste(event: ClipboardEvent) {
-	const paste = (event.clipboardData || window.clipboardData).getData("text");
-	if (done(paste)) {
+async function paste(event: ClipboardEvent) {
+	let pasteStr: string | null = null;
+	if (event.clipboardData) {
+		pasteStr = event.clipboardData.getData("text");
+	} else {
+		// Use native api
+		try {
+			pasteStr = await window.navigator.clipboard.readText();
+		} catch (_err) {
+			// Reading the clipboard requires permission, and the user did not give it
+		}
+	}
+	if (done(pasteStr)) {
 		event.preventDefault();
 	}
 }
 
-function done(query?: any): boolean | void {
+function done(query?: string | null): boolean {
+	// biome-ignore lint/style/noParameterAssign: assign it intentially
 	if (query == null) query = q.value;
-	if (query == null || typeof query !== "string") return;
+	if (query == null || typeof query !== "string") return false;
 
 	const q2 = query.replaceAll(":", "");
 	const exactMatchCustom = customEmojis.find((emoji) => emoji.name === q2);
@@ -470,6 +490,7 @@ function done(query?: any): boolean | void {
 		chosen(searchResultUnicode.value[0]);
 		return true;
 	}
+	return false;
 }
 
 onMounted(() => {

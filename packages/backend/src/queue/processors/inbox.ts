@@ -5,7 +5,7 @@ import perform from "@/remote/activitypub/perform.js";
 import Logger from "@/services/logger.js";
 import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
 import { Instances } from "@/models/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { toPuny, extractHost } from "backend-rs";
 import { getApId } from "@/remote/activitypub/type.js";
 import { fetchInstanceMetadata } from "@/services/fetch-instance-metadata.js";
@@ -41,7 +41,7 @@ export default async (job: Bull.Job<InboxJobData>): Promise<string> => {
 	const host = toPuny(new URL(signature.keyId).hostname);
 
 	// interrupt if blocked
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 	if (await shouldBlockInstance(host, meta)) {
 		return `Blocked request: ${host}`;
 	}

@@ -64,7 +64,7 @@ import "vue-plyr/dist/vue-plyr.css";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
-const props = withDefaults(
+withDefaults(
 	defineProps<{
 		media: entities.DriveFile;
 	}>(),

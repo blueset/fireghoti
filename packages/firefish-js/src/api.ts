@@ -122,6 +122,6 @@ export class APIClient {
 				.catch(reject);
 		});
 
-		return promise as any;
+		return promise;
 	}
 }

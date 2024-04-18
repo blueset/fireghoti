@@ -50,8 +50,8 @@
 			>
 				<video
 					:poster="media.thumbnailUrl"
-					:aria-label="media.comment"
-					preload="metadata"
+					:aria-label="media.comment || undefined"
+					preload="none"
 					controls
 					playsinline
 					@contextmenu.stop

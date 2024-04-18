@@ -1,7 +1,7 @@
 import { uploadFromUrl } from "@/services/drive/upload-from-url.js";
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
 import Resolver from "../resolver.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { apLogger } from "../logger.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import { DriveFiles } from "@/models/index.js";
@@ -34,7 +34,7 @@ export async function createImage(
 
 	logger.info(`Creating the Image: ${image.url}`);
 
-	const instance = await fetchMeta();
+	const instance = await fetchMeta(true);
 
 	let file = await uploadFromUrl({
 		url: image.url,

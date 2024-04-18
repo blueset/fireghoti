@@ -72,9 +72,8 @@ export class Note {
 	})
 	public name: string | null;
 
-	@Index() // USING pgroonga pgroonga_varchar_full_text_search_ops_v2
-	@Column("varchar", {
-		length: 512,
+	@Index() // USING pgroonga
+	@Column("text", {
 		nullable: true,
 	})
 	public cw: string | null;

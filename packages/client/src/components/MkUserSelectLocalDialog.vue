@@ -94,9 +94,9 @@ import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 
 const emit = defineEmits<{
-	(ev: "ok", selected: entities.UserDetailed): void;
-	(ev: "cancel"): void;
-	(ev: "closed"): void;
+	ok: [selected: entities.UserDetailed];
+	cancel: [];
+	closed: [];
 }>();
 
 const username = ref("");
@@ -114,7 +114,7 @@ const search = () => {
 		query: username.value,
 		origin: "local",
 		limit: 10,
-		detail: false,
+		detail: true,
 	}).then((_users) => {
 		users.value = _users;
 	});
@@ -127,7 +127,7 @@ const ok = () => {
 
 	// 最近使ったユーザー更新
 	let recents = defaultStore.state.recentlyUsedUsers;
-	recents = recents.filter((x) => x !== selected.value.id);
+	recents = recents.filter((x) => x !== selected.value!.id);
 	recents.unshift(selected.value.id);
 	defaultStore.set("recentlyUsedUsers", recents.splice(0, 16));
 };

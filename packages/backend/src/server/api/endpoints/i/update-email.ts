@@ -7,7 +7,7 @@ import { sendEmail } from "@/services/send-email.js";
 import { ApiError } from "@/server/api/error.js";
 import { validateEmailForAccount } from "@/services/validate-email-for-account.js";
 import { HOUR } from "@/const.js";
-import { comparePassword } from "@/misc/password.js";
+import { verifyPassword } from "backend-rs";
 
 export const meta = {
 	requireCredential: true,
@@ -46,8 +46,8 @@ export const paramDef = {
 export default define(meta, paramDef, async (ps, user) => {
 	const profile = await UserProfiles.findOneByOrFail({ userId: user.id });
 
-	// Compare password
-	const same = await comparePassword(ps.password, profile.password!);
+	// Compare passwords
+	const same = verifyPassword(ps.password, profile.password!);
 
 	if (!same) {
 		throw new ApiError(meta.errors.incorrectPassword);

@@ -8,7 +8,7 @@ import renderFollowUser from "@/remote/activitypub/renderer/follow-user.js";
 import { Users, Followings, UserProfiles } from "@/models/index.js";
 import type { Following } from "@/models/entities/following.js";
 import { checkFetch } from "@/remote/activitypub/check-fetch.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { setResponseType } from "../activitypub.js";
 import type { FindOptionsWhere } from "typeorm";
 import type Router from "@koa/router";
@@ -110,7 +110,7 @@ export default async (ctx: Router.RouterContext) => {
 		ctx.body = renderActivity(rendered);
 		setResponseType(ctx);
 	}
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 	if (meta.secureMode || meta.privateMode) {
 		ctx.set("Cache-Control", "private, max-age=0, must-revalidate");
 	} else {

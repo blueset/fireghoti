@@ -40,7 +40,9 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 
-import MkPagination from "@/components/MkPagination.vue";
+import MkPagination, {
+	type MkPaginationType,
+} from "@/components/MkPagination.vue";
 import MkInfo from "@/components/MkInfo.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
@@ -52,7 +54,9 @@ const pagination = {
 	limit: 10,
 };
 
-const pagingComponent = ref<InstanceType<typeof MkPagination>>();
+const pagingComponent = ref<MkPaginationType<
+	typeof pagination.endpoint
+> | null>(null);
 
 async function create() {
 	const { canceled, result } = await os.form(i18n.ts.createNewClip, {

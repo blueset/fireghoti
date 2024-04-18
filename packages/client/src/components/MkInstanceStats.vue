@@ -44,6 +44,7 @@
 <script lang="ts" setup>
 import { onMounted, ref, shallowRef } from "vue";
 import { Chart } from "chart.js";
+import type { entities } from "firefish-js";
 import MkSelect from "@/components/form/select.vue";
 import MkChart from "@/components/MkChart.vue";
 import { useChartTooltip } from "@/scripts/use-chart-tooltip";
@@ -67,7 +68,18 @@ const { handler: externalTooltipHandler2 } = useChartTooltip({
 	position: "middle",
 });
 
-function createDoughnut(chartEl, tooltip, data) {
+interface ColorData {
+	name: string;
+	color: string | undefined;
+	value: number;
+	onClick?: () => void;
+}
+
+function createDoughnut(
+	chartEl: HTMLCanvasElement,
+	tooltip: typeof externalTooltipHandler1,
+	data: ColorData[],
+) {
 	const chartInstance = new Chart(chartEl, {
 		type: "doughnut",
 		data: {
@@ -96,13 +108,13 @@ function createDoughnut(chartEl, tooltip, data) {
 			},
 			onClick: (ev) => {
 				const hit = chartInstance.getElementsAtEventForMode(
-					ev,
+					ev as unknown as Event,
 					"nearest",
 					{ intersect: true },
 					false,
 				)[0];
-				if (hit && data[hit.index].onClick) {
-					data[hit.index].onClick();
+				if (hit) {
+					data[hit.index].onClick?.();
 				}
 			},
 			plugins: {
@@ -124,48 +136,41 @@ function createDoughnut(chartEl, tooltip, data) {
 	return chartInstance;
 }
 
+function instance2ColorData(x: entities.Instance): ColorData {
+	return {
+		name: x.host,
+		color: x.themeColor || undefined,
+		value: x.followersCount,
+		onClick: () => {
+			os.pageWindow(`/instance-info/${x.host}`);
+		},
+	};
+}
+
 onMounted(() => {
 	os.apiGet("federation/stats", { limit: 30 }).then((fedStats) => {
 		createDoughnut(
-			subDoughnutEl.value,
+			subDoughnutEl.value!,
 			externalTooltipHandler1,
-			fedStats.topSubInstances
-				.map((x) => ({
-					name: x.host,
-					color: x.themeColor,
-					value: x.followersCount,
-					onClick: () => {
-						os.pageWindow(`/instance-info/${x.host}`);
-					},
-				}))
-				.concat([
-					{
-						name: "(other)",
-						color: "#80808080",
-						value: fedStats.otherFollowersCount,
-					},
-				]),
+			fedStats.topSubInstances.map(instance2ColorData).concat([
+				{
+					name: "(other)",
+					color: "#80808080",
+					value: fedStats.otherFollowersCount,
+				},
+			]),
 		);
 
 		createDoughnut(
-			pubDoughnutEl.value,
+			pubDoughnutEl.value!,
 			externalTooltipHandler2,
-			fedStats.topPubInstances
-				.map((x) => ({
-					name: x.host,
-					color: x.themeColor,
-					value: x.followingCount,
-					onClick: () => {
-						os.pageWindow(`/instance-info/${x.host}`);
-					},
-				}))
-				.concat([
-					{
-						name: "(other)",
-						color: "#80808080",
-						value: fedStats.otherFollowingCount,
-					},
-				]),
+			fedStats.topPubInstances.map(instance2ColorData).concat([
+				{
+					name: "(other)",
+					color: "#80808080",
+					value: fedStats.otherFollowingCount,
+				},
+			]),
 		);
 	});
 });

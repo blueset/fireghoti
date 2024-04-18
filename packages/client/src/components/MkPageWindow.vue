@@ -56,23 +56,22 @@ const router = new Router(routes, props.initialPath);
 
 const pageMetadata = ref<null | ComputedRef<PageMetadata>>();
 const windowEl = ref<InstanceType<typeof XWindow>>();
-const history = ref<{ path: string; key: any }[]>([
+const history = ref<{ path: string; key: string }[]>([
 	{
 		path: router.getCurrentPath(),
 		key: router.getCurrentKey(),
 	},
 ]);
 const buttonsLeft = computed(() => {
-	const buttons = [];
-
 	if (history.value.length > 1) {
-		buttons.push({
-			icon: `${icon("ph-caret-left")}`,
-			onClick: back,
-		});
+		return [
+			{
+				icon: `${icon("ph-caret-left")}`,
+				onClick: back,
+			},
+		];
 	}
-
-	return buttons;
+	return [];
 });
 const buttonsRight = computed(() => {
 	const buttons = [
@@ -114,7 +113,7 @@ const contextmenu = computed(() => [
 		text: i18n.ts.openInNewTab,
 		action: () => {
 			window.open(url + router.getCurrentPath(), "_blank");
-			windowEl.value.close();
+			windowEl.value!.close();
 		},
 	},
 	{
@@ -135,17 +134,17 @@ function back() {
 }
 
 function close() {
-	windowEl.value.close();
+	windowEl.value!.close();
 }
 
 function expand() {
 	mainRouter.push(router.getCurrentPath(), "forcePage");
-	windowEl.value.close();
+	windowEl.value!.close();
 }
 
 function popout() {
-	_popout(router.getCurrentPath(), windowEl.value.$el);
-	windowEl.value.close();
+	_popout(router.getCurrentPath(), windowEl.value!.$el);
+	windowEl.value!.close();
 }
 
 defineExpose({

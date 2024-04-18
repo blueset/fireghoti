@@ -3,7 +3,7 @@
 		ref="modal"
 		:z-priority="'high'"
 		:src="src"
-		@click="modal.close()"
+		@click="modal!.close()"
 		@closed="emit('closed')"
 	>
 		<div class="_popup" :class="$style.root">
@@ -153,15 +153,15 @@ const props = withDefaults(
 	defineProps<{
 		currentVisibility: NoteVisibility;
 		currentLocalOnly: boolean;
-		src?: HTMLElement;
+		src?: HTMLElement | null;
 	}>(),
 	{},
 );
 
 const emit = defineEmits<{
-	(ev: "changeVisibility", v: NoteVisibility): void;
-	(ev: "changeLocalOnly", v: boolean): void;
-	(ev: "closed"): void;
+	changeVisibility: [v: NoteVisibility];
+	changeLocalOnly: [v: boolean];
+	closed: [];
 }>();
 
 const v = ref(props.currentVisibility);
@@ -175,7 +175,7 @@ function choose(visibility: NoteVisibility): void {
 	v.value = visibility;
 	emit("changeVisibility", visibility);
 	nextTick(() => {
-		modal.value.close();
+		modal.value!.close();
 	});
 }
 </script>

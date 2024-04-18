@@ -1,6 +1,6 @@
 import type Koa from "koa";
 import summaly from "summaly";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import Logger from "@/services/logger.js";
 import config from "@/config/index.js";
 import { query } from "@/prelude/url.js";
@@ -22,7 +22,7 @@ export const urlPreviewHandler = async (ctx: Koa.Context) => {
 		return;
 	}
 
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 
 	logger.info(
 		meta.summalyProxy

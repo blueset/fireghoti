@@ -310,8 +310,9 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { readServerConfig, stringToAcct, acctToString, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, toMastodonId, fromMastodonId, nyaify, AntennaSrcEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
+const { readEnvironmentConfig, readServerConfig, stringToAcct, acctToString, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getNoteSummary, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, AntennaSrcEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
 
+module.exports.readEnvironmentConfig = readEnvironmentConfig
 module.exports.readServerConfig = readServerConfig
 module.exports.stringToAcct = stringToAcct
 module.exports.acctToString = acctToString
@@ -321,9 +322,22 @@ module.exports.isSelfHost = isSelfHost
 module.exports.isSameOrigin = isSameOrigin
 module.exports.extractHost = extractHost
 module.exports.toPuny = toPuny
+module.exports.isUnicodeEmoji = isUnicodeEmoji
+module.exports.sqlLikeEscape = sqlLikeEscape
+module.exports.safeForSql = safeForSql
+module.exports.formatMilliseconds = formatMilliseconds
+module.exports.getNoteSummary = getNoteSummary
 module.exports.toMastodonId = toMastodonId
 module.exports.fromMastodonId = fromMastodonId
+module.exports.fetchMeta = fetchMeta
+module.exports.metaToPugArgs = metaToPugArgs
 module.exports.nyaify = nyaify
+module.exports.hashPassword = hashPassword
+module.exports.verifyPassword = verifyPassword
+module.exports.isOldPasswordAlgorithm = isOldPasswordAlgorithm
+module.exports.decodeReaction = decodeReaction
+module.exports.countReactions = countReactions
+module.exports.toDbReaction = toDbReaction
 module.exports.AntennaSrcEnum = AntennaSrcEnum
 module.exports.MutedNoteReasonEnum = MutedNoteReasonEnum
 module.exports.NoteVisibilityEnum = NoteVisibilityEnum

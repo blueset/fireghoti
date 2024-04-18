@@ -3,6 +3,7 @@
 		ref="tooltip"
 		:target-element="targetElement"
 		:max-width="340"
+		:showing="showing"
 		@closed="emit('closed')"
 	>
 		<div class="beeadbfb">
@@ -18,12 +19,15 @@
 </template>
 
 <script lang="ts" setup>
+import type { Ref } from "vue";
+import type { entities } from "firefish-js";
 import MkTooltip from "./MkTooltip.vue";
 import XReactionIcon from "@/components/MkReactionIcon.vue";
 
 defineProps<{
+	showing: Ref<boolean>;
 	reaction: string;
-	emojis: any[]; // TODO
+	emojis: entities.EmojiLite[];
 	targetElement: HTMLElement;
 }>();
 

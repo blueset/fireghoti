@@ -1,5 +1,5 @@
 import type Koa from "koa";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import config from "@/config/index.js";
 import manifest from "./manifest.json" assert { type: "json" };
 
@@ -8,7 +8,7 @@ export const manifestHandler = async (ctx: Koa.Context) => {
 	//const res = structuredClone(manifest);
 	const res = JSON.parse(JSON.stringify(manifest));
 
-	const instance = await fetchMeta(true);
+	const instance = await fetchMeta(false);
 
 	res.short_name = instance.name || "Firefish";
 	res.name = instance.name || "Firefish";

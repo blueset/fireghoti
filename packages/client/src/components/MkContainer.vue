@@ -1,5 +1,6 @@
 <template>
 	<div
+		ref="el"
 		v-size="{ max: [380] }"
 		class="ukygtjoj _panel"
 		:class="{
@@ -59,123 +60,110 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
+import { onMounted, ref, watch } from "vue";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
 
-export default defineComponent({
-	props: {
-		showHeader: {
-			type: Boolean,
-			required: false,
-			default: true,
-		},
-		thin: {
-			type: Boolean,
-			required: false,
-			default: false,
-		},
-		naked: {
-			type: Boolean,
-			required: false,
-			default: false,
-		},
-		foldable: {
-			type: Boolean,
-			required: false,
-			default: false,
-		},
-		expanded: {
-			type: Boolean,
-			required: false,
-			default: true,
-		},
-		scrollable: {
-			type: Boolean,
-			required: false,
-			default: false,
-		},
-		maxHeight: {
-			type: Number,
-			required: false,
-			default: null,
-		},
+const props = withDefaults(
+	defineProps<{
+		showHeader?: boolean;
+		thin?: boolean;
+		naked?: boolean;
+		foldable?: boolean;
+		expanded?: boolean;
+		scrollable?: boolean;
+		maxHeight?: number | null;
+	}>(),
+	{
+		showHeader: true,
+		thin: false,
+		naked: false,
+		foldable: false,
+		expanded: true,
+		scrollable: false,
+		maxHeight: null,
 	},
-	data() {
-		return {
-			showBody: this.expanded,
-			omitted: null,
-			ignoreOmit: false,
-			i18n,
-			icon,
-			defaultStore,
-		};
-	},
-	mounted() {
-		this.$watch(
-			"showBody",
-			(showBody) => {
-				const headerHeight = this.showHeader
-					? this.$refs.header.offsetHeight
-					: 0;
-				this.$el.style.minHeight = `${headerHeight}px`;
-				if (showBody) {
-					this.$el.style.flexBasis = "auto";
-				} else {
-					this.$el.style.flexBasis = `${headerHeight}px`;
-				}
-			},
-			{
-				immediate: true,
-			},
-		);
+);
 
-		this.$el.style.setProperty("--maxHeight", this.maxHeight + "px");
+const showBody = ref(props.expanded);
+const omitted = ref<boolean | null>(null);
+const ignoreOmit = ref(false);
+const el = ref<HTMLElement | null>(null);
+const header = ref<HTMLElement | null>(null);
+const content = ref<HTMLElement | null>(null);
 
-		const calcOmit = () => {
-			if (
-				this.omitted ||
-				this.ignoreOmit ||
-				this.maxHeight == null ||
-				this.$refs.content == null
-			)
-				return;
-			const height = this.$refs.content.offsetHeight;
-			this.omitted = height > this.maxHeight;
-		};
+function toggleContent(show: boolean) {
+	if (!props.foldable) return;
+	showBody.value = show;
+}
 
+function enter(el) {
+	const elementHeight = el.getBoundingClientRect().height;
+	el.style.height = 0;
+	el.offsetHeight; // reflow
+	el.style.height = `${elementHeight}px`;
+}
+function afterEnter(el) {
+	el.style.height = null;
+}
+function leave(el) {
+	const elementHeight = el.getBoundingClientRect().height;
+	el.style.height = `${elementHeight}px`;
+	el.offsetHeight; // reflow
+	el.style.height = 0;
+}
+function afterLeave(el) {
+	el.style.height = null;
+}
+
+onMounted(() => {
+	watch(
+		showBody,
+		(showBody) => {
+			const headerHeight = props.showHeader ? header.value!.offsetHeight : 0;
+			el.value!.style.minHeight = `${headerHeight}px`;
+			if (showBody) {
+				el.value!.style.flexBasis = "auto";
+			} else {
+				el.value!.style.flexBasis = `${headerHeight}px`;
+			}
+		},
+		{
+			immediate: true,
+		},
+	);
+
+	if (props.maxHeight != null) {
+		el.value!.style.setProperty("--maxHeight", `${props.maxHeight}px`);
+	}
+
+	const calcOmit = () => {
+		if (
+			omitted.value ||
+			ignoreOmit.value ||
+			props.maxHeight == null ||
+			content.value == null
+		)
+			return;
+		const height = content.value.offsetHeight;
+		omitted.value = height > props.maxHeight;
+	};
+
+	calcOmit();
+
+	new ResizeObserver((_entries, _observer) => {
 		calcOmit();
-		new ResizeObserver((entries, observer) => {
-			calcOmit();
-		}).observe(this.$refs.content);
-	},
-	methods: {
-		toggleContent(show: boolean) {
-			if (!this.foldable) return;
-			this.showBody = show;
-		},
+	}).observe(content.value!);
+});
 
-		enter(el) {
-			const elementHeight = el.getBoundingClientRect().height;
-			el.style.height = 0;
-			el.offsetHeight; // reflow
-			el.style.height = elementHeight + "px";
-		},
-		afterEnter(el) {
-			el.style.height = null;
-		},
-		leave(el) {
-			const elementHeight = el.getBoundingClientRect().height;
-			el.style.height = elementHeight + "px";
-			el.offsetHeight; // reflow
-			el.style.height = 0;
-		},
-		afterLeave(el) {
-			el.style.height = null;
-		},
-	},
+defineExpose({
+	toggleContent,
+	enter,
+	afterEnter,
+	leave,
+	afterLeave,
 });
 </script>
 

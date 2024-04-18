@@ -9,7 +9,7 @@
 		v-vibrate="5"
 		:aria-label="accessibleLabel"
 		class="tkcbzcuz note-container"
-		:tabindex="!isDeleted ? '-1' : null"
+		:tabindex="!isDeleted ? '-1' : undefined"
 		:class="{ renote: isRenote }"
 	>
 		<MkNoteSub
@@ -112,9 +112,9 @@
 						:note="appearNote"
 						:detailed="true"
 						:detailed-view="detailedView"
-						:parent-id="appearNote.parentId"
+						:parent-id="appearNote.id"
 						@push="(e) => router.push(notePage(e))"
-						@focusfooter="footerEl.focus()"
+						@focusfooter="footerEl!.focus()"
 						@expanded="(e) => setPostExpanded(e)"
 					></MkSubNoteContent>
 					<div v-if="translating || translation" class="translation">
@@ -312,11 +312,17 @@ import { notePage } from "@/filters/note";
 import { deepClone } from "@/scripts/clone";
 import { getNoteSummary } from "@/scripts/get-note-summary";
 import icon from "@/scripts/icon";
+import type { NoteTranslation } from "@/types/note";
 
 const router = useRouter();
 
+type NoteType = entities.Note & {
+	_featuredId_?: string;
+	_prId_?: string;
+};
+
 const props = defineProps<{
-	note: entities.Note;
+	note: NoteType;
 	pinned?: boolean;
 	detailedView?: boolean;
 	collapsedReply?: boolean;
@@ -354,18 +360,18 @@ const isRenote =
 	note.value.fileIds.length === 0 &&
 	note.value.poll == null;
 
-const el = ref<HTMLElement>();
+const el = ref<HTMLElement | null>(null);
 const footerEl = ref<HTMLElement>();
 const menuButton = ref<HTMLElement>();
 const starButton = ref<InstanceType<typeof XStarButton>>();
-const renoteButton = ref<InstanceType<typeof XRenoteButton>>();
+const renoteButton = ref<InstanceType<typeof XRenoteButton> | null>(null);
 const renoteTime = ref<HTMLElement>();
-const reactButton = ref<HTMLElement>();
+const reactButton = ref<HTMLElement | null>(null);
 const appearNote = computed(() =>
-	isRenote ? (note.value.renote as entities.Note) : note.value,
+	isRenote ? (note.value.renote as NoteType) : note.value,
 );
-const isMyRenote = isSignedIn && me.id === note.value.userId;
-const showContent = ref(false);
+const isMyRenote = isSignedIn && me!.id === note.value.userId;
+// const showContent = ref(false);
 const isDeleted = ref(false);
 const muted = ref(
 	getWordSoftMute(
@@ -375,7 +381,7 @@ const muted = ref(
 		defaultStore.state.mutedLangs,
 	),
 );
-const translation = ref(null);
+const translation = ref<NoteTranslation | null>(null);
 const translating = ref(false);
 const enableEmojiReactions = defaultStore.state.enableEmojiReactions;
 const expandOnNoteClick = defaultStore.state.expandOnNoteClick;
@@ -391,7 +397,7 @@ const isForeignLanguage: boolean =
 		return postLang !== "" && postLang !== targetLang;
 	})();
 
-async function translate_(noteId, targetLang: string) {
+async function translate_(noteId: string, targetLang: string) {
 	return await os.api("notes/translate", {
 		noteId,
 		targetLang,
@@ -421,12 +427,13 @@ async function translate() {
 const keymap = {
 	r: () => reply(true),
 	"e|a|plus": () => react(true),
-	q: () => renoteButton.value.renote(true),
+	q: () => renoteButton.value!.renote(true),
 	"up|k": focusBefore,
 	"down|j": focusAfter,
 	esc: blur,
 	"m|o": () => menu(true),
-	s: () => showContent.value !== showContent.value,
+	// FIXME: What's this?
+	// s: () => showContent.value !== showContent.value,
 };
 
 if (appearNote.value.historyId == null) {
@@ -437,12 +444,12 @@ if (appearNote.value.historyId == null) {
 	});
 }
 
-function reply(viaKeyboard = false): void {
+function reply(_viaKeyboard = false): void {
 	pleaseLogin();
 	os.post(
 		{
 			reply: appearNote.value,
-			animation: !viaKeyboard,
+			// animation: !viaKeyboard,
 		},
 		() => {
 			focus();
@@ -450,11 +457,11 @@ function reply(viaKeyboard = false): void {
 	);
 }
 
-function react(viaKeyboard = false): void {
+function react(_viaKeyboard = false): void {
 	pleaseLogin();
 	blur();
 	reactionPicker.show(
-		reactButton.value,
+		reactButton.value!,
 		(reaction) => {
 			os.api("notes/reactions/create", {
 				noteId: appearNote.value.id,
@@ -467,7 +474,7 @@ function react(viaKeyboard = false): void {
 	);
 }
 
-function undoReact(note): void {
+function undoReact(note: NoteType): void {
 	const oldReaction = note.myReaction;
 	if (!oldReaction) return;
 	os.api("notes/reactions/delete", {
@@ -481,16 +488,17 @@ const currentClipPage = inject<Ref<entities.Clip> | null>(
 );
 
 function onContextmenu(ev: MouseEvent): void {
-	const isLink = (el: HTMLElement) => {
+	const isLink = (el: HTMLElement): boolean => {
 		if (el.tagName === "A") return true;
 		// The Audio element's context menu is the browser default, such as for selecting playback speed.
 		if (el.tagName === "AUDIO") return true;
 		if (el.parentElement) {
 			return isLink(el.parentElement);
 		}
+		return false;
 	};
-	if (isLink(ev.target)) return;
-	if (window.getSelection().toString() !== "") return;
+	if (isLink(ev.target as HTMLElement)) return;
+	if (window.getSelection()?.toString() !== "") return;
 
 	if (defaultStore.state.useReactionPickerForContextMenu) {
 		ev.preventDefault();
@@ -509,7 +517,7 @@ function onContextmenu(ev: MouseEvent): void {
 						os.pageWindow(notePage(appearNote.value));
 					},
 				},
-				notePage(appearNote.value) != location.pathname
+				notePage(appearNote.value) !== location.pathname
 					? {
 							icon: `${icon("ph-arrows-out-simple")}`,
 							text: i18n.ts.showInPage,
@@ -589,11 +597,11 @@ function showRenoteMenu(viaKeyboard = false): void {
 }
 
 function focus() {
-	el.value.focus();
+	el.value!.focus();
 }
 
 function blur() {
-	el.value.blur();
+	el.value!.blur();
 }
 
 function focusBefore() {
@@ -605,12 +613,12 @@ function focusAfter() {
 }
 
 function scrollIntoView() {
-	el.value.scrollIntoView();
+	el.value!.scrollIntoView();
 }
 
 function noteClick(e) {
 	if (
-		document.getSelection().type === "Range" ||
+		document.getSelection()?.type === "Range" ||
 		props.detailedView ||
 		!expandOnNoteClick
 	) {

@@ -2,16 +2,16 @@
 	<MkModal
 		ref="modal"
 		:z-priority="'middle'"
-		@click="modal.close()"
+		@click="modal!.close()"
 		@closed="emit('closed')"
 	>
 		<div class="xubzgfga">
 			<header>{{ image.name }}</header>
 			<img
 				:src="image.url"
-				:alt="image.comment"
-				:title="image.comment"
-				@click="modal.close()"
+				:alt="image.comment || undefined"
+				:title="image.comment || undefined"
+				@click="modal!.close()"
 			/>
 			<footer>
 				<span>{{ image.type }}</span>
@@ -33,7 +33,7 @@ import bytes from "@/filters/bytes";
 import number from "@/filters/number";
 import MkModal from "@/components/MkModal.vue";
 
-const props = withDefaults(
+withDefaults(
 	defineProps<{
 		image: entities.DriveFile;
 	}>(),
@@ -41,10 +41,10 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	(ev: "closed"): void;
+	closed: [];
 }>();
 
-const modal = ref<InstanceType<typeof MkModal>>();
+const modal = ref<InstanceType<typeof MkModal> | null>(null);
 </script>
 
 <style lang="scss" scoped>

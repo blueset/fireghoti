@@ -36,6 +36,13 @@ export const packedChannelSchema = {
 			nullable: true,
 			optional: false,
 		},
+		bannerId: {
+			type: "string",
+			optional: false,
+			nullable: true,
+			format: "id",
+			example: "xxxxxxxxxx",
+		},
 		notesCount: {
 			type: "number",
 			nullable: false,
@@ -56,6 +63,11 @@ export const packedChannelSchema = {
 			nullable: true,
 			optional: false,
 			format: "id",
+		},
+		hasUnreadNote: {
+			type: "boolean",
+			optional: true,
+			nullable: false,
 		},
 	},
 } as const;

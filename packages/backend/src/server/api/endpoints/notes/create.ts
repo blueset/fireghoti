@@ -114,7 +114,7 @@ export const paramDef = {
 			enum: Object.keys(langmap),
 			nullable: true,
 		},
-		cw: { type: "string", nullable: true, maxLength: 100 },
+		cw: { type: "string", nullable: true, maxLength: MAX_NOTE_TEXT_LENGTH },
 		localOnly: { type: "boolean", default: false },
 		noExtractMentions: { type: "boolean", default: false },
 		noExtractHashtags: { type: "boolean", default: false },

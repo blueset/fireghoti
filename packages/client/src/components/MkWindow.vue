@@ -271,7 +271,7 @@ function onHeaderMousedown(evt: MouseEvent) {
 			? evt.touches[0].clientY
 			: evt.clientY;
 	const moveBaseX = beforeMaximized
-		? parseInt(unMaximizedWidth, 10) / 2
+		? Number.parseInt(unMaximizedWidth, 10) / 2
 		: clickX - position.left; // TODO: parseIntやめる
 	const moveBaseY = beforeMaximized ? 20 : clickY - position.top;
 	const browserWidth = window.innerWidth;
@@ -321,8 +321,8 @@ function onTopHandleMousedown(evt) {
 	const main = rootEl.value;
 
 	const base = evt.clientY;
-	const height = parseInt(getComputedStyle(main, "").height, 10);
-	const top = parseInt(getComputedStyle(main, "").top, 10);
+	const height = Number.parseInt(getComputedStyle(main, "").height, 10);
+	const top = Number.parseInt(getComputedStyle(main, "").top, 10);
 
 	// 動かした時
 	dragListen((me) => {
@@ -349,8 +349,8 @@ function onRightHandleMousedown(evt) {
 	const main = rootEl.value;
 
 	const base = evt.clientX;
-	const width = parseInt(getComputedStyle(main, "").width, 10);
-	const left = parseInt(getComputedStyle(main, "").left, 10);
+	const width = Number.parseInt(getComputedStyle(main, "").width, 10);
+	const left = Number.parseInt(getComputedStyle(main, "").left, 10);
 	const browserWidth = window.innerWidth;
 
 	// 動かした時
@@ -375,8 +375,8 @@ function onBottomHandleMousedown(evt) {
 	const main = rootEl.value;
 
 	const base = evt.clientY;
-	const height = parseInt(getComputedStyle(main, "").height, 10);
-	const top = parseInt(getComputedStyle(main, "").top, 10);
+	const height = Number.parseInt(getComputedStyle(main, "").height, 10);
+	const top = Number.parseInt(getComputedStyle(main, "").top, 10);
 	const browserHeight = window.innerHeight;
 
 	// 動かした時
@@ -401,8 +401,8 @@ function onLeftHandleMousedown(evt) {
 	const main = rootEl.value;
 
 	const base = evt.clientX;
-	const width = parseInt(getComputedStyle(main, "").width, 10);
-	const left = parseInt(getComputedStyle(main, "").left, 10);
+	const width = Number.parseInt(getComputedStyle(main, "").width, 10);
+	const left = Number.parseInt(getComputedStyle(main, "").left, 10);
 
 	// 動かした時
 	dragListen((me) => {

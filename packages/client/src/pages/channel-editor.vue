@@ -41,6 +41,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from "vue";
+import type { entities } from "firefish-js";
 import MkTextarea from "@/components/form/textarea.vue";
 import MkButton from "@/components/MkButton.vue";
 import MkInput from "@/components/form/input.vue";
@@ -57,26 +58,24 @@ const props = defineProps<{
 	channelId?: string;
 }>();
 
-const channel = ref(null);
-const name = ref(null);
-const description = ref(null);
+const channel = ref<entities.Channel | null>(null);
+const name = ref<string>("");
+const description = ref<string>("");
 const bannerUrl = ref<string | null>(null);
 const bannerId = ref<string | null>(null);
 
-watch(
-	() => bannerId.value,
-	async () => {
-		if (bannerId.value == null) {
-			bannerUrl.value = null;
-		} else {
-			bannerUrl.value = (
-				await os.api("drive/files/show", {
-					fileId: bannerId.value,
-				})
-			).url;
-		}
-	},
-);
+let bannerUrlUpdated = false;
+
+/**
+ * Set banner url and id when we already know the url
+ * Prevent redundant network requests from being sent
+ */
+function setBanner(opt: { bannerId: string | null; bannerUrl: string | null }) {
+	bannerUrlUpdated = true;
+	bannerUrl.value = opt.bannerUrl;
+	bannerId.value = opt.bannerId;
+	bannerUrlUpdated = false;
+}
 
 async function fetchChannel() {
 	if (props.channelId == null) return;
@@ -86,23 +85,44 @@ async function fetchChannel() {
 	});
 
 	name.value = channel.value.name;
-	description.value = channel.value.description;
-	bannerId.value = channel.value.bannerId;
-	bannerUrl.value = channel.value.bannerUrl;
+	description.value = channel.value.description ?? "";
+	setBanner(channel.value);
 }
 
-fetchChannel();
+await fetchChannel();
+
+watch(bannerId, async () => {
+	if (bannerUrlUpdated) {
+		bannerUrlUpdated = false;
+		return;
+	}
+	if (bannerId.value == null) {
+		bannerUrl.value = null;
+	} else {
+		bannerUrl.value = (
+			await os.api("drive/files/show", {
+				fileId: bannerId.value,
+			})
+		).url;
+	}
+});
 
 function save() {
-	const params = {
+	const params: {
+		name: string;
+		description: string;
+		bannerId: string | null;
+	} = {
 		name: name.value,
 		description: description.value,
 		bannerId: bannerId.value,
 	};
 
 	if (props.channelId) {
-		params.channelId = props.channelId;
-		os.api("channels/update", params).then(() => {
+		os.api("channels/update", {
+			...params,
+			channelId: props.channelId,
+		}).then(() => {
 			os.success();
 		});
 	} else {
@@ -113,14 +133,20 @@ function save() {
 	}
 }
 
-function setBannerImage(evt) {
+function setBannerImage(evt: MouseEvent) {
 	selectFile(evt.currentTarget ?? evt.target, null).then((file) => {
-		bannerId.value = file.id;
+		setBanner({
+			bannerId: file.id,
+			bannerUrl: file.url,
+		});
 	});
 }
 
 function removeBannerImage() {
-	bannerId.value = null;
+	setBanner({
+		bannerId: null,
+		bannerUrl: null,
+	});
 }
 
 const headerActions = computed(() => []);

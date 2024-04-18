@@ -1,6 +1,6 @@
 import define from "@/server/api/define.js";
 import { Hashtags } from "@/models/index.js";
-import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
+import { sqlLikeEscape } from "backend-rs";
 
 export const meta = {
 	tags: ["hashtags"],

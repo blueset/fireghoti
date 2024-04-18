@@ -18,8 +18,8 @@ import { initChart } from "@/scripts/init-chart";
 
 initChart();
 
-const rootEl = shallowRef<HTMLDivElement>();
-const chartEl = shallowRef<HTMLCanvasElement>();
+const rootEl = shallowRef<HTMLDivElement | null>(null);
+const chartEl = shallowRef<HTMLCanvasElement | null>(null);
 const now = new Date();
 let chartInstance: Chart | null = null;
 const fetching = ref(true);
@@ -33,8 +33,8 @@ async function renderActiveUsersChart() {
 		chartInstance.destroy();
 	}
 
-	const wide = rootEl.value.offsetWidth > 700;
-	const narrow = rootEl.value.offsetWidth < 400;
+	const wide = rootEl.value!.offsetWidth > 700;
+	const narrow = rootEl.value!.offsetWidth < 400;
 
 	const weeks = wide ? 50 : narrow ? 10 : 25;
 	const chartLimit = 7 * weeks;

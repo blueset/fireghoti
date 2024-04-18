@@ -2,7 +2,7 @@ import Limiter from "ratelimiter";
 import Logger from "@/services/logger.js";
 import { redisClient } from "@/db/redis.js";
 import type { IEndpointMeta } from "./endpoints.js";
-import { convertMilliseconds } from "@/misc/convert-milliseconds.js";
+import { formatMilliseconds } from "backend-rs";
 
 const logger = new Logger("limiter");
 
@@ -77,7 +77,7 @@ export const limiter = (
 				if (info.remaining === 0) {
 					reject({
 						message: "RATE_LIMIT_EXCEEDED",
-						remainingTime: convertMilliseconds(info.resetMs - Date.now()),
+						remainingTime: formatMilliseconds(info.resetMs - Date.now()),
 					});
 				} else {
 					ok();

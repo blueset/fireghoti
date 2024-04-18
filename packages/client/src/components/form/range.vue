@@ -48,7 +48,7 @@ const id = os.getUniqueId();
 
 const props = withDefaults(
 	defineProps<{
-		modelValue: number;
+		modelValue: number | null;
 		disabled?: boolean;
 		min: number;
 		max: number;

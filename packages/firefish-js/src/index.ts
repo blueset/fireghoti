@@ -1,6 +1,7 @@
 import * as acct from "./acct";
 import type { Acct } from "./acct";
 import { Endpoints } from "./api.types";
+import type * as ApiTypes from "./api.types";
 import * as consts from "./consts";
 import Stream, { Connection } from "./streaming";
 import * as StreamTypes from "./streaming.types";
@@ -8,6 +9,7 @@ import type * as TypeUtils from "./type-utils";
 
 export {
 	Endpoints,
+	type ApiTypes,
 	Stream,
 	Connection as ChannelConnection,
 	StreamTypes,

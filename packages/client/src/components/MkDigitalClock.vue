@@ -26,7 +26,7 @@ const props = withDefaults(
 	},
 );
 
-let intervalId;
+let intervalId: number;
 const hh = ref("");
 const mm = ref("");
 const ss = ref("");
