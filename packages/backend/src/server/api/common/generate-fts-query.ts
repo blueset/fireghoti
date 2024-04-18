@@ -1,5 +1,5 @@
 import { Brackets, SelectQueryBuilder, WhereExpressionBuilder } from "typeorm";
-import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
+import { sqlLikeEscape } from "backend-rs";
 import { sqlRegexEscape } from "@/misc/sql-regex-escape.js";
 import {
 	Followings,

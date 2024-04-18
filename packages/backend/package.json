@@ -4,7 +4,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"start": "pnpm node ./built/index.js",
+		"start": "pnpm node --heapsnapshot-signal=SIGUSR2 ./built/index.js",
 		"start:test": "NODE_ENV=test pnpm node ./built/index.js",
 		"migration:run": "typeorm migration:run --dataSource ./built/ormconfig.js",
 		"migration:revert": "typeorm migration:revert --dataSource ./built/ormconfig.js",

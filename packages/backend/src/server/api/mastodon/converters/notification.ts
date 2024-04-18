@@ -15,9 +15,9 @@ import isQuote from "@/misc/is-quote.js";
 import { unique } from "@/prelude/array.js";
 import { Note } from "@/models/entities/note.js";
 import { SwSubscription } from "@/models/entities/sw-subscription.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import type { pushNotificationsTypes } from "@/services/push-notification.js";
-import { getNoteSummary } from "@/misc/get-note-summary.js";
+import { getNoteSummary } from "backend-rs";
 
 type NotificationType = (typeof notificationTypes)[number];
 

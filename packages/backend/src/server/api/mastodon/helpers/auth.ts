@@ -2,7 +2,7 @@ import OAuth from "@/server/api/mastodon/entities/oauth/oauth.js";
 import { secureRndstr } from "backend-rs";
 import { Apps, AccessTokens } from "@/models/index.js";
 import { genId } from "backend-rs";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { MastoContext } from "@/server/api/mastodon/index.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import { difference, toSingleLast, unique } from "@/prelude/array.js";

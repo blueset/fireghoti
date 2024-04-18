@@ -4,7 +4,7 @@ import { isInstanceMuted } from "@/misc/is-instance-muted.js";
 import { Note } from "@/models/entities/note.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { StreamMessages } from "@/server/api/stream/types.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import isQuote from "@/misc/is-quote.js";
 
 export class MastodonStreamPublic extends MastodonStream {

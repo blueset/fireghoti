@@ -14,7 +14,7 @@ import { generateVisibilityQuery } from "@/server/api/common/generate-visibility
 import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
 import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
 import { generateMutedUserRenotesQueryForNotes } from "@/server/api/common/generated-muted-renote-query.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserList } from "@/models/entities/user-list.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";

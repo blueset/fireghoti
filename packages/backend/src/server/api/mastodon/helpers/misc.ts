@@ -1,6 +1,6 @@
 import config from "@/config/index.js";
 import { FILE_TYPE_BROWSERSAFE, MAX_NOTE_TEXT_LENGTH } from "@/const.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import {
 	AnnouncementReads,
 	Announcements,

@@ -20,7 +20,6 @@ import { fetchMeta } from "backend-rs";
 import { genIdenticon } from "@/misc/gen-identicon.js";
 import { createTemp } from "@/misc/create-temp.js";
 import { stringToAcct } from "backend-rs";
-import { envOption } from "@/env.js";
 import activityPub from "./activitypub.js";
 import nodeinfo from "./nodeinfo.js";
 import wellKnown from "./well-known.js";

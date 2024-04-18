@@ -21,7 +21,7 @@ import {
 	NoteThreadMutings,
 	UserNotePinings,
 } from "@/models/index.js";
-import { decodeReaction } from "@/misc/reaction-lib.js";
+import { decodeReaction } from "backend-rs";
 import { MentionConverter } from "@/server/api/mastodon/converters/mention.js";
 import { PollConverter } from "@/server/api/mastodon/converters/poll.js";
 import { populatePoll } from "@/models/repositories/note.js";

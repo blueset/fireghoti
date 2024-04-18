@@ -41,7 +41,7 @@ import {
 	getStubMastoContext,
 	MastoContext,
 } from "@/server/api/mastodon/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { translate } from "@/misc/translate.js";
 import type { PostLanguage } from "@/misc/langmap.js";
 

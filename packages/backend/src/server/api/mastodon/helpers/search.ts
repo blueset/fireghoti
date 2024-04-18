@@ -1,5 +1,5 @@
 import { Followings, Hashtags, Notes, Users } from "@/models/index.js";
-import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
+import { sqlLikeEscape } from "backend-rs";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
 import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
 import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
