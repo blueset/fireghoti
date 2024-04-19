@@ -52,6 +52,8 @@ pub struct Model {
     pub request_headers: Option<Json>,
     #[sea_orm(column_name = "requestIp")]
     pub request_ip: Option<String>,
+    #[sea_orm(column_name = "usageHint")]
+    pub usage_hint: Option<String>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
