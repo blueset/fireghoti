@@ -25,7 +25,7 @@ struct ServerConfig {
     /// `NapiValue` is not implemented for `u64`
     pub max_file_size: Option<i64>,
     pub access_log: Option<String>,
-    pub cluster_limits: Option<_WorkerConfig>,
+    pub cluster_limits: Option<WorkerConfigInternal>,
     pub cuid: Option<IdConfig>,
     pub outgoing_address: Option<String>,
 
@@ -103,7 +103,7 @@ pub struct WorkerConfig {
 #[derive(Clone, Debug, PartialEq, Deserialize)]
 #[serde(rename_all = "camelCase")]
 #[crate::export(object, use_nullable = false)]
-pub struct _WorkerConfig {
+pub struct WorkerConfigInternal {
     pub web: Option<u32>,
     pub queue: Option<u32>,
 }

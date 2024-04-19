@@ -29,7 +29,7 @@ export interface ServerConfig {
   /** `NapiValue` is not implemented for `u64` */
   maxFileSize?: number
   accessLog?: string
-  clusterLimits?: _WorkerConfig
+  clusterLimits?: WorkerConfigInternal
   cuid?: IdConfig
   outgoingAddress?: string
   deliverJobConcurrency?: number
@@ -80,7 +80,7 @@ export interface WorkerConfig {
   web: number
   queue: number
 }
-export interface WorkerConfig {
+export interface WorkerConfigInternal {
   web?: number
   queue?: number
 }

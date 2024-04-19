@@ -30,6 +30,7 @@ jsonschema = { workspace = true }
 once_cell = { workspace = true }
 parse-display = { workspace = true }
 rand = { workspace = true }
+redis = { workspace = true }
 regex = { workspace = true }
 schemars = { workspace = true, features = ["chrono"] }
 sea-orm = { workspace = true, features = ["sqlx-postgres", "runtime-tokio-rustls"] }
