@@ -5,7 +5,7 @@ pg.types.setTypeParser(20, Number);
 import type { Logger } from "typeorm";
 import { DataSource } from "typeorm";
 import * as highlight from "cli-highlight";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 
 import { User } from "@/models/entities/user.js";
 import { DriveFile } from "@/models/entities/drive-file.js";

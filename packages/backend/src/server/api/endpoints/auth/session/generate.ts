@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { Apps, AuthSessions } from "@/models/index.js";

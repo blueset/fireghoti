@@ -1,6 +1,6 @@
 import { URL } from "node:url";
 import * as mfm from "mfm-js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import type { ILocalUser } from "@/models/entities/user.js";
 import { DriveFiles, UserProfiles } from "@/models/index.js";
 import { getUserKeypair } from "@/misc/keypair-store.js";

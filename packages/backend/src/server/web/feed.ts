@@ -1,6 +1,6 @@
 import { Feed } from "feed";
 import { In, IsNull } from "typeorm";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import type { User } from "@/models/entities/user.js";
 import { Notes, DriveFiles, UserProfiles, Users } from "@/models/index.js";
 

@@ -1,6 +1,6 @@
 import JSON5 from "json5";
 import { IsNull, MoreThan } from "typeorm";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { fetchMeta } from "backend-rs";
 import { Ads, Emojis, Users } from "@/models/index.js";
 import { MAX_NOTE_TEXT_LENGTH, MAX_CAPTION_TEXT_LENGTH } from "@/const.js";

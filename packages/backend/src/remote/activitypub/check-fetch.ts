@@ -1,6 +1,6 @@
 import { URL } from "url";
 import httpSignature, { IParsedSignature } from "@peertube/http-signature";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { fetchMeta } from "backend-rs";
 import { toPuny } from "backend-rs";
 import DbResolver from "@/remote/activitypub/db-resolver.js";

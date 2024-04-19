@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { getUserKeypair } from "@/misc/keypair-store.js";
 import type { User } from "@/models/entities/user.js";
 import { LdSignature } from "../misc/ld-signature.js";

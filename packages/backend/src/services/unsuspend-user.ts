@@ -2,7 +2,7 @@ import renderDelete from "@/remote/activitypub/renderer/delete.js";
 import renderUndo from "@/remote/activitypub/renderer/undo.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import { deliver } from "@/queue/index.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import type { User } from "@/models/entities/user.js";
 import { Users, Followings } from "@/models/index.js";
 import { Not, IsNull } from "typeorm";

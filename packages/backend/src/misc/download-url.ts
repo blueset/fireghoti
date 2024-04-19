@@ -3,7 +3,7 @@ import * as stream from "node:stream";
 import * as util from "node:util";
 import got, * as Got from "got";
 import { httpAgent, httpsAgent, StatusError } from "./fetch.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import chalk from "chalk";
 import Logger from "@/services/logger.js";
 import IPCIDR from "ip-cidr";

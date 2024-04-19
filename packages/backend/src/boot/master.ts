@@ -8,9 +8,8 @@ import chalkTemplate from "chalk-template";
 import semver from "semver";
 
 import Logger from "@/services/logger.js";
-import loadConfig from "@/config/load.js";
-import type { Config } from "@/config/types.js";
-import { envOption } from "@/config/index.js";
+import type { Config } from "backend-rs";
+import { config, envOption } from "@/config.js";
 import { showMachineInfo } from "@/misc/show-machine-info.js";
 import { db, initDb } from "@/db/postgre.js";
 import { inspect } from "node:util";
@@ -87,15 +86,12 @@ function greet() {
  * Init master process
  */
 export async function masterMain() {
-	let config!: Config;
-
 	// initialize app
 	try {
 		greet();
 		showEnvironment();
 		await showMachineInfo(bootLogger);
 		showNodejsVersion();
-		config = loadConfigBoot();
 		await connectDb();
 	} catch (e) {
 		bootLogger.error(
@@ -152,28 +148,6 @@ function showNodejsVersion(): void {
 		nodejsLogger.error(`At least Node.js ${minVersion} required!`);
 		process.exit(1);
 	}
-}
-
-function loadConfigBoot(): Config {
-	const configLogger = bootLogger.createSubLogger("config");
-	let config;
-
-	try {
-		config = loadConfig();
-	} catch (exception) {
-		if (exception.code === "ENOENT") {
-			configLogger.error("Configuration file not found", null, true);
-			process.exit(1);
-		} else if (e instanceof Error) {
-			configLogger.error(e.message);
-			process.exit(1);
-		}
-		throw exception;
-	}
-
-	configLogger.succ("Loaded");
-
-	return config;
 }
 
 async function connectDb(): Promise<void> {

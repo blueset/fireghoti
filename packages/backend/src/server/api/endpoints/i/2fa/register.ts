@@ -1,6 +1,6 @@
 import * as OTPAuth from "otpauth";
 import * as QRCode from "qrcode";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { UserProfiles } from "@/models/index.js";
 import define from "@/server/api/define.js";
 import { verifyPassword } from "backend-rs";

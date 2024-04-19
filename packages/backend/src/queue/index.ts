@@ -1,11 +1,10 @@
 import type httpSignature from "@peertube/http-signature";
 import { v4 as uuid } from "uuid";
 
-import config from "@/config/index.js";
+import { config, envOption } from "@/config.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { IActivity } from "@/remote/activitypub/type.js";
 import type { Webhook, webhookEventTypes } from "@/models/entities/webhook.js";
-import { envOption } from "@/config/index.js";
 
 import processDeliver from "./processors/deliver.js";
 import processInbox from "./processors/inbox.js";
@@ -24,10 +23,9 @@ import {
 	objectStorageQueue,
 	endedPollNotificationQueue,
 	webhookDeliverQueue,
-	backgroundQueue,
 } from "./queues.js";
 import type { ThinUser } from "./types.js";
-import { Note } from "@/models/entities/note.js";
+import type { Note } from "@/models/entities/note.js";
 
 function renderError(e: Error): any {
 	return {

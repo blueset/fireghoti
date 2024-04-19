@@ -2,7 +2,7 @@ import cluster from "node:cluster";
 import chalk from "chalk";
 import { default as convertColor } from "color-convert";
 import { format as dateFormat } from "date-fns";
-import config, { envOption } from "@/config/index.js";
+import { config, envOption } from "@/config.js";
 
 import * as SyslogPro from "syslog-pro";
 

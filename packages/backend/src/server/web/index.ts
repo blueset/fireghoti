@@ -16,7 +16,7 @@ import { KoaAdapter } from "@bull-board/koa";
 
 import { In, IsNull } from "typeorm";
 import { fetchMeta, metaToPugArgs } from "backend-rs";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import {
 	Users,
 	Notes,

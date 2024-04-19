@@ -1,4 +1,4 @@
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import type { ILocalUser } from "@/models/entities/user.js";
 import { getInstanceActor } from "@/services/instance-actor.js";
 import { fetchMeta } from "backend-rs";

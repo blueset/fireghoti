@@ -1,4 +1,4 @@
-use crate::config::server::SERVER_CONFIG;
+use crate::config::server::CONFIG;
 use sea_orm::{Database, DbConn, DbErr};
 
 static DB_CONN: once_cell::sync::OnceCell<DbConn> = once_cell::sync::OnceCell::new();
@@ -6,11 +6,11 @@ static DB_CONN: once_cell::sync::OnceCell<DbConn> = once_cell::sync::OnceCell::n
 async fn init_database() -> Result<&'static DbConn, DbErr> {
     let database_uri = format!(
         "postgres://{}:{}@{}:{}/{}",
-        SERVER_CONFIG.db.user,
-        urlencoding::encode(&SERVER_CONFIG.db.pass),
-        SERVER_CONFIG.db.host,
-        SERVER_CONFIG.db.port,
-        SERVER_CONFIG.db.db,
+        CONFIG.db.user,
+        urlencoding::encode(&CONFIG.db.pass),
+        CONFIG.db.host,
+        CONFIG.db.port,
+        CONFIG.db.db,
     );
     let conn = Database::connect(database_uri).await?;
     Ok(DB_CONN.get_or_init(move || conn))

@@ -10,7 +10,7 @@ import renderCreate from "@/remote/activitypub/renderer/create.js";
 import renderAnnounce from "@/remote/activitypub/renderer/announce.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import { resolveUser } from "@/remote/resolve-user.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { updateHashtags } from "@/services/update-hashtag.js";
 import { concat } from "@/prelude/array.js";
 import { insertNoteUnread } from "@/services/note/unread.js";

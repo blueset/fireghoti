@@ -1,5 +1,5 @@
 import Bull from "bull";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 
 export function initialize<T>(name: string, limitPerSec = -1) {
 	return new Bull<T>(name, {
