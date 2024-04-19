@@ -77,7 +77,6 @@ import { NoteFile } from "@/models/entities/note-file.js";
 
 import { entities as charts } from "@/services/chart/entities.js";
 import { dbLogger } from "./logger.js";
-import { redisClient } from "./redis.js";
 
 const sqlLogger = dbLogger.createSubLogger("sql", "gray", false);
 
