@@ -369,7 +369,7 @@ export async function createPerson(
 				: resolveImage(
 						user,
 						img,
-						index === 0 ? "user_avatar" : index === 1 ? "user_banner" : null,
+						index === 0 ? "userAvatar" : index === 1 ? "userBanner" : null,
 					).catch(() => null),
 		),
 	);
@@ -449,7 +449,7 @@ export async function updatePerson(
 				: resolveImage(
 						user,
 						img,
-						index === 0 ? "user_avatar" : index === 1 ? "user_banner" : null,
+						index === 0 ? "userAvatar" : index === 1 ? "userBanner" : null,
 					).catch(() => null),
 		),
 	);

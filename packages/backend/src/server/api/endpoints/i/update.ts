@@ -335,14 +335,14 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 	if (avatar) {
 		if (user.avatarId)
 			await DriveFiles.update(user.avatarId, { usageHint: null });
-		await DriveFiles.update(avatar.id, { usageHint: "user_avatar" });
+		await DriveFiles.update(avatar.id, { usageHint: "userAvatar" });
 	}
 
 	// Update old/new banner usage hints
 	if (banner) {
 		if (user.bannerId)
 			await DriveFiles.update(user.bannerId, { usageHint: null });
-		await DriveFiles.update(banner.id, { usageHint: "user_banner" });
+		await DriveFiles.update(banner.id, { usageHint: "userBanner" });
 	}
 
 	if (Object.keys(updates).length > 0) await Users.update(user.id, updates);

@@ -66,7 +66,7 @@ function urlPathJoin(
  * @param type Content-Type for original
  * @param hash Hash for original
  * @param size Size for original
- * @param usage Optional usage hint for file (f.e. "user_avatar")
+ * @param usage Optional usage hint for file (f.e. "userAvatar")
  */
 async function save(
 	file: DriveFile,

@@ -16,7 +16,7 @@ import { DriveFolder } from "./drive-folder.js";
 import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
 import { NoteFile } from "./note-file.js";
 
-export type DriveFileUsageHint = "user_avatar" | "user_banner" | null;
+export type DriveFileUsageHint = "userAvatar" | "userBanner" | null;
 
 @Entity()
 @Index(["userId", "folderId", "id"])
@@ -179,8 +179,9 @@ export class DriveFile {
 	})
 	public isSensitive: boolean;
 
-	@Column("varchar", {
-		length: 16,
+	@Column({
+		type: "enum",
+		enum: ["userAvatar", "userBanner"],
 		nullable: true,
 		comment: "Hint for what the file is used for.",
 	})
