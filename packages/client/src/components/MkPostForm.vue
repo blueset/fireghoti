@@ -1188,7 +1188,7 @@ async function insertEmoji(ev: MouseEvent) {
 	os.openEmojiPicker(
 		(ev.currentTarget ?? ev.target) as HTMLElement,
 		{},
-		textareaEl.value,
+		textareaEl.value!,
 	);
 }
 

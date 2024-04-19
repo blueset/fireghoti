@@ -231,15 +231,9 @@ const unicodeEmojiSkinToneLabels = [
 	i18n.ts._skinTones?.dark ?? "Dark",
 ];
 
-const size = computed(() =>
-	props.asReactionPicker ? reactionPickerSize.value : 1,
-);
-const width = computed(() =>
-	props.asReactionPicker ? reactionPickerWidth.value : 3,
-);
-const height = computed(() =>
-	props.asReactionPicker ? reactionPickerHeight.value : 2,
-);
+const size = reactionPickerSize;
+const width = reactionPickerWidth;
+const height = reactionPickerHeight;
 const customEmojiCategories = emojiCategories;
 const customEmojis = instance.emojis;
 const q = ref<string | null>(null);
