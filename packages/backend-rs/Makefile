@@ -6,6 +6,7 @@ SRC += $(call recursive_wildcard, src, *)
 
 .PHONY: regenerate-entities
 regenerate-entities:
+	rm --recursive --force src/model/entity
 	sea-orm-cli generate entity \
 	  --output-dir='src/model/entity' \
 	  --database-url='postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@localhost:25432/$(POSTGRES_DB)' \
@@ -16,8 +17,9 @@ regenerate-entities:
 	  jsname=$$(printf '%s\n' "$${base%.*}" | perl -pe 's/(^|_)./uc($$&)/ge;s/_//g'); \
 	  attribute=$$(printf 'cfg_attr(feature = "napi", napi_derive::napi(object, js_name = "%s", use_nullable = true))' "$${jsname}"); \
 	  sed -i "s/NAPI_EXTRA_ATTR_PLACEHOLDER/$${attribute}/" "$${file}"; \
+		sed -i 's/#\[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)\]/#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, serde::Serialize)]/' "$${file}"; \
 	done
-	sed -i 's/#\[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum)\]/#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]\n#[cfg_attr(not(feature = "napi"), derive(Clone))]\n#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]/' \
+	sed -i 's/#\[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum)\]/#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, serde::Serialize)]\n#[cfg_attr(not(feature = "napi"), derive(Clone))]\n#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]/' \
 	  src/model/entity/sea_orm_active_enums.rs
 	cargo fmt --all --
 

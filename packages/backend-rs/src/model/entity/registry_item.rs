@@ -2,7 +2,7 @@
 
 use sea_orm::entity::prelude::*;
 
-#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, serde::Serialize)]
 #[sea_orm(table_name = "registry_item")]
 #[cfg_attr(
     feature = "napi",

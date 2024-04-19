@@ -3,7 +3,7 @@
 use super::sea_orm_active_enums::MutedNoteReasonEnum;
 use sea_orm::entity::prelude::*;
 
-#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, serde::Serialize)]
 #[sea_orm(table_name = "muted_note")]
 #[cfg_attr(
     feature = "napi",
