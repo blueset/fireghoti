@@ -13,6 +13,7 @@ import { normalizeForSearch } from "@/misc/normalize-for-search.js";
 import { verifyLink } from "@/services/fetch-rel-me.js";
 import { ApiError } from "@/server/api/error.js";
 import define from "@/server/api/define.js";
+import { DriveFile } from "@/models/entities/drive-file";
 
 export const meta = {
 	tags: ["account"],
@@ -241,8 +242,9 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 	if (ps.emailNotificationTypes !== undefined)
 		profileUpdates.emailNotificationTypes = ps.emailNotificationTypes;
 
+	let avatar: DriveFile | null = null
 	if (ps.avatarId) {
-		const avatar = await DriveFiles.findOneBy({ id: ps.avatarId });
+		avatar = await DriveFiles.findOneBy({ id: ps.avatarId });
 
 		if (avatar == null || avatar.userId !== user.id)
 			throw new ApiError(meta.errors.noSuchAvatar);
@@ -250,8 +252,9 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 			throw new ApiError(meta.errors.avatarNotAnImage);
 	}
 
+	let banner: DriveFile | null = null
 	if (ps.bannerId) {
-		const banner = await DriveFiles.findOneBy({ id: ps.bannerId });
+		banner = await DriveFiles.findOneBy({ id: ps.bannerId });
 
 		if (banner == null || banner.userId !== user.id)
 			throw new ApiError(meta.errors.noSuchBanner);
@@ -327,6 +330,22 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 	// ハッシュタグ更新
 	updateUsertags(user, tags);
 	//#endregion
+
+	// Update old/new avatar usage hints
+	if (avatar)
+	{
+		if (user.avatarId)
+			await DriveFiles.update(user.avatarId, {usageHint: null});
+		await DriveFiles.update(avatar.id, {usageHint: "user_avatar"});
+	}
+
+	// Update old/new banner usage hints
+	if (banner)
+	{
+		if (user.bannerId)
+			await DriveFiles.update(user.bannerId, {usageHint: null});
+		await DriveFiles.update(banner.id, {usageHint: "user_banner"});
+	}
 
 	if (Object.keys(updates).length > 0) await Users.update(user.id, updates);
 	if (Object.keys(profileUpdates).length > 0)

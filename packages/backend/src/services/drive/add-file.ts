@@ -16,6 +16,7 @@ import {
 	UserProfiles,
 } from "@/models/index.js";
 import { DriveFile } from "@/models/entities/drive-file.js";
+import type { DriveFileUsageHint } from "@/models/entities/drive-file.js";
 import type { IRemoteUser, User } from "@/models/entities/user.js";
 import { genId } from "backend-rs";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
@@ -65,7 +66,7 @@ function urlPathJoin(
  * @param type Content-Type for original
  * @param hash Hash for original
  * @param size Size for original
- * @param usage Optional usage hint for file (f.e. "avatar")
+ * @param usage Optional usage hint for file (f.e. "user_avatar")
  */
 async function save(
 	file: DriveFile,
@@ -74,7 +75,7 @@ async function save(
 	type: string,
 	hash: string,
 	size: number,
-	usage: string | null = null
+	usage: DriveFileUsageHint = null
 ): Promise<DriveFile> {
 	// thunbnail, webpublic を必要なら生成
 	const alts = await generateAlts(path, type, !file.uri);
@@ -456,7 +457,7 @@ type AddFileArgs = {
 	requestHeaders?: Record<string, string> | null;
 
 	/** Whether this file has a known use case, like user avatar or instance icon */
-	usageHint?: string | null;
+	usageHint?: DriveFileUsageHint;
 };
 
 /**

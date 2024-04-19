@@ -16,6 +16,8 @@ import { DriveFolder } from "./drive-folder.js";
 import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
 import { NoteFile } from "./note-file.js";
 
+export type DriveFileUsageHint = "user_avatar" | "user_banner" | null;
+
 @Entity()
 @Index(["userId", "folderId", "id"])
 export class DriveFile {
@@ -182,7 +184,7 @@ export class DriveFile {
 		nullable: true,
 		comment: "Hint for what the file is used for.",
 	})
-	public usageHint: string | null;
+	public usageHint: DriveFileUsageHint;
 
 	/**
 	 * 外部の(信頼されていない)URLへの直リンクか否か

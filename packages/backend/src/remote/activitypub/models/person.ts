@@ -365,7 +365,7 @@ export async function createPerson(
 		[person.icon, person.image].map((img, index) =>
 			img == null
 				? Promise.resolve(null)
-				: resolveImage(user!, img, index === 0 ? "avatar" : index === 1 ? "banner" : null).catch(() => null),
+				: resolveImage(user, img, index === 0 ? "user_avatar" : index === 1 ? "user_banner" : null).catch(() => null)
 		),
 	);
 
@@ -441,7 +441,7 @@ export async function updatePerson(
 		[person.icon, person.image].map((img, index) =>
 			img == null
 				? Promise.resolve(null)
-				: resolveImage(user, img, index === 0 ? "avatar" : index === 1 ? "banner" : null).catch(() => null),
+				: resolveImage(user, img, index === 0 ? "user_avatar" : index === 1 ? "user_banner" : null).catch(() => null),
 		),
 	);
 
