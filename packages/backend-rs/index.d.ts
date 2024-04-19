@@ -1098,6 +1098,7 @@ export interface Webhook {
   latestSentAt: Date | null
   latestStatus: number | null
 }
+export function addNoteToAntenna(antennaId: string, note: Note): void
 /** Initializes Cuid2 generator. Must be called before any [create_id]. */
 export function initIdGenerator(length: number, fingerprint: string): void
 export function getTimestamp(id: string): number

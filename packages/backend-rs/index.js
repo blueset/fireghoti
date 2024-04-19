@@ -310,7 +310,7 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { loadEnv, loadConfig, stringToAcct, acctToString, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getNoteSummary, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, AntennaSrcEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
+const { loadEnv, loadConfig, stringToAcct, acctToString, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getNoteSummary, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, AntennaSrcEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, addNoteToAntenna, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
 
 module.exports.loadEnv = loadEnv
 module.exports.loadConfig = loadConfig
@@ -348,6 +348,7 @@ module.exports.RelayStatusEnum = RelayStatusEnum
 module.exports.UserEmojimodpermEnum = UserEmojimodpermEnum
 module.exports.UserProfileFfvisibilityEnum = UserProfileFfvisibilityEnum
 module.exports.UserProfileMutingnotificationtypesEnum = UserProfileMutingnotificationtypesEnum
+module.exports.addNoteToAntenna = addNoteToAntenna
 module.exports.initIdGenerator = initIdGenerator
 module.exports.getTimestamp = getTimestamp
 module.exports.genId = genId

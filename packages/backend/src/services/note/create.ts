@@ -44,8 +44,7 @@ import { Poll } from "@/models/entities/poll.js";
 import { createNotification } from "@/services/create-notification.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
 import { checkHitAntenna } from "@/misc/check-hit-antenna.js";
-import { checkWordMute } from "backend-rs";
-import { addNoteToAntenna } from "@/services/add-note-to-antenna.js";
+import { addNoteToAntenna, checkWordMute } from "backend-rs";
 import { countSameRenotes } from "@/misc/count-same-renotes.js";
 import { deliverToRelays, getCachedRelays } from "../relay.js";
 import type { Channel } from "@/models/entities/channel.js";
@@ -63,6 +62,7 @@ import { Mutex } from "redis-semaphore";
 import { langmap } from "@/misc/langmap.js";
 import Logger from "@/services/logger.js";
 import { inspect } from "node:util";
+import { undefinedToNull } from "@/prelude/undefined-to-null.js";
 
 const logger = new Logger("create-note");
 
@@ -399,7 +399,8 @@ export default async (
 		for (const antenna of await getAntennas()) {
 			checkHitAntenna(antenna, note, user).then((hit) => {
 				if (hit) {
-					addNoteToAntenna(antenna, note, user);
+					// TODO: do this more sanely
+					addNoteToAntenna(antenna.id, undefinedToNull(note) as Note);
 				}
 			});
 		}
