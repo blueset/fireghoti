@@ -130,10 +130,9 @@ export class MfmHelpers {
 					}
 				}
 				const el = doc.createElement("span");
-				el.textContent = `${node.props.name}(`;
-				el.textContent += Object.entries(node.props.args).map(([k, v]) => `${k}=${v}, `).join("");
+				el.appendChild(doc.createTextNode(`${node.props.name}(` + Object.entries(node.props.args).map(([k, v]) => `${k}=${v}, `).join("")));
 				await appendChildren(node.children, el);
-				el.textContent += ")";
+				el.appendChild(doc.createTextNode(")"));
 				return [el];
 			},
 

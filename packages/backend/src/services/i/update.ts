@@ -93,7 +93,6 @@ export async function updateUserProfileData(
 
 	await promiseEarlyReturn(
 		UserProfiles.updateMentions(user.id).finally(() => {
-			UserConverter.prewarmCacheById(user.id, oldProfile);
 			publishToFollowers(user.id);
 		}),
 		1500,

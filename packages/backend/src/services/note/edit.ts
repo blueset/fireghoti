@@ -190,8 +190,6 @@ export default async function (
 	note = await Notes.findOneByOrFail({ id: note.id });
 
 	if (publishing) {
-		NoteConverter.prewarmCache(note);
-
 		// Publish update event for the updated note details
 		publishNoteStream(note.id, "updated", {
 			updatedAt: update.updatedAt,
