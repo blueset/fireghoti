@@ -10,6 +10,7 @@ import {
 	Followings,
 	UserProfiles,
 	UserPublickeys,
+	DriveFiles,
 } from "@/models/index.js";
 import type { IRemoteUser, CacheableUser } from "@/models/entities/user.js";
 import { User } from "@/models/entities/user.js";
@@ -561,10 +562,14 @@ export async function updatePerson(
 	} as Partial<User>;
 
 	if (avatar) {
+		if (user?.avatarId)
+			await DriveFiles.update(user.avatarId, {usageHint: null});
 		updates.avatarId = avatar.id;
 	}
 
 	if (banner) {
+		if (user?.bannerId)
+			await DriveFiles.update(user.bannerId, {usageHint: null});
 		updates.bannerId = banner.id;
 	}
 
