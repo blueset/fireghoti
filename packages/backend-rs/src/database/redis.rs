@@ -7,15 +7,21 @@ fn init_redis() -> Result<Client, RedisError> {
     let redis_url = {
         let mut params = vec!["redis://".to_owned()];
 
-        if let Some(user) = &CONFIG.redis.user {
+        let redis = if let Some(cache_server) = &CONFIG.cache_server {
+            cache_server
+        } else {
+            &CONFIG.redis
+        };
+
+        if let Some(user) = &redis.user {
             params.push(user.to_string())
         }
-        if let Some(pass) = &CONFIG.redis.pass {
+        if let Some(pass) = &redis.pass {
             params.push(format!(":{}@", pass))
         }
-        params.push(CONFIG.redis.host.to_string());
-        params.push(format!(":{}", CONFIG.redis.port));
-        params.push(format!("/{}", CONFIG.redis.db));
+        params.push(redis.host.to_string());
+        params.push(format!(":{}", redis.port));
+        params.push(format!("/{}", redis.db));
 
         params.concat()
     };
@@ -31,9 +37,9 @@ pub fn redis_conn() -> Result<Connection, RedisError> {
 }
 
 #[inline]
-/// prefix redis key with the hostname
-pub fn key(key: &str) -> String {
-    format!("{}:{}", CONFIG.hostname, key)
+/// prefix redis key
+pub fn key(key: impl ToString) -> String {
+    format!("{}:{}", CONFIG.redis.prefix, key.to_string())
 }
 
 #[cfg(test)]
