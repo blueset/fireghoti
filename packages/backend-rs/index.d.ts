@@ -70,7 +70,7 @@ export interface RedisConfig {
   pass?: string
   tls?: TlsConfig
   db: number
-  prefix: string
+  prefix?: string
 }
 export interface TlsConfig {
   host: string
@@ -165,6 +165,7 @@ export interface Config {
   version: string
   host: string
   hostname: string
+  redisKeyPrefix: string
   scheme: string
   wsScheme: string
   apiUrl: string

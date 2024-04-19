@@ -39,7 +39,7 @@ pub fn redis_conn() -> Result<Connection, RedisError> {
 #[inline]
 /// prefix redis key
 pub fn key(key: impl ToString) -> String {
-    format!("{}:{}", CONFIG.redis.prefix, key.to_string())
+    format!("{}:{}", CONFIG.redis_key_prefix, key.to_string())
 }
 
 #[cfg(test)]

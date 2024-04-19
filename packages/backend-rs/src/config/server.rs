@@ -82,8 +82,7 @@ pub struct RedisConfig {
     pub tls: Option<TlsConfig>,
     #[serde(default)]
     pub db: u32,
-    #[serde(default)]
-    pub prefix: String,
+    pub prefix: Option<String>,
 }
 
 #[derive(Clone, Debug, PartialEq, Deserialize)]
@@ -217,6 +216,7 @@ pub struct Config {
     pub version: String,
     pub host: String,
     pub hostname: String,
+    pub redis_key_prefix: String,
     pub scheme: String,
     pub ws_scheme: String,
     pub api_url: String,
@@ -315,6 +315,13 @@ fn load_config() -> Config {
         None => WorkerConfig { web: 1, queue: 1 },
     };
 
+    let redis_key_prefix = if let Some(cache_server) = &server_config.cache_server {
+        cache_server.prefix.clone()
+    } else {
+        server_config.redis.prefix.clone()
+    }
+    .unwrap_or(hostname.clone());
+
     Config {
         url: server_config.url,
         port: server_config.port,
@@ -361,6 +368,7 @@ fn load_config() -> Config {
         version,
         host,
         hostname,
+        redis_key_prefix,
         scheme,
         ws_scheme,
         client_entry: manifest,
