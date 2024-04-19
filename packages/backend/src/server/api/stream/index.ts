@@ -1,4 +1,4 @@
-import type { EventEmitter } from "events";
+import type { EventEmitter } from "node:events";
 import type * as websocket from "websocket";
 import readNote from "@/services/note/read.js";
 import type { User } from "@/models/entities/user.js";

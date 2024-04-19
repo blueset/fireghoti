@@ -296,14 +296,14 @@ fn load_config() -> Config {
     let version = read_meta().version;
     let manifest = read_manifest();
     let url = url::Url::parse(&server_config.url).expect("Config url is invalid");
-    let host = url
+    let hostname = url
         .host_str()
         .expect("Hostname is missing in the config url")
         .to_owned();
-    let hostname = url
-        .domain()
-        .expect("Domain is missing in the config url")
-        .to_owned();
+    let host = match url.port() {
+        Some(port) => format!("{}:{}", hostname, port),
+        None => hostname.clone(),
+    };
     let scheme = url.scheme().to_owned();
     let ws_scheme = scheme.replace("http", "ws");
 
@@ -320,7 +320,7 @@ fn load_config() -> Config {
     } else {
         server_config.redis.prefix.clone()
     }
-    .unwrap_or(hostname.clone());
+    .unwrap_or(host.clone());
 
     Config {
         url: server_config.url,
