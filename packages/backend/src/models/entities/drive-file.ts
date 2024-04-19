@@ -177,6 +177,13 @@ export class DriveFile {
 	})
 	public isSensitive: boolean;
 
+	@Column("varchar", {
+		length: 16,
+		nullable: true,
+		comment: "Hint for what the file is used for.",
+	})
+	public usageHint: string | null;
+
 	/**
 	 * 外部の(信頼されていない)URLへの直リンクか否か
 	 */

@@ -16,6 +16,7 @@ const logger = apLogger;
 export async function createImage(
 	actor: CacheableRemoteUser,
 	value: any,
+	usage: 'avatar' | 'banner' | null
 ): Promise<DriveFile> {
 	// Skip if author is frozen.
 	if (actor.isSuspended) {
@@ -43,6 +44,7 @@ export async function createImage(
 		sensitive: image.sensitive,
 		isLink: !instance.cacheRemoteFiles,
 		comment: truncate(image.name, DB_MAX_IMAGE_COMMENT_LENGTH),
+		usageHint: usage
 	});
 
 	if (file.isLink) {
@@ -73,9 +75,10 @@ export async function createImage(
 export async function resolveImage(
 	actor: CacheableRemoteUser,
 	value: any,
+	usage: 'avatar' | 'banner' | null,
 ): Promise<DriveFile> {
 	// TODO
 
 	// Fetch from remote server and register
-	return await createImage(actor, value);
+	return await createImage(actor, value, usage);
 }

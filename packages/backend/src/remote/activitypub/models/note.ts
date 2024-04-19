@@ -213,7 +213,7 @@ export async function createNote(
 		? (
 				await Promise.all(
 					note.attachment.map(
-						(x) => limit(() => resolveImage(actor, x)) as Promise<DriveFile>,
+						(x) => limit(() => resolveImage(actor, x, null)) as Promise<DriveFile>,
 					),
 				)
 			).filter((image) => image != null)
@@ -616,7 +616,7 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 			fileList.map(
 				(x) =>
 					limit(async () => {
-						const file = await resolveImage(actor, x);
+						const file = await resolveImage(actor, x, null);
 						const update: Partial<DriveFile> = {};
 
 						const altText = truncate(x.name, DB_MAX_IMAGE_COMMENT_LENGTH);

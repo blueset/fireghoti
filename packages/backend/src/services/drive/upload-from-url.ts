@@ -13,7 +13,11 @@ const logger = driveLogger.createSubLogger("downloader");
 
 type Args = {
 	url: string;
-	user: { id: User["id"]; host: User["host"] } | null;
+	user: {
+		id: User["id"];
+		host: User["host"];
+		driveCapacityOverrideMb: User["driveCapacityOverrideMb"];
+	} | null;
 	folderId?: DriveFolder["id"] | null;
 	uri?: string | null;
 	sensitive?: boolean;
@@ -22,6 +26,7 @@ type Args = {
 	comment?: string | null;
 	requestIp?: string | null;
 	requestHeaders?: Record<string, string> | null;
+	usageHint?: string | null;
 };
 
 export async function uploadFromUrl({
@@ -35,6 +40,7 @@ export async function uploadFromUrl({
 	comment = null,
 	requestIp = null,
 	requestHeaders = null,
+	usageHint = null
 }: Args): Promise<DriveFile> {
 	const parsedUrl = new URL(url);
 	if (
@@ -75,9 +81,10 @@ export async function uploadFromUrl({
 			sensitive,
 			requestIp,
 			requestHeaders,
+			usageHint
 		});
 		logger.succ(`Got: ${driveFile.id}`);
-		return driveFile!;
+		return driveFile;
 	} catch (e) {
 		logger.error(`Failed to create drive file:\n${inspect(e)}`);
 		throw e;

@@ -362,10 +362,10 @@ export async function createPerson(
 
 	//#region Fetch avatar and header image
 	const [avatar, banner] = await Promise.all(
-		[person.icon, person.image].map((img) =>
+		[person.icon, person.image].map((img, index) =>
 			img == null
 				? Promise.resolve(null)
-				: resolveImage(user!, img).catch(() => null),
+				: resolveImage(user!, img, index === 0 ? "avatar" : index === 1 ? "banner" : null).catch(() => null),
 		),
 	);
 
@@ -438,10 +438,10 @@ export async function updatePerson(
 
 	// Fetch avatar and header image
 	const [avatar, banner] = await Promise.all(
-		[person.icon, person.image].map((img) =>
+		[person.icon, person.image].map((img, index) =>
 			img == null
 				? Promise.resolve(null)
-				: resolveImage(user, img).catch(() => null),
+				: resolveImage(user, img, index === 0 ? "avatar" : index === 1 ? "banner" : null).catch(() => null),
 		),
 	);
 
