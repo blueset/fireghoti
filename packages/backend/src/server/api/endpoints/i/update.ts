@@ -242,7 +242,7 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 	if (ps.emailNotificationTypes !== undefined)
 		profileUpdates.emailNotificationTypes = ps.emailNotificationTypes;
 
-	let avatar: DriveFile | null = null
+	let avatar: DriveFile | null = null;
 	if (ps.avatarId) {
 		avatar = await DriveFiles.findOneBy({ id: ps.avatarId });
 
@@ -252,7 +252,7 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 			throw new ApiError(meta.errors.avatarNotAnImage);
 	}
 
-	let banner: DriveFile | null = null
+	let banner: DriveFile | null = null;
 	if (ps.bannerId) {
 		banner = await DriveFiles.findOneBy({ id: ps.bannerId });
 
@@ -332,19 +332,17 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 	//#endregion
 
 	// Update old/new avatar usage hints
-	if (avatar)
-	{
+	if (avatar) {
 		if (user.avatarId)
-			await DriveFiles.update(user.avatarId, {usageHint: null});
-		await DriveFiles.update(avatar.id, {usageHint: "user_avatar"});
+			await DriveFiles.update(user.avatarId, { usageHint: null });
+		await DriveFiles.update(avatar.id, { usageHint: "user_avatar" });
 	}
 
 	// Update old/new banner usage hints
-	if (banner)
-	{
+	if (banner) {
 		if (user.bannerId)
-			await DriveFiles.update(user.bannerId, {usageHint: null});
-		await DriveFiles.update(banner.id, {usageHint: "user_banner"});
+			await DriveFiles.update(user.bannerId, { usageHint: null });
+		await DriveFiles.update(banner.id, { usageHint: "user_banner" });
 	}
 
 	if (Object.keys(updates).length > 0) await Users.update(user.id, updates);

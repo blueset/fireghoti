@@ -8,8 +8,6 @@ export class AddDriveFileUsage1713451569342 implements MigrationInterface {
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
-		await queryRunner.query(
-			`ALTER TABLE "drive_file" DROP COLUMN "usageHint"`
-		);
+		await queryRunner.query(`ALTER TABLE "drive_file" DROP COLUMN "usageHint"`);
 	}
 }

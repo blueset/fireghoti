@@ -3,7 +3,10 @@ import type { CacheableRemoteUser } from "@/models/entities/user.js";
 import Resolver from "../resolver.js";
 import { fetchMeta } from "backend-rs";
 import { apLogger } from "../logger.js";
-import type { DriveFile, DriveFileUsageHint } from "@/models/entities/drive-file.js";
+import type {
+	DriveFile,
+	DriveFileUsageHint,
+} from "@/models/entities/drive-file.js";
 import { DriveFiles } from "@/models/index.js";
 import { truncate } from "@/misc/truncate.js";
 import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
@@ -16,7 +19,7 @@ const logger = apLogger;
 export async function createImage(
 	actor: CacheableRemoteUser,
 	value: any,
-	usage: DriveFileUsageHint
+	usage: DriveFileUsageHint,
 ): Promise<DriveFile> {
 	// Skip if author is frozen.
 	if (actor.isSuspended) {
@@ -44,7 +47,7 @@ export async function createImage(
 		sensitive: image.sensitive,
 		isLink: !instance.cacheRemoteFiles,
 		comment: truncate(image.name, DB_MAX_IMAGE_COMMENT_LENGTH),
-		usageHint: usage
+		usageHint: usage,
 	});
 
 	if (file.isLink) {

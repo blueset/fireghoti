@@ -366,7 +366,11 @@ export async function createPerson(
 		[person.icon, person.image].map((img, index) =>
 			img == null
 				? Promise.resolve(null)
-				: resolveImage(user, img, index === 0 ? "user_avatar" : index === 1 ? "user_banner" : null).catch(() => null)
+				: resolveImage(
+						user,
+						img,
+						index === 0 ? "user_avatar" : index === 1 ? "user_banner" : null,
+					).catch(() => null),
 		),
 	);
 
@@ -442,7 +446,11 @@ export async function updatePerson(
 		[person.icon, person.image].map((img, index) =>
 			img == null
 				? Promise.resolve(null)
-				: resolveImage(user, img, index === 0 ? "user_avatar" : index === 1 ? "user_banner" : null).catch(() => null),
+				: resolveImage(
+						user,
+						img,
+						index === 0 ? "user_avatar" : index === 1 ? "user_banner" : null,
+					).catch(() => null),
 		),
 	);
 
@@ -563,13 +571,13 @@ export async function updatePerson(
 
 	if (avatar) {
 		if (user?.avatarId)
-			await DriveFiles.update(user.avatarId, {usageHint: null});
+			await DriveFiles.update(user.avatarId, { usageHint: null });
 		updates.avatarId = avatar.id;
 	}
 
 	if (banner) {
 		if (user?.bannerId)
-			await DriveFiles.update(user.bannerId, {usageHint: null});
+			await DriveFiles.update(user.bannerId, { usageHint: null });
 		updates.bannerId = banner.id;
 	}
 

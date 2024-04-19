@@ -75,7 +75,7 @@ async function save(
 	type: string,
 	hash: string,
 	size: number,
-	usage: DriveFileUsageHint = null
+	usage: DriveFileUsageHint = null,
 ): Promise<DriveFile> {
 	// thunbnail, webpublic を必要なら生成
 	const alts = await generateAlts(path, type, !file.uri);
@@ -649,7 +649,7 @@ export async function addFile({
 			info.type.mime,
 			info.md5,
 			info.size,
-			usageHint
+			usageHint,
 		);
 	}
 

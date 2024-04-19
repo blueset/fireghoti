@@ -213,7 +213,8 @@ export async function createNote(
 		? (
 				await Promise.all(
 					note.attachment.map(
-						(x) => limit(() => resolveImage(actor, x, null)) as Promise<DriveFile>,
+						(x) =>
+							limit(() => resolveImage(actor, x, null)) as Promise<DriveFile>,
 					),
 				)
 			).filter((image) => image != null)
