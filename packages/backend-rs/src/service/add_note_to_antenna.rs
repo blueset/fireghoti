@@ -16,5 +16,5 @@ pub fn add_note_to_antenna(antenna_id: &str, note: &note::Model) -> Result<(), E
     let stream = Stream::Antenna {
         id: antenna_id.to_string(),
     };
-    publish(&stream, Some("note"), Some(serde_json::to_value(note)?))
+    publish(&stream, Some("note"), Some(serde_json::to_string(note)?))
 }

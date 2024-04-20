@@ -1,3 +1,4 @@
+use crate::config::server::CONFIG;
 use crate::database::redis_conn;
 use redis::{Commands, RedisError};
 
@@ -35,33 +36,33 @@ pub enum Stream {
 pub enum Error {
     #[error("Redis error: {0}")]
     RedisError(#[from] RedisError),
-    #[error("Json serialization error: {0}")]
+    #[error("Json (de)serialization error: {0}")]
     JsonError(#[from] serde_json::Error),
     #[error("Value error: {0}")]
     ValueError(String),
 }
 
-pub fn publish(
-    channel: &Stream,
-    kind: Option<&str>,
-    value: Option<serde_json::Value>,
-) -> Result<(), Error> {
-    #[derive(serde::Serialize)]
-    struct Message {
-        r#type: String,
-        body: Option<serde_json::Value>,
-    }
-
+pub fn publish(channel: &Stream, kind: Option<&str>, value: Option<String>) -> Result<(), Error> {
     let message = if let Some(kind) = kind {
-        serde_json::to_value(Message {
-            r#type: kind.to_string(),
-            body: value,
-        })?
+        format!(
+            "{{ \"type\": \"{}\", \"body\": {} }}",
+            kind,
+            match value {
+                Some(v) => v,
+                None => "null".to_string(),
+            }
+        )
     } else {
         value.ok_or(Error::ValueError("Invalid streaming message".to_string()))?
     };
 
-    redis_conn()?.publish(channel.to_string(), message.to_string())?;
+    redis_conn()?.publish(
+        &CONFIG.host,
+        format!(
+            "{{ \"channel\": \"{}\", \"message\": {} }}",
+            channel, message,
+        ),
+    )?;
 
     Ok(())
 }
