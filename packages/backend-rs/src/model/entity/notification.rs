@@ -3,7 +3,8 @@
 use super::sea_orm_active_enums::NotificationTypeEnum;
 use sea_orm::entity::prelude::*;
 
-#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, serde::Serialize)]
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 #[sea_orm(table_name = "notification")]
 #[cfg_attr(
     feature = "napi",

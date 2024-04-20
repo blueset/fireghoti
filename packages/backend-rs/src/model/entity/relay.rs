@@ -3,7 +3,8 @@
 use super::sea_orm_active_enums::RelayStatusEnum;
 use sea_orm::entity::prelude::*;
 
-#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, serde::Serialize)]
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 #[sea_orm(table_name = "relay")]
 #[cfg_attr(
     feature = "napi",
