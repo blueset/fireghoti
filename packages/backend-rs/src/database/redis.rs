@@ -44,10 +44,25 @@ pub fn key(key: impl ToString) -> String {
 
 #[cfg(test)]
 mod unit_test {
-    use super::init_redis;
+    use super::redis_conn;
+    use pretty_assertions::assert_eq;
+    use redis::Commands;
 
     #[test]
-    fn connect_test() {
-        assert!(init_redis().is_ok());
+    fn connect() {
+        assert!(redis_conn().is_ok());
+        assert!(redis_conn().is_ok());
+    }
+
+    #[test]
+    fn access() {
+        let mut redis = redis_conn().unwrap();
+
+        let key = "CARGO_UNIT_TEST_KEY";
+        let value = "CARGO_UNIT_TEST_VALUE";
+
+        assert_eq!(redis.set::<&str, &str, String>(key, value).unwrap(), "OK");
+        assert_eq!(redis.get::<&str, String>(key).unwrap(), value);
+        assert_eq!(redis.del::<&str, u32>(key).unwrap(), 1);
     }
 }

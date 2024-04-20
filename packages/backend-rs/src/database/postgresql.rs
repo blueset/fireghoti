@@ -28,7 +28,8 @@ mod unit_test {
     use super::db_conn;
 
     #[tokio::test]
-    async fn connect_test() {
+    async fn connect() {
+        assert!(db_conn().await.is_ok());
         assert!(db_conn().await.is_ok());
     }
 }
