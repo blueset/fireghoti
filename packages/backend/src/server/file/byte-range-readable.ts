@@ -1,4 +1,4 @@
-import { Readable, ReadableOptions } from "node:stream";
+import { Readable, type ReadableOptions } from "node:stream";
 import { Buffer } from "node:buffer";
 import * as fs from "node:fs";
 

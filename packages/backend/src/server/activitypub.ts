@@ -32,7 +32,7 @@ import Followers from "./activitypub/followers.js";
 import Outbox, { packActivity } from "./activitypub/outbox.js";
 import { serverLogger } from "./index.js";
 import { config } from "@/config.js";
-import Koa from "koa";
+import type Koa from "koa";
 import * as crypto from "node:crypto";
 import { inspect } from "node:util";
 import type { IActivity } from "@/remote/activitypub/type.js";
