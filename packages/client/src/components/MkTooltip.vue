@@ -5,7 +5,7 @@
 		@after-leave="emit('closed')"
 	>
 		<div
-			v-show="unref(showing)"
+			v-show="showing"
 			ref="el"
 			class="buebdbiu _acrylic _shadow"
 			:style="{ zIndex, maxWidth: maxWidth + 'px' }"
@@ -19,21 +19,14 @@
 </template>
 
 <script lang="ts" setup>
-import {
-	type MaybeRef,
-	nextTick,
-	onMounted,
-	onUnmounted,
-	ref,
-	unref,
-} from "vue";
+import { nextTick, onMounted, onUnmounted, ref } from "vue";
 import * as os from "@/os";
 import { calcPopupPosition } from "@/scripts/popup-position";
 import { defaultStore } from "@/store";
 
 const props = withDefaults(
 	defineProps<{
-		showing: MaybeRef<boolean>;
+		showing: boolean;
 		targetElement?: HTMLElement | null;
 		x?: number;
 		y?: number;

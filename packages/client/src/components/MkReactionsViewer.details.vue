@@ -30,13 +30,12 @@
 </template>
 
 <script lang="ts" setup>
-import type { Ref } from "vue";
 import type { entities } from "firefish-js";
 import MkTooltip from "./MkTooltip.vue";
 import XReactionIcon from "@/components/MkReactionIcon.vue";
 
 defineProps<{
-	showing: Ref<boolean>;
+	showing: boolean;
 	reaction: string;
 	users: entities.User[]; // TODO
 	count: number;
