@@ -1,6 +1,6 @@
-import type { SelectQueryBuilder } from "typeorm";
+import type { ObjectLiteral, SelectQueryBuilder } from "typeorm";
 
-export function makePaginationQuery<T>(
+export function makePaginationQuery<T extends ObjectLiteral>(
 	q: SelectQueryBuilder<T>,
 	sinceId?: string,
 	untilId?: string,
