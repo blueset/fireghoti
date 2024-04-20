@@ -164,6 +164,7 @@
 					:reply-level="replyLevel + 1"
 					:parent-id="appearNote.id"
 					:detailed-view="detailedView"
+					:auto-add-replies="true"
 				/>
 				<div v-if="hasMoreReplies" class="more">
 					<div class="line"></div>
@@ -247,10 +248,12 @@ const props = withDefaults(
 		depth?: number;
 		// the actual reply level of this note within the conversation thread
 		replyLevel?: number;
+		autoAddReplies?: boolean;
 	}>(),
 	{
 		depth: 1,
 		replyLevel: 1,
+		autoAddReplies: false,
 	},
 );
 
@@ -376,6 +379,9 @@ useNoteCapture({
 	note: appearNote,
 	isDeletedRef: isDeleted,
 	onReplied: (note) => {
+		if (props.autoAddReplies !== true) {
+			return;
+		}
 		if (hasMoreReplies.value === false) {
 			conversation.value = (conversation.value ?? []).concat([note]);
 		}

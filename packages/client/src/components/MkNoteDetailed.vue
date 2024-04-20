@@ -94,6 +94,7 @@
 				:auto-conversation="true"
 				:detailed-view="true"
 				:parent-id="note.id"
+				:auto-add-replies="true"
 			/>
 		</MkPagination>
 
@@ -110,6 +111,7 @@
 				:auto-conversation="true"
 				:detailed-view="true"
 				:parent-id="note.id"
+				:auto-add-replies="true"
 			/>
 		</MkPagination>
 
