@@ -64,11 +64,11 @@
 					)
 				}}
 			</option>
-			<option v-if="directQuotes && directQuotes.length > 0" value="quotes">
+			<option v-if="note.quoteCount > 0" value="quotes">
 				<!-- <i :class="icon('ph-quotes')"></i> -->
 				{{
 					wordWithCount(
-						directQuotes.length,
+						note.quoteCount,
 						i18n.ts.quote,
 						i18n.ts.quotes,
 					)
@@ -92,32 +92,33 @@
 		/>
 		<MkLoading v-else-if="tab === 'replies' && note.repliesCount > 0" />
 
-		<MkNoteSub
-			v-for="note in directQuotes"
-			v-if="directQuotes && tab === 'quotes'"
-			:key="note.id"
-			:note="note"
-			class="reply"
-			:conversation="replies"
-			:detailed-view="true"
-			:parent-id="note.id"
-		/>
-		<MkLoading v-else-if="tab === 'quotes' && directQuotes && directQuotes.length > 0" />
+		<MkPagination
+			v-if="tab === 'quotes'"
+			v-slot="{ items }"
+			:pagination="quotePagination"
+		>
+			<MkNoteSub
+				v-for="note in items"
+				:key="note.id"
+				:note="note"
+				class="reply"
+				:conversation="items"
+				:detailed-view="true"
+				:parent-id="note.id"
+			/>
+		</MkPagination>
 
-		<!-- <MkPagination
+		<MkPagination
 			v-if="tab === 'renotes'"
 			v-slot="{ items }"
-			ref="pagingComponent"
-			:pagination="pagination"
-		> -->
-		<MkUserCardMini
-			v-for="item in renotes"
-			v-if="tab === 'renotes' && renotes"
-			:key="item.user.id"
-			:user="item.user"
-		/>
-		<!-- </MkPagination> -->
-		<MkLoading v-else-if="tab === 'renotes' && note.renoteCount > 0" />
+			:pagination="renotePagination"
+		>
+			<MkUserCardMini
+				v-for="item in items"
+				:key="item.user.id"
+				:user="item.user"
+			/>
+		</MkPagination>
 
 		<div v-if="tab === 'clips' && clips.length > 0" class="_content clips">
 			<MkA
@@ -186,6 +187,7 @@ import { getNoteMenu } from "@/scripts/get-note-menu";
 import { useNoteCapture } from "@/scripts/use-note-capture";
 import { deepClone } from "@/scripts/clone";
 import { useStream } from "@/stream";
+import MkPagination, { Paging } from "@/components/MkPagination.vue";
 // import icon from "@/scripts/icon";
 
 const props = defineProps<{
@@ -247,7 +249,6 @@ const replies = ref<entities.Note[]>([]);
 const directReplies = ref<null | entities.Note[]>([]);
 const directQuotes = ref<null | entities.Note[]>([]);
 const clips = ref();
-const renotes = ref();
 const isRenote = ref(note.value.renoteId != null);
 let isScrolling: boolean;
 
@@ -401,24 +402,32 @@ os.api("notes/clips", {
 	clips.value = res;
 });
 
-// const pagination = {
-// 	endpoint: "notes/renotes",
-// 	noteId: note.id,
-// 	limit: 10,
-// };
+const renotePagination = {
+	endpoint: "notes/renotes" as const,
+	limit: 30,
+	params: {
+		noteId: note.value.id,
+		filter: "boost" as const,
+	},
+};
+const quotePagination = {
+	endpoint: "notes/renotes" as const,
+	limit: 30,
+	params: {
+		noteId: note.value.id,
+		filter: "quote" as const,
+	},
+};
 
-// const pagingComponent = $ref<InstanceType<typeof MkPagination>>();
-
-renotes.value = null;
 function loadTab() {
-	if (tab.value === "renotes" && !renotes.value) {
-		os.api("notes/renotes", {
-			noteId: note.value.id,
-			limit: 100,
-		}).then((res) => {
-			renotes.value = res;
-		});
-	}
+	// if (tab.value === "renotes" && !renotes.value) {
+	// 	os.api("notes/renotes", {
+	// 		noteId: note.value.id,
+	// 		limit: 100,
+	// 	}).then((res) => {
+	// 		renotes.value = res;
+	// 	});
+	// }
 }
 
 async function onNoteUpdated(

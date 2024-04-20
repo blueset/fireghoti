@@ -1,4 +1,4 @@
-import { In } from "typeorm";
+import { In, IsNull, Not } from "typeorm";
 import * as mfm from "mfm-js";
 import { Note } from "@/models/entities/note.js";
 import type { User } from "@/models/entities/user.js";
@@ -10,6 +10,7 @@ import {
 	Followings,
 	Polls,
 	Channels,
+	Notes,
 } from "../index.js";
 import type { Packed } from "@/misc/schema.js";
 import { countReactions, decodeReaction, nyaify } from "backend-rs";
@@ -101,7 +102,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 				return true;
 			} else {
 				// 指定されているかどうか
-				return note.visibleUserIds.some((id: any) => meId === id);
+				return note.visibleUserIds.some((id) => meId === id);
 			}
 		}
 
@@ -211,8 +212,25 @@ export const NoteRepository = db.getRepository(Note).extend({
 			localOnly: note.localOnly || undefined,
 			visibleUserIds:
 				note.visibility === "specified" ? note.visibleUserIds : undefined,
+			// FIXME: Deleting a post does not decrease these two numbers, causing the number to be wrong
 			renoteCount: note.renoteCount,
 			repliesCount: note.repliesCount,
+			// TODO: add it to database and use note.quoteCount
+			quoteCount: Notes.count({
+				where: {
+					renoteId: note.id,
+					text: Not(IsNull()),
+				},
+			}),
+			meRenoteCount: me
+				? Notes.count({
+						where: {
+							renoteId: note.id,
+							text: IsNull(),
+							userId: me.id,
+						},
+					})
+				: undefined,
 			reactions: countReactions(note.reactions),
 			reactionEmojis: reactionEmoji,
 			emojis: noteEmoji,

@@ -27,7 +27,7 @@ import Ripple from "@/components/MkRipple.vue";
 import XDetails from "@/components/MkUsersTooltip.vue";
 import { pleaseLogin } from "@/scripts/please-login";
 import * as os from "@/os";
-import { isSignedIn, me } from "@/me";
+import { me } from "@/me";
 import { useTooltip } from "@/scripts/use-tooltip";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
@@ -72,17 +72,9 @@ useTooltip(buttonRef, async (showing) => {
 	);
 });
 
-const hasRenotedBefore = ref(false);
-
-if (isSignedIn) {
-	os.api("notes/renotes", {
-		noteId: props.note.id,
-		userId: me!.id,
-		limit: 1,
-	}).then((res) => {
-		hasRenotedBefore.value = res.length > 0;
-	});
-}
+const hasRenotedBefore = ref(
+	props.note.meRenoteCount && props.note.meRenoteCount > 0,
+);
 
 const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 	pleaseLogin();

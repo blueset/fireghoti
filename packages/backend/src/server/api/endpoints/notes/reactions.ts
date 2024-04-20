@@ -42,8 +42,6 @@ export const paramDef = {
 		type: { type: "string", nullable: true },
 		limit: { type: "integer", minimum: 1, maximum: 100, default: 10 },
 		offset: { type: "integer", default: 0 },
-		sinceId: { type: "string", format: "misskey:id" },
-		untilId: { type: "string", format: "misskey:id" },
 	},
 	required: ["noteId"],
 } as const;

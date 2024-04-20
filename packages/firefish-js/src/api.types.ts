@@ -773,7 +773,12 @@ export type Endpoints = {
 		res: null;
 	};
 	"notes/reactions": {
-		req: { noteId: Note["id"]; type?: string | null; limit?: number };
+		req: {
+			noteId: Note["id"];
+			type?: string | null;
+			limit?: number;
+			offset?: number;
+		};
 		res: NoteReaction[];
 	};
 	"notes/reactions/create": {
@@ -787,6 +792,7 @@ export type Endpoints = {
 			sinceId?: Note["id"];
 			untilId?: Note["id"];
 			noteId: Note["id"];
+			filter?: "boost" | "quote";
 		};
 		res: Note[];
 	};
