@@ -39,7 +39,7 @@ import { defaultStore } from "@/store";
 withDefaults(
 	defineProps<{
 		manualShowing?: boolean | null;
-		src?: HTMLElement;
+		src?: HTMLElement | null;
 		showPinned?: boolean;
 		asReactionPicker?: boolean;
 	}>(),

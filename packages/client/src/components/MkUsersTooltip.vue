@@ -19,12 +19,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { Ref } from "vue";
 import type { entities } from "firefish-js";
 import MkTooltip from "./MkTooltip.vue";
 
 defineProps<{
-	showing: Ref<boolean>;
+	showing: boolean;
 	users: entities.User[];
 	count: number;
 	targetElement?: HTMLElement;

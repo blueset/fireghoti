@@ -3,7 +3,7 @@
 import { EventEmitter } from "eventemitter3";
 import { type Endpoints, type entities, api as firefishApi } from "firefish-js";
 import insertTextAtCursor from "insert-text-at-cursor";
-import type { Component, Ref } from "vue";
+import type { Component, MaybeRef, Ref } from "vue";
 import { defineAsyncComponent, markRaw, ref } from "vue";
 import { i18n } from "./i18n";
 import MkDialog from "@/components/MkDialog.vue";
@@ -213,9 +213,13 @@ interface VueComponentConstructor<P, E> {
 
 type NonArrayAble<A> = A extends Array<unknown> ? never : A;
 
+type CanUseRef<T> = {
+	[K in keyof T]: MaybeRef<T[K]>;
+};
+
 export async function popup<Props, Emits>(
 	component: VueComponentConstructor<Props, Emits>,
-	props: Props,
+	props: CanUseRef<Props>,
 	events: Partial<NonArrayAble<NonNullable<Emits>>> = {},
 	disposeEvent?: keyof Partial<NonArrayAble<NonNullable<Emits>>>,
 ) {
@@ -240,6 +244,7 @@ export async function popup<Props, Emits>(
 		id,
 	};
 
+	// Hint: Vue will automatically resolve ref here, so it is safe to use ref in props
 	popups.value.push(state);
 
 	return {

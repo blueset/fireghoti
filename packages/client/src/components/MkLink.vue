@@ -42,7 +42,7 @@ useTooltip(el, (showing) => {
 	os.popup(
 		defineAsyncComponent(() => import("@/components/MkUrlPreviewPopup.vue")),
 		{
-			showing: showing.value,
+			showing,
 			url: props.url,
 			source: el.value,
 		},
