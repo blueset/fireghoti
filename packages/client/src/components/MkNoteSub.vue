@@ -1,6 +1,7 @@
 <template>
+	<MkLoading v-if="conversationLoading" />
 	<article
-		v-if="!muted.muted || muted.what === 'reply'"
+		v-else-if="!muted.muted || muted.what === 'reply'"
 		:id="detailedView ? appearNote.id : undefined"
 		ref="el"
 		v-size="{ max: [450, 500] }"
@@ -289,6 +290,7 @@ watch(conversation, updateReplies, {
 });
 
 if (props.autoConversation) {
+	conversation.value = [];
 	if (note.value.repliesCount > 0 || note.value.renoteCount > 0) {
 		conversationLoading.value = true;
 		os.api("notes/children", {
@@ -302,8 +304,6 @@ if (props.autoConversation) {
 				.concat(res.filter((n) => n.userId === note.value.userId));
 			conversationLoading.value = false;
 		});
-	} else {
-		conversation.value = [];
 	}
 }
 
