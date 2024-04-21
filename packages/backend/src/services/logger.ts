@@ -28,9 +28,9 @@ export default class Logger {
 
 		if (config.syslog) {
 			this.syslogClient = new SyslogPro.RFC5424({
-				applacationName: "Firefish",
+				applicationName: "Firefish",
 				timestamp: true,
-				encludeStructuredData: true,
+				includeStructuredData: true,
 				color: true,
 				extendedColor: true,
 				server: {
@@ -144,12 +144,12 @@ export default class Logger {
 		}
 	}
 
+	// Used when the process can't continue (fatal error)
 	public error(
 		x: string | Error,
 		data?: Record<string, any> | null,
 		important = false,
 	): void {
-		// 実行を継続できない状況で使う
 		if (x instanceof Error) {
 			data = data || {};
 			data.e = x;
@@ -166,30 +166,30 @@ export default class Logger {
 		}
 	}
 
+	// Used when the process can continue but some action should be taken
 	public warn(
 		message: string,
 		data?: Record<string, any> | null,
 		important = false,
 	): void {
-		// 実行を継続できるが改善すべき状況で使う
 		this.log("warning", message, data, important);
 	}
 
+	// Used when something is successful
 	public succ(
 		message: string,
 		data?: Record<string, any> | null,
 		important = false,
 	): void {
-		// 何かに成功した状況で使う
 		this.log("success", message, data, important);
 	}
 
+	// Used for debugging (information necessary for developers but unnecessary for users)
 	public debug(
 		message: string,
 		data?: Record<string, any> | null,
 		important = false,
 	): void {
-		// Used for debugging (information necessary for developers but unnecessary for users)
 		// Fixed if statement is ignored when logLevel includes debug
 		if (
 			config.logLevel?.includes("debug") ||
@@ -200,12 +200,12 @@ export default class Logger {
 		}
 	}
 
+	// Other generic logs
 	public info(
 		message: string,
 		data?: Record<string, any> | null,
 		important = false,
 	): void {
-		// それ以外
 		this.log("info", message, data, important);
 	}
 }

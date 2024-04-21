@@ -32,6 +32,23 @@ pub enum AntennaSrcEnum {
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
+    enum_name = "drive_file_usage_hint_enum"
+)]
+pub enum DriveFileUsageHintEnum {
+    #[sea_orm(string_value = "userAvatar")]
+    UserAvatar,
+    #[sea_orm(string_value = "userBanner")]
+    UserBanner,
+}
+#[derive(
+    Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, serde::Serialize, serde::Deserialize,
+)]
+#[serde(rename_all = "camelCase")]
+#[cfg_attr(not(feature = "napi"), derive(Clone))]
+#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
+#[sea_orm(
+    rs_type = "String",
+    db_type = "Enum",
     enum_name = "muted_note_reason_enum"
 )]
 pub enum MutedNoteReasonEnum {
