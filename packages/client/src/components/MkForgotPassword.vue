@@ -3,7 +3,7 @@
 		ref="dialog"
 		:width="370"
 		:height="400"
-		@close="dialog.close()"
+		@close="dialog!.close()"
 		@closed="emit('closed')"
 	>
 		<template #header>{{ i18n.ts.forgotPassword }}</template>
@@ -76,7 +76,7 @@ const emit = defineEmits<{
 	(ev: "closed"): void;
 }>();
 
-const dialog: InstanceType<typeof XModalWindow> = ref();
+const dialog = ref<InstanceType<typeof XModalWindow> | null>(null);
 
 const username = ref("");
 const email = ref("");
@@ -89,7 +89,7 @@ async function onSubmit() {
 		email: email.value,
 	});
 	emit("done");
-	dialog.value.close();
+	dialog.value!.close();
 }
 </script>
 

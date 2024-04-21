@@ -1,6 +1,6 @@
 import { Brackets } from "typeorm";
 import { Notes } from "@/models/index.js";
-import { safeForSql } from "@/misc/safe-for-sql.js";
+import { safeForSql } from "backend-rs";
 import { normalizeForSearch } from "@/misc/normalize-for-search.js";
 import define from "@/server/api/define.js";
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";

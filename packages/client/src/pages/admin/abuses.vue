@@ -93,18 +93,21 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 
+import type { entities } from "firefish-js";
 import MkSelect from "@/components/form/select.vue";
-import MkPagination from "@/components/MkPagination.vue";
+import MkPagination, {
+	type MkPaginationType,
+} from "@/components/MkPagination.vue";
 import XAbuseReport from "@/components/MkAbuseReport.vue";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
 
-const reports = ref<InstanceType<typeof MkPagination>>();
+const reports = ref<MkPaginationType<typeof pagination.endpoint> | null>(null);
 
 const state = ref("unresolved");
-const reporterOrigin = ref("combined");
-const targetUserOrigin = ref("combined");
+const reporterOrigin = ref<entities.OriginType>("combined");
+const targetUserOrigin = ref<entities.OriginType>("combined");
 // const searchUsername = ref("");
 // const searchHost = ref("");
 

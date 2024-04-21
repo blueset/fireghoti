@@ -985,12 +985,6 @@ _aboutFirefish:
   source: "Sumber kode"
   translation: "Terjemahkan Firefish"
   donate: "Donasi ke Firefish"
-  morePatrons: "Kami sangat mengapresiasi dukungan dari banyak penolong lain yang
-    tidak tercantum disini. Terima kasih! 🥰"
-  patrons: "Pendukung"
-  patronsList: Diurutkan secara kronologis, bukan berdasarkan jumlah donasi. Berdonasilah
-    dengan tautan di atas supaya nama kamu ada di sini!
-  sponsors: Sponsor Firefish
   donateTitle: Suka Firefish?
   pleaseDonateToFirefish: Silakan pertimbangkan berdonasi ke Firefish untuk mendukung
     pengembangannya.

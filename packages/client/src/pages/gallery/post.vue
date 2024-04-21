@@ -22,7 +22,7 @@
 						<div class="body _block">
 							<div class="title">{{ post.title }}</div>
 							<div class="description">
-								<Mfm :text="post.description" />
+								<Mfm :text="post.description || ''" />
 							</div>
 							<div class="info">
 								<i :class="icon('ph-clock')"></i>
@@ -59,7 +59,7 @@
 								<div class="other">
 									<button
 										v-if="
-											isSignedIn && me.id === post.user.id
+											isSignedIn && me!.id === post.user.id
 										"
 										v-tooltip="i18n.ts.toEdit"
 										v-click-anime
@@ -105,7 +105,7 @@
 									<MkAcct :user="post.user" />
 								</div>
 								<MkFollowButton
-									v-if="!me || me.id != post.user.id"
+									v-if="!isSignedIn || me!.id != post.user.id"
 									:user="post.user"
 									:inline="true"
 									:transparent="false"
@@ -140,7 +140,7 @@
 							</MkPagination>
 						</MkContainer>
 					</div>
-					<MkError v-else-if="error" @retry="fetch()" />
+					<MkError v-else-if="error" @retry="fetchPost()" />
 					<MkLoading v-else />
 				</transition>
 			</div>
@@ -150,6 +150,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from "vue";
+import type { entities } from "firefish-js";
 import MkButton from "@/components/MkButton.vue";
 import * as os from "@/os";
 import MkContainer from "@/components/MkContainer.vue";
@@ -163,7 +164,7 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import { shareAvailable } from "@/scripts/share-available";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
-import { isSignedIn } from "@/me";
+import { isSignedIn, me } from "@/me";
 
 const router = useRouter();
 
@@ -171,18 +172,19 @@ const props = defineProps<{
 	postId: string;
 }>();
 
-const post = ref(null);
+const post = ref<entities.GalleryPost | null>(null);
 const error = ref(null);
 const otherPostsPagination = {
 	endpoint: "users/gallery/posts" as const,
 	limit: 6,
 	params: computed(() => ({
-		userId: post.value.user.id,
+		userId: post.value!.user.id,
 	})),
 };
 
 function fetchPost() {
 	post.value = null;
+	error.value = null;
 	os.api("gallery/posts/show", {
 		postId: props.postId,
 	})
@@ -196,15 +198,15 @@ function fetchPost() {
 
 function share() {
 	navigator.share({
-		title: post.value.title,
-		text: post.value.description,
-		url: `${url}/gallery/${post.value.id}`,
+		title: post.value!.title,
+		text: post.value!.description || undefined,
+		url: `${url}/gallery/${post.value!.id}`,
 	});
 }
 
 function shareWithNote() {
 	os.post({
-		initialText: `${post.value.title} ${url}/gallery/${post.value.id}`,
+		initialText: `${post.value!.title} ${url}/gallery/${post.value!.id}`,
 	});
 }
 
@@ -212,8 +214,8 @@ function like() {
 	os.api("gallery/posts/like", {
 		postId: props.postId,
 	}).then(() => {
-		post.value.isLiked = true;
-		post.value.likedCount++;
+		post.value!.isLiked = true;
+		post.value!.likedCount++;
 	});
 }
 
@@ -221,13 +223,13 @@ async function unlike() {
 	os.api("gallery/posts/unlike", {
 		postId: props.postId,
 	}).then(() => {
-		post.value.isLiked = false;
-		post.value.likedCount--;
+		post.value!.isLiked = false;
+		post.value!.likedCount--;
 	});
 }
 
 function edit() {
-	router.push(`/gallery/${post.value.id}/edit`);
+	router.push(`/gallery/${post.value!.id}/edit`);
 }
 
 watch(() => props.postId, fetchPost, { immediate: true });

@@ -3,7 +3,7 @@ import { createImportPostsJob } from "@/queue/index.js";
 import { ApiError } from "@/server/api/error.js";
 import { DriveFiles } from "@/models/index.js";
 import { DAY } from "@/const.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 
 export const meta = {
 	secure: true,
@@ -45,7 +45,7 @@ export const paramDef = {
 export default define(meta, paramDef, async (ps, user) => {
 	const file = await DriveFiles.findOneBy({ id: ps.fileId });
 
-	const instanceMeta = await fetchMeta();
+	const instanceMeta = await fetchMeta(true);
 	if (instanceMeta.experimentalFeatures?.postImports === false)
 		throw new ApiError(meta.errors.importsDisabled);
 

@@ -53,7 +53,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		throw new ApiError(meta.errors.accessDenied);
 	}
 
-	await deleteNote(user, note, false, false);
+	await deleteNote(user, note, false);
 	await Notes.update(note.id, {
 		visibility: "specified",
 		visibleUserIds: [],

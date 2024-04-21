@@ -1,5 +1,5 @@
 <template>
-	<MkModal ref="modal" @click="done(true)" @closed="$emit('closed')">
+	<MkModal ref="modal" @click="done(true)" @closed="emit('closed')">
 		<div class="container">
 			<div class="fullwidth top-caption">
 				<div class="mk-dialog">
@@ -48,9 +48,9 @@
 				<img
 					id="imgtocaption"
 					:src="image.url"
-					:alt="image.comment"
-					:title="image.comment"
-					@click="$refs.modal.close()"
+					:alt="image.comment || undefined"
+					:title="image.comment || undefined"
+					@click="modal!.close()"
 				/>
 				<footer>
 					<span>{{ image.type }}</span>
@@ -65,10 +65,11 @@
 	</MkModal>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import insertTextAtCursor from "insert-text-at-cursor";
 import { length } from "stringz";
+import type { entities } from "firefish-js";
 import * as os from "@/os";
 import MkModal from "@/components/MkModal.vue";
 import MkButton from "@/components/MkButton.vue";
@@ -77,121 +78,98 @@ import number from "@/filters/number";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
 
-export default defineComponent({
-	components: {
-		MkModal,
-		MkButton,
-	},
-
-	props: {
-		image: {
-			type: Object,
-			required: true,
-		},
-		title: {
-			type: String,
-			required: false,
-		},
+const props = withDefaults(
+	defineProps<{
+		image: entities.DriveFile;
 		input: {
-			required: true,
-		},
-		showOkButton: {
-			type: Boolean,
-			default: true,
-		},
-		showCaptionButton: {
-			type: Boolean,
-			default: true,
-		},
-		showCancelButton: {
-			type: Boolean,
-			default: true,
-		},
-		cancelableByBgClick: {
-			type: Boolean,
-			default: true,
-		},
-	},
-
-	emits: ["done", "closed"],
-
-	data() {
-		return {
-			inputValue: this.input.default ? this.input.default : null,
-			i18n,
+			placeholder: string;
+			default: string;
 		};
+		title?: string;
+		showOkButton?: boolean;
+		showCaptionButton?: boolean;
+		showCancelButton?: boolean;
+		cancelableByBgClick?: boolean;
+	}>(),
+	{
+		showOkButton: true,
+		showCaptionButton: true,
+		showCancelButton: true,
+		cancelableByBgClick: true,
 	},
+);
 
-	computed: {
-		remainingLength(): number {
-			const maxCaptionLength = instance.maxCaptionTextLength ?? 512;
-			if (typeof this.inputValue !== "string") return maxCaptionLength;
-			return maxCaptionLength - length(this.inputValue);
-		},
-	},
+const emit = defineEmits<{
+	done: [result: { canceled: boolean; result?: string | null }];
+	closed: [];
+}>();
 
-	mounted() {
-		document.addEventListener("keydown", this.onKeydown);
-	},
+const modal = ref<InstanceType<typeof MkModal> | null>(null);
 
-	beforeUnmount() {
-		document.removeEventListener("keydown", this.onKeydown);
-	},
+const inputValue = ref(props.input.default ? props.input.default : null);
 
-	methods: {
-		bytes,
-		number,
+const remainingLength = computed(() => {
+	const maxCaptionLength = instance.maxCaptionTextLength ?? 512;
+	if (typeof inputValue.value !== "string") return maxCaptionLength;
+	return maxCaptionLength - length(inputValue.value);
+});
 
-		done(canceled, result?) {
-			this.$emit("done", { canceled, result });
-			this.$refs.modal.close();
-		},
+function done(canceled: boolean, result?: string | null) {
+	emit("done", { canceled, result });
+	modal.value!.close();
+}
 
-		async ok() {
-			if (!this.showOkButton) return;
+async function ok() {
+	if (!props.showOkButton) return;
 
-			const result = this.inputValue;
-			this.done(false, result);
-		},
+	const result = inputValue.value;
+	done(false, result);
+}
 
-		cancel() {
-			this.done(true);
-		},
+function cancel() {
+	done(true);
+}
 
-		onBgClick() {
-			if (this.cancelableByBgClick) {
-				this.cancel();
-			}
-		},
+// function onBgClick() {
+// 	if (props.cancelableByBgClick) {
+// 		cancel();
+// 	}
+// }
 
-		onKeydown(evt) {
-			if (evt.which === 27) {
-				// ESC
-				this.cancel();
-			}
-		},
+function onKeydown(evt) {
+	if (evt.which === 27) {
+		// ESC
+		cancel();
+	}
+}
 
-		onInputKeydown(evt) {
-			if (evt.which === 13) {
-				// Enter
-				if (evt.ctrlKey) {
-					evt.preventDefault();
-					evt.stopPropagation();
-					this.ok();
-				}
-			}
-		},
+function onInputKeydown(evt) {
+	if (evt.which === 13) {
+		// Enter
+		if (evt.ctrlKey) {
+			evt.preventDefault();
+			evt.stopPropagation();
+			ok();
+		}
+	}
+}
 
-		caption() {
-			const img = document.getElementById("imgtocaption") as HTMLImageElement;
-			const ta = document.getElementById("captioninput") as HTMLTextAreaElement;
-			os.api("drive/files/caption-image", {
-				url: img.src,
-			}).then((text) => {
-				insertTextAtCursor(ta, text.slice(0, 512 - ta.value.length));
-			});
-		},
-	},
+function caption() {
+	const img = document.getElementById("imgtocaption") as HTMLImageElement;
+	const ta = document.getElementById("captioninput") as HTMLTextAreaElement;
+	os.api("drive/files/caption-image", {
+		url: img.src,
+	}).then((text) => {
+		insertTextAtCursor(ta, text.slice(0, 512 - ta.value.length));
+	});
+}
+
+onMounted(() => {
+	document.addEventListener("keydown", onKeydown);
+});
+
+onBeforeUnmount(() => {
+	document.removeEventListener("keydown", onKeydown);
 });
 </script>
 

@@ -30,5 +30,5 @@
 		"jsx": "preserve"
 	},
 	"compileOnSave": false,
-	"include": ["./src/**/*.ts", "./src/**/*.vue"]
+	"include": ["./src/**/*.ts", "./src/**/*.vue", "./@types"]
 }

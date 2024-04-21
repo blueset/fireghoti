@@ -23,17 +23,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
-
 import type { entities } from "firefish-js";
-import * as os from "@/os";
 import { getProxiedImageUrlNullable } from "@/scripts/media-proxy";
 
-const props = defineProps<{
+defineProps<{
 	instance: entities.Instance;
 }>();
 
-function getInstanceIcon(instance): string {
+function getInstanceIcon(instance: entities.Instance): string {
 	return (
 		getProxiedImageUrlNullable(instance.faviconUrl, "preview") ??
 		getProxiedImageUrlNullable(instance.iconUrl, "preview") ??

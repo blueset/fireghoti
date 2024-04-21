@@ -50,7 +50,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(ev: "update:modelValue", v: string | null): void;
+	"update:modelValue": [v: string | null];
 }>();
 
 const available = ref(false);
@@ -93,7 +93,9 @@ if (loaded) {
 				src: src.value,
 			}),
 		)
-	).addEventListener("load", () => (available.value = true));
+	)
+		// biome-ignore lint/suspicious/noAssignInExpressions: assign it intentially
+		.addEventListener("load", () => (available.value = true));
 }
 
 function reset() {

@@ -1586,18 +1586,12 @@ _aboutFirefish:
   translation: Tradueix Firefish
   about: Firefish és una bifurcació de Misskey feta per ThatOneCalculator, que està
     en desenvolupament des del 2022.
-  morePatrons: També agraïm el suport de molts altres ajudants que no figuren aquí.
-    Gràcies! 🥰
-  patrons: Mecenes de Firefish
-  patronsList: Llistats cronològicament, no per la quantitat donada. Fes una donació
-    amb l'enllaç de dalt per veure el teu nom aquí!
   donateTitle: T'agrada Firefish?
   pleaseDonateToFirefish: Penseu en fer una donació a Firefish per donar suport al
     seu desenvolupament.
   pleaseDonateToHost: Penseu també en fer una donació a la vostre instància, {host},
     per ajudar-lo a suportar els costos de funcionament.
   donateHost: Fes una donació a {host}
-  sponsors: Patrocinadors de Calckey
   misskeyContributors: Col·laboradors de Misskey
 unknown: Desconegut
 pageLikesCount: Nombre de pàgines amb M'agrada
@@ -2084,9 +2078,9 @@ _experiments:
   release: Publicà
   title: Experiments
   enablePostImports: Activar l'importació de publicacions
-  postImportsCaption: Permet els usuaris importar publicacions desde comptes a Firefish,
+  postImportsCaption: Permet als usuaris importar publicacions des de comptes de Firefish,
     Misskey, Mastodon, Akkoma i Pleroma. Pot fer que el servidor vagi més lent durant
-    la càrrega si tens un coll d'ampolla a la cua.
+    la importació si la teva cua de feina és saturada.
 noGraze: Si us plau, desactiva l'extensió del navegador "Graze for Mastodon", ja que
   interfereix amb Firefish.
 accessibility: Accessibilitat

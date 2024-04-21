@@ -11,7 +11,7 @@
 			</div>
 		</template>
 
-		<template #default="{ items }">
+		<template #default="{ items }: { items: entities.Channel[] }">
 			<MkChannelPreview
 				v-for="item in items"
 				:key="item.id"
@@ -29,14 +29,15 @@ import type { PagingOf } from "@/components/MkPagination.vue";
 import MkPagination from "@/components/MkPagination.vue";
 import { i18n } from "@/i18n";
 
-const props = withDefaults(
+withDefaults(
 	defineProps<{
 		pagination: PagingOf<entities.Channel>;
 		noGap?: boolean;
-		extractor?: (item: any) => any;
+		// TODO: this function is not used and may can be removed
+		extractor?: (item: entities.Channel) => entities.Channel;
 	}>(),
 	{
-		extractor: (item) => item,
+		extractor: (item: entities.Channel) => item,
 	},
 );
 </script>

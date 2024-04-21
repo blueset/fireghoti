@@ -3,7 +3,7 @@ import * as QRCode from "qrcode";
 import config from "@/config/index.js";
 import { UserProfiles } from "@/models/index.js";
 import define from "@/server/api/define.js";
-import { comparePassword } from "@/misc/password.js";
+import { verifyPassword } from "backend-rs";
 
 export const meta = {
 	requireCredential: true,
@@ -22,8 +22,8 @@ export const paramDef = {
 export default define(meta, paramDef, async (ps, user) => {
 	const profile = await UserProfiles.findOneByOrFail({ userId: user.id });
 
-	// Compare password
-	const same = await comparePassword(ps.password, profile.password!);
+	// Compare passwords
+	const same = verifyPassword(ps.password, profile.password!);
 
 	if (!same) {
 		throw new Error("incorrect password");

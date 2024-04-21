@@ -1337,12 +1337,6 @@ _aboutFirefish:
   pleaseDonateToHost: "Please also consider donating to your home server, {host},
     to help support its operation costs."
   donateHost: "Donate to {host}"
-  morePatrons: "We also appreciate the support of many other helpers not listed here.
-    Thank you! 🥰"
-  sponsors: "Firefish sponsors"
-  patrons: "Firefish patrons"
-  patronsList: "Listed chronologically, not by donation size. Donate with the link
-    above to get your name on here!"
 _nsfw:
   respect: "Hide NSFW media"
   ignore: "Don't hide NSFW media"

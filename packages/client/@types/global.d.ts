@@ -1,3 +1,4 @@
+// biome-ignore lint/suspicious/noExplicitAny:
 type FIXME = any;
 
 declare const _LANGS_: string[][];

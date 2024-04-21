@@ -1,4 +1,4 @@
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { Notes } from "@/models/index.js";
 import { activeUsersChart } from "@/services/chart/index.js";
 import define from "@/server/api/define.js";
@@ -64,7 +64,7 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, user) => {
-	const m = await fetchMeta();
+	const m = await fetchMeta(true);
 	if (m.disableGlobalTimeline) {
 		if (user == null || !(user.isAdmin || user.isModerator)) {
 			throw new ApiError(meta.errors.gtlDisabled);

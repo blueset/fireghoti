@@ -6,7 +6,7 @@ import { shallowRef } from "vue";
 import { safeURIDecode } from "@/scripts/safe-uri-decode";
 import { pleaseLogin } from "@/scripts/please-login";
 
-interface RouteDef {
+export interface RouteDef {
 	path: string;
 	component: Component;
 	query?: Record<string, string>;

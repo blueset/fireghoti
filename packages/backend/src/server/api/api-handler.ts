@@ -2,7 +2,7 @@ import type Koa from "koa";
 
 import type { User } from "@/models/entities/user.js";
 import { UserIps } from "@/models/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import type { IEndpoint } from "./endpoints.js";
 import authenticate, { AuthenticationError } from "./authenticate.js";
 import call from "./call.js";
@@ -84,7 +84,7 @@ export default (endpoint: IEndpoint, ctx: Koa.Context) =>
 
 				// Log IP
 				if (user) {
-					fetchMeta().then((meta) => {
+					fetchMeta(true).then((meta) => {
 						if (!meta.enableIpLogging) return;
 						const ip = ctx.ip;
 						const ips = userIpHistories.get(user.id);

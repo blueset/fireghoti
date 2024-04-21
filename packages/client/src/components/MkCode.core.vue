@@ -29,6 +29,7 @@ if (props.lang != null && !(props.lang in Prism.languages)) {
 	const { lang } = props;
 	loadLanguage(props.lang).then(
 		// onLoaded
+		// biome-ignore lint/suspicious/noAssignInExpressions: assign intentionally
 		() => (prismLang.value = lang),
 		// onError
 		() => {},

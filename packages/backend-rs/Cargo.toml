@@ -17,11 +17,14 @@ macro_rs = { workspace = true }
 napi = { workspace = true, optional = true, default-features = false, features = ["napi9", "tokio_rt", "chrono_date", "serde-json"] }
 napi-derive = { workspace = true, optional = true }
 
+argon2 = { workspace = true, features = ["std"] }
 async-trait = { workspace = true }
 basen = { workspace = true }
+bcrypt = { workspace = true }
 cfg-if = { workspace = true }
 chrono = { workspace = true }
 cuid2 = { workspace = true }
+emojis = { workspace = true }
 idna = { workspace = true }
 jsonschema = { workspace = true }
 once_cell = { workspace = true }

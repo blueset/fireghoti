@@ -62,7 +62,7 @@
 				<span v-else class="emoji">{{ emoji.emoji }}</span>
 				<span
 					class="name"
-					v-html="emoji.name.replace(q, `<b>${q}</b>`)"
+					v-html="q ? emoji.name.replace(q, `<b>${q}</b>`) : emoji.name"
 				></span>
 				<span v-if="emoji.aliasOf" class="alias"
 					>({{ emoji.aliasOf }})</span
@@ -107,7 +107,7 @@ interface EmojiDef {
 	emoji: string;
 	name: string;
 	aliasOf?: string;
-	url?: string;
+	url: string;
 	isCustomEmoji?: boolean;
 }
 

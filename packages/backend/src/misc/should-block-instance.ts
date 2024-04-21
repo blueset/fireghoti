@@ -1,4 +1,4 @@
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import type { Instance } from "@/models/entities/instance.js";
 import type { Meta } from "@/models/entities/meta.js";
 
@@ -13,7 +13,7 @@ export async function shouldBlockInstance(
 	host: Instance["host"],
 	meta?: Meta,
 ): Promise<boolean> {
-	const { blockedHosts } = meta ?? (await fetchMeta());
+	const { blockedHosts } = meta ?? (await fetchMeta(true));
 	return blockedHosts.some(
 		(blockedHost) => host === blockedHost || host.endsWith(`.${blockedHost}`),
 	);
@@ -30,7 +30,7 @@ export async function shouldSilenceInstance(
 	host: Instance["host"],
 	meta?: Meta,
 ): Promise<boolean> {
-	const { silencedHosts } = meta ?? (await fetchMeta());
+	const { silencedHosts } = meta ?? (await fetchMeta(true));
 	return silencedHosts.some(
 		(silencedHost) =>
 			host === silencedHost || host.endsWith(`.${silencedHost}`),

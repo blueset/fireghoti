@@ -4,7 +4,7 @@ use sea_orm::entity::prelude::*;
 
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi)]
+#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "antenna_src_enum")]
 pub enum AntennaSrcEnum {
     #[sea_orm(string_value = "all")]
@@ -22,7 +22,21 @@ pub enum AntennaSrcEnum {
 }
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi)]
+#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
+#[sea_orm(
+    rs_type = "String",
+    db_type = "Enum",
+    enum_name = "drive_file_usage_hint_enum"
+)]
+pub enum DriveFileUsageHintEnum {
+    #[sea_orm(string_value = "userAvatar")]
+    UserAvatar,
+    #[sea_orm(string_value = "userBanner")]
+    UserBanner,
+}
+#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
+#[cfg_attr(not(feature = "napi"), derive(Clone))]
+#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
@@ -40,7 +54,7 @@ pub enum MutedNoteReasonEnum {
 }
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi)]
+#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
@@ -60,7 +74,7 @@ pub enum NoteVisibilityEnum {
 }
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi)]
+#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
@@ -94,7 +108,7 @@ pub enum NotificationTypeEnum {
 }
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi)]
+#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
@@ -110,7 +124,7 @@ pub enum PageVisibilityEnum {
 }
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi)]
+#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
@@ -128,7 +142,7 @@ pub enum PollNotevisibilityEnum {
 }
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi)]
+#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "relay_status_enum")]
 pub enum RelayStatusEnum {
     #[sea_orm(string_value = "accepted")]
@@ -140,7 +154,7 @@ pub enum RelayStatusEnum {
 }
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi)]
+#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
@@ -158,7 +172,7 @@ pub enum UserEmojimodpermEnum {
 }
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi)]
+#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
@@ -174,7 +188,7 @@ pub enum UserProfileFfvisibilityEnum {
 }
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi)]
+#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",

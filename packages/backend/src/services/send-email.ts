@@ -1,5 +1,5 @@
 import * as nodemailer from "nodemailer";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import Logger from "@/services/logger.js";
 import config from "@/config/index.js";
 import { inspect } from "node:util";
@@ -12,7 +12,7 @@ export async function sendEmail(
 	html: string,
 	text: string,
 ) {
-	const meta = await fetchMeta(true);
+	const meta = await fetchMeta(false);
 
 	const iconUrl = `${config.url}/static-assets/mi-white.png`;
 	const emailSettingUrl = `${config.url}/settings/email`;

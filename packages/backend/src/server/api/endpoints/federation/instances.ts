@@ -1,7 +1,6 @@
 import define from "@/server/api/define.js";
 import { Instances } from "@/models/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
+import { fetchMeta, sqlLikeEscape } from "backend-rs";
 
 export const meta = {
 	tags: ["federation"],
@@ -101,7 +100,7 @@ export default define(meta, paramDef, async (ps, me) => {
 	}
 
 	if (typeof ps.blocked === "boolean") {
-		const meta = await fetchMeta(true);
+		const meta = await fetchMeta(false);
 		if (ps.blocked) {
 			if (meta.blockedHosts.length === 0) {
 				return [];
@@ -117,7 +116,7 @@ export default define(meta, paramDef, async (ps, me) => {
 	}
 
 	if (typeof ps.silenced === "boolean") {
-		const meta = await fetchMeta(true);
+		const meta = await fetchMeta(false);
 		if (ps.silenced) {
 			if (meta.silencedHosts.length === 0) {
 				return [];

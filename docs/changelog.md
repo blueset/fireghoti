@@ -5,9 +5,16 @@ Critical security updates are indicated by the :warning: icon.
 - Server administrators should check [notice-for-admins.md](./notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](./api-change.md) as well.
 
-## Unreleased
+## [v20240421](https://firefish.dev/firefish/firefish/-/merge_requests/10756/commits)
+
+- Fix bugs
+
+## [v20240413](https://firefish.dev/firefish/firefish/-/merge_requests/10741/commits)
 
 - Add "Media" tab to user page
+- Improve federation and rendering of mathematical expressions
+- Remove donor information from the web client
+	- See also: https://info.firefish.dev/notes/9s1n283sb10rh869
 - Fix bugs
 
 ## [v20240405](https://firefish.dev/firefish/firefish/-/merge_requests/10733/commits)

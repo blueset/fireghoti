@@ -28,7 +28,7 @@ export const packedNoteSchema = {
 		},
 		cw: {
 			type: "string",
-			optional: true,
+			optional: false,
 			nullable: true,
 		},
 		userId: {
@@ -98,7 +98,7 @@ export const packedNoteSchema = {
 		},
 		fileIds: {
 			type: "array",
-			optional: true,
+			optional: false,
 			nullable: false,
 			items: {
 				type: "string",
@@ -127,6 +127,11 @@ export const packedNoteSchema = {
 				optional: false,
 				nullable: false,
 			},
+		},
+		hasPoll: {
+			type: "boolean",
+			optional: false,
+			nullable: false,
 		},
 		poll: {
 			type: "object",

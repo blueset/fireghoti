@@ -11,7 +11,7 @@ import * as url from "@/prelude/url.js";
 import { Users, Notes } from "@/models/index.js";
 import type { Note } from "@/models/entities/note.js";
 import { checkFetch } from "@/remote/activitypub/check-fetch.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { makePaginationQuery } from "../api/common/make-pagination-query.js";
 import { setResponseType } from "../activitypub.js";
 import type Router from "@koa/router";
@@ -117,7 +117,7 @@ export default async (ctx: Router.RouterContext) => {
 
 		setResponseType(ctx);
 	}
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 	if (meta.secureMode || meta.privateMode) {
 		ctx.set("Cache-Control", "private, max-age=0, must-revalidate");
 	} else {

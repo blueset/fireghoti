@@ -83,7 +83,7 @@ export default define(meta, paramDef, async (ps, me) => {
 	await Channels.update(channel.id, {
 		...(ps.name !== undefined ? { name: ps.name } : {}),
 		...(ps.description !== undefined ? { description: ps.description } : {}),
-		...(banner ? { bannerId: banner.id } : {}),
+		...(banner ? { bannerId: banner.id } : { bannerId: null }),
 	});
 
 	return await Channels.pack(channel.id, me);

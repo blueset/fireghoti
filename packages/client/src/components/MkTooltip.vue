@@ -11,7 +11,7 @@
 			:style="{ zIndex, maxWidth: maxWidth + 'px' }"
 		>
 			<slot>
-				<Mfm v-if="asMfm" :text="text" />
+				<Mfm v-if="asMfm" :text="text!" />
 				<span v-else>{{ text }}</span>
 			</slot>
 		</div>
@@ -27,7 +27,7 @@ import { defaultStore } from "@/store";
 const props = withDefaults(
 	defineProps<{
 		showing: boolean;
-		targetElement?: HTMLElement;
+		targetElement?: HTMLElement | null;
 		x?: number;
 		y?: number;
 		text?: string;
@@ -40,6 +40,7 @@ const props = withDefaults(
 		maxWidth: 250,
 		direction: "top",
 		innerMargin: 0,
+		targetElement: null,
 	},
 );
 
@@ -51,7 +52,7 @@ const el = ref<HTMLElement>();
 const zIndex = os.claimZIndex("high");
 
 function setPosition() {
-	const data = calcPopupPosition(el.value, {
+	const data = calcPopupPosition(el.value!, {
 		anchorElement: props.targetElement,
 		direction: props.direction,
 		align: "center",
@@ -60,12 +61,12 @@ function setPosition() {
 		y: props.y,
 	});
 
-	el.value.style.transformOrigin = data.transformOrigin;
-	el.value.style.left = data.left + "px";
-	el.value.style.top = data.top + "px";
+	el.value!.style.transformOrigin = data.transformOrigin;
+	el.value!.style.left = `${data.left}px`;
+	el.value!.style.top = `${data.top}px`;
 }
 
-let loopHandler;
+let loopHandler: number;
 
 onMounted(() => {
 	nextTick(() => {

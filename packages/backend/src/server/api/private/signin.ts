@@ -10,12 +10,12 @@ import {
 	AttestationChallenges,
 } from "@/models/index.js";
 import type { ILocalUser } from "@/models/entities/user.js";
-import { genId } from "backend-rs";
 import {
-	comparePassword,
+	genId,
 	hashPassword,
-	isOldAlgorithm,
-} from "@/misc/password.js";
+	isOldPasswordAlgorithm,
+	verifyPassword,
+} from "backend-rs";
 import { verifyLogin, hash } from "@/server/api/2fa.js";
 import { randomBytes } from "node:crypto";
 import { IsNull } from "typeorm";
@@ -91,11 +91,11 @@ export default async (ctx: Koa.Context) => {
 
 	const profile = await UserProfiles.findOneByOrFail({ userId: user.id });
 
-	// Compare password
-	const same = await comparePassword(password, profile.password!);
+	// Compare passwords
+	const same = verifyPassword(password, profile.password!);
 
-	if (same && isOldAlgorithm(profile.password!)) {
-		profile.password = await hashPassword(password);
+	if (same && isOldPasswordAlgorithm(profile.password!)) {
+		profile.password = hashPassword(password);
 		await UserProfiles.save(profile);
 	}
 

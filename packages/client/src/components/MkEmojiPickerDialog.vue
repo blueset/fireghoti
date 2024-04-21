@@ -39,7 +39,7 @@ import { defaultStore } from "@/store";
 withDefaults(
 	defineProps<{
 		manualShowing?: boolean | null;
-		src?: HTMLElement;
+		src?: HTMLElement | null;
 		showPinned?: boolean;
 		asReactionPicker?: boolean;
 	}>(),
@@ -51,7 +51,7 @@ withDefaults(
 );
 
 const emit = defineEmits<{
-	(ev: "done", v: any): void;
+	(ev: "done", v: string): void;
 	(ev: "close"): void;
 	(ev: "closed"): void;
 }>();
@@ -64,7 +64,7 @@ function checkForShift(ev?: MouseEvent) {
 	modal.value?.close(ev);
 }
 
-function chosen(emoji: any, ev: MouseEvent) {
+function chosen(emoji: string, ev?: MouseEvent) {
 	emit("done", emoji);
 	checkForShift(ev);
 }

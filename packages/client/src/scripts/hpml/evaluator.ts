@@ -183,7 +183,7 @@ export class Hpml {
 			}
 
 			if (expr.type === "number") {
-				return parseInt(expr.value as any, 10);
+				return Number.parseInt(expr.value as any, 10);
 			}
 
 			if (expr.type === "text" || expr.type === "multiLineText") {

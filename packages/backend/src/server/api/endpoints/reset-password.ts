@@ -1,6 +1,6 @@
 import { UserProfiles, PasswordResetRequests } from "@/models/index.js";
 import define from "@/server/api/define.js";
-import { hashPassword } from "@/misc/password.js";
+import { hashPassword } from "backend-rs";
 
 export const meta = {
 	tags: ["reset password"],
@@ -32,7 +32,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	}
 
 	// Generate hash of password
-	const hash = await hashPassword(ps.password);
+	const hash = hashPassword(ps.password);
 
 	await UserProfiles.update(req.userId, {
 		password: hash,

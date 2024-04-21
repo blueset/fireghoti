@@ -31,7 +31,6 @@
 			:text="note.cw"
 			:author="note.user"
 			:lang="note.lang"
-			:i="me"
 			:custom-emojis="note.emojis"
 		/>
 	</p>
@@ -63,8 +62,8 @@
 			<div
 				class="body"
 				v-bind="{
-					'aria-hidden': note.cw && !showContent ? 'true' : null,
-					tabindex: !showContent ? '-1' : null,
+					'aria-hidden': note.cw && !showContent ? 'true' : undefined,
+					tabindex: !showContent ? '-1' : undefined,
 				}"
 			>
 				<span v-if="note.deletedAt" style="opacity: 0.5"
@@ -103,7 +102,6 @@
 					v-if="note.text"
 					:text="note.text"
 					:author="note.user"
-					:i="me"
 					:lang="note.lang"
 					:custom-emojis="note.emojis"
 				/>
@@ -256,7 +254,7 @@ async function toggleMfm() {
 }
 
 function focusFooter(ev) {
-	if (ev.key == "Tab" && !ev.getModifierState("Shift")) {
+	if (ev.key === "Tab" && !ev.getModifierState("Shift")) {
 		emit("focusfooter");
 	}
 }

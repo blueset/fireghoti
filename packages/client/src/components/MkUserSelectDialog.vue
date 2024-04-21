@@ -98,16 +98,16 @@ import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 
 const emit = defineEmits<{
-	(ev: "ok", selected: entities.UserDetailed): void;
-	(ev: "cancel"): void;
-	(ev: "closed"): void;
+	ok: [selected: entities.UserDetailed];
+	cancel: [];
+	closed: [];
 }>();
 
 const username = ref("");
 const host = ref("");
-const users: entities.UserDetailed[] = ref([]);
-const recentUsers: entities.UserDetailed[] = ref([]);
-const selected: entities.UserDetailed | null = ref(null);
+const users = ref<entities.UserDetailed[]>([]);
+const recentUsers = ref<entities.UserDetailed[]>([]);
+const selected = ref<entities.UserDetailed | null>(null);
 const dialogEl = ref();
 
 const search = () => {
@@ -132,7 +132,7 @@ const ok = () => {
 
 	// 最近使ったユーザー更新
 	let recents = defaultStore.state.recentlyUsedUsers;
-	recents = recents.filter((x) => x !== selected.value.id);
+	recents = recents.filter((x) => x !== selected.value!.id);
 	recents.unshift(selected.value.id);
 	defaultStore.set("recentlyUsedUsers", recents.splice(0, 16));
 };
