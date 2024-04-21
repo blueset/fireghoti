@@ -23,7 +23,7 @@ import { i18n } from "@/i18n";
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 const checkAnnouncements = () => {
-	modal.value.close();
+	modal.value!.close();
 	location.href = "/announcements";
 };
 </script>

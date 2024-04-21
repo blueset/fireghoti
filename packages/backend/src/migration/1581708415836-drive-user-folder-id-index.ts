@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class driveUserFolderIdIndex1581708415836 implements MigrationInterface {
 	async up(queryRunner: QueryRunner): Promise<void> {

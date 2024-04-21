@@ -3,11 +3,11 @@ import { Emojis } from "@/models/index.js";
 import type { Emoji } from "@/models/entities/emoji.js";
 import type { Note } from "@/models/entities/note.js";
 import { Cache } from "./cache.js";
-import { isSelfHost, toPunyNullable } from "./convert-host.js";
-import { decodeReaction } from "./reaction-lib.js";
+import { decodeReaction, isSelfHost, toPuny } from "backend-rs";
 import config from "@/config/index.js";
 import { query } from "@/prelude/url.js";
 import { redisClient } from "@/db/redis.js";
+import type { NoteEdit } from "@/models/entities/note-edit.js";
 
 const cache = new Cache<Emoji | null>("populateEmojis", 60 * 60 * 12);
 
@@ -26,7 +26,7 @@ function normalizeHost(
 	noteUserHost: string | null,
 ): string | null {
 	// クエリに使うホスト
-	let host =
+	const host =
 		src === "."
 			? null // .はローカルホスト (ここがマッチするのはリアクションのみ)
 			: src === undefined
@@ -35,9 +35,7 @@ function normalizeHost(
 					? null // 自ホスト指定
 					: src || noteUserHost; // 指定されたホスト || ノートなどの所有者のホスト (こっちがリアクションにマッチすることはない)
 
-	host = toPunyNullable(host);
-
-	return host;
+	return host == null ? null : toPuny(host);
 }
 
 function parseEmojiStr(emojiName: string, noteUserHost: string | null) {
@@ -45,11 +43,7 @@ function parseEmojiStr(emojiName: string, noteUserHost: string | null) {
 	if (!match) return { name: null, host: null };
 
 	const name = match[1];
-
-	// ホスト正規化
-	const host = toPunyNullable(normalizeHost(match[2], noteUserHost));
-
-	return { name, host };
+	return { name, host: normalizeHost(match[2], noteUserHost) };
 }
 
 /**
@@ -110,6 +104,23 @@ export async function populateEmojis(
 	return emojis.filter((x): x is PopulatedEmoji => x != null);
 }
 
+export function aggregateNoteEditEmojis(
+	noteEdits: NoteEdit[],
+	sourceHost: string | null,
+) {
+	let emojis: string[] = [];
+	for (const noteEdit of noteEdits) {
+		emojis = emojis.concat(noteEdit.emojis);
+	}
+	emojis = Array.from(new Set(emojis));
+	return emojis
+		.map((e) => parseEmojiStr(e, sourceHost))
+		.filter((x) => x.name != null) as {
+		name: string;
+		host: string | null;
+	}[];
+}
+
 export function aggregateNoteEmojis(notes: Note[]) {
 	let emojis: { name: string | null; host: string | null }[] = [];
 	for (const note of notes) {
@@ -145,7 +156,7 @@ export function aggregateNoteEmojis(notes: Note[]) {
 }
 
 /**
- * 与えられた絵文字のリストをデータベースから取得し、キャッシュに追加します
+ * Get the given list of emojis from the database and adds them to the cache
  */
 export async function prefetchEmojis(
 	emojis: { name: string; host: string | null }[],

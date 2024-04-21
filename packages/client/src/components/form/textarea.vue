@@ -60,6 +60,7 @@ export default defineComponent({
 
 	props: {
 		modelValue: {
+			type: String,
 			required: true,
 		},
 		type: {
@@ -92,9 +93,11 @@ export default defineComponent({
 			default: false,
 		},
 		autocomplete: {
+			type: String,
 			required: false,
 		},
 		spellcheck: {
+			type: Boolean,
 			required: false,
 		},
 		code: {
@@ -132,9 +135,9 @@ export default defineComponent({
 		const changed = ref(false);
 		const invalid = ref(false);
 		const filled = computed(() => v.value !== "" && v.value != null);
-		const inputEl = ref(null);
+		const inputEl = ref<HTMLTextAreaElement | null>(null);
 
-		const focus = () => inputEl.value.focus();
+		const focus = () => inputEl.value!.focus();
 		const onInput = (ev) => {
 			changed.value = true;
 			context.emit("change", ev);
@@ -167,7 +170,7 @@ export default defineComponent({
 				}
 			}
 
-			invalid.value = inputEl.value.validity.badInput;
+			invalid.value = inputEl.value!.validity.badInput;
 		});
 
 		onMounted(() => {

@@ -100,7 +100,7 @@
 					active-class="active"
 					to="/admin/emojis"
 				>
-					<i class="icon ph-smiley ph-bold ph-fw ph-lg"></i
+					<i :class="icon('ph-smiley icon ph-fw')"></i
 					><span class="text">{{ i18n.ts.customEmojis }}</span>
 				</MkA>
 				<button

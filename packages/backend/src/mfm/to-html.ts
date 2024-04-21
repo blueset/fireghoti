@@ -1,8 +1,22 @@
-import { Window } from "happy-dom";
+import { type HTMLElement, Window } from "happy-dom";
 import type * as mfm from "mfm-js";
+import katex from "katex";
 import config from "@/config/index.js";
 import { intersperse } from "@/prelude/array.js";
 import type { IMentionedRemoteUsers } from "@/models/entities/note.js";
+
+function toMathMl(code: string, displayMode: boolean): HTMLElement | null {
+	const { window } = new Window();
+	const document = window.document;
+
+	document.body.innerHTML = katex.renderToString(code, {
+		throwOnError: false,
+		output: "mathml",
+		displayMode,
+	});
+
+	return document.querySelector("math");
+}
 
 export function toHtml(
 	nodes: mfm.MfmNode[] | null,
@@ -93,12 +107,24 @@ export function toHtml(
 		},
 
 		mathInline(node) {
+			const mathml = toMathMl(node.props.formula, false);
+			if (mathml != null) {
+				return mathml;
+			}
+
+			// fallbacks to <code> element
 			const el = doc.createElement("code");
 			el.textContent = node.props.formula;
 			return el;
 		},
 
 		mathBlock(node) {
+			const mathml = toMathMl(node.props.formula, true);
+			if (mathml != null) {
+				return mathml;
+			}
+
+			// fallbacks to <code> element
 			const el = doc.createElement("code");
 			el.textContent = node.props.formula;
 			return el;

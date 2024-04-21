@@ -17,7 +17,7 @@ import {
 	Instances,
 	UserProfiles,
 } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
 import type { Packed } from "@/misc/schema.js";

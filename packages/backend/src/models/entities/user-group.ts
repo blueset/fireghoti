@@ -5,6 +5,7 @@ import {
 	Column,
 	PrimaryColumn,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
@@ -15,7 +16,7 @@ export class UserGroup {
 	public id: string;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the UserGroup.",
 	})
 	public createdAt: Date;
@@ -32,16 +33,18 @@ export class UserGroup {
 	})
 	public userId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
-
 	@Column("boolean", {
 		default: false,
 	})
 	public isPrivate: boolean;
+
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public user: Relation<User>;
+	//#endregion
 
 	constructor(data: Partial<UserGroup>) {
 		if (data == null) return;

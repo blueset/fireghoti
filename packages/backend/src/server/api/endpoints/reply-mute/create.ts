@@ -1,4 +1,4 @@
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { ReplyMutings } from "@/models/index.js";
 import { ReplyMuting } from "@/models/entities/reply-muting.js";
 import define from "@/server/api/define.js";

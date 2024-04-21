@@ -9,7 +9,7 @@ import {
 import config from "@/config/index.js";
 import { procedures, hash } from "@/server/api/2fa.js";
 import { publishMainStream } from "@/services/stream.js";
-import { comparePassword } from "@/misc/password.js";
+import { verifyPassword } from "backend-rs";
 
 const rpIdHashReal = hash(Buffer.from(config.hostname, "utf-8"));
 
@@ -40,8 +40,8 @@ export const paramDef = {
 export default define(meta, paramDef, async (ps, user) => {
 	const profile = await UserProfiles.findOneByOrFail({ userId: user.id });
 
-	// Compare password
-	const same = await comparePassword(ps.password, profile.password!);
+	// Compare passwords
+	const same = verifyPassword(ps.password, profile.password!);
 
 	if (!same) {
 		throw new Error("incorrect password");
@@ -117,10 +117,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	});
 
 	// Expired challenge (> 5min old)
-	if (
-		new Date().getTime() - attestationChallenge.createdAt.getTime() >=
-		5 * 60 * 1000
-	) {
+	if (Date.now() - attestationChallenge.createdAt.getTime() >= 5 * 60 * 1000) {
 		throw new Error("expired challenge");
 	}
 

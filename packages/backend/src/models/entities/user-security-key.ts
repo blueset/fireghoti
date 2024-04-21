@@ -5,6 +5,7 @@ import {
 	Column,
 	ManyToOne,
 	Index,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
@@ -20,12 +21,6 @@ export class UserSecurityKey {
 	@Column(id())
 	public userId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
-
 	@Index()
 	@Column("varchar", {
 		comment:
@@ -33,7 +28,7 @@ export class UserSecurityKey {
 	})
 	public publicKey: string;
 
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment:
 			"The date of the last time the UserSecurityKey was successfully validated.",
 	})
@@ -44,6 +39,14 @@ export class UserSecurityKey {
 		length: 30,
 	})
 	public name: string;
+
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public user: Relation<User>;
+	//#endregion
 
 	constructor(data: Partial<UserSecurityKey>) {
 		if (data == null) return;

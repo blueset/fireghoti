@@ -3,9 +3,7 @@ import type { Note } from "@/models/entities/note.js";
 import type { User } from "@/models/entities/user.js";
 import type { UserProfile } from "@/models/entities/user-profile.js";
 import { Blockings, Followings, UserProfiles } from "@/models/index.js";
-import { getFullApAccount } from "@/misc/convert-host.js";
-import * as Acct from "@/misc/acct.js";
-import { getWordHardMute } from "@/misc/check-word-mute.js";
+import { checkWordMute, getFullApAccount, stringToAcct } from "backend-rs";
 import type { Packed } from "@/misc/schema.js";
 import { Cache } from "@/misc/cache.js";
 
@@ -30,7 +28,7 @@ export async function checkHitAntenna(
 
 	if (antenna.src === "users") {
 		const accts = antenna.users.map((x) => {
-			const { username, host } = Acct.parse(x);
+			const { username, host } = stringToAcct(x);
 			return getFullApAccount(username, host).toLowerCase();
 		});
 		if (
@@ -124,7 +122,7 @@ export async function checkHitAntenna(
 		mutes.mutedWords != null &&
 		mutes.mutedPatterns != null &&
 		antenna.userId !== note.userId &&
-		(await getWordHardMute(note, mutes.mutedWords, mutes.mutedPatterns))
+		(await checkWordMute(note, mutes.mutedWords, mutes.mutedPatterns))
 	)
 		return false;
 

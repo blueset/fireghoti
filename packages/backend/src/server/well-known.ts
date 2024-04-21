@@ -1,7 +1,7 @@
 import Router from "@koa/router";
 
 import config from "@/config/index.js";
-import * as Acct from "@/misc/acct.js";
+import { type Acct, stringToAcct } from "backend-rs";
 import { links } from "./nodeinfo.js";
 import { escapeAttribute, escapeValue } from "@/prelude/xml.js";
 import { Users } from "@/models/index.js";
@@ -74,22 +74,6 @@ router.get("/.well-known/host-meta.json", async (ctx) => {
 	};
 });
 
-if (config.twa != null) {
-	router.get("/.well-known/assetlinks.json", async (ctx) => {
-		ctx.set("Content-Type", "application/json");
-		ctx.body = [
-			{
-				relation: ["delegate_permission/common.handle_all_urls"],
-				target: {
-					namespace: config.twa.nameSpace,
-					package_name: config.twa.packageName,
-					sha256_cert_fingerprints: config.twa.sha256CertFingerprints,
-				},
-			},
-		];
-	});
-}
-
 router.get("/.well-known/nodeinfo", async (ctx) => {
 	ctx.body = { links };
 });
@@ -110,7 +94,7 @@ router.get(webFingerPath, async (ctx) => {
 		resource.startsWith(`${config.url.toLowerCase()}/users/`)
 			? fromId(resource.split("/").pop()!)
 			: fromAcct(
-					Acct.parse(
+					stringToAcct(
 						resource.startsWith(`${config.url.toLowerCase()}/@`)
 							? resource.split("/").pop()!
 							: resource.startsWith("acct:")
@@ -119,7 +103,7 @@ router.get(webFingerPath, async (ctx) => {
 					),
 				);
 
-	const fromAcct = (acct: Acct.Acct): FindOptionsWhere<User> | number =>
+	const fromAcct = (acct: Acct): FindOptionsWhere<User> | number =>
 		!acct.host || acct.host === config.host.toLowerCase()
 			? {
 					usernameLower: acct.username,

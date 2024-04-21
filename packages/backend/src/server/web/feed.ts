@@ -2,7 +2,16 @@ import { Feed } from "feed";
 import { In, IsNull } from "typeorm";
 import config from "@/config/index.js";
 import type { User } from "@/models/entities/user.js";
+import type { Note } from "@/models/entities/note.js";
 import { Notes, DriveFiles, UserProfiles, Users } from "@/models/index.js";
+import getNoteHtml from "@/remote/activitypub/misc/get-note-html.js";
+
+/**
+ * If there is this part in the note, it will cause CDATA to be terminated early.
+ */
+function escapeCDATA(str: string) {
+	return str.replaceAll("]]>", "]]]]><![CDATA[>");
+}
 
 export default async function (
 	user: User,
@@ -15,7 +24,7 @@ export default async function (
 	const author = {
 		link: `${config.url}/@${user.username}`,
 		email: `${user.username}@${config.host}`,
-		name: user.name || user.username,
+		name: escapeCDATA(user.name || user.username),
 	};
 
 	const profile = await UserProfiles.findOneByOrFail({ userId: user.id });
@@ -44,11 +53,13 @@ export default async function (
 		title: `${author.name} (@${user.username}@${config.host})`,
 		updated: notes[0].createdAt,
 		generator: "Firefish",
-		description: `${user.notesCount} Notes, ${
-			profile.ffVisibility === "public" ? user.followingCount : "?"
-		} Following, ${
-			profile.ffVisibility === "public" ? user.followersCount : "?"
-		} Followers${profile.description ? ` · ${profile.description}` : ""}`,
+		description: escapeCDATA(
+			`${user.notesCount} Notes, ${
+				profile.ffVisibility === "public" ? user.followingCount : "?"
+			} Following, ${
+				profile.ffVisibility === "public" ? user.followersCount : "?"
+			} Followers${profile.description ? ` · ${profile.description}` : ""}`,
+		),
 		link: author.link,
 		image: await Users.getAvatarUrl(user),
 		feedLinks: {
@@ -88,19 +99,23 @@ export default async function (
 		}
 
 		feed.addItem({
-			title: title
-				.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g, "")
-				.substring(0, 100),
+			title: escapeCDATA(
+				title
+					.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g, "")
+					.substring(0, 100),
+			),
 			link: `${config.url}/notes/${note.id}`,
 			date: note.createdAt,
 			description: note.cw
-				? note.cw.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g, "")
+				? escapeCDATA(note.cw.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g, ""))
 				: undefined,
-			content: contentStr.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g, ""),
+			content: escapeCDATA(
+				contentStr.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g, ""),
+			),
 		});
 	}
 
-	async function noteToString(note, isTheNote = false) {
+	async function noteToString(note: Note, isTheNote = false) {
 		const author = isTheNote
 			? null
 			: await Users.findOneBy({ id: note.userId });
@@ -135,7 +150,10 @@ export default async function (
 				}">${file.name}</a>`;
 			}
 		}
-		outstr += `${note.cw ? note.cw + "<br>" : ""}${note.text || ""}${fileEle}`;
+
+		outstr += `${note.cw ? note.cw + "<br>" : ""}${
+			getNoteHtml(note) || ""
+		}${fileEle}`;
 		if (isTheNote) {
 			outstr += ` <span class="${
 				note.renoteId ? "renote_note" : note.replyId ? "reply_note" : "new_note"

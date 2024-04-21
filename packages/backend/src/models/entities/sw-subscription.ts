@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
@@ -14,18 +15,12 @@ export class SwSubscription {
 	@PrimaryColumn(id())
 	public id: string;
 
-	@Column("timestamp with time zone")
+	@Column("timestamp without time zone")
 	public createdAt: Date;
 
 	@Index()
 	@Column(id())
 	public userId: User["id"];
-
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
 
 	@Column("varchar", {
 		length: 512,
@@ -46,4 +41,12 @@ export class SwSubscription {
 		default: false,
 	})
 	public sendReadMessage: boolean;
+
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public user: Relation<User>;
+	//#endregion
 }

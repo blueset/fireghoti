@@ -4,7 +4,7 @@ import { IsNull } from "typeorm";
 import config from "@/config/index.js";
 import type { User, IRemoteUser } from "@/models/entities/user.js";
 import { Users } from "@/models/index.js";
-import { toPuny } from "@/misc/convert-host.js";
+import { toPuny } from "backend-rs";
 import webFinger from "./webfinger.js";
 import { createPerson, updatePerson } from "./activitypub/models/person.js";
 import { remoteLogger } from "./logger.js";

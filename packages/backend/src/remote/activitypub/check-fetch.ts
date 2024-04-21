@@ -1,8 +1,8 @@
 import { URL } from "url";
 import httpSignature, { IParsedSignature } from "@peertube/http-signature";
 import config from "@/config/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import { toPuny } from "@/misc/convert-host.js";
+import { fetchMeta } from "backend-rs";
+import { toPuny } from "backend-rs";
 import DbResolver from "@/remote/activitypub/db-resolver.js";
 import { getApId } from "@/remote/activitypub/type.js";
 import { shouldBlockInstance } from "@/misc/should-block-instance.js";
@@ -12,7 +12,7 @@ import type { UserPublickey } from "@/models/entities/user-publickey.js";
 import { verify } from "node:crypto";
 
 export async function hasSignature(req: IncomingMessage): Promise<string> {
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 	const required = meta.secureMode || meta.privateMode;
 
 	try {
@@ -27,7 +27,7 @@ export async function hasSignature(req: IncomingMessage): Promise<string> {
 }
 
 export async function checkFetch(req: IncomingMessage): Promise<number> {
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 	if (meta.secureMode || meta.privateMode) {
 		if (req.headers.host !== config.host) return 400;
 

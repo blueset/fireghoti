@@ -5,8 +5,8 @@ import perform from "@/remote/activitypub/perform.js";
 import Logger from "@/services/logger.js";
 import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
 import { Instances } from "@/models/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import { toPuny, extractDbHost } from "@/misc/convert-host.js";
+import { fetchMeta } from "backend-rs";
+import { toPuny, extractHost } from "backend-rs";
 import { getApId } from "@/remote/activitypub/type.js";
 import { fetchInstanceMetadata } from "@/services/fetch-instance-metadata.js";
 import type { InboxJobData } from "../types.js";
@@ -41,7 +41,7 @@ export default async (job: Bull.Job<InboxJobData>): Promise<string> => {
 	const host = toPuny(new URL(signature.keyId).hostname);
 
 	// interrupt if blocked
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 	if (await shouldBlockInstance(host, meta)) {
 		return `Blocked request: ${host}`;
 	}
@@ -157,7 +157,7 @@ export default async (job: Bull.Job<InboxJobData>): Promise<string> => {
 			}
 
 			// ブロックしてたら中断
-			const ldHost = extractDbHost(authUser.user.uri);
+			const ldHost = extractHost(authUser.user.uri);
 			if (await shouldBlockInstance(ldHost, meta)) {
 				return `Blocked request: ${ldHost}`;
 			}
@@ -168,8 +168,8 @@ export default async (job: Bull.Job<InboxJobData>): Promise<string> => {
 
 	// activity.idがあればホストが署名者のホストであることを確認する
 	if (typeof activity.id === "string") {
-		const signerHost = extractDbHost(authUser.user.uri!);
-		const activityIdHost = extractDbHost(activity.id);
+		const signerHost = extractHost(authUser.user.uri!);
+		const activityIdHost = extractHost(activity.id);
 		if (signerHost !== activityIdHost) {
 			return `skip: signerHost(${signerHost}) !== activity.id host(${activityIdHost}`;
 		}

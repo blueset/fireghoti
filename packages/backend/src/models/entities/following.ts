@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
@@ -16,7 +17,7 @@ export class Following {
 	public id: string;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the Following.",
 	})
 	public createdAt: Date;
@@ -28,24 +29,12 @@ export class Following {
 	})
 	public followeeId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public followee: User | null;
-
 	@Index()
 	@Column({
 		...id(),
 		comment: "The follower user ID.",
 	})
 	public followerId: User["id"];
-
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public follower: User | null;
 
 	//#region Denormalized fields
 	@Index()
@@ -91,5 +80,19 @@ export class Following {
 		comment: "[Denormalized]",
 	})
 	public followeeSharedInbox: string | null;
+	//#endregion
+
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public followee: Relation<User>;
+
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public follower: Relation<User>;
 	//#endregion
 }

@@ -1,6 +1,5 @@
 import Channel from "../channel.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import { getWordHardMute } from "@/misc/check-word-mute.js";
+import { checkWordMute, fetchMeta } from "backend-rs";
 import { isInstanceMuted } from "@/misc/is-instance-muted.js";
 import { isUserRelated } from "@/misc/is-user-related.js";
 import type { Packed } from "@/misc/schema.js";
@@ -17,7 +16,7 @@ export default class extends Channel {
 	}
 
 	public async init(params: any) {
-		const meta = await fetchMeta();
+		const meta = await fetchMeta(true);
 		if (meta.disableGlobalTimeline) {
 			if (this.user == null || !(this.user.isAdmin || this.user.isModerator))
 				return;
@@ -72,7 +71,7 @@ export default class extends Channel {
 		if (
 			this.userProfile &&
 			this.user?.id !== note.userId &&
-			(await getWordHardMute(
+			(await checkWordMute(
 				note,
 				this.userProfile.mutedWords,
 				this.userProfile.mutedPatterns,

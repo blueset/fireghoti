@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class ChannelNoteIdDescIndex1597893996136 implements MigrationInterface {
 	async up(queryRunner: QueryRunner): Promise<void> {

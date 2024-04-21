@@ -3,12 +3,7 @@
 		<template #header
 			><MkPageHeader :actions="headerActions" :tabs="headerTabs"
 		/></template>
-		<div
-			ref="rootEl"
-			v-hotkey.global="keymap"
-			v-size="{ min: [800] }"
-			class="tqmomfks"
-		>
+		<MkSpacer v-hotkey.global="keymap" :content-max="800">
 			<div class="tl _block">
 				<XTimeline
 					ref="tlEl"
@@ -19,12 +14,14 @@
 					:sound="true"
 				/>
 			</div>
-		</div>
+		</MkSpacer>
 	</MkStickyContainer>
 </template>
 
 <script lang="ts" setup>
 import { computed, ref, watch } from "vue";
+// TODO: disable this rule properly
+// biome-ignore lint/style/useImportType: used in <template>
 import XTimeline from "@/components/MkTimeline.vue";
 import * as os from "@/os";
 import { useRouter } from "@/router";
@@ -39,7 +36,6 @@ const props = defineProps<{
 }>();
 
 const antenna = ref(null);
-const rootEl = ref<HTMLElement>();
 const tlEl = ref<InstanceType<typeof XTimeline>>();
 const keymap = computed(() => ({
 	t: focus,
@@ -102,17 +98,8 @@ definePageMetadata(
 </script>
 
 <style lang="scss" scoped>
-.tqmomfks {
-	padding: var(--margin);
-
-	> .tl {
-		background: none;
-		border-radius: var(--radius);
-	}
-
-	&.min-width_800px {
-		max-width: 800px;
-		margin: 0 auto;
-	}
+.tl {
+	background: none;
+	border-radius: var(--radius);
 }
 </style>

@@ -5,8 +5,8 @@
 import * as fs from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname } from "node:path";
-import * as yaml from "js-yaml";
-import type { Source, Mixin } from "./types.js";
+import type { Mixin } from "./types.js";
+import { readServerConfig } from "backend-rs";
 
 const _filename = fileURLToPath(import.meta.url);
 const _dirname = dirname(_filename);
@@ -32,7 +32,7 @@ export default function load() {
 			"utf-8",
 		),
 	);
-	const config = yaml.load(fs.readFileSync(path, "utf-8")) as Source;
+	const config = readServerConfig();
 
 	const mixin = {} as Mixin;
 
@@ -55,6 +55,7 @@ export default function load() {
 	mixin.userAgent = `Firefish/${meta.version} (${config.url})`;
 	mixin.clientEntry = clientManifest["src/init.ts"];
 
+	if (config.proxyRemoteFiles == null) config.proxyRemoteFiles = true;
 	if (!config.redis.prefix) config.redis.prefix = mixin.hostname;
 	if (config.cacheServer && !config.cacheServer.prefix)
 		config.cacheServer.prefix = mixin.hostname;

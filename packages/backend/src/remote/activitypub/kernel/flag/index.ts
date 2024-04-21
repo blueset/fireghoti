@@ -4,7 +4,7 @@ import type { IFlag } from "../../type.js";
 import { getApIds } from "../../type.js";
 import { AbuseUserReports, Users } from "@/models/index.js";
 import { In } from "typeorm";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 
 export default async (
 	actor: CacheableRemoteUser,

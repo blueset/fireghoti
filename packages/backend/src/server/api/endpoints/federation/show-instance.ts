@@ -1,6 +1,6 @@
 import define from "@/server/api/define.js";
 import { Instances } from "@/models/index.js";
-import { toPuny } from "@/misc/convert-host.js";
+import { toPuny } from "backend-rs";
 
 export const meta = {
 	tags: ["federation"],

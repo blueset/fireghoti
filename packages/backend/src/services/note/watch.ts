@@ -1,7 +1,7 @@
 import type { User } from "@/models/entities/user.js";
 import type { Note } from "@/models/entities/note.js";
 import { NoteWatchings } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import type { NoteWatching } from "@/models/entities/note-watching.js";
 
 export default async (me: User["id"], note: Note) => {

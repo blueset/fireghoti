@@ -47,8 +47,8 @@ export class Parser extends EventEmitter {
 				if (root.length !== 2) continue;
 
 				// remove event and data markers
-				const event: string = root[0].substr(7);
-				const data: string = root[1].substr(6);
+				const event: string = root[0].substring(7);
+				const data: string = root[1].substring(6);
 
 				let jsonObj = {};
 				try {

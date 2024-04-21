@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { UserGroup } from "./user-group.js";
@@ -16,7 +17,7 @@ export class UserGroupInvitation {
 	@PrimaryColumn(id())
 	public id: string;
 
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the UserGroupInvitation.",
 	})
 	public createdAt: Date;
@@ -28,12 +29,6 @@ export class UserGroupInvitation {
 	})
 	public userId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
-
 	@Index()
 	@Column({
 		...id(),
@@ -41,9 +36,17 @@ export class UserGroupInvitation {
 	})
 	public userGroupId: UserGroup["id"];
 
-	@ManyToOne((type) => UserGroup, {
+	//#region Relation
+	@ManyToOne(() => User, {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	public userGroup: UserGroup | null;
+	public user: Relation<User>;
+
+	@ManyToOne(() => UserGroup, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public userGroup: Relation<UserGroup>;
+	//#endregion
 }

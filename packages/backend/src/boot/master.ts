@@ -10,7 +10,7 @@ import semver from "semver";
 import Logger from "@/services/logger.js";
 import loadConfig from "@/config/load.js";
 import type { Config } from "@/config/types.js";
-import { envOption } from "@/env.js";
+import { envOption } from "@/config/index.js";
 import { showMachineInfo } from "@/misc/show-machine-info.js";
 import { db, initDb } from "@/db/postgre.js";
 import { inspect } from "node:util";
@@ -28,58 +28,56 @@ const bootLogger = logger.createSubLogger("boot", "magenta", false);
 const themeColor = chalk.hex("#31748f");
 
 function greet() {
-	if (!envOption.quiet) {
-		//#region Firefish logo
-		console.log(
-			themeColor(
-				"██████╗ ██╗██████╗ ███████╗███████╗██╗███████╗██╗  ██╗    ○     ▄    ▄    ",
-			),
-		);
-		console.log(
-			themeColor(
-				"██╔════╝██║██╔══██╗██╔════╝██╔════╝██║██╔════╝██║  ██║      ⚬   █▄▄  █▄▄ ",
-			),
-		);
-		console.log(
-			themeColor(
-				"█████╗  ██║██████╔╝█████╗  █████╗  ██║███████╗███████║      ▄▄▄▄▄▄   ▄    ",
-			),
-		);
-		console.log(
-			themeColor(
-				"██╔══╝  ██║██╔══██╗██╔══╝  ██╔══╝  ██║╚════██║██╔══██║     █      █  █▄▄  ",
-			),
-		);
-		console.log(
-			themeColor(
-				"██║     ██║██║  ██║███████╗██║     ██║███████║██║  ██║     █ ● ●  █       ",
-			),
-		);
-		console.log(
-			themeColor(
-				"╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═╝     ▀▄▄▄▄▄▄▀       ",
-			),
-		);
-		//#endregion
+	//#region Firefish logo
+	console.log(
+		themeColor(
+			"██████╗ ██╗██████╗ ███████╗███████╗██╗███████╗██╗  ██╗    ○     ▄    ▄    ",
+		),
+	);
+	console.log(
+		themeColor(
+			"██╔════╝██║██╔══██╗██╔════╝██╔════╝██║██╔════╝██║  ██║      ⚬   █▄▄  █▄▄ ",
+		),
+	);
+	console.log(
+		themeColor(
+			"█████╗  ██║██████╔╝█████╗  █████╗  ██║███████╗███████║      ▄▄▄▄▄▄   ▄    ",
+		),
+	);
+	console.log(
+		themeColor(
+			"██╔══╝  ██║██╔══██╗██╔══╝  ██╔══╝  ██║╚════██║██╔══██║     █      █  █▄▄  ",
+		),
+	);
+	console.log(
+		themeColor(
+			"██║     ██║██║  ██║███████╗██║     ██║███████║██║  ██║     █ ● ●  █       ",
+		),
+	);
+	console.log(
+		themeColor(
+			"╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═╝     ▀▄▄▄▄▄▄▀       ",
+		),
+	);
+	//#endregion
 
-		console.log(
-			" Firefish is an open-source decentralized microblogging platform.",
-		);
-		console.log(
-			chalk.rgb(
-				255,
-				136,
-				0,
-			)(
-				" If you like Firefish, please consider contributing to the repo. https://firefish.dev/firefish/firefish",
-			),
-		);
+	console.log(
+		" Firefish is an open-source decentralized microblogging platform.",
+	);
+	console.log(
+		chalk.rgb(
+			255,
+			136,
+			0,
+		)(
+			" If you like Firefish, please consider contributing to the repo. https://firefish.dev/firefish/firefish",
+		),
+	);
 
-		console.log("");
-		console.log(
-			chalkTemplate`--- ${os.hostname()} {gray (PID: ${process.pid.toString()})} ---`,
-		);
-	}
+	console.log("");
+	console.log(
+		chalkTemplate`--- ${os.hostname()} {gray (PID: ${process.pid.toString()})} ---`,
+	);
 
 	bootLogger.info("Welcome to Firefish!");
 	bootLogger.info(`Firefish v${meta.version}`, null, true);

@@ -2,9 +2,9 @@ import * as mfm from "mfm-js";
 import sanitizeHtml from "sanitize-html";
 import { publishAdminStream } from "@/services/stream.js";
 import { AbuseUserReports, UserProfiles, Users } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { sendEmail } from "@/services/send-email.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { getUser } from "@/server/api/common/getters.js";
 import { ApiError } from "@/server/api/error.js";
 import define from "@/server/api/define.js";
@@ -86,7 +86,7 @@ export default define(meta, paramDef, async (ps, me) => {
 			],
 		});
 
-		const meta = await fetchMeta();
+		const meta = await fetchMeta(true);
 		for (const moderator of moderators) {
 			publishAdminStream(moderator.id, "newAbuseUserReport", {
 				id: report.id,

@@ -240,6 +240,7 @@ import * as ep___notes_conversation from "./endpoints/notes/conversation.js";
 import * as ep___notes_create from "./endpoints/notes/create.js";
 import * as ep___notes_delete from "./endpoints/notes/delete.js";
 import * as ep___notes_edit from "./endpoints/notes/edit.js";
+import * as ep___notes_history from "./endpoints/notes/history.js";
 import * as ep___notes_favorites_create from "./endpoints/notes/favorites/create.js";
 import * as ep___notes_favorites_delete from "./endpoints/notes/favorites/delete.js";
 import * as ep___notes_featured from "./endpoints/notes/featured.js";
@@ -285,7 +286,6 @@ import * as ep___pinnedUsers from "./endpoints/pinned-users.js";
 import * as ep___customMotd from "./endpoints/custom-motd.js";
 import * as ep___customSplashIcons from "./endpoints/custom-splash-icons.js";
 import * as ep___latestVersion from "./endpoints/latest-version.js";
-import * as ep___patrons from "./endpoints/patrons.js";
 import * as ep___release from "./endpoints/release.js";
 import * as ep___promo_read from "./endpoints/promo/read.js";
 import * as ep___requestResetPassword from "./endpoints/request-reset-password.js";
@@ -583,6 +583,7 @@ const eps = [
 	["notes/create", ep___notes_create],
 	["notes/delete", ep___notes_delete],
 	["notes/edit", ep___notes_edit],
+	["notes/history", ep___notes_history],
 	["notes/favorites/create", ep___notes_favorites_create],
 	["notes/favorites/delete", ep___notes_favorites_delete],
 	["notes/featured", ep___notes_featured],
@@ -634,7 +635,6 @@ const eps = [
 	["custom-motd", ep___customMotd],
 	["custom-splash-icons", ep___customSplashIcons],
 	["latest-version", ep___latestVersion],
-	["patrons", ep___patrons],
 	["release", ep___release],
 	["promo/read", ep___promo_read],
 	["request-reset-password", ep___requestResetPassword],

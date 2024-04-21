@@ -22,7 +22,7 @@
 		}
 	},
 	"devDependencies": {
-		"@napi-rs/cli": "2.18.0",
+		"@napi-rs/cli": "2.18.1",
 		"ava": "6.1.2"
 	},
 	"ava": {
@@ -33,14 +33,12 @@
 	},
 	"scripts": {
 		"artifacts": "napi artifacts",
-		"build": "napi build --features napi --platform --release ./built/",
-		"build:debug": "napi build --features napi --platform ./built/",
+		"build": "napi build --features napi --no-const-enum --platform --release ./built/",
+		"build:debug": "napi build --features napi --no-const-enum --platform ./built/",
 		"prepublishOnly": "napi prepublish -t npm",
 		"test": "pnpm run cargo:test && pnpm run build:debug && ava",
 		"universal": "napi universal",
 		"version": "napi version",
-		"format": "cargo fmt --all --",
-		"lint": "cargo clippy --fix --allow-dirty --allow-staged && cargo fmt --all --",
 		"cargo:test": "pnpm run cargo:unit && pnpm run cargo:integration",
 		"cargo:unit": "cargo test unit_test && cargo test -F napi unit_test",
 		"cargo:integration": "cargo test int_test"

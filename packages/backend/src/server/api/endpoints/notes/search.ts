@@ -1,11 +1,11 @@
 import { Notes } from "@/models/index.js";
-import { Note } from "@/models/entities/note.js";
+import type { Note } from "@/models/entities/note.js";
 import define from "@/server/api/define.js";
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
 import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
 import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
-import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
+import { sqlLikeEscape } from "backend-rs";
 import type { SelectQueryBuilder } from "typeorm";
 
 export const meta = {

@@ -12,7 +12,7 @@ import { getUser } from "@/server/api/common/getters.js";
 import { Followings, Users } from "@/models/index.js";
 import config from "@/config/index.js";
 import { publishMainStream } from "@/services/stream.js";
-import { parse } from "@/misc/acct.js";
+import { stringToAcct } from "backend-rs";
 import { inspect } from "node:util";
 
 export const meta = {
@@ -90,7 +90,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	if (!ps.moveToAccount) throw new ApiError(meta.errors.noSuchMoveTarget);
 	if (user.movedToUri) throw new ApiError(meta.errors.alreadyMoved);
 
-	const { username, host } = parse(ps.moveToAccount);
+	const { username, host } = stringToAcct(ps.moveToAccount);
 	if (!host) throw new ApiError(meta.errors.notRemote);
 
 	const moveTo: User = await resolveUser(username, host).catch((e) => {

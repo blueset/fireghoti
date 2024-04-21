@@ -31,72 +31,76 @@
 	</section>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
+import { ref, watch } from "vue";
 import { getUniqueId } from "@/os";
 import { defaultStore } from "@/store";
 // import icon from "@/scripts/icon";
 
 const localStoragePrefix = "ui:folder:";
 
-export default defineComponent({
-	props: {
-		expanded: {
-			type: Boolean,
-			required: false,
-			default: true,
-		},
-		persistKey: {
-			type: String,
-			required: false,
-			default: null,
-		},
+const props = withDefaults(
+	defineProps<{
+		expanded?: boolean;
+		persistKey?: string | null;
+	}>(),
+	{
+		expanded: true,
+		persistKey: null,
 	},
-	data() {
-		return {
-			bodyId: getUniqueId(),
-			showBody:
-				this.persistKey &&
-				localStorage.getItem(localStoragePrefix + this.persistKey)
-					? localStorage.getItem(localStoragePrefix + this.persistKey) === "t"
-					: this.expanded,
-			animation: defaultStore.state.animation,
-		};
-	},
-	watch: {
-		showBody() {
-			if (this.persistKey) {
-				localStorage.setItem(
-					localStoragePrefix + this.persistKey,
-					this.showBody ? "t" : "f",
-				);
-			}
-		},
-	},
-	methods: {
-		toggleContent(show: boolean) {
-			this.showBody = show;
-		},
+);
 
-		enter(el) {
-			const elementHeight = el.getBoundingClientRect().height;
-			el.style.height = 0;
-			el.offsetHeight; // reflow
-			el.style.height = elementHeight + "px";
-		},
-		afterEnter(el) {
-			el.style.height = null;
-		},
-		leave(el) {
-			const elementHeight = el.getBoundingClientRect().height;
-			el.style.height = elementHeight + "px";
-			el.offsetHeight; // reflow
-			el.style.height = 0;
-		},
-		afterLeave(el) {
-			el.style.height = null;
-		},
-	},
+const bodyId = ref(getUniqueId());
+
+const showBody = ref(
+	props.persistKey &&
+		localStorage.getItem(localStoragePrefix + props.persistKey)
+		? localStorage.getItem(localStoragePrefix + props.persistKey) === "t"
+		: props.expanded,
+);
+
+const animation = defaultStore.state.animation;
+
+watch(showBody, () => {
+	if (props.persistKey) {
+		localStorage.setItem(
+			localStoragePrefix + props.persistKey,
+			showBody.value ? "t" : "f",
+		);
+	}
+});
+
+function toggleContent(show: boolean) {
+	showBody.value = show;
+}
+
+function enter(el) {
+	const elementHeight = el.getBoundingClientRect().height;
+	el.style.height = 0;
+	el.offsetHeight; // reflow
+	// biome-ignore lint/style/useTemplate: <explanation>
+	el.style.height = elementHeight + "px";
+}
+function afterEnter(el) {
+	el.style.height = null;
+}
+function leave(el) {
+	const elementHeight = el.getBoundingClientRect().height;
+	// biome-ignore lint/style/useTemplate: <explanation>
+	el.style.height = elementHeight + "px";
+	el.offsetHeight; // reflow
+	el.style.height = 0;
+}
+function afterLeave(el) {
+	el.style.height = null;
+}
+
+defineExpose({
+	toggleContent,
+	enter,
+	afterEnter,
+	leave,
+	afterLeave,
 });
 </script>
 

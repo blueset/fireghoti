@@ -1,5 +1,5 @@
 import define from "@/server/api/define.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { Clips } from "@/models/index.js";
 
 export const meta = {

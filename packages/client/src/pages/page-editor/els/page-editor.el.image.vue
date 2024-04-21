@@ -44,9 +44,9 @@ const props = withDefaults(
 const file = ref<any>(null);
 
 async function choose() {
-	os.selectDriveFile(false).then((fileResponse: any) => {
+	os.selectDriveFile(false).then((fileResponse) => {
 		file.value = fileResponse;
-		props.value.fileId = fileResponse.id;
+		props.value.fileId = fileResponse?.id;
 	});
 }
 

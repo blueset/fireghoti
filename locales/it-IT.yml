@@ -859,7 +859,6 @@ useDrawerReactionPickerForMobile: "Mostra sul drawer da dispositivo mobile"
 welcomeBackWithName: "Ciao {name}"
 clickToFinishEmailVerification: "Fai click su [{ok}] per completare la verifica dell'indirizzo
   email."
-searchByGoogle: "Cerca"
 indefinitely: "Senza scadenza"
 tenMinutes: "10 minuti"
 oneHour: "1 ora"
@@ -935,18 +934,12 @@ _aboutFirefish:
   source: "Codice sorgente"
   translation: "Traduzione di Firefish"
   donate: "Sostieni Firefish"
-  morePatrons: "Apprezziamo sinceramente l'aiuto di tante altre persone non elencate
-    qui. Grazie mille! 🥰"
-  patrons: "Sostenitori"
-  sponsors: Gli sponsor di Firefish
   misskeyContributors: Contributori di Misskey
   donateTitle: Ti piace Firefish?
   pleaseDonateToFirefish: Con una donazione puoi supportare lo sviluppo di Firefish.
   pleaseDonateToHost: Considera anche una donazione al server che ti ospita, {host},
     per contribuire ai costi che sostiene.
   donateHost: Dona a {host}
-  patronsList: Elencati in ordine cronologico, non per importo. Dona con il link sopra
-    per apparire in questa lista!
 _nsfw:
   respect: "Nascondi i media sensibli (NSFW)"
   ignore: "Mostra i media sensibili (NSFW)"

@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { Note } from "./note.js";
@@ -17,7 +18,7 @@ export class NoteWatching {
 	public id: string;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the NoteWatching.",
 	})
 	public createdAt: Date;
@@ -29,24 +30,12 @@ export class NoteWatching {
 	})
 	public userId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
-
 	@Index()
 	@Column({
 		...id(),
 		comment: "The target Note ID.",
 	})
 	public noteId: Note["id"];
-
-	@ManyToOne((type) => Note, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public note: Note | null;
 
 	//#region Denormalized fields
 	@Index()
@@ -55,5 +44,19 @@ export class NoteWatching {
 		comment: "[Denormalized]",
 	})
 	public noteUserId: Note["userId"];
+	//#endregion
+
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public user: Relation<User>;
+
+	@ManyToOne(() => Note, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public note: Relation<Note>;
 	//#endregion
 }

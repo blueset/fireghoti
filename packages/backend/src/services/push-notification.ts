@@ -1,9 +1,8 @@
 import push from "web-push";
 import config from "@/config/index.js";
 import { SwSubscriptions } from "@/models/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta, getNoteSummary } from "backend-rs";
 import type { Packed } from "@/misc/schema.js";
-import { getNoteSummary } from "@/misc/get-note-summary.js";
 
 // Defined also packages/sw/types.ts#L14-L21
 type pushNotificationsTypes = {
@@ -17,15 +16,15 @@ type pushNotificationsTypes = {
 
 // プッシュメッセージサーバーには文字数制限があるため、内容を削減します
 function truncateNotification(notification: Packed<"Notification">): any {
-	if (notification.note) {
+	if (notification.note != null) {
 		return {
 			...notification,
 			note: {
 				...notification.note,
-				// textをgetNoteSummaryしたものに置き換える
+				// replace the text with summary
 				text: getNoteSummary(
-					notification.type === "renote"
-						? (notification.note.renote as Packed<"Note">)
+					notification.type === "renote" && notification.note.renote != null
+						? notification.note.renote
 						: notification.note,
 				),
 
@@ -45,7 +44,7 @@ export async function pushNotification<T extends keyof pushNotificationsTypes>(
 	type: T,
 	body: pushNotificationsTypes[T],
 ) {
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 
 	if (
 		!meta.enableServiceWorker ||
@@ -92,7 +91,7 @@ export async function pushNotification<T extends keyof pushNotificationsTypes>(
 							? truncateNotification(body as Packed<"Notification">)
 							: body,
 					userId,
-					dateTime: new Date().getTime(),
+					dateTime: Date.now(),
 				}),
 				{
 					proxy: config.proxy,

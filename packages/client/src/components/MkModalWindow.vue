@@ -15,7 +15,7 @@
 					height: scroll
 						? height
 							? `${props.height}px`
-							: null
+							: undefined
 						: height
 							? `min(${props.height}px, 100%)`
 							: '100%',
@@ -26,7 +26,7 @@
 					<button
 						v-if="props.withOkButton"
 						v-tooltip="i18n.ts.close"
-						:aria-label="i18n.t('close')"
+						:aria-label="i18n.ts.close"
 						class="_button"
 						@click="$emit('close')"
 					>
@@ -37,7 +37,7 @@
 					</span>
 					<button
 						v-if="!props.withOkButton"
-						:aria-label="i18n.t('close')"
+						:aria-label="i18n.ts.close"
 						class="_button"
 						@click="$emit('close')"
 					>
@@ -45,7 +45,7 @@
 					</button>
 					<button
 						v-if="props.withOkButton"
-						:aria-label="i18n.t('ok')"
+						:aria-label="i18n.ts.ok"
 						class="_button"
 						:disabled="props.okButtonDisabled"
 						@click="$emit('ok')"
@@ -54,7 +54,10 @@
 					</button>
 				</div>
 				<div class="body">
-					<slot></slot>
+					<slot
+						:width="width"
+						:height="height"
+					></slot>
 				</div>
 			</div>
 		</FocusTrap>
@@ -62,7 +65,7 @@
 </template>
 
 <script lang="ts" setup>
-import { shallowRef } from "vue";
+import { ref, shallowRef } from "vue";
 
 import { FocusTrap } from "focus-trap-vue";
 import MkModal from "./MkModal.vue";
@@ -93,11 +96,14 @@ const emit = defineEmits<{
 	(event: "ok"): void;
 }>();
 
+// FIXME: seems that this is not used
+const isActive = ref();
+
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 const rootEl = shallowRef<HTMLElement>();
 const headerEl = shallowRef<HTMLElement>();
 
-const close = (ev) => {
+const close = (ev?) => {
 	modal.value?.close(ev);
 };
 

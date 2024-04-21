@@ -3,7 +3,7 @@
 		<template #header
 			><MkPageHeader :actions="headerActions" :tabs="headerTabs"
 		/></template>
-		<div ref="rootEl" v-size="{ min: [800] }" class="eqqrhokj">
+		<MkSpacer>
 			<div class="tl _block">
 				<XTimeline
 					ref="tlEl"
@@ -14,12 +14,15 @@
 					:sound="true"
 				/>
 			</div>
-		</div>
+		</MkSpacer>
 	</MkStickyContainer>
 </template>
 
 <script lang="ts" setup>
 import { computed, ref, watch } from "vue";
+import type { entities } from "firefish-js";
+// TODO: disable this rule properly
+// biome-ignore lint/style/useImportType: used in <template>
 import XTimeline from "@/components/MkTimeline.vue";
 import * as os from "@/os";
 import { useRouter } from "@/router";
@@ -33,9 +36,8 @@ const props = defineProps<{
 	listId: string;
 }>();
 
-const list = ref(null);
+const list = ref<entities.UserList>();
 const tlEl = ref<InstanceType<typeof XTimeline>>();
-const rootEl = ref<HTMLElement>();
 
 watch(
 	() => props.listId,
@@ -56,8 +58,8 @@ async function timetravel() {
 		title: i18n.ts.date,
 	});
 	if (canceled) return;
-
-	tlEl.value.timetravel(date);
+	// FIXME:
+	tlEl.value!.timetravel(date);
 }
 
 const headerActions = computed(() =>
@@ -92,16 +94,8 @@ definePageMetadata(
 </script>
 
 <style lang="scss" scoped>
-.eqqrhokj {
-	padding: var(--margin);
-	> .tl {
-		background: none;
-		border-radius: var(--radius);
-	}
-
-	&.min-width_800px {
-		max-width: 800px;
-		margin: 0 auto;
-	}
+.tl {
+	background: none;
+	border-radius: var(--radius);
 }
 </style>

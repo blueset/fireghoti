@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class AddMetaOptions1688280713783 implements MigrationInterface {
 	async up(queryRunner: QueryRunner): Promise<void> {

@@ -3,7 +3,7 @@
 		ref="modal"
 		:z-priority="'high'"
 		:src="src"
-		@click="modal.close()"
+		@click="modal!.close()"
 		@closed="emit('closed')"
 	>
 		<div class="_popup" :class="$style.root">
@@ -142,26 +142,26 @@
 
 <script lang="ts" setup>
 import { nextTick, ref, shallowRef, watch } from "vue";
-import type { noteVisibilities } from "firefish-js";
 import MkModal from "@/components/MkModal.vue";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
+import type { NoteVisibility } from "@/types/note";
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 
 const props = withDefaults(
 	defineProps<{
-		currentVisibility: (typeof noteVisibilities)[number];
+		currentVisibility: NoteVisibility;
 		currentLocalOnly: boolean;
-		src?: HTMLElement;
+		src?: HTMLElement | null;
 	}>(),
 	{},
 );
 
 const emit = defineEmits<{
-	(ev: "changeVisibility", v: (typeof noteVisibilities)[number]): void;
-	(ev: "changeLocalOnly", v: boolean): void;
-	(ev: "closed"): void;
+	changeVisibility: [v: NoteVisibility];
+	changeLocalOnly: [v: boolean];
+	closed: [];
 }>();
 
 const v = ref(props.currentVisibility);
@@ -171,13 +171,11 @@ watch(localOnly, () => {
 	emit("changeLocalOnly", localOnly.value);
 });
 
-function choose(
-	visibility: (typeof noteVisibilities)[number] | "private",
-): void {
+function choose(visibility: NoteVisibility): void {
 	v.value = visibility;
 	emit("changeVisibility", visibility);
 	nextTick(() => {
-		modal.value.close();
+		modal.value!.close();
 	});
 }
 </script>

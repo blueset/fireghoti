@@ -23,9 +23,7 @@ export interface WidgetComponentExpose {
 	configure: () => void;
 }
 
-export const useWidgetPropsManager = <
-	F extends Form & Record<string, { default: any }>,
->(
+export const useWidgetPropsManager = <F extends Form>(
 	name: string,
 	propsDef: F,
 	props: Readonly<WidgetComponentProps<GetFormResultType<F>>>,

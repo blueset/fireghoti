@@ -66,10 +66,10 @@
 	</transition>
 </template>
 
-<script lang="ts" setup>
-import type { ComputedRef } from "vue";
+<script lang="ts" setup generic="E extends PagingKey">
+import type { ComponentPublicInstance, ComputedRef } from "vue";
 import { computed, isRef, onActivated, onDeactivated, ref, watch } from "vue";
-import type { Endpoints } from "firefish-js";
+import type { Endpoints, TypeUtils } from "firefish-js";
 import * as os from "@/os";
 import {
 	getScrollContainer,
@@ -81,7 +81,32 @@ import MkButton from "@/components/MkButton.vue";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 
-export interface Paging<E extends keyof Endpoints = keyof Endpoints> {
+/**
+ * ref type of MkPagination<E>
+ * Due to Vue's incomplete type support for generic components,
+ * we have to manually maintain this type instead of
+ * using `InstanceType<typeof MkPagination>`
+ */
+export type MkPaginationType<
+	E extends PagingKey,
+	Item = Endpoints[E]["res"][number],
+> = ComponentPublicInstance & {
+	items: Item[];
+	queue: Item[];
+	backed: boolean;
+	reload: () => Promise<void>;
+	refresh: () => Promise<void>;
+	prepend: (item: Item) => Promise<void>;
+	append: (item: Item) => Promise<void>;
+	removeItem: (finder: (item: Item) => boolean) => boolean;
+	updateItem: (id: string, replacer: (old: Item) => Item) => boolean;
+};
+
+export type PagingKeyOf<T> = TypeUtils.EndpointsOf<T[]>;
+// biome-ignore lint/suspicious/noExplicitAny: Used Intentionally
+export type PagingKey = PagingKeyOf<any>;
+
+export interface Paging<E extends PagingKey = PagingKey> {
 	endpoint: E;
 	limit: number;
 	params?: Endpoints[E]["req"] | ComputedRef<Endpoints[E]["req"]>;
@@ -100,11 +125,13 @@ export interface Paging<E extends keyof Endpoints = keyof Endpoints> {
 	offsetMode?: boolean;
 }
 
+export type PagingOf<T> = Paging<TypeUtils.EndpointsOf<T[]>>;
+
 const SECOND_FETCH_LIMIT = 30;
 
 const props = withDefaults(
 	defineProps<{
-		pagination: Paging;
+		pagination: Paging<E>;
 		disableAutoLoad?: boolean;
 		displayLimit?: number;
 	}>(),
@@ -113,15 +140,18 @@ const props = withDefaults(
 	},
 );
 
-const emit = defineEmits<{
-	(ev: "queue", count: number): void;
-	(ev: "status", error: boolean): void;
+const slots = defineSlots<{
+	default(props: { items: Item[] }): unknown;
+	empty(props: Record<string, never>): never;
 }>();
 
-interface Item {
-	id: string;
-	[another: string]: unknown;
-}
+const emit = defineEmits<{
+	(ev: "queue", count: number): void;
+	(ev: "status", hasError: boolean): void;
+}>();
+
+type Param = Endpoints[E]["req"] | Record<string, never>;
+type Item = Endpoints[E]["res"][number];
 
 const rootEl = ref<HTMLElement>();
 const items = ref<Item[]>([]);
@@ -138,8 +168,9 @@ const error = ref(false);
 const init = async (): Promise<void> => {
 	queue.value = [];
 	fetching.value = true;
+
 	const params = props.pagination.params
-		? isRef(props.pagination.params)
+		? isRef<Param>(props.pagination.params)
 			? props.pagination.params.value
 			: props.pagination.params
 		: {};
@@ -151,7 +182,7 @@ const init = async (): Promise<void> => {
 				: (props.pagination.limit || 10) + 1,
 		})
 		.then(
-			(res) => {
+			(res: Item[]) => {
 				for (let i = 0; i < res.length; i++) {
 					const item = res[i];
 					if (props.pagination.reversed) {
@@ -175,7 +206,7 @@ const init = async (): Promise<void> => {
 				error.value = false;
 				fetching.value = false;
 			},
-			(err) => {
+			(_err) => {
 				error.value = true;
 				fetching.value = false;
 			},
@@ -189,7 +220,7 @@ const reload = (): Promise<void> => {
 
 const refresh = async (): Promise<void> => {
 	const params = props.pagination.params
-		? isRef(props.pagination.params)
+		? isRef<Param>(props.pagination.params)
 			? props.pagination.params.value
 			: props.pagination.params
 		: {};
@@ -200,7 +231,7 @@ const refresh = async (): Promise<void> => {
 			offset: 0,
 		})
 		.then(
-			(res) => {
+			(res: Item[]) => {
 				const ids = items.value.reduce(
 					(a, b) => {
 						a[b.id] = true;
@@ -211,7 +242,7 @@ const refresh = async (): Promise<void> => {
 
 				for (let i = 0; i < res.length; i++) {
 					const item = res[i];
-					if (!updateItem(item.id, (old) => item)) {
+					if (!updateItem(item.id, (_old) => item)) {
 						append(item);
 					}
 					delete ids[item.id];
@@ -221,7 +252,7 @@ const refresh = async (): Promise<void> => {
 					removeItem((i) => i.id === id);
 				}
 			},
-			(err) => {
+			(_err) => {
 				error.value = true;
 				fetching.value = false;
 			},
@@ -239,7 +270,7 @@ const fetchMore = async (): Promise<void> => {
 	moreFetching.value = true;
 	backed.value = true;
 	const params = props.pagination.params
-		? isRef(props.pagination.params)
+		? isRef<Param>(props.pagination.params)
 			? props.pagination.params.value
 			: props.pagination.params
 		: {};
@@ -260,7 +291,7 @@ const fetchMore = async (): Promise<void> => {
 						}),
 		})
 		.then(
-			(res) => {
+			(res: Item[]) => {
 				for (let i = 0; i < res.length; i++) {
 					const item = res[i];
 					if (props.pagination.reversed) {
@@ -284,7 +315,7 @@ const fetchMore = async (): Promise<void> => {
 				offset.value += res.length;
 				moreFetching.value = false;
 			},
-			(err) => {
+			(_err) => {
 				moreFetching.value = false;
 			},
 		);
@@ -300,7 +331,7 @@ const fetchMoreAhead = async (): Promise<void> => {
 		return;
 	moreFetching.value = true;
 	const params = props.pagination.params
-		? isRef(props.pagination.params)
+		? isRef<Param>(props.pagination.params)
 			? props.pagination.params.value
 			: props.pagination.params
 		: {};
@@ -321,7 +352,7 @@ const fetchMoreAhead = async (): Promise<void> => {
 						}),
 		})
 		.then(
-			(res) => {
+			(res: Item[]) => {
 				if (res.length > SECOND_FETCH_LIMIT) {
 					res.pop();
 					items.value = props.pagination.reversed
@@ -337,7 +368,7 @@ const fetchMoreAhead = async (): Promise<void> => {
 				offset.value += res.length;
 				moreFetching.value = false;
 			},
-			(err) => {
+			(_err) => {
 				moreFetching.value = false;
 			},
 		);
@@ -429,7 +460,7 @@ const updateItem = (id: Item["id"], replacer: (old: Item) => Item): boolean => {
 	return true;
 };
 
-if (props.pagination.params && isRef(props.pagination.params)) {
+if (props.pagination.params && isRef<Param>(props.pagination.params)) {
 	watch(props.pagination.params, init, { deep: true });
 }
 

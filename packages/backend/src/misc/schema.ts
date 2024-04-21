@@ -33,8 +33,10 @@ import { packedGalleryPostSchema } from "@/models/schema/gallery-post.js";
 import { packedEmojiSchema } from "@/models/schema/emoji.js";
 import { packedNoteEdit } from "@/models/schema/note-edit.js";
 import { packedNoteFileSchema } from "@/models/schema/note-file.js";
+import { packedAbuseUserReportSchema } from "@/models/schema/abuse-user-report.js";
 
 export const refs = {
+	AbuseUserReport: packedAbuseUserReportSchema,
 	UserLite: packedUserLiteSchema,
 	UserDetailedNotMeOnly: packedUserDetailedNotMeOnlySchema,
 	MeDetailedOnly: packedMeDetailedOnlySchema,

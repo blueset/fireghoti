@@ -11,14 +11,20 @@ import { noteActions } from "@/store";
 import { shareAvailable } from "@/scripts/share-available";
 import { getUserMenu } from "@/scripts/get-user-menu";
 import icon from "@/scripts/icon";
+import { useRouter } from "@/router";
+import { notePage } from "@/filters/note";
+import type { NoteTranslation } from "@/types/note";
+import type { MenuItem } from "@/types/menu";
+
+const router = useRouter();
 
 export function getNoteMenu(props: {
 	note: entities.Note;
 	menuButton: Ref<HTMLElement | undefined>;
-	translation: Ref<any>;
+	translation: Ref<NoteTranslation | null>;
 	translating: Ref<boolean>;
 	isDeleted: Ref<boolean>;
-	currentClipPage?: Ref<entities.Clip>;
+	currentClipPage?: Ref<entities.Clip> | null;
 }) {
 	const isRenote =
 		props.note.renote != null &&
@@ -71,6 +77,10 @@ export function getNoteMenu(props: {
 			channel: appearNote.channel,
 			editId: appearNote.id,
 		});
+	}
+
+	function showEditHistory(): void {
+		router.push(notePage(appearNote, { historyPage: true }));
 	}
 
 	function makePrivate(): void {
@@ -282,11 +292,13 @@ export function getNoteMenu(props: {
 		props.translating.value = false;
 	}
 
-	let menu;
+	let menu: MenuItem[];
 	if (isSignedIn) {
 		const statePromise = os.api("notes/state", {
 			noteId: appearNote.id,
 		});
+
+		const isEdited = !!appearNote.updatedAt;
 
 		const isAppearAuthor = appearNote.userId === me.id;
 
@@ -361,6 +373,13 @@ export function getNoteMenu(props: {
 							action: () => togglePin(true),
 						}
 				: undefined,
+			isEdited
+				? {
+						icon: `${icon("ph-clock-countdown")}`,
+						text: i18n.ts.noteEditHistory,
+						action: () => showEditHistory(),
+					}
+				: undefined,
 			instance.translatorAvailable
 				? {
 						icon: `${icon("ph-translate")}`,
@@ -378,7 +397,7 @@ export function getNoteMenu(props: {
 					}
 				: undefined,
 			{
-				type: "parent",
+				type: "parent" as const,
 				icon: `${icon("ph-share-network")}`,
 				text: i18n.ts.share,
 				children: [
@@ -481,7 +500,7 @@ export function getNoteMenu(props: {
 			!isAppearAuthor ? null : undefined,
 			!isAppearAuthor
 				? {
-						type: "parent",
+						type: "parent" as const,
 						icon: `${icon("ph-user")}`,
 						text: i18n.ts.user,
 						children: getUserMenu(appearNote.user),

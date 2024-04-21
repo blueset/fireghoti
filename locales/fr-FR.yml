@@ -910,7 +910,6 @@ auto: "Automatique"
 themeColor: "Couleur du bandeau d'information du serveur"
 size: "Taille"
 numberOfColumn: "Nombre de colonnes"
-searchByGoogle: "Google"
 instanceDefaultLightTheme: "Thème clair par défaut sur tout le serveur"
 instanceDefaultDarkTheme: "Thème sombre par défaut sur tout le serveur"
 instanceDefaultThemeDescription: "Saisissez le code du thème en format objet."
@@ -997,18 +996,12 @@ _aboutFirefish:
   source: "Code source"
   translation: "Traduire Firefish"
   donate: "Soutenir Firefish"
-  morePatrons: "Nous apprécions vraiment le soutien de nombreuses autres personnes
-    non mentionnées ici. Merci à toutes et à tous ! 🥰"
-  patrons: "Contributeurs"
   pleaseDonateToFirefish: Merci de considérer de faire un don pour soutenir le développement
     de Firefish.
-  sponsors: Sponsors Firefish
   donateTitle: Firefish vous plaît ?
   pleaseDonateToHost: Également, veuillez envisager de faire un don à votre serveur
     d'accueil, {host}, pour contribuer à couvrir ses frais de fonctionnement.
   donateHost: Faire un don à {host}
-  patronsList: Listé chronologiquement, pas par taille de donation. Faite un don avec
-    le lien ci-dessus pour avoir votre nom affiché ici !
   misskeyContributors: Contributeurs Misskey
 _nsfw:
   respect: "Cacher les médias marqués comme contenu sensible (NSFW)"
@@ -2324,3 +2317,5 @@ markLocalFilesNsfwByDefault: Marquer tous les nouveaux fichiers locaux comme sen
 markLocalFilesNsfwByDefaultDescription: Indépendamment de ce réglage, les utilisateurs
   peuvent supprimer le drapeau « sensible » (NSFW) eux-mêmes. Les fichiers existants
   ne sont pas affectés.
+noteEditHistory: Historique des publications
+media: Multimédia

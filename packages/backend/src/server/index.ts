@@ -13,15 +13,14 @@ import koaLogger from "koa-logger";
 import * as slow from "koa-slow";
 
 import { IsNull } from "typeorm";
-import config from "@/config/index.js";
+import config, { envOption } from "@/config/index.js";
 import Logger from "@/services/logger.js";
 import { Users } from "@/models/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { genIdenticon } from "@/misc/gen-identicon.js";
 import { createTemp } from "@/misc/create-temp.js";
-import * as Acct from "@/misc/acct.js";
-import { envOption } from "@/env.js";
-import megalodon, { MegalodonInterface } from "megalodon";
+import { stringToAcct } from "backend-rs";
+import megalodon, { type MegalodonInterface } from "megalodon";
 import activityPub from "./activitypub.js";
 import nodeinfo from "./nodeinfo.js";
 import wellKnown from "./well-known.js";
@@ -108,7 +107,7 @@ router.use(nodeinfo.routes());
 router.use(wellKnown.routes());
 
 router.get("/avatar/@:acct", async (ctx) => {
-	const { username, host } = Acct.parse(ctx.params.acct);
+	const { username, host } = stringToAcct(ctx.params.acct);
 	const user = await Users.findOne({
 		where: {
 			usernameLower: username.toLowerCase(),
@@ -126,7 +125,7 @@ router.get("/avatar/@:acct", async (ctx) => {
 });
 
 router.get("/identicon/:x", async (ctx) => {
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 	if (meta.enableIdenticonGeneration) {
 		const [temp, cleanup] = await createTemp();
 		await genIdenticon(ctx.params.x, fs.createWriteStream(temp));
@@ -158,7 +157,7 @@ mastoRouter.post("/oauth/token", async (ctx) => {
 			access_token: uuid(),
 			token_type: "Bearer",
 			scope: "read",
-			created_at: Math.floor(new Date().getTime() / 1000),
+			created_at: Math.floor(Date.now() / 1000),
 		};
 		ctx.body = ret;
 		return;
@@ -193,7 +192,7 @@ mastoRouter.post("/oauth/token", async (ctx) => {
 			access_token: atData.accessToken,
 			token_type: "Bearer",
 			scope: body.scope || "read write follow push",
-			created_at: Math.floor(new Date().getTime() / 1000),
+			created_at: Math.floor(Date.now() / 1000),
 		};
 		serverLogger.info("token-response", ret);
 		ctx.body = ret;

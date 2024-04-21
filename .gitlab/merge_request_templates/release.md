@@ -10,6 +10,7 @@ I have updated...
 - [ ] `docs/changelog.md`
 - [ ] `docs/notice-for-admins.md`
 - [ ] `docs/api-change.md`
+- [ ] `packages/backend-rs/index.js`
 - [ ] OCI container image
 
 <!-- TODO: Add automated tests (task runners are currently down) -->

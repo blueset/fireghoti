@@ -5,6 +5,8 @@ services:
     image: docker.io/redis:7-alpine
     ports:
       - "26379:6379"
+    volumes:
+      - "redis-data:/data"
   db:
     image: docker.io/groonga/pgroonga:3.1.8-alpine-12
     env_file:
@@ -13,3 +15,10 @@ services:
       - "25432:5432"
     volumes:
       - "./install.sql:/docker-entrypoint-initdb.d/install.sql:ro"
+      - "postgres-data:/var/lib/postgresql/data"
+
+volumes:
+  redis-data:
+    name: redis-data
+  postgres-data:
+    name: postgres-data

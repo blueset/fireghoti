@@ -5,6 +5,7 @@ import {
 	Column,
 	PrimaryColumn,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
@@ -16,13 +17,13 @@ export class GalleryPost {
 	public id: string;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the GalleryPost.",
 	})
 	public createdAt: Date;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The updated date of the GalleryPost.",
 	})
 	public updatedAt: Date;
@@ -44,12 +45,6 @@ export class GalleryPost {
 		comment: "The ID of author.",
 	})
 	public userId: User["id"];
-
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
 
 	@Index()
 	@Column({
@@ -79,6 +74,14 @@ export class GalleryPost {
 		default: "{}",
 	})
 	public tags: string[];
+
+	//#region Relations
+	@ManyToOne((type) => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public user: Relation<User>;
+	//#endregion
 
 	constructor(data: Partial<GalleryPost>) {
 		if (data == null) return;

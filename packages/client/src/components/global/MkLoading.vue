@@ -6,6 +6,7 @@
 				[$style.inline]: inline,
 				[$style.colored]: colored,
 				[$style.mini]: mini,
+				[$style.em]: em,
 			},
 		]"
 	>
@@ -30,18 +31,20 @@
 </template>
 
 <script lang="ts" setup>
-const props = withDefaults(
+withDefaults(
 	defineProps<{
 		inline?: boolean;
 		colored?: boolean;
 		mini?: boolean;
 		em?: boolean;
+		sizeEm?: number;
 	}>(),
 	{
 		inline: false,
 		colored: true,
 		mini: false,
 		em: false,
+		sizeEm: 1,
 	},
 );
 </script>
@@ -98,7 +101,7 @@ const props = withDefaults(
 		display: inline-block;
 		vertical-align: middle;
 		padding: 0;
-		--size: 1em;
+		--size: v-bind(`${sizeEm}em`);
 	}
 }
 

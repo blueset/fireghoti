@@ -505,7 +505,7 @@ export function initHpmlLib(
 		strReplace: (a: string, b: string, c: string) => a.split(b).join(c),
 		strReverse: (a: string) => a.split("").reverse().join(""),
 		join: (texts: string[], separator: string) => texts.join(separator || ""),
-		stringToNumber: (a: string) => parseInt(a),
+		stringToNumber: (a: string) => Number.parseInt(a),
 		numberToString: (a: number) => a.toString(),
 		splitStrByLine: (a: string) => a.split("\n"),
 		pick: (list: any[], i: number) => list[i - 1],
@@ -534,7 +534,7 @@ export function initHpmlLib(
 			let totalFactor = 0;
 			for (const x of list) {
 				const parts = x.split(" ");
-				const factor = parseInt(parts.pop()!, 10);
+				const factor = Number.parseInt(parts.pop()!, 10);
 				const text = parts.join(" ");
 				totalFactor += factor;
 				xs.push({ factor, text });

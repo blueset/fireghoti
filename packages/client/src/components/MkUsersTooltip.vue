@@ -3,6 +3,7 @@
 		ref="tooltip"
 		:target-element="targetElement"
 		:max-width="250"
+		:showing="showing"
 		@closed="emit('closed')"
 	>
 		<div class="beaffaef">
@@ -18,12 +19,14 @@
 </template>
 
 <script lang="ts" setup>
+import type { entities } from "firefish-js";
 import MkTooltip from "./MkTooltip.vue";
 
 defineProps<{
-	users: any[]; // TODO
+	showing: boolean;
+	users: entities.User[];
 	count: number;
-	targetElement: HTMLElement;
+	targetElement?: HTMLElement;
 }>();
 
 const emit = defineEmits<{

@@ -901,7 +901,6 @@ auto: "Otomatis"
 themeColor: "Warna Jam Server"
 size: "Ukuran"
 numberOfColumn: "Jumlah per kolom"
-searchByGoogle: "Penelusuran"
 instanceDefaultLightTheme: "Tema terang bawaan ranah server"
 instanceDefaultDarkTheme: "Tema gelap bawaan ranah server"
 instanceDefaultThemeDescription: "Masukkan kode tema di format obyek."
@@ -986,12 +985,6 @@ _aboutFirefish:
   source: "Sumber kode"
   translation: "Terjemahkan Firefish"
   donate: "Donasi ke Firefish"
-  morePatrons: "Kami sangat mengapresiasi dukungan dari banyak penolong lain yang
-    tidak tercantum disini. Terima kasih! 🥰"
-  patrons: "Pendukung"
-  patronsList: Diurutkan secara kronologis, bukan berdasarkan jumlah donasi. Berdonasilah
-    dengan tautan di atas supaya nama kamu ada di sini!
-  sponsors: Sponsor Firefish
   donateTitle: Suka Firefish?
   pleaseDonateToFirefish: Silakan pertimbangkan berdonasi ke Firefish untuk mendukung
     pengembangannya.
@@ -2272,3 +2265,5 @@ autocorrectNoteLanguage: Tampilkan peringatan jika bahasa kiriman tidak cocok de
 markLocalFilesNsfwByDefault: Tandai semua berkas lokal baru sensitif secara bawaan
 markLocalFilesNsfwByDefaultDescription: Terlepas dari pengaturan ini, pengguna dapat
   menghapus sendiri tanda NSFW. Berkas yang ada tidak berpengaruh.
+noteEditHistory: Riwayat penyuntingan kiriman
+media: Media

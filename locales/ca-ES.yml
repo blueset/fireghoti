@@ -135,7 +135,6 @@ userList: "Llistes"
 smtpUser: "Nom d'usuari"
 smtpPass: "Contrasenya"
 user: "Usuari"
-searchByGoogle: "Cerca"
 file: "Fitxer"
 _email:
   _follow:
@@ -856,7 +855,7 @@ more: Més!
 featured: Destacat
 usernameOrUserId: Nom o ID d'usuari
 noSuchUser: No s'ha trobat l'usuari
-lookup: Cerca
+lookup: Ves a
 attachFile: Afegeix fitxers
 currentPassword: Contrasenya actual
 newPassword: Nova contrasenya
@@ -877,7 +876,7 @@ fromDrive: Des del Disc
 uploadFromUrl: Puja des d'una adreça URL
 uploadFromUrlDescription: Adreça URL del fitxer que vols pujar
 uploadFromUrlRequested: Pujada demanada
-noMoreHistory: No hi ha res més a l'historial
+noMoreHistory: No hi ha més historial
 tos: Condicions d'ús
 start: Comença
 startMessaging: Comença una conversa
@@ -1577,7 +1576,7 @@ cannotUploadBecauseInappropriate: Aquest fitxer no s'ha pogut carregar perquè s
 cannotUploadBecauseNoFreeSpace: La pujada ha fallat a causa de la manca d'espai al
   Disc.
 enableAutoSensitive: Marcatge automàtic NSFW
-moveTo: Mou el compte actual al compte nou
+moveTo: Mou aquest compte a un compte nou
 customKaTeXMacro: Macros KaTeX personalitzats
 _aboutFirefish:
   contributors: Col·laboradors principals
@@ -1587,18 +1586,12 @@ _aboutFirefish:
   translation: Tradueix Firefish
   about: Firefish és una bifurcació de Misskey feta per ThatOneCalculator, que està
     en desenvolupament des del 2022.
-  morePatrons: També agraïm el suport de molts altres ajudants que no figuren aquí.
-    Gràcies! 🥰
-  patrons: Mecenes de Firefish
-  patronsList: Llistats cronològicament, no per la quantitat donada. Fes una donació
-    amb l'enllaç de dalt per veure el teu nom aquí!
   donateTitle: T'agrada Firefish?
   pleaseDonateToFirefish: Penseu en fer una donació a Firefish per donar suport al
     seu desenvolupament.
   pleaseDonateToHost: Penseu també en fer una donació a la vostre instància, {host},
     per ajudar-lo a suportar els costos de funcionament.
   donateHost: Fes una donació a {host}
-  sponsors: Patrocinadors de Calckey
   misskeyContributors: Col·laboradors de Misskey
 unknown: Desconegut
 pageLikesCount: Nombre de pàgines amb M'agrada
@@ -1724,7 +1717,7 @@ deleteConfirm: De veritat ho vols esborrar?
 receiveAnnouncementFromInstance: Rep notificacions d'aquest servidor
 emailNotification: Notificacions per correu electrònic
 publish: Publicar
-inChannelSearch: Buscar al canal
+inChannelSearch: Cerca al canal
 useReactionPickerForContextMenu: Obrir el selector de reaccions al fer click esquerra
 typingUsers: L'{users} està escrivint
 oneDay: Un dia
@@ -1762,7 +1755,7 @@ customSplashIconsDescription: Les URLS de les icones personalitzades a la pantal
   de benvinguda separades per salts de línia. Es mostraran aleatòriament cada vegada
   que un usuari carrega/recarrega la pàgina. Si us plau, assegureu-vos que les imatges
   estiguin en una URL estàtica, preferiblement amb imatges amb la de 192 x 192.
-moveFrom: Mou a aquest compte des d'un compte anterior
+moveFrom: Mou-te a aquest compte des d'un compte anterior
 moveFromLabel: 'Compte des del qual us moveu:'
 migrationConfirm: "Esteu absolutament segur que voleu migrar el vostre compte a {account}?
   Un cop ho feu, no podreu revertir-ho i no podreu tornar a utilitzar el vostre compte
@@ -2085,9 +2078,9 @@ _experiments:
   release: Publicà
   title: Experiments
   enablePostImports: Activar l'importació de publicacions
-  postImportsCaption: Permet els usuaris importar publicacions desde comptes a Firefish,
+  postImportsCaption: Permet als usuaris importar publicacions des de comptes de Firefish,
     Misskey, Mastodon, Akkoma i Pleroma. Pot fer que el servidor vagi més lent durant
-    la càrrega si tens un coll d'ampolla a la cua.
+    la importació si la teva cua de feina és saturada.
 noGraze: Si us plau, desactiva l'extensió del navegador "Graze for Mastodon", ja que
   interfereix amb Firefish.
 accessibility: Accessibilitat
@@ -2210,8 +2203,8 @@ squareCatAvatars: Mostrar avatars quadrats per a comptes de gats
 replaceChatButtonWithAccountButton: Canviar el botó de xats amb el botó de canvi de
   compte
 replaceWidgetsButtonWithReloadButton: Canviar el botó de ginys amb el botó de recarregar
-searchEngine: Motor de cerca fet servir anla barra MFM
-postSearch: Posar els resultats en aquest servidor
+searchEngine: Motor de cerca fet servir a la barra MFM
+postSearch: Publicar els resultats en aquest servidor
 showBigPostButton: Mostrar un botó gegant al formulari de publicació
 _emojiModPerm:
   unauthorized: Res
@@ -2238,7 +2231,7 @@ enableTimelineStreaming: Actualitza les línies de temps automàticament
 enablePullToRefresh: Activa "Baixa per actualitzar"
 pullDownToReload: Baixa per actualitzar
 pullToRefreshThreshold: Distancia de baixada per actualitzar
-searchWords: Paraules / ID o adreça a URL a buscar
+searchWords: Paraules / ID o adreça URL que vols cercar
 noSentFollowRequests: No tens cap sol·licitud de seguiment enviada
 sentFollowRequests: Enviar sol·licituds de seguiment
 replyMute: Silencia les respostes a les línies de temps
@@ -2251,12 +2244,12 @@ searchWordsDescription: "Per cercar publicacions, escriu el terme a buscar. Sepa
   Si vols cercar per una seqüencia de paraules (per exemple una frase) has d'escriure-les
   entre cometes dobles, per no fer una cerca amb condicionant AND: \"Avui he aprés\"\
   \n \nSi vols anar a una pàgina d'usuari o publicació en concret, escriu la adreça
-  URL o la ID en aquest camp i fes clic al botó 'Trobar'. Fent clic a 'Cercar' trobarà
+  URL o la ID en aquest camp i fes clic al botó 'Ves a'. Fent clic a 'Cerca' trobarà
   publicacions que, literalment , continguin la ID/adreça URL."
 searchPostsWithFiles: Només publicacions amb fitxers
 searchCwAndAlt: Inclou avisos de contingut i arxius amb descripcions
 searchUsers: Publicat per (opcional)
-searchRange: Publicat dintre de (opcional)
+searchRange: Publicat entre les dates (opcional)
 publishTimelines: Publica línies de temps per visitants
 toPost: Publicar
 publishTimelinesDescription: Si està activat, les línies de temps Global i Local es
@@ -2294,3 +2287,5 @@ markLocalFilesNsfwByDefaultDescription: Independentment d'aquest ajust, els usua
   afectats.
 autocorrectNoteLanguage: Mostra un avís si l'idioma de la publicació no coincideix
   amb el resultat de l'idioma detectat automàticament
+noteEditHistory: Historial d'edicions
+media: Multimèdia

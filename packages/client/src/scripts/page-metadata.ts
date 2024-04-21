@@ -9,9 +9,10 @@ export interface PageMetadata {
 	title: string;
 	subtitle?: string;
 	icon?: string | null;
-	avatar?: entities.User | null;
+	avatar?: entities.UserDetailed | null;
 	userName?: entities.User | null;
 	bg?: string;
+	hideHeader?: boolean;
 }
 
 export function definePageMetadata(

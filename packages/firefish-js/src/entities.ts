@@ -1,10 +1,12 @@
+import type * as consts from "./consts";
+
 export type ID = string;
 export type DateString = string;
 
 type TODO = Record<string, any>;
 
 // NOTE: 極力この型を使うのは避け、UserLite か UserDetailed か明示するように
-export type User = UserLite | UserDetailed;
+export type User = UserLite & Partial<UserDetailed>;
 
 export type UserLite = {
 	id: ID;
@@ -16,18 +18,18 @@ export type UserLite = {
 	avatarBlurhash: string;
 	alsoKnownAs: string[];
 	movedToUri: any;
-	emojis: {
-		name: string;
-		url: string;
-	}[];
-	instance?: {
-		name: Instance["name"];
-		softwareName: Instance["softwareName"];
-		softwareVersion: Instance["softwareVersion"];
-		iconUrl: Instance["iconUrl"];
-		faviconUrl: Instance["faviconUrl"];
-		themeColor: Instance["themeColor"];
-	};
+	emojis: EmojiLite[];
+	instance?: InstanceLite;
+	avatarColor: null;
+	emojiModPerm: "unauthorized" | "add" | "mod" | "full";
+	isAdmin?: boolean;
+	isModerator?: boolean;
+	isBot?: boolean;
+	isLocked: boolean;
+	isIndexable: boolean;
+	isCat?: boolean;
+	speakAsCat?: boolean;
+	driveCapacityOverrideMb: number | null;
 };
 
 export type UserDetailed = UserLite & {
@@ -54,7 +56,6 @@ export type UserDetailed = UserLite & {
 	isCat: boolean;
 	isFollowed: boolean;
 	isFollowing: boolean;
-	isLocked: boolean;
 	isModerator: boolean;
 	isMuted: boolean;
 	isRenoteMuted: boolean;
@@ -77,7 +78,9 @@ export type UserDetailed = UserLite & {
 	url: string | null;
 };
 
-export type UserGroup = TODO;
+export type UserGroup = {
+	id: ID;
+} & Record<string, TODO>;
 
 export type UserList = {
 	id: ID;
@@ -108,7 +111,7 @@ export type MeDetailed = UserDetailed & {
 	isExplorable: boolean;
 	mutedWords: string[][];
 	mutedPatterns: string[];
-	mutingNotificationTypes: string[];
+	mutingNotificationTypes: (typeof consts.notificationTypes)[number][];
 	noCrawle: boolean;
 	preventAiLearning: boolean;
 	receiveAnnouncementEmail: boolean;
@@ -129,11 +132,27 @@ export type DriveFile = {
 	blurhash: string;
 	comment: string | null;
 	properties: Record<string, any>;
+	userId?: User["id"];
+	user?: User;
 };
 
 export type DriveFolder = TODO;
 
-export type GalleryPost = TODO;
+export type GalleryPost = {
+	id: ID;
+	createdAt: DateString;
+	updatedAt: DateString;
+	title: string;
+	description: string | null;
+	userId: User["id"];
+	user: UserDetailed;
+	fileIds?: DriveFile["id"][];
+	files?: DriveFile[];
+	tags?: string[];
+	isSensitive: boolean;
+	isLiked?: boolean;
+	likedCount: number;
+};
 
 export type Note = {
 	id: ID;
@@ -143,16 +162,17 @@ export type Note = {
 	user: User;
 	userId: User["id"];
 	reply?: Note;
-	replyId: Note["id"];
+	replyId: Note["id"] | null;
 	renote?: Note;
-	renoteId: Note["id"];
+	renoteId: Note["id"] | null;
 	files: DriveFile[];
 	fileIds: DriveFile["id"][];
 	visibility: "public" | "home" | "followers" | "specified";
 	visibleUserIds?: User["id"][];
 	lang?: string;
 	localOnly?: boolean;
-	channel?: Channel["id"];
+	channelId?: Channel["id"];
+	channel?: Channel;
 	myReaction?: string;
 	reactions: Record<string, number>;
 	renoteCount: number;
@@ -166,14 +186,24 @@ export type Note = {
 			votes: number;
 		}[];
 	};
-	emojis: {
-		name: string;
-		url: string;
-	}[];
+	emojis: EmojiLite[];
 	uri?: string;
 	url?: string;
 	updatedAt?: DateString;
 	isHidden?: boolean;
+	/** if the note is a history */
+	historyId?: ID;
+};
+
+export type NoteEdit = {
+	id: string;
+	noteId: string;
+	text: string | null;
+	cw: string | null;
+	updatedAt: string;
+	fileIds: DriveFile["id"][];
+	files: DriveFile[];
+	emojis: EmojiLite[];
 };
 
 export type NoteReaction = {
@@ -183,82 +213,101 @@ export type NoteReaction = {
 	type: string;
 };
 
-export type Notification = {
+interface BaseNotification {
 	id: ID;
 	createdAt: DateString;
 	isRead: boolean;
-} & (
-	| {
-			type: "reaction";
-			reaction: string;
-			user: User;
-			userId: User["id"];
-			note: Note;
-	  }
-	| {
-			type: "reply";
-			user: User;
-			userId: User["id"];
-			note: Note;
-	  }
-	| {
-			type: "renote";
-			user: User;
-			userId: User["id"];
-			note: Note;
-	  }
-	| {
-			type: "quote";
-			user: User;
-			userId: User["id"];
-			note: Note;
-	  }
-	| {
-			type: "mention";
-			user: User;
-			userId: User["id"];
-			note: Note;
-	  }
-	| {
-			type: "pollVote";
-			user: User;
-			userId: User["id"];
-			note: Note;
-	  }
-	| {
-			type: "pollEnded";
-			user: User;
-			userId: User["id"];
-			note: Note;
-	  }
-	| {
-			type: "follow";
-			user: User;
-			userId: User["id"];
-	  }
-	| {
-			type: "followRequestAccepted";
-			user: User;
-			userId: User["id"];
-	  }
-	| {
-			type: "receiveFollowRequest";
-			user: User;
-			userId: User["id"];
-	  }
-	| {
-			type: "groupInvited";
-			invitation: UserGroup;
-			user: User;
-			userId: User["id"];
-	  }
-	| {
-			type: "app";
-			header?: string | null;
-			body: string;
-			icon?: string | null;
-	  }
-);
+	type: (typeof consts.notificationTypes)[number];
+}
+
+export interface ReactionNotification extends BaseNotification {
+	type: "reaction";
+	reaction: string;
+	user: User;
+	userId: User["id"];
+	note: Note;
+}
+export interface ReplyNotification extends BaseNotification {
+	type: "reply";
+	user: User;
+	userId: User["id"];
+	note: Note;
+}
+export interface RenoteNotification extends BaseNotification {
+	type: "renote";
+	user: User;
+	userId: User["id"];
+	note: Note & {
+		renote: Note;
+		renoteId: string;
+	};
+}
+export interface QuoteNotification extends BaseNotification {
+	type: "quote";
+	user: User;
+	userId: User["id"];
+	note: Note;
+}
+export interface MentionNotification extends BaseNotification {
+	type: "mention";
+	user: User;
+	userId: User["id"];
+	note: Note;
+}
+export interface PollVoteNotification extends BaseNotification {
+	type: "pollVote";
+	user: User;
+	userId: User["id"];
+	note: Note;
+}
+export interface PollEndedNotification extends BaseNotification {
+	type: "pollEnded";
+	user: User;
+	userId: User["id"];
+	note: Note;
+}
+export interface FollowNotification extends BaseNotification {
+	type: "follow";
+	user: User;
+	userId: User["id"];
+}
+
+export interface FollowRequestAcceptedNotification extends BaseNotification {
+	type: "followRequestAccepted";
+	user: User;
+	userId: User["id"];
+}
+export interface ReceiveFollowRequestNotification extends BaseNotification {
+	type: "receiveFollowRequest";
+	user: User;
+	userId: User["id"];
+}
+export interface GroupInvitedNotification extends BaseNotification {
+	type: "groupInvited";
+	invitation: UserGroup;
+	user: User;
+	userId: User["id"];
+}
+export interface AppNotification extends BaseNotification {
+	type: "app";
+	header?: string | null;
+	body: string;
+	icon?: string | null;
+}
+
+export type Notification =
+	| ReactionNotification
+	| ReplyNotification
+	| RenoteNotification
+	| QuoteNotification
+	| MentionNotification
+	| PollVoteNotification
+	| PollEndedNotification
+	| FollowNotification
+	| FollowRequestAcceptedNotification
+	| ReceiveFollowRequestNotification
+	| GroupInvitedNotification
+	| AppNotification;
 
 export type MessagingMessage = {
 	id: ID;
@@ -284,6 +333,14 @@ export type CustomEmoji = {
 	aliases: string[];
 };
 
+export type EmojiLite = {
+	id: string;
+	name: string;
+	url: string;
+	width: number | null;
+	height: number | null;
+};
+
 export type LiteInstanceMetadata = {
 	maintainerName: string | null;
 	maintainerEmail: string | null;
@@ -291,6 +348,7 @@ export type LiteInstanceMetadata = {
 	name: string | null;
 	uri: string;
 	description: string | null;
+	donationLink?: string;
 	tosUrl: string | null;
 	disableRegistration: boolean;
 	disableLocalTimeline: boolean;
@@ -298,6 +356,7 @@ export type LiteInstanceMetadata = {
 	disableGlobalTimeline: boolean;
 	driveCapacityPerLocalUserMb: number;
 	driveCapacityPerRemoteUserMb: number;
+	antennaLimit: number;
 	enableHcaptcha: boolean;
 	hcaptchaSiteKey: string | null;
 	enableRecaptcha: boolean;
@@ -305,10 +364,8 @@ export type LiteInstanceMetadata = {
 	swPublickey: string | null;
 	maxNoteTextLength: number;
 	enableEmail: boolean;
-	enableTwitterIntegration: boolean;
-	enableGithubIntegration: boolean;
-	enableDiscordIntegration: boolean;
 	enableServiceWorker: boolean;
+	markLocalFilesNsfwByDefault: boolean;
 	emojis: CustomEmoji[];
 	ads: {
 		id: ID;
@@ -320,7 +377,40 @@ export type LiteInstanceMetadata = {
 };
 
 export type DetailedInstanceMetadata = LiteInstanceMetadata & {
-	features: Record<string, any>;
+	features: {
+		registration: boolean;
+		localTimeLine: boolean;
+		recommendedTimeLine: boolean;
+		globalTimeLine: boolean;
+		searchFilters: boolean;
+		hcaptcha: boolean;
+		recaptcha: boolean;
+		objectStorage: boolean;
+		serviceWorker: boolean;
+		miauth?: boolean;
+	};
+	langs: string[];
+	moreUrls: object;
+	repositoryUrl: string;
+	feedbackUrl: string;
+	defaultDarkTheme: string | null;
+	defaultLightTheme: string | null;
+	enableGuestTimeline: boolean;
+	cacheRemoteFiles: boolean;
+	emailRequiredForSignup: boolean;
+	mascotImageUrl: string;
+	bannerUrl: string;
+	errorImageUrl: string;
+	iconUrl: string | null;
+	maxCaptionTextLength: number;
+	requireSetup: boolean;
+	translatorAvailable: boolean;
+	proxyAccountName: string | null;
+	secureMode?: boolean;
+	privateMode?: boolean;
+	defaultReaction: string;
+	donationLink?: string | null;
+	enableServerMachineStats?: boolean;
 };
 
 export type InstanceMetadata = LiteInstanceMetadata | DetailedInstanceMetadata;
@@ -388,6 +478,8 @@ export type Announcement = {
 	title: string;
 	imageUrl: string | null;
 	isRead?: boolean;
+	isGoodNews: boolean;
+	showPopUp: boolean;
 };
 
 export type Antenna = {
@@ -435,7 +527,17 @@ export type FollowRequest = {
 
 export type Channel = {
 	id: ID;
-	// TODO
+	createdAt: DateString;
+	lastNotedAt: DateString | null;
+	name: string;
+	description: string | null;
+	bannerId: DriveFile["id"];
+	bannerUrl: string | null;
+	notesCount: number;
+	usersCount: number;
+	isFollowing?: boolean;
+	userId: User["id"] | null;
+	hasUnreadNote?: boolean;
 };
 
 export type Following = {
@@ -460,6 +562,15 @@ export type Blocking = {
 	blockee: UserDetailed;
 };
 
+export type InstanceLite = {
+	name: Instance["name"];
+	softwareName: Instance["softwareName"];
+	softwareVersion: Instance["softwareVersion"];
+	iconUrl: Instance["iconUrl"];
+	faviconUrl: Instance["faviconUrl"];
+	themeColor: Instance["themeColor"];
+};
+
 export type Instance = {
 	id: ID;
 	caughtAt: DateString;
@@ -476,6 +587,8 @@ export type Instance = {
 	lastCommunicatedAt: DateString;
 	isNotResponding: boolean;
 	isSuspended: boolean;
+	isBlocked: boolean;
+	isSilenced: boolean;
 	softwareName: string | null;
 	softwareVersion: string | null;
 	openRegistrations: boolean | null;
@@ -505,3 +618,17 @@ export type UserSorting =
 	| "+updatedAt"
 	| "-updatedAt";
 export type OriginType = "combined" | "local" | "remote";
+
+export type AbuseUserReport = {
+	id: string;
+	createdAt: DateString;
+	comment: string;
+	resolved: boolean;
+	reporterId: User["id"];
+	targetUserId: User["id"];
+	assigneeId: User["id"] | null;
+	reporter: UserDetailed;
+	targetUser: UserDetailed;
+	assignee?: UserDetailed | null;
+	forwarded: boolean;
+};

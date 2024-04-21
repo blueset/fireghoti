@@ -20,7 +20,7 @@
 			:stroke="color"
 			stroke-width="2"
 		/>
-		<circle :cx="headX" :cy="headY" r="3" :fill="color" />
+		<circle :cx="headX ?? undefined" :cy="headY ?? undefined" r="3" :fill="color" />
 	</svg>
 </template>
 

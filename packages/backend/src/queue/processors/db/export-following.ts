@@ -4,7 +4,7 @@ import * as fs from "node:fs";
 import { queueLogger } from "../../logger.js";
 import { addFile } from "@/services/drive/add-file.js";
 import { format as dateFormat } from "date-fns";
-import { getFullApAccount } from "@/misc/convert-host.js";
+import { getFullApAccount } from "backend-rs";
 import { createTemp } from "@/misc/create-temp.js";
 import { Users, Followings, Mutings } from "@/models/index.js";
 import { In, MoreThan, Not } from "typeorm";

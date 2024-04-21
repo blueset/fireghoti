@@ -136,6 +136,7 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from "vue";
 import { toUnicode } from "punycode/";
+import type { entities } from "firefish-js";
 import MkButton from "@/components/MkButton.vue";
 import MkInput from "@/components/form/input.vue";
 import MkInfo from "@/components/MkInfo.vue";
@@ -147,7 +148,7 @@ import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
 const signing = ref(false);
-const user = ref(null);
+const user = ref<entities.UserDetailed | null>(null);
 const username = ref("");
 const password = ref("");
 const token = ref("");
@@ -249,7 +250,7 @@ function queryKey() {
 function onSubmit() {
 	signing.value = true;
 	console.log("submit");
-	if (window.PublicKeyCredential && user.value.securityKeys) {
+	if (window.PublicKeyCredential && user.value?.securityKeys) {
 		os.api("signin", {
 			username: username.value,
 			password: password.value,
@@ -263,7 +264,7 @@ function onSubmit() {
 				return queryKey();
 			})
 			.catch(loginFailed);
-	} else if (!totpLogin.value && user.value && user.value.twoFactorEnabled) {
+	} else if (!totpLogin.value && user.value?.twoFactorEnabled) {
 		totpLogin.value = true;
 		signing.value = false;
 	} else {
@@ -272,8 +273,7 @@ function onSubmit() {
 			password: password.value,
 			"hcaptcha-response": hCaptchaResponse.value,
 			"g-recaptcha-response": reCaptchaResponse.value,
-			token:
-				user.value && user.value.twoFactorEnabled ? token.value : undefined,
+			token: user.value?.twoFactorEnabled ? token.value : undefined,
 		})
 			.then((res) => {
 				emit("login", res);

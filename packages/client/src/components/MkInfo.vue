@@ -1,16 +1,16 @@
 <template>
 	<div v-if="visible" class="info" :class="{ warn, card }">
-		<i v-if="warn" :class="iconClass('ph-warning')"></i>
-		<i v-else :class="iconClass(icon ? `ph-${icon}` : 'ph-info')"></i>
+		<i v-if="warn" :class="iconify('ph-warning')"></i>
+		<i v-else :class="iconify(icon ? `ph-${icon}` : 'ph-info')"></i>
 		<slot></slot>
 		<button
 			v-if="closeable"
 			v-tooltip="i18n.ts.close"
 			class="_buttonIcon close"
-			:aria-label="i18n.t('close')"
+			:aria-label="i18n.ts.close"
 			@click.stop="close"
 		>
-			<i :class="iconClass('ph-x')"></i>
+			<i :class="iconify('ph-x')"></i>
 		</button>
 	</div>
 </template>
@@ -18,7 +18,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { i18n } from "@/i18n";
-import iconClass from "@/scripts/icon";
+import iconify from "@/scripts/icon";
 
 const visible = ref(true);
 

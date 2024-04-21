@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { DriveFile } from "./drive-file.js";
@@ -17,7 +18,7 @@ export class MessagingMessage {
 	public id: string;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the MessagingMessage.",
 	})
 	public createdAt: Date;
@@ -29,12 +30,6 @@ export class MessagingMessage {
 	})
 	public userId: User["id"];
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
-
 	@Index()
 	@Column({
 		...id(),
@@ -43,12 +38,6 @@ export class MessagingMessage {
 	})
 	public recipientId: User["id"] | null;
 
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public recipient: User | null;
-
 	@Index()
 	@Column({
 		...id(),
@@ -56,12 +45,6 @@ export class MessagingMessage {
 		comment: "The recipient group ID.",
 	})
 	public groupId: UserGroup["id"] | null;
-
-	@ManyToOne((type) => UserGroup, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public group: UserGroup | null;
 
 	@Column("varchar", {
 		length: 4096,
@@ -93,9 +76,31 @@ export class MessagingMessage {
 	})
 	public fileId: DriveFile["id"] | null;
 
-	@ManyToOne((type) => DriveFile, {
+	//#region Relations
+	@ManyToOne(() => User, {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	public file: DriveFile | null;
+	public user: Relation<User>;
+
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public recipient: Relation<User>;
+
+	@ManyToOne(() => UserGroup, {
+		onDelete: "CASCADE",
+		nullable: true,
+	})
+	@JoinColumn()
+	public group: Relation<UserGroup | null>;
+
+	@ManyToOne(() => DriveFile, {
+		onDelete: "SET NULL",
+		nullable: true,
+	})
+	@JoinColumn()
+	public file: Relation<DriveFile | null>;
+	//#endregion
 }

@@ -8,7 +8,7 @@
 		<i :class="icon('ph-dots-three-outline')"></i>
 	</button>
 	<button
-		v-if="!hideFollowButton && isSignedIn && me.id != user.id"
+		v-if="!hideFollowButton && isSignedIn && me!.id != user.id"
 		v-tooltip="full ? null : `${state} ${user.name || user.username}`"
 		class="kpoogebi _button follow-button"
 		:class="{
@@ -123,7 +123,7 @@ async function onClick() {
 		if (isBlocking.value) {
 			const { canceled } = await os.confirm({
 				type: "warning",
-				text: i18n.t("unblockConfirm"),
+				text: i18n.ts.unblockConfirm,
 			});
 			if (canceled) return;
 

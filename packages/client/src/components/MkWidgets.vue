@@ -39,7 +39,7 @@
 						</button>
 						<button
 							class="remove _button"
-							:aria-label="i18n.t('close')"
+							:aria-label="i18n.ts.close"
 							@click.prevent.stop="removeWidget(element)"
 						>
 							<i :class="icon('ph-x')"></i>
@@ -85,7 +85,7 @@ import icon from "@/scripts/icon";
 interface Widget {
 	name: string;
 	id: string;
-	data: Record<string, any>;
+	data: Record<string, unknown>;
 }
 
 const props = defineProps<{
@@ -137,12 +137,12 @@ function onContextmenu(widget: Widget, ev: MouseEvent) {
 			return isLink(el.parentElement);
 		}
 	};
-	if (isLink(ev.target)) return;
+	if (isLink(ev.target as HTMLElement)) return;
 	if (
 		["INPUT", "TEXTAREA", "IMG", "VIDEO", "CANVAS"].includes(
-			ev.target.tagName,
+			(ev.target as HTMLElement).tagName,
 		) ||
-		ev.target.attributes.contenteditable
+		(ev.target as HTMLElement).getAttribute("contentEditable")
 	)
 		return;
 	if (window.getSelection()?.toString() !== "") return;

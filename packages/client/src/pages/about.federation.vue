@@ -106,6 +106,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
+import type { instanceSortParam } from "firefish-js";
 import MkInput from "@/components/form/input.vue";
 import MkSelect from "@/components/form/select.vue";
 import MkPagination from "@/components/MkPagination.vue";
@@ -116,7 +117,7 @@ import icon from "@/scripts/icon";
 
 const host = ref("");
 const state = ref("federating");
-const sort = ref("+pubSub");
+const sort = ref<(typeof instanceSortParam)[number]>("+pubSub");
 const pagination = {
 	endpoint: "federation/instances" as const,
 	limit: 10,

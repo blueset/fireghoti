@@ -3,7 +3,7 @@ export
 
 
 .PHONY: pre-commit
-pre-commit: format entities update-index-js
+pre-commit: format entities napi-index
 
 .PHONY: format
 format:
@@ -14,9 +14,9 @@ entities:
 	pnpm run migrate
 	$(MAKE) -C ./packages/backend-rs regenerate-entities
 
-.PHONY: update-index-js
-update-index-js:
-	$(MAKE) -C ./packages/backend-rs index.js
+.PHONY: napi-index
+napi-index:
+	$(MAKE) -C ./packages/backend-rs update-index
 
 
 .PHONY: build
@@ -27,13 +27,13 @@ build:
 	pnpm run migrate
 
 
-.PHONY: db.init db.up db.down
-db.init:
-	$(MAKE) -C ./dev/db-container init
+.PHONY: db.up db.down db.init
 db.up:
 	$(MAKE) -C ./dev/db-container up
 db.down:
 	$(MAKE) -C ./dev/db-container down
+db.init:
+	$(MAKE) -C ./dev/db-container init
 
 .PHONY: psql redis-cli
 psql:

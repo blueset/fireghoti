@@ -178,18 +178,12 @@ logLevel: [
 # Media Proxy
 #mediaProxy: https://example.com/proxy
 
-# Proxy remote files (default: false)
+# Proxy remote files (default: true)
 #proxyRemoteFiles: true
 
 #allowedPrivateNetworks: [
 #  '127.0.0.1/32'
 #]
-
-# TWA
-#twa:
-#  nameSpace: android_app
-#  packageName: tld.domain.twa
-#  sha256CertFingerprints: ['AB:CD:EF']
 
 # Upload or download file size limits (bytes)
 #maxFileSize: 262144000

@@ -224,17 +224,32 @@ switch (platform) {
         }
         break
       case 'arm':
-        localFileExisted = existsSync(
-          join(__dirname, 'backend-rs.linux-arm-gnueabihf.node')
-        )
-        try {
-          if (localFileExisted) {
-            nativeBinding = require('./backend-rs.linux-arm-gnueabihf.node')
-          } else {
-            nativeBinding = require('backend-rs-linux-arm-gnueabihf')
+        if (isMusl()) {
+          localFileExisted = existsSync(
+            join(__dirname, 'backend-rs.linux-arm-musleabihf.node')
+          )
+          try {
+            if (localFileExisted) {
+              nativeBinding = require('./backend-rs.linux-arm-musleabihf.node')
+            } else {
+              nativeBinding = require('backend-rs-linux-arm-musleabihf')
+            }
+          } catch (e) {
+            loadError = e
           }
-        } catch (e) {
-          loadError = e
+        } else {
+          localFileExisted = existsSync(
+            join(__dirname, 'backend-rs.linux-arm-gnueabihf.node')
+          )
+          try {
+            if (localFileExisted) {
+              nativeBinding = require('./backend-rs.linux-arm-gnueabihf.node')
+            } else {
+              nativeBinding = require('backend-rs-linux-arm-gnueabihf')
+            }
+          } catch (e) {
+            loadError = e
+          }
         }
         break
       case 'riscv64':
@@ -295,11 +310,46 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { nativeRandomStr, IdConvertType, convertId, nativeGetTimestamp, nativeCreateId, nativeInitIdGenerator } = nativeBinding
+const { readEnvironmentConfig, readServerConfig, stringToAcct, acctToString, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getNoteSummary, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, AntennaSrcEnum, DriveFileUsageHintEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
 
-module.exports.nativeRandomStr = nativeRandomStr
-module.exports.IdConvertType = IdConvertType
-module.exports.convertId = convertId
-module.exports.nativeGetTimestamp = nativeGetTimestamp
-module.exports.nativeCreateId = nativeCreateId
-module.exports.nativeInitIdGenerator = nativeInitIdGenerator
+module.exports.readEnvironmentConfig = readEnvironmentConfig
+module.exports.readServerConfig = readServerConfig
+module.exports.stringToAcct = stringToAcct
+module.exports.acctToString = acctToString
+module.exports.checkWordMute = checkWordMute
+module.exports.getFullApAccount = getFullApAccount
+module.exports.isSelfHost = isSelfHost
+module.exports.isSameOrigin = isSameOrigin
+module.exports.extractHost = extractHost
+module.exports.toPuny = toPuny
+module.exports.isUnicodeEmoji = isUnicodeEmoji
+module.exports.sqlLikeEscape = sqlLikeEscape
+module.exports.safeForSql = safeForSql
+module.exports.formatMilliseconds = formatMilliseconds
+module.exports.getNoteSummary = getNoteSummary
+module.exports.toMastodonId = toMastodonId
+module.exports.fromMastodonId = fromMastodonId
+module.exports.fetchMeta = fetchMeta
+module.exports.metaToPugArgs = metaToPugArgs
+module.exports.nyaify = nyaify
+module.exports.hashPassword = hashPassword
+module.exports.verifyPassword = verifyPassword
+module.exports.isOldPasswordAlgorithm = isOldPasswordAlgorithm
+module.exports.decodeReaction = decodeReaction
+module.exports.countReactions = countReactions
+module.exports.toDbReaction = toDbReaction
+module.exports.AntennaSrcEnum = AntennaSrcEnum
+module.exports.DriveFileUsageHintEnum = DriveFileUsageHintEnum
+module.exports.MutedNoteReasonEnum = MutedNoteReasonEnum
+module.exports.NoteVisibilityEnum = NoteVisibilityEnum
+module.exports.NotificationTypeEnum = NotificationTypeEnum
+module.exports.PageVisibilityEnum = PageVisibilityEnum
+module.exports.PollNotevisibilityEnum = PollNotevisibilityEnum
+module.exports.RelayStatusEnum = RelayStatusEnum
+module.exports.UserEmojimodpermEnum = UserEmojimodpermEnum
+module.exports.UserProfileFfvisibilityEnum = UserProfileFfvisibilityEnum
+module.exports.UserProfileMutingnotificationtypesEnum = UserProfileMutingnotificationtypesEnum
+module.exports.initIdGenerator = initIdGenerator
+module.exports.getTimestamp = getTimestamp
+module.exports.genId = genId
+module.exports.secureRndstr = secureRndstr

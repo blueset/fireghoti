@@ -2,7 +2,6 @@ import { publishNoteStream } from "@/services/stream.js";
 import { renderLike } from "@/remote/activitypub/renderer/like.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import { toDbReaction, decodeReaction } from "@/misc/reaction-lib.js";
 import type { User, IRemoteUser } from "@/models/entities/user.js";
 import type { Note } from "@/models/entities/note.js";
 import {
@@ -14,7 +13,7 @@ import {
 	Blockings,
 } from "@/models/index.js";
 import { IsNull, Not } from "typeorm";
-import { genId } from "@/misc/gen-id.js";
+import { decodeReaction, genId, toDbReaction } from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 import deleteReaction from "./delete.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
@@ -95,7 +94,7 @@ export default async (
 
 	const emoji = await Emojis.findOne({
 		where: {
-			name: decodedReaction.name,
+			name: decodedReaction.name ?? undefined,
 			host: decodedReaction.host ?? IsNull(),
 		},
 		select: ["name", "host", "originalUrl", "publicUrl"],

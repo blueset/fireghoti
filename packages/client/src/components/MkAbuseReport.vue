@@ -67,6 +67,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
+import type { entities } from "firefish-js";
 import MkButton from "@/components/MkButton.vue";
 import MkSwitch from "@/components/form/switch.vue";
 import MkKeyValue from "@/components/MkKeyValue.vue";
@@ -74,11 +75,11 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 
 const props = defineProps<{
-	report: any;
+	report: entities.AbuseUserReport;
 }>();
 
 const emit = defineEmits<{
-	(ev: "resolved", reportId: string): void;
+	resolved: [reportId: string];
 }>();
 
 const forward = ref(props.report.forwarded);

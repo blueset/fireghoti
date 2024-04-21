@@ -1,7 +1,7 @@
 <template>
 	<article
 		v-if="!muted.muted || muted.what === 'reply'"
-		:id="detailedView ? appearNote.id : null"
+		:id="detailedView ? appearNote.id : undefined"
 		ref="el"
 		v-size="{ max: [450, 500] }"
 		class="wrpstxzv"
@@ -35,10 +35,10 @@
 						:parent-id="parentId"
 						:conversation="conversation"
 						:detailed-view="detailedView"
-						@focusfooter="footerEl.focus()"
+						@focusfooter="footerEl!.focus()"
 					/>
 					<div v-if="translating || translation" class="translation">
-						<MkLoading v-if="translating" mini />
+						<MkLoading v-if="translating || translation == null" mini />
 						<div v-else class="translated">
 							<b
 								>{{
@@ -217,6 +217,7 @@ import { useNoteCapture } from "@/scripts/use-note-capture";
 import { defaultStore } from "@/store";
 import { deepClone } from "@/scripts/clone";
 import icon from "@/scripts/icon";
+import type { NoteTranslation } from "@/types/note";
 
 const router = useRouter();
 
@@ -256,12 +257,12 @@ const isRenote =
 	note.value.fileIds.length === 0 &&
 	note.value.poll == null;
 
-const el = ref<HTMLElement>();
-const footerEl = ref<HTMLElement>();
+const el = ref<HTMLElement | null>(null);
+const footerEl = ref<HTMLElement | null>(null);
 const menuButton = ref<HTMLElement>();
-const starButton = ref<InstanceType<typeof XStarButton>>();
-const renoteButton = ref<InstanceType<typeof XRenoteButton>>();
-const reactButton = ref<HTMLElement>();
+const starButton = ref<InstanceType<typeof XStarButton> | null>(null);
+const renoteButton = ref<InstanceType<typeof XRenoteButton> | null>(null);
+const reactButton = ref<HTMLElement | null>(null);
 const appearNote = computed(() =>
 	isRenote ? (note.value.renote as entities.Note) : note.value,
 );
@@ -274,7 +275,7 @@ const muted = ref(
 		defaultStore.state.mutedLangs,
 	),
 );
-const translation = ref(null);
+const translation = ref<NoteTranslation | null>(null);
 const translating = ref(false);
 const replies: entities.Note[] =
 	props.conversation
@@ -330,21 +331,21 @@ useNoteCapture({
 	isDeletedRef: isDeleted,
 });
 
-function reply(viaKeyboard = false): void {
+function reply(_viaKeyboard = false): void {
 	pleaseLogin();
 	os.post({
 		reply: appearNote.value,
-		animation: !viaKeyboard,
+		// animation: !viaKeyboard,
 	}).then(() => {
 		focus();
 	});
 }
 
-function react(viaKeyboard = false): void {
+function react(_viaKeyboard = false): void {
 	pleaseLogin();
 	blur();
 	reactionPicker.show(
-		reactButton.value,
+		reactButton.value!,
 		(reaction) => {
 			os.api("notes/reactions/create", {
 				noteId: appearNote.value.id,
@@ -388,14 +389,15 @@ function menu(viaKeyboard = false): void {
 }
 
 function onContextmenu(ev: MouseEvent): void {
-	const isLink = (el: HTMLElement) => {
+	const isLink = (el: HTMLElement | null) => {
+		if (el == null) return;
 		if (el.tagName === "A") return true;
 		if (el.parentElement) {
 			return isLink(el.parentElement);
 		}
 	};
-	if (isLink(ev.target)) return;
-	if (window.getSelection().toString() !== "") return;
+	if (isLink(ev.target as HTMLElement | null)) return;
+	if (window.getSelection()?.toString() !== "") return;
 
 	if (defaultStore.state.useReactionPickerForContextMenu) {
 		ev.preventDefault();
@@ -414,7 +416,7 @@ function onContextmenu(ev: MouseEvent): void {
 						os.pageWindow(notePage(appearNote.value));
 					},
 				},
-				notePage(appearNote.value) != location.pathname
+				notePage(appearNote.value) !== location.pathname
 					? {
 							icon: `${icon("ph-arrows-out-simple")}`,
 							text: i18n.ts.showInPage,
@@ -454,15 +456,15 @@ function onContextmenu(ev: MouseEvent): void {
 }
 
 function focus() {
-	el.value.focus();
+	el.value!.focus();
 }
 
 function blur() {
-	el.value.blur();
+	el.value!.blur();
 }
 
-function noteClick(e) {
-	if (document.getSelection().type === "Range" || !expandOnNoteClick) {
+function noteClick(e: MouseEvent) {
+	if (document.getSelection()?.type === "Range" || !expandOnNoteClick) {
 		e.stopPropagation();
 	} else {
 		router.push(notePage(props.note));

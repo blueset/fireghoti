@@ -4,6 +4,10 @@ use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "note_unread")]
+#[cfg_attr(
+    feature = "napi",
+    napi_derive::napi(object, js_name = "NoteUnread", use_nullable = true)
+)]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,

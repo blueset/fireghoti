@@ -8,7 +8,7 @@ import { DAY } from "@/const.js";
 import { apiLogger } from "@/server/api/logger.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
-import { parse } from "@/misc/acct.js";
+import { stringToAcct } from "backend-rs";
 import { inspect } from "node:util";
 
 export const meta = {
@@ -72,7 +72,7 @@ export default define(meta, paramDef, async (ps, user) => {
 
 	for (const line of ps.alsoKnownAs) {
 		if (!line) throw new ApiError(meta.errors.noSuchUser);
-		const { username, host } = parse(line);
+		const { username, host } = stringToAcct(line);
 
 		const aka = await resolveUser(username, host).catch((e) => {
 			apiLogger.warn(`failed to resolve remote user:\n${inspect(e)}`);

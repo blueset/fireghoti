@@ -892,7 +892,6 @@ auto: "Tự động"
 themeColor: "Màu theme"
 size: "Kích thước"
 numberOfColumn: "Số lượng cột"
-searchByGoogle: "Google"
 instanceDefaultLightTheme: "Theme máy chủ Sáng-Rộng"
 instanceDefaultDarkTheme: "Theme máy chủ Tối-Rộng"
 instanceDefaultThemeDescription: "Nhập mã theme trong định dạng đối tượng."
@@ -1051,15 +1050,10 @@ _aboutFirefish:
   source: "Mã nguồn"
   translation: "Dịch Firefish"
   donate: "Ủng hộ Firefish"
-  morePatrons: "Chúng tôi cũng trân trọng sự hỗ trợ của nhiều người đóng góp khác
-    không được liệt kê ở đây. Cảm ơn! 🥰"
-  patrons: "Người ủng hộ"
-  patronsList: Liệt kê theo thứ tự, không theo số tiền ủng hộ. Hãy để tên bạn ở đây!
   donateTitle: Thích Firefish?
   pleaseDonateToFirefish: Hãy cân nhắc ủng hộ Firefish phát triển.
   donateHost: Ủng hộ {host}
   pleaseDonateToHost: Cũng như ủng hộ chi phí vận hành máy chủ {host} của bạn.
-  sponsors: Nhà tài trợ Firefish
   misskeyContributors: Người đóng góp Misskey
 _nsfw:
   respect: "Ẩn nội dung NSFW"

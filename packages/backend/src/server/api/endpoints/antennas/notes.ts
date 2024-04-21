@@ -2,7 +2,7 @@ import define from "@/server/api/define.js";
 import readNote from "@/services/note/read.js";
 import { Antennas, Notes } from "@/models/index.js";
 import { redisClient } from "@/db/redis.js";
-import { getTimestamp } from "@/misc/gen-id.js";
+import { getTimestamp } from "backend-rs";
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
 import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";

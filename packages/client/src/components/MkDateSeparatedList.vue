@@ -1,130 +1,83 @@
-<script lang="ts">
-import type { PropType } from "vue";
-import { TransitionGroup, defineComponent, h } from "vue";
+<template>
+	<component
+		:is="defaultStore.state.animation? TransitionGroup : 'div'"
+		tag="div"
+		class="sqadhkmv"
+		name="list"
+		:class="{ noGap }"
+		:data-direction = "props.direction"
+		:data-reversed = "props.reversed ? 'true' : 'false'"
+	>
+		<template v-for="(item, index) in items" :key="item.id">
+			<slot :item="item"> </slot>
+			<div
+				v-if="index !== items.length - 1 &&
+					new Date(item.createdAt).getDate() !==
+					new Date(items[index + 1].createdAt).getDate()"
+				class="separator"
+			>
+				<p class="date">
+					<span>
+						<i class="icon" :class="icon('ph-caret-up')"></i>
+						{{ getDateText(item.createdAt) }}
+					</span>
+					<span>
+						{{ getDateText(items[index + 1].createdAt) }}
+						<i class="icon" :class="icon('ph-caret-down')"></i>
+					</span>
+				</p>
+			</div>
+			<!-- class="a" means advertise -->
+			<MkAd
+				v-else-if="ad && item._shouldInsertAd_"
+				class="a" 
+				:prefer="['inline', 'inline-big']"
+			/>
+		</template>
+	</component>
+</template>
+
+<script lang="ts" setup generic="T extends Item">
+import { TransitionGroup } from "vue";
 import MkAd from "@/components/global/MkAd.vue";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
 
-export default defineComponent({
-	props: {
-		items: {
-			type: Array as PropType<
-				{ id: string; createdAt: string; _shouldInsertAd_: boolean }[]
-			>,
-			required: true,
-		},
-		direction: {
-			type: String,
-			required: false,
-			default: "down",
-		},
-		reversed: {
-			type: Boolean,
-			required: false,
-			default: false,
-		},
-		noGap: {
-			type: Boolean,
-			required: false,
-			default: false,
-		},
-		ad: {
-			type: Boolean,
-			required: false,
-			default: false,
-		},
+export interface Item {
+	id: string;
+	createdAt: string;
+	_shouldInsertAd_?: boolean;
+}
+
+const props = withDefaults(
+	defineProps<{
+		items: T[];
+		direction?: string;
+		reversed?: boolean;
+		noGap?: boolean;
+		ad?: boolean;
+	}>(),
+	{
+		direction: "down",
+		reversed: false,
+		noGap: false,
+		ad: false,
 	},
+);
 
-	setup(props, { slots, expose }) {
-		function getDateText(time: string) {
-			const date = new Date(time).getDate();
-			const month = new Date(time).getMonth() + 1;
-			return i18n.t("monthAndDay", {
-				month: month.toString(),
-				day: date.toString(),
-			});
-		}
+const slots = defineSlots<{
+	default(props: { item: T }): unknown;
+}>();
 
-		if (props.items.length === 0) return;
-
-		const renderChildren = () =>
-			props.items.map((item, i) => {
-				if (!slots || !slots.default) return;
-
-				const el = slots.default({
-					item,
-				})[0];
-				if (el.key == null && item.id) el.key = item.id;
-
-				if (
-					i !== props.items.length - 1 &&
-					new Date(item.createdAt).getDate() !==
-						new Date(props.items[i + 1].createdAt).getDate()
-				) {
-					const separator = h(
-						"div",
-						{
-							class: "separator",
-							key: item.id + ":separator",
-						},
-						h(
-							"p",
-							{
-								class: "date",
-							},
-							[
-								h("span", [
-									h("i", {
-										class: `${icon("ph-caret-up")} icon`,
-									}),
-									getDateText(item.createdAt),
-								]),
-								h("span", [
-									getDateText(props.items[i + 1].createdAt),
-									h("i", {
-										class: `${icon("ph-caret-down")} icon`,
-									}),
-								]),
-							],
-						),
-					);
-
-					return [el, separator];
-				} else {
-					if (props.ad && item._shouldInsertAd_) {
-						return [
-							h(MkAd, {
-								class: "a", // advertiseの意(ブロッカー対策)
-								key: item.id + ":ad",
-								prefer: ["inline", "inline-big"],
-							}),
-							el,
-						];
-					} else {
-						return el;
-					}
-				}
-			});
-
-		return () =>
-			h(
-				defaultStore.state.animation ? TransitionGroup : "div",
-				defaultStore.state.animation
-					? {
-							class: "sqadhkmv" + (props.noGap ? " noGap" : ""),
-							name: "list",
-							tag: "div",
-							"data-direction": props.direction,
-							"data-reversed": props.reversed ? "true" : "false",
-						}
-					: {
-							class: "sqadhkmv" + (props.noGap ? " noGap" : ""),
-						},
-				{ default: renderChildren },
-			);
-	},
-});
+function getDateText(time: string) {
+	const date = new Date(time).getDate();
+	const month = new Date(time).getMonth() + 1;
+	return i18n.t("monthAndDay", {
+		month: month.toString(),
+		day: date.toString(),
+	});
+}
 </script>
 
 <style lang="scss">

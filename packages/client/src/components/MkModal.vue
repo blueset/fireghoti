@@ -108,8 +108,11 @@ type ModalTypes = "popup" | "dialog" | "dialog:top" | "drawer";
 const props = withDefaults(
 	defineProps<{
 		manualShowing?: boolean | null;
-		anchor?: { x: string; y: string };
-		src?: HTMLElement;
+		anchor?: {
+			x: "left" | "center" | "right";
+			y: "top" | "center" | "bottom";
+		};
+		src?: HTMLElement | null;
 		preferType?: ModalTypes | "auto";
 		zPriority?: "low" | "middle" | "high";
 		noOverlap?: boolean;
@@ -138,6 +141,9 @@ const emit = defineEmits<{
 }>();
 
 provide("modal", true);
+
+// FIXME: this may not used
+const isActive = ref();
 
 const maxHeight = ref<number>();
 const fixed = ref(false);
@@ -189,8 +195,8 @@ const transitionDuration = computed(() =>
 
 let contentClicking = false;
 
-const focusedElement = document.activeElement;
-function close(ev, opts: { useSendAnimation?: boolean } = {}) {
+const focusedElement = document.activeElement as HTMLElement;
+function close(_ev?, opts: { useSendAnimation?: boolean } = {}) {
 	// removeEventListener("popstate", close);
 	// if (props.preferType == "dialog") {
 	// 	history.forward();
@@ -204,7 +210,7 @@ function close(ev, opts: { useSendAnimation?: boolean } = {}) {
 	showing.value = false;
 	emit("close");
 	if (!props.noReturnFocus) {
-		focusedElement.focus();
+		focusedElement?.focus();
 	}
 }
 
@@ -235,11 +241,11 @@ const align = () => {
 	const width = content.value!.offsetWidth;
 	const height = content.value!.offsetHeight;
 
-	let left;
-	let top;
+	let left = 0;
+	let top = MARGIN;
 
-	const x = srcRect.left + (fixed.value ? 0 : window.pageXOffset);
-	const y = srcRect.top + (fixed.value ? 0 : window.pageYOffset);
+	const x = srcRect.left + (fixed.value ? 0 : window.scrollX);
+	const y = srcRect.top + (fixed.value ? 0 : window.scrollY);
 
 	if (props.anchor.x === "center") {
 		left = x + props.src.offsetWidth / 2 - width / 2;
@@ -287,7 +293,7 @@ const align = () => {
 			left = window.innerWidth - width + window.scrollX - 1;
 		}
 
-		const underSpace = window.innerHeight - MARGIN - (top - window.pageYOffset);
+		const underSpace = window.innerHeight - MARGIN - (top - window.scrollY);
 		const upperSpace = srcRect.top - MARGIN;
 
 		// 画面から縦にはみ出る場合
@@ -300,7 +306,7 @@ const align = () => {
 					top = window.scrollY + (upperSpace + MARGIN - height);
 				}
 			} else {
-				top = window.innerHeight - MARGIN - height + window.pageYOffset - 1;
+				top = window.innerHeight - MARGIN - height + window.scrollY - 1;
 			}
 		} else {
 			maxHeight.value = underSpace;
@@ -320,36 +326,29 @@ const align = () => {
 
 	if (
 		top >=
-		srcRect.top +
-			props.src.offsetHeight +
-			(fixed.value ? 0 : window.pageYOffset)
+		srcRect.top + props.src.offsetHeight + (fixed.value ? 0 : window.scrollY)
 	) {
 		transformOriginY = "top";
-	} else if (
-		top + height <=
-		srcRect.top + (fixed.value ? 0 : window.pageYOffset)
-	) {
+	} else if (top + height <= srcRect.top + (fixed.value ? 0 : window.scrollY)) {
 		transformOriginY = "bottom";
 	}
 
 	if (
 		left >=
-		srcRect.left +
-			props.src.offsetWidth +
-			(fixed.value ? 0 : window.pageXOffset)
+		srcRect.left + props.src.offsetWidth + (fixed.value ? 0 : window.scrollX)
 	) {
 		transformOriginX = "left";
 	} else if (
 		left + width <=
-		srcRect.left + (fixed.value ? 0 : window.pageXOffset)
+		srcRect.left + (fixed.value ? 0 : window.scrollX)
 	) {
 		transformOriginX = "right";
 	}
 
 	transformOrigin.value = `${transformOriginX} ${transformOriginY}`;
 
-	content.value.style.left = left + "px";
-	content.value.style.top = top + "px";
+	content.value.style.left = `${left}px`;
+	content.value.style.top = `${top}px`;
 };
 
 const onOpened = () => {

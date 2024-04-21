@@ -9,9 +9,11 @@
 </template>
 
 <script lang="ts" setup>
+import type { entities } from "firefish-js";
+
 defineProps<{
 	reaction: string;
-	customEmojis?: any[]; // TODO
+	customEmojis?: entities.EmojiLite[];
 	noStyle?: boolean;
 }>();
 </script>

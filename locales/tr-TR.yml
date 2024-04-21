@@ -48,7 +48,6 @@ remove: "Sil"
 smtpUser: "Kullanıcı Adı"
 smtpPass: "Şifre"
 user: "Kullanıcı"
-searchByGoogle: "Arama"
 _mfm:
   search: "Arama"
   play: MFM'i çal
@@ -1911,14 +1910,9 @@ _preferencesBackups:
   updatedAt: 'Güncelleme tarihi: {date} {time}'
   cannotLoad: Yüklenemedi
 _aboutFirefish:
-  patronsList: Bağış büyüklüğüne göre değil, kronolojik olarak listelenmiştir. Adınızı
-    buraya almak için yukarıdaki bağlantıyla bağış yapın!
   about: Firefish, 2022'den beri geliştirilmekte olan ThatOneCalculator tarafından
     yapılan bir Misskey çatalıdır.
   allContributors: Tüm katkıda bulunanlar
-  patrons: Firefish patronları
-  morePatrons: Burada listelenmeyen diğer birçok yardımcının desteğini de takdir ediyoruz.
-    Teşekkür ederim! 🥰
   donate: Firefish'e bağışta bulunun
   contributors: Ana katkıda bulunanlar
   source: Kaynak Kodu
@@ -1929,7 +1923,6 @@ _aboutFirefish:
   pleaseDonateToHost: İşletme maliyetlerini desteklemek için lütfen ev sunucunuz {host}'a
     bağış yapmayı da düşünün.
   donateHost: '{ev sahibi} için bağış yapın'
-  sponsors: Firefish sponsorları
   misskeyContributors: Misskey'e katkıda bulunanlar
 _weekday:
   saturday: Cumartesi

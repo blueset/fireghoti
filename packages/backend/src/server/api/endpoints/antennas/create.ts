@@ -1,5 +1,5 @@
 import define from "@/server/api/define.js";
-import { genId } from "@/misc/gen-id.js";
+import { fetchMeta, genId } from "backend-rs";
 import { Antennas, UserLists, UserGroupJoinings } from "@/models/index.js";
 import { ApiError } from "@/server/api/error.js";
 import { publishInternalEvent } from "@/services/stream.js";
@@ -109,10 +109,12 @@ export default define(meta, paramDef, async (ps, user) => {
 	let userList;
 	let userGroupJoining;
 
+	const instance = await fetchMeta(true);
+
 	const antennas = await Antennas.findBy({
 		userId: user.id,
 	});
-	if (antennas.length > 5 && !user.isAdmin) {
+	if (antennas.length >= instance.antennaLimit) {
 		throw new ApiError(meta.errors.tooManyAntennas);
 	}
 

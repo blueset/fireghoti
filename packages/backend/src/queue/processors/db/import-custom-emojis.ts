@@ -8,7 +8,7 @@ import { downloadUrl } from "@/misc/download-url.js";
 import { DriveFiles, Emojis } from "@/models/index.js";
 import type { DbUserImportJobData } from "@/queue/types.js";
 import { addFile } from "@/services/drive/add-file.js";
-import { genId } from "@/misc/gen-id.js";
+import { genId } from "backend-rs";
 import { db } from "@/db/postgre.js";
 import probeImageSize from "probe-image-size";
 import * as path from "path";

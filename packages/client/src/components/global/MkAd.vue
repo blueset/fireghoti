@@ -1,7 +1,7 @@
 <template>
 	<div
 		v-for="chosenItem in chosen"
-		v-if="chosen && chosen.length > 0 && defaultStore.state.showAds"
+		v-if="chosen && Array.isArray(chosen) && chosen.length > 0 && defaultStore.state.showAds"
 		class="qiivuoyo"
 	>
 		<div v-if="!showMenu" class="main" :class="chosenItem.place">
@@ -10,7 +10,7 @@
 			</a>
 		</div>
 	</div>
-	<div v-else-if="chosen && defaultStore.state.showAds" class="qiivuoyo">
+	<div v-else-if="chosen && !Array.isArray(chosen) && defaultStore.state.showAds" class="qiivuoyo">
 		<div v-if="!showMenu" class="main" :class="chosen.place">
 			<a :href="chosen.url" target="_blank">
 				<img :src="chosen.imageUrl" />
@@ -60,7 +60,7 @@ const toggleMenu = (): void => {
 	showMenu.value = !showMenu.value;
 };
 
-const choseAd = (): Ad | null => {
+const choseAd = (): Ad | Ad[] | null => {
 	if (props.specify) {
 		return props.specify;
 	}
@@ -113,6 +113,7 @@ const chosen = ref(choseAd());
 
 function reduceFrequency(): void {
 	if (chosen.value == null) return;
+	if (Array.isArray(chosen.value)) return;
 	if (defaultStore.state.mutedAds.includes(chosen.value.id)) return;
 	defaultStore.push("mutedAds", chosen.value.id);
 	os.success();

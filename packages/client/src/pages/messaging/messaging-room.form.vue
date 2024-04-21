@@ -19,14 +19,14 @@
 			<div class="buttons">
 				<button
 					class="_button"
-					:aria-label="i18n.t('attachFile')"
+					:aria-label="i18n.ts.attachFile"
 					@click="chooseFile"
 				>
 					<i :class="icon('ph-upload')"></i>
 				</button>
 				<button
 					class="_button"
-					:aria-label="i18n.t('chooseEmoji')"
+					:aria-label="i18n.ts.chooseEmoji"
 					@click="insertEmoji"
 				>
 					<i :class="icon('ph-smiley')"></i>

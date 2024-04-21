@@ -4,16 +4,16 @@
 		class="mk-emoji custom"
 		:class="{ normal, noStyle }"
 		:src="url"
-		:alt="alt"
-		:title="alt"
+		:alt="alt || undefined"
+		:title="alt || undefined"
 		decoding="async"
 	/>
 	<img
 		v-else-if="char && !useOsNativeEmojis"
 		class="mk-emoji"
 		:src="url"
-		:alt="alt"
-		:title="alt"
+		:alt="alt!"
+		:title="alt!"
 		decoding="async"
 	/>
 	<span v-else-if="char && useOsNativeEmojis">{{ char }}</span>
@@ -32,7 +32,7 @@ const props = defineProps<{
 	emoji: string;
 	normal?: boolean;
 	noStyle?: boolean;
-	customEmojis?: entities.CustomEmoji[];
+	customEmojis?: entities.EmojiLite[];
 	isReaction?: boolean;
 }>();
 
@@ -45,7 +45,7 @@ const ce = computed(() => props.customEmojis ?? instance.emojis ?? []);
 const customEmoji = computed(() =>
 	isCustom.value
 		? ce.value.find(
-				(x) => x.name === props.emoji.substr(1, props.emoji.length - 2),
+				(x) => x.name === props.emoji.substring(1, props.emoji.length - 1),
 			)
 		: null,
 );
@@ -54,8 +54,8 @@ const url = computed(() => {
 		return char2filePath(char.value);
 	} else {
 		return defaultStore.state.disableShowingAnimatedImages
-			? getStaticImageUrl(customEmoji.value.url)
-			: customEmoji.value.url;
+			? getStaticImageUrl(customEmoji.value!.url)
+			: customEmoji.value!.url;
 	}
 });
 const alt = computed(() =>

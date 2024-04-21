@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class chartV51643966656277 implements MigrationInterface {
 	async up(queryRunner: QueryRunner): Promise<void> {

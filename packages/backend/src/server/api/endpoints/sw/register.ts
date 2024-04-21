@@ -1,5 +1,5 @@
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import { genId } from "@/misc/gen-id.js";
+import { fetchMeta } from "backend-rs";
+import { genId } from "backend-rs";
 import { SwSubscriptions } from "@/models/index.js";
 import define from "@/server/api/define.js";
 
@@ -64,7 +64,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		publickey: ps.publickey,
 	});
 
-	const instance = await fetchMeta(true);
+	const instance = await fetchMeta(false);
 
 	// if already subscribed
 	if (subscription != null) {

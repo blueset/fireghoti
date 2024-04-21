@@ -1,17 +1,15 @@
 import Router from "@koa/router";
 import { getClient } from "../ApiMastodonCompatibleService.js";
-import { emojiRegexAtStartToEnd } from "@/misc/emoji-regex.js";
 import querystring from "node:querystring";
 import qs from "qs";
 import { convertTimelinesArgsId, limitToInt } from "./timeline.js";
-import { convertId, IdType } from "@/server/api/index.js";
+import { fetchMeta, fromMastodonId, isUnicodeEmoji } from "backend-rs";
 import {
 	convertAccount,
 	convertAttachment,
 	convertPoll,
 	convertStatus,
 } from "../converters.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
 import { apiLogger } from "@/server/api/logger.js";
 import { inspect } from "node:util";
 
@@ -28,9 +26,8 @@ export function apiStatusMastodon(router: Router): void {
 		try {
 			let body: any = ctx.request.body;
 			if (body.in_reply_to_id)
-				body.in_reply_to_id = convertId(body.in_reply_to_id, IdType.FirefishId);
-			if (body.quote_id)
-				body.quote_id = convertId(body.quote_id, IdType.FirefishId);
+				body.in_reply_to_id = fromMastodonId(body.in_reply_to_id);
+			if (body.quote_id) body.quote_id = fromMastodonId(body.quote_id);
 			if (
 				(!body.poll && body["poll[options][]"]) ||
 				(!body.media_ids && body["media_ids[]"])
@@ -39,7 +36,7 @@ export function apiStatusMastodon(router: Router): void {
 			}
 			const text = body.status;
 			const removed = text.replace(/@\S+/g, "").replace(/\s|​/g, "");
-			const isDefaultEmoji = emojiRegexAtStartToEnd.test(removed);
+			const isDefaultEmoji = isUnicodeEmoji(removed);
 			const isCustomEmoji = /^:[a-zA-Z0-9@_]+:$/.test(removed);
 			if ((body.in_reply_to_id && isDefaultEmoji) || isCustomEmoji) {
 				const a = await client.createEmojiReaction(
@@ -65,7 +62,7 @@ export function apiStatusMastodon(router: Router): void {
 			if (body.media_ids && !body.media_ids.length) body.media_ids = undefined;
 			if (body.media_ids) {
 				body.media_ids = (body.media_ids as string[]).map((p) =>
-					convertId(p, IdType.FirefishId),
+					fromMastodonId(p),
 				);
 			}
 			const { sensitive } = body;
@@ -103,9 +100,7 @@ export function apiStatusMastodon(router: Router): void {
 		const accessTokens = ctx.headers.authorization;
 		const client = getClient(BASE_URL, accessTokens);
 		try {
-			const data = await client.getStatus(
-				convertId(ctx.params.id, IdType.FirefishId),
-			);
+			const data = await client.getStatus(fromMastodonId(ctx.params.id));
 			ctx.body = convertStatus(data.data);
 		} catch (e: any) {
 			apiLogger.error(inspect(e));
@@ -118,9 +113,7 @@ export function apiStatusMastodon(router: Router): void {
 		const accessTokens = ctx.headers.authorization;
 		const client = getClient(BASE_URL, accessTokens);
 		try {
-			const data = await client.deleteStatus(
-				convertId(ctx.params.id, IdType.FirefishId),
-			);
+			const data = await client.deleteStatus(fromMastodonId(ctx.params.id));
 			ctx.body = data.data;
 		} catch (e: any) {
 			apiLogger.error(inspect(e));
@@ -141,7 +134,7 @@ export function apiStatusMastodon(router: Router): void {
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const id = convertId(ctx.params.id, IdType.FirefishId);
+				const id = fromMastodonId(ctx.params.id);
 				const data = await client.getStatusContext(
 					id,
 					convertTimelinesArgsId(limitToInt(ctx.query as any)),
@@ -169,7 +162,7 @@ export function apiStatusMastodon(router: Router): void {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.getStatusHistory(
-					convertId(ctx.params.id, IdType.FirefishId),
+					fromMastodonId(ctx.params.id),
 				);
 				ctx.body = data.data.map((account) => convertAccount(account));
 			} catch (e: any) {
@@ -187,7 +180,7 @@ export function apiStatusMastodon(router: Router): void {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.getStatusRebloggedBy(
-					convertId(ctx.params.id, IdType.FirefishId),
+					fromMastodonId(ctx.params.id),
 				);
 				ctx.body = data.data.map((account) => convertAccount(account));
 			} catch (e: any) {
@@ -205,7 +198,7 @@ export function apiStatusMastodon(router: Router): void {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.getStatusFavouritedBy(
-					convertId(ctx.params.id, IdType.FirefishId),
+					fromMastodonId(ctx.params.id),
 				);
 				ctx.body = data.data.map((account) => convertAccount(account));
 			} catch (e: any) {
@@ -218,14 +211,14 @@ export function apiStatusMastodon(router: Router): void {
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/favourite",
 		async (ctx) => {
-			const meta = await fetchMeta();
+			const meta = await fetchMeta(true);
 			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
 			const react = meta.defaultReaction;
 			try {
 				const a = (await client.createEmojiReaction(
-					convertId(ctx.params.id, IdType.FirefishId),
+					fromMastodonId(ctx.params.id),
 					react,
 				)) as any;
 				//const data = await client.favouriteStatus(ctx.params.id) as any;
@@ -240,14 +233,14 @@ export function apiStatusMastodon(router: Router): void {
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/unfavourite",
 		async (ctx) => {
-			const meta = await fetchMeta();
+			const meta = await fetchMeta(true);
 			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
 			const react = meta.defaultReaction;
 			try {
 				const data = await client.deleteEmojiReaction(
-					convertId(ctx.params.id, IdType.FirefishId),
+					fromMastodonId(ctx.params.id),
 					react,
 				);
 				ctx.body = convertStatus(data.data);
@@ -266,9 +259,7 @@ export function apiStatusMastodon(router: Router): void {
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.reblogStatus(
-					convertId(ctx.params.id, IdType.FirefishId),
-				);
+				const data = await client.reblogStatus(fromMastodonId(ctx.params.id));
 				ctx.body = convertStatus(data.data);
 			} catch (e: any) {
 				apiLogger.error(inspect(e));
@@ -285,9 +276,7 @@ export function apiStatusMastodon(router: Router): void {
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.unreblogStatus(
-					convertId(ctx.params.id, IdType.FirefishId),
-				);
+				const data = await client.unreblogStatus(fromMastodonId(ctx.params.id));
 				ctx.body = convertStatus(data.data);
 			} catch (e: any) {
 				apiLogger.error(inspect(e));
@@ -304,9 +293,7 @@ export function apiStatusMastodon(router: Router): void {
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.bookmarkStatus(
-					convertId(ctx.params.id, IdType.FirefishId),
-				);
+				const data = await client.bookmarkStatus(fromMastodonId(ctx.params.id));
 				ctx.body = convertStatus(data.data);
 			} catch (e: any) {
 				apiLogger.error(inspect(e));
@@ -324,7 +311,7 @@ export function apiStatusMastodon(router: Router): void {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.unbookmarkStatus(
-					convertId(ctx.params.id, IdType.FirefishId),
+					fromMastodonId(ctx.params.id),
 				);
 				ctx.body = convertStatus(data.data);
 			} catch (e: any) {
@@ -342,9 +329,7 @@ export function apiStatusMastodon(router: Router): void {
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.pinStatus(
-					convertId(ctx.params.id, IdType.FirefishId),
-				);
+				const data = await client.pinStatus(fromMastodonId(ctx.params.id));
 				ctx.body = convertStatus(data.data);
 			} catch (e: any) {
 				apiLogger.error(inspect(e));
@@ -361,9 +346,7 @@ export function apiStatusMastodon(router: Router): void {
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.unpinStatus(
-					convertId(ctx.params.id, IdType.FirefishId),
-				);
+				const data = await client.unpinStatus(fromMastodonId(ctx.params.id));
 				ctx.body = convertStatus(data.data);
 			} catch (e: any) {
 				apiLogger.error(inspect(e));
@@ -381,7 +364,7 @@ export function apiStatusMastodon(router: Router): void {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.reactStatus(
-					convertId(ctx.params.id, IdType.FirefishId),
+					fromMastodonId(ctx.params.id),
 					ctx.params.name,
 				);
 				ctx.body = convertStatus(data.data);
@@ -401,7 +384,7 @@ export function apiStatusMastodon(router: Router): void {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.unreactStatus(
-					convertId(ctx.params.id, IdType.FirefishId),
+					fromMastodonId(ctx.params.id),
 					ctx.params.name,
 				);
 				ctx.body = convertStatus(data.data);
@@ -418,9 +401,7 @@ export function apiStatusMastodon(router: Router): void {
 		const accessTokens = ctx.headers.authorization;
 		const client = getClient(BASE_URL, accessTokens);
 		try {
-			const data = await client.getMedia(
-				convertId(ctx.params.id, IdType.FirefishId),
-			);
+			const data = await client.getMedia(fromMastodonId(ctx.params.id));
 			ctx.body = convertAttachment(data.data);
 		} catch (e: any) {
 			apiLogger.error(inspect(e));
@@ -434,7 +415,7 @@ export function apiStatusMastodon(router: Router): void {
 		const client = getClient(BASE_URL, accessTokens);
 		try {
 			const data = await client.updateMedia(
-				convertId(ctx.params.id, IdType.FirefishId),
+				fromMastodonId(ctx.params.id),
 				ctx.request.body as any,
 			);
 			ctx.body = convertAttachment(data.data);
@@ -449,9 +430,7 @@ export function apiStatusMastodon(router: Router): void {
 		const accessTokens = ctx.headers.authorization;
 		const client = getClient(BASE_URL, accessTokens);
 		try {
-			const data = await client.getPoll(
-				convertId(ctx.params.id, IdType.FirefishId),
-			);
+			const data = await client.getPoll(fromMastodonId(ctx.params.id));
 			ctx.body = convertPoll(data.data);
 		} catch (e: any) {
 			apiLogger.error(inspect(e));
@@ -467,7 +446,7 @@ export function apiStatusMastodon(router: Router): void {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.votePoll(
-					convertId(ctx.params.id, IdType.FirefishId),
+					fromMastodonId(ctx.params.id),
 					(ctx.request.body as any).choices,
 				);
 				ctx.body = convertPoll(data.data);

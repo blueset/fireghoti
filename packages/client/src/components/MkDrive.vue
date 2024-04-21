@@ -253,7 +253,7 @@ function onStreamDriveFolderDeleted(folderId: string) {
 	removeFolder(folderId);
 }
 
-function onDragover(ev: DragEvent): any {
+function onDragover(ev: DragEvent) {
 	if (!ev.dataTransfer) return;
 
 	// ドラッグ元が自分自身の所有するアイテムだったら
@@ -285,7 +285,7 @@ function onDragleave() {
 	draghover.value = false;
 }
 
-function onDrop(ev: DragEvent): any {
+function onDrop(ev: DragEvent) {
 	draghover.value = false;
 
 	if (!ev.dataTransfer) return;
@@ -493,14 +493,12 @@ function move(target?: entities.DriveFolder) {
 	if (!target) {
 		goRoot();
 		return;
-	} else if (typeof target === "object") {
-		target = target.id;
 	}
 
 	fetching.value = true;
 
 	os.api("drive/folders/show", {
-		folderId: target,
+		folderId: target.id,
 	}).then((folderToMove) => {
 		folder.value = folderToMove;
 		hierarchyFolders.value = [];

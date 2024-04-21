@@ -27,7 +27,7 @@ const props = withDefaults(
 
 const _time =
 	props.time == null
-		? NaN
+		? Number.NaN
 		: typeof props.time === "number"
 			? props.time
 			: (props.time instanceof Date
@@ -37,7 +37,7 @@ const _time =
 const invalid = Number.isNaN(_time);
 const absolute = !invalid ? dateTimeFormat.format(_time) : i18n.ts._ago.invalid;
 
-const now = ref((props.origin ?? new Date()).getTime());
+const now = ref(props.origin?.getTime() ?? Date.now());
 const relative = computed<string>(() => {
 	if (props.mode === "absolute") return ""; // absoluteではrelativeを使わないので計算しない
 	if (invalid) return i18n.ts._ago.invalid;
@@ -77,7 +77,7 @@ const relative = computed<string>(() => {
 let tickId: number;
 
 function tick() {
-	const _now = new Date().getTime();
+	const _now = Date.now();
 	const agoPrev = (now.value - _time) / 1000; /* ms */ // 現状のinterval
 
 	now.value = _now;

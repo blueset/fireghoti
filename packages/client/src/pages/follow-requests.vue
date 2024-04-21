@@ -59,14 +59,14 @@
 								<div class="actions">
 									<button
 										class="_button"
-										:aria-label="i18n.t('accept')"
+										:aria-label="i18n.ts.accept"
 										@click="accept(req.follower)"
 									>
 										<i :class="icon('ph-check')"></i>
 									</button>
 									<button
 										class="_button"
-										:aria-label="i18n.t('reject')"
+										:aria-label="i18n.ts.reject"
 										@click="reject(req.follower)"
 									>
 										<i :class="icon('ph-x')"></i>
@@ -85,6 +85,7 @@
 import { computed, ref } from "vue";
 import { acct } from "firefish-js";
 import MkPagination from "@/components/MkPagination.vue";
+import type { MkPaginationType } from "@/components/MkPagination.vue";
 import { userPage } from "@/filters/user";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
@@ -92,7 +93,9 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import { me } from "@/me";
 import icon from "@/scripts/icon";
 
-const paginationComponent = ref<InstanceType<typeof MkPagination>>();
+const paginationComponent = ref<MkPaginationType<
+	typeof pagination.endpoint
+> | null>(null);
 
 const pagination = {
 	endpoint: "following/requests/list" as const,
@@ -102,13 +105,13 @@ const pagination = {
 
 function accept(user) {
 	os.api("following/requests/accept", { userId: user.id }).then(() => {
-		paginationComponent.value.reload();
+		paginationComponent.value!.reload();
 	});
 }
 
 function reject(user) {
 	os.api("following/requests/reject", { userId: user.id }).then(() => {
-		paginationComponent.value.reload();
+		paginationComponent.value!.reload();
 	});
 }
 

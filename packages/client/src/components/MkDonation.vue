@@ -29,7 +29,7 @@
 					<MkButton
 						v-if="instance.donationLink"
 						gradate
-						@click="openExternal(instance.donationLink)"
+						@click="openExternal(instance.donationLink!)"
 						>{{
 							i18n.t("_aboutFirefish.donateHost", {
 								host: hostname,
@@ -49,7 +49,7 @@
 			<button
 				class="_button"
 				:class="$style.close"
-				:aria-label="i18n.t('close')"
+				:aria-label="i18n.ts.close"
 				@click="close"
 			>
 				<i :class="icon('ph-x')"></i>
@@ -73,7 +73,8 @@ const emit = defineEmits<{
 	(ev: "closed"): void;
 }>();
 
-const hostname = instance.name?.length < 38 ? instance.name : host;
+const hostname =
+	instance.name?.length && instance.name?.length < 38 ? instance.name : host;
 
 const zIndex = os.claimZIndex("low");
 
@@ -97,7 +98,7 @@ function neverShow() {
 	close();
 }
 
-function openExternal(link) {
+function openExternal(link: string) {
 	window.open(link, "_blank");
 }
 </script>

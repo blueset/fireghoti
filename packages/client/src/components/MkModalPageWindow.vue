@@ -28,8 +28,8 @@
 				</span>
 				<button
 					class="_button"
-					:aria-label="i18n.t('close')"
-					@click="$refs.modal.close()"
+					:aria-label="i18n.ts.close"
+					@click="modal!.close()"
 				>
 					<i :class="icon('ph-x')"></i>
 				</button>
@@ -65,6 +65,7 @@ import type { PageMetadata } from "@/scripts/page-metadata";
 import { provideMetadataReceiver } from "@/scripts/page-metadata";
 import { Router } from "@/nirax";
 import icon from "@/scripts/icon";
+import type { MenuItem } from "@/types/menu";
 
 const props = defineProps<{
 	initialPath: string;
@@ -81,11 +82,11 @@ router.addListener("push", (ctx) => {});
 
 const pageMetadata = ref<null | ComputedRef<PageMetadata>>();
 const rootEl = ref();
-const modal = ref<InstanceType<typeof MkModal>>();
+const modal = ref<InstanceType<typeof MkModal> | null>(null);
 const path = ref(props.initialPath);
 const width = ref(860);
 const height = ref(660);
-const history = [];
+const history: string[] = [];
 
 provide("router", router);
 provideMetadataReceiver((info) => {
@@ -95,7 +96,7 @@ provide("shouldOmitHeaderTitle", true);
 provide("shouldHeaderThin", true);
 
 const pageUrl = computed(() => url + path.value);
-const contextmenu = computed(() => {
+const contextmenu = computed((): MenuItem[] => {
 	return [
 		{
 			type: "label",
@@ -117,7 +118,7 @@ const contextmenu = computed(() => {
 			text: i18n.ts.openInNewTab,
 			action: () => {
 				window.open(pageUrl.value, "_blank");
-				modal.value.close();
+				modal.value!.close();
 			},
 		},
 		{
@@ -130,23 +131,26 @@ const contextmenu = computed(() => {
 	];
 });
 
-function navigate(path, record = true) {
+function navigate(path: string, record = true) {
 	if (record) history.push(router.getCurrentPath());
 	router.push(path);
 }
 
 function back() {
-	navigate(history.pop(), false);
+	const backTo = history.pop();
+	if (backTo) {
+		navigate(backTo, false);
+	}
 }
 
 function expand() {
 	mainRouter.push(path.value);
-	modal.value.close();
+	modal.value!.close();
 }
 
 function popout() {
 	_popout(path.value, rootEl.value);
-	modal.value.close();
+	modal.value!.close();
 }
 
 function onContextmenu(ev: MouseEvent) {

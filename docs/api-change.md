@@ -2,6 +2,18 @@
 
 Breaking changes are indicated by the :warning: icon.
 
+## Unreleased
+
+- Added `antennaLimit` field to the response of `meta` and `admin/meta`, and the request of `admin/update-meta` (optional).
+
+## v20240413
+
+- :warning: Removed `patrons` endpoint.
+
+## v20240405
+
+- Added `notes/history` endpoint.
+
 ## v20240319
 
 - :warning: `followingCount` and `followersCount` in `users/show` will be `null` (instead of 0) if these values are unavailable.

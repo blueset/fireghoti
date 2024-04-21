@@ -1,4 +1,4 @@
-import { comparePassword } from "@/misc/password.js";
+import { verifyPassword } from "backend-rs";
 import define from "@/server/api/define.js";
 import { UserProfiles, UserSecurityKeys, Users } from "@/models/index.js";
 import { publishMainStream } from "@/services/stream.js";
@@ -21,8 +21,8 @@ export const paramDef = {
 export default define(meta, paramDef, async (ps, user) => {
 	const profile = await UserProfiles.findOneByOrFail({ userId: user.id });
 
-	// Compare password
-	const same = await comparePassword(ps.password, profile.password!);
+	// Compare passwords
+	const same = verifyPassword(ps.password, profile.password!);
 
 	if (!same) {
 		throw new Error("incorrect password");

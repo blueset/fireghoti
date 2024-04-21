@@ -1,9 +1,9 @@
 <template>
 	<div v-size="{ min: [350, 500] }" class="fefdfafb">
-		<MkAvatar class="avatar" :user="me" disable-link />
+		<MkAvatar class="avatar" :user="me!" disable-link />
 		<div class="main">
 			<div class="header">
-				<MkUserName :user="me" />
+				<MkUserName :user="me!" />
 			</div>
 			<div class="body">
 				<div class="content">

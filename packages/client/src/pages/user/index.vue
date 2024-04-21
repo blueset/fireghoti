@@ -17,6 +17,7 @@
 						@refresh="fetchUser()"
 					/>
 					<XReactions v-else-if="tab === 'reactions'" :user="user" />
+					<XMediaList v-else-if="tab === 'media'" :user="user"/>
 					<XClips v-else-if="tab === 'clips'" :user="user" />
 					<XPages v-else-if="tab === 'pages'" :user="user" />
 					<XGallery v-else-if="tab === 'gallery'" :user="user" />
@@ -40,6 +41,7 @@ import icon from "@/scripts/icon";
 
 const XHome = defineAsyncComponent(() => import("./home.vue"));
 const XReactions = defineAsyncComponent(() => import("./reactions.vue"));
+const XMediaList = defineAsyncComponent(() => import("./media-list.vue"));
 const XClips = defineAsyncComponent(() => import("./clips.vue"));
 const XPages = defineAsyncComponent(() => import("./pages.vue"));
 const XGallery = defineAsyncComponent(() => import("./gallery.vue"));
@@ -85,6 +87,11 @@ const headerTabs = computed(() =>
 					key: "home",
 					title: i18n.ts.overview,
 					icon: `${icon("ph-user")}`,
+				},
+				{
+					key: "media",
+					title: i18n.ts.media,
+					icon: `${icon("ph-grid-four")}`,
 				},
 				...((isSignedIn && me.id === user.value.id) ||
 				user.value.publicReactions

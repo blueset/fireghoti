@@ -26,10 +26,9 @@
 			"@/*": ["./src/*"]
 		},
 		"typeRoots": ["node_modules/@types", "@types"],
-		"types": ["vite/client"],
 		"lib": ["esnext", "dom"],
 		"jsx": "preserve"
 	},
 	"compileOnSave": false,
-	"include": ["./**/*.ts", "./**/*.vue"]
+	"include": ["./src/**/*.ts", "./src/**/*.vue", "./@types"]
 }

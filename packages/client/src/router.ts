@@ -1,18 +1,18 @@
 import type { AsyncComponentLoader } from "vue";
 import { defineAsyncComponent, inject } from "vue";
 import { isEmojiMod, isModerator, me } from "@/me";
-import { Router } from "@/nirax";
+import { type RouteDef, Router } from "@/nirax";
 import MkError from "@/pages/_error_.vue";
 import MkLoading from "@/pages/_loading_.vue";
 
-const page = (loader: AsyncComponentLoader<any>) =>
+const page = (loader: AsyncComponentLoader) =>
 	defineAsyncComponent({
 		loader,
 		loadingComponent: MkLoading,
 		errorComponent: MkError,
 	});
 
-export const routes = [
+export const routes: RouteDef[] = [
 	{
 		path: "/@:initUser/pages/:initPageName/view-source",
 		component: page(() => import("./pages/page-editor/page-editor.vue")),
@@ -38,6 +38,11 @@ export const routes = [
 		name: "note",
 		path: "/notes/:noteId",
 		component: page(() => import("./pages/note.vue")),
+	},
+	{
+		name: "note-history",
+		path: "/notes/:noteId/history",
+		component: page(() => import("./pages/note-history.vue")),
 	},
 	{
 		path: "/clips/:clipId",

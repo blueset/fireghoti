@@ -1,6 +1,6 @@
 import { Entity } from "megalodon";
 import config from "@/config/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { Users, Notes } from "@/models/index.js";
 import { IsNull } from "typeorm";
 import { MAX_NOTE_TEXT_LENGTH, FILE_TYPE_BROWSERSAFE } from "@/const.js";
@@ -10,7 +10,7 @@ export async function getInstance(
 	contact: Entity.Account,
 ) {
 	const [meta, totalUsers, totalStatuses] = await Promise.all([
-		fetchMeta(),
+		fetchMeta(true),
 		Users.count({ where: { host: IsNull() } }),
 		Notes.count({ where: { userHost: IsNull() } }),
 	]);

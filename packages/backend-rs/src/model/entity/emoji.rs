@@ -4,11 +4,15 @@ use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "emoji")]
+#[cfg_attr(
+    feature = "napi",
+    napi_derive::napi(object, js_name = "Emoji", use_nullable = true)
+)]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,
     #[sea_orm(column_name = "updatedAt")]
-    pub updated_at: Option<DateTimeWithTimeZone>,
+    pub updated_at: Option<DateTime>,
     pub name: String,
     pub host: Option<String>,
     #[sea_orm(column_name = "originalUrl")]

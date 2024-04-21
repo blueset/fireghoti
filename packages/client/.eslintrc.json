@@ -4,16 +4,17 @@
 	"ignorePatterns": ["**/*.json5"],
 	"rules": {
 		"file-progress/activate": 1,
-		"prettier/prettier": 0,
-		"one-var": ["error", "never"],
+		"prettier/prettier": "off",
+		"one-var": ["warn", "never"],
 		"@typescript-eslint/no-unused-vars": [
-			"error",
+			"warn",
 			{
 				"argsIgnorePattern": "^_",
 				"varsIgnorePattern": "^_",
 				"caughtErrorsIgnorePattern": "^_",
 				"destructuredArrayIgnorePattern": "^_"
 			}
-		]
+		],
+		"vue/no-setup-props-destructure": "off"
 	}
 }

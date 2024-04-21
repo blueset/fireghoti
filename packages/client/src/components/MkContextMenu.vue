@@ -28,7 +28,7 @@ const emit = defineEmits<{
 	(ev: "closed"): void;
 }>();
 
-const rootEl = ref<HTMLDivElement>();
+const rootEl = ref<HTMLDivElement | null>(null);
 
 const zIndex = ref<number>(os.claimZIndex("high"));
 
@@ -36,15 +36,15 @@ onMounted(() => {
 	let left = props.ev.pageX + 1; // 間違って右ダブルクリックした場合に意図せずアイテムがクリックされるのを防ぐため + 1
 	let top = props.ev.pageY + 1; // 間違って右ダブルクリックした場合に意図せずアイテムがクリックされるのを防ぐため + 1
 
-	const width = rootEl.value.offsetWidth;
-	const height = rootEl.value.offsetHeight;
+	const width = rootEl.value!.offsetWidth;
+	const height = rootEl.value!.offsetHeight;
 
-	if (left + width - window.pageXOffset > window.innerWidth) {
-		left = window.innerWidth - width + window.pageXOffset;
+	if (left + width - window.scrollX > window.innerWidth) {
+		left = window.innerWidth - width + window.scrollX;
 	}
 
-	if (top + height - window.pageYOffset > window.innerHeight) {
-		top = window.innerHeight - height + window.pageYOffset;
+	if (top + height - window.scrollY > window.innerHeight) {
+		top = window.innerHeight - height + window.scrollY;
 	}
 
 	if (top < 0) {
@@ -55,8 +55,8 @@ onMounted(() => {
 		left = 0;
 	}
 
-	rootEl.value.style.top = `${top}px`;
-	rootEl.value.style.left = `${left}px`;
+	rootEl.value!.style.top = `${top}px`;
+	rootEl.value!.style.left = `${left}px`;
 
 	document.body.addEventListener("mousedown", onMousedown);
 });

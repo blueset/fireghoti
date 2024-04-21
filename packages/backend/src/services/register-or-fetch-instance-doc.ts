@@ -1,15 +1,28 @@
-import type { Instance } from "@/models/entities/instance.js";
+import {
+	type Instance,
+	MAX_LENGTH_INSTANCE,
+} from "@/models/entities/instance.js";
 import { Instances } from "@/models/index.js";
-import { genId } from "@/misc/gen-id.js";
-import { toPuny } from "@/misc/convert-host.js";
+import { genId } from "backend-rs";
+import { toPuny } from "backend-rs";
 import { Cache } from "@/misc/cache.js";
+import Logger from "@/services/logger.js";
 
+const logger = new Logger("register-or-fetch-instance");
 const cache = new Cache<Instance>("registerOrFetchInstanceDoc", 60 * 60);
 
 export async function registerOrFetchInstanceDoc(
 	host: string,
 ): Promise<Instance> {
 	const _host = toPuny(host);
+
+	if (_host.length > MAX_LENGTH_INSTANCE.host) {
+		logger.error(
+			`Instance host name must not be longer than ${MAX_LENGTH_INSTANCE.host} characters`,
+		);
+		logger.error(`hostname: ${_host}`);
+		throw new Error("Instance host name is too long");
+	}
 
 	const cached = await cache.get(_host);
 	if (cached) return cached;

@@ -431,7 +431,7 @@ function getScriptBlockList(type: string = null) {
 	const userFns = variables.value.filter((x) => x.type === "fn");
 	if (userFns.length > 0) {
 		list.unshift({
-			label: i18n.t("_pages.script.categories.fn"),
+			label: i18n.ts._pages.script.categories.fn,
 			items: userFns.map((v) => ({
 				value: "fn:" + v.name,
 				text: v.name,

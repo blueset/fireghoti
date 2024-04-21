@@ -5,6 +5,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	type Relation,
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
@@ -15,12 +16,12 @@ export class RegistryItem {
 	@PrimaryColumn(id())
 	public id: string;
 
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the RegistryItem.",
 	})
 	public createdAt: Date;
 
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The updated date of the RegistryItem.",
 	})
 	public updatedAt: Date;
@@ -31,12 +32,6 @@ export class RegistryItem {
 		comment: "The owner ID.",
 	})
 	public userId: User["id"];
-
-	@ManyToOne((type) => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: User | null;
 
 	@Column("varchar", {
 		length: 1024,
@@ -66,4 +61,12 @@ export class RegistryItem {
 		nullable: true,
 	})
 	public domain: string | null;
+
+	//#region Relations
+	@ManyToOne(() => User, {
+		onDelete: "CASCADE",
+	})
+	@JoinColumn()
+	public user: Relation<User>;
+	//#endregion
 }

@@ -1,12 +1,31 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.0.0/schema.json",
+	"$schema": "https://biomejs.dev/schemas/1.6.4/schema.json",
 	"organizeImports": {
-		"enabled": true
+		"enabled": false
 	},
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"recommended": true
+			"recommended": true,
+			"style": {
+				"noUselessElse": "off"
+			}
 		}
-	}
+	},
+	"overrides": [
+		{
+			"include": ["*.vue"],
+			"linter": {
+				"rules": {
+					"style": {
+						"useImportType": "warn",
+						"useShorthandFunctionType": "warn",
+						"useTemplate": "warn",
+						"noNonNullAssertion": "off",
+						"useNodejsImportProtocol": "off"
+					}
+				}
+			}
+		}
+	]
 }

@@ -10,12 +10,12 @@ import {
 	AttestationChallenges,
 } from "@/models/index.js";
 import type { ILocalUser } from "@/models/entities/user.js";
-import { genId } from "@/misc/gen-id.js";
 import {
-	comparePassword,
+	genId,
 	hashPassword,
-	isOldAlgorithm,
-} from "@/misc/password.js";
+	isOldPasswordAlgorithm,
+	verifyPassword,
+} from "backend-rs";
 import { verifyLogin, hash } from "@/server/api/2fa.js";
 import { randomBytes } from "node:crypto";
 import { IsNull } from "typeorm";
@@ -91,11 +91,11 @@ export default async (ctx: Koa.Context) => {
 
 	const profile = await UserProfiles.findOneByOrFail({ userId: user.id });
 
-	// Compare password
-	const same = await comparePassword(password, profile.password!);
+	// Compare passwords
+	const same = verifyPassword(password, profile.password!);
 
-	if (same && isOldAlgorithm(profile.password!)) {
-		profile.password = await hashPassword(password);
+	if (same && isOldPasswordAlgorithm(profile.password!)) {
+		profile.password = hashPassword(password);
 		await UserProfiles.save(profile);
 	}
 
@@ -185,7 +185,7 @@ export default async (ctx: Koa.Context) => {
 			id: body.challengeId,
 		});
 
-		if (new Date().getTime() - challenge.createdAt.getTime() >= 5 * 60 * 1000) {
+		if (Date.now() - challenge.createdAt.getTime() >= 5 * 60 * 1000) {
 			await fail(403, {
 				id: "2715a88a-2125-4013-932f-aa6fe72792da",
 			});

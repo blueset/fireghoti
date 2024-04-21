@@ -16,6 +16,8 @@ import { DriveFolder } from "./drive-folder.js";
 import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
 import { NoteFile } from "./note-file.js";
 
+export type DriveFileUsageHint = "userAvatar" | "userBanner" | null;
+
 @Entity()
 @Index(["userId", "folderId", "id"])
 export class DriveFile {
@@ -23,7 +25,7 @@ export class DriveFile {
 	public id: string;
 
 	@Index()
-	@Column("timestamp with time zone", {
+	@Column("timestamp without time zone", {
 		comment: "The created date of the DriveFile.",
 	})
 	public createdAt: Date;
@@ -177,6 +179,14 @@ export class DriveFile {
 	})
 	public isSensitive: boolean;
 
+	// Hint for what this file is used for
+	@Column({
+		type: "enum",
+		enum: ["userAvatar", "userBanner"],
+		nullable: true,
+	})
+	public usageHint: DriveFileUsageHint;
+
 	/**
 	 * 外部の(信頼されていない)URLへの直リンクか否か
 	 */
@@ -214,12 +224,14 @@ export class DriveFile {
 
 	@ManyToOne(() => User, {
 		onDelete: "SET NULL",
+		nullable: true,
 	})
 	@JoinColumn()
 	public user: User | null;
 
 	@ManyToOne(() => DriveFolder, {
 		onDelete: "SET NULL",
+		nullable: true,
 	})
 	@JoinColumn()
 	public folder: DriveFolder | null;

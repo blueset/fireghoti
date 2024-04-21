@@ -9,7 +9,7 @@ export function byteify(string: string, encoding: "ascii" | "base64" | "hex") {
 			);
 		case "hex":
 			return new Uint8Array(
-				string.match(/.{1,2}/g).map((byte) => parseInt(byte, 16)),
+				string.match(/.{1,2}/g).map((byte) => Number.parseInt(byte, 16)),
 			);
 	}
 }

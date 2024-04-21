@@ -112,6 +112,7 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
+import type { Swiper as SwiperType } from "swiper/types";
 import MkChannelList from "@/components/MkChannelList.vue";
 import MkInput from "@/components/form/input.vue";
 import MkRadios from "@/components/form/radios.vue";
@@ -216,18 +217,18 @@ definePageMetadata(
 	})),
 );
 
-let swiperRef = null;
+let swiperRef: SwiperType | null = null;
 
-function setSwiperRef(swiper) {
+function setSwiperRef(swiper: SwiperType) {
 	swiperRef = swiper;
 	syncSlide(tabs.indexOf(tab.value));
 }
 
 function onSlideChange() {
-	tab.value = tabs[swiperRef.activeIndex];
+	tab.value = tabs[swiperRef!.activeIndex];
 }
 
-function syncSlide(index) {
-	swiperRef.slideTo(index);
+function syncSlide(index: number) {
+	swiperRef!.slideTo(index);
 }
 </script>

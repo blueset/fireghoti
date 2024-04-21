@@ -82,7 +82,7 @@ os.api("admin/ad/list").then((adsResponse) => {
 	ads.value = adsResponse;
 	// The date format should be changed to yyyy-MM-dd in order to be properly displayed
 	for (const i in ads.value) {
-		ads.value[i].expiresAt = ads.value[i].expiresAt.substr(0, 10);
+		ads.value[i].expiresAt = ads.value[i].expiresAt.substring(0, 10);
 	}
 });
 

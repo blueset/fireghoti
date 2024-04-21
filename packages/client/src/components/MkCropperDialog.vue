@@ -68,40 +68,48 @@ let cropper: Cropper | null = null;
 const loading = ref(true);
 
 const ok = async () => {
-	const promise = new Promise<entities.DriveFile>(async (res) => {
+	async function UploadCroppedImg(): Promise<entities.DriveFile> {
 		const croppedCanvas = await cropper?.getCropperSelection()?.$toCanvas();
-		croppedCanvas.toBlob((blob) => {
-			const formData = new FormData();
-			formData.append("file", blob);
-			if (defaultStore.state.uploadFolder) {
-				formData.append("folderId", defaultStore.state.uploadFolder);
-			}
 
-			fetch(apiUrl + "/drive/files/create", {
-				method: "POST",
-				body: formData,
-				headers: {
-					authorization: `Bearer ${me.token}`,
-				},
-			})
-				.then((response) => response.json())
-				.then((f) => {
-					res(f);
-				});
+		const blob = await new Promise<Blob | null>((resolve) =>
+			croppedCanvas!.toBlob((blob) => resolve(blob)),
+		);
+
+		// MDN says `null` may be passed if the image cannot be created for any reason.
+		// But I don't think this is reachable for normal case.
+		if (blob == null) {
+			throw "Cropping image failed.";
+		}
+
+		const formData = new FormData();
+		formData.append("file", blob);
+		if (defaultStore.state.uploadFolder) {
+			formData.append("folderId", defaultStore.state.uploadFolder);
+		}
+
+		const response = await fetch(`${apiUrl}/drive/files/create`, {
+			method: "POST",
+			body: formData,
+			headers: {
+				authorization: `Bearer ${me!.token}`,
+			},
 		});
-	});
+		return await response.json();
+	}
+
+	const promise = UploadCroppedImg();
 
 	os.promiseDialog(promise);
 
 	const f = await promise;
 
 	emit("ok", f);
-	dialogEl.value.close();
+	dialogEl.value!.close();
 };
 
 const cancel = () => {
 	emit("cancel");
-	dialogEl.value.close();
+	dialogEl.value!.close();
 };
 
 const onImageLoad = () => {
@@ -114,7 +122,7 @@ const onImageLoad = () => {
 };
 
 onMounted(() => {
-	cropper = new Cropper(imgEl.value, {});
+	cropper = new Cropper(imgEl.value!, {});
 
 	const computedStyle = getComputedStyle(document.documentElement);
 
@@ -127,13 +135,13 @@ onMounted(() => {
 	selection.outlined = true;
 
 	window.setTimeout(() => {
-		cropper.getCropperImage()!.$center("contain");
+		cropper!.getCropperImage()!.$center("contain");
 		selection.$center();
 	}, 100);
 
 	// モーダルオープンアニメーションが終わったあとで再度調整
 	window.setTimeout(() => {
-		cropper.getCropperImage()!.$center("contain");
+		cropper!.getCropperImage()!.$center("contain");
 		selection.$center();
 	}, 500);
 });

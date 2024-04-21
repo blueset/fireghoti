@@ -886,7 +886,6 @@ auto: "Automaticky"
 themeColor: "Farba témy"
 size: "Veľkosť"
 numberOfColumn: "Počet stĺpcov"
-searchByGoogle: "Hľadať cez Google"
 instanceDefaultLightTheme: "Predvolená svetlá téma"
 instanceDefaultDarkTheme: "Predvolená tmavá téma"
 instanceDefaultThemeDescription: "Vložte kód témy v objektovom formáte"
@@ -1037,9 +1036,6 @@ _aboutFirefish:
   source: "Zdrojový kód"
   translation: "Preložiť Firefish"
   donate: "Podporiť Firefish"
-  morePatrons: "Takisto oceňujeme podporu mnoých ďalších, ktorí tu nie sú uvedení.
-    Ďakujeme! 🥰"
-  patrons: "Prispievatelia"
 _nsfw:
   respect: "Skryť NSFW médiá"
   ignore: "Neskrývať NSFW médiá"

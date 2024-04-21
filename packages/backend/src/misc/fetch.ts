@@ -2,7 +2,7 @@ import * as http from "node:http";
 import * as https from "node:https";
 import type { URL } from "node:url";
 import CacheableLookup from "cacheable-lookup";
-import fetch, { RequestRedirect } from "node-fetch";
+import fetch, { type RequestRedirect } from "node-fetch";
 import { HttpProxyAgent, HttpsProxyAgent } from "hpagent";
 import config from "@/config/index.js";
 import { isValidUrl } from "./is-valid-url.js";
@@ -168,6 +168,25 @@ export function getAgentByUrl(url: URL, bypassProxy = false) {
 		return url.protocol === "http:" ? _http : _https;
 	} else {
 		return url.protocol === "http:" ? httpAgent : httpsAgent;
+	}
+}
+
+/**
+ * Get agent by Hostname
+ * @param hostname Hostname
+ * @param bypassProxy Allways bypass proxy
+ */
+export function getAgentByHostname(hostname: string, bypassProxy = false) {
+	if (bypassProxy || (config.proxyBypassHosts || []).includes(hostname)) {
+		return {
+			http: _http,
+			https: _https,
+		};
+	} else {
+		return {
+			http: httpAgent,
+			https: httpsAgent,
+		};
 	}
 }
 

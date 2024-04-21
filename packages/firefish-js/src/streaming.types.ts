@@ -8,10 +8,17 @@ import type {
 	Notification,
 	PageEvent,
 	User,
+	UserDetailed,
 	UserGroup,
+	UserLite,
 } from "./entities";
+import type { Connection } from "./streaming";
 
 type FIXME = any;
+
+type TimelineParams = {
+	withReplies?: boolean;
+};
 
 export type Channels = {
 	main: {
@@ -21,9 +28,9 @@ export type Channels = {
 			mention: (payload: Note) => void;
 			reply: (payload: Note) => void;
 			renote: (payload: Note) => void;
-			follow: (payload: User) => void; // 自分が他人をフォローしたとき
-			followed: (payload: User) => void; // 他人が自分をフォローしたとき
-			unfollow: (payload: User) => void; // 自分が他人をフォロー解除したとき
+			follow: (payload: UserDetailed) => void; // 自分が他人をフォローしたとき
+			followed: (payload: UserLite) => void; // 他人が自分をフォローしたとき
+			unfollow: (payload: UserDetailed) => void; // 自分が他人をフォロー解除したとき
 			meUpdated: (payload: MeDetailed) => void;
 			pageEvent: (payload: PageEvent) => void;
 			urlUploadFinished: (payload: { marker: string; file: DriveFile }) => void;
@@ -56,35 +63,35 @@ export type Channels = {
 		receives: null;
 	};
 	homeTimeline: {
-		params: null;
+		params?: TimelineParams;
 		events: {
 			note: (payload: Note) => void;
 		};
 		receives: null;
 	};
 	localTimeline: {
-		params: null;
+		params: TimelineParams;
 		events: {
 			note: (payload: Note) => void;
 		};
 		receives: null;
 	};
 	hybridTimeline: {
-		params: null;
+		params: TimelineParams;
 		events: {
 			note: (payload: Note) => void;
 		};
 		receives: null;
 	};
 	recommendedTimeline: {
-		params: null;
+		params: TimelineParams;
 		events: {
 			note: (payload: Note) => void;
 		};
 		receives: null;
 	};
 	globalTimeline: {
-		params: null;
+		params: TimelineParams;
 		events: {
 			note: (payload: Note) => void;
 		};
@@ -195,3 +202,5 @@ export type BroadcastEvents = {
 		emoji: CustomEmoji;
 	}) => void;
 };
+
+export type ChannelOf<C extends keyof Channels> = Connection<Channels[C]>;

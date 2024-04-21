@@ -1,3 +1,3 @@
-import { secureRndstr } from "@/misc/secure-rndstr.js";
+import { secureRndstr } from "backend-rs";
 
-export default () => secureRndstr(16, true);
+export default () => secureRndstr(16);

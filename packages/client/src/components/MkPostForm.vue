@@ -11,7 +11,7 @@
 	>
 		<header>
 			<button v-if="!fixed" class="cancel _button" @click="cancel">
-				<i :class="icon('ph-x')" :aria-label="i18n.t('close')"></i>
+				<i :class="icon('ph-x')" :aria-label="i18n.ts.close"></i>
 			</button>
 			<button
 				v-if="$props.editId == null"
@@ -20,7 +20,7 @@
 				class="account _button"
 				@click="openAccountMenu"
 			>
-				<MkAvatar :user="postAccount ?? me" class="avatar" />
+				<MkAvatar :user="postAccount ?? me!" class="avatar" />
 			</button>
 			<div class="right">
 				<span
@@ -85,8 +85,17 @@
 					data-cy-open-post-form-submit
 					@click="post"
 				>
-					{{ submitText
-					}}<i
+					{{ submitText }}
+					<!-- 1.3333 is the em of .ph-lg -->
+					<MkLoading
+						v-if="posting"
+						class="spinner"
+						:em="true"
+						:colored="false"
+						:size-em="1.3333"
+					/>
+					<i
+						v-else
 						:class="
 							icon(
 								reply
@@ -108,7 +117,7 @@
 				{{ i18n.ts.quoteAttached
 				}}<button
 					class="_button"
-					:aria-label="i18n.t('removeQuote')"
+					:aria-label="i18n.ts.removeQuote"
 					@click="quoteId = null"
 				>
 					<i :class="icon('ph-x')"></i>
@@ -121,7 +130,7 @@
 						<MkAcct :user="u" />
 						<button
 							class="_button"
-							:aria-label="i18n.t('removeRecipient')"
+							:aria-label="i18n.ts.removeRecipient"
 							@click="removeVisibleUser(u)"
 						>
 							<i :class="icon('ph-x')"></i>
@@ -289,8 +298,8 @@
 
 <script lang="ts" setup>
 import {
+	type Ref,
 	computed,
-	defineAsyncComponent,
 	inject,
 	nextTick,
 	onMounted,
@@ -303,7 +312,7 @@ import insertTextAtCursor from "insert-text-at-cursor";
 import { length } from "stringz";
 import { toASCII } from "punycode/";
 import { acct } from "firefish-js";
-import type { entities, languages, noteVisibilities } from "firefish-js";
+import type { ApiTypes, entities, languages } from "firefish-js";
 import { throttle } from "throttle-debounce";
 import XNoteSimple from "@/components/MkNoteSimple.vue";
 import XNotePreview from "@/components/MkNotePreview.vue";
@@ -339,6 +348,9 @@ import {
 } from "@/scripts/language-utils";
 import type { MenuItem } from "@/types/menu";
 import icon from "@/scripts/icon";
+import MkVisibilityPicker from "@/components/MkVisibilityPicker.vue";
+import type { NoteVisibility } from "@/types/note";
+import type { NoteDraft, PollType } from "@/types/post-form";
 
 const modal = inject("modal");
 
@@ -346,16 +358,16 @@ const props = withDefaults(
 	defineProps<{
 		reply?: entities.Note;
 		renote?: entities.Note;
-		channel?: any; // TODO
+		channel?: entities.Channel;
 		mention?: entities.User;
 		specified?: entities.User;
 		initialText?: string;
-		initialVisibility?: typeof noteVisibilities;
-		initialLanguage?: typeof languages;
+		initialVisibility?: NoteVisibility;
+		initialLanguage?: (typeof languages)[number];
 		initialFiles?: entities.DriveFile[];
 		initialLocalOnly?: boolean;
 		initialVisibleUsers?: entities.User[];
-		initialNote?: entities.Note;
+		initialNote?: NoteDraft;
 		instant?: boolean;
 		fixed?: boolean;
 		autofocus?: boolean;
@@ -388,12 +400,7 @@ const showBigPostButton = defaultStore.state.showBigPostButton;
 const posting = ref(false);
 const text = ref(props.initialText ?? "");
 const files = ref(props.initialFiles ?? ([] as entities.DriveFile[]));
-const poll = ref<{
-	choices: string[];
-	multiple: boolean;
-	expiresAt: string | null;
-	expiredAfter: string | null;
-} | null>(null);
+const poll = ref<PollType | null>(null);
 const useCw = ref(false);
 const showPreview = ref(defaultStore.state.showPreviewByDefault);
 const cw = ref<string | null>(null);
@@ -404,18 +411,17 @@ const localOnly = ref<boolean>(
 );
 const visibility = ref(
 	props.initialVisibility ??
-		((defaultStore.state.rememberNoteVisibility
+		(defaultStore.state.rememberNoteVisibility
 			? defaultStore.state.visibility
-			: defaultStore.state
-					.defaultNoteVisibility) as (typeof noteVisibilities)[number]),
+			: defaultStore.state.defaultNoteVisibility),
 );
 
-const visibleUsers = ref([]);
+const visibleUsers = ref<entities.User[]>([]);
 if (props.initialVisibleUsers) {
 	props.initialVisibleUsers.forEach(pushVisibleUser);
 }
 const draghover = ref(false);
-const quoteId = ref(null);
+const quoteId = ref<string | null>(null);
 const hasNotSpecifiedMentions = ref(false);
 const recentHashtags = ref(
 	JSON.parse(localStorage.getItem("hashtags") || "[]"),
@@ -499,7 +505,9 @@ const canPost = computed((): boolean => {
 const withHashtags = computed(
 	defaultStore.makeGetterSetter("postFormWithHashtags"),
 );
-const hashtags = computed(defaultStore.makeGetterSetter("postFormHashtags"));
+const hashtags = computed(
+	defaultStore.makeGetterSetter("postFormHashtags"),
+) as Ref<string | null>;
 
 let isFirstPostAttempt = true;
 
@@ -526,7 +534,7 @@ if (props.mention) {
 
 if (
 	props.reply &&
-	(props.reply.user.username !== me.username ||
+	(props.reply.user.username !== me!.username ||
 		(props.reply.user.host != null && props.reply.user.host !== host))
 ) {
 	text.value = `@${props.reply.user.username}${
@@ -546,7 +554,7 @@ if (props.reply && props.reply.text != null) {
 				: `@${x.username}@${toASCII(otherHost)}`;
 
 		// exclude me
-		if (me.username === x.username && (x.host == null || x.host === host))
+		if (me!.username === x.username && (x.host == null || x.host === host))
 			continue;
 
 		// remove duplicates
@@ -580,7 +588,7 @@ if (
 		if (props.reply.visibleUserIds) {
 			os.api("users/show", {
 				userIds: props.reply.visibleUserIds.filter(
-					(uid) => uid !== me.id && uid !== props.reply.userId,
+					(uid) => uid !== me!.id && uid !== props.reply!.userId,
 				),
 			}).then((users) => {
 				users.forEach(pushVisibleUser);
@@ -589,7 +597,7 @@ if (
 			visibility.value = "private";
 		}
 
-		if (props.reply.userId !== me.id) {
+		if (props.reply.userId !== me!.id) {
 			os.api("users/show", { userId: props.reply.userId }).then((user) => {
 				pushVisibleUser(user);
 			});
@@ -616,7 +624,7 @@ const addRe = (s: string) => {
 if (defaultStore.state.keepCw && props.reply && props.reply.cw) {
 	useCw.value = true;
 	cw.value =
-		props.reply.user.username === me.username
+		props.reply.user.username === me!.username
 			? props.reply.cw
 			: addRe(props.reply.cw);
 }
@@ -731,7 +739,7 @@ function setVisibility() {
 	}
 
 	os.popup(
-		defineAsyncComponent(() => import("@/components/MkVisibilityPicker.vue")),
+		MkVisibilityPicker,
 		{
 			currentVisibility: visibility.value,
 			currentLocalOnly: localOnly.value,
@@ -895,11 +903,14 @@ function onCompositionEnd(ev: CompositionEvent) {
 }
 
 async function onPaste(ev: ClipboardEvent) {
+	if (ev.clipboardData == null) return;
+
 	for (const { item, i } of Array.from(ev.clipboardData.items).map(
 		(item, i) => ({ item, i }),
 	)) {
 		if (item.kind === "file") {
 			const file = item.getAsFile();
+			if (file == null) continue;
 			const lio = file.name.lastIndexOf(".");
 			const ext = lio >= 0 ? file.name.slice(lio) : "";
 			const formatted = `${formatTimeString(
@@ -912,7 +923,7 @@ async function onPaste(ev: ClipboardEvent) {
 
 	const paste = ev.clipboardData?.getData("text") ?? "";
 
-	if (!props.renote && !quoteId.value && paste.startsWith(url + "/notes/")) {
+	if (!props.renote && !quoteId.value && paste.startsWith(`${url}/notes/`)) {
 		ev.preventDefault();
 
 		os.yesno({
@@ -920,13 +931,13 @@ async function onPaste(ev: ClipboardEvent) {
 			text: i18n.ts.quoteQuestion,
 		}).then(({ canceled }) => {
 			if (canceled) {
-				insertTextAtCursor(textareaEl.value, paste);
+				insertTextAtCursor(textareaEl.value!, paste);
 				return;
 			}
 
 			quoteId.value = paste
 				.substring(url.length)
-				.match(/^\/notes\/(.+?)\/?$/)[1];
+				.match(/^\/notes\/(.+?)\/?$/)![1];
 		});
 	}
 }
@@ -957,16 +968,17 @@ function onDragover(ev) {
 	}
 }
 
-function onDragenter(ev) {
+function onDragenter(_ev) {
 	draghover.value = true;
 }
 
-function onDragleave(ev) {
+function onDragleave(_ev) {
 	draghover.value = false;
 }
 
-function onDrop(ev): void {
+function onDrop(ev: DragEvent): void {
 	draghover.value = false;
+	if (ev.dataTransfer == null) return;
 
 	// ファイルだったら
 	if (ev.dataTransfer.files.length > 0) {
@@ -1143,7 +1155,7 @@ async function post() {
 
 	const processedText = preprocess(text.value);
 
-	let postData = {
+	let postData: ApiTypes.NoteSubmitReq = {
 		editId: props.editId ? props.editId : undefined,
 		text: processedText === "" ? undefined : processedText,
 		fileIds: files.value.length > 0 ? files.value.map((f) => f.id) : undefined,
@@ -1171,7 +1183,7 @@ async function post() {
 		const hashtags_ = hashtags.value
 			.trim()
 			.split(" ")
-			.map((x) => (x.startsWith("#") ? x : "#" + x))
+			.map((x) => (x.startsWith("#") ? x : `#${x}`))
 			.join(" ");
 		postData.text = postData.text ? `${postData.text} ${hashtags_}` : hashtags_;
 	}
@@ -1183,11 +1195,11 @@ async function post() {
 		}
 	}
 
-	let token;
+	let token: string | undefined;
 
 	if (postAccount.value) {
 		const storedAccounts = await getAccounts();
-		token = storedAccounts.find((x) => x.id === postAccount.value.id)?.token;
+		token = storedAccounts.find((x) => x.id === postAccount.value!.id)?.token;
 	}
 
 	posting.value = true;
@@ -1198,10 +1210,11 @@ async function post() {
 				deleteDraft();
 				emit("posted");
 				if (postData.text && postData.text !== "") {
-					const hashtags_ = mfm
-						.parse(postData.text)
-						.filter((x) => x.type === "hashtag")
-						.map((x) => x.props.hashtag);
+					const hashtags_ = (
+						mfm
+							.parse(postData.text)
+							.filter((x) => x.type === "hashtag") as mfm.MfmHashtag[]
+					).map((x) => x.props.hashtag);
 					const history = JSON.parse(
 						localStorage.getItem("hashtags") || "[]",
 					) as string[];
@@ -1212,14 +1225,14 @@ async function post() {
 				}
 				posting.value = false;
 				postAccount.value = null;
-				nextTick(() => autosize.update(textareaEl.value));
+				nextTick(() => autosize.update(textareaEl.value!));
 			});
 		})
-		.catch((err) => {
+		.catch((err: { message: string; id: string }) => {
 			posting.value = false;
 			os.alert({
 				type: "error",
-				text: err.message + "\n" + (err as any).id,
+				text: `${err.message}\n${err.id}`,
 			});
 		});
 	vibrate([10, 20, 10, 20, 10, 20, 60]);
@@ -1248,19 +1261,23 @@ function cancel() {
 
 function insertMention() {
 	os.selectUser().then((user) => {
-		insertTextAtCursor(textareaEl.value, "@" + acct.toString(user) + " ");
+		insertTextAtCursor(textareaEl.value!, `@${acct.toString(user)} `);
 	});
 }
 
 async function insertEmoji(ev: MouseEvent) {
-	os.openEmojiPicker(ev.currentTarget ?? ev.target, {}, textareaEl.value);
+	os.openEmojiPicker(
+		(ev.currentTarget ?? ev.target) as HTMLElement,
+		{},
+		textareaEl.value!,
+	);
 }
 
 async function openCheatSheet(ev: MouseEvent) {
 	os.popup(XCheatSheet, {}, {}, "closed");
 }
 
-function showActions(ev) {
+function showActions(ev: MouseEvent) {
 	os.popupMenu(
 		postFormActions.map((action) => ({
 			text: action.title,
@@ -1277,7 +1294,7 @@ function showActions(ev) {
 				);
 			},
 		})),
-		ev.currentTarget ?? ev.target,
+		(ev.currentTarget ?? ev.target) as HTMLElement,
 	);
 }
 
@@ -1288,9 +1305,9 @@ function openAccountMenu(ev: MouseEvent) {
 		{
 			withExtraOperation: false,
 			includeCurrentAccount: true,
-			active: postAccount.value != null ? postAccount.value.id : me.id,
+			active: postAccount.value != null ? postAccount.value.id : me!.id,
 			onChoose: (account) => {
-				if (account.id === me.id) {
+				if (account.id === me!.id) {
 					postAccount.value = null;
 				} else {
 					postAccount.value = account;
@@ -1311,14 +1328,14 @@ onMounted(() => {
 	}
 
 	// TODO: detach when unmount
-	new Autocomplete(textareaEl.value, text);
-	new Autocomplete(cwInputEl.value, cw);
-	new Autocomplete(hashtagsInputEl.value, hashtags);
+	new Autocomplete(textareaEl.value!, text);
+	new Autocomplete(cwInputEl.value!, cw as Ref<string>);
+	new Autocomplete(hashtagsInputEl.value!, hashtags as Ref<string>);
 
-	autosize(textareaEl.value);
+	autosize(textareaEl.value!);
 
 	nextTick(() => {
-		autosize(textareaEl.value);
+		autosize(textareaEl.value!);
 		// 書きかけの投稿を復元
 		if (!props.instant && !props.mention && !props.specified) {
 			const draft = JSON.parse(localStorage.getItem("drafts") || "{}")[
@@ -1354,13 +1371,21 @@ onMounted(() => {
 				};
 			}
 			visibility.value = init.visibility;
-			localOnly.value = init.localOnly;
-			language.value = init.lang;
+			localOnly.value = init.localOnly ?? false;
+			language.value = init.lang ?? null;
 			quoteId.value = init.renote ? init.renote.id : null;
 		}
 
+		// Inherit language settings when quoting or replying
+		if (props.renote?.lang) {
+			language.value = props.renote.lang;
+		}
+		if (props.reply?.lang) {
+			language.value = props.reply.lang;
+		}
+
 		nextTick(() => watchForDraft());
-		nextTick(() => autosize.update(textareaEl.value));
+		nextTick(() => autosize.update(textareaEl.value!));
 	});
 });
 </script>
@@ -1472,6 +1497,7 @@ onMounted(() => {
 					opacity: 0.7;
 				}
 
+				> .spinner,
 				> i {
 					margin-left: 6px;
 				}

@@ -19,13 +19,11 @@ export default defineComponent({
 		},
 	},
 	computed: {
-		compiledFormula(): any {
-			const katexString = katex.renderToString(this.formula, {
+		compiledFormula() {
+			return katex.renderToString(this.formula, {
 				throwOnError: false,
-			} as any);
-			return this.block
-				? `<div style="text-align:center">${katexString}</div>`
-				: katexString;
+				displayMode: this.block,
+			});
 		},
 	},
 });
