@@ -5,7 +5,7 @@
 		/></template>
 		<MkSpacer :content-max="800">
 			<MkLoading v-if="note == null" />
-			<div class="" v-else>
+			<div v-else>
 				<MkRemoteCaution
 					v-if="note.user.host != null"
 					:href="note.url ?? note.uri!"
