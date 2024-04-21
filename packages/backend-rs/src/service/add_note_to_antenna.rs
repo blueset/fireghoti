@@ -13,7 +13,7 @@ pub fn add_note_to_antenna(antenna_id: &str, note_id: &str) -> Result<(), Error>
     )?;
 
     let stream = Stream::Antenna {
-        id: antenna_id.to_string(),
+        antenna_id: antenna_id.to_string(),
     };
     publish_to_stream(
         &stream,

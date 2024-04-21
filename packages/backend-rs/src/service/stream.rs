@@ -8,30 +8,33 @@ pub enum Stream {
     Internal,
     #[strum(serialize = "broadcast")]
     Broadcast,
-    #[strum(to_string = "adminStream:{id}")]
-    Admin { id: String },
-    #[strum(to_string = "user:{id}")]
-    User { id: String },
-    #[strum(to_string = "channelStream:{id}")]
-    Channel { id: String },
-    #[strum(to_string = "noteStream:{id}")]
-    Note { id: String },
+    #[strum(to_string = "adminStream:{user_id}")]
+    Admin { user_id: String },
+    #[strum(to_string = "user:{user_id}")]
+    User { user_id: String },
+    #[strum(to_string = "channelStream:{channel_id}")]
+    Channel { channel_id: String },
+    #[strum(to_string = "noteStream:{note_id}")]
+    Note { note_id: String },
     #[strum(serialize = "notesStream")]
     Notes,
-    #[strum(to_string = "userListStream:{id}")]
-    UserList { id: String },
-    #[strum(to_string = "mainStream:{id}")]
-    Main { id: String },
-    #[strum(to_string = "driveStream:{id}")]
-    Drive { id: String },
-    #[strum(to_string = "antennaStream:{id}")]
-    Antenna { id: String },
-    #[strum(to_string = "messagingStream:{id_1}-{id_2}")]
-    Chat { id_1: String, id_2: String },
-    #[strum(to_string = "messagingStream:{id}")]
-    GroupChat { id: String },
-    #[strum(to_string = "messagingIndexStream:{id}")]
-    MessagingIndex { id: String },
+    #[strum(to_string = "userListStream:{list_id}")]
+    UserList { list_id: String },
+    #[strum(to_string = "mainStream:{user_id}")]
+    Main { user_id: String },
+    #[strum(to_string = "driveStream:{user_id}")]
+    Drive { user_id: String },
+    #[strum(to_string = "antennaStream:{antenna_id}")]
+    Antenna { antenna_id: String },
+    #[strum(to_string = "messagingStream:{sender_user_id}-{receiver_user_id}")]
+    Chat {
+        sender_user_id: String,
+        receiver_user_id: String,
+    },
+    #[strum(to_string = "messagingStream:{group_id}")]
+    GroupChat { group_id: String },
+    #[strum(to_string = "messagingIndexStream:{user_id}")]
+    MessagingIndex { user_id: String },
 }
 
 #[derive(thiserror::Error, Debug)]
@@ -79,7 +82,7 @@ mod unit_test {
         assert_eq!(Stream::Broadcast.to_string(), "broadcast");
         assert_eq!(
             Stream::Admin {
-                id: "9tb42br63g5apjcq".to_string()
+                user_id: "9tb42br63g5apjcq".to_string()
             }
             .to_string(),
             "adminStream:9tb42br63g5apjcq"
