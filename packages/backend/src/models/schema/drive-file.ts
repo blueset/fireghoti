@@ -44,6 +44,12 @@ export const packedDriveFileSchema = {
 			optional: false,
 			nullable: false,
 		},
+		usageHint: {
+			type: "string",
+			optional: false,
+			nullable: true,
+			enum: ["userAvatar", "userBanner"],
+		},
 		blurhash: {
 			type: "string",
 			optional: false,
