@@ -41,6 +41,8 @@ pub enum Stream {
 pub enum Error {
     #[error("Redis error: {0}")]
     RedisError(#[from] RedisError),
+    #[error("Json (de)serialization error: {0}")]
+    JsonError(#[from] serde_json::Error),
     #[error("Value error: {0}")]
     ValueError(String),
 }

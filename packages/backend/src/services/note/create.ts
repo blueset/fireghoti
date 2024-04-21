@@ -62,6 +62,7 @@ import { Mutex } from "redis-semaphore";
 import { langmap } from "@/misc/langmap.js";
 import Logger from "@/services/logger.js";
 import { inspect } from "node:util";
+import { undefinedToNull } from "@/prelude/undefined-to-null.js";
 
 const logger = new Logger("create-note");
 
@@ -398,7 +399,8 @@ export default async (
 		for (const antenna of await getAntennas()) {
 			checkHitAntenna(antenna, note, user).then((hit) => {
 				if (hit) {
-					addNoteToAntenna(antenna.id, note.id);
+					// TODO: do this more sanely
+					addNoteToAntenna(antenna.id, undefinedToNull(note) as Note);
 				}
 			});
 		}
