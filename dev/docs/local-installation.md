@@ -42,6 +42,8 @@ cargo --version
 
 ### PostgreSQL and PGroonga
 
+Firefish requires PostgreSQL v12 or later. We recommend that you install v12.x for the same reason as Node.js.
+
 PostgreSQL install instructions can be found at [this page](https://www.postgresql.org/download/).
 
 ```sh
