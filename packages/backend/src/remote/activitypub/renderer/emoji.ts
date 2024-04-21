@@ -1,4 +1,4 @@
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import type { Emoji } from "@/models/entities/emoji.js";
 
 export default (emoji: Emoji) => ({

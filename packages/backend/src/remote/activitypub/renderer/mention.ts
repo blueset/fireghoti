@@ -1,4 +1,4 @@
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import type { User, ILocalUser } from "@/models/entities/user.js";
 import { Users } from "@/models/index.js";
 

@@ -11,7 +11,7 @@ pub struct EnvConfig {
 }
 
 #[crate::export]
-pub fn read_environment_config() -> EnvConfig {
+pub fn load_env() -> EnvConfig {
     let node_env = std::env::var("NODE_ENV").unwrap_or_default().to_lowercase();
     let is_testing = node_env == "test";
 

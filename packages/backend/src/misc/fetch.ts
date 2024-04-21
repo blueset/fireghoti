@@ -4,7 +4,7 @@ import type { URL } from "node:url";
 import CacheableLookup from "cacheable-lookup";
 import fetch, { type RequestRedirect } from "node-fetch";
 import { HttpProxyAgent, HttpsProxyAgent } from "hpagent";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { isValidUrl } from "./is-valid-url.js";
 
 export async function getJson(

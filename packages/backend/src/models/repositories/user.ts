@@ -2,7 +2,7 @@ import { In, Not } from "typeorm";
 import Ajv from "ajv";
 import type { ILocalUser, IRemoteUser } from "@/models/entities/user.js";
 import { User } from "@/models/entities/user.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import type { Packed } from "@/misc/schema.js";
 import type { Promiseable } from "@/prelude/await-all.js";
 import { awaitAll } from "@/prelude/await-all.js";

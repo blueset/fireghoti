@@ -1,4 +1,4 @@
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { getUserKeypair } from "@/misc/keypair-store.js";
 import type { User, ILocalUser } from "@/models/entities/user.js";
 import { StatusError, getResponse } from "@/misc/fetch.js";

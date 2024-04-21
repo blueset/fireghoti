@@ -1,5 +1,5 @@
 import push from "web-push";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { SwSubscriptions } from "@/models/index.js";
 import { fetchMeta, getNoteSummary } from "backend-rs";
 import type { Packed } from "@/misc/schema.js";

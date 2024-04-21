@@ -3,7 +3,7 @@ import Logger from "@/services/logger.js";
 import type { WebhookDeliverJobData } from "../types.js";
 import { getResponse, StatusError } from "@/misc/fetch.js";
 import { Webhooks } from "@/models/index.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 
 const logger = new Logger("webhook");
 

@@ -12,7 +12,7 @@ export interface EnvConfig {
   withLogTime: boolean
   slow: boolean
 }
-export function readEnvironmentConfig(): EnvConfig
+export function loadEnv(): EnvConfig
 export interface ServerConfig {
   url: string
   port: number
@@ -29,7 +29,7 @@ export interface ServerConfig {
   /** `NapiValue` is not implemented for `u64` */
   maxFileSize?: number
   accessLog?: string
-  clusterLimits?: WorkerConfig
+  clusterLimits?: WorkerConfigInternal
   cuid?: IdConfig
   outgoingAddress?: string
   deliverJobConcurrency?: number
@@ -70,13 +70,17 @@ export interface RedisConfig {
   pass?: string
   tls?: TlsConfig
   db: number
-  prefix: string
+  prefix?: string
 }
 export interface TlsConfig {
   host: string
   rejectUnauthorized: boolean
 }
 export interface WorkerConfig {
+  web: number
+  queue: number
+}
+export interface WorkerConfigInternal {
   web?: number
   queue?: number
 }
@@ -121,7 +125,68 @@ export interface ObjectStorageConfig {
   setPublicReadOnUpload?: boolean
   s3ForcePathStyle?: boolean
 }
-export function readServerConfig(): ServerConfig
+export interface Config {
+  url: string
+  port: number
+  bind?: string
+  disableHsts?: boolean
+  db: DbConfig
+  redis: RedisConfig
+  cacheServer?: RedisConfig
+  proxy?: string
+  proxySmtp?: string
+  proxyBypassHosts?: Array<string>
+  allowedPrivateNetworks?: Array<string>
+  maxFileSize?: number
+  accessLog?: string
+  clusterLimits: WorkerConfig
+  cuid?: IdConfig
+  outgoingAddress?: string
+  deliverJobConcurrency?: number
+  inboxJobConcurrency?: number
+  deliverJobPerSec?: number
+  inboxJobPerSec?: number
+  deliverJobMaxAttempts?: number
+  inboxJobMaxAttempts?: number
+  logLevel?: Array<string>
+  syslog?: SysLogConfig
+  proxyRemoteFiles?: boolean
+  mediaProxy?: string
+  summalyProxyUrl?: string
+  reservedUsernames?: Array<string>
+  maxUserSignups?: number
+  isManagedHosting?: boolean
+  maxNoteLength?: number
+  maxCaptionLength?: number
+  deepl?: DeepLConfig
+  libreTranslate?: LibreTranslateConfig
+  email?: EmailConfig
+  objectStorage?: ObjectStorageConfig
+  version: string
+  host: string
+  hostname: string
+  redisKeyPrefix: string
+  scheme: string
+  wsScheme: string
+  apiUrl: string
+  wsUrl: string
+  authUrl: string
+  driveUrl: string
+  userAgent: string
+  clientEntry: Manifest
+}
+export interface Manifest {
+  file: string
+  name: string
+  src: string
+  isEntry: boolean
+  isDynamicEntry: boolean
+  imports: Array<string>
+  dynamicImports: Array<string>
+  css: Array<string>
+  assets: Array<string>
+}
+export function loadConfig(): Config
 export interface Acct {
   username: string
   host: string | null
@@ -1039,6 +1104,7 @@ export interface Webhook {
   latestSentAt: Date | null
   latestStatus: number | null
 }
+export function addNoteToAntenna(antennaId: string, note: Note): void
 /** Initializes Cuid2 generator. Must be called before any [create_id]. */
 export function initIdGenerator(length: number, fingerprint: string): void
 export function getTimestamp(id: string): number

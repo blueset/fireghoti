@@ -1,5 +1,5 @@
 import cluster from "node:cluster";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { initDb } from "@/db/postgre.js";
 import { initIdGenerator } from "backend-rs";
 import os from "node:os";
