@@ -4,6 +4,7 @@ Breaking changes are indicated by the :warning: icon.
 
 ## Unreleased
 
+- Added `antennaLimit` field to the response of `meta` and `admin/meta`, and the request of `admin/update-meta` (optional).
 - Added `filter` optional parameter to `notes/renotes` endpoint to filter the types of renotes. It can take the following values:
 	- `all` (default)
   - `renote`
