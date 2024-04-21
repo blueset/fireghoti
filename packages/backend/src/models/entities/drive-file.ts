@@ -16,6 +16,8 @@ import { DriveFolder } from "./drive-folder.js";
 import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
 import { NoteFile } from "./note-file.js";
 
+export type DriveFileUsageHint = "userAvatar" | "userBanner" | null;
+
 @Entity()
 @Index(["userId", "folderId", "id"])
 export class DriveFile {
@@ -176,6 +178,14 @@ export class DriveFile {
 		comment: "Whether the DriveFile is NSFW.",
 	})
 	public isSensitive: boolean;
+
+	// Hint for what this file is used for
+	@Column({
+		type: "enum",
+		enum: ["userAvatar", "userBanner"],
+		nullable: true,
+	})
+	public usageHint: DriveFileUsageHint;
 
 	/**
 	 * 外部の(信頼されていない)URLへの直リンクか否か

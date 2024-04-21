@@ -1,17 +1,15 @@
 import Router from "@koa/router";
 import { getClient } from "../ApiMastodonCompatibleService.js";
-import { emojiRegexAtStartToEnd } from "@/misc/emoji-regex.js";
 import querystring from "node:querystring";
 import qs from "qs";
 import { convertTimelinesArgsId, limitToInt } from "./timeline.js";
-import { fromMastodonId } from "backend-rs";
+import { fetchMeta, fromMastodonId, isUnicodeEmoji } from "backend-rs";
 import {
 	convertAccount,
 	convertAttachment,
 	convertPoll,
 	convertStatus,
 } from "../converters.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
 import { apiLogger } from "@/server/api/logger.js";
 import { inspect } from "node:util";
 
@@ -38,7 +36,7 @@ export function apiStatusMastodon(router: Router): void {
 			}
 			const text = body.status;
 			const removed = text.replace(/@\S+/g, "").replace(/\s|​/g, "");
-			const isDefaultEmoji = emojiRegexAtStartToEnd.test(removed);
+			const isDefaultEmoji = isUnicodeEmoji(removed);
 			const isCustomEmoji = /^:[a-zA-Z0-9@_]+:$/.test(removed);
 			if ((body.in_reply_to_id && isDefaultEmoji) || isCustomEmoji) {
 				const a = await client.createEmojiReaction(
@@ -213,7 +211,7 @@ export function apiStatusMastodon(router: Router): void {
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/favourite",
 		async (ctx) => {
-			const meta = await fetchMeta();
+			const meta = await fetchMeta(true);
 			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
@@ -235,7 +233,7 @@ export function apiStatusMastodon(router: Router): void {
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/unfavourite",
 		async (ctx) => {
-			const meta = await fetchMeta();
+			const meta = await fetchMeta(true);
 			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);

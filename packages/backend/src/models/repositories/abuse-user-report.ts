@@ -2,6 +2,7 @@ import { db } from "@/db/postgre.js";
 import { Users } from "../index.js";
 import { AbuseUserReport } from "@/models/entities/abuse-user-report.js";
 import { awaitAll } from "@/prelude/await-all.js";
+import type { Packed } from "@/misc/schema.js";
 
 export const AbuseUserReportRepository = db
 	.getRepository(AbuseUserReport)
@@ -10,7 +11,7 @@ export const AbuseUserReportRepository = db
 			const report =
 				typeof src === "object" ? src : await this.findOneByOrFail({ id: src });
 
-			return await awaitAll({
+			const packed: Packed<"AbuseUserReport"> = await awaitAll({
 				id: report.id,
 				createdAt: report.createdAt.toISOString(),
 				comment: report.comment,
@@ -31,9 +32,10 @@ export const AbuseUserReportRepository = db
 					: null,
 				forwarded: report.forwarded,
 			});
+			return packed;
 		},
 
-		packMany(reports: any[]) {
+		packMany(reports: (AbuseUserReport["id"] | AbuseUserReport)[]) {
 			return Promise.all(reports.map((x) => this.pack(x)));
 		},
 	});

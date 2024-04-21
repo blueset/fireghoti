@@ -24,14 +24,14 @@ class ReactionPicker {
 			},
 			{
 				done: (reaction) => {
-					this.onChosen!(reaction);
+					this.onChosen?.(reaction);
 				},
 				close: () => {
 					this.manualShowing.value = false;
 				},
 				closed: () => {
 					this.src.value = null;
-					this.onClosed!();
+					this.onClosed?.();
 				},
 			},
 		);

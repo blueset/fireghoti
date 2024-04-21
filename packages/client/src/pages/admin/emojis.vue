@@ -153,7 +153,9 @@
 import { computed, defineAsyncComponent, ref } from "vue";
 import MkButton from "@/components/MkButton.vue";
 import MkInput from "@/components/form/input.vue";
-import MkPagination from "@/components/MkPagination.vue";
+import MkPagination, {
+	type MkPaginationType,
+} from "@/components/MkPagination.vue";
 import MkSwitch from "@/components/form/switch.vue";
 import FormSplit from "@/components/form/split.vue";
 import { selectFile, selectFiles } from "@/scripts/select-file";
@@ -162,7 +164,8 @@ import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
 
-const emojisPaginationComponent = ref<InstanceType<typeof MkPagination>>();
+const emojisPaginationComponent =
+	ref<MkPaginationType<"admin/emoji/list"> | null>(null);
 
 const tab = ref("local");
 const query = ref(null);

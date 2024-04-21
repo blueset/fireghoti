@@ -40,7 +40,9 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
 import type { entities } from "firefish-js";
-import MkPagination from "@/components/MkPagination.vue";
+import MkPagination, {
+	type MkPaginationType,
+} from "@/components/MkPagination.vue";
 import { api } from "@/os";
 import XList from "@/components/MkDateSeparatedList.vue";
 import XNote from "@/components/MkNote.vue";
@@ -49,7 +51,9 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
 import MkRemoteCaution from "@/components/MkRemoteCaution.vue";
 
-const pagingComponent = ref<InstanceType<typeof MkPagination>>();
+const pagingComponent = ref<MkPaginationType<
+	typeof pagination.endpoint
+> | null>(null);
 
 const props = defineProps<{
 	noteId: string;

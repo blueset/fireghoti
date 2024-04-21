@@ -94,6 +94,7 @@ export const paramDef = {
 		defaultDarkTheme: { type: "string", nullable: true },
 		localDriveCapacityMb: { type: "integer" },
 		remoteDriveCapacityMb: { type: "integer" },
+		antennaLimit: { type: "integer" },
 		cacheRemoteFiles: { type: "boolean" },
 		markLocalFilesNsfwByDefault: { type: "boolean" },
 		emailRequiredForSignup: { type: "boolean" },
@@ -325,6 +326,10 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (ps.remoteDriveCapacityMb !== undefined) {
 		set.remoteDriveCapacityMb = ps.remoteDriveCapacityMb;
+	}
+
+	if (ps.antennaLimit !== undefined) {
+		set.antennaLimit = ps.antennaLimit;
 	}
 
 	if (ps.cacheRemoteFiles !== undefined) {

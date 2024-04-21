@@ -30,6 +30,7 @@
 
 <script lang="ts" setup>
 import { shallowRef } from "vue";
+import type { entities } from "firefish-js";
 import MkModal from "@/components/MkModal.vue";
 import MkSparkle from "@/components/MkSparkle.vue";
 import MkButton from "@/components/MkButton.vue";
@@ -37,7 +38,7 @@ import { i18n } from "@/i18n";
 import * as os from "@/os";
 
 const props = defineProps<{
-	announcement: Announcement;
+	announcement: entities.Announcement;
 }>();
 
 const { id, text, title, imageUrl, isGoodNews } = props.announcement;
@@ -45,7 +46,7 @@ const { id, text, title, imageUrl, isGoodNews } = props.announcement;
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 
 const gotIt = () => {
-	modal.value.close();
+	modal.value!.close();
 	os.api("i/read-announcement", { announcementId: id });
 };
 </script>

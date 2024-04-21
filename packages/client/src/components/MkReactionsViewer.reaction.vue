@@ -89,7 +89,7 @@ useTooltip(
 				emojis: props.note.emojis,
 				users,
 				count: props.count,
-				targetElement: buttonRef.value,
+				targetElement: buttonRef.value!,
 			},
 			{},
 			"closed",

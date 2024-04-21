@@ -12,6 +12,7 @@
     "esbenp.prettier-vscode",
     "redhat.vscode-yaml",
     "yoavbls.pretty-ts-errors",
-    "biomejs.biome"
+    "biomejs.biome",
+		"rust-lang.rust-analyzer"
   ]
 }

@@ -44,7 +44,9 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 
-import MkPagination from "@/components/MkPagination.vue";
+import MkPagination, {
+	type MkPaginationType,
+} from "@/components/MkPagination.vue";
 import MkButton from "@/components/MkButton.vue";
 import MkAvatars from "@/components/MkAvatars.vue";
 import MkInfo from "@/components/MkInfo.vue";
@@ -53,7 +55,9 @@ import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
 
-const pagingComponent = ref<InstanceType<typeof MkPagination>>();
+const pagingComponent = ref<MkPaginationType<
+	typeof pagination.endpoint
+> | null>(null);
 
 const pagination = {
 	endpoint: "users/lists/list" as const,

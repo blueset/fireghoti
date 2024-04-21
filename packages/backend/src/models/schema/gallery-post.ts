@@ -38,7 +38,7 @@ export const packedGalleryPostSchema = {
 		},
 		user: {
 			type: "object",
-			ref: "UserLite",
+			ref: "UserDetailed",
 			optional: false,
 			nullable: false,
 		},
@@ -76,6 +76,16 @@ export const packedGalleryPostSchema = {
 		},
 		isSensitive: {
 			type: "boolean",
+			optional: false,
+			nullable: false,
+		},
+		isLiked: {
+			type: "boolean",
+			optional: true,
+			nullable: false,
+		},
+		likedCount: {
+			type: "number",
 			optional: false,
 			nullable: false,
 		},

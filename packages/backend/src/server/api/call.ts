@@ -10,7 +10,7 @@ import endpoints from "./endpoints.js";
 import compatibility from "./compatibility.js";
 import { ApiError } from "./error.js";
 import { apiLogger } from "./logger.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 
 const accessDenied = {
 	message: "Access denied.",
@@ -117,7 +117,7 @@ export default async (
 	}
 
 	// private mode
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 	if (
 		meta.privateMode &&
 		ep.meta.requireCredentialPrivateMode &&

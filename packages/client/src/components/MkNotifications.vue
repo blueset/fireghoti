@@ -44,7 +44,9 @@
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import type { StreamTypes, entities, notificationTypes } from "firefish-js";
-import MkPagination from "@/components/MkPagination.vue";
+import MkPagination, {
+	type MkPaginationType,
+} from "@/components/MkPagination.vue";
 import XNotification from "@/components/MkNotification.vue";
 import XList from "@/components/MkDateSeparatedList.vue";
 import XNote from "@/components/MkNote.vue";
@@ -59,7 +61,7 @@ const props = defineProps<{
 
 const stream = useStream();
 
-const pagingComponent = ref<InstanceType<typeof MkPagination>>();
+const pagingComponent = ref<MkPaginationType<"i/notifications"> | null>(null);
 
 const pagination = {
 	endpoint: "i/notifications" as const,

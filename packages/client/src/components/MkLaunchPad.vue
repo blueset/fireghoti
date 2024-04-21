@@ -6,7 +6,7 @@
 		:anchor="anchor"
 		:transparent-bg="true"
 		:src="src"
-		@click="modal.close()"
+		@click="modal!.close()"
 		@closed="emit('closed')"
 	>
 		<div
@@ -73,7 +73,10 @@ import { deviceKind } from "@/scripts/device-kind";
 const props = withDefaults(
 	defineProps<{
 		src?: HTMLElement;
-		anchor?: { x: string; y: string };
+		anchor?: {
+			x: "left" | "center" | "right";
+			y: "top" | "center" | "bottom";
+		};
 	}>(),
 	{
 		anchor: () => ({ x: "right", y: "center" }),
@@ -109,7 +112,7 @@ const items = Object.keys(navbarItemDef)
 	}));
 
 function close() {
-	modal.value.close();
+	modal.value!.close();
 }
 </script>
 

@@ -7,7 +7,7 @@ import { IdentifiableError } from "@/misc/identifiable-error.js";
 import type { User, IRemoteUser } from "@/models/entities/user.js";
 import type { Note } from "@/models/entities/note.js";
 import { NoteReactions, Users, Notes } from "@/models/index.js";
-import { decodeReaction } from "@/misc/reaction-lib.js";
+import { decodeReaction } from "backend-rs";
 
 export default async (
 	user: { id: User["id"]; host: User["host"] },

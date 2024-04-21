@@ -1,5 +1,5 @@
 import { Brackets } from "typeorm";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { Instances } from "@/models/index.js";
 import type { Instance } from "@/models/entities/instance.js";
 import { DAY } from "@/const.js";
@@ -19,7 +19,7 @@ export async function skippedInstances(
 	hosts: Instance["host"][],
 ): Promise<Instance["host"][]> {
 	// first check for blocked instances since that info may already be in memory
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 	const shouldSkip = await Promise.all(
 		hosts.map((host) => shouldBlockInstance(host, meta)),
 	);

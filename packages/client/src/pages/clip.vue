@@ -75,29 +75,29 @@ const headerActions = computed(() =>
 					icon: `${icon("ph-pencil")}`,
 					text: i18n.ts.toEdit,
 					handler: async (): Promise<void> => {
-						const { canceled, result } = await os.form(clip.value.name, {
+						const { canceled, result } = await os.form(clip.value!.name, {
 							name: {
 								type: "string",
 								label: i18n.ts.name,
-								default: clip.value.name,
+								default: clip.value!.name,
 							},
 							description: {
 								type: "string",
 								required: false,
 								multiline: true,
 								label: i18n.ts.description,
-								default: clip.value.description,
+								default: clip.value!.description,
 							},
 							isPublic: {
 								type: "boolean",
 								label: i18n.ts.public,
-								default: clip.value.isPublic,
+								default: clip.value!.isPublic,
 							},
 						});
 						if (canceled) return;
 
 						os.apiWithDialog("clips/update", {
-							clipId: clip.value.id,
+							clipId: clip.value!.id,
 							...result,
 						});
 					},

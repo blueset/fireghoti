@@ -54,6 +54,7 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import MkPagination from "@/components/MkPagination.vue";
+import type { MkPaginationType } from "@/components/MkPagination.vue";
 import MkButton from "@/components/MkButton.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
@@ -66,7 +67,7 @@ const pagination = {
 	limit: 10,
 };
 
-const paginationEl = ref<InstanceType<typeof MkPagination>>();
+const paginationEl = ref<MkPaginationType<"announcements"> | null>(null);
 function read(id: string) {
 	if (!paginationEl.value) return;
 	paginationEl.value.updateItem(id, (announcement) => {

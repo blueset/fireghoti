@@ -4,20 +4,20 @@
 		ref="canvas"
 		:width="size"
 		:height="size"
-		:title="title"
+		:title="title || undefined"
 	/>
 	<img
 		v-if="src"
 		:src="src"
-		:title="title"
+		:title="title || undefined"
 		:type="type"
-		:alt="alt"
+		:alt="alt || undefined"
 		:class="{
 			cover,
 			wide: largestDimension === 'width',
 			tall: largestDimension === 'height',
 		}"
-		:style="{ 'object-fit': cover ? 'cover' : null }"
+		:style="{ 'object-fit': cover ? 'cover' : undefined }"
 		loading="lazy"
 		@load="onLoad"
 	/>

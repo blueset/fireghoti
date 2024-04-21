@@ -6,7 +6,7 @@ import type S3 from "aws-sdk/clients/s3.js"; // TODO: migrate to SDK v3
 import sharp from "sharp";
 import { IsNull } from "typeorm";
 import { publishMainStream, publishDriveStream } from "@/services/stream.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { contentDisposition } from "@/misc/content-disposition.js";
 import { getFileInfo } from "@/misc/get-file-info.js";
 import {
@@ -16,6 +16,7 @@ import {
 	UserProfiles,
 } from "@/models/index.js";
 import { DriveFile } from "@/models/entities/drive-file.js";
+import type { DriveFileUsageHint } from "@/models/entities/drive-file.js";
 import type { IRemoteUser, User } from "@/models/entities/user.js";
 import { genId } from "backend-rs";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
@@ -65,6 +66,7 @@ function urlPathJoin(
  * @param type Content-Type for original
  * @param hash Hash for original
  * @param size Size for original
+ * @param usage Optional usage hint for file (f.e. "userAvatar")
  */
 async function save(
 	file: DriveFile,
@@ -73,11 +75,12 @@ async function save(
 	type: string,
 	hash: string,
 	size: number,
+	usage: DriveFileUsageHint = null,
 ): Promise<DriveFile> {
 	// thunbnail, webpublic を必要なら生成
 	const alts = await generateAlts(path, type, !file.uri);
 
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 
 	if (meta.useObjectStorage) {
 		//#region ObjectStorage params
@@ -161,6 +164,7 @@ async function save(
 		file.md5 = hash;
 		file.size = size;
 		file.storedInternal = false;
+		file.usageHint = usage ?? null;
 
 		return await DriveFiles.insert(file).then((x) =>
 			DriveFiles.findOneByOrFail(x.identifiers[0]),
@@ -204,6 +208,7 @@ async function save(
 		file.type = type;
 		file.md5 = hash;
 		file.size = size;
+		file.usageHint = usage ?? null;
 
 		return await DriveFiles.insert(file).then((x) =>
 			DriveFiles.findOneByOrFail(x.identifiers[0]),
@@ -360,7 +365,7 @@ async function upload(
 	if (type === "image/apng") type = "image/png";
 	if (!FILE_TYPE_BROWSERSAFE.includes(type)) type = "application/octet-stream";
 
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 
 	const params = {
 		Bucket: meta.objectStorageBucket,
@@ -450,6 +455,9 @@ type AddFileArgs = {
 
 	requestIp?: string | null;
 	requestHeaders?: Record<string, string> | null;
+
+	/** Whether this file has a known use case, like user avatar or instance icon */
+	usageHint?: DriveFileUsageHint;
 };
 
 /**
@@ -469,6 +477,7 @@ export async function addFile({
 	sensitive = null,
 	requestIp = null,
 	requestHeaders = null,
+	usageHint = null,
 }: AddFileArgs): Promise<DriveFile> {
 	const info = await getFileInfo(path);
 	logger.info(`${JSON.stringify(info)}`);
@@ -495,7 +504,7 @@ export async function addFile({
 		const usage = await DriveFiles.calcDriveUsageOf(user);
 		const u = await Users.findOneBy({ id: user.id });
 
-		const instance = await fetchMeta();
+		const instance = await fetchMeta(true);
 		let driveCapacity =
 			1024 *
 			1024 *
@@ -567,7 +576,7 @@ export async function addFile({
 		: null;
 
 	const folder = await fetchFolder();
-	const instance = await fetchMeta();
+	const instance = await fetchMeta(true);
 
 	let file = new DriveFile();
 	file.id = genId();
@@ -581,6 +590,7 @@ export async function addFile({
 	file.isLink = isLink;
 	file.requestIp = requestIp;
 	file.requestHeaders = requestHeaders;
+	file.usageHint = usageHint;
 	file.isSensitive = user
 		? Users.isLocalUser(user) &&
 			(instance!.markLocalFilesNsfwByDefault || profile!.alwaysMarkNsfw)
@@ -639,6 +649,7 @@ export async function addFile({
 			info.type.mime,
 			info.md5,
 			info.size,
+			usageHint,
 		);
 	}
 

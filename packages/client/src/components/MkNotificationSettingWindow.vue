@@ -6,7 +6,7 @@
 		:with-ok-button="true"
 		:ok-button-disabled="false"
 		@ok="ok()"
-		@close="dialog.close()"
+		@close="dialog!.close()"
 		@closed="emit('closed')"
 	>
 		<template #header>{{ i18n.ts.notificationSetting }}</template>
@@ -68,7 +68,7 @@ const includingTypes = computed(() => props.includingTypes || []);
 
 const dialog = ref<InstanceType<typeof XModalWindow>>();
 
-const typesMap = ref<Record<(typeof notificationTypes)[number], boolean>>({});
+const typesMap = ref({} as Record<(typeof notificationTypes)[number], boolean>);
 const useGlobalSetting = ref(
 	(includingTypes.value === null || includingTypes.value.length === 0) &&
 		props.showGlobalToggle,
@@ -89,7 +89,7 @@ function ok() {
 		});
 	}
 
-	dialog.value.close();
+	dialog.value!.close();
 }
 
 function disableAll() {

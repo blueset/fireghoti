@@ -54,8 +54,8 @@ const url = computed(() => {
 		return char2filePath(char.value);
 	} else {
 		return defaultStore.state.disableShowingAnimatedImages
-			? getStaticImageUrl(customEmoji.value.url)
-			: customEmoji.value.url;
+			? getStaticImageUrl(customEmoji.value!.url)
+			: customEmoji.value!.url;
 	}
 });
 const alt = computed(() =>

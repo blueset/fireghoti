@@ -66,14 +66,17 @@
 import { computed, ref } from "vue";
 import { acct } from "firefish-js";
 import MkPagination from "@/components/MkPagination.vue";
+import type { MkPaginationType } from "@/components/MkPagination.vue";
 import { userPage } from "@/filters/user";
-import * as os from "@/os";
+// import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { me } from "@/me";
 import icon from "@/scripts/icon";
 
-const paginationComponent = ref<InstanceType<typeof MkPagination>>();
+const paginationComponent = ref<MkPaginationType<
+	typeof pagination.endpoint
+> | null>(null);
 
 const pagination = {
 	endpoint: "following/requests/sent" as const,

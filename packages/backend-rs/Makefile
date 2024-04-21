@@ -17,7 +17,7 @@ regenerate-entities:
 	  attribute=$$(printf 'cfg_attr(feature = "napi", napi_derive::napi(object, js_name = "%s", use_nullable = true))' "$${jsname}"); \
 	  sed -i "s/NAPI_EXTRA_ATTR_PLACEHOLDER/$${attribute}/" "$${file}"; \
 	done
-	sed -i 's/#\[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum)\]/#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]\n#[cfg_attr(not(feature = "napi"), derive(Clone))]\n#[cfg_attr(feature = "napi", napi_derive::napi)]/' \
+	sed -i 's/#\[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum)\]/#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]\n#[cfg_attr(not(feature = "napi"), derive(Clone))]\n#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]/' \
 	  src/model/entity/sea_orm_active_enums.rs
 	cargo fmt --all --
 

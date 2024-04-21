@@ -1,7 +1,7 @@
 import { UserProfiles, Users } from "@/models/index.js";
 import { deleteAccount } from "@/services/delete-account.js";
 import define from "@/server/api/define.js";
-import { comparePassword } from "@/misc/password.js";
+import { verifyPassword } from "backend-rs";
 
 export const meta = {
 	requireCredential: true,
@@ -24,8 +24,8 @@ export default define(meta, paramDef, async (ps, user) => {
 		return;
 	}
 
-	// Compare password
-	const same = await comparePassword(ps.password, profile.password!);
+	// Compare passwords
+	const same = verifyPassword(ps.password, profile.password!);
 
 	if (!same) {
 		throw new Error("incorrect password");

@@ -1,5 +1,5 @@
 // import { IsNull } from 'typeorm';
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import define from "@/server/api/define.js";
 
 export const meta = {
@@ -27,7 +27,7 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async () => {
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 	const motd = await Promise.all(meta.customMotd.map((x) => x));
 	return motd;
 });

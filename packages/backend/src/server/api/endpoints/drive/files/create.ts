@@ -2,7 +2,7 @@ import { addFile } from "@/services/drive/add-file.js";
 import { DriveFiles } from "@/models/index.js";
 import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 import { MINUTE } from "@/const.js";
 import define from "@/server/api/define.js";
 import { apiLogger } from "@/server/api/logger.js";
@@ -96,7 +96,7 @@ export default define(
 			name = null;
 		}
 
-		const instanceMeta = await fetchMeta();
+		const instanceMeta = await fetchMeta(true);
 
 		try {
 			// Create file

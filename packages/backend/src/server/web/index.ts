@@ -10,13 +10,12 @@ import Router from "@koa/router";
 import send from "koa-send";
 import favicon from "koa-favicon";
 import views from "@ladjs/koa-views";
-import sharp from "sharp";
 import { createBullBoard } from "@bull-board/api";
 import { BullAdapter } from "@bull-board/api/bullAdapter.js";
 import { KoaAdapter } from "@bull-board/koa";
 
 import { In, IsNull } from "typeorm";
-import { fetchMeta, metaToPugArgs } from "@/misc/fetch-meta.js";
+import { fetchMeta, metaToPugArgs } from "backend-rs";
 import config from "@/config/index.js";
 import {
 	Users,
@@ -28,8 +27,7 @@ import {
 	Emojis,
 	GalleryPosts,
 } from "@/models/index.js";
-import { stringToAcct } from "backend-rs";
-import { getNoteSummary } from "@/misc/get-note-summary.js";
+import { getNoteSummary, stringToAcct } from "backend-rs";
 import { queues } from "@/queue/queues.js";
 import { genOpenapiSpec } from "../api/openapi/gen-spec.js";
 import { urlPreviewHandler } from "./url-preview.js";
@@ -56,6 +54,10 @@ app.use(async (ctx, next) => {
 	const url = decodeURI(ctx.path);
 
 	if (url === bullBoardPath || url.startsWith(`${bullBoardPath}/`)) {
+		if (!url.startsWith(`${bullBoardPath}/static/`)) {
+			ctx.set("Cache-Control", "private, max-age=0, must-revalidate");
+		}
+
 		const token = ctx.cookies.get("token");
 		if (token == null) {
 			ctx.status = 401;
@@ -326,7 +328,7 @@ const getFeed = async (
 	noRenotes: string,
 	noReplies: string,
 ) => {
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 	if (meta.privateMode) {
 		return;
 	}
@@ -475,7 +477,7 @@ const userPage: Router.Middleware = async (ctx, next) => {
 	}
 
 	const profile = await UserProfiles.findOneByOrFail({ userId: user.id });
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 	const me = profile.fields
 		? profile.fields
 				.filter((filed) => filed.value?.match(/^https?:/))
@@ -518,22 +520,22 @@ router.get("/notes/:note", async (ctx, next) => {
 	});
 
 	try {
-		if (note) {
-			const _note = await Notes.pack(note);
+		if (note != null) {
+			const packedNote = await Notes.pack(note);
 
 			const profile = await UserProfiles.findOneByOrFail({
 				userId: note.userId,
 			});
-			const meta = await fetchMeta();
+			const meta = await fetchMeta(true);
 			await ctx.render("note", {
 				...metaToPugArgs(meta),
-				note: _note,
+				note: packedNote,
 				profile,
 				avatarUrl: await Users.getAvatarUrl(
 					await Users.findOneByOrFail({ id: note.userId }),
 				),
 				// TODO: Let locale changeable by instance setting
-				summary: getNoteSummary(_note),
+				summary: getNoteSummary(note),
 			});
 
 			ctx.set("Cache-Control", "public, max-age=15");
@@ -558,7 +560,7 @@ router.get("/posts/:note", async (ctx, next) => {
 	if (note) {
 		const _note = await Notes.pack(note);
 		const profile = await UserProfiles.findOneByOrFail({ userId: note.userId });
-		const meta = await fetchMeta();
+		const meta = await fetchMeta(true);
 		await ctx.render("note", {
 			...metaToPugArgs(meta),
 			note: _note,
@@ -596,7 +598,7 @@ router.get("/@:user/pages/:page", async (ctx, next) => {
 	if (page) {
 		const _page = await Pages.pack(page);
 		const profile = await UserProfiles.findOneByOrFail({ userId: page.userId });
-		const meta = await fetchMeta();
+		const meta = await fetchMeta(true);
 		await ctx.render("page", {
 			...metaToPugArgs(meta),
 			page: _page,
@@ -628,7 +630,7 @@ router.get("/clips/:clip", async (ctx, next) => {
 	if (clip) {
 		const _clip = await Clips.pack(clip);
 		const profile = await UserProfiles.findOneByOrFail({ userId: clip.userId });
-		const meta = await fetchMeta();
+		const meta = await fetchMeta(true);
 		await ctx.render("clip", {
 			...metaToPugArgs(meta),
 			clip: _clip,
@@ -653,7 +655,7 @@ router.get("/gallery/:post", async (ctx, next) => {
 	if (post) {
 		const _post = await GalleryPosts.pack(post);
 		const profile = await UserProfiles.findOneByOrFail({ userId: post.userId });
-		const meta = await fetchMeta();
+		const meta = await fetchMeta(true);
 		await ctx.render("gallery-post", {
 			...metaToPugArgs(meta),
 			post: _post,
@@ -679,7 +681,7 @@ router.get("/channels/:channel", async (ctx, next) => {
 
 	if (channel) {
 		const _channel = await Channels.pack(channel);
-		const meta = await fetchMeta();
+		const meta = await fetchMeta(true);
 		await ctx.render("channel", {
 			...metaToPugArgs(meta),
 			channel: _channel,
@@ -732,7 +734,7 @@ router.get("/api/v1/streaming", async (ctx) => {
 
 // Render base html for all requests
 router.get("(.*)", async (ctx) => {
-	const meta = await fetchMeta();
+	const meta = await fetchMeta(true);
 
 	await ctx.render("base", {
 		...metaToPugArgs(meta),

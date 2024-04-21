@@ -2,7 +2,7 @@ import define from "@/server/api/define.js";
 import { Brackets } from "typeorm";
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
 import { Channels } from "@/models/index.js";
-import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
+import { sqlLikeEscape } from "backend-rs";
 
 export const meta = {
 	tags: ["channels"],

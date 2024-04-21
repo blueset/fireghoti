@@ -1,7 +1,7 @@
 {
 	"$schema": "https://biomejs.dev/schemas/1.6.4/schema.json",
 	"organizeImports": {
-		"enabled": true
+		"enabled": false
 	},
 	"linter": {
 		"enabled": true,
@@ -21,7 +21,8 @@
 						"useImportType": "warn",
 						"useShorthandFunctionType": "warn",
 						"useTemplate": "warn",
-						"noNonNullAssertion": "off"
+						"noNonNullAssertion": "off",
+						"useNodejsImportProtocol": "off"
 					}
 				}
 			}

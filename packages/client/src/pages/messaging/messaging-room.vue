@@ -110,7 +110,7 @@ import { acct } from "firefish-js";
 import XMessage from "./messaging-room.message.vue";
 import XForm from "./messaging-room.form.vue";
 import XList from "@/components/MkDateSeparatedList.vue";
-import type { Paging } from "@/components/MkPagination.vue";
+import type { MkPaginationType, Paging } from "@/components/MkPagination.vue";
 import MkPagination from "@/components/MkPagination.vue";
 import {
 	isBottomVisible,
@@ -136,7 +136,9 @@ const stream = useStream();
 
 const rootEl = ref<HTMLDivElement>();
 const formEl = ref<InstanceType<typeof XForm>>();
-const pagingComponent = ref<InstanceType<typeof MkPagination>>();
+const pagingComponent = ref<MkPaginationType<"messaging/messages"> | null>(
+	null,
+);
 
 const fetching = ref(true);
 const user = ref<entities.UserDetailed | null>(null);

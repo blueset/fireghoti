@@ -1,7 +1,7 @@
 import * as os from "node:os";
 import si from "systeminformation";
 import define from "@/server/api/define.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { fetchMeta } from "backend-rs";
 
 export const meta = {
 	requireCredential: false,
@@ -30,7 +30,7 @@ export default define(meta, paramDef, async () => {
 		}
 	}
 
-	const instanceMeta = await fetchMeta();
+	const instanceMeta = await fetchMeta(true);
 	if (!instanceMeta.enableServerMachineStats) {
 		return {
 			machine: "Not specified",

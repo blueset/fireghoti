@@ -1,6 +1,8 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'AddDriveFileUsage1713451569342',
+    'ConvertCwVarcharToText1713225866247',
     'FixChatFileConstraint1712855579316',
     'DropTimeZone1712425488543',
     'ExpandNoteEdit1711936358554',
@@ -21,6 +23,15 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- AddDriveFileUsage
+ALTER TABLE "drive_file" DROP COLUMN "usageHint";
+DROP TYPE "drive_file_usage_hint_enum";
+
+-- convert-cw-varchar-to-text
+DROP INDEX "IDX_8e3bbbeb3df04d1a8105da4c8f";
+ALTER TABLE "note" ALTER COLUMN "cw" TYPE character varying(512);
+CREATE INDEX "IDX_8e3bbbeb3df04d1a8105da4c8f" ON "note" USING "pgroonga" ("cw" pgroonga_varchar_full_text_search_ops_v2);
 
 -- fix-chat-file-constraint
 ALTER TABLE "messaging_message" DROP CONSTRAINT "FK_535def119223ac05ad3fa9ef64b";
