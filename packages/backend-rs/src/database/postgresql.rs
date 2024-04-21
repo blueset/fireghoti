@@ -1,4 +1,4 @@
-use crate::config::server::CONFIG;
+use crate::config::CONFIG;
 use sea_orm::{Database, DbConn, DbErr};
 
 static DB_CONN: once_cell::sync::OnceCell<DbConn> = once_cell::sync::OnceCell::new();

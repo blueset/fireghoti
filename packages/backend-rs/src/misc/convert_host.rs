@@ -1,4 +1,4 @@
-use crate::config::server::CONFIG;
+use crate::config::CONFIG;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {

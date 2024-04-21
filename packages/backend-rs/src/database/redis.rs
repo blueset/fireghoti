@@ -1,4 +1,4 @@
-use crate::config::server::CONFIG;
+use crate::config::CONFIG;
 use redis::{Client, Connection, RedisError};
 
 static REDIS_CLIENT: once_cell::sync::OnceCell<Client> = once_cell::sync::OnceCell::new();
