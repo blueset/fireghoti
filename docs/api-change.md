@@ -2,6 +2,15 @@
 
 Breaking changes are indicated by the :warning: icon.
 
+## Unreleased
+
+- New optional parameters are added to `notes/renotes` endpoint:
+	- `filter`: `"boost"` for boosts only, `"quote"` for quotes only, `null`(default) for both
+
+- Removed unused optional parameters for `notes/reactions` endpoint:
+	- `sinceId`
+	- `untilId`
+
 ## v20240413
 
 - :warning: Removed `patrons` endpoint.
