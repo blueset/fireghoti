@@ -1113,12 +1113,7 @@ async function post() {
 				}
 			}
 			isFirstPostAttempt = false;
-			// Continue if all files have alt-text added.
-			if (
-				files.value.some((f) => f.comment == null || f.comment.length === 0)
-			) {
-				return;
-			}
+			return;
 		}
 	}
 
@@ -1144,12 +1139,7 @@ async function post() {
 					}
 				}
 			}
-			// Continue if all files have alt-text added.
-			if (
-				files.value.some((f) => f.comment == null || f.comment.length === 0)
-			) {
-				return;
-			}
+			return;
 		}
 	}
 
