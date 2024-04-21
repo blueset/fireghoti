@@ -179,11 +179,11 @@ export class DriveFile {
 	})
 	public isSensitive: boolean;
 
+	// Hint for what this file is used for
 	@Column({
 		type: "enum",
 		enum: ["userAvatar", "userBanner"],
 		nullable: true,
-		comment: "Hint for what the file is used for.",
 	})
 	public usageHint: DriveFileUsageHint;
 
