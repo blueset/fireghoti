@@ -442,6 +442,10 @@ export const defaultStore = markRaw(
 			where: "account",
 			default: true,
 		},
+		showAddFileDescriptionAtFirstPost: {
+			where: "account",
+			default: false,
+		},
 		autocorrectNoteLanguage: {
 			where: "account",
 			default: true,
