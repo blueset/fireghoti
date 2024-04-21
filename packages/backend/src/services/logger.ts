@@ -28,9 +28,9 @@ export default class Logger {
 
 		if (config.syslog) {
 			this.syslogClient = new SyslogPro.RFC5424({
-				applacationName: "Firefish",
+				applicationName: "Firefish",
 				timestamp: true,
-				encludeStructuredData: true,
+				includeStructuredData: true,
 				color: true,
 				extendedColor: true,
 				server: {
