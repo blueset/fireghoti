@@ -134,6 +134,7 @@ class Publisher {
 		);
 	};
 
+	/* ported to backend-rs */
 	// public publishAntennaStream = <K extends keyof AntennaStreamTypes>(
 	// 	antennaId: Antenna["id"],
 	// 	type: K,
