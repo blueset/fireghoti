@@ -1,11 +1,10 @@
 import { URL } from "url";
-import httpSignature, { IParsedSignature } from "@peertube/http-signature";
+import httpSignature, { type IParsedSignature } from "@peertube/http-signature";
 import { config } from "@/config.js";
-import { fetchMeta } from "backend-rs";
+import { fetchMeta, isAllowedServer, isBlockedServer } from "backend-rs";
 import { toPuny } from "backend-rs";
 import DbResolver from "@/remote/activitypub/db-resolver.js";
 import { getApId } from "@/remote/activitypub/type.js";
-import { shouldBlockInstance } from "@/misc/should-block-instance.js";
 import type { IncomingMessage } from "http";
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
 import type { UserPublickey } from "@/models/entities/user-publickey.js";
@@ -44,15 +43,11 @@ export async function checkFetch(req: IncomingMessage): Promise<number> {
 		const keyId = new URL(signature.keyId);
 		const host = toPuny(keyId.hostname);
 
-		if (await shouldBlockInstance(host, meta)) {
+		if (await isBlockedServer(host)) {
 			return 403;
 		}
 
-		if (
-			meta.privateMode &&
-			host !== config.host &&
-			!meta.allowedHosts.includes(host)
-		) {
+		if (host !== config.host && !isAllowedServer(host)) {
 			return 403;
 		}
 

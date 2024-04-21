@@ -37,14 +37,18 @@ import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { App } from "@/models/entities/app.js";
 import { Not, In } from "typeorm";
 import type { User, ILocalUser, IRemoteUser } from "@/models/entities/user.js";
-import { genId } from "backend-rs";
 import { activeUsersChart } from "@/services/chart/index.js";
 import type { IPoll } from "@/models/entities/poll.js";
 import { Poll } from "@/models/entities/poll.js";
 import { createNotification } from "@/services/create-notification.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
 import { checkHitAntenna } from "@/misc/check-hit-antenna.js";
-import { addNoteToAntenna, checkWordMute } from "backend-rs";
+import {
+	addNoteToAntenna,
+	checkWordMute,
+	genId,
+	isSilencedServer,
+} from "backend-rs";
 import { countSameRenotes } from "@/misc/count-same-renotes.js";
 import { deliverToRelays, getCachedRelays } from "../relay.js";
 import type { Channel } from "@/models/entities/channel.js";
@@ -56,7 +60,6 @@ import { Cache } from "@/misc/cache.js";
 import type { UserProfile } from "@/models/entities/user-profile.js";
 import { db } from "@/db/postgre.js";
 import { getActiveWebhooks } from "@/misc/webhook-cache.js";
-import { shouldSilenceInstance } from "@/misc/should-block-instance.js";
 import { redisClient } from "@/db/redis.js";
 import { Mutex } from "redis-semaphore";
 import { langmap } from "@/misc/langmap.js";
@@ -225,7 +228,7 @@ export default async (
 		if (
 			data.visibility === "public" &&
 			Users.isRemoteUser(user) &&
-			(await shouldSilenceInstance(user.host))
+			(await isSilencedServer(user.host))
 		) {
 			data.visibility = "home";
 		}

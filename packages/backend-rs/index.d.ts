@@ -193,6 +193,21 @@ export interface Acct {
 }
 export function stringToAcct(acct: string): Acct
 export function acctToString(acct: Acct): string
+/**
+ * @param host punycoded instance host
+ * @returns whether the given host should be blocked
+*/
+export function isBlockedServer(host: string): Promise<boolean>
+/**
+ * @param host punycoded instance host
+ * @returns whether the given host should be limited
+*/
+export function isSilencedServer(host: string): Promise<boolean>
+/**
+ * @param host punycoded instance host
+ * @returns whether the given host is allowlisted (this is always true if private mode is disabled)
+*/
+export function isAllowedServer(host: string): Promise<boolean>
 /** TODO: handle name collisions better */
 export interface NoteLikeForCheckWordMute {
   fileIds: Array<string>
@@ -557,7 +572,6 @@ export interface Meta {
   recaptchaSecretKey: string | null
   localDriveCapacityMb: number
   remoteDriveCapacityMb: number
-  antennaLimit: number
   summalyProxy: string | null
   enableEmail: boolean
   email: string | null
@@ -620,6 +634,7 @@ export interface Meta {
   donationLink: string | null
   moreUrls: Json
   markLocalFilesNsfwByDefault: boolean
+  antennaLimit: number
 }
 export interface Migrations {
   id: number

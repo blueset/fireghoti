@@ -1,8 +1,12 @@
 import { config } from "@/config.js";
 import type { ILocalUser } from "@/models/entities/user.js";
 import { getInstanceActor } from "@/services/instance-actor.js";
-import { fetchMeta } from "backend-rs";
-import { extractHost, isSelfHost } from "backend-rs";
+import {
+	extractHost,
+	isAllowedServer,
+	isBlockedServer,
+	isSelfHost,
+} from "backend-rs";
 import { apGet } from "./request.js";
 import type { IObject, ICollection, IOrderedCollection } from "./type.js";
 import { isCollectionOrOrderedCollection, getApId } from "./type.js";
@@ -21,7 +25,6 @@ import renderQuestion from "@/remote/activitypub/renderer/question.js";
 import renderCreate from "@/remote/activitypub/renderer/create.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderFollow from "@/remote/activitypub/renderer/follow.js";
-import { shouldBlockInstance } from "@/misc/should-block-instance.js";
 import { apLogger } from "@/remote/activitypub/logger.js";
 import { IsNull, Not } from "typeorm";
 
@@ -69,7 +72,7 @@ export default class Resolver {
 			apLogger.debug("Object to resolve is not a string");
 			if (typeof value.id !== "undefined") {
 				const host = extractHost(getApId(value));
-				if (await shouldBlockInstance(host)) {
+				if (await isBlockedServer(host)) {
 					throw new Error("instance is blocked");
 				}
 			}
@@ -100,17 +103,12 @@ export default class Resolver {
 			return await this.resolveLocal(value);
 		}
 
-		const meta = await fetchMeta(true);
-		if (await shouldBlockInstance(host, meta)) {
-			throw new Error("Instance is blocked");
+		if (await isBlockedServer(host)) {
+			throw new Error("This instance is blocked");
 		}
 
-		if (
-			meta.privateMode &&
-			config.host !== host &&
-			!meta.allowedHosts.includes(host)
-		) {
-			throw new Error("Instance is not allowed");
+		if (config.host !== host && !isAllowedServer(host)) {
+			throw new Error("This instance is not allowed");
 		}
 
 		if (!this.user) {

@@ -12,7 +12,7 @@ import { unique, toArray, toSingle } from "@/prelude/array.js";
 import { extractPollFromQuestion } from "./question.js";
 import vote from "@/services/note/polls/vote.js";
 import { apLogger } from "../logger.js";
-import { DriveFile } from "@/models/entities/drive-file.js";
+import type { DriveFile } from "@/models/entities/drive-file.js";
 import { extractHost, isSameOrigin, toPuny } from "backend-rs";
 import {
 	Emojis,
@@ -33,14 +33,13 @@ import {
 	getApType,
 } from "../type.js";
 import type { Emoji } from "@/models/entities/emoji.js";
-import { genId } from "backend-rs";
+import { genId, isBlockedServer } from "backend-rs";
 import { getApLock } from "@/misc/app-lock.js";
 import { createMessage } from "@/services/messages/create.js";
 import { parseAudience } from "../audience.js";
 import { extractApMentions } from "./mention.js";
 import DbResolver from "../db-resolver.js";
 import { StatusError } from "@/misc/fetch.js";
-import { shouldBlockInstance } from "@/misc/should-block-instance.js";
 import { publishNoteStream } from "@/services/stream.js";
 import { extractHashtags } from "@/misc/extract-hashtags.js";
 import { UserProfiles } from "@/models/index.js";
@@ -421,7 +420,7 @@ export async function resolveNote(
 	if (uri == null) throw new Error("missing uri");
 
 	// Abort if origin host is blocked
-	if (await shouldBlockInstance(extractHost(uri)))
+	if (await isBlockedServer(extractHost(uri)))
 		throw new StatusError(
 			"host blocked",
 			451,

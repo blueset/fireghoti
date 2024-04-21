@@ -310,12 +310,15 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { loadEnv, loadConfig, stringToAcct, acctToString, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getNoteSummary, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, AntennaSrcEnum, DriveFileUsageHintEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, addNoteToAntenna, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
+const { loadEnv, loadConfig, stringToAcct, acctToString, isBlockedServer, isSilencedServer, isAllowedServer, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getNoteSummary, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, AntennaSrcEnum, DriveFileUsageHintEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, addNoteToAntenna, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
 
 module.exports.loadEnv = loadEnv
 module.exports.loadConfig = loadConfig
 module.exports.stringToAcct = stringToAcct
 module.exports.acctToString = acctToString
+module.exports.isBlockedServer = isBlockedServer
+module.exports.isSilencedServer = isSilencedServer
+module.exports.isAllowedServer = isAllowedServer
 module.exports.checkWordMute = checkWordMute
 module.exports.getFullApAccount = getFullApAccount
 module.exports.isSelfHost = isSelfHost
