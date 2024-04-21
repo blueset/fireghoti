@@ -1046,14 +1046,14 @@ function openFileDescriptionWindow(file: entities.DriveFile) {
 						resolve(false);
 						return;
 					}
-					const comment = result.result.length === 0 ? null : result.result;
+					const comment = result.result?.length === 0 ? null : result.result;
 					os.api("drive/files/update", {
 						fileId: file.id,
 						comment,
 					})
 						.then(() => {
 							resolve(true);
-							file.comment = comment;
+							file.comment = comment ?? null;
 						})
 						.catch((err: unknown) => {
 							reject(err);
