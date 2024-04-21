@@ -1,6 +1,6 @@
 use crate::database::{redis_conn, redis_key};
-use crate::service::stream::{publish_to_stream, Error, Stream};
 use crate::model::entity::note;
+use crate::service::stream::{publish_to_stream, Error, Stream};
 use crate::util::id::get_timestamp;
 use redis::{streams::StreamMaxlen, Commands};
 
