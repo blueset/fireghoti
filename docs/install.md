@@ -1,6 +1,31 @@
 # Install Firefish
 
-This document shows an example procedure for installing Firefish on Debian 12. Note that there is much room for customizing the server setup; this document merely demonstrates a simple installation.
+Firefish depends on the following software.
+
+## Runtime dependencies
+
+- At least [NodeJS](https://nodejs.org/en/) v18.17.0 (v20/v21 recommended)
+- At least [PostgreSQL](https://www.postgresql.org/) v12 (v16 recommended) with [PGroonga](https://pgroonga.github.io/) extension
+- At least [Redis](https://redis.io/) v7
+- Web Proxy (one of the following)
+  - Caddy (recommended)
+  - Nginx (recommended)
+  - Apache
+- [FFmpeg](https://ffmpeg.org/) for video transcoding (**optional**)
+- Caching server (**optional**, one of the following)
+  - [DragonflyDB](https://www.dragonflydb.io/)
+  - [KeyDB](https://keydb.dev/)
+  - Another [Redis](https://redis.io/) server
+
+## Build dependencies
+
+- At least [Rust](https://www.rust-lang.org/) v1.74
+- C/C++ compiler & build tools
+  - `build-essential` on Debian/Ubuntu Linux
+  - `base-devel` on Arch Linux
+- [Python 3](https://www.python.org/)
+
+This document shows an example procedure for installing these dependencies and Firefish on Debian 12. Note that there is much room for customizing the server setup; this document merely demonstrates a simple installation.
 
 If you want to use the pre-built container image, please refer to [`install-container.md`](./install-container.md).
 
@@ -317,31 +342,3 @@ cd ~/firefish
   - Run `psql -d firefish` (or whatever the database name is)
   - Run `UPDATE "user" SET "isAdmin" = true WHERE id='999999';` (replace `999999` with the copied ID)
   - Restart your Firefish server
-
-## Dependencies
-
-**We only recommend that you use components that are still within the upstream support cycle for better performance and security, and it is recommended that new sites meet the recommended dependency version requirements.**
-
-- At least [NodeJS](https://nodejs.org/en/) v18.17.0 (v20/v21 recommended)
-- At least [PostgreSQL](https://www.postgresql.org/) v12 (v16 recommended) with [PGroonga](https://pgroonga.github.io/) extension
-- At least [Redis](https://redis.io/) v7
-- Web Proxy (one of the following)
-  - Caddy (recommended for new users)
-  - Nginx (recommended)
-  - Apache
-
-### Optional dependencies
-
-- [FFmpeg](https://ffmpeg.org/) for video transcoding
-- Caching server (one of the following)
-  - [DragonflyDB](https://www.dragonflydb.io/) (recommended)
-  - [KeyDB](https://keydb.dev/)
-  - Another [Redis](https://redis.io/) server
-
-### Build dependencies
-
-- At least [Rust](https://www.rust-lang.org/) v1.74
-- C/C++ compiler & build tools
-  - `build-essential` on Debian/Ubuntu Linux
-  - `base-devel` on Arch Linux
-- [Python 3](https://www.python.org/)
