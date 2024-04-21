@@ -2,7 +2,7 @@ use crate::config::server::CONFIG;
 use crate::database::redis_conn;
 use redis::{Commands, RedisError};
 
-#[derive(strum::Display, serde::Serialize)]
+#[derive(strum::Display)]
 pub enum Stream {
     #[strum(serialize = "internal")]
     Internal,
@@ -38,8 +38,6 @@ pub enum Stream {
 pub enum Error {
     #[error("Redis error: {0}")]
     RedisError(#[from] RedisError),
-    #[error("Json (de)serialization error: {0}")]
-    JsonError(#[from] serde_json::Error),
     #[error("Value error: {0}")]
     ValueError(String),
 }
