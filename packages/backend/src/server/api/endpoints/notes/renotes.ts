@@ -67,6 +67,9 @@ export default define(meta, paramDef, async (ps, user) => {
 		.andWhere("note.renoteId = :renoteId", { renoteId: note.id })
 		.innerJoinAndSelect("note.user", "user");
 
+	// "all" doesn't filter out anything, it's just there for
+	// those who prefer to set the parameter explicitly
+
 	if (ps.filter === "renote") {
 		query.andWhere("note.text IS NULL");
 	}
