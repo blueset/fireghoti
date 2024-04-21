@@ -320,7 +320,7 @@ fn load_config() -> Config {
     } else {
         server_config.redis.prefix.clone()
     }
-    .unwrap_or(host.clone());
+    .unwrap_or(hostname.clone());
 
     Config {
         url: server_config.url,
