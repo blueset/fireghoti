@@ -772,81 +772,81 @@ export interface ReplyMuting {
   muteeId: string
   muterId: string
 }
-export const enum AntennaSrcEnum {
-  All = 0,
-  Group = 1,
-  Home = 2,
-  Instances = 3,
-  List = 4,
-  Users = 5
+export enum AntennaSrcEnum {
+  All = 'all',
+  Group = 'group',
+  Home = 'home',
+  Instances = 'instances',
+  List = 'list',
+  Users = 'users'
 }
-export const enum MutedNoteReasonEnum {
-  Manual = 0,
-  Other = 1,
-  Spam = 2,
-  Word = 3
+export enum MutedNoteReasonEnum {
+  Manual = 'manual',
+  Other = 'other',
+  Spam = 'spam',
+  Word = 'word'
 }
-export const enum NoteVisibilityEnum {
-  Followers = 0,
-  Hidden = 1,
-  Home = 2,
-  Public = 3,
-  Specified = 4
+export enum NoteVisibilityEnum {
+  Followers = 'followers',
+  Hidden = 'hidden',
+  Home = 'home',
+  Public = 'public',
+  Specified = 'specified'
 }
-export const enum NotificationTypeEnum {
-  App = 0,
-  Follow = 1,
-  FollowRequestAccepted = 2,
-  GroupInvited = 3,
-  Mention = 4,
-  PollEnded = 5,
-  PollVote = 6,
-  Quote = 7,
-  Reaction = 8,
-  ReceiveFollowRequest = 9,
-  Renote = 10,
-  Reply = 11
+export enum NotificationTypeEnum {
+  App = 'app',
+  Follow = 'follow',
+  FollowRequestAccepted = 'followRequestAccepted',
+  GroupInvited = 'groupInvited',
+  Mention = 'mention',
+  PollEnded = 'pollEnded',
+  PollVote = 'pollVote',
+  Quote = 'quote',
+  Reaction = 'reaction',
+  ReceiveFollowRequest = 'receiveFollowRequest',
+  Renote = 'renote',
+  Reply = 'reply'
 }
-export const enum PageVisibilityEnum {
-  Followers = 0,
-  Public = 1,
-  Specified = 2
+export enum PageVisibilityEnum {
+  Followers = 'followers',
+  Public = 'public',
+  Specified = 'specified'
 }
-export const enum PollNotevisibilityEnum {
-  Followers = 0,
-  Home = 1,
-  Public = 2,
-  Specified = 3
+export enum PollNotevisibilityEnum {
+  Followers = 'followers',
+  Home = 'home',
+  Public = 'public',
+  Specified = 'specified'
 }
-export const enum RelayStatusEnum {
-  Accepted = 0,
-  Rejected = 1,
-  Requesting = 2
+export enum RelayStatusEnum {
+  Accepted = 'accepted',
+  Rejected = 'rejected',
+  Requesting = 'requesting'
 }
-export const enum UserEmojimodpermEnum {
-  Add = 0,
-  Full = 1,
-  Mod = 2,
-  Unauthorized = 3
+export enum UserEmojimodpermEnum {
+  Add = 'add',
+  Full = 'full',
+  Mod = 'mod',
+  Unauthorized = 'unauthorized'
 }
-export const enum UserProfileFfvisibilityEnum {
-  Followers = 0,
-  Private = 1,
-  Public = 2
+export enum UserProfileFfvisibilityEnum {
+  Followers = 'followers',
+  Private = 'private',
+  Public = 'public'
 }
-export const enum UserProfileMutingnotificationtypesEnum {
-  App = 0,
-  Follow = 1,
-  FollowRequestAccepted = 2,
-  GroupInvited = 3,
-  Mention = 4,
-  PollEnded = 5,
-  PollVote = 6,
-  Quote = 7,
-  Reaction = 8,
-  ReceiveFollowRequest = 9,
-  Renote = 10,
-  Reply = 11
+export enum UserProfileMutingnotificationtypesEnum {
+  App = 'app',
+  Follow = 'follow',
+  FollowRequestAccepted = 'followRequestAccepted',
+  GroupInvited = 'groupInvited',
+  Mention = 'mention',
+  PollEnded = 'pollEnded',
+  PollVote = 'pollVote',
+  Quote = 'quote',
+  Reaction = 'reaction',
+  ReceiveFollowRequest = 'receiveFollowRequest',
+  Renote = 'renote',
+  Reply = 'reply'
 }
 export interface Signin {
   id: string
