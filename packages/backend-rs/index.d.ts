@@ -492,6 +492,7 @@ export interface Meta {
   recaptchaSecretKey: string | null
   localDriveCapacityMb: number
   remoteDriveCapacityMb: number
+  antennaLimit: number
   summalyProxy: string | null
   enableEmail: boolean
   email: string | null
