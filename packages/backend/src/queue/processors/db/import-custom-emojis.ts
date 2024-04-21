@@ -16,17 +16,17 @@ import * as path from "node:path";
 const logger = queueLogger.createSubLogger("import-custom-emojis");
 
 // probeImageSize acceptable extensions
+// JPG, GIF, PNG, WebP, BMP, TIFF, SVG, PSD.
 const acceptableExtensions = [
-	".avif",
-	".bmp",
-	".gif",
-	".ico",
 	".jpeg",
+	".jpg",
+	".gif",
 	".png",
-	".psd",
-	// ".svg", // Disable for secure issues
-	".tiff",
 	".webp",
+	".bmp",
+	".tiff",
+	// ".svg", // Disable for secure issues
+	".psd",
 ];
 
 // TODO: 名前衝突時の動作を選べるようにする
@@ -80,7 +80,7 @@ export async function importCustomEmojis(
 				const extname = path.extname(record.fileName);
 
 				// Skip non-support files
-				if (!acceptableExtensions.includes(extname)) {
+				if (!acceptableExtensions.includes(extname.toLowerCase())) {
 					continue;
 				}
 
@@ -128,7 +128,7 @@ export async function importCustomEmojis(
 				const extname = path.extname(emojiFilename);
 
 				// Skip non-emoji files, such as LICENSE
-				if (!acceptableExtensions.includes(extname)) {
+				if (!acceptableExtensions.includes(extname.toLowerCase())) {
 					continue;
 				}
 
