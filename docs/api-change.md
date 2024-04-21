@@ -4,10 +4,11 @@ Breaking changes are indicated by the :warning: icon.
 
 ## Unreleased
 
-- New optional parameters are added to `notes/renotes` endpoint:
-	- `filter`
-
-- Removed unused optional parameters for `notes/reactions` endpoint:
+- Added `filter` optional parameter to `notes/renotes` endpoint to filter the types of renotes. It can take the following values:
+	- `all` (default)
+  - `renote`
+  - `quote`
+- :warning: Removed the following optional parameters in `notes/reactions`, as they were not taken into account due to a bug:
 	- `sinceId`
 	- `untilId`
 
