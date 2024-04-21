@@ -3,7 +3,10 @@ import type { User } from "@/models/entities/user.js";
 import { createTemp } from "@/misc/create-temp.js";
 import { downloadUrl, isPrivateIp } from "@/misc/download-url.js";
 import type { DriveFolder } from "@/models/entities/drive-folder.js";
-import type { DriveFile, DriveFileUsageHint } from "@/models/entities/drive-file.js";
+import type {
+	DriveFile,
+	DriveFileUsageHint,
+} from "@/models/entities/drive-file.js";
 import { DriveFiles } from "@/models/index.js";
 import { driveLogger } from "./logger.js";
 import { addFile } from "./add-file.js";
