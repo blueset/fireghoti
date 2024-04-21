@@ -8,8 +8,8 @@ pub fn add_note_to_antenna(antenna_id: &str, note_id: &str) -> Result<(), Error>
     redis_conn()?.xadd_maxlen(
         redis_key(format!("antennaTimeline:{}", antenna_id)),
         StreamMaxlen::Approx(200),
-        format!("{}-*", get_timestamp(&note_id)),
-        &[("note", &note_id)],
+        format!("{}-*", get_timestamp(note_id)),
+        &[("note", note_id)],
     )?;
 
     let stream = Stream::Antenna {
