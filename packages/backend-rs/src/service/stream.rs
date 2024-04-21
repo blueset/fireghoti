@@ -51,10 +51,7 @@ pub fn publish_to_stream(
         format!(
             "{{ \"type\": \"{}\", \"body\": {} }}",
             kind,
-            match value {
-                Some(v) => v,
-                None => "null".to_string(),
-            }
+            value.unwrap_or("null".to_string()),
         )
     } else {
         value.ok_or(Error::ValueError("Invalid streaming message".to_string()))?
