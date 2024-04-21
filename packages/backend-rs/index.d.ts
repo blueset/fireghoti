@@ -348,6 +348,7 @@ export interface DriveFile {
   webpublicType: string | null
   requestHeaders: Json | null
   requestIp: string | null
+  usageHint: DriveFileUsageHintEnum | null
 }
 export interface DriveFolder {
   id: string
@@ -779,6 +780,10 @@ export enum AntennaSrcEnum {
   Instances = 'instances',
   List = 'list',
   Users = 'users'
+}
+export enum DriveFileUsageHintEnum {
+  UserAvatar = 'userAvatar',
+  UserBanner = 'userBanner'
 }
 export enum MutedNoteReasonEnum {
   Manual = 'manual',

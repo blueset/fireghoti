@@ -310,7 +310,7 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { readEnvironmentConfig, readServerConfig, stringToAcct, acctToString, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getNoteSummary, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, AntennaSrcEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
+const { readEnvironmentConfig, readServerConfig, stringToAcct, acctToString, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getNoteSummary, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, AntennaSrcEnum, DriveFileUsageHintEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
 
 module.exports.readEnvironmentConfig = readEnvironmentConfig
 module.exports.readServerConfig = readServerConfig
@@ -339,6 +339,7 @@ module.exports.decodeReaction = decodeReaction
 module.exports.countReactions = countReactions
 module.exports.toDbReaction = toDbReaction
 module.exports.AntennaSrcEnum = AntennaSrcEnum
+module.exports.DriveFileUsageHintEnum = DriveFileUsageHintEnum
 module.exports.MutedNoteReasonEnum = MutedNoteReasonEnum
 module.exports.NoteVisibilityEnum = NoteVisibilityEnum
 module.exports.NotificationTypeEnum = NotificationTypeEnum
