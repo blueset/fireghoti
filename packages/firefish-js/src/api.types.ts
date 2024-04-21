@@ -792,7 +792,7 @@ export type Endpoints = {
 			sinceId?: Note["id"];
 			untilId?: Note["id"];
 			noteId: Note["id"];
-			filter?: "boost" | "quote";
+			filter?: "all" | "renote" | "quote";
 		};
 		res: Note[];
 	};

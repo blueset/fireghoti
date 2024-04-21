@@ -44,7 +44,7 @@ export const paramDef = {
 		untilId: { type: "string", format: "misskey:id" },
 		filter: {
 			type: "string",
-			enum: ["boost", "quote"],
+			enum: ["all", "renote", "quote"],
 			nullable: true,
 			default: null,
 		},
@@ -67,7 +67,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		.andWhere("note.renoteId = :renoteId", { renoteId: note.id })
 		.innerJoinAndSelect("note.user", "user");
 
-	if (ps.filter === "boost") {
+	if (ps.filter === "renote") {
 		query.andWhere("note.text IS NULL");
 	}
 	if (ps.filter === "quote") {
