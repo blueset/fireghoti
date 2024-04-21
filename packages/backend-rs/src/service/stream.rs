@@ -26,8 +26,10 @@ pub enum Stream {
     Drive { id: String },
     #[strum(to_string = "antennaStream:{id}")]
     Antenna { id: String },
+    #[strum(to_string = "messagingStream:{id_1}-{id_2}")]
+    Chat { id_1: String, id_2: String },
     #[strum(to_string = "messagingStream:{id}")]
-    Messaging { id: String },
+    GroupChat { id: String },
     #[strum(to_string = "messagingIndexStream:{id}")]
     MessagingIndex { id: String },
 }
