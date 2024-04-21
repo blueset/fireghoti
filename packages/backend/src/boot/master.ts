@@ -9,6 +9,7 @@ import semver from "semver";
 
 import Logger from "@/services/logger.js";
 import type { Config } from "backend-rs";
+import { fetchMeta } from "backend-rs";
 import { config, envOption } from "@/config.js";
 import { showMachineInfo } from "@/misc/show-machine-info.js";
 import { db, initDb } from "@/db/postgre.js";
@@ -123,6 +124,9 @@ export async function masterMain() {
 		import("../daemons/queue-stats.js").then((x) => x.default());
 		import("../daemons/janitor.js").then((x) => x.default());
 	}
+
+	// Update meta cache every 5 minitues
+	setInterval(() => fetchMeta(false), 1000 * 60 * 5);
 }
 
 function showEnvironment(): void {
