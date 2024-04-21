@@ -73,7 +73,7 @@ useTooltip(buttonRef, async (showing) => {
 });
 
 const hasRenotedBefore = ref(
-	props.note.meRenoteCount && props.note.meRenoteCount > 0,
+	props.note.myRenoteCount && props.note.myRenoteCount > 0,
 );
 
 const renote = (viaKeyboard = false, ev?: MouseEvent) => {

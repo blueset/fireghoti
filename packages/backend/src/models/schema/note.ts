@@ -208,7 +208,7 @@ export const packedNoteSchema = {
 			optional: true,
 			nullable: true,
 		},
-		meRenoteCount: {
+		myRenoteCount: {
 			type: "number",
 			optional: true,
 			nullable: false,

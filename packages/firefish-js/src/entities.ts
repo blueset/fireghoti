@@ -174,7 +174,7 @@ export type Note = {
 	channelId?: Channel["id"];
 	channel?: Channel;
 	myReaction?: string;
-	meRenoteCount?: number;
+	myRenoteCount?: number;
 	reactions: Record<string, number>;
 	renoteCount: number;
 	repliesCount: number;

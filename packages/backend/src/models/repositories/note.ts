@@ -222,7 +222,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 					text: Not(IsNull()),
 				},
 			}),
-			meRenoteCount: me
+			myRenoteCount: me
 				? Notes.count({
 						where: {
 							renoteId: note.id,
