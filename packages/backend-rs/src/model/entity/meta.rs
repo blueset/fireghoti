@@ -50,8 +50,6 @@ pub struct Model {
     pub local_drive_capacity_mb: i32,
     #[sea_orm(column_name = "remoteDriveCapacityMb")]
     pub remote_drive_capacity_mb: i32,
-    #[sea_orm(column_name = "antennaLimit")]
-    pub antenna_limit: i32,
     #[sea_orm(column_name = "summalyProxy")]
     pub summaly_proxy: Option<String>,
     #[sea_orm(column_name = "enableEmail")]
@@ -175,6 +173,8 @@ pub struct Model {
     pub more_urls: Json,
     #[sea_orm(column_name = "markLocalFilesNsfwByDefault")]
     pub mark_local_files_nsfw_by_default: bool,
+    #[sea_orm(column_name = "antennaLimit")]
+    pub antenna_limit: i32,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
