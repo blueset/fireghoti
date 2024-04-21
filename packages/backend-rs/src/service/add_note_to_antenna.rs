@@ -1,5 +1,5 @@
 use crate::database::{redis_conn, redis_key};
-use crate::service::stream::{publish, Error, Stream};
+use crate::service::stream::{publish_to_stream, Error, Stream};
 use crate::util::id::get_timestamp;
 use redis::{streams::StreamMaxlen, Commands};
 
@@ -15,7 +15,7 @@ pub fn add_note_to_antenna(antenna_id: &str, note_id: &str) -> Result<(), Error>
     let stream = Stream::Antenna {
         id: antenna_id.to_string(),
     };
-    publish(
+    publish_to_stream(
         &stream,
         Some("note"),
         Some(format!("{{ \"id\": \"{}\" }}", note_id)),

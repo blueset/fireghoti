@@ -42,7 +42,11 @@ pub enum Error {
     ValueError(String),
 }
 
-pub fn publish(channel: &Stream, kind: Option<&str>, value: Option<String>) -> Result<(), Error> {
+pub fn publish_to_stream(
+    stream: &Stream,
+    kind: Option<&str>,
+    value: Option<String>,
+) -> Result<(), Error> {
     let message = if let Some(kind) = kind {
         format!(
             "{{ \"type\": \"{}\", \"body\": {} }}",
@@ -60,7 +64,7 @@ pub fn publish(channel: &Stream, kind: Option<&str>, value: Option<String>) -> R
         &CONFIG.host,
         format!(
             "{{ \"channel\": \"{}\", \"message\": {} }}",
-            channel, message,
+            stream, message,
         ),
     )?;
 
