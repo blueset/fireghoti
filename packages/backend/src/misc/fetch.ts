@@ -171,6 +171,25 @@ export function getAgentByUrl(url: URL, bypassProxy = false) {
 	}
 }
 
+/**
+ * Get agent by Hostname
+ * @param hostname Hostname
+ * @param bypassProxy Allways bypass proxy
+ */
+export function getAgentByHostname(hostname: string, bypassProxy = false) {
+	if (bypassProxy || (config.proxyBypassHosts || []).includes(hostname)) {
+		return {
+			http: _http,
+			https: _https,
+		};
+	} else {
+		return {
+			http: httpAgent,
+			https: httpsAgent,
+		};
+	}
+}
+
 export class StatusError extends Error {
 	public statusCode: number;
 	public statusMessage?: string;
