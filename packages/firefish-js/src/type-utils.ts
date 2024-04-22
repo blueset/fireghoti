@@ -1,6 +1,6 @@
 import type { Endpoints } from "./api.types";
 
-type PropertyOfType<Type, U> = {
+export type PropertyOfType<Type, U> = {
 	[K in keyof Type]: Type[K] extends U ? K : never;
 }[keyof Type];
 

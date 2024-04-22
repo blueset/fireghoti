@@ -5,12 +5,13 @@ import { onUnmounted, ref, watch } from "vue";
 import { api } from "./os";
 import { useStream } from "./stream";
 import { isSignedIn, me } from "@/me";
+import type { TypeUtils } from "firefish-js";
 
 type StateDef = Record<
 	string,
 	{
 		where: "account" | "device" | "deviceAccount";
-		default: any;
+		default: unknown;
 	}
 >;
 
@@ -82,8 +83,8 @@ export class Storage<T extends StateDef> {
 		for (const [k, v] of Object.entries(state)) {
 			reactiveState[k] = ref(v);
 		}
-		this.state = state as any;
-		this.reactiveState = reactiveState as any;
+		this.state = state as typeof this.state;
+		this.reactiveState = reactiveState as typeof this.reactiveState;
 
 		if (isSignedIn) {
 			// なぜかsetTimeoutしないとapi関数内でエラーになる(おそらく循環参照してることに原因がありそう)
@@ -201,11 +202,11 @@ export class Storage<T extends StateDef> {
 		}
 	}
 
-	public push<K extends keyof T>(
+	public push<K extends TypeUtils.PropertyOfType<T, { default: unknown[] }>>(
 		key: K,
 		value: ArrayElement<T[K]["default"]>,
 	): void {
-		const currentState = this.state[key];
+		const currentState = this.state[key] as unknown[];
 		this.set(key, [...currentState, value]);
 	}
 
@@ -219,10 +220,10 @@ export class Storage<T extends StateDef> {
 	 */
 	public makeGetterSetter<K extends keyof T>(
 		key: K,
-		getter?: (v: T[K]) => unknown,
-		setter?: (v: unknown) => T[K],
+		getter?: (oldV: T[K]["default"]) => T[K]["default"],
+		setter?: (oldV: T[K]["default"]) => T[K]["default"],
 	) {
-		const valueRef = ref(this.state[key]);
+		const valueRef = ref(this.state[key]) as Ref<T[K]["default"]>;
 
 		const stop = watch(this.reactiveState[key], (val) => {
 			valueRef.value = val;
@@ -242,7 +243,7 @@ export class Storage<T extends StateDef> {
 					return valueRef.value;
 				}
 			},
-			set: (value: unknown) => {
+			set: (value: T[K]["default"]) => {
 				const val = setter ? setter(value) : value;
 				this.set(key, val);
 				valueRef.value = val;
