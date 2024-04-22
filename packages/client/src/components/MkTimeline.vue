@@ -1,6 +1,6 @@
 <template>
 	<MkInfo
-		v-if="tlHint && !tlHintClosed && isSignedIn"
+		v-if="tlHint && !tlHintClosed && isSignedIn(me)"
 		:closeable="true"
 		class="_gap"
 		@close="closeHint"
@@ -120,7 +120,7 @@ const prepend = (note: entities.Note) => {
 	emit("note");
 
 	if (props.sound) {
-		sound.play(isSignedIn && note.userId === me?.id ? "noteMy" : "note");
+		sound.play(isSignedIn(me) && note.userId === me?.id ? "noteMy" : "note");
 	}
 };
 

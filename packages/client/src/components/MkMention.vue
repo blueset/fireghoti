@@ -51,7 +51,7 @@ const canonical =
 const url = `/${canonical}`;
 
 const isMe =
-	isSignedIn &&
+	isSignedIn(me) &&
 	`@${props.username}@${toUnicode(props.host)}`.toLowerCase() ===
 		`@${me!.username}@${toUnicode(localHost)}`.toLowerCase();
 </script>

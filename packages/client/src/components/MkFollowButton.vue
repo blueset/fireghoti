@@ -8,7 +8,7 @@
 		<i :class="icon('ph-dots-three-outline')"></i>
 	</button>
 	<button
-		v-if="!hideFollowButton && isSignedIn && me!.id != user.id"
+		v-if="!hideFollowButton && isSignedIn(me) && me!.id != user.id"
 		v-tooltip="full ? null : `${state} ${user.name || user.username}`"
 		class="kpoogebi _button follow-button"
 		:class="{

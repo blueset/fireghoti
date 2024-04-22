@@ -235,7 +235,7 @@
 					<XQuoteButton class="button" :note="appearNote" />
 					<button
 						v-if="
-							isSignedIn &&
+							isSignedIn(me) &&
 							isForeignLanguage &&
 							translation == null
 						"
@@ -370,7 +370,7 @@ const reactButton = ref<HTMLElement | null>(null);
 const appearNote = computed(() =>
 	isRenote ? (note.value.renote as NoteType) : note.value,
 );
-const isMyRenote = isSignedIn && me!.id === note.value.userId;
+const isMyRenote = isSignedIn(me) && me!.id === note.value.userId;
 // const showContent = ref(false);
 const isDeleted = ref(false);
 const muted = ref(

@@ -17,7 +17,7 @@
 					<XUserList :pagination="pinnedUsers" />
 				</MkFolder>
 				<MkFolder
-					v-if="isSignedIn"
+					v-if="isSignedIn(me)"
 					class="_gap"
 					persist-key="explore-popular-users"
 				>
@@ -31,7 +31,7 @@
 					<XUserList :pagination="popularUsers" />
 				</MkFolder>
 				<MkFolder
-					v-if="isSignedIn"
+					v-if="isSignedIn(me)"
 					class="_gap"
 					persist-key="explore-recently-updated-users"
 				>
@@ -45,7 +45,7 @@
 					<XUserList :pagination="recentlyUpdatedUsers" />
 				</MkFolder>
 				<MkFolder
-					v-if="isSignedIn"
+					v-if="isSignedIn(me)"
 					class="_gap"
 					persist-key="explore-recently-registered-users"
 				>
@@ -103,7 +103,7 @@
 				<XUserList :pagination="tagUsers" />
 			</MkFolder>
 
-			<template v-if="tag == null && isSignedIn">
+			<template v-if="tag == null && isSignedIn(me)">
 				<MkFolder class="_gap">
 					<template #header
 						><i
@@ -146,7 +146,7 @@ import MkFolder from "@/components/MkFolder.vue";
 import MkTab from "@/components/MkTab.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
-import { isSignedIn } from "@/me";
+import { isSignedIn, me } from "@/me";
 import icon from "@/scripts/icon";
 
 const props = defineProps<{

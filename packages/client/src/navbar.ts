@@ -11,21 +11,21 @@ export const navbarItemDef = reactive({
 	notifications: {
 		title: "notifications",
 		icon: `${icon("ph-bell")}`,
-		show: computed(() => isSignedIn),
+		show: computed(() => isSignedIn(me)),
 		indicated: computed(() => me?.hasUnreadNotification),
 		to: "/my/notifications",
 	},
 	messaging: {
 		title: "messaging",
 		icon: `${icon("ph-chats-teardrop")}`,
-		show: computed(() => isSignedIn),
+		show: computed(() => isSignedIn(me)),
 		indicated: computed(() => me?.hasUnreadMessagingMessage),
 		to: "/my/messaging",
 	},
 	drive: {
 		title: "drive",
 		icon: `${icon("ph-cloud")}`,
-		show: computed(() => isSignedIn),
+		show: computed(() => isSignedIn(me)),
 		to: "/my/drive",
 	},
 	followRequests: {
@@ -54,19 +54,19 @@ export const navbarItemDef = reactive({
 	lists: {
 		title: "lists",
 		icon: `${icon("ph-list-bullets")}`,
-		show: computed(() => isSignedIn),
+		show: computed(() => isSignedIn(me)),
 		to: "/my/lists",
 	},
 	antennas: {
 		title: "antennas",
 		icon: `${icon("ph-flying-saucer")}`,
-		show: computed(() => isSignedIn),
+		show: computed(() => isSignedIn(me)),
 		to: "/my/antennas",
 	},
 	favorites: {
 		title: "favorites",
 		icon: `${icon("ph-bookmark-simple")}`,
-		show: computed(() => isSignedIn),
+		show: computed(() => isSignedIn(me)),
 		to: "/my/favorites",
 	},
 	pages: {
@@ -82,7 +82,7 @@ export const navbarItemDef = reactive({
 	clips: {
 		title: "clips",
 		icon: `${icon("ph-paperclip")}`,
-		show: computed(() => isSignedIn),
+		show: computed(() => isSignedIn(me)),
 		to: "/my/clips",
 	},
 	channels: {
