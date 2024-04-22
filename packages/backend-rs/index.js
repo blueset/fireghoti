@@ -310,11 +310,15 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { readServerConfig, stringToAcct, acctToString, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, AntennaSrcEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
+const { loadEnv, loadConfig, stringToAcct, acctToString, isBlockedServer, isSilencedServer, isAllowedServer, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getNoteSummary, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, AntennaSrcEnum, DriveFileUsageHintEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, addNoteToAntenna, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
 
-module.exports.readServerConfig = readServerConfig
+module.exports.loadEnv = loadEnv
+module.exports.loadConfig = loadConfig
 module.exports.stringToAcct = stringToAcct
 module.exports.acctToString = acctToString
+module.exports.isBlockedServer = isBlockedServer
+module.exports.isSilencedServer = isSilencedServer
+module.exports.isAllowedServer = isAllowedServer
 module.exports.checkWordMute = checkWordMute
 module.exports.getFullApAccount = getFullApAccount
 module.exports.isSelfHost = isSelfHost
@@ -325,6 +329,7 @@ module.exports.isUnicodeEmoji = isUnicodeEmoji
 module.exports.sqlLikeEscape = sqlLikeEscape
 module.exports.safeForSql = safeForSql
 module.exports.formatMilliseconds = formatMilliseconds
+module.exports.getNoteSummary = getNoteSummary
 module.exports.toMastodonId = toMastodonId
 module.exports.fromMastodonId = fromMastodonId
 module.exports.fetchMeta = fetchMeta
@@ -337,6 +342,7 @@ module.exports.decodeReaction = decodeReaction
 module.exports.countReactions = countReactions
 module.exports.toDbReaction = toDbReaction
 module.exports.AntennaSrcEnum = AntennaSrcEnum
+module.exports.DriveFileUsageHintEnum = DriveFileUsageHintEnum
 module.exports.MutedNoteReasonEnum = MutedNoteReasonEnum
 module.exports.NoteVisibilityEnum = NoteVisibilityEnum
 module.exports.NotificationTypeEnum = NotificationTypeEnum
@@ -346,6 +352,7 @@ module.exports.RelayStatusEnum = RelayStatusEnum
 module.exports.UserEmojimodpermEnum = UserEmojimodpermEnum
 module.exports.UserProfileFfvisibilityEnum = UserProfileFfvisibilityEnum
 module.exports.UserProfileMutingnotificationtypesEnum = UserProfileMutingnotificationtypesEnum
+module.exports.addNoteToAntenna = addNoteToAntenna
 module.exports.initIdGenerator = initIdGenerator
 module.exports.getTimestamp = getTimestamp
 module.exports.genId = genId

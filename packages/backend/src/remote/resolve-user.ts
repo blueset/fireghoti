@@ -1,7 +1,7 @@
 import { URL } from "node:url";
 import chalk from "chalk";
 import { IsNull } from "typeorm";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import type { User, IRemoteUser } from "@/models/entities/user.js";
 import { Users } from "@/models/index.js";
 import { toPuny } from "backend-rs";

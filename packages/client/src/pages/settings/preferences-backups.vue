@@ -125,6 +125,7 @@ const defaultStoreSaveKeys: (keyof (typeof defaultStore)["state"])[] = [
 	"enablePullToRefresh",
 	"pullToRefreshThreshold",
 	"showNoAltTextWarning",
+	"showAddFileDescriptionAtFirstPost",
 	"autocorrectNoteLanguage",
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
@@ -299,12 +300,12 @@ function loadFile(): void {
 		});
 
 		// 一応廃棄
-		(window as any).__misskey_input_ref__ = null;
+		window.__misskey_input_ref__ = null;
 	};
 
 	// https://qiita.com/fukasawah/items/b9dc732d95d99551013d
 	// iOS Safari で正常に動かす為のおまじない
-	(window as any).__misskey_input_ref__ = input;
+	window.__misskey_input_ref__ = input;
 
 	input.click();
 }

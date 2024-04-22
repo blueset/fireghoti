@@ -23,7 +23,6 @@
 		:href="url"
 		target="_blank"
 		rel="noopener"
-		:style="{ background: bgCss }"
 		@click.stop
 	>
 		<span class="main">
@@ -54,7 +53,7 @@ const url = `/${canonical}`;
 const isMe =
 	isSignedIn &&
 	`@${props.username}@${toUnicode(props.host)}`.toLowerCase() ===
-		`@${me.username}@${toUnicode(localHost)}`.toLowerCase();
+		`@${me!.username}@${toUnicode(localHost)}`.toLowerCase();
 </script>
 
 <style lang="scss" scoped>

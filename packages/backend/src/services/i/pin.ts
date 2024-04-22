@@ -1,4 +1,4 @@
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import renderAdd from "@/remote/activitypub/renderer/add.js";
 import renderRemove from "@/remote/activitypub/renderer/remove.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";

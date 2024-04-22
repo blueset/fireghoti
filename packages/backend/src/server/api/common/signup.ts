@@ -8,7 +8,7 @@ import { genId, hashPassword, toPuny } from "backend-rs";
 import { UserKeypair } from "@/models/entities/user-keypair.js";
 import { UsedUsername } from "@/models/entities/used-username.js";
 import { db } from "@/db/postgre.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 
 export async function signup(opts: {
 	username: User["username"];

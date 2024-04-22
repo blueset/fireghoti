@@ -1,8 +1,35 @@
 # Install Firefish
 
-This document shows an example procedure for installing Firefish on Debian 12. Note that there is much room for customizing the server setup; this document merely demonstrates a simple installation.
+Firefish depends on the following software.
+
+## Runtime dependencies
+
+- At least [NodeJS](https://nodejs.org/en/) v18.17.0 (v20/v21 recommended)
+- At least [PostgreSQL](https://www.postgresql.org/) v12 (v16 recommended) with [PGroonga](https://pgroonga.github.io/) extension
+- At least [Redis](https://redis.io/) v7
+- Web Proxy (one of the following)
+  - Caddy (recommended)
+  - Nginx (recommended)
+  - Apache
+- [FFmpeg](https://ffmpeg.org/) for video transcoding (**optional**)
+- Caching server (**optional**, one of the following)
+  - [DragonflyDB](https://www.dragonflydb.io/)
+  - [KeyDB](https://keydb.dev/)
+  - Another [Redis](https://redis.io/) server
+
+## Build dependencies
+
+- At least [Rust](https://www.rust-lang.org/) v1.74
+- C/C++ compiler & build tools
+  - `build-essential` on Debian/Ubuntu Linux
+  - `base-devel` on Arch Linux
+- [Python 3](https://www.python.org/)
+
+This document shows an example procedure for installing these dependencies and Firefish on Debian 12. Note that there is much room for customizing the server setup; this document merely demonstrates a simple installation.
 
 If you want to use the pre-built container image, please refer to [`install-container.md`](./install-container.md).
+
+If you do not prepare your environment as document, be sure to meet the minimum dependencies given at the bottom of the page.
 
 Make sure that you can use the `sudo` command before proceeding.
 
@@ -154,7 +181,7 @@ sudo apt install ffmpeg
 1. Build
     ```sh
     pnpm install --frozen-lockfile
-    NODE_ENV=production pnpm run build
+    NODE_ENV=production NODE_OPTIONS='--max-old-space-size=3072' pnpm run build
     ```
 1. Execute database migrations
     ```sh
@@ -242,6 +269,7 @@ In this instruction, we use [Caddy](https://caddyserver.com/) to make the Firefi
     WorkingDirectory=/home/firefish/firefish
     Environment="NODE_ENV=production"
     Environment="npm_config_cache=/tmp"
+		Environment="NODE_OPTIONS=--max-old-space-size=3072"
     # uncomment the following line if you use jemalloc (note that the path varies on different environments)
     # Environment="LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2"
     StandardOutput=journal

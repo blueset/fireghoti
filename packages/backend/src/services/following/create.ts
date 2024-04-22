@@ -17,13 +17,12 @@ import {
 	Instances,
 	UserProfiles,
 } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genId, isSilencedServer } from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
 import type { Packed } from "@/misc/schema.js";
 import { getActiveWebhooks } from "@/misc/webhook-cache.js";
 import { webhookDeliver } from "@/queue/index.js";
-import { shouldSilenceInstance } from "@/misc/should-block-instance.js";
 
 const logger = new Logger("following/create");
 
@@ -231,7 +230,7 @@ export default async function (
 		(Users.isLocalUser(follower) && Users.isRemoteUser(followee)) ||
 		(Users.isRemoteUser(follower) &&
 			Users.isLocalUser(followee) &&
-			(await shouldSilenceInstance(follower.host)))
+			(await isSilencedServer(follower.host)))
 	) {
 		let autoAccept = false;
 

@@ -47,6 +47,7 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { me } from "@/me";
 import icon from "@/scripts/icon";
+import type { MenuItem } from "@/types/menu";
 
 const props = withDefaults(
 	defineProps<{
@@ -72,7 +73,7 @@ const title = computed(
 	() => `${props.file.name}\n${props.file.type} ${bytes(props.file.size)}`,
 );
 
-function getMenu() {
+function getMenu(): MenuItem[] {
 	return [
 		{
 			text: i18n.ts.rename,
@@ -180,12 +181,15 @@ function describe() {
 			image: props.file,
 		},
 		{
-			done: (result) => {
+			done: (result: {
+				canceled: boolean;
+				result?: string | null;
+			}) => {
 				if (!result || result.canceled) return;
 				const comment = result.result;
 				os.api("drive/files/update", {
 					fileId: props.file.id,
-					comment: comment.length === 0 ? null : comment,
+					comment: comment || null,
 				});
 			},
 		},

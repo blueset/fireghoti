@@ -10,7 +10,7 @@ import { getApLock } from "@/misc/app-lock.js";
 import { parseAudience } from "../../audience.js";
 import { StatusError } from "@/misc/fetch.js";
 import { Notes } from "@/models/index.js";
-import { shouldBlockInstance } from "@/misc/should-block-instance.js";
+import { isBlockedServer } from "backend-rs";
 import { inspect } from "node:util";
 
 const logger = apLogger;
@@ -31,7 +31,7 @@ export default async function (
 	}
 
 	// Interrupt if you block the announcement destination
-	if (await shouldBlockInstance(extractHost(uri))) return;
+	if (await isBlockedServer(extractHost(uri))) return;
 
 	const lock = await getApLock(uri);
 

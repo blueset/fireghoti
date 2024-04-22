@@ -9,12 +9,14 @@ import icon from "@/scripts/icon";
 
 const stream = useStream();
 
-function select(
-	src: any,
+function select<Multiple extends boolean>(
+	src: HTMLElement | null | undefined,
 	label: string | null,
-	multiple: boolean,
-): Promise<entities.DriveFile | entities.DriveFile[]> {
-	return new Promise((res, rej) => {
+	multiple: Multiple,
+) {
+	return new Promise<
+		Multiple extends true ? entities.DriveFile[] : entities.DriveFile
+	>((res, rej) => {
 		const keepOriginal = ref(defaultStore.state.keepOriginalUploading);
 
 		const chooseFileFromPc = () => {
@@ -22,6 +24,9 @@ function select(
 			input.type = "file";
 			input.multiple = multiple;
 			input.onchange = () => {
+				if (input.files === null) {
+					return;
+				}
 				const promises = Array.from(input.files).map((file) =>
 					uploadFile(
 						file,
@@ -33,19 +38,19 @@ function select(
 
 				Promise.all(promises)
 					.then((driveFiles) => {
-						res(multiple ? driveFiles : driveFiles[0]);
+						res((multiple ? driveFiles : driveFiles[0]) as never);
 					})
 					.catch((err) => {
 						// アップロードのエラーは uploadFile 内でハンドリングされているためアラートダイアログを出したりはしてはいけない
 					});
 
 				// 一応廃棄
-				(window as any).__misskey_input_ref__ = null;
+				window.__misskey_input_ref__ = null;
 			};
 
 			// https://qiita.com/fukasawah/items/b9dc732d95d99551013d
 			// iOS Safari で正常に動かす為のおまじない
-			(window as any).__misskey_input_ref__ = input;
+			window.__misskey_input_ref__ = input;
 
 			input.click();
 		};
@@ -69,7 +74,7 @@ function select(
 				const connection = stream.useChannel("main");
 				connection.on("urlUploadFinished", (urlResponse) => {
 					if (urlResponse.marker === marker) {
-						res(multiple ? [urlResponse.file] : urlResponse.file);
+						res((multiple ? [urlResponse.file] : urlResponse.file) as never);
 						connection.dispose();
 					}
 				});
@@ -122,15 +127,15 @@ function select(
 }
 
 export function selectFile(
-	src: any,
+	src: HTMLElement | null | undefined,
 	label: string | null = null,
-): Promise<entities.DriveFile> {
-	return select(src, label, false) as Promise<entities.DriveFile>;
+) {
+	return select(src, label, false);
 }
 
 export function selectFiles(
-	src: any,
+	src: HTMLElement | null | undefined,
 	label: string | null = null,
-): Promise<entities.DriveFile[]> {
-	return select(src, label, true) as Promise<entities.DriveFile[]>;
+) {
+	return select(src, label, true);
 }

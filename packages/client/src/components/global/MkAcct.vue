@@ -16,7 +16,7 @@ import { host as hostRaw } from "@/config";
 import { defaultStore } from "@/store";
 
 defineProps<{
-	user: entities.UserDetailed;
+	user: entities.UserLite;
 	detail?: boolean;
 }>();
 

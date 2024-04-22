@@ -1,5 +1,5 @@
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import type { IFlag } from "../../type.js";
 import { getApIds } from "../../type.js";
 import { AbuseUserReports, Users } from "@/models/index.js";

@@ -9,7 +9,7 @@ import { format as dateFormat } from "date-fns";
 import { Users, Emojis } from "@/models/index.js";
 import { createTemp, createTempDir } from "@/misc/create-temp.js";
 import { downloadUrl } from "@/misc/download-url.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { IsNull } from "typeorm";
 import { inspect } from "node:util";
 

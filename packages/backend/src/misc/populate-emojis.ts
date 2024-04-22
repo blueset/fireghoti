@@ -4,7 +4,7 @@ import type { Emoji } from "@/models/entities/emoji.js";
 import type { Note } from "@/models/entities/note.js";
 import { Cache } from "./cache.js";
 import { decodeReaction, isSelfHost, toPuny } from "backend-rs";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { query } from "@/prelude/url.js";
 import { redisClient } from "@/db/redis.js";
 import type { NoteEdit } from "@/models/entities/note-edit.js";

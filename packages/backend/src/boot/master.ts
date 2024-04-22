@@ -8,9 +8,9 @@ import chalkTemplate from "chalk-template";
 import semver from "semver";
 
 import Logger from "@/services/logger.js";
-import loadConfig from "@/config/load.js";
-import type { Config } from "@/config/types.js";
-import { envOption } from "@/env.js";
+import type { Config } from "backend-rs";
+import { fetchMeta } from "backend-rs";
+import { config, envOption } from "@/config.js";
 import { showMachineInfo } from "@/misc/show-machine-info.js";
 import { db, initDb } from "@/db/postgre.js";
 import { inspect } from "node:util";
@@ -87,15 +87,12 @@ function greet() {
  * Init master process
  */
 export async function masterMain() {
-	let config!: Config;
-
 	// initialize app
 	try {
 		greet();
 		showEnvironment();
 		await showMachineInfo(bootLogger);
 		showNodejsVersion();
-		config = loadConfigBoot();
 		await connectDb();
 	} catch (e) {
 		bootLogger.error(
@@ -127,6 +124,9 @@ export async function masterMain() {
 		import("../daemons/queue-stats.js").then((x) => x.default());
 		import("../daemons/janitor.js").then((x) => x.default());
 	}
+
+	// Update meta cache every 5 minitues
+	setInterval(() => fetchMeta(false), 1000 * 60 * 5);
 }
 
 function showEnvironment(): void {
@@ -154,28 +154,6 @@ function showNodejsVersion(): void {
 	}
 }
 
-function loadConfigBoot(): Config {
-	const configLogger = bootLogger.createSubLogger("config");
-	let config;
-
-	try {
-		config = loadConfig();
-	} catch (exception) {
-		if (exception.code === "ENOENT") {
-			configLogger.error("Configuration file not found", null, true);
-			process.exit(1);
-		} else if (e instanceof Error) {
-			configLogger.error(e.message);
-			process.exit(1);
-		}
-		throw exception;
-	}
-
-	configLogger.succ("Loaded");
-
-	return config;
-}
-
 async function connectDb(): Promise<void> {
 	const dbLogger = bootLogger.createSubLogger("db");
 
@@ -195,23 +173,31 @@ async function connectDb(): Promise<void> {
 }
 
 async function spawnWorkers(
-	clusterLimits: Required<Config["clusterLimits"]>,
+	clusterLimits: Config["clusterLimits"],
 ): Promise<void> {
-	const modes = ["web", "queue"];
 	const cpus = os.cpus().length;
-	for (const mode of modes.filter((mode) => clusterLimits[mode] > cpus)) {
+
+	if (clusterLimits.queue > cpus) {
 		bootLogger.warn(
-			`configuration warning: cluster limit for ${mode} exceeds number of cores (${cpus})`,
+			"config: queue cluster limit exceeds the number of cpu cores",
 		);
 	}
 
-	const total = modes.reduce((acc, mode) => acc + clusterLimits[mode], 0);
+	if (clusterLimits.web > cpus) {
+		bootLogger.warn(
+			"config: web cluster limit exceeds the number of cpu cores",
+		);
+	}
+
+	const total = clusterLimits.queue + clusterLimits.web;
+
+	// workers = ["web", "web", ..., "web", "queue", "queue", ..., "queue"]
 	const workers = new Array(total);
-	workers.fill("web", 0, clusterLimits?.web);
-	workers.fill("queue", clusterLimits?.web);
+	workers.fill("web", 0, clusterLimits.web);
+	workers.fill("queue", clusterLimits.web);
 
 	bootLogger.info(
-		`Starting ${clusterLimits?.web} web workers and ${clusterLimits?.queue} queue workers (total ${total})...`,
+		`Starting ${clusterLimits.web} web workers and ${clusterLimits.queue} queue workers (total ${total})...`,
 	);
 	await Promise.all(workers.map((mode) => spawnWorker(mode)));
 	bootLogger.succ("All workers started");

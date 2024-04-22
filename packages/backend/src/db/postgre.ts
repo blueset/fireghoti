@@ -5,7 +5,7 @@ pg.types.setTypeParser(20, Number);
 import type { Logger } from "typeorm";
 import { DataSource } from "typeorm";
 import * as highlight from "cli-highlight";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 
 import { User } from "@/models/entities/user.js";
 import { DriveFile } from "@/models/entities/drive-file.js";
@@ -77,7 +77,6 @@ import { NoteFile } from "@/models/entities/note-file.js";
 
 import { entities as charts } from "@/services/chart/entities.js";
 import { dbLogger } from "./logger.js";
-import { redisClient } from "./redis.js";
 
 const sqlLogger = dbLogger.createSubLogger("sql", "gray", false);
 
@@ -235,33 +234,5 @@ export async function initDb(force = false) {
 		// nop
 	} else {
 		await db.initialize();
-	}
-}
-
-export async function resetDb() {
-	const reset = async () => {
-		await redisClient.flushdb();
-		const tables = await db.query(`SELECT relname AS "table"
-		FROM pg_class C LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace)
-		WHERE nspname NOT IN ('pg_catalog', 'information_schema')
-			AND C.relkind = 'r'
-			AND nspname !~ '^pg_toast';`);
-		for (const table of tables) {
-			await db.query(`DELETE FROM "${table.table}" CASCADE`);
-		}
-	};
-
-	for (let i = 1; i <= 3; i++) {
-		try {
-			await reset();
-		} catch (e) {
-			if (i === 3) {
-				throw e;
-			} else {
-				await new Promise((resolve) => setTimeout(resolve, 1000));
-				continue;
-			}
-		}
-		break;
 	}
 }

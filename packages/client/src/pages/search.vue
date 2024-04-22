@@ -89,8 +89,9 @@ const usersPagination = {
 	endpoint: "users/search" as const,
 	limit: 10,
 	params: computed(() => ({
-		query: props.query,
-		origin: "combined",
+		// FIXME: query is necessary for user search
+		query: props.query!,
+		origin: "combined" as const,
 	})),
 };
 

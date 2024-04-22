@@ -232,6 +232,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 			uri: note.uri || undefined,
 			url: note.url || undefined,
 			updatedAt: note.updatedAt?.toISOString() || undefined,
+			hasPoll: note.hasPoll,
 			poll: note.hasPoll ? populatePoll(note, meId) : undefined,
 			...(meId
 				? {

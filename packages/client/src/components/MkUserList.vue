@@ -11,10 +11,10 @@
 			</div>
 		</template>
 
-		<template #default="{ items: users }">
+		<template #default="{ items }: { items: entities.UserDetailed[] }">
 			<div class="efvhhmdq">
 				<MkUserInfo
-					v-for="user in users"
+					v-for="user in items"
 					:key="user.id"
 					class="user"
 					:user="user"
@@ -26,17 +26,22 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
+import type { entities } from "firefish-js";
 import MkUserInfo from "@/components/MkUserInfo.vue";
-import type { Paging } from "@/components/MkPagination.vue";
+import type {
+	MkPaginationType,
+	PagingKeyOf,
+	PagingOf,
+} from "@/components/MkPagination.vue";
 import MkPagination from "@/components/MkPagination.vue";
 import { i18n } from "@/i18n";
 
 defineProps<{
-	pagination: Paging;
+	pagination: PagingOf<entities.UserDetailed>;
 	noGap?: boolean;
 }>();
 
-const pagingComponent = ref<InstanceType<typeof MkPagination>>();
+const pagingComponent = ref<MkPaginationType<PagingKeyOf<entities.User>>>();
 </script>
 
 <style lang="scss" scoped>

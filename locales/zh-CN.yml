@@ -340,6 +340,7 @@ invite: "邀请"
 driveCapacityPerLocalAccount: "每个本地用户的网盘容量"
 driveCapacityPerRemoteAccount: "每个远程用户的网盘容量"
 inMb: "以兆字节 (MegaByte) 为单位"
+antennaLimit: "每个用户最多可以创建的天线数量"
 iconUrl: "图标 URL"
 bannerUrl: "横幅图 URL"
 backgroundImageUrl: "背景图 URL"
@@ -2053,6 +2054,7 @@ searchRangeDescription: "如果您要过滤时间段，请按以下格式输入�
 messagingUnencryptedInfo: "Firefish 上的聊天没有经过端到端加密，请不要在聊天中分享您的敏感信息。"
 noAltTextWarning: 有些附件没有描述。您是否忘记写描述了？
 showNoAltTextWarning: 当您尝试发布没有描述的帖子附件时显示警告
+showAddFileDescriptionAtFirstPost: 当您首次尝试发布没有描述的帖子附件时自动弹出添加描述页面
 autocorrectNoteLanguage: 当帖子语言不符合自动检测的结果的时候显示警告
 incorrectLanguageWarning: "看上去您帖子使用的语言是{detected}，但您选择的语言是{current}。\n要改为以{detected}发帖吗？"
 noteEditHistory: "帖子编辑历史"

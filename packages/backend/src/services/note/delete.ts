@@ -5,7 +5,7 @@ import renderAnnounce from "@/remote/activitypub/renderer/announce.js";
 import renderUndo from "@/remote/activitypub/renderer/undo.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderTombstone from "@/remote/activitypub/renderer/tombstone.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import type { User, ILocalUser, IRemoteUser } from "@/models/entities/user.js";
 import type { Note, IMentionedRemoteUsers } from "@/models/entities/note.js";
 import { Notes, Users, Instances } from "@/models/index.js";

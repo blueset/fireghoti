@@ -3,7 +3,8 @@
 use super::sea_orm_active_enums::NoteVisibilityEnum;
 use sea_orm::entity::prelude::*;
 
-#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 #[sea_orm(table_name = "note")]
 #[cfg_attr(
     feature = "napi",
@@ -21,6 +22,7 @@ pub struct Model {
     #[sea_orm(column_type = "Text", nullable)]
     pub text: Option<String>,
     pub name: Option<String>,
+    #[sea_orm(column_type = "Text", nullable)]
     pub cw: Option<String>,
     #[sea_orm(column_name = "userId")]
     pub user_id: String,

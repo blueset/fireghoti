@@ -1,4 +1,4 @@
-import type { EventEmitter } from "events";
+import type { EventEmitter } from "node:events";
 import type Emitter from "strict-event-emitter-types";
 import type { Channel } from "@/models/entities/channel.js";
 import type { User } from "@/models/entities/user.js";

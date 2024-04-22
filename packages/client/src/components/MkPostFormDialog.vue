@@ -2,7 +2,7 @@
 	<MkModal
 		ref="modal"
 		:prefer-type="'dialog'"
-		@click="modal.close()"
+		@click="modal!.close()"
 		@closed="onModalClosed()"
 	>
 		<MkPostForm
@@ -12,8 +12,8 @@
 			autofocus
 			freeze-after-posted
 			@posted="onPosted"
-			@cancel="modal.close()"
-			@esc="modal.close()"
+			@cancel="modal!.close()"
+			@esc="modal!.close()"
 		/>
 	</MkModal>
 </template>
@@ -25,20 +25,21 @@ import type { entities, languages } from "firefish-js";
 import MkModal from "@/components/MkModal.vue";
 import MkPostForm from "@/components/MkPostForm.vue";
 import type { NoteVisibility } from "@/types/note";
+import type { NoteDraft } from "@/types/post-form";
 
 const props = defineProps<{
 	reply?: entities.Note;
 	renote?: entities.Note;
-	channel?: any; // TODO
+	channel?: entities.Channel;
 	mention?: entities.User;
 	specified?: entities.User;
 	initialText?: string;
 	initialVisibility?: NoteVisibility;
-	initialLanguage?: typeof languages;
+	initialLanguage?: (typeof languages)[number];
 	initialFiles?: entities.DriveFile[];
 	initialLocalOnly?: boolean;
 	initialVisibleUsers?: entities.User[];
-	initialNote?: entities.Note;
+	initialNote?: NoteDraft;
 	instant?: boolean;
 	fixed?: boolean;
 	autofocus?: boolean;
@@ -58,7 +59,7 @@ const modal = shallowRef<InstanceType<typeof MkModal>>();
 const form = shallowRef<InstanceType<typeof MkPostForm>>();
 
 function onPosted() {
-	modal.value.close({
+	modal.value!.close({
 		useSendAnimation: true,
 	});
 }

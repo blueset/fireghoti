@@ -1,6 +1,6 @@
 import rndstr from "rndstr";
 import { IsNull } from "typeorm";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { Users, UserProfiles, PasswordResetRequests } from "@/models/index.js";
 import { sendEmail } from "@/services/send-email.js";
 import { genId } from "backend-rs";

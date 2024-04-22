@@ -4,30 +4,35 @@
 			><MkPageHeader :display-back-button="true"
 		/></template>
 		<MkSpacer :content-max="800">
-			<MkLoading v-if="!loaded" />
-			<MkPagination
-				v-else
-				ref="pagingComponent"
-				v-slot="{ items }"
-				:pagination="pagination"
-			>
-				<div ref="tlEl" class="giivymft noGap">
-					<XList
-						v-slot="{ item }"
-						:items="convertNoteEditsToNotes(items)"
-						class="notes"
-						:no-gap="true"
-					>
-						<XNote
-							:key="item.id"
-							class="qtqtichx"
-							:note="item"
-							:hide-footer="true"
-							:detailed-view="true"
-						/>
-					</XList>
-				</div>
-			</MkPagination>
+			<MkLoading v-if="note == null" />
+			<div v-else>
+				<MkRemoteCaution
+					v-if="note.user.host != null"
+					:href="note.url ?? note.uri!"
+				/>
+				<MkPagination
+					ref="pagingComponent"
+					v-slot="{ items }"
+					:pagination="pagination"
+				>
+					<div ref="tlEl" class="giivymft noGap">
+						<XList
+							v-slot="{ item }"
+							:items="convertNoteEditsToNotes(items)"
+							class="notes"
+							:no-gap="true"
+						>
+							<XNote
+								:key="item.id"
+								class="qtqtichx"
+								:note="item"
+								:hide-footer="true"
+								:detailed-view="true"
+							/>
+						</XList>
+					</div>
+				</MkPagination>
+			</div>
 		</MkSpacer>
 	</MkStickyContainer>
 </template>
@@ -35,15 +40,20 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
 import type { entities } from "firefish-js";
-import MkPagination from "@/components/MkPagination.vue";
+import MkPagination, {
+	type MkPaginationType,
+} from "@/components/MkPagination.vue";
 import { api } from "@/os";
 import XList from "@/components/MkDateSeparatedList.vue";
 import XNote from "@/components/MkNote.vue";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
+import MkRemoteCaution from "@/components/MkRemoteCaution.vue";
 
-const pagingComponent = ref<InstanceType<typeof MkPagination>>();
+const pagingComponent = ref<MkPaginationType<
+	typeof pagination.endpoint
+> | null>(null);
 
 const props = defineProps<{
 	noteId: string;
@@ -65,8 +75,7 @@ definePageMetadata(
 	})),
 );
 
-const note = ref<entities.Note>({} as entities.Note);
-const loaded = ref(false);
+const note = ref<entities.Note | null>(null);
 
 onMounted(() => {
 	api("notes/show", {
@@ -79,20 +88,19 @@ onMounted(() => {
 		res.replyId = null;
 
 		note.value = res;
-		loaded.value = true;
 	});
 });
 
 function convertNoteEditsToNotes(noteEdits: entities.NoteEdit[]) {
 	const now: entities.NoteEdit = {
 		id: "EditionNow",
-		noteId: note.value.id,
-		updatedAt: note.value.createdAt,
-		text: note.value.text,
-		cw: note.value.cw,
-		files: note.value.files,
-		fileIds: note.value.fileIds,
-		emojis: note.value.emojis,
+		noteId: note.value!.id,
+		updatedAt: note.value!.createdAt,
+		text: note.value!.text,
+		cw: note.value!.cw,
+		files: note.value!.files,
+		fileIds: note.value!.fileIds,
+		emojis: note.value!.emojis,
 	};
 
 	return [now]
@@ -108,7 +116,7 @@ function convertNoteEditsToNotes(noteEdits: entities.NoteEdit[]) {
 				_shouldInsertAd_: false,
 				files: noteEdit.files,
 				fileIds: noteEdit.fileIds,
-				emojis: note.value.emojis.concat(noteEdit.emojis),
+				emojis: note.value!.emojis.concat(noteEdit.emojis),
 			});
 		});
 }

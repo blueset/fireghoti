@@ -50,7 +50,7 @@
 			>
 				<video
 					:poster="media.thumbnailUrl"
-					:aria-label="media.comment"
+					:aria-label="media.comment || undefined"
 					preload="none"
 					controls
 					playsinline

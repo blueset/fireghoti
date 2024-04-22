@@ -1,5 +1,5 @@
 import Redis from "ioredis";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 
 export function createConnection() {
 	let source = config.redis;
@@ -12,7 +12,7 @@ export function createConnection() {
 		family: source.family ?? 0,
 		password: source.pass,
 		username: source.user ?? "default",
-		keyPrefix: `${source.prefix}:`,
+		keyPrefix: `${config.redisKeyPrefix}:`,
 		db: source.db || 0,
 		tls: source.tls,
 	});

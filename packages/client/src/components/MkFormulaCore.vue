@@ -19,11 +19,11 @@ export default defineComponent({
 		},
 	},
 	computed: {
-		compiledFormula(): any {
+		compiledFormula() {
 			return katex.renderToString(this.formula, {
 				throwOnError: false,
 				displayMode: this.block,
-			} as any);
+			});
 		},
 	},
 });

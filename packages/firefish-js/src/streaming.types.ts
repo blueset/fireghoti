@@ -8,7 +8,9 @@ import type {
 	Notification,
 	PageEvent,
 	User,
+	UserDetailed,
 	UserGroup,
+	UserLite,
 } from "./entities";
 import type { Connection } from "./streaming";
 
@@ -26,9 +28,9 @@ export type Channels = {
 			mention: (payload: Note) => void;
 			reply: (payload: Note) => void;
 			renote: (payload: Note) => void;
-			follow: (payload: User) => void; // 自分が他人をフォローしたとき
-			followed: (payload: User) => void; // 他人が自分をフォローしたとき
-			unfollow: (payload: User) => void; // 自分が他人をフォロー解除したとき
+			follow: (payload: UserDetailed) => void; // 自分が他人をフォローしたとき
+			followed: (payload: UserLite) => void; // 他人が自分をフォローしたとき
+			unfollow: (payload: UserDetailed) => void; // 自分が他人をフォロー解除したとき
 			meUpdated: (payload: MeDetailed) => void;
 			pageEvent: (payload: PageEvent) => void;
 			urlUploadFinished: (payload: { marker: string; file: DriveFile }) => void;

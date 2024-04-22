@@ -1,6 +1,6 @@
 import type Koa from "koa";
 import { fetchMeta } from "backend-rs";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import manifest from "./manifest.json" assert { type: "json" };
 
 export const manifestHandler = async (ctx: Koa.Context) => {

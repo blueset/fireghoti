@@ -351,6 +351,19 @@
 						</FormSection>
 
 						<FormSection>
+							<template #label>{{ i18n.ts.antennas }}</template>
+							<FormInput
+									v-model="antennaLimit"
+									type="number"
+									class="_formBlock"
+								>
+									<template #label>{{
+										i18n.ts.antennaLimit
+									}}</template>
+								</FormInput>
+						</FormSection>
+
+						<FormSection>
 							<template #label>ServiceWorker</template>
 
 							<FormSwitch
@@ -502,6 +515,7 @@ const cacheRemoteFiles = ref(false);
 const markLocalFilesNsfwByDefault = ref(false);
 const localDriveCapacityMb = ref(0);
 const remoteDriveCapacityMb = ref(0);
+const antennaLimit = ref(0);
 const enableRegistration = ref(false);
 const emailRequiredForSignup = ref(false);
 const enableServiceWorker = ref(false);
@@ -579,6 +593,7 @@ async function init() {
 	markLocalFilesNsfwByDefault.value = meta.markLocalFilesNsfwByDefault;
 	localDriveCapacityMb.value = meta.driveCapacityPerLocalUserMb;
 	remoteDriveCapacityMb.value = meta.driveCapacityPerRemoteUserMb;
+	antennaLimit.value = meta.antennaLimit;
 	enableRegistration.value = !meta.disableRegistration;
 	emailRequiredForSignup.value = meta.emailRequiredForSignup;
 	enableServiceWorker.value = meta.enableServiceWorker;
@@ -631,6 +646,7 @@ function save() {
 		markLocalFilesNsfwByDefault: markLocalFilesNsfwByDefault.value,
 		localDriveCapacityMb: localDriveCapacityMb.value,
 		remoteDriveCapacityMb: remoteDriveCapacityMb.value,
+		antennaLimit: antennaLimit.value,
 		disableRegistration: !enableRegistration.value,
 		emailRequiredForSignup: emailRequiredForSignup.value,
 		enableServiceWorker: enableServiceWorker.value,

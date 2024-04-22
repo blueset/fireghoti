@@ -35,7 +35,7 @@ defineProps<{
 	align?: "center" | string;
 	width?: number;
 	viaKeyboard?: boolean;
-	src?: any;
+	src?: HTMLElement | null;
 	noReturnFocus?;
 }>();
 

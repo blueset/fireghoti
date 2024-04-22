@@ -3,7 +3,7 @@ import * as fsPromises from "node:fs/promises";
 import * as Path from "node:path";
 import { fileURLToPath } from "node:url";
 import { dirname } from "node:path";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 
 const _filename = fileURLToPath(import.meta.url);
 const _dirname = dirname(_filename);

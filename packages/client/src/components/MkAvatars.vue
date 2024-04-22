@@ -8,13 +8,14 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
+import type { entities } from "firefish-js";
 import * as os from "@/os";
 
 const props = defineProps<{
 	userIds: string[];
 }>();
 
-const users = ref([]);
+const users = ref<entities.UserDetailed[]>([]);
 
 onMounted(async () => {
 	users.value = await os.api("users/show", {

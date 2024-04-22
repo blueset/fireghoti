@@ -1,5 +1,5 @@
 import Router from "@koa/router";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { fetchMeta } from "backend-rs";
 import { Users, Notes } from "@/models/index.js";
 import { IsNull, MoreThan } from "typeorm";

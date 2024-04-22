@@ -1,4 +1,4 @@
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import type { ILocalUser } from "@/models/entities/user.js";
 import type { UserKeypair } from "@/models/entities/user-keypair.js";
 import { createPublicKey } from "node:crypto";

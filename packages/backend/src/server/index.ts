@@ -13,15 +13,14 @@ import koaLogger from "koa-logger";
 import * as slow from "koa-slow";
 
 import { IsNull } from "typeorm";
-import config from "@/config/index.js";
+import { config, envOption } from "@/config.js";
 import Logger from "@/services/logger.js";
 import { Users } from "@/models/index.js";
 import { fetchMeta } from "backend-rs";
 import { genIdenticon } from "@/misc/gen-identicon.js";
 import { createTemp } from "@/misc/create-temp.js";
 import { stringToAcct } from "backend-rs";
-import { envOption } from "@/env.js";
-import megalodon, { MegalodonInterface } from "megalodon";
+import megalodon, { type MegalodonInterface } from "megalodon";
 import activityPub from "./activitypub.js";
 import nodeinfo from "./nodeinfo.js";
 import wellKnown from "./well-known.js";

@@ -37,6 +37,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import MkPagination from "@/components/MkPagination.vue";
+import type { MkPaginationType } from "@/components/MkPagination.vue";
 import XNote from "@/components/MkNote.vue";
 import XList from "@/components/MkDateSeparatedList.vue";
 import { i18n } from "@/i18n";
@@ -48,7 +49,9 @@ const pagination = {
 	limit: 10,
 };
 
-const pagingComponent = ref<InstanceType<typeof MkPagination>>();
+const pagingComponent = ref<MkPaginationType<
+	typeof pagination.endpoint
+> | null>(null);
 
 definePageMetadata({
 	title: i18n.ts.favorites,

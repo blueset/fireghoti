@@ -76,6 +76,7 @@ onMounted(() => {
 					src: "/client-assets/tagcanvas.min.js",
 				}),
 			)
+			// biome-ignore lint/suspicious/noAssignInExpressions: assign it intentially
 			.addEventListener("load", () => (available.value = true));
 	}
 });

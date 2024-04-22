@@ -8,7 +8,7 @@
 		@click="cancel()"
 		@ok="ok()"
 		@close="cancel()"
-		@closed="$emit('closed')"
+		@closed="emit('closed')"
 	>
 		<template #header>
 			{{ title }}
@@ -17,86 +17,107 @@
 		<MkSpacer :margin-min="20" :margin-max="32">
 			<div class="_formRoot">
 				<template
-					v-for="item in Object.keys(form).filter(
-						(item) => !form[item].hidden,
-					)"
+					v-for="[formItem, formItemName] in unHiddenForms()"
 				>
 					<FormInput
-						v-if="form[item].type === 'number'"
-						v-model="values[item]"
+						v-if="formItem.type === 'number'"
+						v-model="values[formItemName]"
 						type="number"
-						:step="form[item].step || 1"
+						:step="formItem.step || 1"
 						class="_formBlock"
 					>
 						<template #label
-							><span v-text="form[item].label || item"></span
-							><span v-if="form[item].required === false">
+							><span v-text="formItem.label || formItemName"></span
+							><span v-if="formItem.required === false">
 								({{ i18n.ts.optional }})</span
 							></template
 						>
-						<template v-if="form[item].description" #caption>{{
-							form[item].description
+						<template v-if="formItem.description" #caption>{{
+							formItem.description
 						}}</template>
 					</FormInput>
 					<FormInput
 						v-else-if="
-							form[item].type === 'string' &&
-							!form[item].multiline
+							formItem.type === 'string' &&
+							!formItem.multiline
 						"
-						v-model="values[item]"
+						v-model="values[formItemName]"
 						type="text"
 						class="_formBlock"
 					>
 						<template #label
-							><span v-text="form[item].label || item"></span
-							><span v-if="form[item].required === false">
+							><span v-text="formItem.label || formItemName"></span
+							><span v-if="formItem.required === false">
 								({{ i18n.ts.optional }})</span
 							></template
 						>
-						<template v-if="form[item].description" #caption>{{
-							form[item].description
+						<template v-if="formItem.description" #caption>{{
+							formItem.description
+						}}</template>
+					</FormInput>
+					<FormInput
+						v-else-if="
+							formItem.type === 'email' ||
+							formItem.type === 'password' ||
+							formItem.type === 'url' ||
+							formItem.type === 'date' ||
+							formItem.type === 'time' ||
+							formItem.type === 'search'
+						"
+						v-model="values[formItemName]"
+						:type="formItem.type"
+						class="_formBlock"
+					>
+						<template #label
+							><span v-text="formItem.label || formItemName"></span
+							><span v-if="formItem.required === false">
+								({{ i18n.ts.optional }})</span
+							></template
+						>
+						<template v-if="formItem.description" #caption>{{
+							formItem.description
 						}}</template>
 					</FormInput>
 					<FormTextarea
 						v-else-if="
-							form[item].type === 'string' && form[item].multiline
+							formItem.type === 'string' && formItem.multiline
 						"
-						v-model="values[item]"
+						v-model="values[formItemName]"
 						class="_formBlock"
 					>
 						<template #label
-							><span v-text="form[item].label || item"></span
-							><span v-if="form[item].required === false">
+							><span v-text="formItem.label || formItemName"></span
+							><span v-if="formItem.required === false">
 								({{ i18n.ts.optional }})</span
 							></template
 						>
-						<template v-if="form[item].description" #caption>{{
-							form[item].description
+						<template v-if="formItem.description" #caption>{{
+							formItem.description
 						}}</template>
 					</FormTextarea>
 					<FormSwitch
-						v-else-if="form[item].type === 'boolean'"
-						v-model="values[item]"
+						v-else-if="formItem.type === 'boolean'"
+						v-model="values[formItemName]"
 						class="_formBlock"
 					>
-						<span v-text="form[item].label || item"></span>
-						<template v-if="form[item].description" #caption>{{
-							form[item].description
+						<span v-text="formItem.label || formItemName"></span>
+						<template v-if="formItem.description" #caption>{{
+							formItem.description
 						}}</template>
 					</FormSwitch>
 					<FormSelect
-						v-else-if="form[item].type === 'enum'"
-						v-model="values[item]"
+						v-else-if="formItem.type === 'enum'"
+						v-model="values[formItemName]"
 						class="_formBlock"
 					>
-						<template #label
-							><span v-text="form[item].label || item"></span
-							><span v-if="form[item].required === false">
+						<template #label>
+						<span v-text="formItem.label || formItemName"></span>
+						<span v-if="formItem.required === false">
 								({{ i18n.ts.optional }})</span
-							></template
 						>
+						</template>
 						<option
-							v-for="item in form[item].enum"
+							v-for="item in formItem.enum"
 							:key="item.value"
 							:value="item.value"
 						>
@@ -104,18 +125,18 @@
 						</option>
 					</FormSelect>
 					<FormRadios
-						v-else-if="form[item].type === 'radio'"
-						v-model="values[item]"
+						v-else-if="formItem.type === 'radio'"
+						v-model="values[formItemName]"
 						class="_formBlock"
 					>
 						<template #label
-							><span v-text="form[item].label || item"></span
-							><span v-if="form[item].required === false">
+							><span v-text="formItem.label || formItemName"></span
+							><span v-if="formItem.required === false">
 								({{ i18n.ts.optional }})</span
 							></template
 						>
 						<option
-							v-for="item in form[item].options"
+							v-for="item in formItem.options"
 							:key="item.value"
 							:value="item.value"
 						>
@@ -123,30 +144,30 @@
 						</option>
 					</FormRadios>
 					<FormRange
-						v-else-if="form[item].type === 'range'"
-						v-model="values[item]"
-						:min="form[item].min"
-						:max="form[item].max"
-						:step="form[item].step"
-						:text-converter="form[item].textConverter"
+						v-else-if="formItem.type === 'range'"
+						v-model="values[formItemName]"
+						:min="formItem.min"
+						:max="formItem.max"
+						:step="formItem.step"
+						:text-converter="formItem.textConverter"
 						class="_formBlock"
 					>
 						<template #label
-							><span v-text="form[item].label || item"></span
-							><span v-if="form[item].required === false">
+							><span v-text="formItem.label || formItemName"></span
+							><span v-if="formItem.required === false">
 								({{ i18n.ts.optional }})</span
 							></template
 						>
-						<template v-if="form[item].description" #caption>{{
-							form[item].description
+						<template v-if="formItem.description" #caption>{{
+							formItem.description
 						}}</template>
 					</FormRange>
 					<MkButton
-						v-else-if="form[item].type === 'button'"
+						v-else-if="formItem.type === 'button'"
 						class="_formBlock"
-						@click="form[item].action($event, values)"
+						@click="formItem.action($event, values)"
 					>
-						<span v-text="form[item].content || item"></span>
+						<span v-text="formItem.content || formItemName"></span>
 					</MkButton>
 				</template>
 			</div>
@@ -154,8 +175,8 @@
 	</XModalWindow>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
+import { ref } from "vue";
 import FormInput from "./form/input.vue";
 import FormTextarea from "./form/textarea.vue";
 import FormSwitch from "./form/switch.vue";
@@ -165,59 +186,50 @@ import MkButton from "./MkButton.vue";
 import FormRadios from "./form/radios.vue";
 import XModalWindow from "@/components/MkModalWindow.vue";
 import { i18n } from "@/i18n";
+import type { FormItemType } from "@/types/form";
 
-export default defineComponent({
-	components: {
-		XModalWindow,
-		FormInput,
-		FormTextarea,
-		FormSwitch,
-		FormSelect,
-		FormRange,
-		MkButton,
-		FormRadios,
-	},
+const props = defineProps<{
+	title: string;
+	form: Record<string, FormItemType>;
+}>();
 
-	props: {
-		title: {
-			type: String,
-			required: true,
+// biome-ignore lint/suspicious/noExplicitAny: To prevent overly complex types we have to use any here
+type ValueType = Record<string, any>;
+
+const emit = defineEmits<{
+	done: [
+		status: {
+			result?: Record<string, FormItemType["default"]>;
+			canceled?: true;
 		},
-		form: {
-			type: Object,
-			required: true,
-		},
-	},
+	];
+	closed: [];
+}>();
 
-	emits: ["done"],
+const values = ref<ValueType>({});
+const dialog = ref<InstanceType<typeof XModalWindow> | null>(null);
 
-	data() {
-		return {
-			values: {},
-			i18n,
-		};
-	},
+for (const item in props.form) {
+	values.value[item] = props.form[item].default ?? null;
+}
 
-	created() {
-		for (const item in this.form) {
-			this.values[item] = this.form[item].default ?? null;
-		}
-	},
+function unHiddenForms(): [FormItemType, string][] {
+	return Object.keys(props.form)
+		.filter((itemName) => !props.form[itemName].hidden)
+		.map((itemName) => [props.form[itemName], itemName]);
+}
 
-	methods: {
-		ok() {
-			this.$emit("done", {
-				result: this.values,
-			});
-			this.$refs.dialog.close();
-		},
+function ok() {
+	emit("done", {
+		result: values.value,
+	});
+	dialog.value!.close();
+}
 
-		cancel() {
-			this.$emit("done", {
-				canceled: true,
-			});
-			this.$refs.dialog.close();
-		},
-	},
-});
+function cancel() {
+	emit("done", {
+		canceled: true,
+	});
+	dialog.value!.close();
+}
 </script>

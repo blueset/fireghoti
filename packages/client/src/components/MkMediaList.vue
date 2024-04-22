@@ -22,7 +22,7 @@
 							media.type.startsWith('video') ||
 							media.type.startsWith('image')
 						"
-						:key="media.id"
+						:key="`m-${media.id}`"
 						:class="{ image: media.type.startsWith('image') }"
 						:data-id="media.id"
 						:media="media"
@@ -30,7 +30,7 @@
 					/>
 					<XModPlayer
 						v-else-if="isModule(media)"
-						:key="media.id"
+						:key="`p-${media.id}`"
 						:module="media"
 					/>
 				</template>
@@ -48,7 +48,7 @@ import "photoswipe/style.css";
 import XBanner from "@/components/MkMediaBanner.vue";
 import XMedia from "@/components/MkMedia.vue";
 import XModPlayer from "@/components/MkModPlayer.vue";
-import * as os from "@/os";
+// import * as os from "@/os";
 import {
 	FILE_EXT_TRACKER_MODULES,
 	FILE_TYPE_BROWSERSAFE,
@@ -61,8 +61,8 @@ const props = defineProps<{
 	inDm?: boolean;
 }>();
 
-const gallery = ref(null);
-const pswpZIndex = os.claimZIndex("middle");
+const gallery = ref<HTMLElement | null>(null);
+// const pswpZIndex = os.claimZIndex("middle");
 
 onMounted(() => {
 	const lightbox = new PhotoSwipeLightbox({
@@ -79,7 +79,7 @@ onMounted(() => {
 					src: media.url,
 					w: media.properties.width,
 					h: media.properties.height,
-					alt: media.comment,
+					alt: media.comment || undefined,
 				};
 				if (
 					media.properties.orientation != null &&
@@ -89,7 +89,7 @@ onMounted(() => {
 				}
 				return item;
 			}),
-		gallery: gallery.value,
+		gallery: gallery.value || undefined,
 		children: ".image",
 		thumbSelector: ".image img",
 		loop: false,
@@ -119,8 +119,12 @@ onMounted(() => {
 		// element is children
 		const { element } = itemData;
 
+		if (element == null) return;
+
 		const id = element.dataset.id;
 		const file = props.mediaList.find((media) => media.id === id);
+
+		if (file == null) return;
 
 		itemData.src = file.url;
 		itemData.w = Number(file.properties.width);
@@ -132,12 +136,12 @@ onMounted(() => {
 			[itemData.w, itemData.h] = [itemData.h, itemData.w];
 		}
 		itemData.msrc = file.thumbnailUrl;
-		itemData.alt = file.comment;
+		itemData.alt = file.comment || undefined;
 		itemData.thumbCropped = true;
 	});
 
 	lightbox.on("uiRegister", () => {
-		lightbox.pswp.ui.registerElement({
+		lightbox.pswp?.ui?.registerElement({
 			name: "altText",
 			className: "pwsp__alt-text-container",
 			appendTo: "wrapper",
@@ -146,7 +150,7 @@ onMounted(() => {
 				textBox.className = "pwsp__alt-text";
 				el.appendChild(textBox);
 
-				const preventProp = function (ev: Event): void {
+				const preventProp = (ev: Event): void => {
 					ev.stopPropagation();
 				};
 
@@ -158,7 +162,7 @@ onMounted(() => {
 				el.onpointermove = preventProp;
 
 				pwsp.on("change", () => {
-					textBox.textContent = pwsp.currSlide.data.alt?.trim();
+					textBox.textContent = pwsp.currSlide?.data.alt?.trim() ?? null;
 				});
 			},
 		});
@@ -168,7 +172,7 @@ onMounted(() => {
 		history.pushState(null, "", location.href);
 		addEventListener("popstate", close);
 		// This is a workaround. Not sure why, but when clicking to open, it doesn't move focus to the photoswipe. Preventing using esc to close. However when using keyboard to open it already focuses the lightbox fine.
-		lightbox.pswp.element.focus();
+		lightbox.pswp?.element?.focus();
 	});
 	lightbox.on("close", () => {
 		removeEventListener("popstate", close);
@@ -180,7 +184,7 @@ onMounted(() => {
 	function close() {
 		removeEventListener("popstate", close);
 		history.forward();
-		lightbox.pswp.close();
+		lightbox.pswp?.close();
 	}
 });
 
@@ -198,7 +202,7 @@ const isModule = (file: entities.DriveFile): boolean => {
 	return (
 		FILE_TYPE_TRACKER_MODULES.includes(file.type) ||
 		FILE_EXT_TRACKER_MODULES.some((ext) => {
-			return file.name.toLowerCase().endsWith("." + ext);
+			return file.name.toLowerCase().endsWith(`.${ext}`);
 		})
 	);
 };
