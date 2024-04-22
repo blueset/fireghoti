@@ -24,9 +24,9 @@ const acceptableExtensions = [
 	".png",
 	".webp",
 	".bmp",
-	".tiff",
+	// ".tiff", // Cannot be used as emoji
 	// ".svg", // Disable for secure issues
-	".psd",
+	// ".psd", // Cannot be used as emoji
 ];
 
 // TODO: 名前衝突時の動作を選べるようにする
