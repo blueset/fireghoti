@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import type { entities } from "firefish-js";
+import { acct, type entities } from "firefish-js";
 import Ripple from "@/components/MkRipple.vue";
 import XDetails from "@/components/MkUsersTooltip.vue";
 import { pleaseLogin } from "@/scripts/please-login";
@@ -231,6 +231,28 @@ const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 				});
 			},
 		});
+		if (
+			props.note.renote != null &&
+			(props.note.text != null ||
+				props.note.fileIds.length === 0 ||
+				props.note.poll != null)
+		) {
+			buttonActions.push({
+				text: i18n.ts.slashQuote,
+				icon: `${icon("ph-notches")}`,
+				danger: false,
+				action: () => {
+					os.post({
+						initialText: ` // @${acct.toString(props.note.user)}: ${
+							props.note.text
+						}`,
+						selectRange: [0, 0],
+						renote: props.note.renote,
+						channel: props.note.channel,
+					});
+				},
+			});
+		}
 	}
 
 	if (hasRenotedBefore.value) {
