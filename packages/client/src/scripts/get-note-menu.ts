@@ -293,7 +293,7 @@ export function getNoteMenu(props: {
 	}
 
 	let menu: MenuItem[];
-	if (isSignedIn) {
+	if (isSignedIn(me)) {
 		const statePromise = os.api("notes/state", {
 			noteId: appearNote.id,
 		});
