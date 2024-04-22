@@ -17,7 +17,7 @@ type StateDef = Record<
 type ArrayElement<A> = A extends readonly (infer T)[] ? T : never;
 
 const stream = useStream();
-const connection = isSignedIn(me) ? stream.useChannel("main") : null; 
+const connection = isSignedIn(me) ? stream.useChannel("main") : null;
 
 export class Storage<T extends StateDef> {
 	public readonly key: string;
