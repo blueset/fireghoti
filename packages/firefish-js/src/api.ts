@@ -7,10 +7,12 @@ export type APIError = {
 	code: string;
 	message: string;
 	kind: "client" | "server";
-	info: Record<string, any>;
+	info: Record<string, unknown>;
 };
 
-export function isAPIError(reason: any): reason is APIError {
+// biome-ignore lint/suspicious/noExplicitAny: used it intentially
+type ExplicitlyUsedAny = any;
+export function isAPIError(reason: ExplicitlyUsedAny): reason is APIError {
 	return reason[MK_API_ERROR] === true;
 }
 
@@ -24,7 +26,7 @@ export type FetchLike = (
 	},
 ) => Promise<{
 	status: number;
-	json(): Promise<any>;
+	json(): Promise<ExplicitlyUsedAny>;
 }>;
 
 type IsNeverType<T> = [T] extends [never] ? true : false;
@@ -36,7 +38,10 @@ type IsCaseMatched<
 	P extends Endpoints[E]["req"],
 	C extends number,
 > = IsNeverType<
-	StrictExtract<Endpoints[E]["res"]["$switch"]["$cases"][C], [P, any]>
+	StrictExtract<
+		Endpoints[E]["res"]["$switch"]["$cases"][C],
+		[P, ExplicitlyUsedAny]
+	>
 > extends false
 	? true
 	: false;
@@ -45,7 +50,10 @@ type GetCaseResult<
 	E extends keyof Endpoints,
 	P extends Endpoints[E]["req"],
 	C extends number,
-> = StrictExtract<Endpoints[E]["res"]["$switch"]["$cases"][C], [P, any]>[1];
+> = StrictExtract<
+	Endpoints[E]["res"]["$switch"]["$cases"][C],
+	[P, ExplicitlyUsedAny]
+>[1];
 
 export class APIClient {
 	public origin: string;
@@ -70,7 +78,7 @@ export class APIClient {
 		credential?: string | null | undefined,
 	): Promise<
 		Endpoints[E]["res"] extends {
-			$switch: { $cases: [any, any][]; $default: any };
+			$switch: { $cases: [unknown, unknown][]; $default: unknown };
 		}
 			? IsCaseMatched<E, P, 0> extends true
 				? GetCaseResult<E, P, 0>
