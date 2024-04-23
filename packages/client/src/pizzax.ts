@@ -88,6 +88,7 @@ export class Storage<T extends StateDef> {
 
 		if (isSignedIn(me)) {
 			// なぜかsetTimeoutしないとapi関数内でエラーになる(おそらく循環参照してることに原因がありそう)
+			// For some reason, if I don't setTimeout, an error occurs in the api function (probably caused by circular references)
 			window.setTimeout(() => {
 				api("i/registry/get-all", { scope: ["client", this.key] }).then(
 					(kvs) => {
@@ -105,7 +106,7 @@ export class Storage<T extends StateDef> {
 							}
 						}
 						localStorage.setItem(
-							`${this.keyForLocalStorage}::cache::${me.id}`,
+							`${this.keyForLocalStorage}::cache::${me!.id}`,
 							JSON.stringify(cache),
 						);
 					},
@@ -119,11 +120,12 @@ export class Storage<T extends StateDef> {
 					key,
 					value,
 				}: {
-					scope: string[];
+					scope?: string[];
 					key: keyof T;
 					value: T[typeof key]["default"];
 				}) => {
 					if (
+						scope == null ||
 						scope.length !== 2 ||
 						scope[0] !== "client" ||
 						scope[1] !== this.key ||
@@ -136,13 +138,13 @@ export class Storage<T extends StateDef> {
 
 					const cache = JSON.parse(
 						localStorage.getItem(
-							`${this.keyForLocalStorage}::cache::${me.id}`,
+							`${this.keyForLocalStorage}::cache::${me!.id}`,
 						) || "{}",
 					);
 					if (cache[key] !== value) {
 						cache[key] = value;
 						localStorage.setItem(
-							`${this.keyForLocalStorage}::cache::${me.id}`,
+							`${this.keyForLocalStorage}::cache::${me!.id}`,
 							JSON.stringify(cache),
 						);
 					}
@@ -151,7 +153,7 @@ export class Storage<T extends StateDef> {
 		}
 	}
 
-	public set<K extends keyof T>(key: K, value: T[K]["default"]): void {
+	public set<K extends keyof T>(key: K & string, value: T[K]["default"]): void {
 		if (_DEV_) console.log("set", key, value);
 
 		this.state[key] = value;
@@ -203,14 +205,14 @@ export class Storage<T extends StateDef> {
 	}
 
 	public push<K extends TypeUtils.PropertyOfType<T, { default: unknown[] }>>(
-		key: K,
+		key: K & string,
 		value: ArrayElement<T[K]["default"]>,
 	): void {
 		const currentState = this.state[key] as unknown[];
 		this.set(key, [...currentState, value]);
 	}
 
-	public reset(key: keyof T) {
+	public reset(key: keyof T & string) {
 		this.set(key, this.def[key].default);
 	}
 
@@ -219,7 +221,7 @@ export class Storage<T extends StateDef> {
 	 * 主にvue場で設定コントロールのmodelとして使う用
 	 */
 	public makeGetterSetter<K extends keyof T>(
-		key: K,
+		key: K & string,
 		getter?: (oldV: T[K]["default"]) => T[K]["default"],
 		setter?: (oldV: T[K]["default"]) => T[K]["default"],
 	) {
