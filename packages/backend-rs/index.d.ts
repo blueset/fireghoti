@@ -264,6 +264,8 @@ export interface DecodedReaction {
 export function decodeReaction(reaction: string): DecodedReaction
 export function countReactions(reactions: Record<string, number>): Record<string, number>
 export function toDbReaction(reaction?: string | undefined | null, host?: string | undefined | null): Promise<string>
+/** Delete all entries in the "attestation_challenge" table created at more than 5 minutes ago */
+export function removeOldAttestationChallenges(): Promise<void>
 export interface AbuseUserReport {
   id: string
   createdAt: Date

@@ -9,7 +9,7 @@ import semver from "semver";
 
 import Logger from "@/services/logger.js";
 import type { Config } from "backend-rs";
-import { fetchMeta } from "backend-rs";
+import { fetchMeta, removeOldAttestationChallenges } from "backend-rs";
 import { config, envOption } from "@/config.js";
 import { showMachineInfo } from "@/misc/show-machine-info.js";
 import { db, initDb } from "@/db/postgre.js";
@@ -115,18 +115,14 @@ export async function masterMain() {
 		true,
 	);
 
-	if (
-		!envOption.noDaemons &&
-		config.clusterLimits?.web &&
-		config.clusterLimits?.web >= 1
-	) {
+	if (!envOption.noDaemons) {
 		import("../daemons/server-stats.js").then((x) => x.default());
 		import("../daemons/queue-stats.js").then((x) => x.default());
-		import("../daemons/janitor.js").then((x) => x.default());
+		// Update meta cache every 5 minitues
+		setInterval(() => fetchMeta(false), 1000 * 60 * 5);
+		// Remove old attestation challenges
+		setInterval(() => removeOldAttestationChallenges(), 1000 * 60 * 30);
 	}
-
-	// Update meta cache every 5 minitues
-	setInterval(() => fetchMeta(false), 1000 * 60 * 5);
 }
 
 function showEnvironment(): void {
