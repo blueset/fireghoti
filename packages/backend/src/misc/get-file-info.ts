@@ -1,15 +1,13 @@
-import * as fs from "node:fs";
+import * as fs from "node:fs/promises";
+import { createReadStream } from "node:fs";
 import * as crypto from "node:crypto";
-import * as stream from "node:stream";
-import * as util from "node:util";
+import * as stream from "node:stream/promises";
 import { fileTypeFromFile } from "file-type";
 import probeImageSize from "probe-image-size";
 import isSvg from "is-svg";
 import sharp from "sharp";
 import { encode } from "blurhash";
 import { inspect } from "node:util";
-
-const pipeline = util.promisify(stream.pipeline);
 
 export type FileInfo = {
 	size: number;
@@ -163,7 +161,7 @@ export async function checkSvg(path: string) {
 	try {
 		const size = await getFileSize(path);
 		if (size > 1 * 1024 * 1024) return false;
-		return isSvg(fs.readFileSync(path));
+		return isSvg(await fs.readFile(path, "utf-8"));
 	} catch {
 		return false;
 	}
@@ -173,8 +171,7 @@ export async function checkSvg(path: string) {
  * Get file size
  */
 export async function getFileSize(path: string): Promise<number> {
-	const getStat = util.promisify(fs.stat);
-	return (await getStat(path)).size;
+	return (await fs.stat(path)).size;
 }
 
 /**
@@ -182,7 +179,7 @@ export async function getFileSize(path: string): Promise<number> {
  */
 async function calcHash(path: string): Promise<string> {
 	const hash = crypto.createHash("md5").setEncoding("hex");
-	await pipeline(fs.createReadStream(path), hash);
+	await stream.pipeline(createReadStream(path), hash);
 	return hash.read();
 }
 
@@ -196,7 +193,7 @@ async function detectImageSize(path: string): Promise<{
 	hUnits: string;
 	orientation?: number;
 }> {
-	const readable = fs.createReadStream(path);
+	const readable = createReadStream(path);
 	const imageSize = await probeImageSize(readable);
 	readable.destroy();
 	return imageSize;
@@ -214,7 +211,7 @@ function getBlurhash(path: string): Promise<string> {
 			.toBuffer((err, buffer, { width, height }) => {
 				if (err) return reject(err);
 
-				let hash;
+				let hash: string;
 
 				try {
 					hash = encode(new Uint8ClampedArray(buffer), width, height, 7, 7);

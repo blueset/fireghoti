@@ -1,5 +1,4 @@
-import * as fs from "node:fs";
-import * as util from "node:util";
+import * as fs from "node:fs/promises";
 import Logger from "@/services/logger.js";
 import { createTemp } from "./create-temp.js";
 import { downloadUrl } from "./download-url.js";
@@ -16,7 +15,7 @@ export async function downloadTextFile(url: string): Promise<string> {
 		// write content at URL to temp file
 		await downloadUrl(url, path);
 
-		const text = await util.promisify(fs.readFile)(path, "utf8");
+		const text = await fs.readFile(path, "utf-8");
 
 		return text;
 	} finally {
