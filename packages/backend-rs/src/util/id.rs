@@ -1,54 +1,63 @@
 //! ID generation utility based on [cuid2]
 
+use crate::config::CONFIG;
 use basen::BASE36;
 use chrono::{DateTime, NaiveDateTime, Utc};
 use once_cell::sync::OnceCell;
 use std::cmp;
 
-#[derive(thiserror::Error, Debug, PartialEq, Eq)]
-#[error("ID generator has not been initialized yet")]
-pub struct ErrorUninitialized;
-
 static FINGERPRINT: OnceCell<String> = OnceCell::new();
 static GENERATOR: OnceCell<cuid2::CuidConstructor> = OnceCell::new();
 
 const TIME_2000: i64 = 946_684_800_000;
-const TIMESTAMP_LENGTH: u16 = 8;
+const TIMESTAMP_LENGTH: u8 = 8;
 
-/// Initializes Cuid2 generator. Must be called before any [create_id].
-#[crate::export]
-pub fn init_id_generator(length: u16, fingerprint: &str) {
+/// Initializes Cuid2 generator.
+fn init_id_generator(length: u8, fingerprint: &str) {
     FINGERPRINT.get_or_init(move || format!("{}{}", fingerprint, cuid2::create_id()));
     GENERATOR.get_or_init(move || {
         cuid2::CuidConstructor::new()
             // length to pass shoule be greater than or equal to 8.
-            .with_length(cmp::max(length - TIMESTAMP_LENGTH, 8))
+            .with_length(cmp::max(length - TIMESTAMP_LENGTH, 8).into())
             .with_fingerprinter(|| FINGERPRINT.get().unwrap().clone())
     });
 }
 
-/// Returns Cuid2 with the length specified by [init_id]. Must be called after
-/// [init_id], otherwise returns [ErrorUninitialized].
-pub fn create_id(datetime: &NaiveDateTime) -> Result<String, ErrorUninitialized> {
-    match GENERATOR.get() {
-        None => Err(ErrorUninitialized),
-        Some(gen) => {
-            let date_num = cmp::max(0, datetime.and_utc().timestamp_millis() - TIME_2000) as u64;
-            Ok(format!(
-                "{:0>8}{}",
-                BASE36.encode_var_len(&date_num),
-                gen.create_id()
-            ))
-        }
+/// Returns Cuid2 with the length specified by [init_id_generator].
+/// It automatically calls [init_id_generator], if the generator has not been initialized.
+fn create_id(datetime: &NaiveDateTime) -> String {
+    if GENERATOR.get().is_none() {
+        let length = match &CONFIG.cuid {
+            Some(cuid) => cmp::min(cmp::max(cuid.length.unwrap_or(16), 16), 24),
+            None => 16,
+        };
+        let fingerprint = match &CONFIG.cuid {
+            Some(cuid) => cuid.fingerprint.as_deref().unwrap_or_default(),
+            None => "",
+        };
+        init_id_generator(length, fingerprint);
     }
+    let date_num = cmp::max(0, datetime.and_utc().timestamp_millis() - TIME_2000) as u64;
+    format!(
+        "{:0>8}{}",
+        BASE36.encode_var_len(&date_num),
+        GENERATOR.get().unwrap().create_id()
+    )
+}
+
+#[derive(thiserror::Error, Debug)]
+#[error("Invalid ID: {id}")]
+pub struct InvalidIdErr {
+    id: String,
 }
 
 #[crate::export]
-pub fn get_timestamp(id: &str) -> i64 {
+pub fn get_timestamp(id: &str) -> Result<i64, InvalidIdErr> {
     let n: Option<u64> = BASE36.decode_var_len(&id[0..8]);
-    match n {
-        None => -1,
-        Some(n) => n as i64 + TIME_2000,
+    if let Some(n) = n {
+        Ok(n as i64 + TIME_2000)
+    } else {
+        Err(InvalidIdErr { id: id.to_string() })
     }
 }
 
@@ -60,35 +69,41 @@ pub fn get_timestamp(id: &str) -> i64 {
 /// Ref: https://github.com/paralleldrive/cuid2#parameterized-length
 #[crate::export]
 pub fn gen_id() -> String {
-    create_id(&Utc::now().naive_utc()).unwrap()
+    create_id(&Utc::now().naive_utc())
 }
 
 /// Generate an ID using a specific datetime
 #[crate::export]
 pub fn gen_id_at(date: DateTime<Utc>) -> String {
-    create_id(&date.naive_utc()).unwrap()
+    create_id(&date.naive_utc())
 }
 
 #[cfg(test)]
 mod unit_test {
-    use crate::util::id;
-    use chrono::Utc;
+    use super::{gen_id, gen_id_at, get_timestamp};
+    use chrono::{Duration, Utc};
     use pretty_assertions::{assert_eq, assert_ne};
     use std::thread;
 
     #[test]
     fn can_create_and_decode_id() {
-        let now = Utc::now().naive_utc();
-        assert_eq!(id::create_id(&now), Err(id::ErrorUninitialized));
-        id::init_id_generator(16, "");
-        assert_eq!(id::create_id(&now).unwrap().len(), 16);
-        assert_ne!(id::create_id(&now).unwrap(), id::create_id(&now).unwrap());
-        let id1 = thread::spawn(move || id::create_id(&now).unwrap());
-        let id2 = thread::spawn(move || id::create_id(&now).unwrap());
+        let now = Utc::now();
+        assert_eq!(gen_id().len(), 16);
+        assert_ne!(gen_id_at(now), gen_id_at(now));
+        assert_ne!(gen_id(), gen_id());
+
+        let id1 = thread::spawn(move || gen_id_at(now));
+        let id2 = thread::spawn(move || gen_id_at(now));
         assert_ne!(id1.join().unwrap(), id2.join().unwrap());
 
-        let test_id = id::create_id(&now).unwrap();
-        let timestamp = id::get_timestamp(&test_id);
-        assert_eq!(now.and_utc().timestamp_millis(), timestamp);
+        let test_id = gen_id_at(now);
+        let timestamp = get_timestamp(&test_id).unwrap();
+        assert_eq!(now.timestamp_millis(), timestamp);
+
+        let now_id = gen_id_at(now);
+        let old_id = gen_id_at(now - Duration::milliseconds(1));
+        let future_id = gen_id_at(now + Duration::milliseconds(1));
+        assert!(old_id < now_id);
+        assert!(now_id < future_id);
     }
 }
