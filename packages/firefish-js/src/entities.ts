@@ -174,9 +174,11 @@ export type Note = {
 	channelId?: Channel["id"];
 	channel?: Channel;
 	myReaction?: string;
+	myRenoteCount?: number;
 	reactions: Record<string, number>;
 	renoteCount: number;
 	repliesCount: number;
+	quoteCount: number;
 	poll?: {
 		expiresAt: DateString | null;
 		multiple: boolean;
