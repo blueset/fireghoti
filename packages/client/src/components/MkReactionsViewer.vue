@@ -30,7 +30,7 @@ const reactionsEl = ref<HTMLElement>();
 
 const initialReactions = new Set(Object.keys(props.note.reactions));
 
-const isMe = computed(() => isSignedIn && me.id === props.note.userId);
+const isMe = computed(() => isSignedIn(me) && me.id === props.note.userId);
 </script>
 
 <style lang="scss" scoped>

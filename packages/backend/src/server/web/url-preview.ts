@@ -2,7 +2,7 @@ import type Koa from "koa";
 import summaly from "summaly";
 import { fetchMeta } from "backend-rs";
 import Logger from "@/services/logger.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { query } from "@/prelude/url.js";
 import { getJson } from "@/misc/fetch.js";
 import { inspect } from "node:util";

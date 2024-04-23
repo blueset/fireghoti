@@ -4,14 +4,13 @@ import { createNote } from "@/remote/activitypub/models/note.js";
 import DbResolver from "@/remote/activitypub/db-resolver.js";
 import Resolver from "@/remote/activitypub/resolver.js";
 import { ApiError } from "@/server/api/error.js";
-import { extractHost } from "backend-rs";
+import { extractHost, isBlockedServer } from "backend-rs";
 import { Users, Notes } from "@/models/index.js";
 import type { Note } from "@/models/entities/note.js";
 import type { CacheableLocalUser, User } from "@/models/entities/user.js";
 import { isActor, isPost, getApId } from "@/remote/activitypub/type.js";
 import type { SchemaType } from "@/misc/schema.js";
 import { MINUTE } from "@/const.js";
-import { shouldBlockInstance } from "@/misc/should-block-instance.js";
 import { updateQuestion } from "@/remote/activitypub/models/question.js";
 import { populatePoll } from "@/models/repositories/note.js";
 import { redisClient } from "@/db/redis.js";
@@ -101,7 +100,7 @@ async function fetchAny(
 	me: CacheableLocalUser | null | undefined,
 ): Promise<SchemaType<(typeof meta)["res"]> | null> {
 	// Wait if blocked.
-	if (await shouldBlockInstance(extractHost(uri))) return null;
+	if (await isBlockedServer(extractHost(uri))) return null;
 
 	const dbResolver = new DbResolver();
 

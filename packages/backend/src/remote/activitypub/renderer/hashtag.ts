@@ -1,4 +1,4 @@
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 
 export default (tag: string) => ({
 	type: "Hashtag",

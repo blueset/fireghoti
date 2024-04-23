@@ -1,4 +1,4 @@
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import type { Blocking } from "@/models/entities/blocking.js";
 
 /**

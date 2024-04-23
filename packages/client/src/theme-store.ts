@@ -2,14 +2,14 @@ import type { Theme } from "./scripts/theme";
 import { isSignedIn, me } from "@/me";
 import { api } from "@/os";
 
-const lsCacheKey = isSignedIn ? `themes:${me.id}` : "";
+const lsCacheKey = isSignedIn(me) ? `themes:${me.id}` : "";
 
 export function getThemes(): Theme[] {
 	return JSON.parse(localStorage.getItem(lsCacheKey) || "[]");
 }
 
 export async function fetchThemes(): Promise<void> {
-	if (!isSignedIn) return;
+	if (!isSignedIn(me)) return;
 
 	try {
 		const themes = await api("i/registry/get", {

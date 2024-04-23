@@ -1,4 +1,4 @@
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import type { User } from "@/models/entities/user.js";
 import type { Note } from "@/models/entities/note.js";
 import type { Poll } from "@/models/entities/poll.js";

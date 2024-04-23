@@ -2,7 +2,10 @@
 
 use sea_orm::entity::prelude::*;
 
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
+#[derive(
+    Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, serde::Serialize, serde::Deserialize,
+)]
+#[serde(rename_all = "camelCase")]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
 #[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "antenna_src_enum")]
@@ -20,7 +23,10 @@ pub enum AntennaSrcEnum {
     #[sea_orm(string_value = "users")]
     Users,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
+#[derive(
+    Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, serde::Serialize, serde::Deserialize,
+)]
+#[serde(rename_all = "camelCase")]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
 #[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(
@@ -34,7 +40,10 @@ pub enum DriveFileUsageHintEnum {
     #[sea_orm(string_value = "userBanner")]
     UserBanner,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
+#[derive(
+    Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, serde::Serialize, serde::Deserialize,
+)]
+#[serde(rename_all = "camelCase")]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
 #[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(
@@ -52,7 +61,10 @@ pub enum MutedNoteReasonEnum {
     #[sea_orm(string_value = "word")]
     Word,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
+#[derive(
+    Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, serde::Serialize, serde::Deserialize,
+)]
+#[serde(rename_all = "camelCase")]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
 #[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(
@@ -72,7 +84,10 @@ pub enum NoteVisibilityEnum {
     #[sea_orm(string_value = "specified")]
     Specified,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
+#[derive(
+    Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, serde::Serialize, serde::Deserialize,
+)]
+#[serde(rename_all = "camelCase")]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
 #[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(
@@ -106,7 +121,10 @@ pub enum NotificationTypeEnum {
     #[sea_orm(string_value = "reply")]
     Reply,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
+#[derive(
+    Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, serde::Serialize, serde::Deserialize,
+)]
+#[serde(rename_all = "camelCase")]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
 #[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(
@@ -122,7 +140,10 @@ pub enum PageVisibilityEnum {
     #[sea_orm(string_value = "specified")]
     Specified,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
+#[derive(
+    Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, serde::Serialize, serde::Deserialize,
+)]
+#[serde(rename_all = "camelCase")]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
 #[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(
@@ -140,7 +161,10 @@ pub enum PollNotevisibilityEnum {
     #[sea_orm(string_value = "specified")]
     Specified,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
+#[derive(
+    Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, serde::Serialize, serde::Deserialize,
+)]
+#[serde(rename_all = "camelCase")]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
 #[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "relay_status_enum")]
@@ -152,7 +176,10 @@ pub enum RelayStatusEnum {
     #[sea_orm(string_value = "requesting")]
     Requesting,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
+#[derive(
+    Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, serde::Serialize, serde::Deserialize,
+)]
+#[serde(rename_all = "camelCase")]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
 #[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(
@@ -170,7 +197,10 @@ pub enum UserEmojimodpermEnum {
     #[sea_orm(string_value = "unauthorized")]
     Unauthorized,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
+#[derive(
+    Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, serde::Serialize, serde::Deserialize,
+)]
+#[serde(rename_all = "camelCase")]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
 #[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(
@@ -186,7 +216,10 @@ pub enum UserProfileFfvisibilityEnum {
     #[sea_orm(string_value = "public")]
     Public,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
+#[derive(
+    Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, serde::Serialize, serde::Deserialize,
+)]
+#[serde(rename_all = "camelCase")]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
 #[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(

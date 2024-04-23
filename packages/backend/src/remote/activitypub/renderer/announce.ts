@@ -1,4 +1,4 @@
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import type { Note } from "@/models/entities/note.js";
 
 export default (object: any, note: Note) => {

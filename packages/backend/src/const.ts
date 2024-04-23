@@ -1,4 +1,4 @@
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import {
 	DB_MAX_IMAGE_COMMENT_LENGTH,
 	DB_MAX_NOTE_TEXT_LENGTH,

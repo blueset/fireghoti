@@ -1,6 +1,6 @@
 import Router from "@koa/router";
 
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { type Acct, stringToAcct } from "backend-rs";
 import { links } from "./nodeinfo.js";
 import { escapeAttribute, escapeValue } from "@/prelude/xml.js";

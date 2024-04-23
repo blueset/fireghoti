@@ -1,5 +1,5 @@
 import { IsNull } from "typeorm";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderOrderedCollection from "@/remote/activitypub/renderer/ordered-collection.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";

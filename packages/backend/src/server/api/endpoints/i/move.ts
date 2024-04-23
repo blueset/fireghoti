@@ -10,7 +10,7 @@ import deleteFollowing from "@/services/following/delete.js";
 import create from "@/services/following/create.js";
 import { getUser } from "@/server/api/common/getters.js";
 import { Followings, Users } from "@/models/index.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { publishMainStream } from "@/services/stream.js";
 import { stringToAcct } from "backend-rs";
 import { inspect } from "node:util";

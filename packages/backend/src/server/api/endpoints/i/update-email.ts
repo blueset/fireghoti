@@ -1,7 +1,7 @@
 import { publishMainStream } from "@/services/stream.js";
 import define from "@/server/api/define.js";
 import rndstr from "rndstr";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { Users, UserProfiles } from "@/models/index.js";
 import { sendEmail } from "@/services/send-email.js";
 import { ApiError } from "@/server/api/error.js";

@@ -1,4 +1,4 @@
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import type { ILocalUser } from "@/models/entities/user.js";
 
 // to anonymise reporters, the reporting actor must be a system user

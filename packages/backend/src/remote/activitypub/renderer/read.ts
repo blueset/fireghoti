@@ -1,4 +1,4 @@
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import type { User } from "@/models/entities/user.js";
 import type { MessagingMessage } from "@/models/entities/messaging-message.js";
 

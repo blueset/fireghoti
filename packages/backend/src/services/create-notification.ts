@@ -8,11 +8,10 @@ import {
 	Users,
 	Followings,
 } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genId, isSilencedServer } from "backend-rs";
 import type { User } from "@/models/entities/user.js";
 import type { Notification } from "@/models/entities/notification.js";
 import { sendEmailNotification } from "./send-email-notification.js";
-import { shouldSilenceInstance } from "@/misc/should-block-instance.js";
 
 export async function createNotification(
 	notifieeId: User["id"],
@@ -35,8 +34,8 @@ export async function createNotification(
 		if (
 			(notifier.isSilenced ||
 				(Users.isRemoteUser(notifier) &&
-					(await shouldSilenceInstance(notifier.host)))) &&
-			!(await Followings.exist({
+					(await isSilencedServer(notifier.host)))) &&
+			!(await Followings.exists({
 				where: { followerId: notifieeId, followeeId: data.notifierId },
 			}))
 		)

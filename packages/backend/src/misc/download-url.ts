@@ -2,8 +2,8 @@ import * as fs from "node:fs";
 import * as stream from "node:stream";
 import * as util from "node:util";
 import got, * as Got from "got";
-import { httpAgent, httpsAgent, StatusError } from "./fetch.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
+import { getAgentByHostname, StatusError } from "./fetch.js";
 import chalk from "chalk";
 import Logger from "@/services/logger.js";
 import IPCIDR from "ip-cidr";
@@ -40,10 +40,7 @@ export async function downloadUrl(url: string, path: string): Promise<void> {
 				send: timeout,
 				request: operationTimeout, // whole operation timeout
 			},
-			agent: {
-				http: httpAgent,
-				https: httpsAgent,
-			},
+			agent: getAgentByHostname(new URL(url).hostname),
 			http2: false, // default
 			retry: {
 				limit: 0,

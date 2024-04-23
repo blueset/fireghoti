@@ -239,7 +239,7 @@ watch(route, () => {
 const columns = deckStore.reactiveState.columns;
 const layout = deckStore.reactiveState.layout;
 const menuIndicated = computed(() => {
-	if (!isSignedIn) return false;
+	if (!isSignedIn(me)) return false;
 	for (const def in navbarItemDef) {
 		if (navbarItemDef[def].indicated) return true;
 	}
