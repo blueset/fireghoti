@@ -1386,7 +1386,7 @@ _poll:
 _visibility:
   public: "公开"
   publicDescription: "您的帖子将出现在公共时间线上"
-  home: "不公开"
+  home: "悄悄公开"
   homeDescription: "仅发送至首页时间线"
   followers: "仅关注者"
   followersDescription: "仅对您的关注者和提及的用户可见"
