@@ -9,7 +9,7 @@ Breaking changes are indicated by the :warning: icon.
 	- `all` (default)
   - `renote`
   - `quote`
-- :warning: Removed the following optional parameters in `notes/reactions`, as they were not taken into account due to a bug:
+- :warning: Removed the following optional parameters in `notes/reactions`, as they were never taken into account due to a bug:
 	- `sinceId`
 	- `untilId`
 
