@@ -2057,3 +2057,5 @@ incorrectLanguageWarning: "この投稿は{detected}で書かれていると判�
 markLocalFilesNsfwByDefault: このサーバーの全てのファイルをデフォルトでNSFWに設定する
 markLocalFilesNsfwByDefaultDescription: この設定が有効でも、ユーザーは自分でNSFWのフラグを外すことができます。また、この設定は既存のファイルには影響しません。
 noteEditHistory: 編集履歴
+showAddFileDescriptionAtFirstPost: 説明の無い添付ファイルを投稿しようとした際に説明を書く画面を自動で開く
+antennaLimit: 各ユーザーが作れるアンテナの最大数
