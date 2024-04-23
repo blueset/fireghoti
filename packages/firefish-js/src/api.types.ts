@@ -263,7 +263,7 @@ export type Endpoints = {
 
 	// clips
 	"clips/add-note": { req: TODO; res: TODO };
-	"clips/create": { req: TODO; res: TODO };
+	"clips/create": { req: TODO; res: Clip };
 	"clips/delete": { req: { clipId: Clip["id"] }; res: null };
 	"clips/list": { req: TODO; res: TODO };
 	"clips/notes": { req: TODO; res: TODO };
@@ -748,6 +748,18 @@ export type Endpoints = {
 		};
 		res: Note[];
 	};
+	"notes/thread-muting/create": {
+		req: {
+			noteId: Note["id"];
+		};
+		res: null;
+	};
+	"notes/thread-muting/delete": {
+		req: {
+			noteId: Note["id"];
+		};
+		res: null;
+	};
 	"notes/hybrid-timeline": {
 		req: {
 			limit?: number;
@@ -768,6 +780,12 @@ export type Endpoints = {
 		};
 		res: Note[];
 	};
+	"notes/make-private": {
+		req: {
+			noteId: Note["id"];
+		};
+		res: null;
+	}
 	"notes/mentions": {
 		req: {
 			following?: boolean;

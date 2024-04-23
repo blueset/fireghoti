@@ -1,5 +1,6 @@
 export function focusPrev(el: Element | null, self = false, scroll = true) {
 	if (el == null) return;
+	// biome-ignore lint/style/noParameterAssign: assign it intentionally
 	if (!self) el = el.previousElementSibling;
 	if (el) {
 		if (el.hasAttribute("tabindex")) {
@@ -14,6 +15,7 @@ export function focusPrev(el: Element | null, self = false, scroll = true) {
 
 export function focusNext(el: Element | null, self = false, scroll = true) {
 	if (el == null) return;
+	// biome-ignore lint/style/noParameterAssign: assign it intentionally
 	if (!self) el = el.nextElementSibling;
 	if (el) {
 		if (el.hasAttribute("tabindex")) {

@@ -1,7 +1,7 @@
 /**
  * Clipboardに値をコピー(TODO: 文字列以外も対応)
  */
-export default (val) => {
+function obsoleteCopyToClipboard(val: string) {
 	// 空div 生成
 	const tmp = document.createElement("div");
 	// 選択用のタグ生成
@@ -21,7 +21,7 @@ export default (val) => {
 	// body に追加
 	document.body.appendChild(tmp);
 	// 要素を選択
-	document.getSelection().selectAllChildren(tmp);
+	document.getSelection()?.selectAllChildren(tmp);
 
 	// クリップボードにコピー
 	const result = document.execCommand("copy");
@@ -30,4 +30,20 @@ export default (val) => {
 	document.body.removeChild(tmp);
 
 	return result;
-};
+}
+
+export default async function (val?: string | null) {
+	if (val == null) return true;
+	const clipboardObj = window.navigator?.clipboard;
+	if (clipboardObj == null) {
+		// not supported
+		return obsoleteCopyToClipboard(val);
+	} else {
+		return new Promise<boolean>((res) => {
+			clipboardObj
+				.writeText(val)
+				.then(() => res(true))
+				.catch(() => res(obsoleteCopyToClipboard(val)));
+		});
+	}
+}

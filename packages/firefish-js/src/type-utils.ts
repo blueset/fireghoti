@@ -5,3 +5,5 @@ export type PropertyOfType<Type, U> = {
 }[keyof Type];
 
 export type EndpointsOf<T> = PropertyOfType<Endpoints, { res: T }>;
+
+export type NonUndefinedAble<T> = T extends undefined ? never : T;

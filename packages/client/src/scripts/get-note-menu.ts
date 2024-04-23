@@ -15,6 +15,7 @@ import { useRouter } from "@/router";
 import { notePage } from "@/filters/note";
 import type { NoteTranslation } from "@/types/note";
 import type { MenuItem } from "@/types/menu";
+import type { NoteDraft } from "@/types/post-form";
 
 const router = useRouter();
 
@@ -61,7 +62,7 @@ export function getNoteMenu(props: {
 			});
 
 			os.post({
-				initialNote: appearNote,
+				initialNote: appearNote as NoteDraft,
 				renote: appearNote.renote,
 				reply: appearNote.reply,
 				channel: appearNote.channel,
@@ -71,7 +72,7 @@ export function getNoteMenu(props: {
 
 	function edit(): void {
 		os.post({
-			initialNote: appearNote,
+			initialNote: appearNote as NoteDraft,
 			renote: appearNote.renote,
 			reply: appearNote.reply,
 			channel: appearNote.channel,
