@@ -265,7 +265,7 @@ export type Endpoints = {
 	"clips/add-note": { req: TODO; res: TODO };
 	"clips/create": { req: TODO; res: Clip };
 	"clips/delete": { req: { clipId: Clip["id"] }; res: null };
-	"clips/list": { req: TODO; res: TODO };
+	"clips/list": { req: TODO; res: Clip[] };
 	"clips/notes": { req: TODO; res: TODO };
 	"clips/show": { req: TODO; res: TODO };
 	"clips/update": { req: TODO; res: TODO };
@@ -785,7 +785,7 @@ export type Endpoints = {
 			noteId: Note["id"];
 		};
 		res: null;
-	}
+	};
 	"notes/mentions": {
 		req: {
 			following?: boolean;

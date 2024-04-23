@@ -39,6 +39,7 @@
 		"aws-sdk": "2.1599.0",
 		"axios": "^1.6.8",
 		"backend-rs": "workspace:*",
+		"firefish-js": "workspace:*",
 		"blurhash": "2.0.5",
 		"bull": "4.12.2",
 		"cacheable-lookup": "TheEssem/cacheable-lookup",

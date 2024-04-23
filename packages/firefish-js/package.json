@@ -7,8 +7,9 @@
 	"types": "./src/index.ts",
 	"license": "MIT",
 	"scripts": {
-		"build": "pnpm swc src --out-dir built --source-maps false --copy-files --strip-leading-paths",
-		"build:debug": "pnpm swc src --out-dir built --source-maps true --copy-files --strip-leading-paths",
+		"build": "pnpm swc src --out-dir built --source-maps false --copy-files --strip-leading-paths && pnpm run build:types",
+		"build:debug": "pnpm swc src --out-dir built --source-maps true --copy-files --strip-leading-paths && pnpm run build:types",
+		"build:types": "pnpm tsc --emitDeclarationOnly",
 		"watch": "pnpm swc src --out-dir built --source-maps true --copy-files --strip-leading-paths --watch",
 		"lint": "pnpm biome check --apply src",
 		"format": "pnpm biome format --write src",

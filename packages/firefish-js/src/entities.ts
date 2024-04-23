@@ -1,4 +1,5 @@
 import type * as consts from "./consts";
+import type { Packed } from "./misc/schema";
 
 export type ID = string;
 export type DateString = string;
@@ -513,7 +514,7 @@ export type AuthSession = {
 
 export type Ad = TODO;
 
-export type Clip = TODO;
+export type Clip = Packed<"Clip">;
 
 export type NoteFavorite = {
 	id: ID;

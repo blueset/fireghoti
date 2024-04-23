@@ -7,6 +7,9 @@ import Stream, { Connection } from "./streaming";
 import * as StreamTypes from "./streaming.types";
 import type * as TypeUtils from "./type-utils";
 
+import type * as SchemaTypes from "./misc/schema";
+import * as Schema from "./misc/schema";
+
 export {
 	Endpoints,
 	type ApiTypes,
@@ -16,6 +19,8 @@ export {
 	acct,
 	type Acct,
 	type TypeUtils,
+	Schema,
+	type SchemaTypes,
 };
 
 export const permissions = consts.permissions;
@@ -26,9 +31,11 @@ export const languages = consts.languages;
 export const ffVisibility = consts.ffVisibility;
 export const instanceSortParam = consts.instanceSortParam;
 
+import { langmap } from "./misc/langmap";
+
 // api extractor not supported yet
 //export * as api from './api';
 //export * as entities from './entities';
 import * as api from "./api";
 import * as entities from "./entities";
-export { api, entities };
+export { api, entities, langmap };
