@@ -1140,5 +1140,7 @@ export function getTimestamp(id: string): number
  *
  * Ref: https://github.com/paralleldrive/cuid2#parameterized-length
  */
-export function genId(date?: Date | undefined | null): string
+export function genId(): string
+/** Generate an ID using a specific datetime */
+export function genIdAt(date: Date): string
 export function secureRndstr(length?: number | undefined | null): string

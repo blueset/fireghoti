@@ -47,6 +47,7 @@ import {
 	addNoteToAntenna,
 	checkWordMute,
 	genId,
+	genIdAt,
 	isSilencedServer,
 } from "backend-rs";
 import { countSameRenotes } from "@/misc/count-same-renotes.js";
@@ -711,7 +712,7 @@ async function insertNote(
 		data.createdAt = new Date();
 	}
 	const insert = new Note({
-		id: genId(data.createdAt),
+		id: genIdAt(data.createdAt),
 		createdAt: data.createdAt,
 		fileIds: data.files ? data.files.map((file) => file.id) : [],
 		replyId: data.reply ? data.reply.id : null,

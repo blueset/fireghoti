@@ -1,8 +1,7 @@
 //! ID generation utility based on [cuid2]
 
 use basen::BASE36;
-use cfg_if::cfg_if;
-use chrono::NaiveDateTime;
+use chrono::{DateTime, NaiveDateTime, Utc};
 use once_cell::sync::OnceCell;
 use std::cmp;
 
@@ -53,21 +52,21 @@ pub fn get_timestamp(id: &str) -> i64 {
     }
 }
 
-cfg_if! {
-    if #[cfg(feature = "napi")] {
-        use chrono::{DateTime, Utc};
+/// The generated ID results in the form of `[8 chars timestamp] + [cuid2]`.
+/// The minimum and maximum lengths are 16 and 24, respectively.
+/// With the length of 16, namely 8 for cuid2, roughly 1427399 IDs are needed
+/// in the same millisecond to reach 50% chance of collision.
+///
+/// Ref: https://github.com/paralleldrive/cuid2#parameterized-length
+#[crate::export]
+pub fn gen_id() -> String {
+    create_id(&Utc::now().naive_utc()).unwrap()
+}
 
-        /// The generated ID results in the form of `[8 chars timestamp] + [cuid2]`.
-        /// The minimum and maximum lengths are 16 and 24, respectively.
-        /// With the length of 16, namely 8 for cuid2, roughly 1427399 IDs are needed
-        /// in the same millisecond to reach 50% chance of collision.
-        ///
-        /// Ref: https://github.com/paralleldrive/cuid2#parameterized-length
-        #[napi_derive::napi]
-        pub fn gen_id(date: Option<DateTime<Utc>>) -> String {
-            create_id(&date.unwrap_or_else(Utc::now).naive_utc()).unwrap()
-        }
-    }
+/// Generate an ID using a specific datetime
+#[crate::export]
+pub fn gen_id_at(date: DateTime<Utc>) -> String {
+    create_id(&date.naive_utc()).unwrap()
 }
 
 #[cfg(test)]

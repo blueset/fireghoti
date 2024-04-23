@@ -310,7 +310,7 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { loadEnv, loadConfig, stringToAcct, acctToString, addNoteToAntenna, isBlockedServer, isSilencedServer, isAllowedServer, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getNoteSummary, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, removeOldAttestationChallenges, AntennaSrcEnum, DriveFileUsageHintEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, ChatEvent, publishToChatStream, initIdGenerator, getTimestamp, genId, secureRndstr } = nativeBinding
+const { loadEnv, loadConfig, stringToAcct, acctToString, addNoteToAntenna, isBlockedServer, isSilencedServer, isAllowedServer, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getNoteSummary, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, removeOldAttestationChallenges, AntennaSrcEnum, DriveFileUsageHintEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, ChatEvent, publishToChatStream, initIdGenerator, getTimestamp, genId, genIdAt, secureRndstr } = nativeBinding
 
 module.exports.loadEnv = loadEnv
 module.exports.loadConfig = loadConfig
@@ -359,4 +359,5 @@ module.exports.publishToChatStream = publishToChatStream
 module.exports.initIdGenerator = initIdGenerator
 module.exports.getTimestamp = getTimestamp
 module.exports.genId = genId
+module.exports.genIdAt = genIdAt
 module.exports.secureRndstr = secureRndstr
