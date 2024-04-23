@@ -36,13 +36,13 @@ withDefaults(
 );
 
 const emit = defineEmits<{
-	(ev: "done"): void;
+	(ev: "done", res: { id: string; i: string }): void;
 	(ev: "closed"): void;
 }>();
 
 const dialog = ref<InstanceType<typeof XModalWindow>>();
 
-function onSignup(res) {
+function onSignup(res: { id: string; i: string }) {
 	emit("done", res);
 	dialog.value?.close();
 }

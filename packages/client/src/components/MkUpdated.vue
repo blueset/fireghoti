@@ -2,8 +2,8 @@
 	<MkModal
 		ref="modal"
 		:z-priority="'middle'"
-		@click="$refs.modal.close()"
-		@closed="$emit('closed')"
+		@click="modal!.close()"
+		@closed="emit('closed')"
 	>
 		<div :class="$style.root">
 			<div :class="$style.title">
@@ -11,8 +11,8 @@
 			</div>
 			<div :class="$style.version">✨ {{ version }} 🚀</div>
 			<div v-if="newRelease" :class="$style.releaseNotes">
-				<Mfm :text="data.notes" />
-				<div v-if="data.screenshots.length > 0" style="max-width: 500">
+				<Mfm :text="data?.notes ?? ''" />
+				<div v-if="data?.screenshots && data.screenshots.length > 0" style="max-width: 500">
 					<img
 						v-for="i in data.screenshots"
 						:key="i"
@@ -25,7 +25,7 @@
 				:class="$style.gotIt"
 				primary
 				full
-				@click="$refs.modal.close()"
+				@click="modal!.close()"
 				>{{ i18n.ts.gotIt }}</MkButton
 			>
 		</div>
@@ -40,11 +40,16 @@ import MkButton from "@/components/MkButton.vue";
 import { version } from "@/config";
 import { i18n } from "@/i18n";
 import * as os from "@/os";
+import type { Endpoints } from "firefish-js";
+
+const emit = defineEmits<{
+	closed: [];
+}>();
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 
 const newRelease = ref(false);
-const data = ref(Object);
+const data = ref<Endpoints["release"]["res"] | null>(null);
 
 os.api("release").then((res) => {
 	data.value = res;
@@ -52,7 +57,7 @@ os.api("release").then((res) => {
 });
 
 console.log(`Version: ${version}`);
-console.log(`Data version: ${data.value.version}`);
+console.log(`Data version: ${data.value?.version}`);
 console.log(newRelease.value);
 console.log(data.value);
 </script>

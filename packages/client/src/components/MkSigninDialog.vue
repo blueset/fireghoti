@@ -30,7 +30,7 @@ withDefaults(
 );
 
 const emit = defineEmits<{
-	(ev: "done"): void;
+	(ev: "done", res: { id: string; i: string }): void;
 	(ev: "closed"): void;
 	(ev: "cancelled"): void;
 }>();
@@ -39,11 +39,11 @@ const dialog = ref<InstanceType<typeof XModalWindow>>();
 
 function onClose() {
 	emit("cancelled");
-	dialog.value.close();
+	dialog.value!.close();
 }
 
-function onLogin(res) {
+function onLogin(res: { id: string; i: string }) {
 	emit("done", res);
-	dialog.value.close();
+	dialog.value!.close();
 }
 </script>

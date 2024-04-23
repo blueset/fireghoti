@@ -245,7 +245,12 @@ function checkForSplash() {
 
 		try {
 			// 変なバージョン文字列来るとcompareVersionsでエラーになるため
-			if (lastVersion < version && defaultStore.state.showUpdates) {
+			// If a strange version string comes, an error will occur in compareVersions.
+			if (
+				lastVersion != null &&
+				lastVersion < version &&
+				defaultStore.state.showUpdates
+			) {
 				// ログインしてる場合だけ
 				if (me) {
 					popup(
@@ -281,7 +286,7 @@ function checkForSplash() {
 						"closed",
 					);
 				} else {
-					unreadAnnouncements.forEach((item) => {
+					for (const item of unreadAnnouncements) {
 						if (item.showPopup)
 							popup(
 								defineAsyncComponent(
@@ -291,7 +296,7 @@ function checkForSplash() {
 								{},
 								"closed",
 							);
-					});
+					}
 				}
 			})
 			.catch((err) => console.log(err));

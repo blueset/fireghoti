@@ -893,9 +893,6 @@ export async function openEmojiPicker(
 			...opts,
 		},
 		{
-			chosen: (emoji) => {
-				insertTextAtCursor(activeTextarea, emoji);
-			},
 			done: (emoji) => {
 				insertTextAtCursor(activeTextarea, emoji);
 			},

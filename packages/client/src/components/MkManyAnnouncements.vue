@@ -1,5 +1,5 @@
 <template>
-	<MkModal ref="modal" :z-priority="'middle'" @closed="$emit('closed')">
+	<MkModal ref="modal" :z-priority="'middle'" @closed="emit('closed')">
 		<div :class="$style.root">
 			<p :class="$style.title">
 				{{ i18n.ts.youHaveUnreadAnnouncements }}
@@ -20,6 +20,10 @@ import { shallowRef } from "vue";
 import MkModal from "@/components/MkModal.vue";
 import MkButton from "@/components/MkButton.vue";
 import { i18n } from "@/i18n";
+
+const emit = defineEmits<{
+	closed: [];
+}>();
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 const checkAnnouncements = () => {

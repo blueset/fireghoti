@@ -116,6 +116,7 @@ export type MeDetailed = UserDetailed & {
 	preventAiLearning: boolean;
 	receiveAnnouncementEmail: boolean;
 	usePasswordLessLogin: boolean;
+	token: string;
 	[other: string]: any;
 };
 
@@ -479,7 +480,7 @@ export type Announcement = {
 	imageUrl: string | null;
 	isRead?: boolean;
 	isGoodNews: boolean;
-	showPopUp: boolean;
+	showPopup: boolean;
 };
 
 export type Antenna = {

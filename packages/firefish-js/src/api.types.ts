@@ -362,6 +362,16 @@ export type Endpoints = {
 		res: DriveFile[];
 	};
 
+	"email-address/available": {
+		req: {
+			emailAddress: string;
+		};
+		res: {
+			available?: boolean;
+			reason: string | null;
+		};
+	};
+
 	// endpoint
 	endpoint: {
 		req: { endpoint: string };
@@ -893,6 +903,16 @@ export type Endpoints = {
 	// promo
 	"promo/read": { req: TODO; res: TODO };
 
+	// release
+	release: {
+		req: null;
+		res: {
+			version: string;
+			notes: string;
+			screenshots: string[];
+		};
+	};
+
 	// request-reset-password
 	"request-reset-password": {
 		req: { username: string; email: string };
@@ -915,8 +935,36 @@ export type Endpoints = {
 	// ck specific
 	"latest-version": { req: NoParams; res: TODO };
 
+	// signin
+	signin: {
+		req: {
+			username: string;
+			password: string;
+			"hcaptcha-response"?: null | string;
+			"g-recaptcha-response"?: null | string;
+		};
+		res:
+			| {
+					id: User["id"];
+					i: string;
+			  }
+			| {
+					challenge: string;
+					challengeId: string;
+					securityKeys: {
+						id: string;
+					}[];
+			  };
+	};
+
 	// sw
 	"sw/register": { req: TODO; res: TODO };
+	"sw/unregister": {
+		req: {
+			endpoint: string;
+		};
+		res: null;
+	};
 
 	// username
 	"username/available": {

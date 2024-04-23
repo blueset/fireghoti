@@ -15,7 +15,7 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async () => {
-	let release;
+	let release: unknown;
 
 	await fetch(
 		"https://firefish.dev/firefish/firefish/-/raw/develop/release.json",
