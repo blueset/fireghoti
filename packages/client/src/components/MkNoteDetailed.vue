@@ -33,7 +33,7 @@
 			@contextmenu.stop="onContextmenu"
 		></MkNote>
 
-		<MkTab v-model="tab" :style="'underline'" @update:modelValue="loadTab">
+		<MkTab v-model="tab" :style="'underline'">
 			<option value="replies">
 				<!-- <i :class="icon('ph-arrow-u-up-left')"></i> -->
 				{{
@@ -64,11 +64,11 @@
 					)
 				}}
 			</option>
-			<option v-if="directQuotes && directQuotes.length > 0" value="quotes">
+			<option v-if="note.quoteCount > 0" value="quotes">
 				<!-- <i :class="icon('ph-quotes')"></i> -->
 				{{
 					wordWithCount(
-						directQuotes.length,
+						note.quoteCount,
 						i18n.ts.quote,
 						i18n.ts.quotes,
 					)
@@ -80,44 +80,52 @@
 			</option>
 		</MkTab>
 
-		<MkNoteSub
-			v-for="note in directReplies"
-			v-if="directReplies && tab === 'replies'"
-			:key="note.id"
-			:note="note"
-			class="reply"
-			:conversation="replies"
-			:detailed-view="true"
-			:parent-id="note.id"
-		/>
-		<MkLoading v-else-if="tab === 'replies' && note.repliesCount > 0" />
+		<MkPagination
+			ref="repliesPagingComponent"
+			v-if="tab === 'replies' && note.repliesCount > 0"
+			v-slot="{ items }"
+			:pagination="repliesPagination"
+		>
+			<MkNoteSub
+				v-for="note in items"
+				:key="note.id"
+				:note="note"
+				class="reply"
+				:auto-conversation="true"
+				:detailed-view="true"
+				:parent-id="note.id"
+				:auto-add-replies="true"
+			/>
+		</MkPagination>
 
-		<MkNoteSub
-			v-for="note in directQuotes"
-			v-if="directQuotes && tab === 'quotes'"
-			:key="note.id"
-			:note="note"
-			class="reply"
-			:conversation="replies"
-			:detailed-view="true"
-			:parent-id="note.id"
-		/>
-		<MkLoading v-else-if="tab === 'quotes' && directQuotes && directQuotes.length > 0" />
+		<MkPagination
+			v-if="tab === 'quotes'"
+			v-slot="{ items }"
+			:pagination="quotePagination"
+		>
+			<MkNoteSub
+				v-for="note in items"
+				:key="note.id"
+				:note="note"
+				class="reply"
+				:auto-conversation="true"
+				:detailed-view="true"
+				:parent-id="note.id"
+				:auto-add-replies="true"
+			/>
+		</MkPagination>
 
-		<!-- <MkPagination
+		<MkPagination
 			v-if="tab === 'renotes'"
 			v-slot="{ items }"
-			ref="pagingComponent"
-			:pagination="pagination"
-		> -->
-		<MkUserCardMini
-			v-for="item in renotes"
-			v-if="tab === 'renotes' && renotes"
-			:key="item.user.id"
-			:user="item.user"
-		/>
-		<!-- </MkPagination> -->
-		<MkLoading v-else-if="tab === 'renotes' && note.renoteCount > 0" />
+			:pagination="renotePagination"
+		>
+			<MkUserCardMini
+				v-for="item in items"
+				:key="item.user.id"
+				:user="item.user"
+			/>
+		</MkPagination>
 
 		<div v-if="tab === 'clips' && clips.length > 0" class="_content clips">
 			<MkA
@@ -166,8 +174,8 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, onUpdated, ref } from "vue";
-import type { StreamTypes, entities } from "firefish-js";
+import { onMounted, onUpdated, ref } from "vue";
+import type { entities } from "firefish-js";
 import MkTab from "@/components/MkTab.vue";
 import MkNote from "@/components/MkNote.vue";
 import MkNoteSub from "@/components/MkNoteSub.vue";
@@ -185,15 +193,15 @@ import { i18n } from "@/i18n";
 import { getNoteMenu } from "@/scripts/get-note-menu";
 import { useNoteCapture } from "@/scripts/use-note-capture";
 import { deepClone } from "@/scripts/clone";
-import { useStream } from "@/stream";
+import MkPagination, {
+	type MkPaginationType,
+} from "@/components/MkPagination.vue";
 // import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	note: entities.Note;
 	pinned?: boolean;
 }>();
-
-const stream = useStream();
 
 const tab = ref("replies");
 
@@ -225,6 +233,10 @@ if (noteViewInterruptors.length > 0) {
 	});
 }
 
+const repliesPagingComponent = ref<MkPaginationType<"notes/replies"> | null>(
+	null,
+);
+
 const el = ref<HTMLElement | null>(null);
 const noteEl = ref();
 const menuButton = ref<HTMLElement>();
@@ -243,11 +255,7 @@ const muted = ref(
 const translation = ref(null);
 const translating = ref(false);
 const conversation = ref<null | entities.Note[]>([]);
-const replies = ref<entities.Note[]>([]);
-const directReplies = ref<null | entities.Note[]>([]);
-const directQuotes = ref<null | entities.Note[]>([]);
 const clips = ref();
-const renotes = ref();
 const isRenote = ref(note.value.renoteId != null);
 let isScrolling: boolean;
 
@@ -269,6 +277,10 @@ useNoteCapture({
 	rootEl: el,
 	note,
 	isDeletedRef: isDeleted,
+	onReplied: (replyNote) => {
+		note.value.repliesCount += 1;
+		repliesPagingComponent.value?.append(replyNote);
+	},
 });
 
 function reply(_viaKeyboard = false): void {
@@ -357,32 +369,6 @@ function blur() {
 	noteEl.value.blur();
 }
 
-directReplies.value = null;
-os.api("notes/children", {
-	noteId: note.value.id,
-	limit: 30,
-	depth: 12,
-}).then((res) => {
-	// biome-ignore lint/style/noParameterAssign: assign it intentially
-	res = res
-		.filter((n) => n.userId !== note.value.userId)
-		.reverse()
-		.concat(res.filter((n) => n.userId === note.value.userId));
-	// res = res.reduce((acc: entities.Note[], resNote) => {
-	// 	if (resNote.userId === note.value.userId) {
-	// 		return [...acc, resNote];
-	// 	}
-	// 	return [resNote, ...acc];
-	// }, []);
-	replies.value = res;
-	directReplies.value = res
-		.filter((resNote) => resNote.replyId === note.value.id)
-		.reverse();
-	directQuotes.value = res.filter(
-		(resNote) => resNote.renoteId === note.value.id,
-	);
-});
-
 conversation.value = null;
 if (note.value.replyId) {
 	os.api("notes/conversation", {
@@ -401,77 +387,37 @@ os.api("notes/clips", {
 	clips.value = res;
 });
 
-// const pagination = {
-// 	endpoint: "notes/renotes",
-// 	noteId: note.id,
-// 	limit: 10,
-// };
+const repliesPagination = {
+	endpoint: "notes/replies" as const,
+	limit: 10,
+	params: {
+		noteId: note.value.id,
+	},
+	ascending: true,
+};
 
-// const pagingComponent = $ref<InstanceType<typeof MkPagination>>();
-
-renotes.value = null;
-function loadTab() {
-	if (tab.value === "renotes" && !renotes.value) {
-		os.api("notes/renotes", {
-			noteId: note.value.id,
-			limit: 100,
-		}).then((res) => {
-			renotes.value = res;
-		});
-	}
-}
-
-async function onNoteUpdated(
-	noteData: StreamTypes.NoteUpdatedEvent,
-): Promise<void> {
-	const { type, id, body } = noteData;
-
-	let found = -1;
-	if (id === note.value.id) {
-		found = 0;
-	} else {
-		for (let i = 0; i < replies.value.length; i++) {
-			const reply = replies.value[i];
-			if (reply.id === id) {
-				found = i + 1;
-				break;
-			}
-		}
-	}
-
-	if (found === -1) {
-		return;
-	}
-
-	switch (type) {
-		case "replied": {
-			const { id: createdId } = body;
-			const replyNote = await os.api("notes/show", {
-				noteId: createdId,
-			});
-
-			replies.value.splice(found, 0, replyNote);
-			if (found === 0) {
-				directReplies.value!.push(replyNote);
-			}
-			break;
-		}
-		case "deleted":
-			if (found === 0) {
-				isDeleted.value = true;
-			} else {
-				replies.value.splice(found - 1, 1);
-			}
-			break;
-	}
-}
+const renotePagination = {
+	endpoint: "notes/renotes" as const,
+	limit: 30,
+	params: {
+		noteId: note.value.id,
+		filter: "renote" as const,
+	},
+};
+const quotePagination = {
+	endpoint: "notes/renotes" as const,
+	limit: 30,
+	params: {
+		noteId: note.value.id,
+		filter: "quote" as const,
+	},
+};
 
 document.addEventListener("wheel", () => {
 	isScrolling = true;
 });
 
 onMounted(() => {
-	stream.on("noteUpdated", onNoteUpdated);
 	isScrolling = false;
 	noteEl.value.scrollIntoView();
 });
@@ -483,10 +429,6 @@ onUpdated(() => {
 			location.replace(location.hash); // Jump to highlighted reply
 		}
 	}
-});
-
-onUnmounted(() => {
-	stream.off("noteUpdated", onNoteUpdated);
 });
 </script>
 

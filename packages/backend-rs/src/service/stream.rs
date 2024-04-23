@@ -1,3 +1,5 @@
+pub mod antenna;
+
 use crate::config::CONFIG;
 use crate::database::redis_conn;
 use redis::{Commands, RedisError};

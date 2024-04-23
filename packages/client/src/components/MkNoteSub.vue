@@ -1,6 +1,7 @@
 <template>
+	<MkLoading v-if="conversationLoading" />
 	<article
-		v-if="!muted.muted || muted.what === 'reply'"
+		v-else-if="!muted.muted || muted.what === 'reply'"
 		:id="detailedView ? appearNote.id : undefined"
 		ref="el"
 		v-size="{ max: [450, 500] }"
@@ -22,7 +23,7 @@
 			<div class="avatar-container">
 				<MkAvatar class="avatar" :user="appearNote.user" />
 				<div
-					v-if="!conversation || replies.length > 0"
+					v-if="conversation == null || replies.length > 0"
 					class="line"
 				></div>
 			</div>
@@ -148,20 +149,32 @@
 				</footer>
 			</div>
 		</div>
-		<template v-if="conversation">
-			<MkNoteSub
-				v-for="reply in replies"
-				v-if="replyLevel < 11 && depth < 5"
-				:key="reply.id"
-				:note="reply"
-				class="reply"
-				:class="{ single: replies.length == 1 }"
-				:conversation="conversation"
-				:depth="replies.length == 1 ? depth : depth + 1"
-				:reply-level="replyLevel + 1"
-				:parent-id="appearNote.id"
-				:detailed-view="detailedView"
-			/>
+		<MkLoading v-if="conversationLoading" />
+		<template v-else-if="conversation">
+			<template
+				v-if="replyLevel < REPLY_LEVEL_UPPERBOUND && depth < DEPTH_UPPERBOUND"
+			>
+				<MkNoteSub
+					v-for="reply in replies.slice(0, REPLIES_LIMIT)"
+					:key="reply.id"
+					:note="reply"
+					class="reply"
+					:class="{ single: replies.length == 1 }"
+					:conversation="conversation"
+					:depth="replies.length == 1 ? depth : depth + 1"
+					:reply-level="replyLevel + 1"
+					:parent-id="appearNote.id"
+					:detailed-view="detailedView"
+					:auto-add-replies="true"
+				/>
+				<div v-if="hasMoreReplies" class="more">
+					<div class="line"></div>
+					<MkA class="text _link" :to="notePage(note)"
+						>{{ i18n.ts.continueThread }}
+						<i :class="icon('ph-caret-double-right')"></i
+					></MkA>
+				</div>
+			</template>
 			<div v-else-if="replies.length > 0" class="more">
 				<div class="line"></div>
 				<MkA class="text _link" :to="notePage(note)"
@@ -190,7 +203,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, ref } from "vue";
+import { computed, inject, ref, watch } from "vue";
 import type { Ref } from "vue";
 import type { entities } from "firefish-js";
 import XNoteHeader from "@/components/MkNoteHeader.vue";
@@ -221,21 +234,27 @@ import type { NoteTranslation } from "@/types/note";
 
 const router = useRouter();
 
+const REPLIES_LIMIT = 10;
+const REPLY_LEVEL_UPPERBOUND = 11;
+const DEPTH_UPPERBOUND = 5;
+
 const props = withDefaults(
 	defineProps<{
 		note: entities.Note;
 		conversation?: entities.Note[];
-		parentId?;
-		detailedView?;
-
+		autoConversation?: boolean;
+		parentId?: string;
+		detailedView?: boolean;
 		// how many notes are in between this one and the note being viewed in detail
 		depth?: number;
 		// the actual reply level of this note within the conversation thread
 		replyLevel?: number;
+		autoAddReplies?: boolean;
 	}>(),
 	{
 		depth: 1,
 		replyLevel: 1,
+		autoAddReplies: false,
 	},
 );
 
@@ -250,6 +269,43 @@ const softMuteReasonI18nSrc = (what?: string) => {
 	// I don't think here is reachable, but just in case
 	return i18n.ts.userSaysSomething;
 };
+
+const conversation = ref(props.conversation);
+const conversationLoading = ref(false);
+const replies = ref<entities.Note[]>([]);
+const hasMoreReplies = ref(false);
+
+function updateReplies() {
+	replies.value = (conversation.value ?? [])
+		.filter(
+			(item) =>
+				item.replyId === props.note.id || item.renoteId === props.note.id,
+		)
+		.reverse();
+	hasMoreReplies.value = replies.value.length >= REPLIES_LIMIT + 1;
+}
+
+watch(conversation, updateReplies, {
+	immediate: true,
+});
+
+if (props.autoConversation) {
+	conversation.value = [];
+	if (note.value.repliesCount > 0 || note.value.renoteCount > 0) {
+		conversationLoading.value = true;
+		os.api("notes/children", {
+			noteId: note.value.id,
+			limit: REPLIES_LIMIT + 1,
+			depth: REPLY_LEVEL_UPPERBOUND + 1,
+		}).then((res) => {
+			conversation.value = res
+				.filter((n) => n.userId !== note.value.userId)
+				.reverse()
+				.concat(res.filter((n) => n.userId === note.value.userId));
+			conversationLoading.value = false;
+		});
+	}
+}
 
 const isRenote =
 	note.value.renote != null &&
@@ -277,13 +333,6 @@ const muted = ref(
 );
 const translation = ref<NoteTranslation | null>(null);
 const translating = ref(false);
-const replies: entities.Note[] =
-	props.conversation
-		?.filter(
-			(item) =>
-				item.replyId === props.note.id || item.renoteId === props.note.id,
-		)
-		.reverse() ?? [];
 const enableEmojiReactions = defaultStore.state.enableEmojiReactions;
 const expandOnNoteClick = defaultStore.state.expandOnNoteClick;
 const lang = localStorage.getItem("lang");
@@ -329,6 +378,14 @@ useNoteCapture({
 	rootEl: el,
 	note: appearNote,
 	isDeletedRef: isDeleted,
+	onReplied: (note) => {
+		if (props.autoAddReplies !== true) {
+			return;
+		}
+		if (hasMoreReplies.value === false) {
+			conversation.value = (conversation.value ?? []).concat([note]);
+		}
+	},
 });
 
 function reply(_viaKeyboard = false): void {

@@ -1,13 +1,14 @@
 use crate::database::{redis_conn, redis_key};
 use crate::model::entity::note;
-use crate::service::stream::{publish_to_stream, Error, Stream};
+use crate::service::stream;
 use crate::util::id::get_timestamp;
 use redis::{streams::StreamMaxlen, Commands};
 
 type Note = note::Model;
 
 #[crate::export]
-pub fn add_note_to_antenna(antenna_id: String, note: &Note) -> Result<(), Error> {
+pub fn add_note_to_antenna(antenna_id: String, note: &Note) -> Result<(), stream::Error> {
+    // for timeline API
     redis_conn()?.xadd_maxlen(
         redis_key(format!("antennaTimeline:{}", antenna_id)),
         StreamMaxlen::Approx(200),
@@ -15,9 +16,6 @@ pub fn add_note_to_antenna(antenna_id: String, note: &Note) -> Result<(), Error>
         &[("note", &note.id)],
     )?;
 
-    publish_to_stream(
-        &Stream::Antenna { antenna_id },
-        Some("note"),
-        Some(serde_json::to_string(note)?),
-    )
+    // for streaming API
+    stream::antenna::publish(antenna_id, note)
 }

@@ -9,6 +9,7 @@ export function useNoteCapture(props: {
 	rootEl: Ref<HTMLElement | null>;
 	note: Ref<entities.Note>;
 	isDeletedRef: Ref<boolean>;
+	onReplied?: (note: entities.Note) => void;
 }) {
 	const note = props.note;
 	const connection = isSignedIn(me) ? useStream() : null;
@@ -19,6 +20,16 @@ export function useNoteCapture(props: {
 		if (id !== note.value.id) return;
 
 		switch (type) {
+			case "replied": {
+				if (props.onReplied) {
+					const { id: createdId } = body;
+					const replyNote = await os.api("notes/show", {
+						noteId: createdId,
+					});
+					props.onReplied(replyNote);
+				}
+				break;
+			}
 			case "reacted": {
 				const reaction = body.reaction;
 
