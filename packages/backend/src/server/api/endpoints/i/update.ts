@@ -13,7 +13,7 @@ import { normalizeForSearch } from "@/misc/normalize-for-search.js";
 import { verifyLink } from "@/services/fetch-rel-me.js";
 import { ApiError } from "@/server/api/error.js";
 import define from "@/server/api/define.js";
-import { DriveFile } from "@/models/entities/drive-file";
+import type { DriveFile } from "@/models/entities/drive-file";
 
 export const meta = {
 	tags: ["account"],
