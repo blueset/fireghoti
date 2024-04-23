@@ -1,10 +1,8 @@
 import { config } from "@/config.js";
 import { MessagingMessages, Users } from "@/models/index.js";
 import type { MessagingMessage } from "@/models/entities/messaging-message.js";
-import {
-	publishGroupMessagingStream,
-	publishMessagingStream,
-} from "@/services/stream.js";
+import { publishGroupMessagingStream } from "@/services/stream.js";
+import { publishToChatStream, ChatEvent } from "backend-rs";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderDelete from "@/remote/activitypub/renderer/delete.js";
 import renderTombstone from "@/remote/activitypub/renderer/tombstone.js";
@@ -21,17 +19,17 @@ async function postDeleteMessage(message: MessagingMessage) {
 		const recipient = await Users.findOneByOrFail({ id: message.recipientId });
 
 		if (Users.isLocalUser(user))
-			publishMessagingStream(
+			publishToChatStream(
 				message.userId,
 				message.recipientId,
-				"deleted",
+				ChatEvent.Deleted,
 				message.id,
 			);
 		if (Users.isLocalUser(recipient))
-			publishMessagingStream(
+			publishToChatStream(
 				message.recipientId,
 				message.userId,
-				"deleted",
+				ChatEvent.Deleted,
 				message.id,
 			);
 

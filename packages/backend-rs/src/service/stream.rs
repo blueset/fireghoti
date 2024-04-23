@@ -1,4 +1,5 @@
 pub mod antenna;
+pub mod chat;
 
 use crate::config::CONFIG;
 use crate::database::redis_conn;
@@ -51,7 +52,7 @@ pub enum Error {
 
 pub fn publish_to_stream(
     stream: &Stream,
-    kind: Option<&str>,
+    kind: Option<String>,
     value: Option<String>,
 ) -> Result<(), Error> {
     let message = if let Some(kind) = kind {

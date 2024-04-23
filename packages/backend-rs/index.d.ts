@@ -1120,6 +1120,13 @@ export interface Webhook {
   latestSentAt: Date | null
   latestStatus: number | null
 }
+export enum ChatEvent {
+  Message = 'message',
+  Read = 'read',
+  Deleted = 'deleted',
+  Typing = 'typing'
+}
+export function publishToChatStream(senderUserId: string, receiverUserId: string, kind: ChatEvent, object: any): void
 /** Initializes Cuid2 generator. Must be called before any [create_id]. */
 export function initIdGenerator(length: number, fingerprint: string): void
 export function getTimestamp(id: string): number
