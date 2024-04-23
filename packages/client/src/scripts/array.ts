@@ -1,4 +1,4 @@
-import type { EndoRelation, Predicate } from "./relation";
+import type { EndoRelation, Predicate } from "@/types/relation";
 
 /**
  * Count the number of elements that satisfy the predicate
@@ -126,7 +126,7 @@ export function lessThan(xs: number[], ys: number[]): boolean {
  * Returns the longest prefix of elements that satisfy the predicate
  */
 export function takeWhile<T>(f: Predicate<T>, xs: T[]): T[] {
-	const ys = [];
+	const ys: T[] = [];
 	for (const x of xs) {
 		if (f(x)) {
 			ys.push(x);
