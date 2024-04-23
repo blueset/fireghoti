@@ -11,3 +11,4 @@ pub mod meta;
 pub mod nyaify;
 pub mod password;
 pub mod reaction;
+pub mod redis_cache;

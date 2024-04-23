@@ -335,7 +335,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		},
 	] as any;
 
-	if (isSignedIn && me.id !== user.id) {
+	if (isSignedIn(me) && me.id !== user.id) {
 		menu = menu.concat([
 			{
 				icon: user.isMuted ? "ph-eye ph-lg" : "ph-eye-slash ph-lg",
@@ -386,7 +386,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		}
 	}
 
-	if (isSignedIn && me.id === user.id) {
+	if (isSignedIn(me) && me.id === user.id) {
 		menu = menu.concat([
 			null,
 			{

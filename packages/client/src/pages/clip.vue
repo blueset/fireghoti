@@ -51,7 +51,7 @@ const pagination = {
 };
 
 const isOwned: boolean | null = computed<boolean | null>(
-	() => isSignedIn && clip.value && me.id === clip.value.userId,
+	() => isSignedIn(me) && clip.value && me.id === clip.value.userId,
 );
 
 watch(

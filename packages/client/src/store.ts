@@ -1,6 +1,6 @@
 import { markRaw, ref } from "vue";
 import type { ApiTypes, entities } from "firefish-js";
-import { isSignedIn } from "./me";
+import { isSignedIn, me } from "./me";
 import { Storage } from "./pizzax";
 import type { NoteVisibility } from "@/types/note";
 
@@ -167,7 +167,7 @@ export const defaultStore = markRaw(
 		tl: {
 			where: "deviceAccount",
 			default: {
-				src: (isSignedIn ? "home" : "local") as
+				src: (isSignedIn(me) ? "home" : "local") as
 					| "home"
 					| "local"
 					| "social"

@@ -17,7 +17,7 @@
 				>
 					<div class="_title">
 						<h3>
-							<span v-if="isSignedIn && !announcement.isRead">
+							<span v-if="isSignedIn(me) && !announcement.isRead">
 								🆕&nbsp;
 							</span>
 							{{ announcement.title }}
@@ -37,7 +37,7 @@
 						/>
 					</div>
 					<div
-						v-if="isSignedIn && !announcement.isRead"
+						v-if="isSignedIn(me) && !announcement.isRead"
 						class="_footer"
 					>
 						<MkButton primary @click="read(announcement.id)"
@@ -60,7 +60,7 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
-import { isSignedIn } from "@/me";
+import { isSignedIn, me } from "@/me";
 
 const pagination = {
 	endpoint: "announcements" as const,

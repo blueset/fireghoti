@@ -74,10 +74,10 @@ useTooltip(buttonRef, async (showing) => {
 
 const hasRenotedBefore = ref(false);
 
-if (isSignedIn) {
+if (isSignedIn(me)) {
 	os.api("notes/renotes", {
 		noteId: props.note.id,
-		userId: me!.id,
+		userId: me.id,
 		limit: 1,
 	}).then((res) => {
 		hasRenotedBefore.value = res.length > 0;

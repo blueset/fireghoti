@@ -23,12 +23,12 @@
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import type { entitites } from "firefish-js";
+import type { entities } from "firefish-js";
 import XDetails from "@/components/MkReactionsViewer.details.vue";
 import XReactionIcon from "@/components/MkReactionIcon.vue";
 import * as os from "@/os";
 import { useTooltip } from "@/scripts/use-tooltip";
-import { isSignedIn } from "@/me";
+import { isSignedIn, me } from "@/me";
 
 const props = defineProps<{
 	reaction: string;
@@ -43,7 +43,9 @@ const emit = defineEmits<{
 
 const buttonRef = ref<HTMLElement>();
 
-const canToggle = computed(() => isSignedIn && !props.reaction.match(/@\w/));
+const canToggle = computed(
+	() => isSignedIn(me) && !props.reaction.match(/@\w/),
+);
 
 const toggleReaction = () => {
 	if (!canToggle.value) return;

@@ -127,7 +127,7 @@
 					<XQuoteButton class="button" :note="appearNote" />
 					<button
 						v-if="
-							isSignedIn &&
+							isSignedIn(me) &&
 							isForeignLanguage &&
 							translation == null
 						"
