@@ -29,7 +29,7 @@ export async function exportCustomEmojis(
 
 	const [path, cleanup] = await createTempDir();
 
-	logger.info(`Temp dir is ${path}`);
+	logger.info(`temp dir created: ${path}`);
 
 	const metaPath = `${path}/meta.json`;
 
@@ -41,7 +41,8 @@ export async function exportCustomEmojis(
 		return new Promise<void>((res, rej) => {
 			metaStream.write(text, (err) => {
 				if (err) {
-					logger.error(err);
+					logger.warn("Failed to export custom emojis");
+					logger.info(inspect(err));
 					rej(err);
 				} else {
 					res();

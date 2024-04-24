@@ -49,7 +49,7 @@ export async function importCkPost(
 			});
 			files.push(file);
 		} catch (e) {
-			logger.error(`Skipped adding file to drive: ${url}`);
+			logger.info(`Skipped adding file to drive: ${url}`);
 		}
 	}
 	const { text, cw, localOnly, createdAt, visibility } = Post.parse(post);
@@ -71,12 +71,12 @@ export async function importCkPost(
 			fileIds: note.fileIds,
 			updatedAt: new Date(),
 		});
-		logger.info(`Note file updated`);
+		logger.info("Post updated");
 	}
 	if (!note) {
 		note = await create(user, {
 			createdAt: createdAt,
-			files: files.length == 0 ? undefined : files,
+			files: files.length === 0 ? undefined : files,
 			poll: undefined,
 			text: text || undefined,
 			reply: post.replyId ? job.data.parent : null,
@@ -90,9 +90,9 @@ export async function importCkPost(
 			apHashtags: undefined,
 			apEmojis: undefined,
 		});
-		logger.info(`Create new note`);
+		logger.debug("New post has been created");
 	} else {
-		logger.info(`Note exist`);
+		logger.info("This post already exists");
 	}
 	logger.info("Imported");
 	if (post.childNotes) {

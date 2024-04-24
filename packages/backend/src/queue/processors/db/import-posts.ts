@@ -45,7 +45,8 @@ export async function importPosts(
 			}
 		} catch (e) {
 			// handle error
-			logger.warn(`Failed to read Mastodon archive:\n${inspect(e)}`);
+			logger.warn("Failed to read Mastodon archive");
+			logger.info(inspect(e));
 		}
 		logger.info("Mastodon archive imported");
 		done();
@@ -56,21 +57,22 @@ export async function importPosts(
 
 	try {
 		const parsed = JSON.parse(json);
-		if (parsed instanceof Array) {
-			logger.info("Parsing key style posts");
+		if (Array.isArray(parsed)) {
+			logger.info("Parsing *key posts");
 			const arr = recreateChain(parsed);
 			for (const post of arr) {
 				createImportCkPostJob(job.data.user, post, job.data.signatureCheck);
 			}
 		} else if (parsed instanceof Object) {
-			logger.info("Parsing animal style posts");
+			logger.info("Parsing Mastodon posts");
 			for (const post of parsed.orderedItems) {
 				createImportMastoPostJob(job.data.user, post, job.data.signatureCheck);
 			}
 		}
 	} catch (e) {
 		// handle error
-		logger.warn(`Error occured while reading:\n${inspect(e)}`);
+		logger.warn("an error occured while reading");
+		logger.info(inspect(e));
 	}
 
 	logger.info("Imported");

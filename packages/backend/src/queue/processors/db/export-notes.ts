@@ -10,6 +10,7 @@ import type { Note } from "@/models/entities/note.js";
 import type { Poll } from "@/models/entities/poll.js";
 import type { DbUserJobData } from "@/queue/types.js";
 import { createTemp } from "@/misc/create-temp.js";
+import { inspect } from "node:util";
 
 const logger = queueLogger.createSubLogger("export-notes");
 
@@ -28,7 +29,7 @@ export async function exportNotes(
 	// Create temp file
 	const [path, cleanup] = await createTemp();
 
-	logger.info(`Temp file is ${path}`);
+	logger.info(`temp file created: ${path}`);
 
 	try {
 		const stream = fs.createWriteStream(path, { flags: "a" });
@@ -37,7 +38,8 @@ export async function exportNotes(
 			return new Promise<void>((res, rej) => {
 				stream.write(text, (err) => {
 					if (err) {
-						logger.error(err);
+						logger.warn(`failed to export posts of ${job.data.user.id}`);
+						logger.info(inspect(err));
 						rej(err);
 					} else {
 						res();

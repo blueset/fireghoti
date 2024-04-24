@@ -103,9 +103,9 @@ export default class Logger {
 				: level === "warning"
 					? chalk.yellow("WARN")
 					: level === "info"
-						? chalk.green("INFO")
+						? chalk.cyan("INFO")
 						: level === "debug"
-							? chalk.blue("DEBUG")
+							? chalk.green("DEBUG")
 							: level === "trace"
 								? chalk.gray("TRACE")
 								: null;

@@ -73,7 +73,7 @@ export async function importMastoPost(
 				});
 				files.push(file);
 			} catch (e) {
-				logger.error(`Skipped adding file to drive: ${url}`);
+				logger.warn(`Skipped adding file to drive: ${url}`);
 			}
 		}
 	}
@@ -97,14 +97,14 @@ export async function importMastoPost(
 			fileIds: note.fileIds,
 			updatedAt: new Date(),
 		});
-		logger.info(`Note file updated`);
+		logger.info("Post updated");
 	}
 	if (!note) {
 		note = await create(user, {
 			createdAt: isRenote
 				? new Date(post.published)
 				: new Date(post.object.published),
-			files: files.length == 0 ? undefined : files,
+			files: files.length === 0 ? undefined : files,
 			poll: undefined,
 			text: text || undefined,
 			reply,
@@ -118,9 +118,9 @@ export async function importMastoPost(
 			apHashtags: undefined,
 			apEmojis: undefined,
 		});
-		logger.info(`Create new note`);
+		logger.debug("New post has been created");
 	} else {
-		logger.info(`Note exist`);
+		logger.info("This post already exists");
 	}
 	job.progress(100);
 	done();

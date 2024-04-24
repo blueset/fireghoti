@@ -32,7 +32,7 @@ export async function importCustomEmojis(
 
 	const [tempPath, cleanup] = await createTempDir();
 
-	logger.info(`Temp dir is ${tempPath}`);
+	logger.debug(`temp dir created: ${tempPath}`);
 
 	const destPath = `${tempPath}/emojis.zip`;
 

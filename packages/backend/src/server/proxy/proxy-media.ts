@@ -131,7 +131,8 @@ export async function proxyMedia(ctx: Koa.Context) {
 		ctx.set("Cache-Control", "max-age=31536000, immutable");
 		ctx.body = image.data;
 	} catch (e) {
-		serverLogger.error(`${inspect(e)}`);
+		serverLogger.warn(`failed to proxy ${url}`);
+		serverLogger.debug(inspect(e));
 
 		if (e instanceof StatusError && (e.statusCode === 302 || e.isClientError)) {
 			ctx.status = e.statusCode;
