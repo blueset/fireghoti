@@ -1787,7 +1787,7 @@ _notification:
   reacted: 回应了您的帖子
   voted: 在您的问卷调查中投了票
   renoted: 转发了您的帖子
-  andCountUsers: "等 {count} 名用户{acted}"
+  andCountUsers: "和其他 {count} 名用户{acted}"
 _deck:
   alwaysShowMainColumn: "总是显示主列"
   columnAlign: "列对齐"

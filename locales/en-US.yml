@@ -2146,7 +2146,7 @@ _notification:
   reacted: "reacted to your post"
   renoted: "boosted your post"
   voted: "voted on your poll"
-  andCountUsers: "and {count} users {acted}"
+  andCountUsers: "and {count} more users {acted}"
   _types:
     all: "All"
     follow: "New followers"
