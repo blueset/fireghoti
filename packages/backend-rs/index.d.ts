@@ -1122,6 +1122,8 @@ export interface Webhook {
   latestSentAt: Date | null
   latestStatus: number | null
 }
+export function watchNote(watcherId: string, noteAuthorId: string, noteId: string): Promise<void>
+export function unwatchNote(watcherId: string, noteId: string): Promise<void>
 export enum ChatEvent {
   Message = 'message',
   Read = 'read',

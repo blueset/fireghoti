@@ -1,4 +1,4 @@
-import watch from "@/services/note/watch.js";
+import { watchNote } from "backend-rs";
 import define from "@/server/api/define.js";
 import { getNote } from "@/server/api/common/getters.js";
 import { ApiError } from "@/server/api/error.js";
@@ -34,5 +34,5 @@ export default define(meta, paramDef, async (ps, user) => {
 		throw err;
 	});
 
-	await watch(user.id, note);
+	await watchNote(user.id, note.userId, note.id);
 });
