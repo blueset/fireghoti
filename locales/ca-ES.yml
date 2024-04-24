@@ -2289,3 +2289,6 @@ autocorrectNoteLanguage: Mostra un avís si l'idioma de la publicació no coinci
   amb el resultat de l'idioma detectat automàticament
 noteEditHistory: Historial d'edicions
 media: Multimèdia
+antennaLimit: El nombre màxim d'antenes que pot crear un usuari
+showAddFileDescriptionAtFirstPost: Obra de forma automàtica un formulari per escriure
+  una descripció quant intentes publicar un fitxer que no en té
