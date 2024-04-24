@@ -278,7 +278,6 @@ useNoteCapture({
 	note,
 	isDeletedRef: isDeleted,
 	onReplied: (replyNote) => {
-		note.value.repliesCount += 1;
 		repliesPagingComponent.value?.append(replyNote);
 	},
 });
