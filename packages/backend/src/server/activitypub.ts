@@ -42,9 +42,9 @@ const router = new Router();
 
 //#region Routing
 
-const inboxLogger = serverLogger.createSubLogger("inbox");
-
 function inbox(ctx: Router.RouterContext) {
+	const inboxLogger = serverLogger.createSubLogger("inbox");
+
 	if (ctx.req.headers.host !== config.host) {
 		inboxLogger.warn(`regecting invalid host (${ctx.req.headers.host})`);
 		ctx.status = 400;
