@@ -5,7 +5,7 @@ import { extractMentions } from "@/misc/extract-mentions.js";
 import { resolveMentionToUserAndProfile } from "@/remote/resolve-user.js";
 import { IMentionedRemoteUsers } from "@/models/entities/note.js";
 import { unique } from "@/prelude/array.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { Mutex, Semaphore } from "async-mutex";
 
 const queue = new Semaphore(5);

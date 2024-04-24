@@ -1,5 +1,5 @@
 import type { ILocalUser, User } from "@/models/entities/user.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { DriveFiles, Followings, UserProfiles, Users } from "@/models/index.js";
 import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
 import { populateEmojis } from "@/misc/populate-emojis.js";

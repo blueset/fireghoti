@@ -4,7 +4,7 @@ import { UserProfile } from "@/models/entities/user-profile.js";
 import { checkWordMute } from "backend-rs";
 import { Cache } from "@/misc/cache.js";
 import { unique } from "@/prelude/array.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { UserProfiles } from "@/models/index.js";
 
 const filteredNoteCache = new Cache<boolean>(

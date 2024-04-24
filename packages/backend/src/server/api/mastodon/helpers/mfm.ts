@@ -1,5 +1,5 @@
 import { Window as HappyDom } from "happy-dom";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { intersperse } from "@/prelude/array.js";
 import { resolveMentionFromCache } from "@/remote/resolve-user.js";
 import type { IMentionedRemoteUsers } from "@/models/entities/note.js";

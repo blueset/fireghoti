@@ -16,7 +16,7 @@ import { createPerson } from "@/remote/activitypub/models/person.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { resolveUser } from "@/remote/resolve-user.js";
 import { createNote } from "@/remote/activitypub/models/note.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { logger, MastoContext } from "@/server/api/mastodon/index.js";
 import { generateFtsQuery } from "@/server/api/common/generate-fts-query.js";
 

@@ -1,5 +1,5 @@
 import { MastoContext } from "@/server/api/mastodon/index.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 
 type PaginationData = {
 	limit: number;

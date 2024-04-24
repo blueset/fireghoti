@@ -1,7 +1,7 @@
 import { ILocalUser, User } from "@/models/entities/user.js";
 import { getNote } from "@/server/api/common/getters.js";
 import { Note } from "@/models/entities/note.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import mfm, { MfmLink, MfmUrl } from "mfm-js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
