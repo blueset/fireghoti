@@ -105,7 +105,7 @@ export async function exportCustomEmojis(
 		zlib: { level: 0 },
 	});
 	archiveStream.on("close", async () => {
-		logger.succ(`Exported to: ${archivePath}`);
+		logger.info(`Exported to: ${archivePath}`);
 
 		const fileName = `custom-emojis-${dateFormat(
 			new Date(),
@@ -118,7 +118,7 @@ export async function exportCustomEmojis(
 			force: true,
 		});
 
-		logger.succ(`Exported to: ${driveFile.id}`);
+		logger.info(`Exported to: ${driveFile.id}`);
 		cleanup();
 		archiveCleanup();
 		done();

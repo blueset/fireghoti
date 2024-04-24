@@ -91,7 +91,7 @@ export async function exportFollowing(
 		}
 
 		stream.end();
-		logger.succ(`Exported to: ${path}`);
+		logger.info(`Exported to: ${path}`);
 
 		const fileName = `following-${dateFormat(
 			new Date(),
@@ -104,7 +104,7 @@ export async function exportFollowing(
 			force: true,
 		});
 
-		logger.succ(`Exported to: ${driveFile.id}`);
+		logger.info(`Exported to: ${driveFile.id}`);
 	} finally {
 		cleanup();
 	}

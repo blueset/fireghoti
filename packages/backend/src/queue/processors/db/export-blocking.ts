@@ -83,7 +83,7 @@ export async function exportBlocking(
 		}
 
 		stream.end();
-		logger.succ(`Exported to: ${path}`);
+		logger.info(`Exported to: ${path}`);
 
 		const fileName = `blocking-${dateFormat(
 			new Date(),
@@ -96,7 +96,7 @@ export async function exportBlocking(
 			force: true,
 		});
 
-		logger.succ(`Exported to: ${driveFile.id}`);
+		logger.info(`Exported to: ${driveFile.id}`);
 	} finally {
 		cleanup();
 	}

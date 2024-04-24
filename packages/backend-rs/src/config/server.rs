@@ -36,7 +36,10 @@ struct ServerConfig {
     pub deliver_job_max_attempts: Option<u32>,
     pub inbox_job_max_attempts: Option<u32>,
 
+    /// deprecated
     pub log_level: Option<Vec<String>>,
+
+    pub max_log_level: Option<String>,
 
     pub syslog: Option<SysLogConfig>,
 
@@ -197,7 +200,9 @@ pub struct Config {
     pub inbox_job_per_sec: Option<u32>,
     pub deliver_job_max_attempts: Option<u32>,
     pub inbox_job_max_attempts: Option<u32>,
+    /// deprecated
     pub log_level: Option<Vec<String>>,
+    pub max_log_level: Option<String>,
     pub syslog: Option<SysLogConfig>,
     pub proxy_remote_files: Option<bool>,
     pub media_proxy: Option<String>,
@@ -346,6 +351,7 @@ fn load_config() -> Config {
         deliver_job_max_attempts: server_config.deliver_job_max_attempts,
         inbox_job_max_attempts: server_config.inbox_job_max_attempts,
         log_level: server_config.log_level,
+        max_log_level: server_config.max_log_level,
         syslog: server_config.syslog,
         proxy_remote_files: server_config.proxy_remote_files,
         media_proxy: server_config.media_proxy,

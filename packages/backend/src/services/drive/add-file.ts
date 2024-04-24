@@ -653,7 +653,7 @@ export async function addFile({
 		);
 	}
 
-	logger.succ(`drive file has been created ${file.id}`);
+	logger.info(`drive file has been created ${file.id}`);
 
 	if (user) {
 		DriveFiles.pack(file, { self: true }).then((packedFile) => {

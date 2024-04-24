@@ -111,6 +111,6 @@ export async function importFollowing(
 		}
 	}
 
-	logger.succ("Imported");
+	logger.info("Imported");
 	done();
 }

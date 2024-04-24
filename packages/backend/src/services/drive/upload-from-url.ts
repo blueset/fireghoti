@@ -86,7 +86,7 @@ export async function uploadFromUrl({
 			requestHeaders,
 			usageHint,
 		});
-		logger.succ(`Got: ${driveFile.id}`);
+		logger.info(`Got: ${driveFile.id}`);
 		return driveFile;
 	} catch (e) {
 		logger.error(`Failed to create drive file:\n${inspect(e)}`);

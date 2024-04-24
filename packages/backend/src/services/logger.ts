@@ -11,7 +11,7 @@ type Domain = {
 	color?: string;
 };
 
-type Level = "error" | "success" | "warning" | "debug" | "info";
+type Level = "error" | "warning" | "debug" | "info" | "trace";
 
 export default class Logger {
 	private domain: Domain;
@@ -47,6 +47,23 @@ export default class Logger {
 		return logger;
 	}
 
+	private showThisLog(logLevel: Level, configLevel: string) {
+		switch (configLevel) {
+			case "error":
+				return ["error"].includes(logLevel);
+			case "warning":
+				return ["error", "warning"].includes(logLevel);
+			case "info":
+				return ["error", "warning", "info"].includes(logLevel);
+			case "debug":
+				return ["error", "warning", "info", "debug"].includes(logLevel);
+			case "trace":
+				return true;
+			default:
+				return ["error", "warning", "info"].includes(logLevel);
+		}
+	}
+
 	private log(
 		level: Level,
 		message: string,
@@ -56,12 +73,13 @@ export default class Logger {
 		store = true,
 	): void {
 		if (
-			!(typeof config.logLevel === "undefined") &&
-			!config.logLevel.includes(level)
+			(config.maxLogLevel != null &&
+				!this.showThisLog(level, config.maxLogLevel)) ||
+			(config.logLevel != null && !config.logLevel.includes(level))
 		)
 			return;
 		if (!this.store) store = false;
-		if (level === "debug") store = false;
+		if (level === "debug" || level === "trace") store = false;
 
 		if (this.parentLogger) {
 			this.parentLogger.log(
@@ -84,14 +102,12 @@ export default class Logger {
 					: chalk.red("ERR ")
 				: level === "warning"
 					? chalk.yellow("WARN")
-					: level === "success"
-						? important
-							? chalk.bgGreen.white("DONE")
-							: chalk.green("DONE")
+					: level === "info"
+						? chalk.green("INFO")
 						: level === "debug"
-							? chalk.gray("VERB")
-							: level === "info"
-								? chalk.blue("INFO")
+							? chalk.blue("DEBUG")
+							: level === "trace"
+								? chalk.gray("TRACE")
 								: null;
 		const domains = [this.domain]
 			.concat(subDomains)
@@ -105,11 +121,11 @@ export default class Logger {
 				? chalk.red(message)
 				: level === "warning"
 					? chalk.yellow(message)
-					: level === "success"
+					: level === "info"
 						? chalk.green(message)
 						: level === "debug"
-							? chalk.gray(message)
-							: level === "info"
+							? chalk.blue(message)
+							: level === "trace"
 								? message
 								: null;
 
@@ -129,11 +145,11 @@ export default class Logger {
 						? this.syslogClient.error
 						: level === "warning"
 							? this.syslogClient.warning
-							: level === "success"
+							: level === "debug"
 								? this.syslogClient.info
-								: level === "debug"
+								: level === "info"
 									? this.syslogClient.info
-									: level === "info"
+									: level === "trace"
 										? this.syslogClient.info
 										: (null as never);
 
@@ -144,7 +160,7 @@ export default class Logger {
 		}
 	}
 
-	// Used when the process can't continue (fatal error)
+	// Only used when the process can't continue (fatal error)
 	public error(
 		x: string | Error,
 		data?: Record<string, any> | null,
@@ -175,16 +191,16 @@ export default class Logger {
 		this.log("warning", message, data, important);
 	}
 
-	// Used when something is successful
-	public succ(
+	// Other generic logs
+	public info(
 		message: string,
 		data?: Record<string, any> | null,
 		important = false,
 	): void {
-		this.log("success", message, data, important);
+		this.log("info", message, data, important);
 	}
 
-	// Used for debugging (information necessary for developers but unnecessary for users)
+	// Only used for debugging (information necessary for developers but unnecessary for users)
 	public debug(
 		message: string,
 		data?: Record<string, any> | null,
@@ -200,12 +216,12 @@ export default class Logger {
 		}
 	}
 
-	// Other generic logs
-	public info(
+	// Extremely verbose logs for debugging (e.g., SQL Query)
+	public trace(
 		message: string,
 		data?: Record<string, any> | null,
 		important = false,
 	): void {
-		this.log("info", message, data, important);
+		this.log("trace", message, data, important);
 	}
 }

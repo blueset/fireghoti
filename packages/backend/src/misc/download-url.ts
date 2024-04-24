@@ -94,7 +94,7 @@ export async function downloadUrl(url: string, path: string): Promise<void> {
 		}
 	}
 
-	logger.succ(`Download finished: ${chalk.cyan(url)}`);
+	logger.info(`Download finished: ${chalk.cyan(url)}`);
 }
 
 export function isPrivateIp(ip: string): boolean {

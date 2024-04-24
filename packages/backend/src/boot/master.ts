@@ -9,6 +9,7 @@ import semver from "semver";
 
 import Logger from "@/services/logger.js";
 import type { Config } from "backend-rs";
+import { initializeRustLogger } from "backend-rs";
 import { fetchMeta, removeOldAttestationChallenges } from "backend-rs";
 import { config, envOption } from "@/config.js";
 import { showMachineInfo } from "@/misc/show-machine-info.js";
@@ -94,6 +95,7 @@ export async function masterMain() {
 		await showMachineInfo(bootLogger);
 		showNodejsVersion();
 		await connectDb();
+		initializeRustLogger();
 	} catch (e) {
 		bootLogger.error(
 			`Fatal error occurred during initialization:\n${inspect(e)}`,
@@ -103,13 +105,13 @@ export async function masterMain() {
 		process.exit(1);
 	}
 
-	bootLogger.succ("Firefish initialized");
+	bootLogger.info("Firefish initialized");
 
 	if (!envOption.disableClustering) {
 		await spawnWorkers(config.clusterLimits);
 	}
 
-	bootLogger.succ(
+	bootLogger.info(
 		`Now listening on port ${config.port} on ${config.url}`,
 		null,
 		true,
@@ -160,7 +162,7 @@ async function connectDb(): Promise<void> {
 		const v = await db
 			.query("SHOW server_version")
 			.then((x) => x[0].server_version);
-		dbLogger.succ(`Connected: v${v}`);
+		dbLogger.info(`Connected: v${v}`);
 	} catch (e) {
 		dbLogger.error("Failed to connect to the database", null, true);
 		dbLogger.error(inspect(e));
@@ -196,7 +198,7 @@ async function spawnWorkers(
 		`Starting ${clusterLimits.web} web workers and ${clusterLimits.queue} queue workers (total ${total})...`,
 	);
 	await Promise.all(workers.map((mode) => spawnWorker(mode)));
-	bootLogger.succ("All workers started");
+	bootLogger.info("All workers started");
 }
 
 function spawnWorker(mode: "web" | "queue"): Promise<void> {

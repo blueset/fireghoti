@@ -39,6 +39,6 @@ export async function verifyLinks(
 		}
 	}
 
-	logger.succ("All links successfully verified.");
+	logger.info("All links successfully verified.");
 	done();
 }

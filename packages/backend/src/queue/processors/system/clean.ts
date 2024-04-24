@@ -16,6 +16,6 @@ export async function clean(
 		createdAt: LessThan(new Date(Date.now() - 1000 * 60 * 60 * 24 * 90)),
 	});
 
-	logger.succ("Cleaned.");
+	logger.info("Cleaned.");
 	done();
 }

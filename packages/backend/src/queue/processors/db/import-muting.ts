@@ -74,7 +74,7 @@ export async function importMuting(
 		}
 	}
 
-	logger.succ("Imported");
+	logger.info("Imported");
 	done();
 }
 

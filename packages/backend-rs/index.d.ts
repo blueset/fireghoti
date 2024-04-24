@@ -38,7 +38,9 @@ export interface ServerConfig {
   inboxJobPerSec?: number
   deliverJobMaxAttempts?: number
   inboxJobMaxAttempts?: number
+  /** deprecated */
   logLevel?: Array<string>
+  maxLogLevel?: string
   syslog?: SysLogConfig
   proxyRemoteFiles?: boolean
   mediaProxy?: string
@@ -148,7 +150,9 @@ export interface Config {
   inboxJobPerSec?: number
   deliverJobMaxAttempts?: number
   inboxJobMaxAttempts?: number
+  /** deprecated */
   logLevel?: Array<string>
+  maxLogLevel?: string
   syslog?: SysLogConfig
   proxyRemoteFiles?: boolean
   mediaProxy?: string
@@ -1122,6 +1126,7 @@ export interface Webhook {
   latestSentAt: Date | null
   latestStatus: number | null
 }
+export function initializeRustLogger(): void
 export function watchNote(watcherId: string, noteAuthorId: string, noteId: string): Promise<void>
 export function unwatchNote(watcherId: string, noteId: string): Promise<void>
 export enum ChatEvent {

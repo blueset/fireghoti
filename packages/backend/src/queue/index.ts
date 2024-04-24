@@ -564,12 +564,12 @@ export default function () {
 
 export function destroy() {
 	deliverQueue.once("cleaned", (jobs, status) => {
-		deliverLogger.succ(`Cleaned ${jobs.length} ${status} jobs`);
+		deliverLogger.info(`Cleaned ${jobs.length} ${status} jobs`);
 	});
 	deliverQueue.clean(0, "delayed");
 
 	inboxQueue.once("cleaned", (jobs, status) => {
-		inboxLogger.succ(`Cleaned ${jobs.length} ${status} jobs`);
+		inboxLogger.info(`Cleaned ${jobs.length} ${status} jobs`);
 	});
 	inboxQueue.clean(0, "delayed");
 }

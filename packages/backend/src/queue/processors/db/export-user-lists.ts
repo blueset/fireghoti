@@ -59,7 +59,7 @@ export async function exportUserLists(
 		}
 
 		stream.end();
-		logger.succ(`Exported to: ${path}`);
+		logger.info(`Exported to: ${path}`);
 
 		const fileName = `user-lists-${dateFormat(
 			new Date(),
@@ -72,7 +72,7 @@ export async function exportUserLists(
 			force: true,
 		});
 
-		logger.succ(`Exported to: ${driveFile.id}`);
+		logger.info(`Exported to: ${driveFile.id}`);
 	} finally {
 		cleanup();
 	}

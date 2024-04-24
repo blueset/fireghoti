@@ -43,7 +43,7 @@ export async function deleteAccount(
 			await Notes.delete(notes.map((note) => note.id));
 		}
 
-		logger.succ("All of notes deleted");
+		logger.info("All of notes deleted");
 	}
 
 	{
@@ -73,7 +73,7 @@ export async function deleteAccount(
 			}
 		}
 
-		logger.succ("All of files deleted");
+		logger.info("All of files deleted");
 	}
 
 	{
