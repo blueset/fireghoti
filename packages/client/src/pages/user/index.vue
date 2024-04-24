@@ -98,7 +98,7 @@ const headerTabs = computed(() =>
 					? [
 							{
 								key: "reactions",
-								title: i18n.ts.reaction,
+								title: i18n.ts.reactions,
 								icon: `${icon("ph-smiley")}`,
 							},
 						]
