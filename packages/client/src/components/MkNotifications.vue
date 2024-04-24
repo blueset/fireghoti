@@ -75,7 +75,7 @@ const stream = useStream();
 
 const pagingComponent = ref<MkPaginationType<"i/notifications"> | null>(null);
 
-const FETCH_LIMIT = 50;
+const FETCH_LIMIT = 90;
 
 const pagination = {
 	endpoint: "i/notifications" as const,
