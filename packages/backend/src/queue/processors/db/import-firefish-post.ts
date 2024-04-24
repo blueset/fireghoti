@@ -1,6 +1,6 @@
 import * as Post from "@/misc/post.js";
 import create from "@/services/note/create.js";
-import { Users } from "@/models/index.js";
+import { NoteFiles, Users } from "@/models/index.js";
 import type { DbUserImportMastoPostJobData } from "@/queue/types.js";
 import { queueLogger } from "../../logger.js";
 import { uploadFromUrl } from "@/services/drive/upload-from-url.js";
@@ -59,9 +59,17 @@ export async function importCkPost(
 		userId: user.id,
 	});
 
-	if (note && (note?.fileIds?.length || 0) < files.length) {
+	if (note != null && (note.fileIds?.length || 0) < files.length) {
 		const update: Partial<Note> = {};
 		update.fileIds = files.map((x) => x.id);
+
+		if (update.fileIds != null) {
+			await NoteFiles.delete({ noteId: note.id });
+			await NoteFiles.insert(
+				update.fileIds.map((fileId) => ({ noteId: note?.id, fileId })),
+			);
+		}
+
 		await Notes.update(note.id, update);
 		await NoteEdits.insert({
 			id: genId(),
