@@ -1,5 +1,5 @@
 import type * as http from "node:http";
-import { EventEmitter } from "events";
+import { EventEmitter } from "node:events";
 import type { ParsedUrlQuery } from "node:querystring";
 import * as websocket from "websocket";
 

@@ -1,12 +1,7 @@
 import { publishMainStream } from "@/services/stream.js";
 import type { Note } from "@/models/entities/note.js";
 import type { User } from "@/models/entities/user.js";
-import {
-	NoteUnreads,
-	Users,
-	Followings,
-	ChannelFollowings,
-} from "@/models/index.js";
+import { NoteUnreads, Followings, ChannelFollowings } from "@/models/index.js";
 import { Not, IsNull, In } from "typeorm";
 import type { Channel } from "@/models/entities/channel.js";
 import { readNotificationByQuery } from "@/server/api/common/read-notification.js";
@@ -120,34 +115,4 @@ export default async function (
 			]),
 		});
 	}
-
-	// if (readAntennaNotes.length > 0) {
-	// 	await AntennaNotes.update(
-	// 		{
-	// 			antennaId: In(myAntennas.map((a) => a.id)),
-	// 			noteId: In(readAntennaNotes.map((n) => n.id)),
-	// 		},
-	// 		{
-	// 			read: true,
-	// 		},
-	// 	);
-
-	// 	// TODO: まとめてクエリしたい
-	// 	for (const antenna of myAntennas) {
-	// 		const count = await AntennaNotes.countBy({
-	// 			antennaId: antenna.id,
-	// 			read: false,
-	// 		});
-
-	// 		if (count === 0) {
-	// 			publishMainStream(userId, "readAntenna", antenna);
-	// 		}
-	// 	}
-
-	// 	Users.getHasUnreadAntenna(userId).then((unread) => {
-	// 		if (!unread) {
-	// 			publishMainStream(userId, "readAllAntennas");
-	// 		}
-	// 	});
-	// }
 }

@@ -48,6 +48,6 @@ export async function verifyLinks(
 		}
 	}
 
-	logger.succ(`All ${usersToVerify.length} links successfully verified.`);
+	logger.info("All links successfully verified.");
 	done();
 }

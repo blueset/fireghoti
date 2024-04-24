@@ -1,4 +1,4 @@
-import unwatch from "@/services/note/unwatch.js";
+import { unwatchNote } from "backend-rs";
 import define from "@/server/api/define.js";
 import { getNote } from "@/server/api/common/getters.js";
 import { ApiError } from "@/server/api/error.js";
@@ -34,5 +34,5 @@ export default define(meta, paramDef, async (ps, user) => {
 		throw err;
 	});
 
-	await unwatch(user.id, note);
+	await unwatchNote(user.id, note.id);
 });

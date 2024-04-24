@@ -10,7 +10,7 @@ import renderCreate from "@/remote/activitypub/renderer/create.js";
 import renderAnnounce from "@/remote/activitypub/renderer/announce.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import { resolveUser } from "@/remote/resolve-user.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { updateHashtags } from "@/services/update-hashtag.js";
 import { concat } from "@/prelude/array.js";
 import { insertNoteUnread } from "@/services/note/unread.js";
@@ -37,15 +37,19 @@ import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { App } from "@/models/entities/app.js";
 import { Not, In } from "typeorm";
 import type { User, ILocalUser, IRemoteUser } from "@/models/entities/user.js";
-import { genId } from "backend-rs";
 import { activeUsersChart } from "@/services/chart/index.js";
 import type { IPoll } from "@/models/entities/poll.js";
 import { Poll } from "@/models/entities/poll.js";
 import { createNotification } from "@/services/create-notification.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
 import { checkHitAntenna } from "@/misc/check-hit-antenna.js";
-import { checkWordMute } from "backend-rs";
-import { addNoteToAntenna } from "@/services/add-note-to-antenna.js";
+import {
+	addNoteToAntenna,
+	checkWordMute,
+	genId,
+	genIdAt,
+	isSilencedServer,
+} from "backend-rs";
 import { countSameRenotes } from "@/misc/count-same-renotes.js";
 import { deliverToRelays, getCachedRelays } from "../relay.js";
 import type { Channel } from "@/models/entities/channel.js";
@@ -57,12 +61,12 @@ import { Cache } from "@/misc/cache.js";
 import type { UserProfile } from "@/models/entities/user-profile.js";
 import { db } from "@/db/postgre.js";
 import { getActiveWebhooks } from "@/misc/webhook-cache.js";
-import { shouldSilenceInstance } from "@/misc/should-block-instance.js";
 import { redisClient } from "@/db/redis.js";
 import { Mutex } from "redis-semaphore";
 import { langmap } from "@/misc/langmap.js";
 import Logger from "@/services/logger.js";
 import { inspect } from "node:util";
+import { undefinedToNull } from "@/prelude/undefined-to-null.js";
 
 const logger = new Logger("create-note");
 
@@ -225,7 +229,7 @@ export default async (
 		if (
 			data.visibility === "public" &&
 			Users.isRemoteUser(user) &&
-			(await shouldSilenceInstance(user.host))
+			(await isSilencedServer(user.host))
 		) {
 			data.visibility = "home";
 		}
@@ -399,7 +403,8 @@ export default async (
 		for (const antenna of await getAntennas()) {
 			checkHitAntenna(antenna, note, user).then((hit) => {
 				if (hit) {
-					addNoteToAntenna(antenna, note, user);
+					// TODO: do this more sanely
+					addNoteToAntenna(antenna.id, undefinedToNull(note) as Note);
 				}
 			});
 		}
@@ -707,7 +712,7 @@ async function insertNote(
 		data.createdAt = new Date();
 	}
 	const insert = new Note({
-		id: genId(data.createdAt),
+		id: genIdAt(data.createdAt),
 		createdAt: data.createdAt,
 		fileIds: data.files ? data.files.map((file) => file.id) : [],
 		replyId: data.reply ? data.reply.id : null,

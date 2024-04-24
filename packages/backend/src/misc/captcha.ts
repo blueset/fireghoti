@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 import { URLSearchParams } from "node:url";
 import { getAgentByUrl } from "@/misc/fetch.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { inspect } from "node:util";
 
 export async function verifyRecaptcha(secret: string, response: string) {

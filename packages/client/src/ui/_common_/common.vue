@@ -57,7 +57,7 @@ const onNotification = (notification) => {
 	sound.play("notification");
 };
 
-if (isSignedIn) {
+if (isSignedIn(me)) {
 	const connection = stream.useChannel("main", null, "UI");
 	connection.on("notification", onNotification);
 

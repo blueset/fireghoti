@@ -13,7 +13,7 @@ import koaLogger from "koa-logger";
 import * as slow from "koa-slow";
 
 import { IsNull } from "typeorm";
-import config, { envOption } from "@/config/index.js";
+import { config, envOption } from "@/config.js";
 import Logger from "@/services/logger.js";
 import { Users } from "@/models/index.js";
 import { fetchMeta } from "backend-rs";

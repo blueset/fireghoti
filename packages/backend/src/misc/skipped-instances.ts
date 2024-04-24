@@ -1,9 +1,8 @@
 import { Brackets } from "typeorm";
-import { fetchMeta } from "backend-rs";
+import { isBlockedServer } from "backend-rs";
 import { Instances } from "@/models/index.js";
 import type { Instance } from "@/models/entities/instance.js";
 import { DAY } from "@/const.js";
-import { shouldBlockInstance } from "./should-block-instance.js";
 
 // Threshold from last contact after which an instance will be considered
 // "dead" and should no longer get activities delivered to it.
@@ -19,16 +18,16 @@ export async function skippedInstances(
 	hosts: Instance["host"][],
 ): Promise<Instance["host"][]> {
 	// first check for blocked instances since that info may already be in memory
-	const meta = await fetchMeta(true);
 	const shouldSkip = await Promise.all(
-		hosts.map((host) => shouldBlockInstance(host, meta)),
+		hosts.map((host) => isBlockedServer(host)),
 	);
 	const skipped = hosts.filter((_, i) => shouldSkip[i]);
 
 	// if possible return early and skip accessing the database
 	if (skipped.length === hosts.length) return hosts;
 
-	const deadTime = new Date(Date.now() - deadThreshold);
+	// FIXME: Use or remove this
+	// const deadTime = new Date(Date.now() - deadThreshold);
 
 	return skipped.concat(
 		await Instances.createQueryBuilder("instance")

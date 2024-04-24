@@ -54,7 +54,7 @@ export async function deleteDriveFiles(
 		job.progress(deletedCount / total);
 	}
 
-	logger.succ(
+	logger.info(
 		`All drive files (${deletedCount}) of ${user.id} has been deleted.`,
 	);
 	done();

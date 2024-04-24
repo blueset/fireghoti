@@ -1,7 +1,7 @@
 import { type HTMLElement, Window } from "happy-dom";
 import type * as mfm from "mfm-js";
 import katex from "katex";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { intersperse } from "@/prelude/array.js";
 import type { IMentionedRemoteUsers } from "@/models/entities/note.js";
 

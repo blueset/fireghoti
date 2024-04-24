@@ -34,10 +34,10 @@ export async function setLocalEmojiSizes(
 		} finally {
 			// wait for 1sec so that this would not overwhelm the object storage.
 			await new Promise((resolve) => setTimeout(resolve, 1000));
-			if (i % 10 === 9) logger.succ(`fetched ${i + 1}/${emojis.length} emojis`);
+			if (i % 10 === 9) logger.info(`fetched ${i + 1}/${emojis.length} emojis`);
 		}
 	}
 
-	logger.succ("Done.");
+	logger.info("Done.");
 	done();
 }

@@ -125,5 +125,5 @@ export async function importMastoPost(
 	job.progress(100);
 	done();
 
-	logger.succ("Imported");
+	logger.info("Imported");
 }

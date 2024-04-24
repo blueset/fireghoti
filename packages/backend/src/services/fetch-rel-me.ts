@@ -1,9 +1,6 @@
-import {
-	type HTMLAnchorElement,
-	type HTMLLinkElement,
-	Window,
-} from "happy-dom";
-import config from "@/config/index.js";
+import { Window } from "happy-dom";
+import type { HTMLAnchorElement, HTMLLinkElement } from "happy-dom";
+import { config } from "@/config.js";
 import { getHtml } from "@/misc/fetch.js";
 
 async function getRelMeLinks(url: string): Promise<string[]> {

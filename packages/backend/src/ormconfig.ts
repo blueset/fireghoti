@@ -1,6 +1,6 @@
 import { DataSource } from "typeorm";
-import config from "./config/index.js";
-import { entities } from "./db/postgre.js";
+import { config } from "@/config.js";
+import { entities } from "@/db/postgre.js";
 
 export default new DataSource({
 	type: "postgres",

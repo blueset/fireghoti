@@ -14,7 +14,7 @@
 	},
 	"overrides": [
 		{
-			"include": ["*.vue"],
+			"include": ["*.vue", "packages/client/*.ts"],
 			"linter": {
 				"rules": {
 					"style": {

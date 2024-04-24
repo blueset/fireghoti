@@ -91,7 +91,7 @@ export async function exportNotes(
 		await write("]");
 
 		stream.end();
-		logger.succ(`Exported to: ${path}`);
+		logger.info(`Exported to: ${path}`);
 
 		const fileName = `notes-${dateFormat(
 			new Date(),
@@ -104,7 +104,7 @@ export async function exportNotes(
 			force: true,
 		});
 
-		logger.succ(`Exported to: ${driveFile.id}`);
+		logger.info(`Exported to: ${driveFile.id}`);
 	} finally {
 		cleanup();
 	}

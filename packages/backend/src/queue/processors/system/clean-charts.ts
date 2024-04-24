@@ -11,6 +11,6 @@ export async function cleanCharts(
 ): Promise<void> {
 	logger.info("Cleaning active users chart...");
 	await activeUsersChart.clean();
-	logger.succ("Active users chart has been cleaned.");
+	logger.info("Active users chart has been cleaned.");
 	done();
 }

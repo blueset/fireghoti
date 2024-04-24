@@ -5,7 +5,7 @@ import perform from "@/remote/activitypub/perform.js";
 import Logger from "@/services/logger.js";
 import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
 import { Instances } from "@/models/index.js";
-import { fetchMeta } from "backend-rs";
+import { isAllowedServer, isBlockedServer } from "backend-rs";
 import { toPuny, extractHost } from "backend-rs";
 import { getApId } from "@/remote/activitypub/type.js";
 import { fetchInstanceMetadata } from "@/services/fetch-instance-metadata.js";
@@ -16,7 +16,6 @@ import { LdSignature } from "@/remote/activitypub/misc/ld-signature.js";
 import { StatusError } from "@/misc/fetch.js";
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
 import type { UserPublickey } from "@/models/entities/user-publickey.js";
-import { shouldBlockInstance } from "@/misc/should-block-instance.js";
 import { verifySignature } from "@/remote/activitypub/check-fetch.js";
 import { inspect } from "node:util";
 
@@ -41,13 +40,12 @@ export default async (job: Bull.Job<InboxJobData>): Promise<string> => {
 	const host = toPuny(new URL(signature.keyId).hostname);
 
 	// interrupt if blocked
-	const meta = await fetchMeta(true);
-	if (await shouldBlockInstance(host, meta)) {
+	if (await isBlockedServer(host)) {
 		return `Blocked request: ${host}`;
 	}
 
 	// only whitelisted instances in private mode
-	if (meta.privateMode && !meta.allowedHosts.includes(host)) {
+	if (!isAllowedServer(host)) {
 		return `Blocked request: ${host}`;
 	}
 
@@ -158,7 +156,7 @@ export default async (job: Bull.Job<InboxJobData>): Promise<string> => {
 
 			// ブロックしてたら中断
 			const ldHost = extractHost(authUser.user.uri);
-			if (await shouldBlockInstance(ldHost, meta)) {
+			if (await isBlockedServer(ldHost)) {
 				return `Blocked request: ${ldHost}`;
 			}
 		} else {

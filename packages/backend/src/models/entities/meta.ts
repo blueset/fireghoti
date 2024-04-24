@@ -276,6 +276,12 @@ export class Meta {
 	})
 	public remoteDriveCapacityMb: number;
 
+	@Column("integer", {
+		default: 5,
+		comment: "Antenna Limit",
+	})
+	public antennaLimit: number;
+
 	@Column("varchar", {
 		length: 128,
 		nullable: true,

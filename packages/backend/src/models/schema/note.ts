@@ -212,5 +212,15 @@ export const packedNoteSchema = {
 			optional: true,
 			nullable: true,
 		},
+		myRenoteCount: {
+			type: "number",
+			optional: true,
+			nullable: false,
+		},
+		quoteCount: {
+			type: "number",
+			optional: false,
+			nullable: false,
+		},
 	},
 } as const;

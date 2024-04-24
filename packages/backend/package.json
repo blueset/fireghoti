@@ -182,6 +182,7 @@
 		"ts-loader": "9.5.1",
 		"ts-node": "10.9.2",
 		"tsconfig-paths": "4.2.0",
+		"type-fest": "4.15.0",
 		"typescript": "5.4.5",
 		"webpack": "^5.91.0",
 		"ws": "8.16.0"

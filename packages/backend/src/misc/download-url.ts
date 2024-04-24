@@ -1,16 +1,13 @@
 import * as fs from "node:fs";
-import * as stream from "node:stream";
-import * as util from "node:util";
+import * as stream from "node:stream/promises";
 import got, * as Got from "got";
-import { httpAgent, httpsAgent, StatusError } from "./fetch.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
+import { getAgentByHostname, StatusError } from "./fetch.js";
 import chalk from "chalk";
 import Logger from "@/services/logger.js";
 import IPCIDR from "ip-cidr";
 import PrivateIp from "private-ip";
 import { isValidUrl } from "./is-valid-url.js";
-
-const pipeline = util.promisify(stream.pipeline);
 
 export async function downloadUrl(url: string, path: string): Promise<void> {
 	if (!isValidUrl(url)) {
@@ -40,10 +37,7 @@ export async function downloadUrl(url: string, path: string): Promise<void> {
 				send: timeout,
 				request: operationTimeout, // whole operation timeout
 			},
-			agent: {
-				http: httpAgent,
-				https: httpsAgent,
-			},
+			agent: getAgentByHostname(new URL(url).hostname),
 			http2: false, // default
 			retry: {
 				limit: 0,
@@ -87,7 +81,7 @@ export async function downloadUrl(url: string, path: string): Promise<void> {
 		});
 
 	try {
-		await pipeline(req, fs.createWriteStream(path));
+		await stream.pipeline(req, fs.createWriteStream(path));
 	} catch (e) {
 		if (e instanceof Got.HTTPError) {
 			throw new StatusError(
@@ -100,7 +94,7 @@ export async function downloadUrl(url: string, path: string): Promise<void> {
 		}
 	}
 
-	logger.succ(`Download finished: ${chalk.cyan(url)}`);
+	logger.info(`Download finished: ${chalk.cyan(url)}`);
 }
 
 export function isPrivateIp(ip: string): boolean {

@@ -2,7 +2,8 @@
 
 use sea_orm::entity::prelude::*;
 
-#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 #[sea_orm(table_name = "meta")]
 #[cfg_attr(
     feature = "napi",
@@ -173,6 +174,8 @@ pub struct Model {
     pub more_urls: Json,
     #[sea_orm(column_name = "markLocalFilesNsfwByDefault")]
     pub mark_local_files_nsfw_by_default: bool,
+    #[sea_orm(column_name = "antennaLimit")]
+    pub antenna_limit: i32,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

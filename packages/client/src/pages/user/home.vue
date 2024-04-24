@@ -67,7 +67,7 @@
 									</div>
 									<span
 										v-if="
-											isSignedIn &&
+											isSignedIn(me) &&
 											me.id !== user.id &&
 											user.isFollowed
 										"
@@ -120,7 +120,7 @@
 								/>
 								<span
 									v-if="
-										isSignedIn &&
+										isSignedIn(me) &&
 										me.id !== user.id &&
 										user.isFollowed
 									"
@@ -319,7 +319,7 @@
 						/>
 					</div>
 					<MkInfo
-						v-else-if="isSignedIn && me.id === user.id"
+						v-else-if="isSignedIn(me) && me.id === user.id"
 						style="margin: 12px 0"
 						>{{ i18n.ts.userPagePinTip }}</MkInfo
 					>

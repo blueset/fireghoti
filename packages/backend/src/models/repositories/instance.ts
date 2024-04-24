@@ -1,10 +1,7 @@
 import { db } from "@/db/postgre.js";
 import { Instance } from "@/models/entities/instance.js";
 import type { Packed } from "@/misc/schema.js";
-import {
-	shouldBlockInstance,
-	shouldSilenceInstance,
-} from "@/misc/should-block-instance.js";
+import { isBlockedServer, isSilencedServer } from "backend-rs";
 
 export const InstanceRepository = db.getRepository(Instance).extend({
 	async pack(instance: Instance): Promise<Packed<"FederationInstance">> {
@@ -22,8 +19,8 @@ export const InstanceRepository = db.getRepository(Instance).extend({
 			lastCommunicatedAt: instance.lastCommunicatedAt.toISOString(),
 			isNotResponding: instance.isNotResponding,
 			isSuspended: instance.isSuspended,
-			isBlocked: await shouldBlockInstance(instance.host),
-			isSilenced: await shouldSilenceInstance(instance.host),
+			isBlocked: await isBlockedServer(instance.host),
+			isSilenced: await isSilencedServer(instance.host),
 			softwareName: instance.softwareName,
 			softwareVersion: instance.softwareVersion,
 			openRegistrations: instance.openRegistrations,

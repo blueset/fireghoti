@@ -1,6 +1,6 @@
 #[crate::export]
 pub fn to_mastodon_id(firefish_id: &str) -> Option<String> {
-    let decoded: [u8; 16] = basen::BASE36.decode_var_len(&firefish_id.to_ascii_lowercase())?;
+    let decoded: [u8; 16] = basen::BASE36.decode_var_len(firefish_id)?;
     Some(basen::BASE10.encode_var_len(&decoded))
 }
 

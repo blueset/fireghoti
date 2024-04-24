@@ -10,6 +10,7 @@ import {
 	Followings,
 	UserProfiles,
 	UserPublickeys,
+	DriveFiles,
 } from "@/models/index.js";
 import type { IRemoteUser, CacheableUser } from "@/models/entities/user.js";
 import { User } from "@/models/entities/user.js";
@@ -363,10 +364,14 @@ export async function createPerson(
 
 	//#region Fetch avatar and header image
 	const [avatar, banner] = await Promise.all(
-		[person.icon, person.image].map((img) =>
+		[person.icon, person.image].map((img, index) =>
 			img == null
 				? Promise.resolve(null)
-				: resolveImage(user!, img).catch(() => null),
+				: resolveImage(
+						user,
+						img,
+						index === 0 ? "userAvatar" : index === 1 ? "userBanner" : null,
+					).catch(() => null),
 		),
 	);
 
@@ -439,10 +444,14 @@ export async function updatePerson(
 
 	// Fetch avatar and header image
 	const [avatar, banner] = await Promise.all(
-		[person.icon, person.image].map((img) =>
+		[person.icon, person.image].map((img, index) =>
 			img == null
 				? Promise.resolve(null)
-				: resolveImage(user, img).catch(() => null),
+				: resolveImage(
+						user,
+						img,
+						index === 0 ? "userAvatar" : index === 1 ? "userBanner" : null,
+					).catch(() => null),
 		),
 	);
 
@@ -562,10 +571,14 @@ export async function updatePerson(
 	} as Partial<User>;
 
 	if (avatar) {
+		if (user?.avatarId)
+			await DriveFiles.update(user.avatarId, { usageHint: null });
 		updates.avatarId = avatar.id;
 	}
 
 	if (banner) {
+		if (user?.bannerId)
+			await DriveFiles.update(user.bannerId, { usageHint: null });
 		updates.bannerId = banner.id;
 	}
 

@@ -42,6 +42,12 @@ export const paramDef = {
 		limit: { type: "integer", minimum: 1, maximum: 100, default: 10 },
 		sinceId: { type: "string", format: "misskey:id" },
 		untilId: { type: "string", format: "misskey:id" },
+		filter: {
+			type: "string",
+			enum: ["all", "renote", "quote"],
+			nullable: true,
+			default: null,
+		},
 	},
 	required: ["noteId"],
 } as const;
@@ -53,13 +59,23 @@ export default define(meta, paramDef, async (ps, user) => {
 		throw err;
 	});
 
-	let query = makePaginationQuery(
+	const query = makePaginationQuery(
 		Notes.createQueryBuilder("note"),
 		ps.sinceId,
 		ps.untilId,
 	)
 		.andWhere("note.renoteId = :renoteId", { renoteId: note.id })
 		.innerJoinAndSelect("note.user", "user");
+
+	// "all" doesn't filter out anything, it's just there for
+	// those who prefer to set the parameter explicitly
+
+	if (ps.filter === "renote") {
+		query.andWhere("note.text IS NULL");
+	}
+	if (ps.filter === "quote") {
+		query.andWhere("note.text IS NOT NULL");
+	}
 
 	if (ps.userId) {
 		query.andWhere("user.id = :userId", { userId: ps.userId });

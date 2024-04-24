@@ -24,16 +24,16 @@ async function follow(user): Promise<void> {
 	});
 }
 
-const acct = new URL(location.href).searchParams.get("acct");
-if (acct == null) {
+const acctUri = new URL(location.href).searchParams.get("acct");
+if (acctUri == null) {
 	throw new Error("acct required");
 }
 
 let promise;
 
-if (acct.startsWith("https://")) {
+if (acctUri.startsWith("https://")) {
 	promise = os.api("ap/show", {
-		uri: acct,
+		uri: acctUri,
 	});
 	promise.then((res) => {
 		if (res.type === "User") {
@@ -50,7 +50,7 @@ if (acct.startsWith("https://")) {
 		}
 	});
 } else {
-	promise = os.api("users/show", acct.parse(acct));
+	promise = os.api("users/show", acct.parse(acctUri));
 	promise.then((user) => {
 		follow(user);
 	});

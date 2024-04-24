@@ -94,7 +94,7 @@ export async function importCkPost(
 	} else {
 		logger.info(`Note exist`);
 	}
-	logger.succ("Imported");
+	logger.info("Imported");
 	if (post.childNotes) {
 		for (const child of post.childNotes) {
 			createImportCkPostJob(

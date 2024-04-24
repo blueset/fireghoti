@@ -4,7 +4,7 @@ import type { User } from "@/models/entities/user.js";
 import { toPuny } from "backend-rs";
 import { awaitAll } from "@/prelude/await-all.js";
 import type { Packed } from "@/misc/schema.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { query, appendQuery } from "@/prelude/url.js";
 import { Users, DriveFolders } from "../index.js";
 import { deepClone } from "@/misc/clone.js";
@@ -153,6 +153,7 @@ export const DriveFileRepository = db.getRepository(DriveFile).extend({
 			md5: file.md5,
 			size: file.size,
 			isSensitive: file.isSensitive,
+			usageHint: file.usageHint,
 			blurhash: file.blurhash,
 			properties: opts.self ? file.properties : this.getPublicProperties(file),
 			url: opts.self ? file.url : this.getPublicUrl(file, false),
@@ -194,6 +195,7 @@ export const DriveFileRepository = db.getRepository(DriveFile).extend({
 			md5: file.md5,
 			size: file.size,
 			isSensitive: file.isSensitive,
+			usageHint: file.usageHint,
 			blurhash: file.blurhash,
 			properties: opts.self ? file.properties : this.getPublicProperties(file),
 			url: opts.self ? file.url : this.getPublicUrl(file, false),

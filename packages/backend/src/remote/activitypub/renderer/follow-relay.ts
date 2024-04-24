@@ -1,4 +1,4 @@
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import type { Relay } from "@/models/entities/relay.js";
 import type { ILocalUser } from "@/models/entities/user.js";
 

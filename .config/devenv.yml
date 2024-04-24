@@ -19,10 +19,4 @@ id: 'aid'
 #  '10.69.1.0/24'
 #]
 
-logLevel: [
-  'error',
-  'success',
-  'warning',
-  'debug',
-  'info'
-]
+maxLogLevel: 'debug'

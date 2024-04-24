@@ -1,5 +1,5 @@
 import { In, IsNull } from "typeorm";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import type { Note, IMentionedRemoteUsers } from "@/models/entities/note.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import { DriveFiles, Notes, Users, Emojis, Polls } from "@/models/index.js";

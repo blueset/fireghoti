@@ -3,7 +3,10 @@ import type { User } from "@/models/entities/user.js";
 import { createTemp } from "@/misc/create-temp.js";
 import { downloadUrl, isPrivateIp } from "@/misc/download-url.js";
 import type { DriveFolder } from "@/models/entities/drive-folder.js";
-import type { DriveFile } from "@/models/entities/drive-file.js";
+import type {
+	DriveFile,
+	DriveFileUsageHint,
+} from "@/models/entities/drive-file.js";
 import { DriveFiles } from "@/models/index.js";
 import { driveLogger } from "./logger.js";
 import { addFile } from "./add-file.js";
@@ -13,7 +16,11 @@ const logger = driveLogger.createSubLogger("downloader");
 
 type Args = {
 	url: string;
-	user: { id: User["id"]; host: User["host"] } | null;
+	user: {
+		id: User["id"];
+		host: User["host"];
+		driveCapacityOverrideMb: User["driveCapacityOverrideMb"];
+	} | null;
 	folderId?: DriveFolder["id"] | null;
 	uri?: string | null;
 	sensitive?: boolean;
@@ -22,6 +29,7 @@ type Args = {
 	comment?: string | null;
 	requestIp?: string | null;
 	requestHeaders?: Record<string, string> | null;
+	usageHint?: DriveFileUsageHint;
 };
 
 export async function uploadFromUrl({
@@ -35,6 +43,7 @@ export async function uploadFromUrl({
 	comment = null,
 	requestIp = null,
 	requestHeaders = null,
+	usageHint = null,
 }: Args): Promise<DriveFile> {
 	const parsedUrl = new URL(url);
 	if (
@@ -75,9 +84,10 @@ export async function uploadFromUrl({
 			sensitive,
 			requestIp,
 			requestHeaders,
+			usageHint,
 		});
-		logger.succ(`Got: ${driveFile.id}`);
-		return driveFile!;
+		logger.info(`Got: ${driveFile.id}`);
+		return driveFile;
 	} catch (e) {
 		logger.error(`Failed to create drive file:\n${inspect(e)}`);
 		throw e;

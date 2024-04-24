@@ -49,7 +49,7 @@ export async function fetchInstanceMetadata(
 			getDescription(info, dom, manifest).catch(() => null),
 		]);
 
-		logger.succ(`Successfuly fetched metadata of ${instance.host}`);
+		logger.info(`Successfuly fetched metadata of ${instance.host}`);
 
 		const updates = {
 			infoUpdatedAt: new Date(),
@@ -105,7 +105,7 @@ export async function fetchInstanceMetadata(
 
 		await Instances.update(instance.id, updates);
 
-		logger.succ(`Successfuly updated metadata of ${instance.host}`);
+		logger.info(`Successfuly updated metadata of ${instance.host}`);
 	} catch (e) {
 		logger.error(
 			`Failed to update metadata of ${instance.host}:\n${inspect(e)}`,
@@ -172,7 +172,7 @@ async function fetchNodeinfo(instance: Instance): Promise<NodeInfo> {
 			throw new Error(inspect(e));
 		});
 
-		logger.succ(`Successfuly fetched nodeinfo of ${instance.host}`);
+		logger.info(`Successfuly fetched nodeinfo of ${instance.host}`);
 
 		return info as NodeInfo;
 	} catch (e) {

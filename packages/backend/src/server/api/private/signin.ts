@@ -1,7 +1,7 @@
 import type Koa from "koa";
 import * as OTPAuth from "otpauth";
 import signin from "@/server/api/common/signin.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import {
 	Users,
 	Signins,

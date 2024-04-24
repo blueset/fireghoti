@@ -124,6 +124,9 @@
 			<FormSwitch v-model="showNoAltTextWarning" class="_formBlock">{{
 				i18n.ts.showNoAltTextWarning
 			}}</FormSwitch>
+			<FormSwitch v-model="showAddFileDescriptionAtFirstPost" class="_formBlock">{{
+				i18n.ts.showAddFileDescriptionAtFirstPost
+			}}</FormSwitch>
 			<FormSwitch v-model="autocorrectNoteLanguage" class="_formBlock">{{
 				i18n.ts.autocorrectNoteLanguage
 			}}</FormSwitch>
@@ -532,6 +535,9 @@ const pullToRefreshThreshold = computed(
 );
 const showNoAltTextWarning = computed(
 	defaultStore.makeGetterSetter("showNoAltTextWarning"),
+);
+const showAddFileDescriptionAtFirstPost = computed(
+	defaultStore.makeGetterSetter("showAddFileDescriptionAtFirstPost"),
 );
 const autocorrectNoteLanguage = computed(
 	defaultStore.makeGetterSetter("autocorrectNoteLanguage"),

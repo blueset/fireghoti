@@ -262,7 +262,7 @@ function checkForSplash() {
 	}
 
 	if (
-		isSignedIn &&
+		isSignedIn(me) &&
 		defaultStore.state.tutorial === -1 &&
 		!["/announcements", "/announcements/"].includes(window.location.pathname)
 	) {
@@ -417,7 +417,7 @@ function checkForSplash() {
 		s: search,
 	};
 
-	if (isSignedIn) {
+	if (isSignedIn(me)) {
 		// only add post shortcuts if logged in
 		hotkeys["p|n"] = post;
 

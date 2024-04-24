@@ -1,7 +1,7 @@
 <template>
 	<p v-if="note.cw != null" class="cw">
 		<MkA
-			v-if="conversation && note.renoteId == parentId"
+			v-if="conversation && note.renoteId == parentId && parentId != null"
 			:to="
 				detailedView ? `#${parentId}` : `${notePage(note)}#${parentId}`
 			"
@@ -198,8 +198,8 @@ import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	note: entities.Note;
-	parentId?;
-	conversation?;
+	parentId?: string;
+	conversation?: entities.Note[];
 	detailed?: boolean;
 	detailedView?: boolean;
 }>();

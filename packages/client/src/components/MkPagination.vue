@@ -68,7 +68,15 @@
 
 <script lang="ts" setup generic="E extends PagingKey">
 import type { ComponentPublicInstance, ComputedRef } from "vue";
-import { computed, isRef, onActivated, onDeactivated, ref, watch } from "vue";
+import {
+	computed,
+	isRef,
+	onActivated,
+	onDeactivated,
+	ref,
+	unref,
+	watch,
+} from "vue";
 import type { Endpoints, TypeUtils } from "firefish-js";
 import * as os from "@/os";
 import {
@@ -122,6 +130,12 @@ export interface Paging<E extends PagingKey = PagingKey> {
 	 */
 	reversed?: boolean;
 
+	/**
+	 * For not-reversed, not-offsetMode,
+	 * Sort by id in ascending order
+	 */
+	ascending?: boolean;
+
 	offsetMode?: boolean;
 }
 
@@ -169,17 +183,19 @@ const init = async (): Promise<void> => {
 	queue.value = [];
 	fetching.value = true;
 
-	const params = props.pagination.params
-		? isRef<Param>(props.pagination.params)
-			? props.pagination.params.value
-			: props.pagination.params
-		: {};
+	const params = props.pagination.params ? unref(props.pagination.params) : {};
 	await os
 		.api(props.pagination.endpoint, {
 			...params,
 			limit: props.pagination.noPaging
 				? props.pagination.limit || 10
 				: (props.pagination.limit || 10) + 1,
+			...(props.pagination.ascending
+				? {
+						// An initial value smaller than all possible ids must be filled in here.
+						sinceId: "0",
+					}
+				: {}),
 		})
 		.then(
 			(res: Item[]) => {
@@ -196,10 +212,10 @@ const init = async (): Promise<void> => {
 					res.length > (props.pagination.limit || 10)
 				) {
 					res.pop();
-					items.value = props.pagination.reversed ? [...res].reverse() : res;
+					items.value = props.pagination.reversed ? res.toReversed() : res;
 					more.value = true;
 				} else {
-					items.value = props.pagination.reversed ? [...res].reverse() : res;
+					items.value = props.pagination.reversed ? res.toReversed() : res;
 					more.value = false;
 				}
 				offset.value = res.length;
@@ -219,11 +235,7 @@ const reload = (): Promise<void> => {
 };
 
 const refresh = async (): Promise<void> => {
-	const params = props.pagination.params
-		? isRef<Param>(props.pagination.params)
-			? props.pagination.params.value
-			: props.pagination.params
-		: {};
+	const params = props.pagination.params ? unref(props.pagination.params) : {};
 	await os
 		.api(props.pagination.endpoint, {
 			...params,
@@ -269,11 +281,7 @@ const fetchMore = async (): Promise<void> => {
 		return;
 	moreFetching.value = true;
 	backed.value = true;
-	const params = props.pagination.params
-		? isRef<Param>(props.pagination.params)
-			? props.pagination.params.value
-			: props.pagination.params
-		: {};
+	const params = props.pagination.params ? unref(props.pagination.params) : {};
 	await os
 		.api(props.pagination.endpoint, {
 			...params,
@@ -286,9 +294,13 @@ const fetchMore = async (): Promise<void> => {
 					? {
 							sinceId: items.value[0].id,
 						}
-					: {
-							untilId: items.value[items.value.length - 1].id,
-						}),
+					: props.pagination.ascending
+						? {
+								sinceId: items.value[items.value.length - 1].id,
+							}
+						: {
+								untilId: items.value[items.value.length - 1].id,
+							}),
 		})
 		.then(
 			(res: Item[]) => {
@@ -303,12 +315,12 @@ const fetchMore = async (): Promise<void> => {
 				if (res.length > SECOND_FETCH_LIMIT) {
 					res.pop();
 					items.value = props.pagination.reversed
-						? [...res].reverse().concat(items.value)
+						? res.toReversed().concat(items.value)
 						: items.value.concat(res);
 					more.value = true;
 				} else {
 					items.value = props.pagination.reversed
-						? [...res].reverse().concat(items.value)
+						? res.toReversed().concat(items.value)
 						: items.value.concat(res);
 					more.value = false;
 				}
@@ -330,11 +342,7 @@ const fetchMoreAhead = async (): Promise<void> => {
 	)
 		return;
 	moreFetching.value = true;
-	const params = props.pagination.params
-		? isRef<Param>(props.pagination.params)
-			? props.pagination.params.value
-			: props.pagination.params
-		: {};
+	const params = props.pagination.params ? unref(props.pagination.params) : {};
 	await os
 		.api(props.pagination.endpoint, {
 			...params,
@@ -356,12 +364,12 @@ const fetchMoreAhead = async (): Promise<void> => {
 				if (res.length > SECOND_FETCH_LIMIT) {
 					res.pop();
 					items.value = props.pagination.reversed
-						? [...res].reverse().concat(items.value)
+						? res.toReversed().concat(items.value)
 						: items.value.concat(res);
 					more.value = true;
 				} else {
 					items.value = props.pagination.reversed
-						? [...res].reverse().concat(items.value)
+						? res.toReversed().concat(items.value)
 						: items.value.concat(res);
 					more.value = false;
 				}

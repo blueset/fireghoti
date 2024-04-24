@@ -74,6 +74,6 @@ export async function importBlocking(
 		}
 	}
 
-	logger.succ("Imported");
+	logger.info("Imported");
 	done();
 }

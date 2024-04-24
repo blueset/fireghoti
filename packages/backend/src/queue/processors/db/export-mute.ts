@@ -84,7 +84,7 @@ export async function exportMute(
 		}
 
 		stream.end();
-		logger.succ(`Exported to: ${path}`);
+		logger.info(`Exported to: ${path}`);
 
 		const fileName = `mute-${dateFormat(
 			new Date(),
@@ -97,7 +97,7 @@ export async function exportMute(
 			force: true,
 		});
 
-		logger.succ(`Exported to: ${driveFile.id}`);
+		logger.info(`Exported to: ${driveFile.id}`);
 	} finally {
 		cleanup();
 	}

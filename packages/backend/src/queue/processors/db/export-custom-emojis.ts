@@ -9,7 +9,7 @@ import { format as dateFormat } from "date-fns";
 import { Users, Emojis } from "@/models/index.js";
 import { createTemp, createTempDir } from "@/misc/create-temp.js";
 import { downloadUrl } from "@/misc/download-url.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import { IsNull } from "typeorm";
 import { inspect } from "node:util";
 
@@ -105,7 +105,7 @@ export async function exportCustomEmojis(
 		zlib: { level: 0 },
 	});
 	archiveStream.on("close", async () => {
-		logger.succ(`Exported to: ${archivePath}`);
+		logger.info(`Exported to: ${archivePath}`);
 
 		const fileName = `custom-emojis-${dateFormat(
 			new Date(),
@@ -118,7 +118,7 @@ export async function exportCustomEmojis(
 			force: true,
 		});
 
-		logger.succ(`Exported to: ${driveFile.id}`);
+		logger.info(`Exported to: ${driveFile.id}`);
 		cleanup();
 		archiveCleanup();
 		done();

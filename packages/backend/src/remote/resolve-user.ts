@@ -1,7 +1,7 @@
 import { URL } from "node:url";
 import chalk from "chalk";
 import { IsNull } from "typeorm";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import type { User, IRemoteUser } from "@/models/entities/user.js";
 import { Cache } from "@/misc/cache.js";
 import { UserProfiles, Users } from "@/models/index.js";
@@ -111,33 +111,27 @@ export async function resolveUser(
 
 				// If yes, return existing user
 				if (user != null) {
-					logger.succ(
+					logger.info(
 						`return existing remote user: ${chalk.magenta(finalAcctLower)}`,
 					);
 					return user;
 				}
 				// Otherwise create and return new user
 				else {
-					logger.succ(
+					logger.info(
 						`return new remote user: ${chalk.magenta(finalAcctLower)}`,
 					);
 					return await createPerson(
-						fingerRes.self.href,
-						undefined,
-						subjectHost,
-						limiter,
+						fingerRes.self.href
 					);
 				}
 			}
 		}
 
 		// Not a split domain setup, so we can simply create and return the new user
-		logger.succ(`return new remote user: ${chalk.magenta(finalAcctLower)}`);
+		logger.info(`return new remote user: ${chalk.magenta(finalAcctLower)}`);
 		return await createPerson(
-			fingerRes.self.href,
-			undefined,
-			subjectHost,
-			limiter,
+			fingerRes.self.href
 		);
 	}
 

@@ -9,7 +9,7 @@ import bodyParser from "koa-bodyparser";
 import cors from "@koa/cors";
 import { setupMastodonApi } from "./mastodon/index.js";
 import { AccessTokens, Users } from "@/models/index.js";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import endpoints from "./endpoints.js";
 import compatibility from "./compatibility.js";
 import handler from "./api-handler.js";

@@ -143,8 +143,8 @@ export async function importCustomEmojis(
 
 		cleanup();
 
-		logger.succ("Imported");
+		logger.info("Imported");
 		done();
 	});
-	logger.succ(`Unzipping to ${outputPath}`);
+	logger.info(`Unzipping to ${outputPath}`);
 }

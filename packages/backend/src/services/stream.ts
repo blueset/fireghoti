@@ -3,13 +3,13 @@ import type { User } from "@/models/entities/user.js";
 import type { Note } from "@/models/entities/note.js";
 import type { UserList } from "@/models/entities/user-list.js";
 import type { UserGroup } from "@/models/entities/user-group.js";
-import config from "@/config/index.js";
-import type { Antenna } from "@/models/entities/antenna.js";
+import { config } from "@/config.js";
+// import type { Antenna } from "@/models/entities/antenna.js";
 import type { Channel } from "@/models/entities/channel.js";
 import type {
 	StreamChannels,
 	AdminStreamTypes,
-	AntennaStreamTypes,
+	// AntennaStreamTypes,
 	BroadcastTypes,
 	ChannelStreamTypes,
 	DriveStreamTypes,
@@ -17,7 +17,7 @@ import type {
 	InternalStreamTypes,
 	MainStreamTypes,
 	MessagingIndexStreamTypes,
-	MessagingStreamTypes,
+	// MessagingStreamTypes,
 	NoteStreamTypes,
 	UserListStreamTypes,
 	UserStreamTypes,
@@ -142,30 +142,32 @@ class Publisher {
 		);
 	};
 
-	public publishAntennaStream = <K extends keyof AntennaStreamTypes>(
-		antennaId: Antenna["id"],
-		type: K,
-		value?: AntennaStreamTypes[K],
-	): void => {
-		this.publish(
-			`antennaStream:${antennaId}`,
-			type,
-			typeof value === "undefined" ? null : value,
-		);
-	};
+	/* ported to backend-rs */
+	// public publishAntennaStream = <K extends keyof AntennaStreamTypes>(
+	// 	antennaId: Antenna["id"],
+	// 	type: K,
+	// 	value?: AntennaStreamTypes[K],
+	// ): void => {
+	// 	this.publish(
+	// 		`antennaStream:${antennaId}`,
+	// 		type,
+	// 		typeof value === "undefined" ? null : value,
+	// 	);
+	// };
 
-	public publishMessagingStream = <K extends keyof MessagingStreamTypes>(
-		userId: User["id"],
-		otherpartyId: User["id"],
-		type: K,
-		value?: MessagingStreamTypes[K],
-	): void => {
-		this.publish(
-			`messagingStream:${userId}-${otherpartyId}`,
-			type,
-			typeof value === "undefined" ? null : value,
-		);
-	};
+	/* ported to backend-rs */
+	// public publishMessagingStream = <K extends keyof MessagingStreamTypes>(
+	// 	userId: User["id"],
+	// 	otherpartyId: User["id"],
+	// 	type: K,
+	// 	value?: MessagingStreamTypes[K],
+	// ): void => {
+	// 	this.publish(
+	// 		`messagingStream:${userId}-${otherpartyId}`,
+	// 		type,
+	// 		typeof value === "undefined" ? null : value,
+	// 	);
+	// };
 
 	public publishGroupMessagingStream = <
 		K extends keyof GroupMessagingStreamTypes,
@@ -226,8 +228,8 @@ export const publishNotesStream = publisher.publishNotesStream;
 export const publishNoteUpdatesStream = publisher.publishNoteUpdatesStream;
 export const publishChannelStream = publisher.publishChannelStream;
 export const publishUserListStream = publisher.publishUserListStream;
-export const publishAntennaStream = publisher.publishAntennaStream;
-export const publishMessagingStream = publisher.publishMessagingStream;
+// export const publishAntennaStream = publisher.publishAntennaStream;
+// export const publishMessagingStream = publisher.publishMessagingStream;
 export const publishGroupMessagingStream =
 	publisher.publishGroupMessagingStream;
 export const publishMessagingIndexStream =

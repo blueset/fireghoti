@@ -90,6 +90,6 @@ export async function importUserLists(
 		}
 	}
 
-	logger.succ("Imported");
+	logger.info("Imported");
 	done();
 }

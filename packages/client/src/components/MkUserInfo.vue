@@ -8,7 +8,7 @@
 			:class="{ detailed }"
 		>
 			<span
-				v-if="isSignedIn && me.id !== user.id && user.isFollowed"
+				v-if="isSignedIn(me) && me.id !== user.id && user.isFollowed"
 				class="followed"
 				>{{ i18n.ts.followsYou }}</span
 			>
@@ -80,7 +80,7 @@
 		<div class="buttons">
 			<slot>
 				<MkFollowButton
-					v-if="isSignedIn && user.id !== me.id"
+					v-if="isSignedIn(me) && user.id !== me.id"
 					:user="user"
 				/>
 			</slot>

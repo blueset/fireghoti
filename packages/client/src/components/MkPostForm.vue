@@ -318,6 +318,8 @@ import XNoteSimple from "@/components/MkNoteSimple.vue";
 import XNotePreview from "@/components/MkNotePreview.vue";
 import XPostFormAttaches from "@/components/MkPostFormAttaches.vue";
 import XPollEditor from "@/components/MkPollEditor.vue";
+import XCheatSheet from "@/components/MkCheatSheetDialog.vue";
+import XMediaCaption from "@/components/MkMediaCaption.vue";
 import { host, url } from "@/config";
 import { erase, unique } from "@/scripts/array";
 import { extractMentions } from "@/scripts/extract-mentions";
@@ -334,7 +336,6 @@ import { getAccounts, openAccountMenu as openAccountMenu_ } from "@/account";
 import { me } from "@/me";
 import { uploadFile } from "@/scripts/upload";
 import { deepClone } from "@/scripts/clone";
-import XCheatSheet from "@/components/MkCheatSheetDialog.vue";
 import preprocess from "@/scripts/preprocess";
 import { vibrate } from "@/scripts/vibrate";
 import { langmap } from "@/scripts/langmap";
@@ -507,6 +508,8 @@ const withHashtags = computed(
 const hashtags = computed(
 	defaultStore.makeGetterSetter("postFormHashtags"),
 ) as Ref<string | null>;
+
+let isFirstPostAttempt = true;
 
 watch(text, () => {
 	checkMissingMention();
@@ -1022,6 +1025,46 @@ function deleteDraft() {
 	localStorage.setItem("drafts", JSON.stringify(draftData));
 }
 
+/**
+ * @returns whether the file is described
+ */
+function openFileDescriptionWindow(file: entities.DriveFile) {
+	return new Promise<boolean>((resolve, reject) => {
+		os.popup(
+			XMediaCaption,
+			{
+				title: i18n.ts.describeFile,
+				input: {
+					placeholder: i18n.ts.inputNewDescription,
+					default: file.comment !== null ? file.comment : "",
+				},
+				image: file,
+			},
+			{
+				done: (result) => {
+					if (!result || result.canceled) {
+						resolve(false);
+						return;
+					}
+					const comment = result.result?.length === 0 ? null : result.result;
+					os.api("drive/files/update", {
+						fileId: file.id,
+						comment,
+					})
+						.then(() => {
+							resolve(true);
+							file.comment = comment ?? null;
+						})
+						.catch((err: unknown) => {
+							reject(err);
+						});
+				},
+			},
+			"closed",
+		);
+	});
+}
+
 async function post() {
 	// For text that is too short, the false positive rate may be too high, so we don't show alarm.
 	if (defaultStore.state.autocorrectNoteLanguage && text.value.length > 10) {
@@ -1057,6 +1100,24 @@ async function post() {
 	}
 
 	if (
+		defaultStore.state.showAddFileDescriptionAtFirstPost &&
+		files.value.some((f) => f.comment == null || f.comment.length === 0)
+	) {
+		if (isFirstPostAttempt) {
+			for (const file of files.value) {
+				if (file.comment == null || file.comment.length === 0) {
+					const described = await openFileDescriptionWindow(file);
+					if (!described) {
+						return;
+					}
+				}
+			}
+			isFirstPostAttempt = false;
+			return;
+		}
+	}
+
+	if (
 		defaultStore.state.showNoAltTextWarning &&
 		files.value.some((f) => f.comment == null || f.comment.length === 0)
 	) {
@@ -1064,12 +1125,22 @@ async function post() {
 		const { canceled } = await os.confirm({
 			type: "warning",
 			text: i18n.ts.noAltTextWarning,
-			okText: i18n.ts.goBack,
+			okText: i18n.ts.describeFile,
 			cancelText: i18n.ts.toPost,
 			isPlaintext: true,
 		});
 
-		if (!canceled) return;
+		if (!canceled) {
+			for (const file of files.value) {
+				if (file.comment == null || file.comment.length === 0) {
+					const described = await openFileDescriptionWindow(file);
+					if (!described) {
+						return;
+					}
+				}
+			}
+			return;
+		}
 	}
 
 	const processedText = preprocess(text.value);
@@ -1188,7 +1259,7 @@ async function insertEmoji(ev: MouseEvent) {
 	os.openEmojiPicker(
 		(ev.currentTarget ?? ev.target) as HTMLElement,
 		{},
-		textareaEl.value,
+		textareaEl.value!,
 	);
 }
 

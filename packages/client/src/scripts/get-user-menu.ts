@@ -290,7 +290,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 				os.post({ specified: user });
 			},
 		},
-		me.id !== user.id
+		isSignedIn(me) && me.id !== user.id
 			? {
 					type: "link",
 					icon: `${icon("ph-chats-teardrop")}`,
@@ -313,7 +313,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 			text: i18n.ts.addToList,
 			action: pushList,
 		},
-		me.id !== user.id
+		isSignedIn(me) && me.id !== user.id
 			? {
 					icon: `${icon("ph-users-three")}`,
 					text: i18n.ts.inviteToGroup,
@@ -335,7 +335,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		},
 	] as any;
 
-	if (isSignedIn && me.id !== user.id) {
+	if (isSignedIn(me) && me.id !== user.id) {
 		menu = menu.concat([
 			{
 				icon: user.isMuted ? "ph-eye ph-lg" : "ph-eye-slash ph-lg",
@@ -386,7 +386,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		}
 	}
 
-	if (isSignedIn && me.id === user.id) {
+	if (isSignedIn(me) && me.id === user.id) {
 		menu = menu.concat([
 			null,
 			{

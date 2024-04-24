@@ -16,7 +16,7 @@ import { KoaAdapter } from "@bull-board/koa";
 
 import { In, IsNull } from "typeorm";
 import { fetchMeta, metaToPugArgs } from "backend-rs";
-import config from "@/config/index.js";
+import { config } from "@/config.js";
 import {
 	Users,
 	Notes,
@@ -54,6 +54,10 @@ app.use(async (ctx, next) => {
 	const url = decodeURI(ctx.path);
 
 	if (url === bullBoardPath || url.startsWith(`${bullBoardPath}/`)) {
+		if (!url.startsWith(`${bullBoardPath}/static/`)) {
+			ctx.set("Cache-Control", "private, max-age=0, must-revalidate");
+		}
+
 		const token = ctx.cookies.get("token");
 		if (token == null) {
 			ctx.status = 401;

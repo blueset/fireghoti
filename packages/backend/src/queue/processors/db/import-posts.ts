@@ -47,7 +47,7 @@ export async function importPosts(
 			// handle error
 			logger.warn(`Failed to read Mastodon archive:\n${inspect(e)}`);
 		}
-		logger.succ("Mastodon archive imported");
+		logger.info("Mastodon archive imported");
 		done();
 		return;
 	}
@@ -73,7 +73,7 @@ export async function importPosts(
 		logger.warn(`Error occured while reading:\n${inspect(e)}`);
 	}
 
-	logger.succ("Imported");
+	logger.info("Imported");
 	done();
 }
 

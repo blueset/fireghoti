@@ -3,7 +3,7 @@ import chalk from "chalk";
 import Xev from "xev";
 
 import Logger from "@/services/logger.js";
-import { envOption } from "@/config/index.js";
+import { envOption } from "@/config.js";
 import { inspect } from "node:util";
 
 // for typeorm

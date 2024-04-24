@@ -1,6 +1,6 @@
 {
 	"name": "firefish",
-	"version": "20240413.fork",
+	"version": "20240424.fork",
 	"repository": {
 		"type": "git",
 		"url": "https://firefish.dev/firefish/firefish.git"
@@ -26,7 +26,9 @@
 		"debug": "pnpm run build:debug && pnpm run start",
 		"build:debug": "pnpm run clean && pnpm node ./scripts/dev-build.mjs && pnpm run gulp",
 		"mocha": "pnpm --filter backend run mocha",
-		"test": "pnpm run mocha",
+		"test": "pnpm run test:ts && pnpm run test:rs",
+		"test:ts": "pnpm run mocha",
+		"test:rs": "cargo test",
 		"format": "pnpm run format:ts; pnpm run format:rs",
 		"format:ts": "pnpm -r --parallel run format",
 		"format:rs": "cargo fmt --all --",

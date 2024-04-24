@@ -51,7 +51,7 @@
 									/></MkA>
 									<template
 										v-if="
-											isSignedIn && me.id === page.userId
+											isSignedIn(me) && me.id === page.userId
 										"
 									>
 										<MkA
@@ -159,7 +159,7 @@
 						</div>
 						<!-- <div class="links">
 						<MkA :to="`/@${username}/pages/${pageName}/view-source`" class="link">{{ i18n.ts._pages.viewSource }}</MkA>
-						<template v-if="isSignedIn && me.id === page.userId">
+						<template v-if="isSignedIn(me) && me.id === page.userId">
 							<MkA :to="`/pages/edit/${page.id}`" class="link">{{ i18n.ts._pages.editThisPage }}</MkA>
 							<button v-if="me.pinnedPageId === page.id" class="link _textButton" @click="pin(false)">{{ i18n.ts.unpin }}</button>
 							<button v-else class="link _textButton" @click="pin(true)">{{ i18n.ts.pin }}</button>
