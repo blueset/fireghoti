@@ -328,7 +328,7 @@
 		</FormSection>
 
 		<FormSection>
-			<template #label>{{ i18n.ts.experimental }}</template>
+			<template #label>{{ i18n.ts.experimentalFeatures }}</template>
 			<FormSwitch v-model="foldNotification" class="_formBlock">{{
 				i18n.ts.foldNotification
 			}}</FormSwitch>
