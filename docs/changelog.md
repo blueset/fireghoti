@@ -5,7 +5,7 @@ Critical security updates are indicated by the :warning: icon.
 - Server administrators should check [notice-for-admins.md](./notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](./api-change.md) as well.
 
-## Unreleased
+## [v20240424](https://firefish.dev/firefish/firefish/-/merge_requests/10765/commits)
 
 - Improve the usability of the feature to prevent forgetting to write alt texts
 - Add a server-wide setting for the maximum number of antennas each user can create
