@@ -450,6 +450,10 @@ export const defaultStore = markRaw(
 			where: "account",
 			default: true,
 		},
+		foldNotification: {
+			where: "deviceAccount",
+			default: false,
+		},
 	}),
 );
 

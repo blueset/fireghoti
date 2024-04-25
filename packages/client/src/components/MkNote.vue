@@ -164,7 +164,7 @@
 					tabindex="-1"
 				>
 					<XReactionsViewer
-						v-if="enableEmojiReactions"
+						v-if="enableEmojiReactions && !hideEmojiViewer"
 						ref="reactionsViewer"
 						:note="appearNote"
 					/>
@@ -191,12 +191,7 @@
 						v-if="!enableEmojiReactions"
 						class="button"
 						:note="appearNote"
-						:count="
-							Object.values(appearNote.reactions).reduce(
-								(partialSum, val) => partialSum + val,
-								0,
-							)
-						"
+						:count="reactionCount"
 						:reacted="appearNote.myReaction != null"
 					/>
 					<XStarButton
@@ -219,6 +214,7 @@
 						@click.stop="react()"
 					>
 						<i :class="icon('ph-smiley')"></i>
+						<p class="count" v-if="reactionCount > 0 && hideEmojiViewer">{{reactionCount}}</p>
 					</button>
 					<button
 						v-if="
@@ -231,6 +227,7 @@
 						@click.stop="undoReact(appearNote)"
 					>
 						<i :class="icon('ph-minus')"></i>
+						<p class="count" v-if="reactionCount > 0 && hideEmojiViewer">{{reactionCount}}</p>
 					</button>
 					<XQuoteButton class="button" :note="appearNote" />
 					<button
@@ -327,6 +324,7 @@ const props = defineProps<{
 	detailedView?: boolean;
 	collapsedReply?: boolean;
 	hideFooter?: boolean;
+	hideEmojiViewer?: boolean;
 }>();
 
 const inChannel = inject("inChannel", null);
@@ -396,6 +394,13 @@ const isForeignLanguage: boolean =
 		const postLang = detectLanguage(appearNote.value.text);
 		return postLang !== "" && postLang !== targetLang;
 	})();
+
+const reactionCount = computed(() =>
+	Object.values(appearNote.value.reactions).reduce(
+		(partialSum, val) => partialSum + val,
+		0,
+	),
+);
 
 async function translate_(noteId: string, targetLang: string) {
 	return await os.api("notes/translate", {

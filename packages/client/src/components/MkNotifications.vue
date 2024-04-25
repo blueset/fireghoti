@@ -13,13 +13,21 @@
 
 		<template #default="{ items: notifications }">
 			<XList
+				:items="convertNotification(notifications)"
 				v-slot="{ item: notification }"
 				class="elsfgstc"
-				:items="notifications"
 				:no-gap="true"
 			>
+				<XNotificationFolded
+					v-if="isFoldedNotification(notification)"
+					:key="'nf-' + notification.id"
+					:notification="notification"
+					:with-time="true"
+					:full="true"
+					class="_panel notification"
+				/>
 				<XNote
-					v-if="isNoteNotification(notification)"
+					v-else-if="isNoteNotification(notification)"
 					:key="'nn-' + notification.id"
 					:note="notification.note"
 					:collapsed-reply="
@@ -48,11 +56,15 @@ import MkPagination, {
 	type MkPaginationType,
 } from "@/components/MkPagination.vue";
 import XNotification from "@/components/MkNotification.vue";
+import XNotificationFolded from "@/components/MkNotificationFolded.vue";
 import XList from "@/components/MkDateSeparatedList.vue";
 import XNote from "@/components/MkNote.vue";
 import { useStream } from "@/stream";
 import { me } from "@/me";
 import { i18n } from "@/i18n";
+import type { NotificationFolded } from "@/types/notification";
+import { foldNotifications } from "@/scripts/fold";
+import { defaultStore } from "@/store";
 
 const props = defineProps<{
 	includeTypes?: (typeof notificationTypes)[number][];
@@ -63,15 +75,30 @@ const stream = useStream();
 
 const pagingComponent = ref<MkPaginationType<"i/notifications"> | null>(null);
 
-const pagination = {
-	endpoint: "i/notifications" as const,
-	limit: 10,
-	params: computed(() => ({
-		includeTypes: props.includeTypes ?? undefined,
-		excludeTypes: props.includeTypes ? undefined : me?.mutingNotificationTypes,
-		unreadOnly: props.unreadOnly,
-	})),
-};
+const shouldFold = defaultStore.state.foldNotification;
+
+const FETCH_LIMIT = 90;
+
+const pagination = Object.assign(
+	{
+		endpoint: "i/notifications" as const,
+		params: computed(() => ({
+			includeTypes: props.includeTypes ?? undefined,
+			excludeTypes: props.includeTypes
+				? undefined
+				: me?.mutingNotificationTypes,
+			unreadOnly: props.unreadOnly,
+		})),
+	},
+	shouldFold
+		? {
+				limit: FETCH_LIMIT,
+				secondFetchLimit: FETCH_LIMIT,
+			}
+		: {
+				limit: 30,
+			},
+);
 
 function isNoteNotification(
 	n: entities.Notification,
@@ -80,6 +107,11 @@ function isNoteNotification(
 	| entities.QuoteNotification
 	| entities.MentionNotification {
 	return n.type === "reply" || n.type === "quote" || n.type === "mention";
+}
+function isFoldedNotification(
+	n: NotificationFolded | entities.Notification,
+): n is NotificationFolded {
+	return "folded" in n;
 }
 
 const onNotification = (notification: entities.Notification) => {
@@ -101,6 +133,14 @@ const onNotification = (notification: entities.Notification) => {
 };
 
 let connection: StreamTypes.ChannelOf<"main"> | undefined;
+
+function convertNotification(n: entities.Notification[]) {
+	if (shouldFold) {
+		return foldNotifications(n, FETCH_LIMIT);
+	} else {
+		return n;
+	}
+}
 
 onMounted(() => {
 	connection = stream.useChannel("main");

@@ -2146,6 +2146,7 @@ _notification:
   reacted: "reacted to your post"
   renoted: "boosted your post"
   voted: "voted on your poll"
+  andCountUsers: "and {count} more users {acted}"
   _types:
     all: "All"
     follow: "New followers"
@@ -2232,3 +2233,4 @@ autocorrectNoteLanguage: "Show a warning if the post language does not match the
 incorrectLanguageWarning: "It looks like your post is in {detected}, but you selected
   {current}.\nWould you like to set the language to {detected} instead?"
 noteEditHistory: "Post edit history"
+foldNotification: "Group similar notifications"

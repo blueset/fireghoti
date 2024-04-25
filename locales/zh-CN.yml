@@ -1787,6 +1787,7 @@ _notification:
   reacted: 回应了您的帖子
   voted: 在您的问卷调查中投了票
   renoted: 转发了您的帖子
+  andCountUsers: "和其他 {count} 名用户{acted}"
 _deck:
   alwaysShowMainColumn: "总是显示主列"
   columnAlign: "列对齐"
@@ -2059,3 +2060,4 @@ autocorrectNoteLanguage: 当帖子语言不符合自动检测的结果的时候�
 incorrectLanguageWarning: "看上去您帖子使用的语言是{detected}，但您选择的语言是{current}。\n要改为以{detected}发帖吗？"
 noteEditHistory: "帖子编辑历史"
 media: 媒体
+foldNotification: "将通知按同类型分组"
