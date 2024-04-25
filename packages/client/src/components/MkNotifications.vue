@@ -75,18 +75,30 @@ const stream = useStream();
 
 const pagingComponent = ref<MkPaginationType<"i/notifications"> | null>(null);
 
+const shouldFold = defaultStore.state.foldNotification;
+
 const FETCH_LIMIT = 90;
 
-const pagination = {
-	endpoint: "i/notifications" as const,
-	limit: FETCH_LIMIT,
-	secondFetchLimit: FETCH_LIMIT,
-	params: computed(() => ({
-		includeTypes: props.includeTypes ?? undefined,
-		excludeTypes: props.includeTypes ? undefined : me?.mutingNotificationTypes,
-		unreadOnly: props.unreadOnly,
-	})),
-};
+const pagination = Object.assign(
+	{
+		endpoint: "i/notifications" as const,
+		params: computed(() => ({
+			includeTypes: props.includeTypes ?? undefined,
+			excludeTypes: props.includeTypes
+				? undefined
+				: me?.mutingNotificationTypes,
+			unreadOnly: props.unreadOnly,
+		})),
+	},
+	shouldFold
+		? {
+				limit: FETCH_LIMIT,
+				secondFetchLimit: FETCH_LIMIT,
+			}
+		: {
+				limit: 30,
+			},
+);
 
 function isNoteNotification(
 	n: entities.Notification,
@@ -123,7 +135,7 @@ const onNotification = (notification: entities.Notification) => {
 let connection: StreamTypes.ChannelOf<"main"> | undefined;
 
 function convertNotification(n: entities.Notification[]) {
-	if (defaultStore.state.foldNotification) {
+	if (shouldFold) {
 		return foldNotifications(n, FETCH_LIMIT);
 	} else {
 		return n;

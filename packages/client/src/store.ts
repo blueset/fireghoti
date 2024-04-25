@@ -451,7 +451,7 @@ export const defaultStore = markRaw(
 			default: true,
 		},
 		foldNotification: {
-			where: "device",
+			where: "deviceAccount",
 			default: false,
 		},
 	}),
