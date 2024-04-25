@@ -13,7 +13,13 @@ import { extractPollFromQuestion } from "./question.js";
 import vote from "@/services/note/polls/vote.js";
 import { apLogger } from "../logger.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
-import { extractHost, isSameOrigin, toPuny } from "backend-rs";
+import {
+	type ImageSize,
+	extractHost,
+	getImageSizeFromUrl,
+	isSameOrigin,
+	toPuny,
+} from "backend-rs";
 import {
 	Emojis,
 	Polls,
@@ -46,7 +52,6 @@ import { UserProfiles } from "@/models/index.js";
 import { In } from "typeorm";
 import { config } from "@/config.js";
 import { truncate } from "@/misc/truncate.js";
-import { type Size, getEmojiSize } from "@/misc/emoji-meta.js";
 import { langmap } from "@/misc/langmap.js";
 import { inspect } from "node:util";
 
@@ -488,11 +493,16 @@ export async function extractEmojis(
 					tag.icon!.url !== exists.originalUrl ||
 					!(exists.width && exists.height)
 				) {
-					let size: Size = { width: 0, height: 0 };
-					try {
-						size = await getEmojiSize(tag.icon!.url);
-					} catch {
-						/* skip if any error happens */
+					let size: ImageSize | null = null;
+					if (tag.icon?.url != null) {
+						try {
+							size = await getImageSizeFromUrl(tag.icon.url);
+						} catch (err) {
+							apLogger.info(
+								`Failed to determine the size of the image: ${tag.icon.url}`,
+							);
+							apLogger.debug(inspect(err));
+						}
 					}
 					await Emojis.update(
 						{
@@ -504,8 +514,8 @@ export async function extractEmojis(
 							originalUrl: tag.icon!.url,
 							publicUrl: tag.icon!.url,
 							updatedAt: new Date(),
-							width: size.width || null,
-							height: size.height || null,
+							width: size?.width || null,
+							height: size?.height || null,
 						},
 					);
 
@@ -520,9 +530,9 @@ export async function extractEmojis(
 
 			apLogger.info(`register emoji host=${host}, name=${name}`);
 
-			let size: Size = { width: 0, height: 0 };
+			let size: ImageSize = { width: 0, height: 0 };
 			try {
-				size = await getEmojiSize(tag.icon!.url);
+				size = await getImageSizeFromUrl(tag.icon!.url);
 			} catch {
 				/* skip if any error happens */
 			}
