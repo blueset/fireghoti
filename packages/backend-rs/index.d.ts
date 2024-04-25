@@ -1156,6 +1156,13 @@ export enum ChatEvent {
   Typing = 'typing'
 }
 export function publishToChatStream(senderUserId: string, receiverUserId: string, kind: ChatEvent, object: any): void
+export interface AbuseUserReportLike {
+  id: string
+  targetUserId: string
+  reporterId: string
+  comment: string
+}
+export function publishToModerationStream(moderatorId: string, report: AbuseUserReportLike): void
 export function getTimestamp(id: string): number
 /**
  * The generated ID results in the form of `[8 chars timestamp] + [cuid2]`.

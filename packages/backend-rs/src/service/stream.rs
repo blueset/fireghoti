@@ -1,5 +1,6 @@
 pub mod antenna;
 pub mod chat;
+pub mod moderation;
 
 use crate::config::CONFIG;
 use crate::database::redis_conn;
@@ -11,8 +12,8 @@ pub enum Stream {
     Internal,
     #[strum(serialize = "broadcast")]
     Broadcast,
-    #[strum(to_string = "adminStream:{user_id}")]
-    Admin { user_id: String },
+    #[strum(to_string = "adminStream:{moderator_id}")]
+    Moderation { moderator_id: String },
     #[strum(to_string = "user:{user_id}")]
     User { user_id: String },
     #[strum(to_string = "channelStream:{channel_id}")]
@@ -86,8 +87,8 @@ mod unit_test {
         assert_eq!(Stream::Internal.to_string(), "internal");
         assert_eq!(Stream::Broadcast.to_string(), "broadcast");
         assert_eq!(
-            Stream::Admin {
-                user_id: "9tb42br63g5apjcq".to_string()
+            Stream::Moderation {
+                moderator_id: "9tb42br63g5apjcq".to_string()
             }
             .to_string(),
             "adminStream:9tb42br63g5apjcq"

@@ -8,7 +8,7 @@ import { config } from "@/config.js";
 import type { Channel } from "@/models/entities/channel.js";
 import type {
 	StreamChannels,
-	AdminStreamTypes,
+	// AdminStreamTypes,
 	// AntennaStreamTypes,
 	BroadcastTypes,
 	ChannelStreamTypes,
@@ -193,17 +193,18 @@ class Publisher {
 		this.publish("notesStream", null, note);
 	};
 
-	public publishAdminStream = <K extends keyof AdminStreamTypes>(
-		userId: User["id"],
-		type: K,
-		value?: AdminStreamTypes[K],
-	): void => {
-		this.publish(
-			`adminStream:${userId}`,
-			type,
-			typeof value === "undefined" ? null : value,
-		);
-	};
+	/* ported to backend-rs */
+	// public publishAdminStream = <K extends keyof AdminStreamTypes>(
+	// 	userId: User["id"],
+	// 	type: K,
+	// 	value?: AdminStreamTypes[K],
+	// ): void => {
+	// 	this.publish(
+	// 		`adminStream:${userId}`,
+	// 		type,
+	// 		typeof value === "undefined" ? null : value,
+	// 	);
+	// };
 }
 
 const publisher = new Publisher();
@@ -225,4 +226,4 @@ export const publishGroupMessagingStream =
 	publisher.publishGroupMessagingStream;
 export const publishMessagingIndexStream =
 	publisher.publishMessagingIndexStream;
-export const publishAdminStream = publisher.publishAdminStream;
+// export const publishAdminStream = publisher.publishAdminStream;
