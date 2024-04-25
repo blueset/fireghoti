@@ -9,8 +9,8 @@ use tokio::sync::Mutex;
 pub enum Error {
     #[error("Redis cache error: {0}")]
     CacheErr(#[from] CacheError),
-    #[error("Reqewst error: {0}")]
-    ReqewstErr(#[from] reqwest::Error),
+    #[error("Reqwest error: {0}")]
+    ReqwestErr(#[from] reqwest::Error),
     #[error("Image decoding error: {0}")]
     ImageErr(#[from] ImageError),
     #[error("Image decoding error: {0}")]
