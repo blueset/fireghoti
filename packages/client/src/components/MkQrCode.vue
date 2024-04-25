@@ -21,7 +21,7 @@ import { i18n } from "@/i18n";
 import QRCodeVue3 from "qrcode-vue3";
 
 const props = defineProps<{
-	qrCode: string
+	qrCode: string;
 }>();
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();

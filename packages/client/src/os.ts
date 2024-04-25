@@ -1005,16 +1005,22 @@ export function post(
 }
 
 export async function displayQrCode(qrCode: string) {
-	(await new Promise<(() => void) | undefined>((resolve) => {
-		let dispose: (() => void) | undefined;
-		popup(MkQrCode, { qrCode }, {
-			closed: () => {
-				resolve(dispose);
-			}
-		}).then((res) => {
-			dispose = res.dispose
+	(
+		await new Promise<(() => void) | undefined>((resolve) => {
+			let dispose: (() => void) | undefined;
+			popup(
+				MkQrCode,
+				{ qrCode },
+				{
+					closed: () => {
+						resolve(dispose);
+					},
+				},
+			).then((res) => {
+				dispose = res.dispose;
+			});
 		})
-	}))?.();
+	)?.();
 }
 
 export const deckGlobalEvents = new EventEmitter();
