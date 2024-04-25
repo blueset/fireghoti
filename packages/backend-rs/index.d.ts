@@ -248,6 +248,11 @@ export function sqlLikeEscape(src: string): string
 export function safeForSql(src: string): boolean
 /** Convert milliseconds to a human readable string */
 export function formatMilliseconds(milliseconds: number): string
+export interface ImageSize {
+  width: number
+  height: number
+}
+export function getImageSizeFromUrl(url: string): Promise<ImageSize>
 /** TODO: handle name collisions better */
 export interface NoteLikeForGetNoteSummary {
   fileIds: Array<string>

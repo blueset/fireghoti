@@ -1,12 +1,11 @@
 import define from "@/server/api/define.js";
 import { Emojis, DriveFiles } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genId, getImageSizeFromUrl } from "backend-rs";
 import { insertModerationLog } from "@/services/insert-moderation-log.js";
 import { ApiError } from "@/server/api/error.js";
 import rndstr from "rndstr";
 import { publishBroadcastStream } from "@/services/stream.js";
 import { db } from "@/db/postgre.js";
-import { getEmojiSize } from "@/misc/emoji-meta.js";
 
 export const meta = {
 	tags: ["admin", "emoji"],
@@ -49,7 +48,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		? file.name.split(".")[0]
 		: `_${rndstr("a-z0-9", 8)}_`;
 
-	const size = await getEmojiSize(file.url);
+	const size = await getImageSizeFromUrl(file.url);
 
 	const emoji = await Emojis.insert({
 		id: genId(),
