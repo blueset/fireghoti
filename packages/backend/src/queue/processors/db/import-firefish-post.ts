@@ -59,17 +59,26 @@ export async function importCkPost(
 		userId: user.id,
 	});
 
-	// FIXME: What is this condition?
-	if (note != null && (note.fileIds?.length || 0) < files.length) {
+	// If an import is completely successful at once, the order should not be out of order.
+	// If it takes multiple imports to complete, the order is not guaranteed to be consistent.
+	if (note != null && files.length > 0) {
+		const addFiles: DriveFile[] = [];
+		for (const file of files) {
+			if (!note.fileIds.includes(file.id)) {
+				addFiles.push(file);
+			}
+		}
+
 		const update: Partial<Note> = {};
-		update.fileIds = files.map((x) => x.id);
+		update.fileIds = addFiles.map((x) => x.id);
 
 		if (update.fileIds != null) {
-			await NoteFiles.delete({ noteId: note.id });
 			await NoteFiles.insert(
 				update.fileIds.map((fileId) => ({ noteId: note?.id, fileId })),
 			);
 		}
+
+		update.fileIds = note.fileIds.concat(update.fileIds);
 
 		await Notes.update(note.id, update);
 		await NoteEdits.insert({
