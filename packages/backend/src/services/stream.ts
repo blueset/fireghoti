@@ -17,7 +17,7 @@ import type {
 	InternalStreamTypes,
 	MainStreamTypes,
 	MessagingIndexStreamTypes,
-	MessagingStreamTypes,
+	// MessagingStreamTypes,
 	NoteStreamTypes,
 	UserListStreamTypes,
 	UserStreamTypes,
@@ -147,18 +147,19 @@ class Publisher {
 	// 	);
 	// };
 
-	public publishMessagingStream = <K extends keyof MessagingStreamTypes>(
-		userId: User["id"],
-		otherpartyId: User["id"],
-		type: K,
-		value?: MessagingStreamTypes[K],
-	): void => {
-		this.publish(
-			`messagingStream:${userId}-${otherpartyId}`,
-			type,
-			typeof value === "undefined" ? null : value,
-		);
-	};
+	/* ported to backend-rs */
+	// public publishMessagingStream = <K extends keyof MessagingStreamTypes>(
+	// 	userId: User["id"],
+	// 	otherpartyId: User["id"],
+	// 	type: K,
+	// 	value?: MessagingStreamTypes[K],
+	// ): void => {
+	// 	this.publish(
+	// 		`messagingStream:${userId}-${otherpartyId}`,
+	// 		type,
+	// 		typeof value === "undefined" ? null : value,
+	// 	);
+	// };
 
 	public publishGroupMessagingStream = <
 		K extends keyof GroupMessagingStreamTypes,
@@ -219,7 +220,7 @@ export const publishNotesStream = publisher.publishNotesStream;
 export const publishChannelStream = publisher.publishChannelStream;
 export const publishUserListStream = publisher.publishUserListStream;
 // export const publishAntennaStream = publisher.publishAntennaStream;
-export const publishMessagingStream = publisher.publishMessagingStream;
+// export const publishMessagingStream = publisher.publishMessagingStream;
 export const publishGroupMessagingStream =
 	publisher.publishGroupMessagingStream;
 export const publishMessagingIndexStream =

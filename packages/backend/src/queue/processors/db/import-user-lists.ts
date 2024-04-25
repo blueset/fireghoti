@@ -86,10 +86,11 @@ export async function importUserLists(
 
 			pushUserToUserList(target, list!);
 		} catch (e) {
-			logger.warn(`Error in line ${linenum}:\n${inspect(e)}`);
+			logger.warn(`Error in line ${linenum}`);
+			logger.info(inspect(e));
 		}
 	}
 
-	logger.succ("Imported");
+	logger.info("Imported");
 	done();
 }

@@ -54,7 +54,8 @@ export async function performActivity(
 			try {
 				await performOneActivity(actor, act);
 			} catch (err) {
-				apLogger.error(inspect(err));
+				apLogger.info(`Failed to perform activity: ${err}`);
+				apLogger.debug(inspect(err));
 			}
 		}
 	} else {
@@ -88,9 +89,15 @@ async function performOneActivity(
 	} else if (isReject(activity)) {
 		await reject(actor, activity);
 	} else if (isAdd(activity)) {
-		await add(actor, activity).catch((err) => apLogger.error(inspect(err)));
+		await add(actor, activity).catch((err) => {
+			apLogger.warn(`Failed to perform 'add' activity: ${err}`);
+			apLogger.debug(inspect(err));
+		});
 	} else if (isRemove(activity)) {
-		await remove(actor, activity).catch((err) => apLogger.error(inspect(err)));
+		await remove(actor, activity).catch((err) => {
+			apLogger.warn(`Failed to perform 'remove' activity: ${err}`);
+			apLogger.debug(inspect(err));
+		});
 	} else if (isAnnounce(activity)) {
 		await announce(actor, activity);
 	} else if (isLike(activity)) {
@@ -104,7 +111,7 @@ async function performOneActivity(
 	} else if (isMove(activity)) {
 		await move(actor, activity);
 	} else {
-		apLogger.warn(
+		apLogger.info(
 			`Unrecognized activity type: ${(activity as IActivity).type}`,
 		);
 	}

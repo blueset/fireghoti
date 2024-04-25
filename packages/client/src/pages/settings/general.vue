@@ -328,6 +328,13 @@
 		</FormSection>
 
 		<FormSection>
+			<template #label>{{ i18n.ts.experimentalFeatures }}</template>
+			<FormSwitch v-model="foldNotification" class="_formBlock">{{
+				i18n.ts.foldNotification
+			}}</FormSwitch>
+		</FormSection>
+
+		<FormSection>
 			<template #label>{{ i18n.ts.forMobile }}</template>
 			<FormSwitch
 				v-model="replaceChatButtonWithAccountButton"
@@ -542,6 +549,9 @@ const showAddFileDescriptionAtFirstPost = computed(
 const autocorrectNoteLanguage = computed(
 	defaultStore.makeGetterSetter("autocorrectNoteLanguage"),
 );
+const foldNotification = computed(
+	defaultStore.makeGetterSetter("foldNotification"),
+);
 
 // This feature (along with injectPromo) is currently disabled
 // function onChangeInjectFeaturedNote(v) {
@@ -610,6 +620,7 @@ watch(
 		enableTimelineStreaming,
 		enablePullToRefresh,
 		pullToRefreshThreshold,
+		foldNotification,
 	],
 	async () => {
 		await reloadAsk();

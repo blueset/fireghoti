@@ -2,6 +2,12 @@
 
 You can skip intermediate versions when upgrading from an old version, but please read the notices and follow the instructions for each intermediate version before [upgrading](./upgrade.md).
 
+## Unreleased
+
+### For all users
+
+You can control the verbosity of the server log by adding `maxLogLevel` in `.config/default.yml`. `logLevels` has been deprecated in favor of this setting. (see also: <https://firefish.dev/firefish/firefish/-/blob/eac0c1c47cd23789dcc395ab08b074934409fd96/.config/example.yml#L152>)
+
 ## v20240413
 
 ### For all users

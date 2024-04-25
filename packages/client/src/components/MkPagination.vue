@@ -117,6 +117,7 @@ export type PagingKey = PagingKeyOf<any>;
 export interface Paging<E extends PagingKey = PagingKey> {
 	endpoint: E;
 	limit: number;
+	secondFetchLimit?: number;
 	params?: Endpoints[E]["req"] | ComputedRef<Endpoints[E]["req"]>;
 
 	/**
@@ -141,7 +142,7 @@ export interface Paging<E extends PagingKey = PagingKey> {
 
 export type PagingOf<T> = Paging<TypeUtils.EndpointsOf<T[]>>;
 
-const SECOND_FETCH_LIMIT = 30;
+const SECOND_FETCH_LIMIT_DEFAULT = 30;
 
 const props = withDefaults(
 	defineProps<{
@@ -285,7 +286,8 @@ const fetchMore = async (): Promise<void> => {
 	await os
 		.api(props.pagination.endpoint, {
 			...params,
-			limit: SECOND_FETCH_LIMIT + 1,
+			limit:
+				(props.pagination.secondFetchLimit ?? SECOND_FETCH_LIMIT_DEFAULT) + 1,
 			...(props.pagination.offsetMode
 				? {
 						offset: offset.value,
@@ -312,7 +314,10 @@ const fetchMore = async (): Promise<void> => {
 						if (i === 10) item._shouldInsertAd_ = true;
 					}
 				}
-				if (res.length > SECOND_FETCH_LIMIT) {
+				if (
+					res.length >
+					(props.pagination.secondFetchLimit ?? SECOND_FETCH_LIMIT_DEFAULT)
+				) {
 					res.pop();
 					items.value = props.pagination.reversed
 						? res.toReversed().concat(items.value)
@@ -346,7 +351,8 @@ const fetchMoreAhead = async (): Promise<void> => {
 	await os
 		.api(props.pagination.endpoint, {
 			...params,
-			limit: SECOND_FETCH_LIMIT + 1,
+			limit:
+				(props.pagination.secondFetchLimit ?? SECOND_FETCH_LIMIT_DEFAULT) + 1,
 			...(props.pagination.offsetMode
 				? {
 						offset: offset.value,
@@ -361,7 +367,10 @@ const fetchMoreAhead = async (): Promise<void> => {
 		})
 		.then(
 			(res: Item[]) => {
-				if (res.length > SECOND_FETCH_LIMIT) {
+				if (
+					res.length >
+					(props.pagination.secondFetchLimit ?? SECOND_FETCH_LIMIT_DEFAULT)
+				) {
 					res.pop();
 					items.value = props.pagination.reversed
 						? res.toReversed().concat(items.value)

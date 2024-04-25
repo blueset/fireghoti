@@ -50,11 +50,22 @@ export function getNoteMenu(props: {
 		});
 	}
 
+	async function getVisibleUsers() {
+		if (appearNote.visibleUserIds && appearNote.visibleUserIds.length > 0) {
+			const users = await os.api("users/show", {
+				userIds: appearNote.visibleUserIds,
+			});
+			return users;
+		} else {
+			return undefined;
+		}
+	}
+
 	function delEdit(): void {
 		os.confirm({
 			type: "warning",
 			text: i18n.ts.deleteAndEditConfirm,
-		}).then(({ canceled }) => {
+		}).then(async ({ canceled }) => {
 			if (canceled) return;
 
 			os.api("notes/delete", {
@@ -66,17 +77,19 @@ export function getNoteMenu(props: {
 				renote: appearNote.renote,
 				reply: appearNote.reply,
 				channel: appearNote.channel,
+				initialVisibleUsers: await getVisibleUsers(),
 			});
 		});
 	}
 
-	function edit(): void {
+	async function edit() {
 		os.post({
 			initialNote: appearNote as NoteDraft,
 			renote: appearNote.renote,
 			reply: appearNote.reply,
 			channel: appearNote.channel,
 			editId: appearNote.id,
+			initialVisibleUsers: await getVisibleUsers(),
 		});
 	}
 

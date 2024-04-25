@@ -2,7 +2,7 @@ import {
 	publishMainStream,
 	publishGroupMessagingStream,
 } from "@/services/stream.js";
-import { publishMessagingStream } from "@/services/stream.js";
+import { publishToChatStream, ChatEvent } from "backend-rs";
 import { publishMessagingIndexStream } from "@/services/stream.js";
 import { pushNotification } from "@/services/push-notification.js";
 import type { User, IRemoteUser } from "@/models/entities/user.js";
@@ -54,7 +54,7 @@ export async function readUserMessagingMessage(
 	);
 
 	// Publish event
-	publishMessagingStream(otherpartyId, userId, "read", messageIds);
+	publishToChatStream(otherpartyId, userId, ChatEvent.Read, messageIds);
 	publishMessagingIndexStream(userId, "read", messageIds);
 
 	if (!(await Users.getHasUnreadMessagingMessage(userId))) {

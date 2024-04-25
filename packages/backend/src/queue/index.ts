@@ -70,10 +70,10 @@ deliverQueue
 		),
 	)
 	.on("failed", (job, err) =>
-		deliverLogger.warn(`failed(${err}) ${getJobInfo(job)} to=${job.data.to}`),
+		deliverLogger.info(`failed(${err}) ${getJobInfo(job)} to=${job.data.to}`),
 	)
 	.on("error", (job: any, err: Error) =>
-		deliverLogger.error(`error ${err}`, { job, e: renderError(err) }),
+		deliverLogger.warn(`error ${err}`, { job, e: renderError(err) }),
 	)
 	.on("stalled", (job) =>
 		deliverLogger.warn(`stalled ${getJobInfo(job)} to=${job.data.to}`),
@@ -564,12 +564,12 @@ export default function () {
 
 export function destroy() {
 	deliverQueue.once("cleaned", (jobs, status) => {
-		deliverLogger.succ(`Cleaned ${jobs.length} ${status} jobs`);
+		deliverLogger.info(`Cleaned ${jobs.length} ${status} jobs`);
 	});
 	deliverQueue.clean(0, "delayed");
 
 	inboxQueue.once("cleaned", (jobs, status) => {
-		inboxLogger.succ(`Cleaned ${jobs.length} ${status} jobs`);
+		inboxLogger.info(`Cleaned ${jobs.length} ${status} jobs`);
 	});
 	inboxQueue.clean(0, "delayed");
 }

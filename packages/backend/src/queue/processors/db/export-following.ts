@@ -10,6 +10,7 @@ import { Users, Followings, Mutings } from "@/models/index.js";
 import { In, MoreThan, Not } from "typeorm";
 import type { DbUserJobData } from "@/queue/types.js";
 import type { Following } from "@/models/entities/following.js";
+import { inspect } from "node:util";
 
 const logger = queueLogger.createSubLogger("export-following");
 
@@ -28,7 +29,7 @@ export async function exportFollowing(
 	// Create temp file
 	const [path, cleanup] = await createTemp();
 
-	logger.info(`Temp file is ${path}`);
+	logger.info(`temp file created: ${path}`);
 
 	try {
 		const stream = fs.createWriteStream(path, { flags: "a" });
@@ -78,9 +79,12 @@ export async function exportFollowing(
 
 				const content = getFullApAccount(u.username, u.host);
 				await new Promise<void>((res, rej) => {
-					stream.write(content + "\n", (err) => {
+					stream.write(`${content}\n`, (err) => {
 						if (err) {
-							logger.error(err);
+							logger.warn(
+								`failed to export following users of ${job.data.user.id}`,
+							);
+							logger.info(inspect(err));
 							rej(err);
 						} else {
 							res();
@@ -91,7 +95,7 @@ export async function exportFollowing(
 		}
 
 		stream.end();
-		logger.succ(`Exported to: ${path}`);
+		logger.info(`Exported to: ${path}`);
 
 		const fileName = `following-${dateFormat(
 			new Date(),
@@ -104,7 +108,7 @@ export async function exportFollowing(
 			force: true,
 		});
 
-		logger.succ(`Exported to: ${driveFile.id}`);
+		logger.info(`Exported to: ${driveFile.id}`);
 	} finally {
 		cleanup();
 	}

@@ -7,10 +7,9 @@ import {
 	Mutings,
 	Users,
 } from "@/models/index.js";
-import { genId, toPuny } from "backend-rs";
+import { genId, publishToChatStream, toPuny, ChatEvent } from "backend-rs";
 import type { MessagingMessage } from "@/models/entities/messaging-message.js";
 import {
-	publishMessagingStream,
 	publishMessagingIndexStream,
 	publishMainStream,
 	publishGroupMessagingStream,
@@ -52,10 +51,10 @@ export async function createMessage(
 	if (recipientUser) {
 		if (Users.isLocalUser(user)) {
 			// 自分のストリーム
-			publishMessagingStream(
+			publishToChatStream(
 				message.userId,
 				recipientUser.id,
-				"message",
+				ChatEvent.Message,
 				messageObj,
 			);
 			publishMessagingIndexStream(message.userId, "message", messageObj);
@@ -64,10 +63,10 @@ export async function createMessage(
 
 		if (Users.isLocalUser(recipientUser)) {
 			// 相手のストリーム
-			publishMessagingStream(
+			publishToChatStream(
 				recipientUser.id,
 				message.userId,
-				"message",
+				ChatEvent.Message,
 				messageObj,
 			);
 			publishMessagingIndexStream(recipientUser.id, "message", messageObj);

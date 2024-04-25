@@ -26,6 +26,8 @@ fn init_redis() -> Result<Client, RedisError> {
         params.concat()
     };
 
+    tracing::info!("Initializing Redis connection");
+
     Client::open(redis_url)
 }
 

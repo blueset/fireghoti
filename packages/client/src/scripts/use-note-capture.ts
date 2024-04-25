@@ -21,6 +21,7 @@ export function useNoteCapture(props: {
 
 		switch (type) {
 			case "replied": {
+				note.value.repliesCount += 1;
 				if (props.onReplied) {
 					const { id: createdId } = body;
 					const replyNote = await os.api("notes/show", {

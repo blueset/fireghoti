@@ -29,7 +29,7 @@ export async function exportCustomEmojis(
 
 	const [path, cleanup] = await createTempDir();
 
-	logger.info(`Temp dir is ${path}`);
+	logger.info(`temp dir created: ${path}`);
 
 	const metaPath = `${path}/meta.json`;
 
@@ -41,7 +41,8 @@ export async function exportCustomEmojis(
 		return new Promise<void>((res, rej) => {
 			metaStream.write(text, (err) => {
 				if (err) {
-					logger.error(err);
+					logger.warn("Failed to export custom emojis");
+					logger.info(inspect(err));
 					rej(err);
 				} else {
 					res();
@@ -105,7 +106,7 @@ export async function exportCustomEmojis(
 		zlib: { level: 0 },
 	});
 	archiveStream.on("close", async () => {
-		logger.succ(`Exported to: ${archivePath}`);
+		logger.info(`Exported to: ${archivePath}`);
 
 		const fileName = `custom-emojis-${dateFormat(
 			new Date(),
@@ -118,7 +119,7 @@ export async function exportCustomEmojis(
 			force: true,
 		});
 
-		logger.succ(`Exported to: ${driveFile.id}`);
+		logger.info(`Exported to: ${driveFile.id}`);
 		cleanup();
 		archiveCleanup();
 		done();

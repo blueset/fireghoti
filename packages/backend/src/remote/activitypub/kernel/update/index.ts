@@ -18,12 +18,13 @@ export default async (
 		return "skip: invalid actor";
 	}
 
-	apLogger.debug("Update");
+	apLogger.info("Update");
 
 	const resolver = new Resolver();
 
 	const object = await resolver.resolve(activity.object).catch((e) => {
-		apLogger.error(`Resolution failed:\n${inspect(e)}`);
+		apLogger.info(`Failed to resolve AP object: ${e}`);
+		apLogger.debug(inspect(e));
 		throw e;
 	});
 

@@ -1,6 +1,6 @@
 import define from "@/server/api/define.js";
 import { createExportFollowingJob } from "@/queue/index.js";
-import { HOUR } from "@/const.js";
+import { HOUR } from "backend-rs";
 
 export const meta = {
 	secure: true,

@@ -1,9 +1,8 @@
-import { Entity } from "megalodon";
+import type { Entity } from "megalodon";
 import { config } from "@/config.js";
-import { fetchMeta } from "backend-rs";
+import { FILE_TYPE_BROWSERSAFE, fetchMeta } from "backend-rs";
 import { Users, Notes } from "@/models/index.js";
 import { IsNull } from "typeorm";
-import { MAX_NOTE_TEXT_LENGTH, FILE_TYPE_BROWSERSAFE } from "@/const.js";
 
 export async function getInstance(
 	response: Entity.Instance,
@@ -41,7 +40,7 @@ export async function getInstance(
 				max_featured_tags: 20,
 			},
 			statuses: {
-				max_characters: MAX_NOTE_TEXT_LENGTH,
+				max_characters: config.maxNoteLength,
 				max_media_attachments: 16,
 				characters_reserved_per_url: response.uri.length,
 			},

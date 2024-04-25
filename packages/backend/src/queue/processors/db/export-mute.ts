@@ -9,6 +9,7 @@ import { createTemp } from "@/misc/create-temp.js";
 import { Users, Mutings } from "@/models/index.js";
 import { IsNull, MoreThan } from "typeorm";
 import type { DbUserJobData } from "@/queue/types.js";
+import { inspect } from "node:util";
 
 const logger = queueLogger.createSubLogger("export-mute");
 
@@ -16,7 +17,7 @@ export async function exportMute(
 	job: Bull.Job<DbUserJobData>,
 	done: any,
 ): Promise<void> {
-	logger.info(`Exporting mute of ${job.data.user.id} ...`);
+	logger.info(`Exporting mutes of ${job.data.user.id} ...`);
 
 	const user = await Users.findOneBy({ id: job.data.user.id });
 	if (user == null) {
@@ -27,7 +28,7 @@ export async function exportMute(
 	// Create temp file
 	const [path, cleanup] = await createTemp();
 
-	logger.info(`Temp file is ${path}`);
+	logger.info(`temp file created: ${path}`);
 
 	try {
 		const stream = fs.createWriteStream(path, { flags: "a" });
@@ -64,9 +65,10 @@ export async function exportMute(
 
 				const content = getFullApAccount(u.username, u.host);
 				await new Promise<void>((res, rej) => {
-					stream.write(content + "\n", (err) => {
+					stream.write(`${content}\n`, (err) => {
 						if (err) {
-							logger.error(err);
+							logger.warn("failed");
+							logger.info(inspect(err));
 							rej(err);
 						} else {
 							res();
@@ -84,7 +86,7 @@ export async function exportMute(
 		}
 
 		stream.end();
-		logger.succ(`Exported to: ${path}`);
+		logger.info(`Exported to: ${path}`);
 
 		const fileName = `mute-${dateFormat(
 			new Date(),
@@ -97,7 +99,7 @@ export async function exportMute(
 			force: true,
 		});
 
-		logger.succ(`Exported to: ${driveFile.id}`);
+		logger.info(`Exported to: ${driveFile.id}`);
 	} finally {
 		cleanup();
 	}

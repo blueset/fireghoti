@@ -39,7 +39,7 @@ async fn all_texts(note: NoteLike) -> Result<Vec<String>, DbErr> {
             .flatten(),
     );
 
-    if let Some(renote_id) = note.renote_id {
+    if let Some(renote_id) = &note.renote_id {
         if let Some((text, cw)) = note::Entity::find_by_id(renote_id)
             .select_only()
             .columns([note::Column::Text, note::Column::Cw])
@@ -53,10 +53,12 @@ async fn all_texts(note: NoteLike) -> Result<Vec<String>, DbErr> {
             if let Some(c) = cw {
                 texts.push(c);
             }
+        } else {
+            tracing::warn!("nonexistent renote id: {:#?}", renote_id);
         }
     }
 
-    if let Some(reply_id) = note.reply_id {
+    if let Some(reply_id) = &note.reply_id {
         if let Some((text, cw)) = note::Entity::find_by_id(reply_id)
             .select_only()
             .columns([note::Column::Text, note::Column::Cw])
@@ -70,6 +72,8 @@ async fn all_texts(note: NoteLike) -> Result<Vec<String>, DbErr> {
             if let Some(c) = cw {
                 texts.push(c);
             }
+        } else {
+            tracing::warn!("nonexistent reply id: {:#?}", reply_id);
         }
     }
 

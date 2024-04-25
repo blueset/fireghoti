@@ -27,17 +27,16 @@ export async function setLocalEmojiSizes(
 				height: size.height || null,
 			});
 		} catch (e) {
-			logger.error(
-				`Unable to set emoji size (${i + 1}/${emojis.length}):\n${inspect(e)}`,
-			);
+			logger.warn(`Unable to set emoji size (${i + 1}/${emojis.length})`);
+			logger.info(inspect(e));
 			/* skip if any error happens */
 		} finally {
 			// wait for 1sec so that this would not overwhelm the object storage.
 			await new Promise((resolve) => setTimeout(resolve, 1000));
-			if (i % 10 === 9) logger.succ(`fetched ${i + 1}/${emojis.length} emojis`);
+			if (i % 10 === 9) logger.info(`fetched ${i + 1}/${emojis.length} emojis`);
 		}
 	}
 
-	logger.succ("Done.");
+	logger.info("Done.");
 	done();
 }

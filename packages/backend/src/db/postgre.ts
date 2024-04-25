@@ -80,7 +80,7 @@ import { dbLogger } from "./logger.js";
 
 const sqlLogger = dbLogger.createSubLogger("sql", "gray", false);
 
-class MyCustomLogger implements Logger {
+class DbLogger implements Logger {
 	private highlight(sql: string) {
 		return highlight.highlight(sql, {
 			language: "sql",
@@ -89,15 +89,16 @@ class MyCustomLogger implements Logger {
 	}
 
 	public logQuery(query: string, parameters?: any[]) {
-		sqlLogger.info(this.highlight(query).substring(0, 100));
+		sqlLogger.trace(this.highlight(query).substring(0, 100));
 	}
 
 	public logQueryError(error: string, query: string, parameters?: any[]) {
-		sqlLogger.error(this.highlight(query));
+		sqlLogger.error(error);
+		sqlLogger.trace(this.highlight(query));
 	}
 
 	public logQuerySlow(time: number, query: string, parameters?: any[]) {
-		sqlLogger.warn(this.highlight(query));
+		sqlLogger.trace(this.highlight(query));
 	}
 
 	public logSchemaBuild(message: string) {
@@ -215,7 +216,7 @@ export const db = new DataSource({
 			}
 		: false,
 	logging: log,
-	logger: log ? new MyCustomLogger() : undefined,
+	logger: log ? new DbLogger() : undefined,
 	maxQueryExecutionTime: 300,
 	entities: entities,
 	migrations: ["../../migration/*.js"],

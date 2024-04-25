@@ -52,7 +52,7 @@ if (!["production", "test"].includes(process.env.NODE_ENV || "")) {
 	// Logger
 	app.use(
 		koaLogger((str) => {
-			serverLogger.info(str);
+			serverLogger.debug(str);
 		}),
 	);
 
@@ -177,7 +177,7 @@ mastoRouter.post("/oauth/token", async (ctx) => {
 		console.log(body.code, token);
 		token = body.code;
 	}
-	if (client_id instanceof Array) {
+	if (Array.isArray(client_id)) {
 		client_id = client_id.toString();
 	} else if (!client_id) {
 		client_id = null;
@@ -194,10 +194,10 @@ mastoRouter.post("/oauth/token", async (ctx) => {
 			scope: body.scope || "read write follow push",
 			created_at: Math.floor(Date.now() / 1000),
 		};
-		serverLogger.info("token-response", ret);
+		serverLogger.debug("Mastodon API token response", ret);
 		ctx.body = ret;
 	} catch (err: any) {
-		serverLogger.error(inspect(err));
+		serverLogger.warn(err);
 		ctx.status = 401;
 		ctx.body = err.response.data;
 	}
@@ -246,7 +246,7 @@ export default () =>
 					);
 					break;
 				default:
-					serverLogger.error(e);
+					serverLogger.error(inspect(e));
 					break;
 			}
 

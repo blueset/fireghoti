@@ -97,6 +97,8 @@ pub async fn to_db_reaction(reaction: Option<&str>, host: Option<&str>) -> Resul
                 {
                     return Ok(format!(":{name}@{ascii_host}:"));
                 }
+
+                tracing::info!("nonexistent remote custom emoji: :{name}@{ascii_host}:");
             } else {
                 // local emoji
                 // TODO: Does SeaORM have the `exists` method?
@@ -109,6 +111,8 @@ pub async fn to_db_reaction(reaction: Option<&str>, host: Option<&str>) -> Resul
                 {
                     return Ok(format!(":{name}:"));
                 }
+
+                tracing::info!("nonexistent local custom emoji: :{name}:");
             }
         };
     };
