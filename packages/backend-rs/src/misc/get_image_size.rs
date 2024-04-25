@@ -134,6 +134,7 @@ mod unit_test {
         let webp_url_1 = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/custom/assets/badges/error.webp";
         let webp_url_2 = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/screenshots/1.webp";
         let ico_url = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/favicon.ico";
+        let gif_url = "https://firefish.dev/firefish/firefish/-/raw/b9c3dfbd3d473cb2cee20c467eeae780bc401271/packages/backend/test/resources/anime.gif";
         let mp3_url = "https://firefish.dev/firefish/firefish/-/blob/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/sounds/aisha/1.mp3";
 
         // Delete caches in case you run this test multiple times
@@ -145,6 +146,7 @@ mod unit_test {
         delete_cache(&format!("fetchImage:{}", webp_url_1)).unwrap();
         delete_cache(&format!("fetchImage:{}", webp_url_2)).unwrap();
         delete_cache(&format!("fetchImage:{}", ico_url)).unwrap();
+        delete_cache(&format!("fetchImage:{}", gif_url)).unwrap();
         delete_cache(&format!("fetchImage:{}", mp3_url)).unwrap();
 
         let png_size_1 = ImageSize {
@@ -175,6 +177,10 @@ mod unit_test {
             width: 256,
             height: 256,
         };
+        let gif_size = ImageSize {
+            width: 256,
+            height: 256,
+        };
 
         assert_eq!(
             png_size_1,
@@ -201,6 +207,7 @@ mod unit_test {
             get_image_size_from_url(webp_url_2).await.unwrap()
         );
         assert_eq!(ico_size, get_image_size_from_url(ico_url).await.unwrap());
+        assert_eq!(gif_size, get_image_size_from_url(gif_url).await.unwrap());
         assert!(get_image_size_from_url(mp3_url).await.is_err());
     }
 }
