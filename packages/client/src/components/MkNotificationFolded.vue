@@ -55,13 +55,13 @@
 			/>
 		</div>
 		<!-- Since the reacted user list is actually shown above, the emoji-viewer is hidden to prevent visual noise -->
-		<XNoteSub
+		<XNote
 			v-if="notification.type === 'renote'"
 			class="content"
 			:note="removeReplyTo(notification.note.renote)"
 			:hide-emoji-viewer="true"
 		/>
-		<XNoteSub
+		<XNote
 			v-else
 			class="content"
 			:note="removeReplyTo(notification.note)"
@@ -87,7 +87,7 @@ import type {
 	NotificationFolded,
 	ReactionNotificationFolded,
 } from "@/types/notification";
-import XNoteSub from "@/components/MkNoteSub.vue";
+import XNote from "@/components/MkNote.vue";
 import type { entities } from "firefish-js";
 
 const props = withDefaults(
