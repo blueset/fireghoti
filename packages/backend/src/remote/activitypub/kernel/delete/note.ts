@@ -5,13 +5,11 @@ import DbResolver from "../../db-resolver.js";
 import { getApLock } from "@/misc/app-lock.js";
 import { deleteMessage } from "@/services/messages/delete.js";
 
-const logger = apLogger;
-
 export default async function (
 	actor: CacheableRemoteUser,
 	uri: string,
 ): Promise<string> {
-	logger.info(`Deleting the Note: ${uri}`);
+	apLogger.info(`Deleting note: ${uri}`);
 
 	const lock = await getApLock(uri);
 

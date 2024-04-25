@@ -76,12 +76,12 @@ export default class Resolver {
 					throw new Error("instance is blocked");
 				}
 			}
-			apLogger.debug("Returning existing object:");
-			apLogger.debug(JSON.stringify(value, null, 2));
+			apLogger.debug("Returning the existing object");
+			apLogger.trace(JSON.stringify(value, null, 2));
 			return value;
 		}
 
-		apLogger.debug(`Resolving: ${value}`);
+		apLogger.info(`Resolving: ${value}`);
 
 		if (value.includes("#")) {
 			// URLs with fragment parts cannot be resolved correctly because
@@ -115,8 +115,10 @@ export default class Resolver {
 			this.user = await getInstanceActor();
 		}
 
-		apLogger.debug("Getting object from remote, authenticated as user:");
-		apLogger.debug(JSON.stringify(this.user, null, 2));
+		apLogger.info(
+			`Getting object from remote, authenticated as user ${this.user.id}`,
+		);
+		apLogger.trace(JSON.stringify(this.user, null, 2));
 
 		const { finalUrl, content: object } = await apGet(value, this.user);
 

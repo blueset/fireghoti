@@ -6,20 +6,19 @@ import { isFollow, getApType } from "../../type.js";
 import { apLogger } from "../../logger.js";
 import { inspect } from "node:util";
 
-const logger = apLogger;
-
 export default async (
 	actor: CacheableRemoteUser,
 	activity: IAccept,
 ): Promise<string> => {
 	const uri = activity.id || activity;
 
-	logger.info(`Accept: ${uri}`);
+	apLogger.info(`Accept: ${uri}`);
 
 	const resolver = new Resolver();
 
 	const object = await resolver.resolve(activity.object).catch((e) => {
-		logger.error(`Resolution failed:\n${inspect(e)}`);
+		apLogger.info(`Failed to resolve AP object: ${e}`);
+		apLogger.debug(inspect(e));
 		throw e;
 	});
 

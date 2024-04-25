@@ -13,8 +13,6 @@ import { Notes } from "@/models/index.js";
 import { isBlockedServer } from "backend-rs";
 import { inspect } from "node:util";
 
-const logger = apLogger;
-
 /**
  * Handle announcement activities
  */
@@ -50,11 +48,14 @@ export default async function (
 			// Skip if target is 4xx
 			if (e instanceof StatusError) {
 				if (e.isClientError) {
-					logger.warn(`Ignored announce target ${targetUri} - ${e.statusCode}`);
+					apLogger.info(
+						`Ignored announce target ${targetUri} - ${e.statusCode}`,
+					);
 					return;
 				}
 
-				logger.warn(`Error in announce target ${targetUri}:\n${inspect(e)}`);
+				apLogger.warn(`Error in announce target ${targetUri}`);
+				apLogger.debug(inspect(e));
 			}
 			throw e;
 		}
@@ -63,7 +64,7 @@ export default async function (
 			console.log("skip: invalid actor for this activity");
 			return;
 		}
-		logger.info(`Creating the (Re)Note: ${uri}`);
+		apLogger.info(`Creating (re)note: ${uri}`);
 
 		const activityAudience = await parseAudience(
 			actor,
