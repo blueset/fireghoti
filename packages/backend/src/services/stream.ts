@@ -5,13 +5,13 @@ import type { UserList } from "@/models/entities/user-list.js";
 import type { UserGroup } from "@/models/entities/user-group.js";
 import { config } from "@/config.js";
 // import type { Antenna } from "@/models/entities/antenna.js";
-import type { Channel } from "@/models/entities/channel.js";
+// import type { Channel } from "@/models/entities/channel.js";
 import type {
 	StreamChannels,
 	// AdminStreamTypes,
 	// AntennaStreamTypes,
 	BroadcastTypes,
-	ChannelStreamTypes,
+	// ChannelStreamTypes,
 	DriveStreamTypes,
 	GroupMessagingStreamTypes,
 	InternalStreamTypes,
@@ -110,17 +110,18 @@ class Publisher {
 		});
 	};
 
-	public publishChannelStream = <K extends keyof ChannelStreamTypes>(
-		channelId: Channel["id"],
-		type: K,
-		value?: ChannelStreamTypes[K],
-	): void => {
-		this.publish(
-			`channelStream:${channelId}`,
-			type,
-			typeof value === "undefined" ? null : value,
-		);
-	};
+	/* ported to backend-rs */
+	// public publishChannelStream = <K extends keyof ChannelStreamTypes>(
+	// 	channelId: Channel["id"],
+	// 	type: K,
+	// 	value?: ChannelStreamTypes[K],
+	// ): void => {
+	// 	this.publish(
+	// 		`channelStream:${channelId}`,
+	// 		type,
+	// 		typeof value === "undefined" ? null : value,
+	// 	);
+	// };
 
 	public publishUserListStream = <K extends keyof UserListStreamTypes>(
 		listId: UserList["id"],
@@ -218,7 +219,7 @@ export const publishMainStream = publisher.publishMainStream;
 export const publishDriveStream = publisher.publishDriveStream;
 export const publishNoteStream = publisher.publishNoteStream;
 export const publishNotesStream = publisher.publishNotesStream;
-export const publishChannelStream = publisher.publishChannelStream;
+// export const publishChannelStream = publisher.publishChannelStream;
 export const publishUserListStream = publisher.publishUserListStream;
 // export const publishAntennaStream = publisher.publishAntennaStream;
 // export const publishMessagingStream = publisher.publishMessagingStream;

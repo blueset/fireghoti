@@ -1149,6 +1149,7 @@ export interface Webhook {
 export function initializeRustLogger(): void
 export function watchNote(watcherId: string, noteAuthorId: string, noteId: string): Promise<void>
 export function unwatchNote(watcherId: string, noteId: string): Promise<void>
+export function publishToChannelStream(channelId: string, userId: string): void
 export enum ChatEvent {
   Message = 'message',
   Read = 'read',

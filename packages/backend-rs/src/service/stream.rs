@@ -1,4 +1,5 @@
 pub mod antenna;
+pub mod channel;
 pub mod chat;
 pub mod moderation;
 

@@ -14,11 +14,12 @@ import {
 } from "@/models/index.js";
 import type { AccessToken } from "@/models/entities/access-token.js";
 import type { UserProfile } from "@/models/entities/user-profile.js";
+import { publishGroupMessagingStream } from "@/services/stream.js";
 import {
-	publishChannelStream,
-	publishGroupMessagingStream,
-} from "@/services/stream.js";
-import { publishToChatStream, ChatEvent } from "backend-rs";
+	publishToChannelStream,
+	publishToChatStream,
+	ChatEvent,
+} from "backend-rs";
 import type { UserGroup } from "@/models/entities/user-group.js";
 import type { Packed } from "@/misc/schema.js";
 import { readNotification } from "@/server/api/common/read-notification.js";
@@ -512,9 +513,9 @@ export default class Connection {
 		}
 	}
 
-	private typingOnChannel(channel: ChannelModel["id"]) {
+	private typingOnChannel(channelId: ChannelModel["id"]) {
 		if (this.user) {
-			publishChannelStream(channel, "typing", this.user.id);
+			publishToChannelStream(channelId, this.user.id);
 		}
 	}
 
