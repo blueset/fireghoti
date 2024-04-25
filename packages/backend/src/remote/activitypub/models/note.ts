@@ -13,7 +13,13 @@ import { extractPollFromQuestion } from "./question.js";
 import vote from "@/services/note/polls/vote.js";
 import { apLogger } from "../logger.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
-import { type ImageSize, extractHost, getImageSizeFromUrl, isSameOrigin, toPuny } from "backend-rs";
+import {
+	type ImageSize,
+	extractHost,
+	getImageSizeFromUrl,
+	isSameOrigin,
+	toPuny,
+} from "backend-rs";
 import {
 	Emojis,
 	Polls,
