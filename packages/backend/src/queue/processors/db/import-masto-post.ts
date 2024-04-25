@@ -85,6 +85,7 @@ export async function importMastoPost(
 		userId: user.id,
 	});
 
+	// FIXME: What is this condition?
 	if (note != null && (note.fileIds?.length || 0) < files.length) {
 		const update: Partial<Note> = {};
 		update.fileIds = files.map((x) => x.id);
@@ -107,7 +108,7 @@ export async function importMastoPost(
 		});
 		logger.info("Post updated");
 	}
-	if (!note) {
+	if (note == null) {
 		note = await create(user, {
 			createdAt: isRenote
 				? new Date(post.published)
