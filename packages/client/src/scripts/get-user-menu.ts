@@ -281,6 +281,13 @@ export function getUserMenu(user, router: Router = mainRouter) {
 						copyToClipboard(`https://${host}/@${user.username}.json`);
 					},
 				},
+				{
+					icon: `${icon("ph-hand-waving")}`,
+					text: i18n.ts.remoteFollowUrl,
+					action: () => {
+						copyToClipboard(`https://${host}/follow-me?acct=${user.username}`);
+					},
+				},
 			],
 		},
 		{
@@ -288,6 +295,22 @@ export function getUserMenu(user, router: Router = mainRouter) {
 			text: i18n.ts.sendMessage,
 			action: () => {
 				os.post({ specified: user });
+			},
+		},
+		!isSignedIn(me)
+			? {
+					icon: `${icon("ph-hand-waving")}`,
+					text: i18n.ts.remoteFollow,
+					action: () => {
+						router.push(`/follow-me?acct=${user.username}`);
+					},
+				}
+			: undefined,
+		{
+			icon: "ph-qr-code ph-bold ph-lg",
+			text: i18n.ts.getQrCode,
+			action: () => {
+				os.displayQrCode(`https://${host}/follow-me?acct=${user.username}`);
 			},
 		},
 		isSignedIn(me) && me.id !== user.id
