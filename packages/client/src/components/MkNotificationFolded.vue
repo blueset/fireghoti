@@ -60,12 +60,14 @@
 			class="content"
 			:note="removeReplyTo(notification.note.renote)"
 			:hide-emoji-viewer="true"
+			:is-long-judger="isLongJudger"
 		/>
 		<XNote
 			v-else
 			class="content"
 			:note="removeReplyTo(notification.note)"
 			:hide-emoji-viewer="true"
+			:is-long-judger="isLongJudger"
 		/>
 	</div>
 </template>
@@ -119,6 +121,15 @@ const userleft = ref(props.notification.users.length - users.value.length);
 
 let readObserver: IntersectionObserver | undefined;
 let connection: Connection<Channels["main"]> | null = null;
+
+function isLongJudger(note: entities.Note) {
+	return (
+		note.text != null &&
+		(note.text.split("\n").length > 5 ||
+			note.text.length > 300 ||
+			note.files.length > 4)
+	);
+}
 
 function getText() {
 	let res = "";
