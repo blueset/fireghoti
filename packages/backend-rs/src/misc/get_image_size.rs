@@ -1,9 +1,8 @@
 use crate::misc::redis_cache::{get_cache, set_cache, CacheError};
+use crate::util::http_client;
 use image::{io::Reader, ImageError, ImageFormat};
 use nom_exif::{parse_jpeg_exif, EntryValue, ExifTag};
-use once_cell::sync::OnceCell;
 use std::io::Cursor;
-use std::time::Duration;
 use tokio::sync::Mutex;
 
 #[derive(thiserror::Error, Debug)]
@@ -34,18 +33,6 @@ const BROWSER_SAFE_IMAGE_TYPES: [ImageFormat; 8] = [
     ImageFormat::Ico,
     ImageFormat::Avif,
 ];
-
-static CLIENT: OnceCell<reqwest::Client> = OnceCell::new();
-
-fn client() -> Result<reqwest::Client, reqwest::Error> {
-    CLIENT
-        .get_or_try_init(|| {
-            reqwest::Client::builder()
-                .timeout(Duration::from_secs(5))
-                .build()
-        })
-        .cloned()
-}
 
 static MTX_GUARD: Mutex<()> = Mutex::const_new(());
 
@@ -78,7 +65,7 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
 
     tracing::info!("retrieving image size from {}", url);
 
-    let image_bytes = client()?.get(url).send().await?.bytes().await?;
+    let image_bytes = http_client()?.get(url).send().await?.bytes().await?;
     let reader = Reader::new(Cursor::new(&image_bytes)).with_guessed_format()?;
 
     let format = reader.format();
