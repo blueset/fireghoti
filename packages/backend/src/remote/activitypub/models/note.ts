@@ -493,11 +493,16 @@ export async function extractEmojis(
 					tag.icon!.url !== exists.originalUrl ||
 					!(exists.width && exists.height)
 				) {
-					let size: ImageSize = { width: 0, height: 0 };
-					try {
-						size = await getImageSizeFromUrl(tag.icon!.url);
-					} catch {
-						/* skip if any error happens */
+					let size: ImageSize | null = null;
+					if (tag.icon?.url != null) {
+						try {
+							size = await getImageSizeFromUrl(tag.icon.url);
+						} catch (err) {
+							apLogger.info(
+								`Failed to determine the size of the image: ${tag.icon.url}`,
+							);
+							apLogger.debug(inspect(err));
+						}
 					}
 					await Emojis.update(
 						{
@@ -509,8 +514,8 @@ export async function extractEmojis(
 							originalUrl: tag.icon!.url,
 							publicUrl: tag.icon!.url,
 							updatedAt: new Date(),
-							width: size.width || null,
-							height: size.height || null,
+							width: size?.width || null,
+							height: size?.height || null,
 						},
 					);
 
