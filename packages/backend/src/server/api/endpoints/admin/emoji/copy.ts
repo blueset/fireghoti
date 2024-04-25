@@ -6,7 +6,7 @@ import type { DriveFile } from "@/models/entities/drive-file.js";
 import { uploadFromUrl } from "@/services/drive/upload-from-url.js";
 import { publishBroadcastStream } from "@/services/stream.js";
 import { db } from "@/db/postgre.js";
-import { apiLogger } from "@/server/api/logger";
+import { apiLogger } from "@/server/api/logger.js";
 import { inspect } from "node:util";
 
 export const meta = {
