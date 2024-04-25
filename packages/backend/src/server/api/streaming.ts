@@ -7,6 +7,7 @@ import { subscriber as redisClient } from "@/db/redis.js";
 import { Users } from "@/models/index.js";
 import MainStreamConnection from "./stream/index.js";
 import authenticate from "./authenticate.js";
+import { apiLogger } from "@/server/api/logger.js";
 
 export const initializeStreamingServer = (server: http.Server) => {
 	// Init websocket server
@@ -48,7 +49,7 @@ export const initializeStreamingServer = (server: http.Server) => {
 		redisClient.on("message", onRedisMessage);
 		const host = `https://${request.host}`;
 		const prepareStream = q.stream?.toString();
-		console.log("start", q);
+		apiLogger.trace("initialized streaming", q);
 
 		const main = new MainStreamConnection(
 			connection,
