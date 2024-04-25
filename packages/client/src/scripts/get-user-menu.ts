@@ -256,6 +256,27 @@ export function getUserMenu(user, router: Router = mainRouter) {
 			},
 		},
 		{
+			icon: `${icon("ph-share")}`,
+			text: i18n.ts.share,
+			type: "parent",
+			children: [
+				{
+					icon: "ph-qr-code ph-bold ph-lg",
+					text: i18n.ts.getQrCode,
+					action: () => {
+						os.displayQrCode(`https://${host}/follow-me?acct=${user.username}`);
+					},
+				},
+				{
+					icon: `${icon("ph-hand-waving")}`,
+					text: i18n.ts.copyRemoteFollowUrl,
+					action: () => {
+						copyToClipboard(`https://${host}/follow-me?acct=${user.username}`);
+					},
+				},
+			],
+		},
+		{
 			icon: `${icon("ph-newspaper")}`,
 			text: i18n.ts._feeds.copyFeed,
 			type: "parent",
@@ -281,13 +302,6 @@ export function getUserMenu(user, router: Router = mainRouter) {
 						copyToClipboard(`https://${host}/@${user.username}.json`);
 					},
 				},
-				{
-					icon: `${icon("ph-hand-waving")}`,
-					text: i18n.ts.remoteFollowUrl,
-					action: () => {
-						copyToClipboard(`https://${host}/follow-me?acct=${user.username}`);
-					},
-				},
 			],
 		},
 		{
@@ -306,13 +320,6 @@ export function getUserMenu(user, router: Router = mainRouter) {
 					},
 				}
 			: undefined,
-		{
-			icon: "ph-qr-code ph-bold ph-lg",
-			text: i18n.ts.getQrCode,
-			action: () => {
-				os.displayQrCode(`https://${host}/follow-me?acct=${user.username}`);
-			},
-		},
 		isSignedIn(me) && me.id !== user.id
 			? {
 					type: "link",
