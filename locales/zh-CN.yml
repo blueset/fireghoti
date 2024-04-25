@@ -1974,6 +1974,7 @@ origin: 起源
 confirm: 确认
 importZip: 导入 ZIP
 exportZip: 导出 ZIP
+getQrCode: "获取二维码"
 emojiPackCreator: 表情包创建工具
 objectStorageS3ForcePathStyleDesc: 打开此选项可构建格式为 "s3.amazonaws.com/<bucket>/" 而非 "<bucket>.s3.amazonaws.com"
   的端点 URL。
