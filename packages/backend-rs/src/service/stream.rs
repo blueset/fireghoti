@@ -59,7 +59,7 @@ pub fn publish_to_stream(
 ) -> Result<(), Error> {
     let message = if let Some(kind) = kind {
         format!(
-            "{{ \"type\": \"{}\", \"body\": {} }}",
+            "{{\"type\":\"{}\",\"body\":{}}}",
             kind,
             value.unwrap_or("null".to_string()),
         )
@@ -69,10 +69,7 @@ pub fn publish_to_stream(
 
     redis_conn()?.publish(
         &CONFIG.host,
-        format!(
-            "{{ \"channel\": \"{}\", \"message\": {} }}",
-            stream, message,
-        ),
+        format!("{{\"channel\":\"{}\",\"message\":{}}}", stream, message),
     )?;
 
     Ok(())
