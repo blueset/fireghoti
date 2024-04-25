@@ -60,7 +60,7 @@
 				</div>
 				<footer ref="footerEl" class="footer" tabindex="-1">
 					<XReactionsViewer
-						v-if="enableEmojiReactions"
+						v-if="enableEmojiReactions && !hideEmojiViewer"
 						ref="reactionsViewer"
 						:note="appearNote"
 					/>
@@ -84,12 +84,7 @@
 						v-if="!enableEmojiReactions"
 						class="button"
 						:note="appearNote"
-						:count="
-							Object.values(appearNote.reactions).reduce(
-								(partialSum, val) => partialSum + val,
-								0,
-							)
-						"
+						:count="reactionCount"
 						:reacted="appearNote.myReaction != null"
 					/>
 					<XStarButton
@@ -112,6 +107,7 @@
 						@click.stop="react()"
 					>
 						<i :class="icon('ph-smiley')"></i>
+						<p class="count" v-if="reactionCount > 0 && hideEmojiViewer">{{reactionCount}}</p>
 					</button>
 					<button
 						v-if="
@@ -124,6 +120,7 @@
 						@click.stop="undoReact(appearNote)"
 					>
 						<i :class="icon('ph-minus')"></i>
+						<p class="count" v-if="reactionCount > 0 && hideEmojiViewer">{{reactionCount}}</p>
 					</button>
 					<XQuoteButton class="button" :note="appearNote" />
 					<button
@@ -250,6 +247,7 @@ const props = withDefaults(
 		// the actual reply level of this note within the conversation thread
 		replyLevel?: number;
 		autoAddReplies?: boolean;
+		hideEmojiViewer?: boolean;
 	}>(),
 	{
 		depth: 1,
@@ -338,6 +336,11 @@ const expandOnNoteClick = defaultStore.state.expandOnNoteClick;
 const lang = localStorage.getItem("lang");
 const translateLang = localStorage.getItem("translateLang");
 const targetLang = (translateLang || lang || navigator.language)?.slice(0, 2);
+
+const reactionCount = computed(() => Object.values(appearNote.value.reactions).reduce(
+								(partialSum, val) => partialSum + val,
+								0,
+							))
 
 const isForeignLanguage: boolean =
 	defaultStore.state.detectPostLanguage &&

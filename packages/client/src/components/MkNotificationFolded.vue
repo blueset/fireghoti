@@ -54,31 +54,18 @@
 				class="time"
 			/>
 		</div>
-		<!-- <MkA
-				v-if="notification.type === 'reaction'"
-				class="text"
-				:to="notePage(notification.note)"
-				:title="getNoteSummary(notification.note)"
-			>
-				<Mfm
-					:text="getNoteSummary(notification.note)"
-					:plain="true"
-					:nowrap="!full"
-					:lang="notification.note.lang"
-					:custom-emojis="notification.note.emojis"
-				/>
-			</MkA> -->
-		<XNote
+		<!-- Since the reacted user list is actually shown above, the emoji-viewer is hidden to prevent visual noise -->
+		<XNoteSub
 			v-if="notification.type === 'renote'"
 			class="content"
-			:note="notification.note.renote"
-			:hide-footer="true"
+			:note="removeReplyTo(notification.note.renote)"
+			:hide-emoji-viewer="true"
 		/>
-		<XNote
+		<XNoteSub
 			v-else
 			class="content"
-			:note="notification.note"
-			:hide-footer="true"
+			:note="removeReplyTo(notification.note)"
+			:hide-emoji-viewer="true"
 		/>
 	</div>
 </template>
@@ -100,7 +87,8 @@ import type {
 	NotificationFolded,
 	ReactionNotificationFolded,
 } from "@/types/notification";
-import XNote from "@/components/MkNote.vue";
+import XNoteSub from "@/components/MkNoteSub.vue";
+import type { entities } from "firefish-js";
 
 const props = withDefaults(
 	defineProps<{
@@ -149,6 +137,16 @@ function getText() {
 		});
 	}
 	return res;
+}
+
+/**
+ * Delete reply-related properties that are not needed for notifications
+ */
+function removeReplyTo(note: entities.Note): entities.Note {
+	return Object.assign(note, {
+		replyId: null,
+		reply: undefined,
+	});
 }
 
 useTooltip(reactionRef, (showing) => {
