@@ -11,11 +11,11 @@ import {
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { Note } from "@/models/entities/note.js";
 import type { Channel } from "@/models/entities/channel.js";
-import { MAX_NOTE_TEXT_LENGTH } from "@/const.js";
+import { config } from "@/config.js";
 import { noteVisibilities } from "@/types.js";
 import { ApiError } from "@/server/api/error.js";
 import define from "@/server/api/define.js";
-import { HOUR } from "@/const.js";
+import { HOUR } from "backend-rs";
 import { getNote } from "@/server/api/common/getters.js";
 import { langmap } from "@/misc/langmap.js";
 
@@ -108,13 +108,13 @@ export const paramDef = {
 				format: "misskey:id",
 			},
 		},
-		text: { type: "string", maxLength: MAX_NOTE_TEXT_LENGTH, nullable: true },
+		text: { type: "string", maxLength: config.maxNoteLength, nullable: true },
 		lang: {
 			type: "string",
 			enum: Object.keys(langmap),
 			nullable: true,
 		},
-		cw: { type: "string", nullable: true, maxLength: MAX_NOTE_TEXT_LENGTH },
+		cw: { type: "string", nullable: true, maxLength: config.maxNoteLength },
 		localOnly: { type: "boolean", default: false },
 		noExtractMentions: { type: "boolean", default: false },
 		noExtractHashtags: { type: "boolean", default: false },
@@ -164,7 +164,7 @@ export const paramDef = {
 				text: {
 					type: "string",
 					minLength: 1,
-					maxLength: MAX_NOTE_TEXT_LENGTH,
+					maxLength: config.maxNoteLength,
 					nullable: false,
 				},
 			},

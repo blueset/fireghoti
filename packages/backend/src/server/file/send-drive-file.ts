@@ -15,7 +15,7 @@ import { convertToWebp } from "@/services/drive/image-processor.js";
 import { GenerateVideoThumbnail } from "@/services/drive/generate-video-thumbnail.js";
 import { StatusError } from "@/misc/fetch.js";
 import { ByteRangeReadable } from "./byte-range-readable.js";
-import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
+import { FILE_TYPE_BROWSERSAFE } from "backend-rs";
 import { inspect } from "node:util";
 
 const _filename = fileURLToPath(import.meta.url);

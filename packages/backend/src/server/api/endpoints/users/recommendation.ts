@@ -5,7 +5,7 @@ import {
 	generateBlockedUserQuery,
 	generateBlockQueryForUsers,
 } from "@/server/api/common/generate-block-query.js";
-import { DAY } from "@/const.js";
+import { DAY } from "backend-rs";
 
 export const meta = {
 	tags: ["users"],

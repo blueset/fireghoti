@@ -1,7 +1,7 @@
 import probeImageSize from "probe-image-size";
 import { Mutex } from "redis-semaphore";
 
-import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
+import { FILE_TYPE_BROWSERSAFE } from "backend-rs";
 import Logger from "@/services/logger.js";
 import { Cache } from "./cache.js";
 import { redisClient } from "@/db/redis.js";

@@ -9,7 +9,7 @@ import type {
 } from "@/models/entities/drive-file.js";
 import { DriveFiles } from "@/models/index.js";
 import { truncate } from "@/misc/truncate.js";
-import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
+import { config } from "@/config.js";
 
 /**
  * create an Image.
@@ -44,7 +44,7 @@ export async function createImage(
 		uri: image.url,
 		sensitive: image.sensitive,
 		isLink: !instance.cacheRemoteFiles,
-		comment: truncate(image.name, DB_MAX_IMAGE_COMMENT_LENGTH),
+		comment: truncate(image.name, config.maxCaptionLength),
 		usageHint: usage,
 	});
 

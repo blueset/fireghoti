@@ -1,7 +1,7 @@
 import { Emojis } from "@/models/index.js";
 import type { Emoji } from "@/models/entities/emoji.js";
 import { IsNull, In } from "typeorm";
-import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
+import { FILE_TYPE_BROWSERSAFE } from "backend-rs";
 import define from "@/server/api/define.js";
 
 export const meta = {

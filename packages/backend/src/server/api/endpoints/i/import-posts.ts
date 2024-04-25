@@ -2,7 +2,7 @@ import define from "@/server/api/define.js";
 import { createImportPostsJob } from "@/queue/index.js";
 import { ApiError } from "@/server/api/error.js";
 import { DriveFiles } from "@/models/index.js";
-import { DAY } from "@/const.js";
+import { DAY } from "backend-rs";
 import { fetchMeta } from "backend-rs";
 
 export const meta = {

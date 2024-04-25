@@ -6,7 +6,7 @@ import type S3 from "aws-sdk/clients/s3.js"; // TODO: migrate to SDK v3
 import sharp from "sharp";
 import { IsNull } from "typeorm";
 import { publishMainStream, publishDriveStream } from "@/services/stream.js";
-import { fetchMeta } from "backend-rs";
+import { FILE_TYPE_BROWSERSAFE, fetchMeta, genId } from "backend-rs";
 import { contentDisposition } from "@/misc/content-disposition.js";
 import { getFileInfo } from "@/misc/get-file-info.js";
 import {
@@ -18,9 +18,7 @@ import {
 import { DriveFile } from "@/models/entities/drive-file.js";
 import type { DriveFileUsageHint } from "@/models/entities/drive-file.js";
 import type { IRemoteUser, User } from "@/models/entities/user.js";
-import { genId } from "backend-rs";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
-import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
 import { getS3 } from "./s3.js";
 import { InternalStorage } from "./internal-storage.js";

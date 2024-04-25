@@ -44,7 +44,7 @@ import { publishNoteStream } from "@/services/stream.js";
 import { extractHashtags } from "@/misc/extract-hashtags.js";
 import { UserProfiles } from "@/models/index.js";
 import { In } from "typeorm";
-import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
+import { config } from "@/config.js";
 import { truncate } from "@/misc/truncate.js";
 import { type Size, getEmojiSize } from "@/misc/emoji-meta.js";
 import { langmap } from "@/misc/langmap.js";
@@ -622,7 +622,7 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 						const file = await resolveImage(actor, x, null);
 						const update: Partial<DriveFile> = {};
 
-						const altText = truncate(x.name, DB_MAX_IMAGE_COMMENT_LENGTH);
+						const altText = truncate(x.name, config.maxCaptionLength);
 						if (file.comment !== altText) {
 							update.comment = altText;
 						}

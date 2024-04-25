@@ -3,9 +3,8 @@ import { IsNull } from "typeorm";
 import { config } from "@/config.js";
 import { Users, UserProfiles, PasswordResetRequests } from "@/models/index.js";
 import { sendEmail } from "@/services/send-email.js";
-import { genId } from "backend-rs";
+import { HOUR, genId } from "backend-rs";
 import define from "@/server/api/define.js";
-import { HOUR } from "@/const.js";
 
 export const meta = {
 	tags: ["reset password"],

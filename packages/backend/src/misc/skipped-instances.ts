@@ -2,7 +2,7 @@ import { Brackets } from "typeorm";
 import { isBlockedServer } from "backend-rs";
 import { Instances } from "@/models/index.js";
 import type { Instance } from "@/models/entities/instance.js";
-import { DAY } from "@/const.js";
+import { DAY } from "backend-rs";
 
 // Threshold from last contact after which an instance will be considered
 // "dead" and should no longer get activities delivered to it.
