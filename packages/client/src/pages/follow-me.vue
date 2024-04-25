@@ -57,7 +57,8 @@ if (!remoteAccountId.result) {
 			.then((response) => response.json())
 			.then((data) => {
 				const subscribeUri = data.links.find(
-					(link: { rel: string; }) => link.rel === "http://ostatus.org/schema/1.0/subscribe",
+					(link: { rel: string }) =>
+						link.rel === "http://ostatus.org/schema/1.0/subscribe",
 				).template;
 				window.location.href = subscribeUri.replace(
 					"{uri}",
