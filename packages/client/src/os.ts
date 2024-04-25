@@ -7,6 +7,7 @@ import type { Component, MaybeRef, Ref } from "vue";
 import { defineAsyncComponent, markRaw, ref } from "vue";
 import { i18n } from "./i18n";
 import MkDialog from "@/components/MkDialog.vue";
+import MkQrCode from "@/components/MkQrCode.vue";
 import MkPostFormDialog from "@/components/MkPostFormDialog.vue";
 import MkToast from "@/components/MkToast.vue";
 import MkWaitingDialog from "@/components/MkWaitingDialog.vue";
@@ -1001,6 +1002,25 @@ export function post(
 			dispose = res.dispose;
 		});
 	});
+}
+
+export async function displayQrCode(qrCode: string) {
+	(
+		await new Promise<(() => void) | undefined>((resolve) => {
+			let dispose: (() => void) | undefined;
+			popup(
+				MkQrCode,
+				{ qrCode },
+				{
+					closed: () => {
+						resolve(dispose);
+					},
+				},
+			).then((res) => {
+				dispose = res.dispose;
+			});
+		})
+	)?.();
 }
 
 export const deckGlobalEvents = new EventEmitter();
