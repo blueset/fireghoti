@@ -337,10 +337,12 @@ const lang = localStorage.getItem("lang");
 const translateLang = localStorage.getItem("translateLang");
 const targetLang = (translateLang || lang || navigator.language)?.slice(0, 2);
 
-const reactionCount = computed(() => Object.values(appearNote.value.reactions).reduce(
-								(partialSum, val) => partialSum + val,
-								0,
-							))
+const reactionCount = computed(() =>
+	Object.values(appearNote.value.reactions).reduce(
+		(partialSum, val) => partialSum + val,
+		0,
+	),
+);
 
 const isForeignLanguage: boolean =
 	defaultStore.state.detectPostLanguage &&
