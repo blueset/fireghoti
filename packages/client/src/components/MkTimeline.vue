@@ -338,7 +338,7 @@ defineExpose({
 		content: "";
 		position: absolute;
 		inset: -2px 0;
-		border: 2px solid var(--accentDarken);
+		border-bottom: 2px solid var(--accentDarken);
 		mask: linear-gradient(
 			to right,
 			transparent,
