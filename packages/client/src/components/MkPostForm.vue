@@ -801,13 +801,17 @@ function setLanguage() {
 		actions.push(null);
 	}
 
-	if (language.value != null)
+	if (language.value != null && langmap[language.value] != null) {
 		actions.push({
 			text: langmap[language.value].nativeName,
 			danger: false,
 			active: true,
 			action: () => {},
 		});
+	} else {
+		// Unrecognized language, set to null
+		language.value = null;
+	}
 
 	const langs = Object.keys(langmap);
 
