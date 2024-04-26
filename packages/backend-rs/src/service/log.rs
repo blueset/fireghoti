@@ -13,7 +13,7 @@ pub fn initialize_logger() {
             "info" => Level::INFO,
             "debug" => Level::DEBUG,
             "trace" => Level::TRACE,
-            _ => Level::INFO,
+            _ => Level::INFO, // Fallback
         });
     } else if let Some(levels) = &CONFIG.log_level {
         // `logLevel` config is Deprecated
@@ -27,13 +27,25 @@ pub fn initialize_logger() {
             builder = builder.with_max_level(Level::WARN);
         } else if levels.contains(&"error".to_string()) {
             builder = builder.with_max_level(Level::ERROR);
+        } else {
+            // Fallback
+            builder = builder.with_max_level(Level::INFO);
         }
     } else {
         // Fallback
         builder = builder.with_max_level(Level::INFO);
     };
 
-    let subscriber = builder.with_level(true).pretty().finish();
+    let subscriber = builder
+        .without_time()
+        .with_level(true)
+        .with_ansi(true)
+        .with_target(true)
+        .with_thread_names(true)
+        .with_line_number(true)
+        .log_internal_errors(true)
+        .compact()
+        .finish();
 
     tracing::subscriber::set_global_default(subscriber).expect("Failed to initialize the logger");
 }
