@@ -34,6 +34,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm install -
 
 # Copy in the rest of the rust files
 COPY packages/backend-rs packages/backend-rs/
+# COPY packages/macro-rs packages/macro-rs/
 
 # Compile backend-rs
 RUN NODE_ENV='production' pnpm run --filter backend-rs build
