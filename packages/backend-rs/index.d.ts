@@ -1017,10 +1017,10 @@ export interface User {
   isDeleted: boolean
   driveCapacityOverrideMb: number | null
   movedToUri: string | null
-  alsoKnownAs: string | null
   speakAsCat: boolean
   emojiModPerm: UserEmojimodpermEnum
   isIndexable: boolean
+  alsoKnownAs: Array<string> | null
 }
 export interface UserGroup {
   id: string
