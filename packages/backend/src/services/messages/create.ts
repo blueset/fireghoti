@@ -7,10 +7,16 @@ import {
 	Mutings,
 	Users,
 } from "@/models/index.js";
-import { genId, publishToChatStream, toPuny, ChatEvent } from "backend-rs";
+import {
+	genId,
+	publishToChatStream,
+	publishToChatIndexStream,
+	toPuny,
+	ChatEvent,
+	ChatIndexEvent,
+} from "backend-rs";
 import type { MessagingMessage } from "@/models/entities/messaging-message.js";
 import {
-	publishMessagingIndexStream,
 	publishMainStream,
 	publishGroupMessagingStream,
 } from "@/services/stream.js";
@@ -57,7 +63,11 @@ export async function createMessage(
 				ChatEvent.Message,
 				messageObj,
 			);
-			publishMessagingIndexStream(message.userId, "message", messageObj);
+			publishToChatIndexStream(
+				message.userId,
+				ChatIndexEvent.Message,
+				messageObj,
+			);
 			publishMainStream(message.userId, "messagingMessage", messageObj);
 		}
 
@@ -69,7 +79,11 @@ export async function createMessage(
 				ChatEvent.Message,
 				messageObj,
 			);
-			publishMessagingIndexStream(recipientUser.id, "message", messageObj);
+			publishToChatIndexStream(
+				recipientUser.id,
+				ChatIndexEvent.Message,
+				messageObj,
+			);
 			publishMainStream(recipientUser.id, "messagingMessage", messageObj);
 		}
 	} else if (recipientGroup) {
@@ -81,7 +95,11 @@ export async function createMessage(
 			userGroupId: recipientGroup.id,
 		});
 		for (const joining of joinings) {
-			publishMessagingIndexStream(joining.userId, "message", messageObj);
+			publishToChatIndexStream(
+				joining.userId,
+				ChatIndexEvent.Message,
+				messageObj,
+			);
 			publishMainStream(joining.userId, "messagingMessage", messageObj);
 		}
 	}

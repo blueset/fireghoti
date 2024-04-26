@@ -1157,6 +1157,11 @@ export enum ChatEvent {
   Typing = 'typing'
 }
 export function publishToChatStream(senderUserId: string, receiverUserId: string, kind: ChatEvent, object: any): void
+export enum ChatIndexEvent {
+  Message = 'message',
+  Read = 'read'
+}
+export function publishToChatIndexStream(userId: string, kind: ChatIndexEvent, object: any): void
 export interface AbuseUserReportLike {
   id: string
   targetUserId: string

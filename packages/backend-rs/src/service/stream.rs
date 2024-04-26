@@ -1,6 +1,7 @@
 pub mod antenna;
 pub mod channel;
 pub mod chat;
+pub mod chat_index;
 pub mod moderation;
 
 use crate::config::CONFIG;
@@ -39,7 +40,7 @@ pub enum Stream {
     #[strum(to_string = "messagingStream:{group_id}")]
     GroupChat { group_id: String },
     #[strum(to_string = "messagingIndexStream:{user_id}")]
-    MessagingIndex { user_id: String },
+    ChatIndex { user_id: String },
 }
 
 #[derive(thiserror::Error, Debug)]
