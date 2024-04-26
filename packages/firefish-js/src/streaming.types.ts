@@ -12,7 +12,7 @@ import type {
 	UserGroup,
 	UserLite,
 } from "./entities";
-import type { Connection } from "./streaming";
+import type { Connection } from "./streaming.js";
 
 type FIXME = any;
 

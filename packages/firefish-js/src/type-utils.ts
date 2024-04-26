@@ -1,4 +1,4 @@
-import type { Endpoints } from "./api.types";
+import type { Endpoints } from "./api.types.js";
 
 export type PropertyOfType<Type, U> = {
 	[K in keyof Type]: Type[K] extends U ? K : never;

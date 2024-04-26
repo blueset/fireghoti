@@ -4,12 +4,12 @@
 	"description": "Firefish SDK for JavaScript",
 	"homepage": "https://firefish.dev/firefish/firefish/-/tree/develop/packages/firefish-js",
 	"main": "./built/index.js",
+	"type": "module",
 	"types": "./src/index.ts",
 	"license": "MIT",
 	"scripts": {
-		"build": "pnpm swc src --out-dir built --source-maps false --copy-files --strip-leading-paths && pnpm run build:types",
-		"build:debug": "pnpm swc src --out-dir built --source-maps true --copy-files --strip-leading-paths && pnpm run build:types",
-		"build:types": "pnpm tsc --emitDeclarationOnly",
+		"build": "pnpm swc src --out-dir built --source-maps false --copy-files --strip-leading-paths",
+		"build:debug": "pnpm swc src --out-dir built --source-maps true --copy-files --strip-leading-paths",
 		"watch": "pnpm swc src --out-dir built --source-maps true --copy-files --strip-leading-paths --watch",
 		"lint": "pnpm biome check --apply src",
 		"format": "pnpm biome format --write src",
@@ -36,7 +36,7 @@
 		"typescript": "5.4.5"
 	},
 	"files": [
-		"built"
+		"built", "src"
 	],
 	"dependencies": {
 		"eventemitter3": "^5.0.1",

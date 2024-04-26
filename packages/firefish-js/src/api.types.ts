@@ -38,7 +38,7 @@ import type {
 	UserList,
 	UserLite,
 	UserSorting,
-} from "./entities";
+} from "./entities.js";
 
 import type * as consts from "./consts";
 

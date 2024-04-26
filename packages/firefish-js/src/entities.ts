@@ -1,5 +1,5 @@
-import type * as consts from "./consts";
-import type { Packed } from "./misc/schema";
+import type * as consts from "./consts.js";
+import type { Packed } from "./misc/schema.js";
 
 export type ID = string;
 export type DateString = string;

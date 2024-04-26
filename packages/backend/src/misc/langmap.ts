@@ -1,5 +1,4 @@
-import LangMap from "firefish-js/built/misc/langmap.js";
-
-export const langmap = LangMap.langmap;
+import { langmap as _langmap } from "firefish-js";
+export const langmap = _langmap;
 
 export type PostLanguage = keyof typeof langmap;
