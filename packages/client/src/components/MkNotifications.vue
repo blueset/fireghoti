@@ -1,5 +1,9 @@
 <template>
-	<MkPagination ref="pagingComponent" :pagination="pagination">
+	<MkPagination
+		ref="pagingComponent" 
+		:pagination="pagination"
+		:folder="convertNotification"
+	>
 		<template #empty>
 			<div class="_fullinfo">
 				<img
@@ -11,9 +15,9 @@
 			</div>
 		</template>
 
-		<template #default="{ items: notifications }">
+		<template #default="{ foldedItems: notifications }">
 			<XList
-				:items="convertNotification(notifications)"
+				:items="notifications"
 				v-slot="{ item: notification }"
 				class="elsfgstc"
 				:no-gap="true"
@@ -92,7 +96,7 @@ const pagination = Object.assign(
 	},
 	shouldFold
 		? {
-				limit: FETCH_LIMIT,
+				limit: 50,
 				secondFetchLimit: FETCH_LIMIT,
 			}
 		: {
@@ -134,11 +138,11 @@ const onNotification = (notification: entities.Notification) => {
 
 let connection: StreamTypes.ChannelOf<"main"> | undefined;
 
-function convertNotification(n: entities.Notification[]) {
+function convertNotification(ns: entities.Notification[]) {
 	if (shouldFold) {
-		return foldNotifications(n, FETCH_LIMIT);
+		return foldNotifications(ns);
 	} else {
-		return n;
+		return ns;
 	}
 }
 
