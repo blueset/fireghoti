@@ -9,6 +9,7 @@ import { createTemp } from "@/misc/create-temp.js";
 import { Users, UserLists, UserListJoinings } from "@/models/index.js";
 import { In } from "typeorm";
 import type { DbUserJobData } from "@/queue/types.js";
+import { inspect } from "node:util";
 
 const logger = queueLogger.createSubLogger("export-user-lists");
 
@@ -31,7 +32,7 @@ export async function exportUserLists(
 	// Create temp file
 	const [path, cleanup] = await createTemp();
 
-	logger.info(`Temp file is ${path}`);
+	logger.info(`temp file created: ${path}`);
 
 	try {
 		const stream = fs.createWriteStream(path, { flags: "a" });
@@ -46,9 +47,10 @@ export async function exportUserLists(
 				const acct = getFullApAccount(u.username, u.host);
 				const content = `${list.name},${acct}`;
 				await new Promise<void>((res, rej) => {
-					stream.write(content + "\n", (err) => {
+					stream.write(`${content}\n`, (err) => {
 						if (err) {
-							logger.error(err);
+							logger.warn(`failed to export ${list.id}`);
+							logger.info(inspect(err));
 							rej(err);
 						} else {
 							res();
@@ -59,7 +61,7 @@ export async function exportUserLists(
 		}
 
 		stream.end();
-		logger.succ(`Exported to: ${path}`);
+		logger.info(`Exported to: ${path}`);
 
 		const fileName = `user-lists-${dateFormat(
 			new Date(),
@@ -72,7 +74,7 @@ export async function exportUserLists(
 			force: true,
 		});
 
-		logger.succ(`Exported to: ${driveFile.id}`);
+		logger.info(`Exported to: ${driveFile.id}`);
 	} finally {
 		cleanup();
 	}

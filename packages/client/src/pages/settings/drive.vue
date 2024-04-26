@@ -64,7 +64,7 @@ const fetching = ref(true);
 const usage = ref<any>(null);
 const capacity = ref<any>(null);
 const uploadFolder = ref<any>(null);
-const alwaysMarkNsfw = ref<boolean>(isSignedIn && me.alwaysMarkNsfw);
+const alwaysMarkNsfw = ref<boolean>(isSignedIn(me) && me.alwaysMarkNsfw);
 
 const meterStyle = computed(() => {
 	return {

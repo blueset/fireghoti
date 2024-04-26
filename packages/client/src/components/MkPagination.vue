@@ -38,7 +38,7 @@
 				</MkButton>
 				<MkLoading v-else class="loading" />
 			</div>
-			<slot :items="items"></slot>
+			<slot :items="items" :foldedItems="foldedItems"></slot>
 			<div
 				v-show="!pagination.reversed && more"
 				key="_more_"
@@ -66,17 +66,20 @@
 	</transition>
 </template>
 
-<script lang="ts" setup generic="E extends PagingKey">
-import type { ComponentPublicInstance, ComputedRef } from "vue";
-import { computed, isRef, onActivated, onDeactivated, ref, watch } from "vue";
+<script lang="ts" setup generic="E extends PagingKey, Fold extends PagingAble">
+import type { ComponentPublicInstance, ComputedRef, Ref } from "vue";
+import {
+	computed,
+	isRef,
+	onActivated,
+	onDeactivated,
+	ref,
+	unref,
+	watch,
+} from "vue";
 import type { Endpoints, TypeUtils } from "firefish-js";
 import * as os from "@/os";
-import {
-	getScrollContainer,
-	getScrollPosition,
-	isTopVisible,
-	onScrollTop,
-} from "@/scripts/scroll";
+import { isTopVisible, onScrollTop } from "@/scripts/scroll";
 import MkButton from "@/components/MkButton.vue";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
@@ -97,9 +100,13 @@ export type MkPaginationType<
 	reload: () => Promise<void>;
 	refresh: () => Promise<void>;
 	prepend: (item: Item) => Promise<void>;
-	append: (item: Item) => Promise<void>;
+	append: (...item: Item[]) => Promise<void>;
 	removeItem: (finder: (item: Item) => boolean) => boolean;
 	updateItem: (id: string, replacer: (old: Item) => Item) => boolean;
+};
+
+export type PagingAble = {
+	id: string;
 };
 
 export type PagingKeyOf<T> = TypeUtils.EndpointsOf<T[]>;
@@ -109,6 +116,7 @@ export type PagingKey = PagingKeyOf<any>;
 export interface Paging<E extends PagingKey = PagingKey> {
 	endpoint: E;
 	limit: number;
+	secondFetchLimit?: number;
 	params?: Endpoints[E]["req"] | ComputedRef<Endpoints[E]["req"]>;
 
 	/**
@@ -122,18 +130,29 @@ export interface Paging<E extends PagingKey = PagingKey> {
 	 */
 	reversed?: boolean;
 
+	/**
+	 * For not-reversed, not-offsetMode,
+	 * Sort by id in ascending order
+	 */
+	ascending?: boolean;
+
 	offsetMode?: boolean;
 }
 
 export type PagingOf<T> = Paging<TypeUtils.EndpointsOf<T[]>>;
 
-const SECOND_FETCH_LIMIT = 30;
+type Item = Endpoints[E]["res"][number];
+type Param = Endpoints[E]["req"] | Record<string, never>;
+
+const SECOND_FETCH_LIMIT_DEFAULT = 30;
+const FIRST_FETCH_LIMIT_DEFAULT = 10;
 
 const props = withDefaults(
 	defineProps<{
 		pagination: Paging<E>;
 		disableAutoLoad?: boolean;
 		displayLimit?: number;
+		folder?: (i: Item[]) => Fold[];
 	}>(),
 	{
 		displayLimit: 30,
@@ -141,7 +160,7 @@ const props = withDefaults(
 );
 
 const slots = defineSlots<{
-	default(props: { items: Item[] }): unknown;
+	default(props: { items: Item[]; foldedItems: Fold[] }): unknown;
 	empty(props: Record<string, never>): never;
 }>();
 
@@ -150,13 +169,59 @@ const emit = defineEmits<{
 	(ev: "status", hasError: boolean): void;
 }>();
 
-type Param = Endpoints[E]["req"] | Record<string, never>;
-type Item = Endpoints[E]["res"][number];
-
 const rootEl = ref<HTMLElement>();
 const items = ref<Item[]>([]);
+const foldedItems = ref([]) as Ref<Fold[]>;
+
+// To improve performance, we do not use vue’s `computed` here
+function calculateItems() {
+	function getItems<T>(folder: (ns: Item[]) => T[]) {
+		const res = [
+			folder(prepended.value.toReversed()),
+			...arrItems.value.map((arr) => folder(arr)),
+			folder(appended.value),
+		].flat(1);
+		if (props.pagination.reversed) {
+			res.reverse();
+		}
+		return res;
+	}
+	items.value = getItems((x) => x);
+	if (props.folder) foldedItems.value = getItems(props.folder);
+}
+
 const queue = ref<Item[]>([]);
+
+/**
+ * The cached elements inserted front by `prepend` function
+ */
+const prepended = ref<Item[]>([]);
+/**
+ * The array of "frozen" items
+ */
+const arrItems = ref<Item[][]>([]);
+/**
+ * The cached elements inserted back by `append` function
+ */
+const appended = ref<Item[]>([]);
+
+const idMap = new Map<string, boolean>();
+
 const offset = ref(0);
+
+type PagingByParam =
+	| {
+			offset: number;
+	  }
+	| {
+			sinceId: string;
+	  }
+	| {
+			untilId: string;
+	  }
+	| Record<string, never>;
+let nextPagingBy: PagingByParam = {};
+
 const fetching = ref(true);
 const moreFetching = ref(false);
 const more = ref(false);
@@ -169,88 +234,34 @@ const init = async (): Promise<void> => {
 	queue.value = [];
 	fetching.value = true;
 
-	const params = props.pagination.params
-		? isRef<Param>(props.pagination.params)
-			? props.pagination.params.value
-			: props.pagination.params
-		: {};
-	await os
-		.api(props.pagination.endpoint, {
-			...params,
-			limit: props.pagination.noPaging
-				? props.pagination.limit || 10
-				: (props.pagination.limit || 10) + 1,
-		})
-		.then(
-			(res: Item[]) => {
-				for (let i = 0; i < res.length; i++) {
-					const item = res[i];
-					if (props.pagination.reversed) {
-						if (i === res.length - 2) item._shouldInsertAd_ = true;
-					} else {
-						if (i === 3) item._shouldInsertAd_ = true;
-					}
-				}
-				if (
-					!props.pagination.noPaging &&
-					res.length > (props.pagination.limit || 10)
-				) {
-					res.pop();
-					items.value = props.pagination.reversed ? [...res].reverse() : res;
-					more.value = true;
-				} else {
-					items.value = props.pagination.reversed ? [...res].reverse() : res;
-					more.value = false;
-				}
-				offset.value = res.length;
-				error.value = false;
-				fetching.value = false;
-			},
-			(_err) => {
-				error.value = true;
-				fetching.value = false;
-			},
-		);
+	await fetch(true);
 };
 
 const reload = (): Promise<void> => {
-	items.value = [];
+	arrItems.value = [];
+	appended.value = [];
+	prepended.value = [];
+	idMap.clear();
 	return init();
 };
 
 const refresh = async (): Promise<void> => {
-	const params = props.pagination.params
-		? isRef<Param>(props.pagination.params)
-			? props.pagination.params.value
-			: props.pagination.params
-		: {};
+	const params = props.pagination.params ? unref(props.pagination.params) : {};
 	await os
 		.api(props.pagination.endpoint, {
 			...params,
-			limit: items.value.length + 1,
+			limit: (items.value.length || foldedItems.value.length) + 1,
 			offset: 0,
 		})
 		.then(
 			(res: Item[]) => {
-				const ids = items.value.reduce(
-					(a, b) => {
-						a[b.id] = true;
-						return a;
-					},
-					{} as Record<string, boolean>,
-				);
+				appended.value = [];
+				prepended.value = [];
 
-				for (let i = 0; i < res.length; i++) {
-					const item = res[i];
-					if (!updateItem(item.id, (_old) => item)) {
-						append(item);
-					}
-					delete ids[item.id];
-				}
+				// appended should be inserted into arrItems to fix the element position
+				arrItems.value = [res];
 
-				for (const id in ids) {
-					removeItem((i) => i.id === id);
-				}
+				calculateItems();
 			},
 			(_err) => {
 				error.value = true;
@@ -259,151 +270,145 @@ const refresh = async (): Promise<void> => {
 		);
 };
 
-const fetchMore = async (): Promise<void> => {
-	if (
-		!more.value ||
-		fetching.value ||
-		moreFetching.value ||
-		items.value.length === 0
-	)
-		return;
-	moreFetching.value = true;
-	backed.value = true;
-	const params = props.pagination.params
-		? isRef<Param>(props.pagination.params)
-			? props.pagination.params.value
-			: props.pagination.params
-		: {};
+async function fetch(firstFetching?: boolean) {
+	let limit: number;
+
+	if (firstFetching) {
+		limit = props.pagination.noPaging
+			? props.pagination.limit || FIRST_FETCH_LIMIT_DEFAULT
+			: (props.pagination.limit || FIRST_FETCH_LIMIT_DEFAULT) + 1;
+
+		if (props.pagination.ascending) {
+			nextPagingBy = {
+				// An initial value smaller than all possible ids must be filled in here.
+				sinceId: "0",
+			};
+		}
+	} else {
+		if (
+			!more.value ||
+			fetching.value ||
+			moreFetching.value ||
+			items.value.length === 0
+		)
+			return;
+		moreFetching.value = true;
+		backed.value = true;
+
+		limit =
+			(props.pagination.secondFetchLimit ?? SECOND_FETCH_LIMIT_DEFAULT) + 1;
+	}
+
+	const params = props.pagination.params ? unref(props.pagination.params) : {};
+
 	await os
 		.api(props.pagination.endpoint, {
 			...params,
-			limit: SECOND_FETCH_LIMIT + 1,
-			...(props.pagination.offsetMode
-				? {
-						offset: offset.value,
-					}
-				: props.pagination.reversed
-					? {
-							sinceId: items.value[0].id,
-						}
-					: {
-							untilId: items.value[items.value.length - 1].id,
-						}),
+			limit,
+			...nextPagingBy,
 		})
 		.then(
 			(res: Item[]) => {
-				for (let i = 0; i < res.length; i++) {
-					const item = res[i];
-					if (props.pagination.reversed) {
-						if (i === res.length - 9) item._shouldInsertAd_ = true;
-					} else {
-						if (i === 10) item._shouldInsertAd_ = true;
+				if (!props.pagination.reversed)
+					for (let i = 0; i < res.length; i++) {
+						const item = res[i];
+						if (props.pagination.reversed) {
+							if (i === res.length - (firstFetching ? 2 : 9))
+								item._shouldInsertAd_ = true;
+						} else {
+							if (i === (firstFetching ? 3 : 10)) item._shouldInsertAd_ = true;
+						}
 					}
-				}
-				if (res.length > SECOND_FETCH_LIMIT) {
+				if (!props.pagination.noPaging && res.length > limit - 1) {
 					res.pop();
-					items.value = props.pagination.reversed
-						? [...res].reverse().concat(items.value)
-						: items.value.concat(res);
 					more.value = true;
 				} else {
-					items.value = props.pagination.reversed
-						? [...res].reverse().concat(items.value)
-						: items.value.concat(res);
 					more.value = false;
 				}
+
 				offset.value += res.length;
+				error.value = false;
+				fetching.value = false;
 				moreFetching.value = false;
+
+				const lastRes = res[res.length - 1];
+
+				if (props.pagination.offsetMode) {
+					nextPagingBy = {
+						offset: offset.value,
+					};
+				} else if (props.pagination.ascending) {
+					nextPagingBy = {
+						sinceId: lastRes?.id,
+					};
+				} else {
+					nextPagingBy = {
+						untilId: lastRes?.id,
+					};
+				}
+
+				if (firstFetching && props.folder != null) {
+					// In this way, prepended has some initial values for folding
+					prepended.value = res.toReversed();
+				} else {
+					// For ascending and offset modes, append and prepend may cause item duplication
+					// so they need to be filtered out.
+					if (props.pagination.offsetMode || props.pagination.ascending) {
+						for (const item of appended.value) {
+							idMap.set(item.id, true);
+						}
+
+						// biome-ignore lint/style/noParameterAssign: assign it intentially
+						res = res.filter((item) => {
+							if (idMap.has(item)) return false;
+							idMap.set(item, true);
+							return true;
+						});
+					}
+
+					// appended should be inserted into arrItems to fix the element position
+					arrItems.value.push(appended.value);
+					arrItems.value.push(res);
+					appended.value = [];
+				}
+
+				calculateItems();
 			},
 			(_err) => {
+				error.value = true;
+				fetching.value = false;
 				moreFetching.value = false;
 			},
 		);
+}
+
+const fetchMore = async (): Promise<void> => {
+	await fetch();
 };
 
 const fetchMoreAhead = async (): Promise<void> => {
-	if (
-		!more.value ||
-		fetching.value ||
-		moreFetching.value ||
-		items.value.length === 0
-	)
-		return;
-	moreFetching.value = true;
-	const params = props.pagination.params
-		? isRef<Param>(props.pagination.params)
-			? props.pagination.params.value
-			: props.pagination.params
-		: {};
-	await os
-		.api(props.pagination.endpoint, {
-			...params,
-			limit: SECOND_FETCH_LIMIT + 1,
-			...(props.pagination.offsetMode
-				? {
-						offset: offset.value,
-					}
-				: props.pagination.reversed
-					? {
-							untilId: items.value[0].id,
-						}
-					: {
-							sinceId: items.value[items.value.length - 1].id,
-						}),
-		})
-		.then(
-			(res: Item[]) => {
-				if (res.length > SECOND_FETCH_LIMIT) {
-					res.pop();
-					items.value = props.pagination.reversed
-						? [...res].reverse().concat(items.value)
-						: items.value.concat(res);
-					more.value = true;
-				} else {
-					items.value = props.pagination.reversed
-						? [...res].reverse().concat(items.value)
-						: items.value.concat(res);
-					more.value = false;
-				}
-				offset.value += res.length;
-				moreFetching.value = false;
-			},
-			(_err) => {
-				moreFetching.value = false;
-			},
-		);
+	await fetch();
 };
 
-const prepend = (item: Item): void => {
+const prepend = (...item: Item[]): void => {
+	// If there are too many prepended, merge them into arrItems
+	if (
+		prepended.value.length >
+		(props.pagination.secondFetchLimit || SECOND_FETCH_LIMIT_DEFAULT)
+	) {
+		arrItems.value.unshift(prepended.value.toReversed());
+		prepended.value = [];
+		// We don't need to calculate here because it won't cause any changes in items
+	}
+
 	if (props.pagination.reversed) {
-		if (rootEl.value) {
-			const container = getScrollContainer(rootEl.value);
-			if (container == null) {
-				// TODO?
-			} else {
-				const pos = getScrollPosition(rootEl.value);
-				const viewHeight = container.clientHeight;
-				const height = container.scrollHeight;
-				const isBottom = pos + viewHeight > height - 32;
-				if (isBottom) {
-					// オーバーフローしたら古いアイテムは捨てる
-					if (items.value.length >= props.displayLimit) {
-						// このやり方だとVue 3.2以降アニメーションが動かなくなる
-						// items.value = items.value.slice(-props.displayLimit);
-						while (items.value.length >= props.displayLimit) {
-							items.value.shift();
-						}
-						more.value = true;
-					}
-				}
-			}
-		}
-		items.value.push(item);
-		// TODO
+		prepended.value.push(...item);
+		calculateItems();
 	} else {
-		// 初回表示時はunshiftだけでOK
+		// When displaying for the first time, just do this is OK
 		if (!rootEl.value) {
-			items.value.unshift(item);
+			prepended.value.push(...item);
+			calculateItems();
 			return;
 		}
 
@@ -412,52 +417,63 @@ const prepend = (item: Item): void => {
 			(document.body.contains(rootEl.value) && isTopVisible(rootEl.value));
 
 		if (isTop) {
-			// Prepend the item
-			items.value.unshift(item);
-
-			// オーバーフローしたら古いアイテムは捨てる
-			if (items.value.length >= props.displayLimit) {
-				// このやり方だとVue 3.2以降アニメーションが動かなくなる
-				// this.items = items.value.slice(0, props.displayLimit);
-				while (items.value.length >= props.displayLimit) {
-					items.value.pop();
-				}
-				more.value = true;
-			}
+			prepended.value.push(...item);
+			calculateItems();
 		} else {
-			queue.value.push(item);
+			queue.value.push(...item);
 			onScrollTop(rootEl.value, () => {
-				for (const queueItem of queue.value) {
-					prepend(queueItem);
-				}
+				prepend(...queue.value);
 				queue.value = [];
 			});
 		}
 	}
 };
 
-const append = (item: Item): void => {
-	items.value.push(item);
+const append = (...items: Item[]): void => {
+	appended.value.push(...items);
+	calculateItems();
+};
+
+const _removeItem = (arr: Item[], finder: (item: Item) => boolean): boolean => {
+	const i = arr.findIndex(finder);
+	if (i === -1) {
+		return false;
+	}
+
+	arr.splice(i, 1);
+	return true;
+};
+
+const _updateItem = (
+	arr: Item[],
+	id: Item["id"],
+	replacer: (old: Item) => Item,
+): boolean => {
+	const i = arr.findIndex((item) => item.id === id);
+	if (i === -1) {
+		return false;
+	}
+
+	arr[i] = replacer(arr[i]);
+	return true;
 };
 
 const removeItem = (finder: (item: Item) => boolean): boolean => {
-	const i = items.value.findIndex(finder);
-	if (i === -1) {
-		return false;
-	}
-
-	items.value.splice(i, 1);
-	return true;
+	const res =
+		_removeItem(prepended.value, finder) ||
+		_removeItem(appended.value, finder) ||
+		arrItems.value.filter((arr) => _removeItem(arr, finder)).length > 0;
+	calculateItems();
+	return res;
 };
 
 const updateItem = (id: Item["id"], replacer: (old: Item) => Item): boolean => {
-	const i = items.value.findIndex((item) => item.id === id);
-	if (i === -1) {
-		return false;
-	}
-
-	items.value[i] = replacer(items.value[i]);
-	return true;
+	const res =
+		_updateItem(prepended.value, id, replacer) ||
+		_updateItem(appended.value, id, replacer) ||
+		arrItems.value.filter((arr) => _updateItem(arr, id, replacer)).length > 0;
+	calculateItems();
+	return res;
 };
 
 if (props.pagination.params && isRef<Param>(props.pagination.params)) {

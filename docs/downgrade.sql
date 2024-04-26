@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'AlterAkaType1714099399879',
     'AddDriveFileUsage1713451569342',
     'ConvertCwVarcharToText1713225866247',
     'FixChatFileConstraint1712855579316',
@@ -23,6 +24,13 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- alter-aka-type
+ALTER TABLE "user" RENAME COLUMN "alsoKnownAs" TO "alsoKnownAsOld";
+ALTER TABLE "user" ADD COLUMN "alsoKnownAs" text;
+UPDATE "user" SET "alsoKnownAs" = array_to_string("alsoKnownAsOld", ',');
+COMMENT ON COLUMN "user"."alsoKnownAs" IS 'URIs the user is known as too';
+ALTER TABLE "user" DROP COLUMN "alsoKnownAsOld";
 
 -- AddDriveFileUsage
 ALTER TABLE "drive_file" DROP COLUMN "usageHint";

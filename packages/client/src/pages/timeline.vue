@@ -75,28 +75,28 @@ import * as os from "@/os";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
-import { isModerator, isSignedIn } from "@/me";
+import { isModerator, isSignedIn, me } from "@/me";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { deviceKind } from "@/scripts/device-kind";
 import icon from "@/scripts/icon";
 import "swiper/scss";
 import "swiper/scss/virtual";
 
-if (isSignedIn && defaultStore.reactiveState.tutorial.value !== -1) {
+if (isSignedIn(me) && defaultStore.reactiveState.tutorial.value !== -1) {
 	os.popup(XTutorial, {}, {}, "closed");
 }
 
-const isHomeTimelineAvailable = isSignedIn;
+const isHomeTimelineAvailable = isSignedIn(me);
 const isLocalTimelineAvailable =
 	(!instance.disableLocalTimeline &&
-		(isSignedIn || instance.enableGuestTimeline)) ||
+		(isSignedIn(me) || instance.enableGuestTimeline)) ||
 	isModerator;
-const isSocialTimelineAvailable = isLocalTimelineAvailable && isSignedIn;
+const isSocialTimelineAvailable = isLocalTimelineAvailable && isSignedIn(me);
 const isRecommendedTimelineAvailable =
-	!instance.disableRecommendedTimeline && isSignedIn;
+	!instance.disableRecommendedTimeline && isSignedIn(me);
 const isGlobalTimelineAvailable =
 	(!instance.disableGlobalTimeline &&
-		(isSignedIn || instance.enableGuestTimeline)) ||
+		(isSignedIn(me) || instance.enableGuestTimeline)) ||
 	isModerator;
 const keymap = {
 	t: focus,
@@ -205,7 +205,7 @@ function focus(): void {
 }
 
 const headerActions = computed(() =>
-	isSignedIn
+	isSignedIn(me)
 		? [
 				{
 					icon: `${icon("ph-list-bullets")}`,

@@ -36,7 +36,10 @@ struct ServerConfig {
     pub deliver_job_max_attempts: Option<u32>,
     pub inbox_job_max_attempts: Option<u32>,
 
+    /// deprecated
     pub log_level: Option<Vec<String>>,
+
+    pub max_log_level: Option<String>,
 
     pub syslog: Option<SysLogConfig>,
 
@@ -197,7 +200,11 @@ pub struct Config {
     pub inbox_job_per_sec: Option<u32>,
     pub deliver_job_max_attempts: Option<u32>,
     pub inbox_job_max_attempts: Option<u32>,
+
+    /// deprecated
     pub log_level: Option<Vec<String>>,
+
+    pub max_log_level: Option<String>,
     pub syslog: Option<SysLogConfig>,
     pub proxy_remote_files: Option<bool>,
     pub media_proxy: Option<String>,
@@ -205,8 +212,8 @@ pub struct Config {
     pub reserved_usernames: Option<Vec<String>>,
     pub max_user_signups: Option<u32>,
     pub is_managed_hosting: Option<bool>,
-    pub max_note_length: Option<u32>,
-    pub max_caption_length: Option<u32>,
+    pub max_note_length: u32,
+    pub max_caption_length: u32,
     pub deepl: Option<DeepLConfig>,
     pub libre_translate: Option<LibreTranslateConfig>,
     pub email: Option<EmailConfig>,
@@ -346,6 +353,7 @@ fn load_config() -> Config {
         deliver_job_max_attempts: server_config.deliver_job_max_attempts,
         inbox_job_max_attempts: server_config.inbox_job_max_attempts,
         log_level: server_config.log_level,
+        max_log_level: server_config.max_log_level,
         syslog: server_config.syslog,
         proxy_remote_files: server_config.proxy_remote_files,
         media_proxy: server_config.media_proxy,
@@ -353,8 +361,8 @@ fn load_config() -> Config {
         reserved_usernames: server_config.reserved_usernames,
         max_user_signups: server_config.max_user_signups,
         is_managed_hosting: server_config.is_managed_hosting,
-        max_note_length: server_config.max_note_length,
-        max_caption_length: server_config.max_caption_length,
+        max_note_length: server_config.max_note_length.unwrap_or(3000),
+        max_caption_length: server_config.max_caption_length.unwrap_or(1500),
         deepl: server_config.deepl,
         libre_translate: server_config.libre_translate,
         email: server_config.email,

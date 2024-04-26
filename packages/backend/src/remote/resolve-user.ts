@@ -56,7 +56,7 @@ export async function resolveUser(
 	if (user == null) {
 		const self = await resolveSelf(acctLower);
 
-		logger.succ(`return new remote user: ${chalk.magenta(acctLower)}`);
+		logger.info(`return new remote user: ${chalk.magenta(acctLower)}`);
 		return await createPerson(self.href);
 	}
 

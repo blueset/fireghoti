@@ -59,7 +59,7 @@
 								<div class="other">
 									<button
 										v-if="
-											isSignedIn && me!.id === post.user.id
+											isSignedIn(me) && me.id === post.user.id
 										"
 										v-tooltip="i18n.ts.toEdit"
 										v-click-anime
@@ -105,7 +105,7 @@
 									<MkAcct :user="post.user" />
 								</div>
 								<MkFollowButton
-									v-if="!isSignedIn || me!.id != post.user.id"
+									v-if="!isSignedIn(me) || me.id != post.user.id"
 									:user="post.user"
 									:inline="true"
 									:transparent="false"

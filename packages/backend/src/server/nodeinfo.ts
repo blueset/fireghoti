@@ -3,7 +3,6 @@ import { config } from "@/config.js";
 import { fetchMeta } from "backend-rs";
 import { Users, Notes } from "@/models/index.js";
 import { IsNull, MoreThan } from "typeorm";
-import { MAX_NOTE_TEXT_LENGTH, MAX_CAPTION_TEXT_LENGTH } from "@/const.js";
 import { Cache } from "@/misc/cache.js";
 
 const router = new Router();
@@ -86,8 +85,8 @@ const nodeinfo2 = async () => {
 			postImports: meta.experimentalFeatures?.postImports || false,
 			enableHcaptcha: meta.enableHcaptcha,
 			enableRecaptcha: meta.enableRecaptcha,
-			maxNoteTextLength: MAX_NOTE_TEXT_LENGTH,
-			maxCaptionTextLength: MAX_CAPTION_TEXT_LENGTH,
+			maxNoteTextLength: config.maxNoteLength,
+			maxCaptionTextLength: config.maxCaptionLength,
 			enableEmail: meta.enableEmail,
 			enableServiceWorker: meta.enableServiceWorker,
 			proxyAccountName: proxyAccount ? proxyAccount.username : null,
@@ -113,6 +112,7 @@ router.get(nodeinfo2_0path, async (ctx) => {
 
 	// @ts-ignore
 	base.software.repository = undefined;
+	// @ts-ignore
 	base.software.homepage = undefined;
 
 	ctx.body = { version: "2.0", ...base };

@@ -928,6 +928,8 @@ colored: "Coloré"
 label: "Étiquette"
 localOnly: "Local seulement"
 account: "Comptes"
+getQrCode: "Obtenir le code QR"
+
 _emailUnavailable:
   used: "Adresse non disponible"
   format: "Le format de cette adresse de courriel est invalide"

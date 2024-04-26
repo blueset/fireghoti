@@ -133,7 +133,8 @@ export default class DeliverManager {
 					host: new URL(inbox).host,
 				});
 			} catch (error) {
-				apLogger.error(`Invalid Inbox ${inbox}:\n${inspect(error)}`);
+				apLogger.info(`Invalid Inbox ${inbox}`);
+				apLogger.debug(inspect(error));
 			}
 		}
 

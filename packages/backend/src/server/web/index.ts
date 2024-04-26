@@ -15,7 +15,14 @@ import { BullAdapter } from "@bull-board/api/bullAdapter.js";
 import { KoaAdapter } from "@bull-board/koa";
 
 import { In, IsNull } from "typeorm";
-import { fetchMeta, metaToPugArgs } from "backend-rs";
+import {
+	MINUTE,
+	DAY,
+	getNoteSummary,
+	stringToAcct,
+	fetchMeta,
+	metaToPugArgs,
+} from "backend-rs";
 import { config } from "@/config.js";
 import {
 	Users,
@@ -27,13 +34,11 @@ import {
 	Emojis,
 	GalleryPosts,
 } from "@/models/index.js";
-import { getNoteSummary, stringToAcct } from "backend-rs";
 import { queues } from "@/queue/queues.js";
 import { genOpenapiSpec } from "../api/openapi/gen-spec.js";
 import { urlPreviewHandler } from "./url-preview.js";
 import { manifestHandler } from "./manifest.js";
 import packFeed from "./feed.js";
-import { MINUTE, DAY } from "@/const.js";
 
 const _filename = fileURLToPath(import.meta.url);
 const _dirname = dirname(_filename);

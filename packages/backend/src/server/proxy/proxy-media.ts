@@ -9,7 +9,7 @@ import { createTemp } from "@/misc/create-temp.js";
 import { downloadUrl } from "@/misc/download-url.js";
 import { detectType } from "@/misc/get-file-info.js";
 import { StatusError } from "@/misc/fetch.js";
-import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
+import { FILE_TYPE_BROWSERSAFE } from "backend-rs";
 import { serverLogger } from "../index.js";
 import { isMimeImage } from "@/misc/is-mime-image.js";
 import { inspect } from "node:util";
@@ -131,7 +131,8 @@ export async function proxyMedia(ctx: Koa.Context) {
 		ctx.set("Cache-Control", "max-age=31536000, immutable");
 		ctx.body = image.data;
 	} catch (e) {
-		serverLogger.error(`${inspect(e)}`);
+		serverLogger.warn(`failed to proxy ${url}`);
+		serverLogger.debug(inspect(e));
 
 		if (e instanceof StatusError && (e.statusCode === 302 || e.isClientError)) {
 			ctx.status = e.statusCode;

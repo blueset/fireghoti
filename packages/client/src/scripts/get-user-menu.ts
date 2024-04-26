@@ -256,6 +256,27 @@ export function getUserMenu(user, router: Router = mainRouter) {
 			},
 		},
 		{
+			icon: `${icon("ph-share")}`,
+			text: i18n.ts.share,
+			type: "parent",
+			children: [
+				{
+					icon: "ph-qr-code ph-bold ph-lg",
+					text: i18n.ts.getQrCode,
+					action: () => {
+						os.displayQrCode(`https://${host}/follow-me?acct=${user.username}`);
+					},
+				},
+				{
+					icon: `${icon("ph-hand-waving")}`,
+					text: i18n.ts.copyRemoteFollowUrl,
+					action: () => {
+						copyToClipboard(`https://${host}/follow-me?acct=${user.username}`);
+					},
+				},
+			],
+		},
+		{
 			icon: `${icon("ph-newspaper")}`,
 			text: i18n.ts._feeds.copyFeed,
 			type: "parent",
@@ -290,7 +311,16 @@ export function getUserMenu(user, router: Router = mainRouter) {
 				os.post({ specified: user });
 			},
 		},
-		me.id !== user.id
+		!isSignedIn(me)
+			? {
+					icon: `${icon("ph-hand-waving")}`,
+					text: i18n.ts.remoteFollow,
+					action: () => {
+						router.push(`/follow-me?acct=${user.username}`);
+					},
+				}
+			: undefined,
+		isSignedIn(me) && me.id !== user.id
 			? {
 					type: "link",
 					icon: `${icon("ph-chats-teardrop")}`,
@@ -313,7 +343,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 			text: i18n.ts.addToList,
 			action: pushList,
 		},
-		me.id !== user.id
+		isSignedIn(me) && me.id !== user.id
 			? {
 					icon: `${icon("ph-users-three")}`,
 					text: i18n.ts.inviteToGroup,
@@ -335,7 +365,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		},
 	] as any;
 
-	if (isSignedIn && me.id !== user.id) {
+	if (isSignedIn(me) && me.id !== user.id) {
 		menu = menu.concat([
 			{
 				icon: user.isMuted ? "ph-eye ph-lg" : "ph-eye-slash ph-lg",
@@ -386,7 +416,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		}
 	}
 
-	if (isSignedIn && me.id === user.id) {
+	if (isSignedIn(me) && me.id === user.id) {
 		menu = menu.concat([
 			null,
 			{

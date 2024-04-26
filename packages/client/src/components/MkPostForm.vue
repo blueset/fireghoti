@@ -33,9 +33,9 @@
 				></span>
 				<button
 					ref="visibilityButton"
-					v-tooltip="i18n.ts.visibility"
+					v-tooltip="editId == null ? i18n.ts.visibility : i18n.ts.cannotEditVisibility"
 					class="_button visibility"
-					:disabled="channel != null"
+					:disabled="channel != null || editId != null"
 					@click="setVisibility"
 				>
 					<span v-if="visibility === 'public'"

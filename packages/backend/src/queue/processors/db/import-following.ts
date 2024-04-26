@@ -64,11 +64,12 @@ export async function importFollowing(
 				// skip myself
 				if (target.id === job.data.user.id) continue;
 
-				logger.info(`Follow[${linenum}] ${target.id} ...`);
+				logger.debug(`Follow[${linenum}] ${target.id} ...`);
 
 				follow(user, target);
 			} catch (e) {
-				logger.warn(`Error in line ${linenum}:\n${inspect(e)}`);
+				logger.warn(`Error in line ${linenum}`);
+				logger.info(inspect(e));
 			}
 		}
 	} else {
@@ -102,15 +103,16 @@ export async function importFollowing(
 				// skip myself
 				if (target.id === job.data.user.id) continue;
 
-				logger.info(`Follow[${linenum}] ${target.id} ...`);
+				logger.debug(`Follow[${linenum}] ${target.id} ...`);
 
 				follow(user, target);
 			} catch (e) {
-				logger.warn(`Error in line ${linenum}:\n${inspect(e)}`);
+				logger.warn(`Error in line ${linenum}`);
+				logger.info(inspect(e));
 			}
 		}
 	}
 
-	logger.succ("Imported");
+	logger.info("Imported");
 	done();
 }

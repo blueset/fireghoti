@@ -48,8 +48,6 @@ import { resolveNote, extractEmojis } from "./note.js";
 import { resolveImage } from "./image.js";
 import { inspect } from "node:util";
 
-const logger = apLogger;
-
 const nameLength = 128;
 const summaryLength = 2048;
 
@@ -178,7 +176,7 @@ export async function createPerson(
 
 	const person = validateActor(object, uri);
 
-	logger.info(`Creating the Person: ${person.id}`);
+	apLogger.info(`Creating Person: ${person.id}`);
 
 	const host = toPuny(new URL(object.id).hostname);
 
@@ -347,7 +345,8 @@ export async function createPerson(
 				throw new Error("already registered");
 			}
 		} else {
-			logger.error(inspect(e));
+			apLogger.info(`Failed to create a Person actor: ${person.url}`);
+			apLogger.debug(inspect(e));
 			throw e;
 		}
 	}
@@ -388,7 +387,8 @@ export async function createPerson(
 
 	//#region Get custom emoji
 	const emojis = await extractEmojis(person.tag || [], host).catch((e) => {
-		logger.info(`extractEmojis:\n${inspect(e)}`);
+		apLogger.info("Failed to extract emojis");
+		apLogger.debug(inspect(e));
 		return [] as Emoji[];
 	});
 
@@ -399,9 +399,10 @@ export async function createPerson(
 	});
 	//#endregion
 
-	await updateFeatured(user!.id, resolver).catch((err) =>
-		logger.error(inspect(err)),
-	);
+	await updateFeatured(user!.id, resolver).catch((err) => {
+		apLogger.info(`Failed to update featured collection of ${user.uri}`);
+		apLogger.debug(inspect(err));
+	});
 
 	return user!;
 }
@@ -439,7 +440,7 @@ export async function updatePerson(
 
 	const person = validateActor(object, uri);
 
-	logger.info(`Updating the Person: ${person.id}`);
+	apLogger.info(`Updating the Person: ${person.id}`);
 
 	// Fetch avatar and header image
 	const [avatar, banner] = await Promise.all(
@@ -456,7 +457,8 @@ export async function updatePerson(
 
 	// Custom pictogram acquisition
 	const emojis = await extractEmojis(person.tag || [], user.host).catch((e) => {
-		logger.info(`extractEmojis:\n${inspect(e)}`);
+		apLogger.info("Failed to extract emojis");
+		apLogger.debug(inspect(e));
 		return [] as Emoji[];
 	});
 
@@ -626,9 +628,10 @@ export async function updatePerson(
 		},
 	);
 
-	await updateFeatured(user.id, resolver).catch((err) =>
-		logger.error(inspect(err)),
-	);
+	await updateFeatured(user.id, resolver).catch((err) => {
+		apLogger.info(`Failed to update featured collection of ${user.uri}`);
+		apLogger.debug(inspect(err));
+	});
 }
 
 /**
@@ -681,7 +684,7 @@ export async function updateFeatured(userId: User["id"], resolver?: Resolver) {
 	if (!Users.isRemoteUser(user)) return;
 	if (!user.featured) return;
 
-	logger.info(`Updating the featured: ${user.uri}`);
+	apLogger.info(`Updating the featured collection: ${user.uri}`);
 
 	if (resolver == null) resolver = new Resolver();
 

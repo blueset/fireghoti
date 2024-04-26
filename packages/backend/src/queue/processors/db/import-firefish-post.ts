@@ -1,6 +1,6 @@
 import * as Post from "@/misc/post.js";
 import create from "@/services/note/create.js";
-import { Users } from "@/models/index.js";
+import { NoteFiles, Users } from "@/models/index.js";
 import type { DbUserImportMastoPostJobData } from "@/queue/types.js";
 import { queueLogger } from "../../logger.js";
 import { uploadFromUrl } from "@/services/drive/upload-from-url.js";
@@ -49,7 +49,7 @@ export async function importCkPost(
 			});
 			files.push(file);
 		} catch (e) {
-			logger.error(`Skipped adding file to drive: ${url}`);
+			logger.info(`Skipped adding file to drive: ${url}`);
 		}
 	}
 	const { text, cw, localOnly, createdAt, visibility } = Post.parse(post);
@@ -59,9 +59,18 @@ export async function importCkPost(
 		userId: user.id,
 	});
 
-	if (note && (note?.fileIds?.length || 0) < files.length) {
+	// FIXME: What is this condition?
+	if (note != null && (note.fileIds?.length || 0) < files.length) {
 		const update: Partial<Note> = {};
 		update.fileIds = files.map((x) => x.id);
+
+		if (update.fileIds != null) {
+			await NoteFiles.delete({ noteId: note.id });
+			await NoteFiles.insert(
+				update.fileIds.map((fileId) => ({ noteId: note?.id, fileId })),
+			);
+		}
+
 		await Notes.update(note.id, update);
 		await NoteEdits.insert({
 			id: genId(),
@@ -71,12 +80,12 @@ export async function importCkPost(
 			fileIds: note.fileIds,
 			updatedAt: new Date(),
 		});
-		logger.info(`Note file updated`);
+		logger.info("Post updated");
 	}
-	if (!note) {
+	if (note == null) {
 		note = await create(user, {
 			createdAt: createdAt,
-			files: files.length == 0 ? undefined : files,
+			files: files.length === 0 ? undefined : files,
 			poll: undefined,
 			text: text || undefined,
 			reply: post.replyId ? job.data.parent : null,
@@ -90,11 +99,11 @@ export async function importCkPost(
 			apHashtags: undefined,
 			apEmojis: undefined,
 		});
-		logger.info(`Create new note`);
+		logger.debug("New post has been created");
 	} else {
-		logger.info(`Note exist`);
+		logger.info("This post already exists");
 	}
-	logger.succ("Imported");
+	logger.info("Imported");
 	if (post.childNotes) {
 		for (const child of post.childNotes) {
 			createImportCkPostJob(

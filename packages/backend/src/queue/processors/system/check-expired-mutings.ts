@@ -28,6 +28,6 @@ export async function checkExpiredMutings(
 		}
 	}
 
-	logger.succ("All expired mutings checked.");
+	logger.info("All expired mutings checked.");
 	done();
 }

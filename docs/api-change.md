@@ -2,9 +2,16 @@
 
 Breaking changes are indicated by the :warning: icon.
 
-## Unreleased
+## v20240424
 
 - Added `antennaLimit` field to the response of `meta` and `admin/meta`, and the request of `admin/update-meta` (optional).
+- Added `filter` optional parameter to `notes/renotes` endpoint to filter the types of renotes. It can take the following values:
+	- `all` (default)
+  - `renote`
+  - `quote`
+- :warning: Removed the following optional parameters in `notes/reactions`, as they were never taken into account due to a bug:
+	- `sinceId`
+	- `untilId`
 
 ## v20240413
 

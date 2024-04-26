@@ -4,7 +4,6 @@ import readNote from "@/services/note/read.js";
 import type { User } from "@/models/entities/user.js";
 import type { Channel as ChannelModel } from "@/models/entities/channel.js";
 import {
-	Users,
 	Followings,
 	Mutings,
 	RenoteMutings,
@@ -15,11 +14,12 @@ import {
 } from "@/models/index.js";
 import type { AccessToken } from "@/models/entities/access-token.js";
 import type { UserProfile } from "@/models/entities/user-profile.js";
+import { publishGroupMessagingStream } from "@/services/stream.js";
 import {
-	publishChannelStream,
-	publishGroupMessagingStream,
-	publishMessagingStream,
-} from "@/services/stream.js";
+	publishToChannelStream,
+	publishToChatStream,
+	ChatEvent,
+} from "backend-rs";
 import type { UserGroup } from "@/models/entities/user-group.js";
 import type { Packed } from "@/misc/schema.js";
 import { readNotification } from "@/server/api/common/read-notification.js";
@@ -513,9 +513,9 @@ export default class Connection {
 		}
 	}
 
-	private typingOnChannel(channel: ChannelModel["id"]) {
+	private typingOnChannel(channelId: ChannelModel["id"]) {
 		if (this.user) {
-			publishChannelStream(channel, "typing", this.user.id);
+			publishToChannelStream(channelId, this.user.id);
 		}
 	}
 
@@ -525,10 +525,10 @@ export default class Connection {
 	}) {
 		if (this.user) {
 			if (param.partner) {
-				publishMessagingStream(
+				publishToChatStream(
 					param.partner,
 					this.user.id,
-					"typing",
+					ChatEvent.Typing,
 					this.user.id,
 				);
 			} else if (param.group) {

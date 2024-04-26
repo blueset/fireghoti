@@ -59,7 +59,7 @@ if (
 ) {
 	useTooltip(specified, async (showing) => {
 		const users = await os.api("users/show", {
-			userIds: props.note.visibleUserIds,
+			userIds: props.note.visibleUserIds!,
 			limit: 10,
 		});
 
@@ -68,7 +68,7 @@ if (
 			{
 				showing,
 				users,
-				count: props.note.visibleUserIds.length,
+				count: props.note.visibleUserIds!.length,
 				targetElement: specified.value,
 			},
 			{},

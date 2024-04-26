@@ -1,8 +1,8 @@
 <template>
-	<div v-if="isSignedIn && fetching" class="">
+	<div v-if="isSignedIn(me) && fetching" class="">
 		<MkLoading />
 	</div>
-	<div v-else-if="isSignedIn">
+	<div v-else-if="isSignedIn(me)">
 		<XForm
 			v-if="state == 'waiting'"
 			ref="form"
@@ -52,7 +52,7 @@ import MkSignin from "@/components/MkSignin.vue";
 import MkKeyValue from "@/components/MkKeyValue.vue";
 import * as os from "@/os";
 import { signIn } from "@/account";
-import { isSignedIn } from "@/me";
+import { isSignedIn, me } from "@/me";
 import { i18n } from "@/i18n";
 
 const props = defineProps<{
@@ -64,7 +64,7 @@ const fetching = ref(true);
 const auth_code = ref("");
 
 onMounted(() => {
-	if (!isSignedIn) return;
+	if (!isSignedIn(me)) return;
 
 	os.api("auth/session/show", { token: props.token })
 		.then((sess: any) => {

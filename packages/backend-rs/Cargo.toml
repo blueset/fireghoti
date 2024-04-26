@@ -18,21 +18,21 @@ napi = { workspace = true, optional = true, default-features = false, features =
 napi-derive = { workspace = true, optional = true }
 
 argon2 = { workspace = true, features = ["std"] }
-async-trait = { workspace = true }
 basen = { workspace = true }
 bcrypt = { workspace = true }
-cfg-if = { workspace = true }
 chrono = { workspace = true }
 cuid2 = { workspace = true }
 emojis = { workspace = true }
 idna = { workspace = true }
-jsonschema = { workspace = true }
+image = { workspace = true }
+nom-exif = { workspace = true }
 once_cell = { workspace = true }
-parse-display = { workspace = true }
+openssl = { workspace = true, features = ["vendored"] }
 rand = { workspace = true }
 redis = { workspace = true }
 regex = { workspace = true }
-schemars = { workspace = true, features = ["chrono"] }
+reqwest = { workspace = true, features = ["blocking"] }
+rmp-serde = { workspace = true }
 sea-orm = { workspace = true, features = ["sqlx-postgres", "runtime-tokio-rustls"] }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
@@ -40,6 +40,8 @@ serde_yaml = { workspace = true }
 strum = { workspace = true, features = ["derive"] }
 thiserror = { workspace = true }
 tokio = { workspace = true, features = ["full"] }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
 url = { workspace = true }
 urlencoding = { workspace = true }
 

@@ -2,8 +2,12 @@ import {
 	publishMainStream,
 	publishGroupMessagingStream,
 } from "@/services/stream.js";
-import { publishMessagingStream } from "@/services/stream.js";
-import { publishMessagingIndexStream } from "@/services/stream.js";
+import {
+	publishToChatStream,
+	publishToChatIndexStream,
+	ChatEvent,
+	ChatIndexEvent,
+} from "backend-rs";
 import { pushNotification } from "@/services/push-notification.js";
 import type { User, IRemoteUser } from "@/models/entities/user.js";
 import type { MessagingMessage } from "@/models/entities/messaging-message.js";
@@ -54,8 +58,8 @@ export async function readUserMessagingMessage(
 	);
 
 	// Publish event
-	publishMessagingStream(otherpartyId, userId, "read", messageIds);
-	publishMessagingIndexStream(userId, "read", messageIds);
+	publishToChatStream(otherpartyId, userId, ChatEvent.Read, messageIds);
+	publishToChatIndexStream(userId, ChatIndexEvent.Read, messageIds);
 
 	if (!(await Users.getHasUnreadMessagingMessage(userId))) {
 		// 全ての(いままで未読だった)自分宛てのメッセージを(これで)読みましたよというイベントを発行
@@ -130,7 +134,7 @@ export async function readGroupMessagingMessage(
 		ids: reads,
 		userId: userId,
 	});
-	publishMessagingIndexStream(userId, "read", reads);
+	publishToChatIndexStream(userId, ChatIndexEvent.Read, reads);
 
 	if (!(await Users.getHasUnreadMessagingMessage(userId))) {
 		// 全ての(いままで未読だった)自分宛てのメッセージを(これで)読みましたよというイベントを発行

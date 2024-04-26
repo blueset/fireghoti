@@ -1,5 +1,6 @@
 use crate::config::CONFIG;
-use sea_orm::{Database, DbConn, DbErr};
+use sea_orm::{ConnectOptions, Database, DbConn, DbErr};
+use tracing::log::LevelFilter;
 
 static DB_CONN: once_cell::sync::OnceCell<DbConn> = once_cell::sync::OnceCell::new();
 
@@ -12,7 +13,13 @@ async fn init_database() -> Result<&'static DbConn, DbErr> {
         CONFIG.db.port,
         CONFIG.db.db,
     );
-    let conn = Database::connect(database_uri).await?;
+    let option: ConnectOptions = ConnectOptions::new(database_uri)
+        .sqlx_logging_level(LevelFilter::Trace)
+        .to_owned();
+
+    tracing::info!("Initializing PostgreSQL connection");
+
+    let conn = Database::connect(option).await?;
     Ok(DB_CONN.get_or_init(move || conn))
 }
 

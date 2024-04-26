@@ -1,9 +1,8 @@
 import define from "@/server/api/define.js";
 import { DriveFiles, GalleryPosts } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { HOUR, genId } from "backend-rs";
 import { GalleryPost } from "@/models/entities/gallery-post.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
-import { HOUR } from "@/const.js";
 
 export const meta = {
 	tags: ["gallery"],

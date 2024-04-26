@@ -17,8 +17,6 @@ import Resolver from "../../resolver.js";
 import { apLogger } from "../../logger.js";
 import { inspect } from "node:util";
 
-const logger = apLogger;
-
 export default async (
 	actor: CacheableRemoteUser,
 	activity: IUndo,
@@ -29,12 +27,13 @@ export default async (
 
 	const uri = activity.id || activity;
 
-	logger.info(`Undo: ${uri}`);
+	apLogger.info(`Undo: ${uri}`);
 
 	const resolver = new Resolver();
 
 	const object = await resolver.resolve(activity.object).catch((e) => {
-		logger.error(`Resolution failed:\n${inspect(e)}`);
+		apLogger.info(`Failed to resolve AP object: ${e}`);
+		apLogger.debug(inspect(e));
 		throw e;
 	});
 

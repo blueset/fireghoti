@@ -93,12 +93,12 @@ const headerTabs = computed(() =>
 					title: i18n.ts.media,
 					icon: `${icon("ph-grid-four")}`,
 				},
-				...((isSignedIn && me.id === user.value.id) ||
+				...((isSignedIn(me) && me.id === user.value.id) ||
 				user.value.publicReactions
 					? [
 							{
 								key: "reactions",
-								title: i18n.ts.reaction,
+								title: i18n.ts.reactions,
 								icon: `${icon("ph-smiley")}`,
 							},
 						]

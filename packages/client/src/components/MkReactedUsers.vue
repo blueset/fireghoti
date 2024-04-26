@@ -23,7 +23,13 @@
 				}}</span>
 			</button>
 		</div>
-		<MkUserCardMini v-for="user in users" :key="user.id" :user="user" />
+		<MkPagination
+			ref="pagingComponent"
+			:pagination="pagination"
+			v-slot="{ items }"
+		>
+			<MkUserCardMini v-for="{ user: user } in items" :key="user.id" :user="user" />
+		</MkPagination>
 	</div>
 	<div v-else>
 		<MkLoading />
@@ -36,6 +42,9 @@ import type { entities } from "firefish-js";
 import MkReactionIcon from "@/components/MkReactionIcon.vue";
 import MkUserCardMini from "@/components/MkUserCardMini.vue";
 import * as os from "@/os";
+import MkPagination, {
+	type MkPaginationType,
+} from "@/components/MkPagination.vue";
 
 const props = defineProps<{
 	noteId: entities.Note["id"];
@@ -44,16 +53,22 @@ const props = defineProps<{
 const note = ref<entities.Note>();
 const tab = ref<string | null>(null);
 const reactions = ref<string[]>();
-const users = ref();
 
-async function updateUsers(): void {
-	const res = await os.api("notes/reactions", {
+const pagingComponent = ref<MkPaginationType<"notes/reactions"> | null>(null);
+
+const pagination = {
+	endpoint: "notes/reactions" as const,
+	params: {
 		noteId: props.noteId,
 		type: tab.value,
-		limit: 30,
-	});
+	},
+	offsetMode: true,
+	limit: 30,
+};
 
-	users.value = res.map((x) => x.user);
+function updateUsers(): void {
+	pagination.params.type = tab.value;
+	pagingComponent.value?.reload();
 }
 
 watch(tab, updateUsers);
@@ -64,7 +79,7 @@ onMounted(() => {
 	}).then(async (res) => {
 		reactions.value = Object.keys(res.reactions);
 		note.value = res;
-		await updateUsers();
+		// updateUsers();
 	});
 });
 </script>

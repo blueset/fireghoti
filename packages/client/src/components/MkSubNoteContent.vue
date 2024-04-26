@@ -1,7 +1,7 @@
 <template>
 	<p v-if="note.cw != null" class="cw">
 		<MkA
-			v-if="conversation && note.renoteId == parentId"
+			v-if="conversation && note.renoteId == parentId && parentId != null"
 			:to="
 				detailedView ? `#${parentId}` : `${notePage(note)}#${parentId}`
 			"
@@ -196,13 +196,26 @@ import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
 
-const props = defineProps<{
-	note: entities.Note;
-	parentId?;
-	conversation?;
-	detailed?: boolean;
-	detailedView?: boolean;
-}>();
+const props = withDefaults(
+	defineProps<{
+		note: entities.Note;
+		parentId?: string;
+		conversation?: entities.Note[];
+		detailed?: boolean;
+		detailedView?: boolean;
+		isLongJudger?: (note: entities.Note) => boolean;
+	}>(),
+	{
+		isLongJudger: (note: entities.Note) => {
+			return (
+				note.text != null &&
+				(note.text.split("\n").length > 10 ||
+					note.text.length > 800 ||
+					note.files.length > 4)
+			);
+		},
+	},
+);
 
 const emit = defineEmits<{
 	(ev: "push", v): void;
@@ -216,10 +229,7 @@ const showMoreButton = ref<HTMLElement>();
 const isLong =
 	!props.detailedView &&
 	props.note.cw == null &&
-	((props.note.text != null &&
-		(props.note.text.split("\n").length > 10 ||
-			props.note.text.length > 800)) ||
-		props.note.files.length > 4);
+	props.isLongJudger(props.note);
 const collapsed = ref(props.note.cw == null && isLong);
 const urls = props.note.text
 	? extractUrlFromMfm(mfm.parse(props.note.text)).slice(0, 5)

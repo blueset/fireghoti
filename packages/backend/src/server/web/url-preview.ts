@@ -43,7 +43,7 @@ export const urlPreviewHandler = async (ctx: Koa.Context) => {
 					lang: lang ?? "en-US",
 				});
 
-		logger.succ(`Got preview of ${url}: ${summary.title}`);
+		logger.info(`Got preview of ${url}: ${summary.title}`);
 
 		if (
 			summary.url &&

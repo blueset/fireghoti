@@ -4,7 +4,7 @@ import { resolveUser } from "@/remote/resolve-user.js";
 import acceptAllFollowRequests from "@/services/following/requests/accept-all.js";
 import { publishToFollowers } from "@/services/i/update.js";
 import { publishMainStream } from "@/services/stream.js";
-import { DAY } from "@/const.js";
+import { DAY } from "backend-rs";
 import { apiLogger } from "@/server/api/logger.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";

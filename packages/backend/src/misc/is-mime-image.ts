@@ -1,4 +1,4 @@
-import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
+import { FILE_TYPE_BROWSERSAFE } from "backend-rs";
 
 const dictionary = {
 	"safe-file": FILE_TYPE_BROWSERSAFE,

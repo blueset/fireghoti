@@ -1902,6 +1902,7 @@ _notification:
   reacted: がリアクションしました
   renoted: がブーストしました
   voted: が投票しました
+  andCountUsers: と{count}人が{acted}しました
 _deck:
   alwaysShowMainColumn: "常にメインカラムを表示"
   columnAlign: "カラムの寄せ"
@@ -2057,3 +2058,12 @@ incorrectLanguageWarning: "この投稿は{detected}で書かれていると判�
 markLocalFilesNsfwByDefault: このサーバーの全てのファイルをデフォルトでNSFWに設定する
 markLocalFilesNsfwByDefaultDescription: この設定が有効でも、ユーザーは自分でNSFWのフラグを外すことができます。また、この設定は既存のファイルには影響しません。
 noteEditHistory: 編集履歴
+showAddFileDescriptionAtFirstPost: 説明の無い添付ファイルを投稿しようとした際に説明を書く画面を自動で開く
+antennaLimit: 各ユーザーが作れるアンテナの最大数
+inputAccountId: 'あなたのアカウントを入力してください（例: @firefish@info.firefish.dev）'
+remoteFollow: リモートフォロー
+cannotEditVisibility: 公開範囲は変更できません
+useThisAccountConfirm: このアカウントで操作を続けますか？
+getQrCode: QRコードを表示
+copyRemoteFollowUrl: リモートからフォローするURLをコピー
+foldNotification: 同じ種類の通知をまとめて表示する

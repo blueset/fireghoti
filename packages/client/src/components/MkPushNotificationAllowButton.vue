@@ -16,7 +16,7 @@
 	<MkButton
 		v-else-if="
 			!showOnlyToRegister &&
-			(isSignedIn ? pushRegistrationInServer : pushSubscription)
+			(isSignedIn(me) ? pushRegistrationInServer : pushSubscription)
 		"
 		type="button"
 		:primary="false"
@@ -31,7 +31,7 @@
 		{{ i18n.ts.unsubscribePushNotification }}
 	</MkButton>
 	<MkButton
-		v-else-if="isSignedIn && pushRegistrationInServer"
+		v-else-if="isSignedIn(me) && pushRegistrationInServer"
 		disabled
 		:rounded="rounded"
 		:inline="inline"
@@ -142,7 +142,7 @@ async function unsubscribe() {
 
 	pushRegistrationInServer.value = undefined;
 
-	if (isSignedIn && accounts.length >= 2) {
+	if (isSignedIn(me) && accounts.length >= 2) {
 		apiWithDialog("sw/unregister", {
 			i: me.token,
 			endpoint,
@@ -189,7 +189,7 @@ if (navigator.serviceWorker == null) {
 		if (
 			instance.swPublickey &&
 			"PushManager" in window &&
-			isSignedIn &&
+			isSignedIn(me) &&
 			me.token
 		) {
 			supported.value = true;

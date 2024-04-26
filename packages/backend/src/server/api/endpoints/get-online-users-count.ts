@@ -1,5 +1,5 @@
 import { MoreThan } from "typeorm";
-import { USER_ONLINE_THRESHOLD } from "@/const.js";
+import { USER_ONLINE_THRESHOLD } from "backend-rs";
 import { Users } from "@/models/index.js";
 import define from "@/server/api/define.js";
 

@@ -1825,6 +1825,7 @@ _notification:
   reacted: mereaksi postinganmu
   renoted: memposting ulang postinganmu
   voted: memilih di angketmu
+  andCountUsers: dan {count} lebih banyak pengguna {acted}
 _deck:
   alwaysShowMainColumn: "Selalu tampilkan kolom utama"
   columnAlign: "Luruskan kolom"
@@ -2267,3 +2268,13 @@ markLocalFilesNsfwByDefaultDescription: Terlepas dari pengaturan ini, pengguna d
   menghapus sendiri tanda NSFW. Berkas yang ada tidak berpengaruh.
 noteEditHistory: Riwayat penyuntingan kiriman
 media: Media
+antennaLimit: Jumlah antena maksimum yang dapat dibuat oleh setiap pengguna
+showAddFileDescriptionAtFirstPost: Buka formulir secara otomatis untuk menulis deskripsi
+  ketika mencoba mengirim berkas tanpa deskripsi
+remoteFollow: Ikuti jarak jauh
+foldNotification: Kelompokkan notifikasi yang sama
+getQrCode: Tampilkan kode QR
+cannotEditVisibility: Kamu tidak bisa menyunting keterlihatan
+useThisAccountConfirm: Apakah kamu ingin melanjutkan dengan akun ini?
+inputAccountId: Silakan memasukkan akunmu (misalnya, @firefish@info.firefish.dev)
+copyRemoteFollowUrl: Salin URL ikuti jarak jauh

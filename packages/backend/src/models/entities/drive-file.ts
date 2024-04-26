@@ -13,7 +13,6 @@ import { id } from "../id.js";
 import { Note } from "./note.js";
 import { User } from "./user.js";
 import { DriveFolder } from "./drive-folder.js";
-import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
 import { NoteFile } from "./note-file.js";
 
 export type DriveFileUsageHint = "userAvatar" | "userBanner" | null;
@@ -73,7 +72,7 @@ export class DriveFile {
 
 	@Index() // USING pgroonga pgroonga_varchar_full_text_search_ops_v2
 	@Column("varchar", {
-		length: DB_MAX_IMAGE_COMMENT_LENGTH,
+		length: 8192,
 		nullable: true,
 		comment: "The comment of the DriveFile.",
 	})

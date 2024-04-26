@@ -4,7 +4,7 @@ import { UserIps } from "@/models/index.js";
 
 import { queueLogger } from "../../logger.js";
 
-const logger = queueLogger.createSubLogger("clean");
+const logger = queueLogger.createSubLogger("clean-user-ip-log");
 
 export async function clean(
 	job: Bull.Job<Record<string, unknown>>,
@@ -16,6 +16,6 @@ export async function clean(
 		createdAt: LessThan(new Date(Date.now() - 1000 * 60 * 60 * 24 * 90)),
 	});
 
-	logger.succ("Cleaned.");
+	logger.info("Cleaned.");
 	done();
 }
