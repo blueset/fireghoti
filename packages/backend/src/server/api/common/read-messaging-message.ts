@@ -1,9 +1,7 @@
-import {
-	publishMainStream,
-	publishGroupMessagingStream,
-} from "@/services/stream.js";
+import { publishMainStream } from "@/services/stream.js";
 import {
 	publishToChatStream,
+	publishToGroupChatStream,
 	publishToChatIndexStream,
 	ChatEvent,
 	ChatIndexEvent,
@@ -130,9 +128,9 @@ export async function readGroupMessagingMessage(
 	}
 
 	// Publish event
-	publishGroupMessagingStream(groupId, "read", {
+	publishToGroupChatStream(groupId, ChatEvent.Read, {
 		ids: reads,
-		userId: userId,
+		userId,
 	});
 	publishToChatIndexStream(userId, ChatIndexEvent.Read, reads);
 

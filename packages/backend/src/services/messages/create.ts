@@ -10,16 +10,14 @@ import {
 import {
 	genId,
 	publishToChatStream,
+	publishToGroupChatStream,
 	publishToChatIndexStream,
 	toPuny,
 	ChatEvent,
 	ChatIndexEvent,
 } from "backend-rs";
 import type { MessagingMessage } from "@/models/entities/messaging-message.js";
-import {
-	publishMainStream,
-	publishGroupMessagingStream,
-} from "@/services/stream.js";
+import { publishMainStream } from "@/services/stream.js";
 import { pushNotification } from "@/services/push-notification.js";
 import { Not } from "typeorm";
 import type { Note } from "@/models/entities/note.js";
@@ -86,11 +84,11 @@ export async function createMessage(
 			);
 			publishMainStream(recipientUser.id, "messagingMessage", messageObj);
 		}
-	} else if (recipientGroup) {
-		// グループのストリーム
-		publishGroupMessagingStream(recipientGroup.id, "message", messageObj);
+	} else if (recipientGroup != null) {
+		// group's stream
+		publishToGroupChatStream(recipientGroup.id, ChatEvent.Message, messageObj);
 
-		// メンバーのストリーム
+		// member's stream
 		const joinings = await UserGroupJoinings.findBy({
 			userGroupId: recipientGroup.id,
 		});

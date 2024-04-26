@@ -1174,6 +1174,7 @@ export interface PackedEmoji {
   height: number | null
 }
 export function publishToBroadcastStream(emoji: PackedEmoji): void
+export function publishToGroupChatStream(groupId: string, kind: ChatEvent, object: any): void
 export interface AbuseUserReportLike {
   id: string
   targetUserId: string

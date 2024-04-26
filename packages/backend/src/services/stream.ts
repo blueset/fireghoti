@@ -2,7 +2,7 @@ import { redisClient } from "@/db/redis.js";
 import type { User } from "@/models/entities/user.js";
 import type { Note } from "@/models/entities/note.js";
 import type { UserList } from "@/models/entities/user-list.js";
-import type { UserGroup } from "@/models/entities/user-group.js";
+// import type { UserGroup } from "@/models/entities/user-group.js";
 import { config } from "@/config.js";
 // import type { Antenna } from "@/models/entities/antenna.js";
 // import type { Channel } from "@/models/entities/channel.js";
@@ -13,7 +13,7 @@ import type {
 	// BroadcastTypes,
 	// ChannelStreamTypes,
 	DriveStreamTypes,
-	GroupMessagingStreamTypes,
+	// GroupMessagingStreamTypes,
 	InternalStreamTypes,
 	MainStreamTypes,
 	// MessagingIndexStreamTypes,
@@ -163,19 +163,20 @@ class Publisher {
 	// 	);
 	// };
 
-	public publishGroupMessagingStream = <
-		K extends keyof GroupMessagingStreamTypes,
-	>(
-		groupId: UserGroup["id"],
-		type: K,
-		value?: GroupMessagingStreamTypes[K],
-	): void => {
-		this.publish(
-			`messagingStream:${groupId}`,
-			type,
-			typeof value === "undefined" ? null : value,
-		);
-	};
+	/* ported to backend-rs */
+	// public publishGroupMessagingStream = <
+	// 	K extends keyof GroupMessagingStreamTypes,
+	// >(
+	// 	groupId: UserGroup["id"],
+	// 	type: K,
+	// 	value?: GroupMessagingStreamTypes[K],
+	// ): void => {
+	// 	this.publish(
+	// 		`messagingStream:${groupId}`,
+	// 		type,
+	// 		typeof value === "undefined" ? null : value,
+	// 	);
+	// };
 
 	/* ported to backend-rs */
 	// public publishMessagingIndexStream = <
@@ -225,7 +226,6 @@ export const publishNotesStream = publisher.publishNotesStream;
 export const publishUserListStream = publisher.publishUserListStream;
 // export const publishAntennaStream = publisher.publishAntennaStream;
 // export const publishMessagingStream = publisher.publishMessagingStream;
-export const publishGroupMessagingStream =
-	publisher.publishGroupMessagingStream;
+// export const publishGroupMessagingStream = publisher.publishGroupMessagingStream;
 // export const publishMessagingIndexStream = publisher.publishMessagingIndexStream;
 // export const publishAdminStream = publisher.publishAdminStream;
