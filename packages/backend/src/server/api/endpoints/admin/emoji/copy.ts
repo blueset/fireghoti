@@ -1,10 +1,14 @@
 import define from "@/server/api/define.js";
 import { Emojis } from "@/models/index.js";
-import { type ImageSize, genId, getImageSizeFromUrl } from "backend-rs";
+import {
+	type ImageSize,
+	genId,
+	getImageSizeFromUrl,
+	publishToBroadcastStream,
+} from "backend-rs";
 import { ApiError } from "@/server/api/error.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import { uploadFromUrl } from "@/services/drive/upload-from-url.js";
-import { publishBroadcastStream } from "@/services/stream.js";
 import { db } from "@/db/postgre.js";
 import { apiLogger } from "@/server/api/logger.js";
 import { inspect } from "node:util";
@@ -102,9 +106,7 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	await db.queryResultCache!.remove(["meta_emojis"]);
 
-	publishBroadcastStream("emojiAdded", {
-		emoji: await Emojis.pack(copied.id),
-	});
+	publishToBroadcastStream(await Emojis.pack(copied));
 
 	return {
 		id: copied.id,

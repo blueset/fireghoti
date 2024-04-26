@@ -310,7 +310,7 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { SECOND, MINUTE, HOUR, DAY, USER_ONLINE_THRESHOLD, USER_ACTIVE_THRESHOLD, FILE_TYPE_BROWSERSAFE, loadEnv, loadConfig, stringToAcct, acctToString, addNoteToAntenna, isBlockedServer, isSilencedServer, isAllowedServer, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getImageSizeFromUrl, getNoteSummary, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, removeOldAttestationChallenges, AntennaSrcEnum, DriveFileUsageHintEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initializeRustLogger, watchNote, unwatchNote, publishToChannelStream, ChatEvent, publishToChatStream, ChatIndexEvent, publishToChatIndexStream, publishToModerationStream, getTimestamp, genId, genIdAt, secureRndstr } = nativeBinding
+const { SECOND, MINUTE, HOUR, DAY, USER_ONLINE_THRESHOLD, USER_ACTIVE_THRESHOLD, FILE_TYPE_BROWSERSAFE, loadEnv, loadConfig, stringToAcct, acctToString, addNoteToAntenna, isBlockedServer, isSilencedServer, isAllowedServer, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getImageSizeFromUrl, getNoteSummary, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, removeOldAttestationChallenges, AntennaSrcEnum, DriveFileUsageHintEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initializeRustLogger, watchNote, unwatchNote, publishToChannelStream, ChatEvent, publishToChatStream, ChatIndexEvent, publishToChatIndexStream, publishToBroadcastStream, publishToModerationStream, getTimestamp, genId, genIdAt, secureRndstr } = nativeBinding
 
 module.exports.SECOND = SECOND
 module.exports.MINUTE = MINUTE
@@ -370,6 +370,7 @@ module.exports.ChatEvent = ChatEvent
 module.exports.publishToChatStream = publishToChatStream
 module.exports.ChatIndexEvent = ChatIndexEvent
 module.exports.publishToChatIndexStream = publishToChatIndexStream
+module.exports.publishToBroadcastStream = publishToBroadcastStream
 module.exports.publishToModerationStream = publishToModerationStream
 module.exports.getTimestamp = getTimestamp
 module.exports.genId = genId

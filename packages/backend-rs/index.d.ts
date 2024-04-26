@@ -1162,6 +1162,18 @@ export enum ChatIndexEvent {
   Read = 'read'
 }
 export function publishToChatIndexStream(userId: string, kind: ChatIndexEvent, object: any): void
+export interface PackedEmoji {
+  id: string
+  aliases: Array<string>
+  name: string
+  category: string | null
+  host: string | null
+  url: string
+  license: string | null
+  width: number | null
+  height: number | null
+}
+export function publishToBroadcastStream(emoji: PackedEmoji): void
 export interface AbuseUserReportLike {
   id: string
   targetUserId: string

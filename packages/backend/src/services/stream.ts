@@ -10,7 +10,7 @@ import type {
 	StreamChannels,
 	// AdminStreamTypes,
 	// AntennaStreamTypes,
-	BroadcastTypes,
+	// BroadcastTypes,
 	// ChannelStreamTypes,
 	DriveStreamTypes,
 	GroupMessagingStreamTypes,
@@ -64,16 +64,17 @@ class Publisher {
 		);
 	};
 
-	public publishBroadcastStream = <K extends keyof BroadcastTypes>(
-		type: K,
-		value?: BroadcastTypes[K],
-	): void => {
-		this.publish(
-			"broadcast",
-			type,
-			typeof value === "undefined" ? null : value,
-		);
-	};
+	/* ported to backend-rs */
+	// public publishBroadcastStream = <K extends keyof BroadcastTypes>(
+	// 	type: K,
+	// 	value?: BroadcastTypes[K],
+	// ): void => {
+	// 	this.publish(
+	// 		"broadcast",
+	// 		type,
+	// 		typeof value === "undefined" ? null : value,
+	// 	);
+	// };
 
 	public publishMainStream = <K extends keyof MainStreamTypes>(
 		userId: User["id"],
@@ -215,7 +216,7 @@ export default publisher;
 
 export const publishInternalEvent = publisher.publishInternalEvent;
 export const publishUserEvent = publisher.publishUserEvent;
-export const publishBroadcastStream = publisher.publishBroadcastStream;
+// export const publishBroadcastStream = publisher.publishBroadcastStream;
 export const publishMainStream = publisher.publishMainStream;
 export const publishDriveStream = publisher.publishDriveStream;
 export const publishNoteStream = publisher.publishNoteStream;

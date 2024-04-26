@@ -2,6 +2,7 @@ pub mod antenna;
 pub mod channel;
 pub mod chat;
 pub mod chat_index;
+pub mod custom_emoji;
 pub mod moderation;
 
 use crate::config::CONFIG;
@@ -13,7 +14,7 @@ pub enum Stream {
     #[strum(serialize = "internal")]
     Internal,
     #[strum(serialize = "broadcast")]
-    Broadcast,
+    CustomEmoji,
     #[strum(to_string = "adminStream:{moderator_id}")]
     Moderation { moderator_id: String },
     #[strum(to_string = "user:{user_id}")]
@@ -84,7 +85,7 @@ mod unit_test {
     #[test]
     fn channel_to_string() {
         assert_eq!(Stream::Internal.to_string(), "internal");
-        assert_eq!(Stream::Broadcast.to_string(), "broadcast");
+        assert_eq!(Stream::CustomEmoji.to_string(), "broadcast");
         assert_eq!(
             Stream::Moderation {
                 moderator_id: "9tb42br63g5apjcq".to_string()
