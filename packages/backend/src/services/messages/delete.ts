@@ -1,8 +1,11 @@
 import { config } from "@/config.js";
 import { MessagingMessages, Users } from "@/models/index.js";
 import type { MessagingMessage } from "@/models/entities/messaging-message.js";
-import { publishGroupMessagingStream } from "@/services/stream.js";
-import { publishToChatStream, ChatEvent } from "backend-rs";
+import {
+	publishToChatStream,
+	publishToGroupChatStream,
+	ChatEvent,
+} from "backend-rs";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderDelete from "@/remote/activitypub/renderer/delete.js";
 import renderTombstone from "@/remote/activitypub/renderer/tombstone.js";
@@ -42,7 +45,7 @@ async function postDeleteMessage(message: MessagingMessage) {
 			);
 			deliver(user, activity, recipient.inbox);
 		}
-	} else if (message.groupId) {
-		publishGroupMessagingStream(message.groupId, "deleted", message.id);
+	} else if (message.groupId != null) {
+		publishToGroupChatStream(message.groupId, ChatEvent.Deleted, message.id);
 	}
 }

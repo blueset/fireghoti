@@ -879,6 +879,8 @@ driveCapOverrideCaption: "输入 0 或以下的值将容量重置为默认值。
 requireAdminForView: "您需要使用管理员账号登录才能查看。"
 isSystemAccount: "该账号由系统自动创建。请不要修改、编辑、删除或以其它方式篡改这个账号，否则可能会破坏您的服务器。"
 typeToConfirm: "输入 {x} 以确认操作"
+useThisAccountConfirm: "您想使用此帐户继续执行此操作吗？"
+inputAccountId: "请输入您的帐户（例如 @firefish@info.firefish.dev ）"
 deleteAccount: "删除账号"
 document: "文档"
 numberOfPageCache: "缓存页数"
@@ -1974,6 +1976,9 @@ origin: 起源
 confirm: 确认
 importZip: 导入 ZIP
 exportZip: 导出 ZIP
+getQrCode: "获取二维码"
+remoteFollow: "远程关注"
+copyRemoteFollowUrl: "复制远程关注 URL"
 emojiPackCreator: 表情包创建工具
 objectStorageS3ForcePathStyleDesc: 打开此选项可构建格式为 "s3.amazonaws.com/<bucket>/" 而非 "<bucket>.s3.amazonaws.com"
   的端点 URL。

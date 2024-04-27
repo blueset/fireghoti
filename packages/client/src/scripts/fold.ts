@@ -20,7 +20,6 @@ interface FoldOption {
  */
 export function foldItems<ItemFolded, Item>(
 	ns: Item[],
-	fetch_limit: number,
 	classfier: (n: Item, index: number) => string,
 	aggregator: (ns: Item[], key: string) => ItemFolded,
 	_options?: FoldOption,
@@ -30,55 +29,48 @@ export function foldItems<ItemFolded, Item>(
 	const options: FoldOption = _options ?? {};
 	options.skipSingleElement ??= true;
 
-	for (let i = 0; i < ns.length; i += fetch_limit) {
-		const toFold = ns.slice(i, i + fetch_limit);
-		const toAppendKeys: string[] = [];
-		const foldMap = new Map<string, Item[]>();
+	const toAppendKeys: string[] = [];
+	const foldMap = new Map<string, Item[]>();
 
-		for (const [index, n] of toFold.entries()) {
-			const key = classfier(n, index);
-			const arr = foldMap.get(key);
-			if (arr != null) {
-				arr.push(n);
-			} else {
-				foldMap.set(key, [n]);
-				toAppendKeys.push(key);
-			}
+	for (const [index, n] of ns.entries()) {
+		const key = classfier(n, index);
+		const arr = foldMap.get(key);
+		if (arr != null) {
+			arr.push(n);
+		} else {
+			foldMap.set(key, [n]);
+			toAppendKeys.push(key);
 		}
-
-		res = res.concat(
-			toAppendKeys.map((key) => {
-				const arr = foldMap.get(key)!;
-				if (arr?.length === 1 && options?.skipSingleElement) {
-					return arr[0];
-				}
-				return aggregator(arr, key);
-			}),
-		);
 	}
+
+	res = toAppendKeys.map((key) => {
+		const arr = foldMap.get(key)!;
+		if (arr?.length === 1 && options?.skipSingleElement) {
+			return arr[0];
+		}
+		return aggregator(arr, key);
+	});
 
 	return res;
 }
 
-export function foldNotifications(
-	ns: entities.Notification[],
-	fetch_limit: number,
-) {
+export function foldNotifications(ns: entities.Notification[]) {
+	// By the implement of MkPagination, lastId is unique and is safe for key
+	const lastId = ns[ns.length - 1]?.id ?? "prepend";
 	return foldItems(
 		ns,
-		fetch_limit,
 		(n) => {
 			switch (n.type) {
 				case "renote":
-					return `renote-of:${n.note.renote.id}`;
+					return `renote-${n.note.renote.id}`;
 				case "reaction":
-					return `reaction:${n.reaction}:of:${n.note.id}`;
+					return `reaction-${n.reaction}-of-${n.note.id}`;
 				default: {
 					return `${n.id}`;
 				}
 			}
 		},
-		(ns) => {
+		(ns, key) => {
 			const represent = ns[0];
 			function check(
 				ns: entities.Notification[],
@@ -94,6 +86,7 @@ export function foldNotifications(
 				userIds: ns.map((nn) => nn.userId),
 				users: ns.map((nn) => nn.user),
 				notifications: ns!,
+				id: `G-${lastId}-${key}`,
 			} as NotificationFolded;
 		},
 	);

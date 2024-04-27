@@ -113,6 +113,7 @@
 						:detailed="true"
 						:detailed-view="detailedView"
 						:parent-id="appearNote.id"
+						:is-long-judger="isLongJudger"
 						@push="(e) => router.push(notePage(e))"
 						@focusfooter="footerEl!.focus()"
 						@expanded="(e) => setPostExpanded(e)"
@@ -325,6 +326,7 @@ const props = defineProps<{
 	collapsedReply?: boolean;
 	hideFooter?: boolean;
 	hideEmojiViewer?: boolean;
+	isLongJudger?: (note: entities.Note) => boolean;
 }>();
 
 const inChannel = inject("inChannel", null);

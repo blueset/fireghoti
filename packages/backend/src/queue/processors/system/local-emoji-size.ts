@@ -3,7 +3,7 @@ import { IsNull } from "typeorm";
 import { Emojis } from "@/models/index.js";
 
 import { queueLogger } from "../../logger.js";
-import { getEmojiSize } from "@/misc/emoji-meta.js";
+import { getImageSizeFromUrl } from "backend-rs";
 import { inspect } from "node:util";
 
 const logger = queueLogger.createSubLogger("local-emoji-size");
@@ -21,7 +21,7 @@ export async function setLocalEmojiSizes(
 
 	for (let i = 0; i < emojis.length; i++) {
 		try {
-			const size = await getEmojiSize(emojis[i].publicUrl);
+			const size = await getImageSizeFromUrl(emojis[i].publicUrl);
 			await Emojis.update(emojis[i].id, {
 				width: size.width || null,
 				height: size.height || null,

@@ -3,7 +3,7 @@ FROM docker.io/node:20-alpine as build
 WORKDIR /firefish
 
 # Install compilation dependencies
-RUN apk update && apk add --no-cache build-base linux-headers curl ca-certificates python3
+RUN apk update && apk add --no-cache build-base linux-headers curl ca-certificates python3 perl
 RUN curl --proto '=https' --tlsv1.2 --silent --show-error --fail https://sh.rustup.rs | sh -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 
@@ -34,6 +34,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm install -
 
 # Copy in the rest of the rust files
 COPY packages/backend-rs packages/backend-rs/
+# COPY packages/macro-rs packages/macro-rs/
 
 # Compile backend-rs
 RUN NODE_ENV='production' pnpm run --filter backend-rs build

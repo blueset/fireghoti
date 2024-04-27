@@ -11,7 +11,7 @@
 	"devDependencies": {
 		"firefish-js": "workspace:*",
 		"idb-keyval": "^6.2.1",
-		"vite": "5.2.8",
+		"vite": "5.2.10",
 		"vite-plugin-compression": "^0.5.1"
 	}
 }

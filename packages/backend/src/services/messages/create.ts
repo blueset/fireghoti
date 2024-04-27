@@ -7,13 +7,17 @@ import {
 	Mutings,
 	Users,
 } from "@/models/index.js";
-import { genId, publishToChatStream, toPuny, ChatEvent } from "backend-rs";
-import type { MessagingMessage } from "@/models/entities/messaging-message.js";
 import {
-	publishMessagingIndexStream,
-	publishMainStream,
-	publishGroupMessagingStream,
-} from "@/services/stream.js";
+	genId,
+	publishToChatStream,
+	publishToGroupChatStream,
+	publishToChatIndexStream,
+	toPuny,
+	ChatEvent,
+	ChatIndexEvent,
+} from "backend-rs";
+import type { MessagingMessage } from "@/models/entities/messaging-message.js";
+import { publishMainStream } from "@/services/stream.js";
 import { pushNotification } from "@/services/push-notification.js";
 import { Not } from "typeorm";
 import type { Note } from "@/models/entities/note.js";
@@ -57,7 +61,11 @@ export async function createMessage(
 				ChatEvent.Message,
 				messageObj,
 			);
-			publishMessagingIndexStream(message.userId, "message", messageObj);
+			publishToChatIndexStream(
+				message.userId,
+				ChatIndexEvent.Message,
+				messageObj,
+			);
 			publishMainStream(message.userId, "messagingMessage", messageObj);
 		}
 
@@ -69,19 +77,27 @@ export async function createMessage(
 				ChatEvent.Message,
 				messageObj,
 			);
-			publishMessagingIndexStream(recipientUser.id, "message", messageObj);
+			publishToChatIndexStream(
+				recipientUser.id,
+				ChatIndexEvent.Message,
+				messageObj,
+			);
 			publishMainStream(recipientUser.id, "messagingMessage", messageObj);
 		}
-	} else if (recipientGroup) {
-		// グループのストリーム
-		publishGroupMessagingStream(recipientGroup.id, "message", messageObj);
+	} else if (recipientGroup != null) {
+		// group's stream
+		publishToGroupChatStream(recipientGroup.id, ChatEvent.Message, messageObj);
 
-		// メンバーのストリーム
+		// member's stream
 		const joinings = await UserGroupJoinings.findBy({
 			userGroupId: recipientGroup.id,
 		});
 		for (const joining of joinings) {
-			publishMessagingIndexStream(joining.userId, "message", messageObj);
+			publishToChatIndexStream(
+				joining.userId,
+				ChatIndexEvent.Message,
+				messageObj,
+			);
 			publishMainStream(joining.userId, "messagingMessage", messageObj);
 		}
 	}

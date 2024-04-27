@@ -1011,6 +1011,8 @@ isSystemAccount: "This account is created and automatically operated by the syst
   Please do not moderate, edit, delete, or otherwise tamper with this account, or
   it may break your server."
 typeToConfirm: "Please enter {x} to confirm"
+useThisAccountConfirm: "Do you want to continue with this account?"
+inputAccountId: "Please input your account (e.g., @firefish@info.firefish.dev)"
 deleteAccount: "Delete account"
 document: "Documentation"
 numberOfPageCache: "Number of cached pages"
@@ -1157,6 +1159,9 @@ addRe: "Add \"re:\" at the beginning of comment in reply to a post with a conten
 confirm: "Confirm"
 importZip: "Import ZIP"
 exportZip: "Export ZIP"
+getQrCode: "Show QR code"
+remoteFollow: "Remote follow"
+copyRemoteFollowUrl: "Copy remote follow URL"
 emojiPackCreator: "Emoji pack creator"
 indexable: "Indexable"
 indexableDescription: "Allow built-in search to show your public posts"

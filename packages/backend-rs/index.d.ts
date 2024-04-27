@@ -248,6 +248,11 @@ export function sqlLikeEscape(src: string): string
 export function safeForSql(src: string): boolean
 /** Convert milliseconds to a human readable string */
 export function formatMilliseconds(milliseconds: number): string
+export interface ImageSize {
+  width: number
+  height: number
+}
+export function getImageSizeFromUrl(url: string): Promise<ImageSize>
 /** TODO: handle name collisions better */
 export interface NoteLikeForGetNoteSummary {
   fileIds: Array<string>
@@ -1012,10 +1017,10 @@ export interface User {
   isDeleted: boolean
   driveCapacityOverrideMb: number | null
   movedToUri: string | null
-  alsoKnownAs: string | null
   speakAsCat: boolean
   emojiModPerm: UserEmojimodpermEnum
   isIndexable: boolean
+  alsoKnownAs: Array<string> | null
 }
 export interface UserGroup {
   id: string
@@ -1144,6 +1149,7 @@ export interface Webhook {
 export function initializeRustLogger(): void
 export function watchNote(watcherId: string, noteAuthorId: string, noteId: string): Promise<void>
 export function unwatchNote(watcherId: string, noteId: string): Promise<void>
+export function publishToChannelStream(channelId: string, userId: string): void
 export enum ChatEvent {
   Message = 'message',
   Read = 'read',
@@ -1151,6 +1157,31 @@ export enum ChatEvent {
   Typing = 'typing'
 }
 export function publishToChatStream(senderUserId: string, receiverUserId: string, kind: ChatEvent, object: any): void
+export enum ChatIndexEvent {
+  Message = 'message',
+  Read = 'read'
+}
+export function publishToChatIndexStream(userId: string, kind: ChatIndexEvent, object: any): void
+export interface PackedEmoji {
+  id: string
+  aliases: Array<string>
+  name: string
+  category: string | null
+  host: string | null
+  url: string
+  license: string | null
+  width: number | null
+  height: number | null
+}
+export function publishToBroadcastStream(emoji: PackedEmoji): void
+export function publishToGroupChatStream(groupId: string, kind: ChatEvent, object: any): void
+export interface AbuseUserReportLike {
+  id: string
+  targetUserId: string
+  reporterId: string
+  comment: string
+}
+export function publishToModerationStream(moderatorId: string, report: AbuseUserReportLike): void
 export function getTimestamp(id: string): number
 /**
  * The generated ID results in the form of `[8 chars timestamp] + [cuid2]`.

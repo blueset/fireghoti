@@ -1,5 +1,10 @@
 pub mod antenna;
+pub mod channel;
 pub mod chat;
+pub mod chat_index;
+pub mod custom_emoji;
+pub mod group_chat;
+pub mod moderation;
 
 use crate::config::CONFIG;
 use crate::database::redis_conn;
@@ -10,9 +15,9 @@ pub enum Stream {
     #[strum(serialize = "internal")]
     Internal,
     #[strum(serialize = "broadcast")]
-    Broadcast,
-    #[strum(to_string = "adminStream:{user_id}")]
-    Admin { user_id: String },
+    CustomEmoji,
+    #[strum(to_string = "adminStream:{moderator_id}")]
+    Moderation { moderator_id: String },
     #[strum(to_string = "user:{user_id}")]
     User { user_id: String },
     #[strum(to_string = "channelStream:{channel_id}")]
@@ -37,7 +42,7 @@ pub enum Stream {
     #[strum(to_string = "messagingStream:{group_id}")]
     GroupChat { group_id: String },
     #[strum(to_string = "messagingIndexStream:{user_id}")]
-    MessagingIndex { user_id: String },
+    ChatIndex { user_id: String },
 }
 
 #[derive(thiserror::Error, Debug)]
@@ -57,7 +62,7 @@ pub fn publish_to_stream(
 ) -> Result<(), Error> {
     let message = if let Some(kind) = kind {
         format!(
-            "{{ \"type\": \"{}\", \"body\": {} }}",
+            "{{\"type\":\"{}\",\"body\":{}}}",
             kind,
             value.unwrap_or("null".to_string()),
         )
@@ -67,10 +72,7 @@ pub fn publish_to_stream(
 
     redis_conn()?.publish(
         &CONFIG.host,
-        format!(
-            "{{ \"channel\": \"{}\", \"message\": {} }}",
-            stream, message,
-        ),
+        format!("{{\"channel\":\"{}\",\"message\":{}}}", stream, message),
     )?;
 
     Ok(())
@@ -84,10 +86,10 @@ mod unit_test {
     #[test]
     fn channel_to_string() {
         assert_eq!(Stream::Internal.to_string(), "internal");
-        assert_eq!(Stream::Broadcast.to_string(), "broadcast");
+        assert_eq!(Stream::CustomEmoji.to_string(), "broadcast");
         assert_eq!(
-            Stream::Admin {
-                user_id: "9tb42br63g5apjcq".to_string()
+            Stream::Moderation {
+                moderator_id: "9tb42br63g5apjcq".to_string()
             }
             .to_string(),
             "adminStream:9tb42br63g5apjcq"

@@ -26,7 +26,6 @@
 								: notification.reaction
 						"
 						:custom-emojis="notification.note.emojis"
-						:no-style="true"
 					/>
 					<XReactionIcon
 						v-else-if="
@@ -60,18 +59,20 @@
 			class="content"
 			:note="removeReplyTo(notification.note.renote)"
 			:hide-emoji-viewer="true"
+			:is-long-judger="isLongJudger"
 		/>
 		<XNote
 			v-else
 			class="content"
 			:note="removeReplyTo(notification.note)"
 			:hide-emoji-viewer="true"
+			:is-long-judger="isLongJudger"
 		/>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import type { Connection } from "firefish-js/src/streaming";
 import type { Channels } from "firefish-js/src/streaming.types";
 import XReactionIcon from "@/components/MkReactionIcon.vue";
@@ -114,11 +115,22 @@ const defaultReaction = ["⭐", "👍", "❤️"].includes(instance.defaultReact
 	? instance.defaultReaction
 	: "⭐";
 
-const users = ref(props.notification.users.slice(0, 5));
-const userleft = ref(props.notification.users.length - users.value.length);
+const users = computed(() => props.notification.users.slice(0, 5));
+const userleft = computed(
+	() => props.notification.users.length - users.value.length,
+);
 
 let readObserver: IntersectionObserver | undefined;
 let connection: Connection<Channels["main"]> | null = null;
+
+function isLongJudger(note: entities.Note) {
+	return (
+		note.text != null &&
+		(note.text.split("\n").length > 5 ||
+			note.text.length > 300 ||
+			note.files.length > 4)
+	);
+}
 
 function getText() {
 	let res = "";

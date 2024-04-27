@@ -1,12 +1,17 @@
 import define from "@/server/api/define.js";
 import { Emojis } from "@/models/index.js";
-import { genId } from "backend-rs";
+import {
+	type ImageSize,
+	genId,
+	getImageSizeFromUrl,
+	publishToBroadcastStream,
+} from "backend-rs";
 import { ApiError } from "@/server/api/error.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import { uploadFromUrl } from "@/services/drive/upload-from-url.js";
-import { publishBroadcastStream } from "@/services/stream.js";
 import { db } from "@/db/postgre.js";
-import { getEmojiSize } from "@/misc/emoji-meta.js";
+import { apiLogger } from "@/server/api/logger.js";
+import { inspect } from "node:util";
 
 export const meta = {
 	tags: ["admin", "emoji"],
@@ -76,7 +81,14 @@ export default define(meta, paramDef, async (ps, me) => {
 		throw new ApiError();
 	}
 
-	const size = await getEmojiSize(driveFile.url);
+	let size: ImageSize | null = null;
+
+	try {
+		size = await getImageSizeFromUrl(driveFile.url);
+	} catch (err) {
+		apiLogger.info(`Failed to determine the image size: ${driveFile.url}`);
+		apiLogger.debug(inspect(err));
+	}
 
 	const copied = await Emojis.insert({
 		id: genId(),
@@ -88,15 +100,13 @@ export default define(meta, paramDef, async (ps, me) => {
 		publicUrl: driveFile.webpublicUrl ?? driveFile.url,
 		type: driveFile.webpublicType ?? driveFile.type,
 		license: emoji.license,
-		width: size.width || null,
-		height: size.height || null,
+		width: size?.width ?? null,
+		height: size?.height ?? null,
 	}).then((x) => Emojis.findOneByOrFail(x.identifiers[0]));
 
 	await db.queryResultCache!.remove(["meta_emojis"]);
 
-	publishBroadcastStream("emojiAdded", {
-		emoji: await Emojis.pack(copied.id),
-	});
+	publishToBroadcastStream(await Emojis.pack(copied));
 
 	return {
 		id: copied.id,

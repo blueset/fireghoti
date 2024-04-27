@@ -4,6 +4,9 @@ export function getScrollContainer(el: HTMLElement | null): HTMLElement | null {
 	if (el == null) return null;
 	const overflow = window.getComputedStyle(el).getPropertyValue("overflow-y");
 	if (overflow === "scroll" || overflow === "auto") {
+		if (el.tagName === "HTML") {
+			return null;
+		}
 		return el;
 	} else {
 		return getScrollContainer(el.parentElement);
