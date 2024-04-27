@@ -20,6 +20,8 @@ if (isSignedIn(me)) {
 	const { canceled } = await os.confirm({
 		type: "question",
 		text: i18n.ts.useThisAccountConfirm,
+		okText: i18n.ts.yes,
+		cancelText: i18n.ts.no,
 	});
 
 	// use the current account
