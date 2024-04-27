@@ -242,6 +242,8 @@ const reload = (): Promise<void> => {
 	appended.value = [];
 	prepended.value = [];
 	idMap.clear();
+	offset.value = 0;
+	nextPagingBy = {};
 	return init();
 };
 
