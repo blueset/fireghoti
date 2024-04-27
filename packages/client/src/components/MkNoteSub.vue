@@ -500,6 +500,7 @@ function onContextmenu(ev: MouseEvent): void {
 					text: i18n.ts.copyLink,
 					action: () => {
 						copyToClipboard(`${url}${notePage(appearNote.value)}`);
+						os.success();
 					},
 				},
 				note.value.user.host != null

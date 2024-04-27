@@ -126,6 +126,7 @@ const contextmenu = computed((): MenuItem[] => {
 			text: i18n.ts.copyLink,
 			action: () => {
 				copyToClipboard(pageUrl.value);
+				os.success();
 			},
 		},
 	];
