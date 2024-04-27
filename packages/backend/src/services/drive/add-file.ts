@@ -482,7 +482,8 @@ export async function addFile({
 
 	// detect name
 	const detectedName =
-		name || (info.type.ext ? `untitled.${info.type.ext}` : "untitled");
+		name ||
+		(info.fileExtension ? `untitled.${info.fileExtension}` : "untitled");
 
 	if (user && !force) {
 		// Check if there is a file with the same hash
@@ -561,12 +562,12 @@ export async function addFile({
 		orientation?: number;
 	} = {};
 
-	if (info.width) {
-		properties["width"] = info.width;
-		properties["height"] = info.height;
+	if (info.width != null && info.height != null) {
+		properties.width = info.width;
+		properties.height = info.height;
 	}
 	if (info.orientation != null) {
-		properties["orientation"] = info.orientation;
+		properties.orientation = info.orientation;
 	}
 
 	const profile = user
@@ -584,7 +585,7 @@ export async function addFile({
 	file.folderId = folder != null ? folder.id : null;
 	file.comment = comment;
 	file.properties = properties;
-	file.blurhash = info.blurhash || null;
+	file.blurhash = info.blurhash ?? null;
 	file.isLink = isLink;
 	file.requestIp = requestIp;
 	file.requestHeaders = requestHeaders;
@@ -619,7 +620,7 @@ export async function addFile({
 			file.size = 0;
 			file.md5 = info.md5;
 			file.name = detectedName;
-			file.type = info.type.mime;
+			file.type = info.mime;
 			file.storedInternal = false;
 
 			file = await DriveFiles.insert(file).then((x) =>
@@ -644,7 +645,7 @@ export async function addFile({
 			file,
 			path,
 			detectedName,
-			info.type.mime,
+			info.mime,
 			info.md5,
 			info.size,
 			usageHint,

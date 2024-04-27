@@ -9,13 +9,11 @@ import sharp from "sharp";
 import { encode } from "blurhash";
 import { inspect } from "node:util";
 
-export type FileInfo = {
+type FileInfo = {
 	size: number;
 	md5: string;
-	type: {
-		mime: string;
-		ext: string | null;
-	};
+	mime: string;
+	fileExtension: string | null;
 	width?: number;
 	height?: number;
 	orientation?: number;
@@ -109,7 +107,8 @@ export async function getFileInfo(path: string): Promise<FileInfo> {
 	return {
 		size,
 		md5,
-		type,
+		mime: type.mime,
+		fileExtension: type.ext,
 		width,
 		height,
 		orientation,
