@@ -52,7 +52,7 @@ import { UserProfiles } from "@/models/index.js";
 import { In } from "typeorm";
 import { config } from "@/config.js";
 import { truncate } from "@/misc/truncate.js";
-import { langmap } from "@/misc/langmap.js";
+import { langmap } from "firefish-js";
 import { inspect } from "node:util";
 
 export function validateNote(object: any, uri: string) {

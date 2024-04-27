@@ -63,7 +63,7 @@ import { db } from "@/db/postgre.js";
 import { getActiveWebhooks } from "@/misc/webhook-cache.js";
 import { redisClient } from "@/db/redis.js";
 import { Mutex } from "redis-semaphore";
-import { langmap } from "@/misc/langmap.js";
+import { langmap } from "firefish-js";
 import Logger from "@/services/logger.js";
 import { inspect } from "node:util";
 import { undefinedToNull } from "@/prelude/undefined-to-null.js";

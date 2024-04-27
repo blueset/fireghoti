@@ -31,11 +31,12 @@ export const languages = consts.languages;
 export const ffVisibility = consts.ffVisibility;
 export const instanceSortParam = consts.instanceSortParam;
 
-import { langmap } from "./misc/langmap.js";
+import { langmap, type PostLanguage } from "./misc/langmap.js";
+export { langmap, type PostLanguage };
 
 // api extractor not supported yet
 //export * as api from './api';
 //export * as entities from './entities';
 import * as api from "./api.js";
 import * as entities from "./entities.js";
-export { api, entities, langmap };
+export { api, entities };
