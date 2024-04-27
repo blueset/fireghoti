@@ -379,6 +379,7 @@ export function inputText(props: {
 	default?: string | null;
 	minLength?: number;
 	maxLength?: number;
+	isPlaintext?: boolean;
 }): Promise<
 	| { canceled: true; result?: undefined }
 	| {
@@ -400,6 +401,7 @@ export function inputText(props: {
 					minLength: props.minLength,
 					maxLength: props.maxLength,
 				},
+				isPlaintext: props.isPlaintext,
 			},
 			{
 				done: (result) => {

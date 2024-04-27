@@ -32,6 +32,7 @@ if (isSignedIn(me)) {
 // Otherwise ask the user what the other account ID is
 const remoteAccountId = await os.inputText({
 	text: i18n.ts.inputAccountId,
+	isPlaintext: true,
 });
 
 // If the user do not want enter uri, the user will be redirected to the user page.
