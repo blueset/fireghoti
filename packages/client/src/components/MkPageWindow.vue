@@ -43,6 +43,7 @@ import { i18n } from "@/i18n";
 import type { PageMetadata } from "@/scripts/page-metadata";
 import { provideMetadataReceiver } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
+import * as os from "@/os";
 
 const props = defineProps<{
 	initialPath: string;
@@ -121,6 +122,7 @@ const contextmenu = computed(() => [
 		text: i18n.ts.copyLink,
 		action: () => {
 			copyToClipboard(url + router.getCurrentPath());
+			os.success();
 		},
 	},
 ]);

@@ -246,6 +246,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 			text: i18n.ts.copyUsername,
 			action: () => {
 				copyToClipboard(`@${user.username}@${user.host || host}`);
+				os.success();
 			},
 		},
 		{
@@ -272,6 +273,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 					text: i18n.ts.copyRemoteFollowUrl,
 					action: () => {
 						copyToClipboard(`https://${host}/follow-me?acct=${user.username}`);
+						os.success();
 					},
 				},
 			],
@@ -286,6 +288,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 					text: i18n.ts._feeds.rss,
 					action: () => {
 						copyToClipboard(`https://${host}/@${user.username}.rss`);
+						os.success();
 					},
 				},
 				{
@@ -293,6 +296,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 					text: i18n.ts._feeds.atom,
 					action: () => {
 						copyToClipboard(`https://${host}/@${user.username}.atom`);
+						os.success();
 					},
 				},
 				{
@@ -300,6 +304,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 					text: i18n.ts._feeds.jsonFeed,
 					action: () => {
 						copyToClipboard(`https://${host}/@${user.username}.json`);
+						os.success();
 					},
 				},
 			],
