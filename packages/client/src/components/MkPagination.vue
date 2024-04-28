@@ -5,7 +5,7 @@
 	>
 		<MkLoading v-if="fetching" />
 
-		<MkError v-else-if="error" @retry="init()" />
+		<MkError v-else-if="error" @retry="reload()" />
 
 		<div v-else-if="empty" key="_empty_" class="empty">
 			<slot name="empty">
@@ -479,7 +479,7 @@ const updateItem = (id: Item["id"], replacer: (old: Item) => Item): boolean => {
 };
 
 if (props.pagination.params && isRef<Param>(props.pagination.params)) {
-	watch(props.pagination.params, init, { deep: true });
+	watch(props.pagination.params, reload, { deep: true });
 }
 
 watch(
