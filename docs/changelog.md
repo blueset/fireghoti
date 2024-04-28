@@ -7,6 +7,7 @@ Critical security updates are indicated by the :warning: icon.
 
 ## Unreleased
 
+- Add ability to group similar notifications
 - Add features to share links to an account in the three dots menu on the profile page
 - Improve server logs
 - Fix bugs
