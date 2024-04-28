@@ -131,6 +131,10 @@
 				i18n.ts.autocorrectNoteLanguage
 			}}</FormSwitch>
 
+			<FormSwitch v-model="foldNotification" class="_formBlock">{{
+				i18n.ts.foldNotification
+			}}</FormSwitch>
+
 			<FormSelect v-model="serverDisconnectedBehavior" class="_formBlock">
 				<template #label>{{ i18n.ts.whenServerDisconnected }}</template>
 				<option value="reload">
@@ -325,13 +329,6 @@
 				<option value="respect">{{ i18n.ts._nsfw.respect }}</option>
 				<option value="ignore">{{ i18n.ts._nsfw.ignore }}</option>
 			</FormSelect>
-		</FormSection>
-
-		<FormSection>
-			<template #label>{{ i18n.ts.experimentalFeatures }}</template>
-			<FormSwitch v-model="foldNotification" class="_formBlock">{{
-				i18n.ts.foldNotification
-			}}</FormSwitch>
 		</FormSection>
 
 		<FormSection>
