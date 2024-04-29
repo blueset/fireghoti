@@ -5,7 +5,7 @@ Critical security updates are indicated by the :warning: icon.
 - Server administrators should check [notice-for-admins.md](./notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](./api-change.md) as well.
 
-## :warning: Unreleased
+## :warning: [v20240430](https://firefish.dev/firefish/firefish/-/merge_requests/10781/commits)
 
 - Add ability to group similar notifications
 - Add features to share links to an account in the three dots menu on the profile page
