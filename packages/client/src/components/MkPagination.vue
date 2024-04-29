@@ -38,7 +38,7 @@
 				</MkButton>
 				<MkLoading v-else class="loading" />
 			</div>
-			<slot :items="items" :foldedItems="foldedItems"></slot>
+			<slot :items="items" :folded-items="foldedItems"></slot>
 			<div
 				v-show="!pagination.reversed && more"
 				key="_more_"
@@ -105,9 +105,9 @@ export type MkPaginationType<
 	updateItem: (id: string, replacer: (old: Item) => Item) => boolean;
 };
 
-export type PagingAble = {
+export interface PagingAble {
 	id: string;
-};
+}
 
 export type PagingKeyOf<T> = TypeUtils.EndpointsOf<T[]>;
 // biome-ignore lint/suspicious/noExplicitAny: Used Intentionally

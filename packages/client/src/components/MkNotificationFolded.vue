@@ -75,6 +75,7 @@
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import type { Connection } from "firefish-js/src/streaming";
 import type { Channels } from "firefish-js/src/streaming.types";
+import type { entities } from "firefish-js";
 import XReactionIcon from "@/components/MkReactionIcon.vue";
 import XReactionTooltip from "@/components/MkReactionTooltip.vue";
 import { i18n } from "@/i18n";
@@ -89,7 +90,6 @@ import type {
 	ReactionNotificationFolded,
 } from "@/types/notification";
 import XNote from "@/components/MkNote.vue";
-import type { entities } from "firefish-js";
 
 const props = withDefaults(
 	defineProps<{

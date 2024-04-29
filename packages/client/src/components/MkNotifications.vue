@@ -17,8 +17,8 @@
 
 		<template #default="{ foldedItems: notifications }">
 			<XList
-				:items="notifications"
 				v-slot="{ item: notification }"
+				:items="notifications"
 				class="elsfgstc"
 				:no-gap="true"
 			>

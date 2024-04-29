@@ -4,7 +4,7 @@ export type FoldableNotification =
 	| entities.RenoteNotification
 	| entities.ReactionNotification;
 
-type Fold<T extends FoldableNotification> = {
+interface Fold<T extends FoldableNotification> {
 	id: string;
 	type: T["type"];
 	createdAt: T["createdAt"];
@@ -13,7 +13,7 @@ type Fold<T extends FoldableNotification> = {
 	userIds: entities.User["id"][];
 	users: entities.User[];
 	notifications: T[];
-};
+}
 
 export type RenoteNotificationFolded = Fold<entities.RenoteNotification>;
 

@@ -1,8 +1,8 @@
+import type { entities } from "firefish-js";
 import type {
 	FoldableNotification,
 	NotificationFolded,
 } from "@/types/notification";
-import type { entities } from "firefish-js";
 
 interface FoldOption {
 	/** If items length is 1, skip aggregation */
