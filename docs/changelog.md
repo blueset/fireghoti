@@ -17,7 +17,7 @@ Critical security updates are indicated by the :warning: icon.
 
 - Improve the usability of the feature to prevent forgetting to write alt texts
 - Add a server-wide setting for the maximum number of antennas each user can create
-- Fix bugs (including a medium sevirity security issue)
+- Fix bugs (including a medium severity security issue)
 	- We are very thankful to @mei23 for kindly sharing the information about the security issue.
 
 ## [v20240421](https://firefish.dev/firefish/firefish/-/merge_requests/10756/commits)
