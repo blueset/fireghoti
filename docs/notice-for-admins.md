@@ -8,6 +8,27 @@ You can skip intermediate versions when upgrading from an old version, but pleas
 
 You can control the verbosity of the server log by adding `maxLogLevel` in `.config/default.yml`. `logLevels` has been deprecated in favor of this setting. (see also: <https://firefish.dev/firefish/firefish/-/blob/eac0c1c47cd23789dcc395ab08b074934409fd96/.config/example.yml#L152>)
 
+### For systemd/pm2 users
+
+Not only Firefish but also Node.js has recently fixed a few security issues:
+
+- https://nodejs.org/en/blog/vulnerability/april-2024-security-releases
+- https://nodejs.org/en/blog/vulnerability/april-2024-security-releases-2
+
+So, it is highly recommended that you upgrade your Node.js version as well. The new versions are
+
+- Node v18.20.2 (v18.x LTS)
+- Node v20.12.2 (v20.x LTS)
+- Node v21.7.3 (v21.x)
+
+You can check your Node.js version by this command:
+
+```sh
+node --version
+```
+
+[Node v22](https://nodejs.org/en/blog/announcements/v22-release-announce) was also released several days ago, but we have not yet tested Firefish with this version.
+
 ## v20240413
 
 ### For all users
