@@ -2067,3 +2067,4 @@ useThisAccountConfirm: このアカウントで操作を続けますか？
 getQrCode: QRコードを表示
 copyRemoteFollowUrl: リモートからフォローするURLをコピー
 foldNotification: 同じ種類の通知をまとめて表示する
+slashQuote: 繋げて引用
