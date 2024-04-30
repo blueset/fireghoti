@@ -88,7 +88,9 @@ export class User {
 	})
 	public movedToUri: string | null;
 
-	@Column("simple-array", {
+	@Column("varchar", {
+		length: 512,
+		array: true,
 		nullable: true,
 		comment: "URIs the user is known as too",
 	})

@@ -14,12 +14,13 @@ export default async (
 ): Promise<string> => {
 	const uri = activity.id || activity;
 
-	logger.info(`Reject: ${uri}`);
+	apLogger.info(`Reject: ${uri}`);
 
 	const resolver = new Resolver();
 
 	const object = await resolver.resolve(activity.object).catch((e) => {
-		logger.error(`Resolution failed:\n${inspect(e)}`);
+		apLogger.info(`Failed to resolve AP object: ${e}`);
+		apLogger.debug(inspect(e));
 		throw e;
 	});
 

@@ -51,7 +51,7 @@ if (!["production", "test"].includes(process.env.NODE_ENV || "")) {
 	// Logger
 	app.use(
 		koaLogger((str) => {
-			serverLogger.info(str);
+			serverLogger.debug(str);
 		}),
 	);
 
@@ -181,7 +181,7 @@ export default () =>
 					);
 					break;
 				default:
-					serverLogger.error(e);
+					serverLogger.error(inspect(e));
 					break;
 			}
 

@@ -70,10 +70,10 @@ deliverQueue
 		),
 	)
 	.on("failed", (job, err) =>
-		deliverLogger.warn(`failed(${err}) ${getJobInfo(job)} to=${job.data.to}`),
+		deliverLogger.info(`failed(${err}) ${getJobInfo(job)} to=${job.data.to}`),
 	)
 	.on("error", (job: any, err: Error) =>
-		deliverLogger.error(`error ${err}`, { job, e: renderError(err) }),
+		deliverLogger.warn(`error ${err}`, { job, e: renderError(err) }),
 	)
 	.on("stalled", (job) =>
 		deliverLogger.warn(`stalled ${getJobInfo(job)} to=${job.data.to}`),

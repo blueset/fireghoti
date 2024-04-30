@@ -94,7 +94,7 @@ class DbLogger implements Logger {
 
 	public logQueryError(error: string, query: string, parameters?: any[]) {
 		sqlLogger.error(error);
-		sqlLogger.error(this.highlight(query));
+		sqlLogger.trace(this.highlight(query));
 	}
 
 	public logQuerySlow(time: number, query: string, parameters?: any[]) {

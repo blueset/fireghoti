@@ -8,12 +8,10 @@ import { Users } from "@/models/index.js";
 import MainStreamConnection from "./stream/index.js";
 import authenticate from "./authenticate.js";
 import { apiLogger } from "@/server/api/logger.js";
-import { MastodonStreamingConnection } from "@/server/api/mastodon/streaming/index.js";
 import type { AccessToken } from "@/models/entities/access-token.js";
 import type { ILocalUser } from "@/models/entities/user.js";
 import { getTokenFromOAuth } from "@/server/api/mastodon/middleware/auth.js";
-
-export const streamingLogger = apiLogger.createSubLogger("streaming");
+import { MastodonStreamingConnection } from "./mastodon/streaming/index.js";
 
 export const initializeStreamingServer = (server: http.Server) => {
 	// Init websocket server
@@ -74,6 +72,7 @@ export const initializeStreamingServer = (server: http.Server) => {
 		redisClient.on("message", onRedisMessage);
 		const host = `https://${request.host}`;
 		const prepareStream = q.stream?.toString();
+		apiLogger.trace("initialized streaming", q);
 
 		main = isMastodon
 			? new MastodonStreamingConnection(connection, ev, user, app, q)

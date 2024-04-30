@@ -80,6 +80,7 @@ function onContextmenu(ev) {
 				text: i18n.ts.copyLink,
 				action: () => {
 					copyToClipboard(`${url}${props.to}`);
+					os.success();
 				},
 			},
 		],

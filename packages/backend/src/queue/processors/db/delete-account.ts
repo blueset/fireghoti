@@ -13,7 +13,7 @@ const logger = queueLogger.createSubLogger("delete-account");
 export async function deleteAccount(
 	job: Bull.Job<DbUserDeleteJobData>,
 ): Promise<string | void> {
-	logger.info(`Deleting account of ${job.data.user.id} ...`);
+	logger.info(`Deleting account ${job.data.user.id} ...`);
 
 	const user = await Users.findOneBy({ id: job.data.user.id });
 	if (!user) return;
@@ -43,7 +43,7 @@ export async function deleteAccount(
 			await Notes.delete(notes.map((note) => note.id));
 		}
 
-		logger.info("All of notes deleted");
+		logger.info(`All posts of user ${job.data.user.id} were deleted`);
 	}
 
 	{
@@ -73,7 +73,7 @@ export async function deleteAccount(
 			}
 		}
 
-		logger.info("All of files deleted");
+		logger.info(`All files of user ${job.data.user.id} were deleted`);
 	}
 
 	{

@@ -13,7 +13,13 @@ import { extractPollFromQuestion } from "./question.js";
 import vote from "@/services/note/polls/vote.js";
 import { apLogger } from "../logger.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
-import { extractHost, isSameOrigin, toPuny } from "backend-rs";
+import {
+	type ImageSize,
+	extractHost,
+	getImageSizeFromUrl,
+	isSameOrigin,
+	toPuny,
+} from "backend-rs";
 import {
 	Emojis,
 	Polls,
@@ -44,13 +50,10 @@ import { publishNoteStream } from "@/services/stream.js";
 import { extractHashtags } from "@/misc/extract-hashtags.js";
 import { UserProfiles } from "@/models/index.js";
 import { In } from "typeorm";
-import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
+import { config } from "@/config.js";
 import { truncate } from "@/misc/truncate.js";
-import { type Size, getEmojiSize } from "@/misc/emoji-meta.js";
 import { langmap } from "@/misc/langmap.js";
 import { inspect } from "node:util";
-
-const logger = apLogger;
 
 export function validateNote(object: any, uri: string) {
 	const expectHost = extractHost(uri);
@@ -112,13 +115,16 @@ export async function createNote(
 	const entryUri = getApId(value);
 	const err = validateNote(object, entryUri);
 	if (err) {
-		logger.error(`${err.message}`, {
-			resolver: {
-				history: resolver.getHistory(),
-			},
-			value: value,
-			object: object,
-		});
+		apLogger.info(`${err.message}`);
+		apLogger.debug(
+			inspect({
+				resolver: {
+					history: resolver.getHistory(),
+				},
+				value: value,
+				object: object,
+			}),
+		);
 		throw new Error("invalid note");
 	}
 
@@ -140,8 +146,8 @@ export async function createNote(
 		throw new Error(`unexpected schema of note url: ${url}`);
 	}
 
-	logger.debug(`Note fetched: ${JSON.stringify(note, null, 2)}`);
-	logger.info(`Creating the Note: ${note.id}`);
+	apLogger.trace(`Note fetched: ${JSON.stringify(note, null, 2)}`);
+	apLogger.info(`Creating the Note: ${note.id}`);
 
 	// Skip if note is made before 2007 (1yr before Fedi was created)
 	// OR skip if note is made 3 days in advance
@@ -150,13 +156,13 @@ export async function createNote(
 		const FutureCheck = new Date();
 		FutureCheck.setDate(FutureCheck.getDate() + 3); // Allow some wiggle room for misconfigured hosts
 		if (DateChecker.getFullYear() < 2007) {
-			logger.warn(
+			apLogger.info(
 				"Note somehow made before Activitypub was created; discarding",
 			);
 			return null;
 		}
 		if (DateChecker > FutureCheck) {
-			logger.warn("Note somehow made after today; discarding");
+			apLogger.info("Note somehow made after today; discarding");
 			return null;
 		}
 	}
@@ -169,8 +175,8 @@ export async function createNote(
 
 	// Skip if author is suspended.
 	if (actor.isSuspended) {
-		logger.debug(
-			`User ${actor.usernameLower}@${actor.host} suspended; discarding.`,
+		apLogger.info(
+			`User ${actor.usernameLower}@${actor.host} is suspended; discarding.`,
 		);
 		return null;
 	}
@@ -224,7 +230,7 @@ export async function createNote(
 		? await resolveNote(note.inReplyTo, resolver)
 				.then((x) => {
 					if (x == null) {
-						logger.warn("Specified inReplyTo, but nout found");
+						apLogger.info(`Specified inReplyTo not found: ${note.inReplyTo}`);
 						throw new Error("inReplyTo not found");
 					} else {
 						return x;
@@ -242,7 +248,8 @@ export async function createNote(
 						}
 					}
 
-					logger.warn(`Error in inReplyTo ${note.inReplyTo}:\n${inspect(e)}`);
+					apLogger.info(`Error in inReplyTo ${note.inReplyTo}`);
+					apLogger.debug(inspect(e));
 					throw e;
 				})
 		: null;
@@ -336,11 +343,11 @@ export async function createNote(
 			index: number,
 		): Promise<null> => {
 			if (poll.expiresAt && Date.now() > new Date(poll.expiresAt).getTime()) {
-				logger.warn(
-					`vote to expired poll from AP: actor=${actor.username}@${actor.host}, note=${note.id}, choice=${name}`,
+				apLogger.info(
+					`discarding vote to expired poll: actor=${actor.username}@${actor.host}, note=${note.id}, choice=${name}`,
 				);
 			} else if (index >= 0) {
-				logger.info(
+				apLogger.info(
 					`vote from AP: actor=${actor.username}@${actor.host}, note=${note.id}, choice=${name}`,
 				);
 				await vote(actor, reply, index);
@@ -357,7 +364,8 @@ export async function createNote(
 	}
 
 	const emojis = await extractEmojis(note.tag || [], actor.host).catch((e) => {
-		logger.info(`extractEmojis:\n${inspect(e)}`);
+		apLogger.info("Failed to extract emojis");
+		apLogger.debug(inspect(e));
 		return [] as Emoji[];
 	});
 
@@ -485,11 +493,16 @@ export async function extractEmojis(
 					tag.icon!.url !== exists.originalUrl ||
 					!(exists.width && exists.height)
 				) {
-					let size: Size = { width: 0, height: 0 };
-					try {
-						size = await getEmojiSize(tag.icon!.url);
-					} catch {
-						/* skip if any error happens */
+					let size: ImageSize | null = null;
+					if (tag.icon?.url != null) {
+						try {
+							size = await getImageSizeFromUrl(tag.icon.url);
+						} catch (err) {
+							apLogger.info(
+								`Failed to determine the size of the image: ${tag.icon.url}`,
+							);
+							apLogger.debug(inspect(err));
+						}
 					}
 					await Emojis.update(
 						{
@@ -501,8 +514,8 @@ export async function extractEmojis(
 							originalUrl: tag.icon!.url,
 							publicUrl: tag.icon!.url,
 							updatedAt: new Date(),
-							width: size.width || null,
-							height: size.height || null,
+							width: size?.width || null,
+							height: size?.height || null,
 						},
 					);
 
@@ -515,11 +528,11 @@ export async function extractEmojis(
 				return exists;
 			}
 
-			logger.info(`register emoji host=${host}, name=${name}`);
+			apLogger.info(`register emoji host=${host}, name=${name}`);
 
-			let size: Size = { width: 0, height: 0 };
+			let size: ImageSize = { width: 0, height: 0 };
 			try {
-				size = await getEmojiSize(tag.icon!.url);
+				size = await getImageSizeFromUrl(tag.icon!.url);
 			} catch {
 				/* skip if any error happens */
 			}
@@ -619,7 +632,7 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 						const file = await resolveImage(actor, x, null);
 						const update: Partial<DriveFile> = {};
 
-						const altText = truncate(x.name, DB_MAX_IMAGE_COMMENT_LENGTH);
+						const altText = truncate(x.name, config.maxCaptionLength);
 						if (file.comment !== altText) {
 							update.comment = altText;
 						}

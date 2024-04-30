@@ -738,6 +738,7 @@ _notification:
   reacted: Ha reaccionat a la teva publicació
   renoted: Ha impulsat la teva publicació
   voted: Ha votat a la teva enquesta
+  andCountUsers: I {count} usuaris més {acted}
 _deck:
   _columns:
     notifications: "Notificacions"
@@ -2292,3 +2293,11 @@ media: Multimèdia
 antennaLimit: El nombre màxim d'antenes que pot crear un usuari
 showAddFileDescriptionAtFirstPost: Obra de forma automàtica un formulari per escriure
   una descripció quant intentes publicar un fitxer que no en té
+remoteFollow: Seguiment remot
+cannotEditVisibility: No pots canviar la visibilitat
+useThisAccountConfirm: Vols continuar amb aquest compte?
+inputAccountId: Sisplau introdueix el teu compte (per exemple @firefish@info.firefish.dev)
+getQrCode: Mostrar el codi QR
+copyRemoteFollowUrl: Còpia la adreça URL del seguidor remot
+foldNotification: Agrupar les notificacions similars
+slashQuote: Cita encadenada

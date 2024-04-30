@@ -81,8 +81,8 @@
 		</MkTab>
 
 		<MkPagination
-			ref="repliesPagingComponent"
 			v-if="tab === 'replies' && note.repliesCount > 0"
+			ref="repliesPagingComponent"
 			v-slot="{ items }"
 			:pagination="repliesPagination"
 		>

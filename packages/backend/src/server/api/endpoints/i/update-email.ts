@@ -6,8 +6,7 @@ import { Users, UserProfiles } from "@/models/index.js";
 import { sendEmail } from "@/services/send-email.js";
 import { ApiError } from "@/server/api/error.js";
 import { validateEmailForAccount } from "@/services/validate-email-for-account.js";
-import { HOUR } from "@/const.js";
-import { verifyPassword } from "backend-rs";
+import { HOUR, verifyPassword } from "backend-rs";
 
 export const meta = {
 	requireCredential: true,

@@ -6,7 +6,7 @@ import type S3 from "aws-sdk/clients/s3.js"; // TODO: migrate to SDK v3
 import sharp from "sharp";
 import { IsNull } from "typeorm";
 import { publishMainStream, publishDriveStream } from "@/services/stream.js";
-import { fetchMeta } from "backend-rs";
+import { FILE_TYPE_BROWSERSAFE, fetchMeta, genId } from "backend-rs";
 import { contentDisposition } from "@/misc/content-disposition.js";
 import { getFileInfo } from "@/misc/get-file-info.js";
 import {
@@ -18,9 +18,7 @@ import {
 import { DriveFile } from "@/models/entities/drive-file.js";
 import type { DriveFileUsageHint } from "@/models/entities/drive-file.js";
 import type { IRemoteUser, User } from "@/models/entities/user.js";
-import { genId } from "backend-rs";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
-import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
 import { getS3 } from "./s3.js";
 import { InternalStorage } from "./internal-storage.js";
@@ -479,17 +477,20 @@ export async function addFile({
 	requestHeaders = null,
 	usageHint = null,
 }: AddFileArgs): Promise<DriveFile> {
-	const info = await getFileInfo(path);
-	logger.info(`${JSON.stringify(info)}`);
+	const fileInfo = await getFileInfo(path);
+	logger.info(`${JSON.stringify(fileInfo)}`);
 
 	// detect name
 	const detectedName =
-		name || (info.type.ext ? `untitled.${info.type.ext}` : "untitled");
+		name ||
+		(fileInfo.fileExtension
+			? `untitled.${fileInfo.fileExtension}`
+			: "untitled");
 
 	if (user && !force) {
 		// Check if there is a file with the same hash
 		const much = await DriveFiles.findOneBy({
-			md5: info.md5,
+			md5: fileInfo.md5,
 			userId: user.id,
 		});
 
@@ -519,7 +520,7 @@ export async function addFile({
 			logger.debug("drive capacity override applied");
 			logger.debug(
 				`overrideCap: ${driveCapacity}bytes, usage: ${usage}bytes, u+s: ${
-					usage + info.size
+					usage + fileInfo.size
 				}bytes`,
 			);
 		}
@@ -527,7 +528,7 @@ export async function addFile({
 		logger.debug(`drive usage is ${usage} (max: ${driveCapacity})`);
 
 		// If usage limit exceeded
-		if (usage + info.size > driveCapacity) {
+		if (usage + fileInfo.size > driveCapacity) {
 			if (Users.isLocalUser(user)) {
 				throw new IdentifiableError(
 					"c6244ed2-a39a-4e1c-bf93-f0fbd7764fa6",
@@ -537,7 +538,7 @@ export async function addFile({
 				// (アバターまたはバナーを含まず)最も古いファイルを削除する
 				expireOldFile(
 					(await Users.findOneByOrFail({ id: user.id })) as IRemoteUser,
-					driveCapacity - info.size,
+					driveCapacity - fileInfo.size,
 				);
 			}
 		}
@@ -565,12 +566,12 @@ export async function addFile({
 		orientation?: number;
 	} = {};
 
-	if (info.width) {
-		properties["width"] = info.width;
-		properties["height"] = info.height;
+	if (fileInfo.width != null && fileInfo.height != null) {
+		properties.width = fileInfo.width;
+		properties.height = fileInfo.height;
 	}
-	if (info.orientation != null) {
-		properties["orientation"] = info.orientation;
+	if (fileInfo.orientation != null) {
+		properties.orientation = fileInfo.orientation;
 	}
 
 	const profile = user
@@ -588,7 +589,7 @@ export async function addFile({
 	file.folderId = folder != null ? folder.id : null;
 	file.comment = comment;
 	file.properties = properties;
-	file.blurhash = info.blurhash || null;
+	file.blurhash = fileInfo.blurhash ?? null;
 	file.isLink = isLink;
 	file.requestIp = requestIp;
 	file.requestHeaders = requestHeaders;
@@ -621,9 +622,9 @@ export async function addFile({
 	if (isLink) {
 		try {
 			file.size = 0;
-			file.md5 = info.md5;
+			file.md5 = fileInfo.md5;
 			file.name = detectedName;
-			file.type = info.type.mime;
+			file.type = fileInfo.mime;
 			file.storedInternal = false;
 
 			file = await DriveFiles.insert(file).then((x) =>
@@ -648,9 +649,9 @@ export async function addFile({
 			file,
 			path,
 			detectedName,
-			info.type.mime,
-			info.md5,
-			info.size,
+			fileInfo.mime,
+			fileInfo.md5,
+			fileInfo.size,
 			usageHint,
 		);
 	}

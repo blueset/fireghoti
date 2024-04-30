@@ -3,7 +3,7 @@ import { IsNull } from "typeorm";
 import { Emojis } from "@/models/index.js";
 
 import { queueLogger } from "../../logger.js";
-import { getEmojiSize } from "@/misc/emoji-meta.js";
+import { getImageSizeFromUrl } from "backend-rs";
 import { inspect } from "node:util";
 
 const logger = queueLogger.createSubLogger("local-emoji-size");
@@ -21,15 +21,14 @@ export async function setLocalEmojiSizes(
 
 	for (let i = 0; i < emojis.length; i++) {
 		try {
-			const size = await getEmojiSize(emojis[i].publicUrl);
+			const size = await getImageSizeFromUrl(emojis[i].publicUrl);
 			await Emojis.update(emojis[i].id, {
 				width: size.width || null,
 				height: size.height || null,
 			});
 		} catch (e) {
-			logger.error(
-				`Unable to set emoji size (${i + 1}/${emojis.length}):\n${inspect(e)}`,
-			);
+			logger.warn(`Unable to set emoji size (${i + 1}/${emojis.length})`);
+			logger.info(inspect(e));
 			/* skip if any error happens */
 		} finally {
 			// wait for 1sec so that this would not overwhelm the object storage.

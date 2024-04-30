@@ -1,5 +1,5 @@
 import { config } from "@/config.js";
-import { FILE_TYPE_BROWSERSAFE, MAX_NOTE_TEXT_LENGTH } from "@/const.js";
+import { FILE_TYPE_BROWSERSAFE } from "backend-rs";
 import { fetchMeta } from "backend-rs";
 import {
 	AnnouncementReads,
@@ -64,7 +64,7 @@ export class MiscHelpers {
 				status_count: noteCount,
 				domain_count: instanceCount,
 			}),
-			max_toot_chars: MAX_NOTE_TEXT_LENGTH,
+			max_toot_chars: config.maxNoteLength,
 			thumbnail: meta.bannerUrl || "/static-assets/transparent.png",
 			languages: meta.langs,
 			registrations: !meta.disableRegistration,
@@ -76,7 +76,7 @@ export class MiscHelpers {
 				},
 				statuses: {
 					supported_mime_types: ["text/x.misskeymarkdown"],
-					max_characters: MAX_NOTE_TEXT_LENGTH,
+					max_characters: config.maxNoteLength,
 					max_media_attachments: 16,
 					characters_reserved_per_url: 23,
 				},
@@ -149,7 +149,7 @@ export class MiscHelpers {
 					max_featured_tags: 20,
 				},
 				statuses: {
-					max_characters: MAX_NOTE_TEXT_LENGTH,
+					max_characters: config.maxNoteLength,
 					max_media_attachments: 16,
 					characters_reserved_per_url: 23,
 				},

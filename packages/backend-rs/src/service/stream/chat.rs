@@ -13,12 +13,15 @@ pub enum ChatEvent {
     Typing,
 }
 
+// We want to merge `kind` and `object` into a single enum
+// https://github.com/napi-rs/napi-rs/issues/2036
+
 #[crate::export(js_name = "publishToChatStream")]
 pub fn publish(
     sender_user_id: String,
     receiver_user_id: String,
     kind: ChatEvent,
-    object: &serde_json::Value, // TODO?: change this to enum
+    object: &serde_json::Value,
 ) -> Result<(), Error> {
     publish_to_stream(
         &Stream::Chat {

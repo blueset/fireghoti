@@ -66,11 +66,12 @@ export async function importMuting(
 			// skip myself
 			if (target.id === job.data.user.id) continue;
 
-			logger.info(`Mute[${linenum}] ${target.id} ...`);
+			logger.debug(`Mute[${linenum}] ${target.id} ...`);
 
 			await mute(user, target);
 		} catch (e) {
-			logger.warn(`Error in line ${linenum}: ${inspect(e)}`);
+			logger.warn(`Error in line ${linenum}`);
+			logger.info(inspect(e));
 		}
 	}
 

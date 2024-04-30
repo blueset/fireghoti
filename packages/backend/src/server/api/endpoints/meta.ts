@@ -3,7 +3,6 @@ import { IsNull, MoreThan } from "typeorm";
 import { config } from "@/config.js";
 import { fetchMeta } from "backend-rs";
 import { Ads, Emojis, Users } from "@/models/index.js";
-import { MAX_NOTE_TEXT_LENGTH, MAX_CAPTION_TEXT_LENGTH } from "@/const.js";
 import define from "@/server/api/define.js";
 
 export const meta = {
@@ -464,8 +463,8 @@ export default define(meta, paramDef, async (ps, me) => {
 		iconUrl: instance.iconUrl,
 		backgroundImageUrl: instance.backgroundImageUrl,
 		logoImageUrl: instance.logoImageUrl,
-		maxNoteTextLength: MAX_NOTE_TEXT_LENGTH, // 後方互換性のため
-		maxCaptionTextLength: MAX_CAPTION_TEXT_LENGTH,
+		maxNoteTextLength: config.maxNoteLength, // for backward compatibility
+		maxCaptionTextLength: config.maxCaptionLength,
 		emojis: instance.privateMode && !me ? [] : await Emojis.packMany(emojis),
 		// クライアントの手間を減らすためあらかじめJSONに変換しておく
 		defaultLightTheme: instance.defaultLightTheme

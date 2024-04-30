@@ -1,6 +1,6 @@
 {
 	"name": "firefish",
-	"version": "20240424.fork",
+	"version": "20240430.fork",
 	"repository": {
 		"type": "git",
 		"url": "https://firefish.dev/firefish/firefish.git"
@@ -45,11 +45,11 @@
 		"js-yaml": "4.1.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.6.4",
-		"@biomejs/cli-darwin-arm64": "^1.6.4",
-		"@biomejs/cli-darwin-x64": "^1.6.4",
-		"@biomejs/cli-linux-arm64": "^1.6.4",
-		"@biomejs/cli-linux-x64": "^1.6.4",
+		"@biomejs/biome": "1.7.1",
+		"@biomejs/cli-darwin-arm64": "^1.7.1",
+		"@biomejs/cli-darwin-x64": "^1.7.1",
+		"@biomejs/cli-linux-arm64": "^1.7.1",
+		"@biomejs/cli-linux-x64": "^1.7.1",
 		"@types/node": "20.12.7",
 		"execa": "8.0.1",
 		"pnpm": "8.15.7",

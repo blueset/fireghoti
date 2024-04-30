@@ -71,14 +71,14 @@ pub struct Model {
     pub drive_capacity_override_mb: Option<i32>,
     #[sea_orm(column_name = "movedToUri")]
     pub moved_to_uri: Option<String>,
-    #[sea_orm(column_name = "alsoKnownAs", column_type = "Text", nullable)]
-    pub also_known_as: Option<String>,
     #[sea_orm(column_name = "speakAsCat")]
     pub speak_as_cat: bool,
     #[sea_orm(column_name = "emojiModPerm")]
     pub emoji_mod_perm: UserEmojimodpermEnum,
     #[sea_orm(column_name = "isIndexable")]
     pub is_indexable: bool,
+    #[sea_orm(column_name = "alsoKnownAs")]
+    pub also_known_as: Option<Vec<String>>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

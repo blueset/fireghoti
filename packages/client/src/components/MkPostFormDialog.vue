@@ -44,6 +44,11 @@ const props = defineProps<{
 	fixed?: boolean;
 	autofocus?: boolean;
 	editId?: entities.Note["id"];
+	selectRange?: [
+		start: number,
+		end: number,
+		direction?: "forward" | "backward" | "none",
+	];
 }>();
 
 const emit = defineEmits<{

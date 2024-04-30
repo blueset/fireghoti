@@ -1,6 +1,5 @@
 import { config } from "@/config.js";
 import { fetchMeta } from "backend-rs";
-import { MAX_NOTE_TEXT_LENGTH, MAX_CAPTION_TEXT_LENGTH } from "@/const.js";
 import define from "@/server/api/define.js";
 
 export const meta = {
@@ -506,8 +505,8 @@ export default define(meta, paramDef, async () => {
 		iconUrl: instance.iconUrl,
 		backgroundImageUrl: instance.backgroundImageUrl,
 		logoImageUrl: instance.logoImageUrl,
-		maxNoteTextLength: MAX_NOTE_TEXT_LENGTH, // 後方互換性のため
-		maxCaptionTextLength: MAX_CAPTION_TEXT_LENGTH,
+		maxNoteTextLength: config.maxNoteLength, // for backward compatibility
+		maxCaptionTextLength: config.maxCaptionLength,
 		defaultLightTheme: instance.defaultLightTheme,
 		defaultDarkTheme: instance.defaultDarkTheme,
 		enableEmail: instance.enableEmail,

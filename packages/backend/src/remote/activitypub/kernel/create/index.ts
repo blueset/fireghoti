@@ -7,15 +7,13 @@ import { apLogger } from "../../logger.js";
 import { toArray, concat, unique } from "@/prelude/array.js";
 import { inspect } from "node:util";
 
-const logger = apLogger;
-
 export default async (
 	actor: CacheableRemoteUser,
 	activity: ICreate,
 ): Promise<void> => {
 	const uri = getApId(activity);
 
-	logger.info(`Create: ${uri}`);
+	apLogger.info(`Create: ${uri}`);
 
 	// copy audiences between activity <=> object.
 	if (typeof activity.object === "object") {
@@ -40,13 +38,14 @@ export default async (
 	const resolver = new Resolver();
 
 	const object = await resolver.resolve(activity.object).catch((e) => {
-		logger.error(`Resolution failed:\n${inspect(e)}`);
+		apLogger.info(`Failed to resolve AP object: ${e}`);
+		apLogger.debug(inspect(e));
 		throw e;
 	});
 
 	if (isPost(object)) {
 		createNote(resolver, actor, object, false, activity);
 	} else {
-		logger.warn(`Unknown type: ${getApType(object)}`);
+		apLogger.info(`Unknown type: ${getApType(object)}`);
 	}
 };

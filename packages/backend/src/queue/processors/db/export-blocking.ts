@@ -9,6 +9,7 @@ import { createTemp } from "@/misc/create-temp.js";
 import { Users, Blockings } from "@/models/index.js";
 import { MoreThan } from "typeorm";
 import type { DbUserJobData } from "@/queue/types.js";
+import { inspect } from "node:util";
 
 const logger = queueLogger.createSubLogger("export-blocking");
 
@@ -27,7 +28,7 @@ export async function exportBlocking(
 	// Create temp file
 	const [path, cleanup] = await createTemp();
 
-	logger.info(`Temp file is ${path}`);
+	logger.info(`temp file created: ${path}`);
 
 	try {
 		const stream = fs.createWriteStream(path, { flags: "a" });
@@ -63,9 +64,10 @@ export async function exportBlocking(
 
 				const content = getFullApAccount(u.username, u.host);
 				await new Promise<void>((res, rej) => {
-					stream.write(content + "\n", (err) => {
+					stream.write(`${content}\n`, (err) => {
 						if (err) {
-							logger.error(err);
+							logger.warn("failed");
+							logger.info(inspect(err));
 							rej(err);
 						} else {
 							res();

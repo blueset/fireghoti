@@ -15,7 +15,7 @@ import { convertToWebp } from "@/services/drive/image-processor.js";
 import { GenerateVideoThumbnail } from "@/services/drive/generate-video-thumbnail.js";
 import { StatusError } from "@/misc/fetch.js";
 import { ByteRangeReadable } from "./byte-range-readable.js";
-import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
+import { FILE_TYPE_BROWSERSAFE } from "backend-rs";
 import { inspect } from "node:util";
 
 const _filename = fileURLToPath(import.meta.url);
@@ -28,7 +28,7 @@ const MAX_BYTE_RANGES = 10;
 const commonReadableHandlerGenerator =
 	(ctx: Koa.Context) =>
 	(e: Error): void => {
-		serverLogger.error(e);
+		serverLogger.warn(e);
 		ctx.status = 500;
 		ctx.set("Cache-Control", "max-age=300");
 	};
@@ -109,7 +109,8 @@ export default async function (ctx: Koa.Context) {
 				);
 				ctx.set("Cache-Control", "max-age=31536000, immutable");
 			} catch (e) {
-				serverLogger.error(`${inspect(e)}`);
+				serverLogger.warn(`failed to fetch/convert ${file.uri}`);
+				serverLogger.debug(inspect(e));
 
 				if (e instanceof StatusError && e.isClientError) {
 					ctx.status = e.statusCode;

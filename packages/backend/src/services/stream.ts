@@ -2,21 +2,21 @@ import { redisClient } from "@/db/redis.js";
 import type { User } from "@/models/entities/user.js";
 import type { Note } from "@/models/entities/note.js";
 import type { UserList } from "@/models/entities/user-list.js";
-import type { UserGroup } from "@/models/entities/user-group.js";
+// import type { UserGroup } from "@/models/entities/user-group.js";
 import { config } from "@/config.js";
 // import type { Antenna } from "@/models/entities/antenna.js";
-import type { Channel } from "@/models/entities/channel.js";
+// import type { Channel } from "@/models/entities/channel.js";
 import type {
 	StreamChannels,
-	AdminStreamTypes,
+	// AdminStreamTypes,
 	// AntennaStreamTypes,
-	BroadcastTypes,
-	ChannelStreamTypes,
+	// BroadcastTypes,
+	// ChannelStreamTypes,
 	DriveStreamTypes,
-	GroupMessagingStreamTypes,
+	// GroupMessagingStreamTypes,
 	InternalStreamTypes,
 	MainStreamTypes,
-	MessagingIndexStreamTypes,
+	// MessagingIndexStreamTypes,
 	// MessagingStreamTypes,
 	NoteStreamTypes,
 	UserListStreamTypes,
@@ -65,16 +65,17 @@ class Publisher {
 		);
 	};
 
-	public publishBroadcastStream = <K extends keyof BroadcastTypes>(
-		type: K,
-		value?: BroadcastTypes[K],
-	): void => {
-		this.publish(
-			"broadcast",
-			type,
-			typeof value === "undefined" ? null : value,
-		);
-	};
+	/* ported to backend-rs */
+	// public publishBroadcastStream = <K extends keyof BroadcastTypes>(
+	// 	type: K,
+	// 	value?: BroadcastTypes[K],
+	// ): void => {
+	// 	this.publish(
+	// 		"broadcast",
+	// 		type,
+	// 		typeof value === "undefined" ? null : value,
+	// 	);
+	// };
 
 	public publishMainStream = <K extends keyof MainStreamTypes>(
 		userId: User["id"],
@@ -118,17 +119,18 @@ class Publisher {
 		this.publish("noteUpdatesStream", type, value);
 	};
 
-	public publishChannelStream = <K extends keyof ChannelStreamTypes>(
-		channelId: Channel["id"],
-		type: K,
-		value?: ChannelStreamTypes[K],
-	): void => {
-		this.publish(
-			`channelStream:${channelId}`,
-			type,
-			typeof value === "undefined" ? null : value,
-		);
-	};
+	/* ported to backend-rs */
+	// public publishChannelStream = <K extends keyof ChannelStreamTypes>(
+	// 	channelId: Channel["id"],
+	// 	type: K,
+	// 	value?: ChannelStreamTypes[K],
+	// ): void => {
+	// 	this.publish(
+	// 		`channelStream:${channelId}`,
+	// 		type,
+	// 		typeof value === "undefined" ? null : value,
+	// 	);
+	// };
 
 	public publishUserListStream = <K extends keyof UserListStreamTypes>(
 		listId: UserList["id"],
@@ -169,49 +171,52 @@ class Publisher {
 	// 	);
 	// };
 
-	public publishGroupMessagingStream = <
-		K extends keyof GroupMessagingStreamTypes,
-	>(
-		groupId: UserGroup["id"],
-		type: K,
-		value?: GroupMessagingStreamTypes[K],
-	): void => {
-		this.publish(
-			`messagingStream:${groupId}`,
-			type,
-			typeof value === "undefined" ? null : value,
-		);
-	};
+	/* ported to backend-rs */
+	// public publishGroupMessagingStream = <
+	// 	K extends keyof GroupMessagingStreamTypes,
+	// >(
+	// 	groupId: UserGroup["id"],
+	// 	type: K,
+	// 	value?: GroupMessagingStreamTypes[K],
+	// ): void => {
+	// 	this.publish(
+	// 		`messagingStream:${groupId}`,
+	// 		type,
+	// 		typeof value === "undefined" ? null : value,
+	// 	);
+	// };
 
-	public publishMessagingIndexStream = <
-		K extends keyof MessagingIndexStreamTypes,
-	>(
-		userId: User["id"],
-		type: K,
-		value?: MessagingIndexStreamTypes[K],
-	): void => {
-		this.publish(
-			`messagingIndexStream:${userId}`,
-			type,
-			typeof value === "undefined" ? null : value,
-		);
-	};
+	/* ported to backend-rs */
+	// public publishMessagingIndexStream = <
+	// 	K extends keyof MessagingIndexStreamTypes,
+	// >(
+	// 	userId: User["id"],
+	// 	type: K,
+	// 	value?: MessagingIndexStreamTypes[K],
+	// ): void => {
+	// 	this.publish(
+	// 		`messagingIndexStream:${userId}`,
+	// 		type,
+	// 		typeof value === "undefined" ? null : value,
+	// 	);
+	// };
 
 	public publishNotesStream = (note: Note): void => {
 		this.publish("notesStream", null, note);
 	};
 
-	public publishAdminStream = <K extends keyof AdminStreamTypes>(
-		userId: User["id"],
-		type: K,
-		value?: AdminStreamTypes[K],
-	): void => {
-		this.publish(
-			`adminStream:${userId}`,
-			type,
-			typeof value === "undefined" ? null : value,
-		);
-	};
+	/* ported to backend-rs */
+	// public publishAdminStream = <K extends keyof AdminStreamTypes>(
+	// 	userId: User["id"],
+	// 	type: K,
+	// 	value?: AdminStreamTypes[K],
+	// ): void => {
+	// 	this.publish(
+	// 		`adminStream:${userId}`,
+	// 		type,
+	// 		typeof value === "undefined" ? null : value,
+	// 	);
+	// };
 }
 
 const publisher = new Publisher();
@@ -220,18 +225,16 @@ export default publisher;
 
 export const publishInternalEvent = publisher.publishInternalEvent;
 export const publishUserEvent = publisher.publishUserEvent;
-export const publishBroadcastStream = publisher.publishBroadcastStream;
+// export const publishBroadcastStream = publisher.publishBroadcastStream;
 export const publishMainStream = publisher.publishMainStream;
 export const publishDriveStream = publisher.publishDriveStream;
 export const publishNoteStream = publisher.publishNoteStream;
 export const publishNotesStream = publisher.publishNotesStream;
 export const publishNoteUpdatesStream = publisher.publishNoteUpdatesStream;
-export const publishChannelStream = publisher.publishChannelStream;
+// export const publishChannelStream = publisher.publishChannelStream;
 export const publishUserListStream = publisher.publishUserListStream;
 // export const publishAntennaStream = publisher.publishAntennaStream;
 // export const publishMessagingStream = publisher.publishMessagingStream;
-export const publishGroupMessagingStream =
-	publisher.publishGroupMessagingStream;
-export const publishMessagingIndexStream =
-	publisher.publishMessagingIndexStream;
-export const publishAdminStream = publisher.publishAdminStream;
+// export const publishGroupMessagingStream = publisher.publishGroupMessagingStream;
+// export const publishMessagingIndexStream = publisher.publishMessagingIndexStream;
+// export const publishAdminStream = publisher.publishAdminStream;

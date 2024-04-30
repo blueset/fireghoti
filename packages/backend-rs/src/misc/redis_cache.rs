@@ -3,7 +3,7 @@ use redis::{Commands, RedisError};
 use serde::{Deserialize, Serialize};
 
 #[derive(thiserror::Error, Debug)]
-pub enum Error {
+pub enum CacheError {
     #[error("Redis error: {0}")]
     RedisError(#[from] RedisError),
     #[error("Data serialization error: {0}")]
@@ -12,25 +12,35 @@ pub enum Error {
     DeserializeError(#[from] rmp_serde::decode::Error),
 }
 
+fn prefix_key(key: &str) -> String {
+    redis_key(format!("cache:{}", key))
+}
+
 pub fn set_cache<V: for<'a> Deserialize<'a> + Serialize>(
     key: &str,
     value: &V,
     expire_seconds: u64,
-) -> Result<(), Error> {
+) -> Result<(), CacheError> {
     redis_conn()?.set_ex(
-        redis_key(key),
+        prefix_key(key),
         rmp_serde::encode::to_vec(&value)?,
         expire_seconds,
     )?;
     Ok(())
 }
 
-pub fn get_cache<V: for<'a> Deserialize<'a> + Serialize>(key: &str) -> Result<Option<V>, Error> {
-    let serialized_value: Option<Vec<u8>> = redis_conn()?.get(redis_key(key))?;
+pub fn get_cache<V: for<'a> Deserialize<'a> + Serialize>(
+    key: &str,
+) -> Result<Option<V>, CacheError> {
+    let serialized_value: Option<Vec<u8>> = redis_conn()?.get(prefix_key(key))?;
     Ok(match serialized_value {
         Some(v) => Some(rmp_serde::from_slice::<V>(v.as_ref())?),
         None => None,
     })
+}
+
+pub fn delete_cache(key: &str) -> Result<(), CacheError> {
+    Ok(redis_conn()?.del(prefix_key(key))?)
 }
 
 #[cfg(test)]

@@ -208,7 +208,7 @@ function unregisterEventListenersForReadyToPull() {
 onMounted(() => {
 	if (rootEl.value == null) return;
 
-	scrollEl = getScrollContainer(rootEl.value);
+	scrollEl = getScrollContainer(rootEl.value) ?? document.querySelector("HTML");
 	if (scrollEl == null) return;
 
 	scrollEl.addEventListener("scroll", onScrollContainerScroll, {

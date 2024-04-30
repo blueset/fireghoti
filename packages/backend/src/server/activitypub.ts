@@ -43,8 +43,10 @@ const router = new Router();
 //#region Routing
 
 function inbox(ctx: Router.RouterContext) {
+	const inboxLogger = serverLogger.createSubLogger("inbox");
+
 	if (ctx.req.headers.host !== config.host) {
-		serverLogger.warn("inbox: Invalid Host");
+		inboxLogger.warn(`regecting invalid host (${ctx.req.headers.host})`);
 		ctx.status = 400;
 		ctx.message = "Invalid Host";
 		return;
@@ -57,7 +59,6 @@ function inbox(ctx: Router.RouterContext) {
 			headers: ["(request-target)", "digest", "host", "date"],
 		});
 	} catch (e) {
-		serverLogger.warn(`inbox: signature parse error:\n${inspect(e)}`);
 		ctx.status = 401;
 
 		if (e instanceof Error) {
@@ -66,6 +67,9 @@ function inbox(ctx: Router.RouterContext) {
 			if (e.name === "MissingHeaderError")
 				ctx.message = "Missing Required Header";
 		}
+
+		inboxLogger.info(`signature parse error: ${ctx.message}`);
+		inboxLogger.debug(inspect(e));
 
 		return;
 	}
@@ -76,8 +80,8 @@ function inbox(ctx: Router.RouterContext) {
 			.toLowerCase()
 			.match(/^((dsa|rsa|ecdsa)-(sha256|sha384|sha512)|ed25519-sha512|hs2019)$/)
 	) {
-		serverLogger.warn(
-			`inbox: invalid signature algorithm ${signature.algorithm}`,
+		inboxLogger.info(
+			`rejecting signature: unknown algorithm (${signature.algorithm})`,
 		);
 		ctx.status = 401;
 		ctx.message = "Invalid Signature Algorithm";
@@ -92,8 +96,8 @@ function inbox(ctx: Router.RouterContext) {
 	const digest = ctx.req.headers.digest;
 
 	if (typeof digest !== "string") {
-		serverLogger.warn(
-			"inbox: zero or more than one digest header(s) are present",
+		inboxLogger.info(
+			"rejecting invalid signature: zero or more than one digest header(s)",
 		);
 		ctx.status = 401;
 		ctx.message = "Invalid Digest Header";
@@ -103,7 +107,7 @@ function inbox(ctx: Router.RouterContext) {
 	const match = digest.match(/^([0-9A-Za-z-]+)=(.+)$/);
 
 	if (match == null) {
-		serverLogger.warn("inbox: unrecognized digest header");
+		inboxLogger.info("rejecting signature: unrecognized digest header");
 		ctx.status = 401;
 		ctx.message = "Invalid Digest Header";
 		return;
@@ -113,7 +117,7 @@ function inbox(ctx: Router.RouterContext) {
 	const expectedDigest = match[2];
 
 	if (digestAlgo.toUpperCase() !== "SHA-256") {
-		serverLogger.warn("inbox: unsupported digest algorithm");
+		inboxLogger.info("rejecting signature: unsupported digest algorithm");
 		ctx.status = 401;
 		ctx.message = "Unsupported Digest Algorithm";
 		return;
@@ -125,7 +129,7 @@ function inbox(ctx: Router.RouterContext) {
 		.digest("base64");
 
 	if (expectedDigest !== actualDigest) {
-		serverLogger.warn("inbox: Digest Mismatch");
+		inboxLogger.info("rejecting invalid signature: Digest Mismatch");
 		ctx.status = 401;
 		ctx.message = "Digest Missmatch";
 		return;
@@ -215,7 +219,9 @@ router.get("/notes/:note", async (ctx, next) => {
 		serverLogger.debug(JSON.stringify(remoteUser, null, 2));
 
 		if (remoteUser == null) {
-			serverLogger.debug("Rejecting: no user");
+			serverLogger.info(
+				"rejecting fetch attempt of private post: no authentication",
+			);
 			ctx.status = 401;
 			return;
 		}
@@ -225,14 +231,14 @@ router.get("/notes/:note", async (ctx, next) => {
 		serverLogger.debug(JSON.stringify(relation, null, 2));
 
 		if (!relation.isFollowing || relation.isBlocked) {
-			serverLogger.debug(
-				"Rejecting: authenticated user is not following us or was blocked by us",
+			serverLogger.info(
+				"rejecting fetch attempt of private post: user is not a follower or is blocked",
 			);
 			ctx.status = 403;
 			return;
 		}
 
-		serverLogger.debug("Accepting: access criteria met");
+		serverLogger.debug("accepting fetch attempt of private post");
 	}
 
 	ctx.body = renderActivity(await renderNote(note, false));

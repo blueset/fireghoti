@@ -1,6 +1,6 @@
 import { publishDriveStream } from "@/services/stream.js";
-import { DriveFiles, DriveFolders, Users } from "@/models/index.js";
-import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
+import { DriveFiles, DriveFolders } from "@/models/index.js";
+import { config } from "@/config.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 
@@ -57,7 +57,7 @@ export const paramDef = {
 		comment: {
 			type: "string",
 			nullable: true,
-			maxLength: DB_MAX_IMAGE_COMMENT_LENGTH,
+			maxLength: config.maxCaptionLength,
 		},
 	},
 	required: ["fileId"],

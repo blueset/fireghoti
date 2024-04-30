@@ -326,6 +326,10 @@ export const routes: RouteDef[] = [
 		loginRequired: true,
 	},
 	{
+		path: "/follow-me",
+		component: page(() => import("./pages/follow-me.vue")),
+	},
+	{
 		path: "/authorize_interaction",
 		component: page(() => import("./pages/authorize_interaction.vue")),
 		loginRequired: true,

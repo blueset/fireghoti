@@ -42,7 +42,8 @@ export async function verifyLinks(
 					fields: user.fields,
 				});
 			} catch (e) {
-				logger.error(`Failed to update user ${user.userId}:\n${inspect(e)}`);
+				logger.error(`Failed to update user ${user.userId}`);
+				logger.info(inspect(e));
 				done(e);
 			}
 		}

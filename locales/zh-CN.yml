@@ -564,6 +564,7 @@ deletedNote: "已删除的帖子"
 invisibleNote: "隐藏的帖子"
 enableInfiniteScroll: "滚动页面以载入更多内容"
 visibility: "可见性"
+cannotEditVisibility: "不能编辑帖子的可见性"
 poll: "调查问卷"
 useCw: "隐藏内容"
 enablePlayer: "打开播放器"
@@ -878,6 +879,8 @@ driveCapOverrideCaption: "输入 0 或以下的值将容量重置为默认值。
 requireAdminForView: "您需要使用管理员账号登录才能查看。"
 isSystemAccount: "该账号由系统自动创建。请不要修改、编辑、删除或以其它方式篡改这个账号，否则可能会破坏您的服务器。"
 typeToConfirm: "输入 {x} 以确认操作"
+useThisAccountConfirm: "您想使用此帐户继续执行此操作吗？"
+inputAccountId: "请输入您的帐户（例如 @firefish@info.firefish.dev ）"
 deleteAccount: "删除账号"
 document: "文档"
 numberOfPageCache: "缓存页数"
@@ -1787,6 +1790,7 @@ _notification:
   reacted: 回应了您的帖子
   voted: 在您的问卷调查中投了票
   renoted: 转发了您的帖子
+  andCountUsers: "和其他 {count} 名用户{acted}"
 _deck:
   alwaysShowMainColumn: "总是显示主列"
   columnAlign: "列对齐"
@@ -1972,6 +1976,9 @@ origin: 起源
 confirm: 确认
 importZip: 导入 ZIP
 exportZip: 导出 ZIP
+getQrCode: "获取二维码"
+remoteFollow: "远程关注"
+copyRemoteFollowUrl: "复制远程关注 URL"
 emojiPackCreator: 表情包创建工具
 objectStorageS3ForcePathStyleDesc: 打开此选项可构建格式为 "s3.amazonaws.com/<bucket>/" 而非 "<bucket>.s3.amazonaws.com"
   的端点 URL。
@@ -2059,3 +2066,5 @@ autocorrectNoteLanguage: 当帖子语言不符合自动检测的结果的时候�
 incorrectLanguageWarning: "看上去您帖子使用的语言是{detected}，但您选择的语言是{current}。\n要改为以{detected}发帖吗？"
 noteEditHistory: "帖子编辑历史"
 media: 媒体
+slashQuote: "斜杠引用"
+foldNotification: "将通知按同类型分组"

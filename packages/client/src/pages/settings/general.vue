@@ -131,6 +131,10 @@
 				i18n.ts.autocorrectNoteLanguage
 			}}</FormSwitch>
 
+			<FormSwitch v-model="foldNotification" class="_formBlock">{{
+				i18n.ts.foldNotification
+			}}</FormSwitch>
+
 			<FormSelect v-model="serverDisconnectedBehavior" class="_formBlock">
 				<template #label>{{ i18n.ts.whenServerDisconnected }}</template>
 				<option value="reload">
@@ -542,6 +546,9 @@ const showAddFileDescriptionAtFirstPost = computed(
 const autocorrectNoteLanguage = computed(
 	defaultStore.makeGetterSetter("autocorrectNoteLanguage"),
 );
+const foldNotification = computed(
+	defaultStore.makeGetterSetter("foldNotification"),
+);
 
 // This feature (along with injectPromo) is currently disabled
 // function onChangeInjectFeaturedNote(v) {
@@ -610,6 +617,7 @@ watch(
 		enableTimelineStreaming,
 		enablePullToRefresh,
 		pullToRefreshThreshold,
+		foldNotification,
 	],
 	async () => {
 		await reloadAsk();

@@ -14,9 +14,9 @@ export async function downloadUrl(url: string, path: string): Promise<void> {
 		throw new StatusError("Invalid URL", 400);
 	}
 
-	const logger = new Logger("download");
+	const downloadLogger = new Logger("download");
 
-	logger.info(`Downloading ${chalk.cyan(url)} ...`);
+	downloadLogger.debug(`Downloading ${chalk.cyan(url)} ...`);
 
 	const timeout = 30 * 1000;
 	const operationTimeout = 60 * 1000;
@@ -45,7 +45,7 @@ export async function downloadUrl(url: string, path: string): Promise<void> {
 		})
 		.on("redirect", (res: Got.Response, opts: Got.NormalizedOptions) => {
 			if (!isValidUrl(opts.url)) {
-				logger.warn(`Invalid URL: ${opts.url}`);
+				downloadLogger.warn(`Invalid URL: ${opts.url}`);
 				req.destroy();
 			}
 		})
@@ -57,7 +57,7 @@ export async function downloadUrl(url: string, path: string): Promise<void> {
 				res.ip
 			) {
 				if (isPrivateIp(res.ip)) {
-					logger.warn(`Blocked address: ${res.ip}`);
+					downloadLogger.warn(`Blocked address: ${res.ip}`);
 					req.destroy();
 				}
 			}
@@ -66,14 +66,16 @@ export async function downloadUrl(url: string, path: string): Promise<void> {
 			if (contentLength != null) {
 				const size = Number(contentLength);
 				if (size > maxSize) {
-					logger.warn(`maxSize exceeded (${size} > ${maxSize}) on response`);
+					downloadLogger.warn(
+						`maxSize exceeded (${size} > ${maxSize}) on response`,
+					);
 					req.destroy();
 				}
 			}
 		})
 		.on("downloadProgress", (progress: Got.Progress) => {
 			if (progress.transferred > maxSize) {
-				logger.warn(
+				downloadLogger.warn(
 					`maxSize exceeded (${progress.transferred} > ${maxSize}) on downloadProgress`,
 				);
 				req.destroy();
@@ -94,7 +96,7 @@ export async function downloadUrl(url: string, path: string): Promise<void> {
 		}
 	}
 
-	logger.info(`Download finished: ${chalk.cyan(url)}`);
+	downloadLogger.debug(`Download finished: ${chalk.cyan(url)}`);
 }
 
 export function isPrivateIp(ip: string): boolean {

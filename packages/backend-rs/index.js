@@ -310,8 +310,15 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { loadEnv, loadConfig, stringToAcct, acctToString, addNoteToAntenna, isBlockedServer, isSilencedServer, isAllowedServer, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getNoteSummary, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, removeOldAttestationChallenges, AntennaSrcEnum, DriveFileUsageHintEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initializeRustLogger, watchNote, unwatchNote, ChatEvent, publishToChatStream, getTimestamp, genId, genIdAt, secureRndstr } = nativeBinding
+const { SECOND, MINUTE, HOUR, DAY, USER_ONLINE_THRESHOLD, USER_ACTIVE_THRESHOLD, FILE_TYPE_BROWSERSAFE, loadEnv, loadConfig, stringToAcct, acctToString, addNoteToAntenna, isBlockedServer, isSilencedServer, isAllowedServer, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getImageSizeFromUrl, getNoteSummary, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, removeOldAttestationChallenges, AntennaSrcEnum, DriveFileUsageHintEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, initializeRustLogger, watchNote, unwatchNote, publishToChannelStream, ChatEvent, publishToChatStream, ChatIndexEvent, publishToChatIndexStream, publishToBroadcastStream, publishToGroupChatStream, publishToModerationStream, getTimestamp, genId, genIdAt, secureRndstr } = nativeBinding
 
+module.exports.SECOND = SECOND
+module.exports.MINUTE = MINUTE
+module.exports.HOUR = HOUR
+module.exports.DAY = DAY
+module.exports.USER_ONLINE_THRESHOLD = USER_ONLINE_THRESHOLD
+module.exports.USER_ACTIVE_THRESHOLD = USER_ACTIVE_THRESHOLD
+module.exports.FILE_TYPE_BROWSERSAFE = FILE_TYPE_BROWSERSAFE
 module.exports.loadEnv = loadEnv
 module.exports.loadConfig = loadConfig
 module.exports.stringToAcct = stringToAcct
@@ -330,6 +337,7 @@ module.exports.isUnicodeEmoji = isUnicodeEmoji
 module.exports.sqlLikeEscape = sqlLikeEscape
 module.exports.safeForSql = safeForSql
 module.exports.formatMilliseconds = formatMilliseconds
+module.exports.getImageSizeFromUrl = getImageSizeFromUrl
 module.exports.getNoteSummary = getNoteSummary
 module.exports.toMastodonId = toMastodonId
 module.exports.fromMastodonId = fromMastodonId
@@ -357,8 +365,14 @@ module.exports.UserProfileMutingnotificationtypesEnum = UserProfileMutingnotific
 module.exports.initializeRustLogger = initializeRustLogger
 module.exports.watchNote = watchNote
 module.exports.unwatchNote = unwatchNote
+module.exports.publishToChannelStream = publishToChannelStream
 module.exports.ChatEvent = ChatEvent
 module.exports.publishToChatStream = publishToChatStream
+module.exports.ChatIndexEvent = ChatIndexEvent
+module.exports.publishToChatIndexStream = publishToChatIndexStream
+module.exports.publishToBroadcastStream = publishToBroadcastStream
+module.exports.publishToGroupChatStream = publishToGroupChatStream
+module.exports.publishToModerationStream = publishToModerationStream
 module.exports.getTimestamp = getTimestamp
 module.exports.genId = genId
 module.exports.genIdAt = genIdAt

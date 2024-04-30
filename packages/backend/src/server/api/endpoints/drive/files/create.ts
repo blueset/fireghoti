@@ -1,9 +1,8 @@
 import { addFile } from "@/services/drive/add-file.js";
 import { DriveFiles } from "@/models/index.js";
-import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
+import { config } from "@/config.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
-import { fetchMeta } from "backend-rs";
-import { MINUTE } from "@/const.js";
+import { MINUTE, fetchMeta } from "backend-rs";
 import define from "@/server/api/define.js";
 import { apiLogger } from "@/server/api/logger.js";
 import { ApiError } from "@/server/api/error.js";
@@ -68,7 +67,7 @@ export const paramDef = {
 		comment: {
 			type: "string",
 			nullable: true,
-			maxLength: DB_MAX_IMAGE_COMMENT_LENGTH,
+			maxLength: config.maxCaptionLength,
 			default: null,
 		},
 		isSensitive: { type: "boolean", default: false },

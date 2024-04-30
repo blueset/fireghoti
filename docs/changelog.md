@@ -5,11 +5,20 @@ Critical security updates are indicated by the :warning: icon.
 - Server administrators should check [notice-for-admins.md](./notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](./api-change.md) as well.
 
+## :warning: [v20240430](https://firefish.dev/firefish/firefish/-/merge_requests/10781/commits)
+
+- Add ability to group similar notifications
+- Add features to share links to an account in the three dots menu on the profile page
+- Improve server logs
+- Fix bugs (including a critical security issue)
+	- We are very thankful to @tesaguri and Laura Hausmann for helping to fix the security issue.
+
 ## [v20240424](https://firefish.dev/firefish/firefish/-/merge_requests/10765/commits)
 
 - Improve the usability of the feature to prevent forgetting to write alt texts
 - Add a server-wide setting for the maximum number of antennas each user can create
-- Fix bugs
+- Fix bugs (including a medium severity security issue)
+	- We are very thankful to @mei23 for kindly sharing the information about the security issue.
 
 ## [v20240421](https://firefish.dev/firefish/firefish/-/merge_requests/10756/commits)
 

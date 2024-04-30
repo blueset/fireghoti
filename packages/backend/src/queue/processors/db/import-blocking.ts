@@ -66,11 +66,12 @@ export async function importBlocking(
 			// skip myself
 			if (target.id === job.data.user.id) continue;
 
-			logger.info(`Block[${linenum}] ${target.id} ...`);
+			logger.debug(`Block[${linenum}] ${target.id} ...`);
 
 			await block(user, target);
 		} catch (e) {
-			logger.warn(`Error in line ${linenum}:\n${inspect(e)}`);
+			logger.warn(`failed: error in line ${linenum}`);
+			logger.info(inspect(e));
 		}
 	}
 

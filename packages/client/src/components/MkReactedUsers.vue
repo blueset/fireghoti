@@ -25,8 +25,8 @@
 		</div>
 		<MkPagination
 			ref="pagingComponent"
-			:pagination="pagination"
 			v-slot="{ items }"
+			:pagination="pagination"
 		>
 			<MkUserCardMini v-for="{ user: user } in items" :key="user.id" :user="user" />
 		</MkPagination>

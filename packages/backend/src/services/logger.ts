@@ -47,8 +47,8 @@ export default class Logger {
 		return logger;
 	}
 
-	private showThisLog(logLevel: Level, configLevel: string) {
-		switch (configLevel) {
+	private showThisLog(logLevel: Level, configMaxLevel: string) {
+		switch (configMaxLevel) {
 			case "error":
 				return ["error"].includes(logLevel);
 			case "warning":
@@ -75,7 +75,10 @@ export default class Logger {
 		if (
 			(config.maxLogLevel != null &&
 				!this.showThisLog(level, config.maxLogLevel)) ||
-			(config.logLevel != null && !config.logLevel.includes(level))
+			(config.logLevel != null && !config.logLevel.includes(level)) ||
+			(config.maxLogLevel == null &&
+				config.logLevel == null &&
+				!this.showThisLog(level, "info"))
 		)
 			return;
 		if (!this.store) store = false;
@@ -103,9 +106,9 @@ export default class Logger {
 				: level === "warning"
 					? chalk.yellow("WARN")
 					: level === "info"
-						? chalk.green("INFO")
+						? chalk.cyan("INFO")
 						: level === "debug"
-							? chalk.blue("DEBUG")
+							? chalk.green("DEBUG")
 							: level === "trace"
 								? chalk.gray("TRACE")
 								: null;
