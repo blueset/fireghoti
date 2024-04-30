@@ -22,7 +22,6 @@
 					(deviceKind !== 'desktop' ||
 						defaultStore.state.swipeOnDesktop)
 				"
-				:long-swipes-radio="1"
 				@swiper="setSwiperRef"
 				@slide-change="onSlideChange"
 			>
