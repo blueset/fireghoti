@@ -20,6 +20,13 @@ export function fromHtml(html: string, hashtagNames?: string[]): string {
 	}
 
 	/**
+	 * We only exclude text containing asterisks, since the other marks can almost be considered intentionally used.
+	 */
+	function escapeAmbiguousMfmMarks(text: string) {
+		return text.includes("*") ? `<plain>${text}</plain>` : text;
+	}
+
+	/**
 	 * Get only the text, ignoring all formatting inside
 	 * @param node
 	 * @returns
@@ -62,7 +69,7 @@ export function fromHtml(html: string, hashtagNames?: string[]): string {
 		background = "",
 	): (string | string[])[] {
 		if (treeAdapter.isTextNode(node)) {
-			return [node.value];
+			return [escapeAmbiguousMfmMarks(node.value)];
 		}
 
 		// Skip comment or document type node
