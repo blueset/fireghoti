@@ -456,7 +456,7 @@ export const defaultStore = markRaw(
 		},
 		collapseReplyInTimeline: {
 			where: "deviceAccount",
-			default: true,
+			default: false,
 		},
 	}),
 );
