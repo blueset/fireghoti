@@ -623,7 +623,6 @@ watch(
 		enableTimelineStreaming,
 		enablePullToRefresh,
 		pullToRefreshThreshold,
-		foldNotification,
 	],
 	async () => {
 		await reloadAsk();

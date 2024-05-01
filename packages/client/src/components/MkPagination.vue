@@ -486,6 +486,8 @@ if (props.pagination.params && isRef<Param>(props.pagination.params)) {
 	watch(props.pagination.params, reload, { deep: true });
 }
 
+watch(() => props.folder, calculateItems);
+
 watch(
 	queue,
 	(a, b) => {
