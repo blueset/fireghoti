@@ -2068,3 +2068,4 @@ noteEditHistory: "帖子编辑历史"
 media: 媒体
 slashQuote: "斜杠引用"
 foldNotification: "将通知按同类型分组"
+collapseReplyInTimeline: "折叠显示时间线里被回复的帖子"

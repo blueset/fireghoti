@@ -31,6 +31,7 @@
 						:key="note._featuredId_ || note._prId_ || note.id"
 						class="qtqtichx"
 						:note="note"
+						:collapsed-reply="collapsedReply"
 					/>
 				</XList>
 			</div>
@@ -58,6 +59,7 @@ defineProps<{
 	pagination: PagingOf<entities.Note>;
 	noGap?: boolean;
 	disableAutoLoad?: boolean;
+	collapsedReply?: boolean;
 }>();
 
 const pagingComponent = ref<MkPaginationType<

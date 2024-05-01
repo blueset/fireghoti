@@ -30,6 +30,7 @@
 			:pagination="pagination"
 			@queue="(x) => (queue = x)"
 			@status="pullToRefreshComponent?.setDisabled($event)"
+			:collapsed-reply
 		/>
 	</MkPullToRefresh>
 	<XNotes
@@ -39,6 +40,7 @@
 		:pagination="pagination"
 		@queue="(x) => (queue = x)"
 		@status="pullToRefreshComponent?.setDisabled($event)"
+		:collapsed-reply
 	/>
 </template>
 
@@ -84,6 +86,8 @@ const emit = defineEmits<{
 
 const tlComponent = ref<InstanceType<typeof XNotes>>();
 const pullToRefreshComponent = ref<InstanceType<typeof MkPullToRefresh>>();
+
+const collapsedReply = defaultStore.reactiveState.collapseReplyInTimeline;
 
 let endpoint: TypeUtils.EndpointsOf<entities.Note[]>; // keyof Endpoints
 let query: {

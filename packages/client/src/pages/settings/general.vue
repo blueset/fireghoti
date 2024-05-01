@@ -134,6 +134,9 @@
 			<FormSwitch v-model="foldNotification" class="_formBlock">{{
 				i18n.ts.foldNotification
 			}}</FormSwitch>
+			<FormSwitch v-model="collapseReplyInTimeline" class="_formBlock">{{
+				i18n.ts.collapseReplyInTimeline
+			}}</FormSwitch>
 
 			<FormSelect v-model="serverDisconnectedBehavior" class="_formBlock">
 				<template #label>{{ i18n.ts.whenServerDisconnected }}</template>
@@ -548,6 +551,9 @@ const autocorrectNoteLanguage = computed(
 );
 const foldNotification = computed(
 	defaultStore.makeGetterSetter("foldNotification"),
+);
+const collapseReplyInTimeline = computed(
+	defaultStore.makeGetterSetter("collapseReplyInTimeline"),
 );
 
 // This feature (along with injectPromo) is currently disabled
