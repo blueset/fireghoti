@@ -527,7 +527,7 @@ export const WellKnownContext = {
 			manuallyApprovesFollowers: "as:manuallyApprovesFollowers",
 			movedTo: {
 				"@id": "https://www.w3.org/ns/activitystreams#movedTo",
-				"@type": "@id"
+				"@type": "@id",
 			},
 			movedToUri: "as:movedTo",
 			sensitive: "as:sensitive",
