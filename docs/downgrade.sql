@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'DropUnusedIndexes1714643926317',
     'AlterAkaType1714099399879',
     'AddDriveFileUsage1713451569342',
     'ConvertCwVarcharToText1713225866247',
@@ -24,6 +25,22 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- drop-unused-indexes
+CREATE INDEX "IDX_01f4581f114e0ebd2bbb876f0b" ON "note_reaction" ("createdAt");
+CREATE INDEX "IDX_0610ebcfcfb4a18441a9bcdab2" ON "poll" ("userId");
+CREATE INDEX "IDX_25dfc71b0369b003a4cd434d0b" ON "note" ("attachedFileTypes");
+CREATE INDEX "IDX_2710a55f826ee236ea1a62698f" ON "hashtag" ("mentionedUsersCount");
+CREATE INDEX "IDX_4c02d38a976c3ae132228c6fce" ON "hashtag" ("mentionedRemoteUsersCount");
+CREATE INDEX "IDX_51c063b6a133a9cb87145450f5" ON "note" ("fileIds");
+CREATE INDEX "IDX_54ebcb6d27222913b908d56fd8" ON "note" ("mentions");
+CREATE INDEX "IDX_7fa20a12319c7f6dc3aed98c0a" ON "poll" ("userHost");
+CREATE INDEX "IDX_88937d94d7443d9a99a76fa5c0" ON "note" ("tags");
+CREATE INDEX "IDX_b11a5e627c41d4dc3170f1d370" ON "notification" ("createdAt");
+CREATE INDEX "IDX_c8dfad3b72196dd1d6b5db168a" ON "drive_file" ("createdAt");
+CREATE INDEX "IDX_d57f9030cd3af7f63ffb1c267c" ON "hashtag" ("attachedUsersCount");
+CREATE INDEX "IDX_e5848eac4940934e23dbc17581" ON "drive_file" ("uri");
+CREATE INDEX "IDX_fa99d777623947a5b05f394cae" ON "user" ("tags");
 
 -- alter-aka-type
 ALTER TABLE "user" RENAME COLUMN "alsoKnownAs" TO "alsoKnownAsOld";
