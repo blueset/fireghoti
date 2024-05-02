@@ -30,7 +30,7 @@
 			:pagination="pagination"
 			@queue="(x) => (queue = x)"
 			@status="pullToRefreshComponent?.setDisabled($event)"
-			:collapsed-reply
+			:folder
 		/>
 	</MkPullToRefresh>
 	<XNotes
@@ -40,7 +40,7 @@
 		:pagination="pagination"
 		@queue="(x) => (queue = x)"
 		@status="pullToRefreshComponent?.setDisabled($event)"
-		:collapsed-reply
+		:folder
 	/>
 </template>
 
@@ -56,6 +56,8 @@ import { isSignedIn, me } from "@/me";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
+import { foldNotes } from "@/scripts/fold";
+import type { NoteType } from "@/types/note";
 
 export type TimelineSource =
 	| "antenna"
@@ -87,7 +89,11 @@ const emit = defineEmits<{
 const tlComponent = ref<InstanceType<typeof XNotes>>();
 const pullToRefreshComponent = ref<InstanceType<typeof MkPullToRefresh>>();
 
-const collapsedReply = defaultStore.reactiveState.collapseReplyInTimeline;
+const folder = computed(() => {
+	const mergeThread = defaultStore.reactiveState.mergeThreadInTimeline.value;
+	const mergeRenotes = defaultStore.reactiveState.mergeRenotesInTimeline.value;
+	return (ns: NoteType[]) => foldNotes(ns, mergeThread, mergeRenotes);
+});
 
 let endpoint: TypeUtils.EndpointsOf<entities.Note[]>; // keyof Endpoints
 let query: {

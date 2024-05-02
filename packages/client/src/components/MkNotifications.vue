@@ -81,30 +81,34 @@ const pagingComponent = ref<MkPaginationType<"i/notifications"> | null>(null);
 
 const shouldFold = defaultStore.reactiveState.foldNotification;
 
-const convertNotification = computed(() => shouldFold.value ? foldNotifications : (ns: entities.Notification[]) => ns);
+const convertNotification = computed(() =>
+	shouldFold.value ? foldNotifications : (ns: entities.Notification[]) => ns,
+);
 
 const FETCH_LIMIT = 90;
 
-const pagination = computed(() => Object.assign(
-	{
-		endpoint: "i/notifications" as const,
-		params: computed(() => ({
-			includeTypes: props.includeTypes ?? undefined,
-			excludeTypes: props.includeTypes
-				? undefined
-				: me?.mutingNotificationTypes,
-			unreadOnly: props.unreadOnly,
-		})),
-	},
-	shouldFold.value
-		? {
-				limit: 50,
-				secondFetchLimit: FETCH_LIMIT,
-			}
-		: {
-				limit: 30,
-			},
-));
+const pagination = computed(() =>
+	Object.assign(
+		{
+			endpoint: "i/notifications" as const,
+			params: computed(() => ({
+				includeTypes: props.includeTypes ?? undefined,
+				excludeTypes: props.includeTypes
+					? undefined
+					: me?.mutingNotificationTypes,
+				unreadOnly: props.unreadOnly,
+			})),
+		},
+		shouldFold.value
+			? {
+					limit: 50,
+					secondFetchLimit: FETCH_LIMIT,
+				}
+			: {
+					limit: 30,
+				},
+	),
+);
 
 function isNoteNotification(
 	n: entities.Notification,

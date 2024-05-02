@@ -3,6 +3,7 @@
 		ref="pagingComponent"
 		:pagination="pagination"
 		:disable-auto-load="disableAutoLoad"
+		:folder
 	>
 		<template #empty>
 			<div class="_fullinfo">
@@ -15,7 +16,7 @@
 			</div>
 		</template>
 
-		<template #default="{ items: notes }">
+		<template #default="{ foldedItems: notes }">
 			<div ref="tlEl" class="giivymft" :class="{ noGap }">
 				<XList
 					ref="notes"
@@ -28,10 +29,24 @@
 					class="notes"
 				>
 					<XNote
+						v-if="'folded' in note && note.folded === 'thread'"
+						:key="note.id"
+						class="qtqtichx"
+						:note="note.note"
+						:parents="note.parents"
+					/>
+					<XNote
+						v-else-if="'folded' in note && note.folded === 'renote'"
+						:key="note.key"
+						class="qtqtichx"
+						:note="note.note"
+						:renotes="note.renotesArr"
+					/>
+					<XNote
+						v-else
 						:key="note._featuredId_ || note._prId_ || note.id"
 						class="qtqtichx"
 						:note="note"
-						:collapsed-reply="collapsedReply"
 					/>
 				</XList>
 			</div>
@@ -52,15 +67,21 @@ import XList from "@/components/MkDateSeparatedList.vue";
 import MkPagination from "@/components/MkPagination.vue";
 import { i18n } from "@/i18n";
 import { scroll } from "@/scripts/scroll";
+import type { NoteFolded, NoteThread, NoteType } from "@/types/note";
 
 const tlEl = ref<HTMLElement>();
 
-defineProps<{
-	pagination: PagingOf<entities.Note>;
-	noGap?: boolean;
-	disableAutoLoad?: boolean;
-	collapsedReply?: boolean;
-}>();
+withDefaults(
+	defineProps<{
+		pagination: PagingOf<entities.Note>;
+		noGap?: boolean;
+		disableAutoLoad?: boolean;
+		folder?: (ns: entities.Note[]) => (NoteType | NoteThread | NoteFolded)[];
+	}>(),
+	{
+		folder: (ns: entities.Note[]) => ns,
+	},
+);
 
 const pagingComponent = ref<MkPaginationType<
 	PagingKeyOf<entities.Note>

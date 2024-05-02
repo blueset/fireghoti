@@ -454,9 +454,13 @@ export const defaultStore = markRaw(
 			where: "deviceAccount",
 			default: true,
 		},
-		collapseReplyInTimeline: {
+		mergeThreadInTimeline: {
 			where: "deviceAccount",
-			default: false,
+			default: true,
+		},
+		mergeRenotesInTimeline: {
+			where: "deviceAccount",
+			default: true,
 		},
 	}),
 );

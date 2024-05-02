@@ -365,9 +365,9 @@ async function fetch(firstFetching?: boolean) {
 						}
 
 						// biome-ignore lint/style/noParameterAssign: assign it intentially
-						res = res.filter((item) => {
-							if (idMap.has(item)) return false;
-							idMap.set(item, true);
+						res = res.filter((it) => {
+							if (idMap.has(it.id)) return false;
+							idMap.set(it.id, true);
 							return true;
 						});
 					}
@@ -435,8 +435,20 @@ const prepend = (...item: Item[]): void => {
 	}
 };
 
-const append = (...items: Item[]): void => {
-	appended.value.push(...items);
+const append = (...it: Item[]): void => {
+	// If there are too many appended, merge them into arrItems
+	if (
+		appended.value.length >
+		(props.pagination.secondFetchLimit || SECOND_FETCH_LIMIT_DEFAULT)
+	) {
+		for (const item of appended.value) {
+			idMap.set(item.id, true);
+		}
+		arrItems.value.push(appended.value);
+		appended.value = [];
+		// We don't need to calculate here because it won't cause any changes in items
+	}
+	appended.value.push(...it);
 	calculateItems();
 };
 
