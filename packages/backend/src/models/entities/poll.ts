@@ -44,14 +44,12 @@ export class Poll {
 	})
 	public noteVisibility: (typeof noteVisibilities)[number];
 
-	@Index()
 	@Column({
 		...id(),
 		comment: "[Denormalized]",
 	})
 	public userId: User["id"];
 
-	@Index()
 	@Column("varchar", {
 		length: 512,
 		nullable: true,
