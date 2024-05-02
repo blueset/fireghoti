@@ -27,6 +27,7 @@
 			>
 				<swiper-slide>
 					<XNotifications
+						:key="'tab1'"
 						class="notifications"
 						:include-types="includeTypes"
 						:unread-only="false"
@@ -34,16 +35,18 @@
 				</swiper-slide>
 				<swiper-slide>
 					<XNotifications
+						v-if="tab === 'reactions'"
+						:key="'tab2'"
 						class="notifications"
 						:include-types="['reaction']"
 						:unread-only="false"
 					/>
 				</swiper-slide>
 				<swiper-slide>
-					<XNotes :pagination="mentionsPagination" />
+					<XNotes v-if="tab === 'mentions'" :key="'tab3'" :pagination="mentionsPagination" />
 				</swiper-slide>
 				<swiper-slide>
-					<XNotes :pagination="directNotesPagination" />
+					<XNotes v-if="tab === 'directNotes'" :key="'tab4'" :pagination="directNotesPagination" />
 				</swiper-slide>
 			</swiper>
 		</MkSpacer>
@@ -54,6 +57,7 @@
 import { computed, ref, watch } from "vue";
 import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
+import type { Swiper as SwiperType } from "swiper/types";
 import { notificationTypes } from "firefish-js";
 import XNotifications from "@/components/MkNotifications.vue";
 import XNotes from "@/components/MkNotes.vue";
@@ -70,7 +74,7 @@ const tabs = ["all", "reactions", "mentions", "directNotes"];
 const tab = ref(tabs[0]);
 watch(tab, () => syncSlide(tabs.indexOf(tab.value)));
 
-const includeTypes = ref<string[] | null>(null);
+const includeTypes = ref<(typeof notificationTypes)[number][] | null>(null);
 os.api("notifications/mark-all-as-read");
 
 const MOBILE_THRESHOLD = 500;
@@ -98,7 +102,7 @@ const directNotesPagination = {
 function setFilter(ev) {
 	const typeItems = notificationTypes.map((t) => ({
 		text: i18n.t(`_notification._types.${t}`),
-		active: includeTypes.value && includeTypes.value.includes(t),
+		active: includeTypes.value?.includes(t),
 		action: () => {
 			includeTypes.value = [t];
 		},
@@ -121,25 +125,23 @@ function setFilter(ev) {
 }
 
 const headerActions = computed(() =>
-	[
-		tab.value === "all"
-			? {
+	tab.value === "all"
+		? [
+				{
 					text: i18n.ts.filter,
 					icon: `${icon("ph-funnel")}`,
 					highlighted: includeTypes.value != null,
 					handler: setFilter,
-				}
-			: undefined,
-		tab.value === "all"
-			? {
+				},
+				{
 					text: i18n.ts.markAllAsRead,
 					icon: `${icon("ph-check")}`,
 					handler: () => {
 						os.apiWithDialog("notifications/mark-all-as-read");
 					},
-				}
-			: undefined,
-	].filter((x) => x !== undefined),
+				},
+			]
+		: [],
 );
 
 const headerTabs = computed(() => [
@@ -172,18 +174,19 @@ definePageMetadata(
 	})),
 );
 
-let swiperRef = null;
+let swiperRef: SwiperType | null = null;
 
-function setSwiperRef(swiper) {
+function setSwiperRef(swiper: SwiperType) {
 	swiperRef = swiper;
 	syncSlide(tabs.indexOf(tab.value));
 }
 
 function onSlideChange() {
-	tab.value = tabs[swiperRef.activeIndex];
+	if (tab.value !== tabs[swiperRef!.activeIndex])
+		tab.value = tabs[swiperRef!.activeIndex];
 }
 
-function syncSlide(index) {
-	swiperRef.slideTo(index);
+function syncSlide(index: number) {
+	if (index !== swiperRef!.activeIndex) swiperRef!.slideTo(index);
 }
 </script>
