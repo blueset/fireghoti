@@ -112,6 +112,11 @@ export function foldNotes(ns: NoteType[], foldReply = true, foldRenote = true) {
 				threads.delete(n.replyId);
 				th.push(n);
 				threads.set(n.id, th);
+			} else if (n.reply?.replyId && threads.has(n.reply.replyId)) {
+				const th = threads.get(n.reply.replyId)!;
+				threads.delete(n.reply.replyId);
+				th.push(n.reply, n);
+				threads.set(n.id, th);
 			} else {
 				threads.set(n.id, [n]);
 			}
