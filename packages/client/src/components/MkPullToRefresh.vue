@@ -160,7 +160,7 @@ function moving(event: TouchEvent | PointerEvent) {
 	const moveScreenX = getScreenX(event);
 	const moveHeight = moveScreenY - startScreenY!;
 	const moveWidth = moveScreenX - startScreenX!;
-	if (Math.abs(moveWidth) > moveHeight * MAX_PULL_TAN_ANGLE) {
+	if (Math.abs(moveWidth / moveHeight) > MAX_PULL_TAN_ANGLE) {
 		if (Math.abs(moveWidth) > 30) pullStarted.value = false;
 		return;
 	}
