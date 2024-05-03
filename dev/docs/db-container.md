@@ -31,7 +31,7 @@ You can refer to [local-installation.md](./local-installation.md) to install the
 1. Copy example config file
     ```sh
     cp dev/config.example.env dev/config.env
-    # If you use container runtime other than Docker, you need to modify the "COMPOSE" variable
+    # If you use container runtime other than Podman, you need to modify the "COMPOSE" variable
     # vim dev/config.env
     ```
 1. Create `.config/default.yml` with the following content
