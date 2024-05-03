@@ -193,6 +193,7 @@ export type Note = {
 	url?: string;
 	updatedAt?: DateString;
 	isHidden?: boolean;
+	scheduledAt?: DateString;
 	/** if the note is a history */
 	historyId?: ID;
 };

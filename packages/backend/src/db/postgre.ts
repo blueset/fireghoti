@@ -77,6 +77,7 @@ import { NoteFile } from "@/models/entities/note-file.js";
 
 import { entities as charts } from "@/services/chart/entities.js";
 import { dbLogger } from "./logger.js";
+import { ScheduledNoteCreation } from "@/models/entities/scheduled-note-creation.js";
 
 const sqlLogger = dbLogger.createSubLogger("sql", "gray", false);
 
@@ -182,6 +183,7 @@ export const entities = [
 	UserPending,
 	Webhook,
 	UserIp,
+	ScheduledNoteCreation,
 	...charts,
 ];
 

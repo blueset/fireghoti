@@ -1583,6 +1583,16 @@ _ago:
   weeksAgo: "{n}w ago"
   monthsAgo: "{n}mo ago"
   yearsAgo: "{n}y ago"
+_later:
+  future: "Future"
+  justNow: "Immediate"
+  secondsAgo: "{n}s later"
+  minutesAgo: "{n}m later"
+  hoursAgo: "{n}h later"
+  daysAgo: "{n}d later"
+  weeksAgo: "{n}w later"
+  monthsAgo: "{n}mo later"
+  yearsAgo: "{n}y later"
 _time:
   second: "Second(s)"
   minute: "Minute(s)"
@@ -2241,3 +2251,5 @@ incorrectLanguageWarning: "It looks like your post is in {detected}, but you sel
 noteEditHistory: "Post edit history"
 slashQuote: "Chain quote"
 foldNotification: "Group similar notifications"
+scheduledPost: "Scheduled post"
+scheduledDate: "Scheduled date"

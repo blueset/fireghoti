@@ -42,36 +42,42 @@ const relative = computed<string>(() => {
 	if (props.mode === "absolute") return ""; // absoluteではrelativeを使わないので計算しない
 	if (invalid) return i18n.ts._ago.invalid;
 
-	const ago = (now.value - _time) / 1000; /* ms */
+	let ago = (now.value - _time) / 1000; /* ms */
+
+	const agoType = ago > 0 ? "_ago" : "_later";
+	ago = Math.abs(ago);
+
 	return ago >= 31536000
-		? i18n.t("_ago.yearsAgo", { n: Math.floor(ago / 31536000).toString() })
+		? i18n.t(`${agoType}.yearsAgo`, {
+				n: Math.floor(ago / 31536000).toString(),
+			})
 		: ago >= 2592000
-			? i18n.t("_ago.monthsAgo", {
+			? i18n.t(`${agoType}.monthsAgo`, {
 					n: Math.floor(ago / 2592000).toString(),
 				})
 			: ago >= 604800
-				? i18n.t("_ago.weeksAgo", {
+				? i18n.t(`${agoType}.weeksAgo`, {
 						n: Math.floor(ago / 604800).toString(),
 					})
 				: ago >= 86400
-					? i18n.t("_ago.daysAgo", {
+					? i18n.t(`${agoType}.daysAgo`, {
 							n: Math.floor(ago / 86400).toString(),
 						})
 					: ago >= 3600
-						? i18n.t("_ago.hoursAgo", {
+						? i18n.t(`${agoType}.hoursAgo`, {
 								n: Math.floor(ago / 3600).toString(),
 							})
 						: ago >= 60
-							? i18n.t("_ago.minutesAgo", {
+							? i18n.t(`${agoType}.minutesAgo`, {
 									n: (~~(ago / 60)).toString(),
 								})
 							: ago >= 10
-								? i18n.t("_ago.secondsAgo", {
+								? i18n.t(`${agoType}.secondsAgo`, {
 										n: (~~(ago % 60)).toString(),
 									})
 								: ago >= -1
-									? i18n.ts._ago.justNow
-									: i18n.ts._ago.future;
+									? i18n.ts[agoType].justNow
+									: i18n.ts[agoType].future;
 });
 
 let tickId: number;

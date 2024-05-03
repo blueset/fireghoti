@@ -175,6 +175,7 @@ export default async (
 	},
 	data: Option,
 	silent = false,
+	waitToPublish?: (note: Note) => Promise<void>,
 ) =>
 	// biome-ignore lint/suspicious/noAsyncPromiseExecutor: FIXME
 	new Promise<Note>(async (res, rej) => {
@@ -355,6 +356,8 @@ export default async (
 		});
 
 		res(note);
+
+		if (waitToPublish) await waitToPublish(note);
 
 		// Register host
 		if (Users.isRemoteUser(user)) {

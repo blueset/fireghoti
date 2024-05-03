@@ -40,7 +40,6 @@ coverage
 
 # misskey
 built
-db
 elasticsearch
 redis
 npm-debug.log
@@ -56,8 +55,6 @@ packages/backend/assets/instance.css
 packages/backend/assets/sounds/None.mp3
 packages/backend/assets/LICENSE
 
-!/packages/backend/queue/processors/db
-!/packages/backend/src/db
 !/packages/backend/src/server/api/endpoints/drive/files
 
 packages/megalodon/lib

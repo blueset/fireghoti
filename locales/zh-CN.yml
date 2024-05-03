@@ -1230,6 +1230,16 @@ _ago:
   weeksAgo: "{n} 周前"
   monthsAgo: "{n} 月前"
   yearsAgo: "{n} 年前"
+_later:
+  future: "将来"
+  justNow: "马上"
+  secondsAgo: "{n} 秒后"
+  minutesAgo: "{n} 分后"
+  hoursAgo: "{n} 时后"
+  daysAgo: "{n} 天后"
+  weeksAgo: "{n} 周后"
+  monthsAgo: "{n} 月后"
+  yearsAgo: "{n} 年后"
 _time:
   second: "秒"
   minute: "分"
@@ -2068,3 +2078,5 @@ noteEditHistory: "帖子编辑历史"
 media: 媒体
 slashQuote: "斜杠引用"
 foldNotification: "将通知按同类型分组"
+scheduledPost: "定时发送"
+scheduledDate: "发送日期"
