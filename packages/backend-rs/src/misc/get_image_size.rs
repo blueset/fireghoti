@@ -1,4 +1,4 @@
-use crate::misc::redis_cache::{get_cache, set_cache, CacheError};
+use crate::database::cache;
 use crate::util::http_client;
 use image::{io::Reader, ImageError, ImageFormat};
 use nom_exif::{parse_jpeg_exif, EntryValue, ExifTag};
@@ -8,7 +8,7 @@ use tokio::sync::Mutex;
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Redis cache error: {0}")]
-    CacheErr(#[from] CacheError),
+    CacheErr(#[from] cache::Error),
     #[error("Reqwest error: {0}")]
     ReqwestErr(#[from] reqwest::Error),
     #[error("Image decoding error: {0}")]
@@ -51,10 +51,10 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
         let _ = MTX_GUARD.lock().await;
 
         let key = format!("fetchImage:{}", url);
-        attempted = get_cache::<bool>(&key)?.is_some();
+        attempted = cache::get::<bool>(&key)?.is_some();
 
         if !attempted {
-            set_cache(&key, &true, 10 * 60)?;
+            cache::set(&key, &true, 10 * 60)?;
         }
     }
 
@@ -109,7 +109,7 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
 #[cfg(test)]
 mod unit_test {
     use super::{get_image_size_from_url, ImageSize};
-    use crate::misc::redis_cache::delete_cache;
+    use crate::database::cache;
     use pretty_assertions::assert_eq;
 
     #[tokio::test]
@@ -126,15 +126,15 @@ mod unit_test {
 
         // Delete caches in case you run this test multiple times
         // (should be disabled in CI tasks)
-        delete_cache(&format!("fetchImage:{}", png_url_1)).unwrap();
-        delete_cache(&format!("fetchImage:{}", png_url_2)).unwrap();
-        delete_cache(&format!("fetchImage:{}", png_url_3)).unwrap();
-        delete_cache(&format!("fetchImage:{}", rotated_jpeg_url)).unwrap();
-        delete_cache(&format!("fetchImage:{}", webp_url_1)).unwrap();
-        delete_cache(&format!("fetchImage:{}", webp_url_2)).unwrap();
-        delete_cache(&format!("fetchImage:{}", ico_url)).unwrap();
-        delete_cache(&format!("fetchImage:{}", gif_url)).unwrap();
-        delete_cache(&format!("fetchImage:{}", mp3_url)).unwrap();
+        cache::delete(&format!("fetchImage:{}", png_url_1)).unwrap();
+        cache::delete(&format!("fetchImage:{}", png_url_2)).unwrap();
+        cache::delete(&format!("fetchImage:{}", png_url_3)).unwrap();
+        cache::delete(&format!("fetchImage:{}", rotated_jpeg_url)).unwrap();
+        cache::delete(&format!("fetchImage:{}", webp_url_1)).unwrap();
+        cache::delete(&format!("fetchImage:{}", webp_url_2)).unwrap();
+        cache::delete(&format!("fetchImage:{}", ico_url)).unwrap();
+        cache::delete(&format!("fetchImage:{}", gif_url)).unwrap();
+        cache::delete(&format!("fetchImage:{}", mp3_url)).unwrap();
 
         let png_size_1 = ImageSize {
             width: 1024,
