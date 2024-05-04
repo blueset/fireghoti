@@ -123,17 +123,20 @@ mod unit_test {
         let gif_url = "https://firefish.dev/firefish/firefish/-/raw/b9c3dfbd3d473cb2cee20c467eeae780bc401271/packages/backend/test/resources/anime.gif";
         let mp3_url = "https://firefish.dev/firefish/firefish/-/blob/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/sounds/aisha/1.mp3";
 
-        // Delete caches in case you run this test multiple times
-        // (should be disabled in CI tasks)
-        cache::delete_one(cache::Category::FetchUrl, png_url_1).unwrap();
-        cache::delete_one(cache::Category::FetchUrl, png_url_2).unwrap();
-        cache::delete_one(cache::Category::FetchUrl, png_url_3).unwrap();
-        cache::delete_one(cache::Category::FetchUrl, rotated_jpeg_url).unwrap();
-        cache::delete_one(cache::Category::FetchUrl, webp_url_1).unwrap();
-        cache::delete_one(cache::Category::FetchUrl, webp_url_2).unwrap();
-        cache::delete_one(cache::Category::FetchUrl, ico_url).unwrap();
-        cache::delete_one(cache::Category::FetchUrl, gif_url).unwrap();
-        cache::delete_one(cache::Category::FetchUrl, mp3_url).unwrap();
+        cfg_if::cfg_if! {
+            if #[cfg(not(feature = "ci"))] {
+                // Delete caches in case you run this test multiple times
+                cache::delete_one(cache::Category::FetchUrl, png_url_1).unwrap();
+                cache::delete_one(cache::Category::FetchUrl, png_url_2).unwrap();
+                cache::delete_one(cache::Category::FetchUrl, png_url_3).unwrap();
+                cache::delete_one(cache::Category::FetchUrl, rotated_jpeg_url).unwrap();
+                cache::delete_one(cache::Category::FetchUrl, webp_url_1).unwrap();
+                cache::delete_one(cache::Category::FetchUrl, webp_url_2).unwrap();
+                cache::delete_one(cache::Category::FetchUrl, ico_url).unwrap();
+                cache::delete_one(cache::Category::FetchUrl, gif_url).unwrap();
+                cache::delete_one(cache::Category::FetchUrl, mp3_url).unwrap();
+            }
+        }
 
         let png_size_1 = ImageSize {
             width: 1024,

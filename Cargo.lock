@@ -202,6 +202,7 @@ dependencies = [
  "argon2",
  "basen",
  "bcrypt",
+ "cfg-if",
  "chrono",
  "cuid2",
  "emojis",
