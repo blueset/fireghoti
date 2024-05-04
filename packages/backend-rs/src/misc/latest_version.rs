@@ -75,11 +75,17 @@ mod unit_test {
         // DD
         assert!(&version[6..8] >= "01");
         assert!(&version[6..8] <= "31");
+
+        // -X
+        if version.len() > 8 {
+            assert!(version.chars().nth(8).unwrap() == '-');
+            assert!(version[9..].chars().all(|c| c.is_ascii_digit()));
+        }
     }
 
     #[tokio::test]
     async fn check_version() {
-        #[cfg(not(feature = "ci"))]
+        // delete caches in case you run this test multiple times
         cache::delete_one(cache::Category::FetchUrl, UPSTREAM_PACKAGE_JSON_URL).unwrap();
 
         // fetch from firefish.dev

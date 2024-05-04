@@ -123,8 +123,7 @@ mod unit_test {
         let gif_url = "https://firefish.dev/firefish/firefish/-/raw/b9c3dfbd3d473cb2cee20c467eeae780bc401271/packages/backend/test/resources/anime.gif";
         let mp3_url = "https://firefish.dev/firefish/firefish/-/blob/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/sounds/aisha/1.mp3";
 
-        // Delete caches in case you run this test multiple times
-        #[cfg(not(feature = "ci"))]
+        // delete caches in case you run this test multiple times
         cache::delete_all(cache::Category::FetchUrl).unwrap();
 
         let png_size_1 = ImageSize {
@@ -187,5 +186,16 @@ mod unit_test {
         assert_eq!(ico_size, get_image_size_from_url(ico_url).await.unwrap());
         assert_eq!(gif_size, get_image_size_from_url(gif_url).await.unwrap());
         assert!(get_image_size_from_url(mp3_url).await.is_err());
+    }
+
+    #[tokio::test]
+    async fn too_many_attempts() {
+        let url = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/splash.png";
+
+        // delete caches in case you run this test multiple times
+        cache::delete_one(cache::Category::FetchUrl, url).unwrap();
+
+        assert!(get_image_size_from_url(url).await.is_ok());
+        assert!(get_image_size_from_url(url).await.is_err());
     }
 }
