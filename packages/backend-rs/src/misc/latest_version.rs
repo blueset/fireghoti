@@ -12,7 +12,7 @@ pub enum Error {
     JsonErr(#[from] serde_json::Error),
 }
 
-const UPSTREAM_PACKAGE_JSON_URL: &'static str =
+const UPSTREAM_PACKAGE_JSON_URL: &str =
     "https://firefish.dev/firefish/firefish/-/raw/main/package.json";
 
 async fn get_latest_version() -> Result<String, Error> {
