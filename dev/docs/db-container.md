@@ -51,12 +51,7 @@ You can refer to [local-installation.md](./local-installation.md) to install the
       host: localhost
       port: 26379
 
-    logLevel: [
-      'error',
-      'success',
-      'warning',
-      'info'
-    ]
+    maxlogLevel: 'debug'  # or 'trace'
     ```
 1. Start database containers
     ```sh
@@ -83,6 +78,19 @@ You can refer to [local-installation.md](./local-installation.md) to install the
     DONE *  [core boot]     All workers started
     DONE *  [core boot]     Now listening on port 3000 on http://localhost:3000
     ```
+
+## Update auto-generated files in `package/backend-rs`
+
+You need to install `sea-orm-cli` to regenerate database entities.
+
+```sh
+cargo install sea-orm-cli
+```
+
+```sh
+make entities
+make napi
+```
 
 ## Reset the environment
 
