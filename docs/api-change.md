@@ -2,7 +2,7 @@
 
 Breaking changes are indicated by the :warning: icon.
 
-## Unreleased
+## v20240504
 
 - :warning: Removed `release` endpoint.
 
