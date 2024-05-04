@@ -7,6 +7,8 @@
   - Node.js
   - pnpm
   - Rust toolchain
+	- Python 3
+	- Perl
   - FFmpeg
   - Container runtime
     - [Docker](https://docs.docker.com/get-docker/)
