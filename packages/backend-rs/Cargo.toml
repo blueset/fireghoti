@@ -47,7 +47,6 @@ url = { workspace = true }
 urlencoding = { workspace = true }
 
 [dev-dependencies]
-cfg-if = { workspace = true }
 pretty_assertions = { workspace = true }
 
 [build-dependencies]

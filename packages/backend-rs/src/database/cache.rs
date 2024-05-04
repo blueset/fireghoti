@@ -2,10 +2,13 @@ use crate::database::{redis_conn, redis_key};
 use redis::{Commands, RedisError};
 use serde::{Deserialize, Serialize};
 
-#[derive(strum::Display)]
+#[derive(strum::Display, Debug)]
 pub enum Category {
     #[strum(serialize = "fetchUrl")]
     FetchUrl,
+    #[cfg(test)]
+    #[strum(serialize = "usedOnlyForTesting")]
+    Test,
 }
 
 #[derive(thiserror::Error, Debug)]
@@ -18,12 +21,19 @@ pub enum Error {
     DeserializeError(#[from] rmp_serde::decode::Error),
 }
 
+#[inline]
+fn prefix_key(key: &str) -> String {
+    redis_key(format!("cache:{}", key))
+}
+
+#[inline]
 fn categorize(category: Category, key: &str) -> String {
     format!("{}:{}", category, key)
 }
 
-fn prefix_key(key: &str) -> String {
-    redis_key(format!("cache:{}", key))
+#[inline]
+fn wildcard(category: Category) -> String {
+    prefix_key(&categorize(category, "*"))
 }
 
 pub fn set<V: for<'a> Deserialize<'a> + Serialize>(
@@ -71,11 +81,19 @@ pub fn delete_one(category: Category, key: &str) -> Result<(), Error> {
     delete(&categorize(category, key))
 }
 
-// TODO: set_all(), get_all(), delete_all()
+pub fn delete_all(category: Category) -> Result<(), Error> {
+    let mut redis = redis_conn()?;
+    let keys: Vec<Vec<u8>> = redis.keys(wildcard(category))?;
+    Ok(redis.del(keys)?)
+}
+
+// TODO: set_all(), get_all()
 
 #[cfg(test)]
 mod unit_test {
-    use super::{get, set};
+    use crate::database::cache::delete_one;
+
+    use super::{delete_all, get, get_one, set, set_one, Category::Test};
     use pretty_assertions::assert_eq;
 
     #[test]
@@ -120,5 +138,36 @@ mod unit_test {
         assert!(expired_value_1.is_none());
         assert!(expired_value_2.is_none());
         assert!(expired_value_3.is_none());
+    }
+
+    #[test]
+    fn use_category() {
+        let key_1 = "fire";
+        let key_2 = "fish";
+        let key_3 = "awawa";
+
+        let value_1 = "hello".to_string();
+        let value_2 = 998244353u32;
+        let value_3 = 'あ';
+
+        set_one(Test, key_1, &value_1, 5 * 60).unwrap();
+        set_one(Test, key_2, &value_2, 5 * 60).unwrap();
+        set_one(Test, key_3, &value_3, 5 * 60).unwrap();
+
+        assert_eq!(get_one::<String>(Test, key_1).unwrap().unwrap(), value_1);
+        assert_eq!(get_one::<u32>(Test, key_2).unwrap().unwrap(), value_2);
+        assert_eq!(get_one::<char>(Test, key_3).unwrap().unwrap(), value_3);
+
+        delete_one(Test, key_1).unwrap();
+
+        assert!(get_one::<String>(Test, key_1).unwrap().is_none());
+        assert!(get_one::<u32>(Test, key_2).unwrap().is_some());
+        assert!(get_one::<char>(Test, key_3).unwrap().is_some());
+
+        delete_all(Test).unwrap();
+
+        assert!(get_one::<String>(Test, key_1).unwrap().is_none());
+        assert!(get_one::<u32>(Test, key_2).unwrap().is_none());
+        assert!(get_one::<char>(Test, key_3).unwrap().is_none());
     }
 }

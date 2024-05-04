@@ -79,11 +79,8 @@ mod unit_test {
 
     #[tokio::test]
     async fn check_version() {
-        cfg_if::cfg_if! {
-            if #[cfg(not(feature = "ci"))] {
-                cache::delete_one(cache::Category::FetchUrl, UPSTREAM_PACKAGE_JSON_URL).unwrap();
-            }
-        }
+        #[cfg(not(feature = "ci"))]
+        cache::delete_one(cache::Category::FetchUrl, UPSTREAM_PACKAGE_JSON_URL).unwrap();
 
         // fetch from firefish.dev
         validate_version(latest_version().await.unwrap());
