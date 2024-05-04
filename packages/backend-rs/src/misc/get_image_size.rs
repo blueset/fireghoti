@@ -50,11 +50,10 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
     {
         let _ = MTX_GUARD.lock().await;
 
-        let key = format!("fetchImage:{}", url);
-        attempted = cache::get::<bool>(&key)?.is_some();
+        attempted = cache::get_one::<bool>(cache::Category::FetchUrl, url)?.is_some();
 
         if !attempted {
-            cache::set(&key, &true, 10 * 60)?;
+            cache::set_one(cache::Category::FetchUrl, url, &true, 10 * 60)?;
         }
     }
 
@@ -126,15 +125,15 @@ mod unit_test {
 
         // Delete caches in case you run this test multiple times
         // (should be disabled in CI tasks)
-        cache::delete(&format!("fetchImage:{}", png_url_1)).unwrap();
-        cache::delete(&format!("fetchImage:{}", png_url_2)).unwrap();
-        cache::delete(&format!("fetchImage:{}", png_url_3)).unwrap();
-        cache::delete(&format!("fetchImage:{}", rotated_jpeg_url)).unwrap();
-        cache::delete(&format!("fetchImage:{}", webp_url_1)).unwrap();
-        cache::delete(&format!("fetchImage:{}", webp_url_2)).unwrap();
-        cache::delete(&format!("fetchImage:{}", ico_url)).unwrap();
-        cache::delete(&format!("fetchImage:{}", gif_url)).unwrap();
-        cache::delete(&format!("fetchImage:{}", mp3_url)).unwrap();
+        cache::delete_one(cache::Category::FetchUrl, png_url_1).unwrap();
+        cache::delete_one(cache::Category::FetchUrl, png_url_2).unwrap();
+        cache::delete_one(cache::Category::FetchUrl, png_url_3).unwrap();
+        cache::delete_one(cache::Category::FetchUrl, rotated_jpeg_url).unwrap();
+        cache::delete_one(cache::Category::FetchUrl, webp_url_1).unwrap();
+        cache::delete_one(cache::Category::FetchUrl, webp_url_2).unwrap();
+        cache::delete_one(cache::Category::FetchUrl, ico_url).unwrap();
+        cache::delete_one(cache::Category::FetchUrl, gif_url).unwrap();
+        cache::delete_one(cache::Category::FetchUrl, mp3_url).unwrap();
 
         let png_size_1 = ImageSize {
             width: 1024,

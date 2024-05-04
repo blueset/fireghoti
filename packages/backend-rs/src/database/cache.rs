@@ -2,6 +2,12 @@ use crate::database::{redis_conn, redis_key};
 use redis::{Commands, RedisError};
 use serde::{Deserialize, Serialize};
 
+#[derive(strum::Display)]
+pub enum Category {
+    #[strum(serialize = "fetchUrl")]
+    FetchUrl,
+}
+
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Redis error: {0}")]
@@ -10,6 +16,10 @@ pub enum Error {
     SerializeError(#[from] rmp_serde::encode::Error),
     #[error("Data deserialization error: {0}")]
     DeserializeError(#[from] rmp_serde::decode::Error),
+}
+
+fn categorize(category: Category, key: &str) -> String {
+    format!("{}:{}", category, key)
 }
 
 fn prefix_key(key: &str) -> String {
@@ -40,6 +50,28 @@ pub fn get<V: for<'a> Deserialize<'a> + Serialize>(key: &str) -> Result<Option<V
 pub fn delete(key: &str) -> Result<(), Error> {
     Ok(redis_conn()?.del(prefix_key(key))?)
 }
+
+pub fn set_one<V: for<'a> Deserialize<'a> + Serialize>(
+    category: Category,
+    key: &str,
+    value: &V,
+    expire_seconds: u64,
+) -> Result<(), Error> {
+    set(&categorize(category, key), value, expire_seconds)
+}
+
+pub fn get_one<V: for<'a> Deserialize<'a> + Serialize>(
+    category: Category,
+    key: &str,
+) -> Result<Option<V>, Error> {
+    get(&categorize(category, key))
+}
+
+pub fn delete_one(category: Category, key: &str) -> Result<(), Error> {
+    delete(&categorize(category, key))
+}
+
+// TODO: set_all(), get_all(), delete_all()
 
 #[cfg(test)]
 mod unit_test {
