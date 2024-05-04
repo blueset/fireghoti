@@ -61,9 +61,9 @@ mod unit_test {
     use crate::database::cache;
 
     fn validate_version(version: String) {
-        // version: YYYYMMDD
-        assert!(version.len() == 8);
-        assert!(version.chars().all(|c| c.is_ascii_digit()));
+        // version: YYYYMMDD or YYYYMMDD-X
+        assert!(version.len() >= 8);
+        assert!(version[..8].chars().all(|c| c.is_ascii_digit()));
 
         // YYYY
         assert!(&version[..4] >= "2024");
@@ -73,8 +73,8 @@ mod unit_test {
         assert!(&version[4..6] <= "12");
 
         // DD
-        assert!(&version[6..] >= "01");
-        assert!(&version[6..] <= "31");
+        assert!(&version[6..8] >= "01");
+        assert!(&version[6..8] <= "31");
     }
 
     #[tokio::test]
