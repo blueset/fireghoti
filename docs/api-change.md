@@ -2,6 +2,10 @@
 
 Breaking changes are indicated by the :warning: icon.
 
+## Unreleased
+
+- :warning: Removed `release` endpoint.
+
 ## v20240424
 
 - Added `antennaLimit` field to the response of `meta` and `admin/meta`, and the request of `admin/update-meta` (optional).

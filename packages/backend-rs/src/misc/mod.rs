@@ -8,6 +8,7 @@ pub mod escape_sql;
 pub mod format_milliseconds;
 pub mod get_image_size;
 pub mod get_note_summary;
+pub mod latest_version;
 pub mod mastodon_id;
 pub mod meta;
 pub mod nyaify;
