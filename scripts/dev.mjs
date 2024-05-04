@@ -11,12 +11,6 @@ import { execa } from "execa";
 		stderr: process.stderr,
 	});
 
-	execa("pnpm", ["dlx", "gulp", "watch"], {
-		cwd: join(__dirname, "/../"),
-		stdout: process.stdout,
-		stderr: process.stderr,
-	});
-
 	execa("pnpm", ["--filter", "backend", "watch"], {
 		cwd: join(__dirname, "/../"),
 		stdout: process.stdout,
