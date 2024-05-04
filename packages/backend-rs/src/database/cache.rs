@@ -36,6 +36,30 @@ fn wildcard(category: Category) -> String {
     prefix_key(&categorize(category, "*"))
 }
 
+/// Sets a Redis cache.
+///
+/// This overwrites the exsisting cache with the same key.
+///
+/// ## Arguments
+///
+/// * `key` - key (will be prefixed automatically)
+/// * `value` - (de)serializable value
+/// * `expire_seconds` - TTL
+///
+/// ## Example
+///
+/// ```
+/// use backend_rs::database::cache;
+/// let key = "apple";
+/// let data = "I want to cache this string".to_string();
+///
+/// // caches the data for 10 seconds
+/// cache::set(key, &data, 10);
+///
+/// // get the cache
+/// let cached_data = cache::get::<String>(key).unwrap();
+/// assert_eq!(data, cached_data.unwrap());
+/// ```
 pub fn set<V: for<'a> Deserialize<'a> + Serialize>(
     key: &str,
     value: &V,
@@ -49,6 +73,34 @@ pub fn set<V: for<'a> Deserialize<'a> + Serialize>(
     Ok(())
 }
 
+/// Gets a Redis cache.
+///
+/// If the Redis connection is fine, this returns `Ok(data)` where `data`
+/// is the cached value. Returns `Ok(None)` if there is no value corresponding to `key`.
+///
+/// ## Arguments
+///
+/// * `key` - key (will be prefixed automatically)
+///
+/// ## Example
+///
+/// ```
+/// use backend_rs::database::cache;
+///
+/// let key = "banana";
+/// let data = "I want to cache this string".to_string();
+///
+/// // set cache
+/// cache::set(key, &data, 10).unwrap();
+///
+/// // get cache
+/// let cached_data = cache::get::<String>(key).unwrap();
+/// assert_eq!(data, cached_data.unwrap());
+///
+/// // get nonexistent (or expired) cache
+/// let no_cache = cache::get::<String>("nonexistent").unwrap();
+/// assert!(no_cache.is_none());
+/// ```
 pub fn get<V: for<'a> Deserialize<'a> + Serialize>(key: &str) -> Result<Option<V>, Error> {
     let serialized_value: Option<Vec<u8>> = redis_conn()?.get(prefix_key(key))?;
     Ok(match serialized_value {
@@ -57,10 +109,49 @@ pub fn get<V: for<'a> Deserialize<'a> + Serialize>(key: &str) -> Result<Option<V
     })
 }
 
+/// Deletes a Redis cache.
+///
+/// If the Redis connection is fine, this returns `Ok(())`
+/// regardless of whether the cache exists.
+///
+/// ## Arguments
+///
+/// * `key` - key (will be prefixed automatically)
+///
+/// ## Example
+///
+/// ```
+/// use backend_rs::database::cache::{set, get, delete};
+///
+/// let key = "chocolate";
+/// let value = "I want to cache this string".to_string();
+///
+/// // set cache
+/// set(key, &value, 10).unwrap();
+///
+/// // delete the cache
+/// delete("foo").unwrap();
+/// delete("nonexistent").unwrap(); // this is okay
+///
+/// // the cache is gone
+/// let cached_value = get::<String>("foo").unwrap();
+/// assert!(cached_value.is_none());
+/// ```
 pub fn delete(key: &str) -> Result<(), Error> {
     Ok(redis_conn()?.del(prefix_key(key))?)
 }
 
+/// Sets a Redis cache under a `category`.
+///
+/// The usage is the same as [set], except that you need to
+/// use [get_one] and [delete_one] to get/delete the cache.
+///
+/// ## Arguments
+///
+/// * `category` - one of [Category]
+/// * `key` - key (will be prefixed automatically)
+/// * `value` - (de)serializable value
+/// * `expire_seconds` - TTL
 pub fn set_one<V: for<'a> Deserialize<'a> + Serialize>(
     category: Category,
     key: &str,
@@ -70,6 +161,14 @@ pub fn set_one<V: for<'a> Deserialize<'a> + Serialize>(
     set(&categorize(category, key), value, expire_seconds)
 }
 
+/// Gets a Redis cache under a `category`.
+///
+/// The usage is basically the same as [get].
+///
+/// ## Arguments
+///
+/// * `category` - one of [Category]
+/// * `key` - key (will be prefixed automatically)
 pub fn get_one<V: for<'a> Deserialize<'a> + Serialize>(
     category: Category,
     key: &str,
@@ -77,14 +176,32 @@ pub fn get_one<V: for<'a> Deserialize<'a> + Serialize>(
     get(&categorize(category, key))
 }
 
+/// Deletes a Redis cache under a `category`.
+///
+/// The usage is basically the same as [delete].
+///
+/// ## Arguments
+///
+/// * `category` - one of [Category]
+/// * `key` - key (will be prefixed automatically)
 pub fn delete_one(category: Category, key: &str) -> Result<(), Error> {
     delete(&categorize(category, key))
 }
 
+/// Deletes all Redis caches under a `category`.
+///
+/// ## Arguments
+///
+/// * `category` - one of [Category]
 pub fn delete_all(category: Category) -> Result<(), Error> {
     let mut redis = redis_conn()?;
     let keys: Vec<Vec<u8>> = redis.keys(wildcard(category))?;
-    Ok(redis.del(keys)?)
+
+    if !keys.is_empty() {
+        redis.del(keys)?
+    }
+
+    Ok(())
 }
 
 // TODO: set_all(), get_all()
