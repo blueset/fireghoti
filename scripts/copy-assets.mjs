@@ -1,12 +1,17 @@
 import fs from "node:fs/promises";
+import path, { join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const repositoryRootDir = join(path.dirname(fileURLToPath(import.meta.url)), "../");
+const file = (relativePath) => join(repositoryRootDir, relativePath);
 
 await (async () => {
-	await fs.rm("built/_client_dist_/locales", { recursive: true, force: true });
+	await fs.rm(file("built/_client_dist_/locales"), { recursive: true, force: true });
 	await Promise.all([
-		fs.cp("packages/backend/src/server/web", "packages/backend/built/server/web", { recursive: true }),
-		fs.cp("custom/assets", "packages/backend/assets", { recursive: true }),
-		fs.cp("packages/client/node_modules/three/examples/fonts", "built/_client_dist_/fonts", { recursive: true }),
-		fs.mkdir("built/_client_dist_/locales", { recursive: true }),
+		fs.cp(file("packages/backend/src/server/web"), file("packages/backend/built/server/web"), { recursive: true }),
+		fs.cp(file("custom/assets"), file("packages/backend/assets"), { recursive: true }),
+		fs.cp(file("packages/client/node_modules/three/examples/fonts"), file("built/_client_dist_/fonts"), { recursive: true }),
+		fs.mkdir(file("built/_client_dist_/locales"), { recursive: true }),
 	]);
 
 	const locales = (await import("../locales/index.mjs")).default;
@@ -14,16 +19,16 @@ await (async () => {
 
 	for await (const [lang, locale] of Object.entries(locales)) {
 		await fs.writeFile(
-			`built/_client_dist_/locales/${lang}.${meta.version}.json`,
+			file(`built/_client_dist_/locales/${lang}.${meta.version}.json`),
 			JSON.stringify({ ...locale, _version_: meta.version }),
 			"utf-8",
 		);
 	}
 
 	const js_assets = [
-		"packages/backend/built/server/web/boot.js",
-		"packages/backend/built/server/web/bios.js",
-		"packages/backend/built/server/web/cli.js",
+		file("packages/backend/built/server/web/boot.js"),
+		file("packages/backend/built/server/web/bios.js"),
+		file("packages/backend/built/server/web/cli.js"),
 	];
 
 	for await (const js_file of js_assets) {
