@@ -28,6 +28,7 @@ pub struct Nodeinfo21 {
 /// NodeInfo schema version 2.0. https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.0
 #[derive(Deserialize, Serialize, Debug, PartialEq)]
 #[serde(rename_all = "camelCase")]
+#[crate::export(object, js_name = "Nodeinfo")]
 pub struct Nodeinfo20 {
     /// The schema version, must be 2.0.
     pub version: String,
@@ -62,6 +63,7 @@ pub struct Software21 {
 /// Metadata about server software in use (version 2.0).
 #[derive(Deserialize, Serialize, Debug, PartialEq)]
 #[serde(rename_all = "camelCase")]
+#[crate::export(object)]
 pub struct Software20 {
     /// The canonical name of this server software.
     pub name: String,
@@ -71,6 +73,7 @@ pub struct Software20 {
 
 #[derive(Deserialize, Serialize, Debug, PartialEq)]
 #[serde(rename_all = "lowercase")]
+#[crate::export(string_enum = "lowercase")]
 pub enum Protocol {
     Activitypub,
     Buddycloud,
@@ -87,6 +90,7 @@ pub enum Protocol {
 /// The third party sites this server can connect to via their application API.
 #[derive(Deserialize, Serialize, Debug, PartialEq)]
 #[serde(rename_all = "camelCase")]
+#[crate::export(object)]
 pub struct Services {
     /// The third party sites this server can retrieve messages from for combined display with regular traffic.
     pub inbound: Vec<Inbound>,
@@ -97,6 +101,7 @@ pub struct Services {
 /// The third party sites this server can retrieve messages from for combined display with regular traffic.
 #[derive(Deserialize, Serialize, Debug, PartialEq)]
 #[serde(rename_all = "lowercase")]
+#[crate::export(string_enum = "lowercase")]
 pub enum Inbound {
     #[serde(rename = "atom1.0")]
     Atom1,
@@ -114,6 +119,7 @@ pub enum Inbound {
 /// The third party sites this server can publish messages to on the behalf of a user.
 #[derive(Deserialize, Serialize, Debug, PartialEq)]
 #[serde(rename_all = "lowercase")]
+#[crate::export(string_enum = "lowercase")]
 pub enum Outbound {
     #[serde(rename = "atom1.0")]
     Atom1,
@@ -150,19 +156,21 @@ pub enum Outbound {
 /// Usage statistics for this server.
 #[derive(Deserialize, Serialize, Debug, PartialEq)]
 #[serde(rename_all = "camelCase")]
+#[crate::export(object)]
 pub struct Usage {
     pub users: Users,
-    pub local_posts: Option<u64>,
-    pub local_comments: Option<u64>,
+    pub local_posts: Option<u32>,
+    pub local_comments: Option<u32>,
 }
 
 /// statistics about the users of this server.
 #[derive(Deserialize, Serialize, Debug, PartialEq)]
 #[serde(rename_all = "camelCase")]
+#[crate::export(object)]
 pub struct Users {
-    pub total: Option<u64>,
-    pub active_halfyear: Option<u64>,
-    pub active_month: Option<u64>,
+    pub total: Option<u32>,
+    pub active_halfyear: Option<u32>,
+    pub active_month: Option<u32>,
 }
 
 impl From<Software21> for Software20 {
@@ -243,7 +251,7 @@ mod unit_test {
         assert_eq!(parsed_2.software.name, "meisskey");
         assert_eq!(parsed_2.software.version, "10.102.699-m544");
 
-        let json_str_3 = r##"{"metadata":{"enableGlobalTimeline":true,"enableGuestTimeline":false,"enableLocalTimeline":true,"enableRecommendedTimeline":false,"maintainerEmail":"","maintainerName":"Firefish dev team","nodeDescription":"","nodeName":"Firefish","repositoryUrl":"https://firefish.dev/firefish/firefish","themeColor":"#F25A85"},"openRegistrations":false,"protocols":["activitypub"],"services":{"inbound":[],"outbound":["atom1.0","rss2.0"]},"software":{"homepage":"https://firefish.dev/firefish/firefish","name":"firefish","repository":"https://firefish.dev/firefish/firefish","version":"20240504"},"usage":{"localPosts":23857,"users":{"activeHalfyear":7,"activeMonth":7,"total":9}},"version":"2.1"}"##;
+        let json_str_3 = r##"{"metadata":{"enableGlobalTimeline":true,"enableGuestTimeline":false,"enableLocalTimeline":true,"enableRecommendedTimeline":false,"maintainer":{"name":"Firefish dev team"},"nodeDescription":"","nodeName":"Firefish","repositoryUrl":"https://firefish.dev/firefish/firefish","themeColor":"#F25A85"},"openRegistrations":false,"protocols":["activitypub"],"services":{"inbound":[],"outbound":["atom1.0","rss2.0"]},"software":{"homepage":"https://firefish.dev/firefish/firefish","name":"firefish","repository":"https://firefish.dev/firefish/firefish","version":"20240504"},"usage":{"localPosts":23857,"users":{"activeHalfyear":7,"activeMonth":7,"total":9}},"version":"2.1"}"##;
         let parsed_3: Nodeinfo20 = serde_json::from_str(json_str_3).unwrap();
         let serialized_3 = serde_json::to_string(&parsed_3).unwrap();
         let reparsed_3: Nodeinfo20 = serde_json::from_str(&serialized_3).unwrap();

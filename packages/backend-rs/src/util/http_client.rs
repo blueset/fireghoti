@@ -18,6 +18,7 @@ pub fn client() -> Result<HttpClient, Error> {
         .get_or_try_init(|| {
             let mut builder = HttpClient::builder()
                 .timeout(Duration::from_secs(10))
+                .default_header("user-agent", &CONFIG.user_agent)
                 .dns_cache(DnsCache::Timeout(Duration::from_secs(60 * 60)));
 
             if let Some(proxy_url) = &CONFIG.proxy {

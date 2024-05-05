@@ -48,7 +48,7 @@ async fn statistics() -> Result<(u64, u64, u64, u64), DbErr> {
     )
 }
 
-async fn get_new_nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
+async fn generate_nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
     let (local_users, local_active_halfyear, local_active_month, local_posts) =
         statistics().await?;
     let meta = fetch_meta(true).await?;
@@ -75,8 +75,10 @@ async fn get_new_nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
             "enableGuestTimeline".to_string(),
             json!(meta.enable_guest_timeline),
         ),
-        ("maintainerName".to_string(), json!(meta.maintainer_name)),
-        ("maintainerEmail".to_string(), json!(meta.maintainer_email)),
+        (
+            "maintainer".to_string(),
+            json!({"name":meta.maintainer_name,"email":meta.maintainer_email}),
+        ),
         ("proxyAccountName".to_string(), json!(meta.proxy_account_id)),
         (
             "themeColor".to_string(),
@@ -100,11 +102,11 @@ async fn get_new_nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
         open_registrations: !meta.disable_registration,
         usage: Usage {
             users: Users {
-                total: Some(local_users),
-                active_halfyear: Some(local_active_halfyear),
-                active_month: Some(local_active_month),
+                total: Some(local_users as u32),
+                active_halfyear: Some(local_active_halfyear as u32),
+                active_month: Some(local_active_month as u32),
             },
-            local_posts: Some(local_posts),
+            local_posts: Some(local_posts as u32),
             local_comments: None,
         },
         metadata,
@@ -119,7 +121,7 @@ pub async fn nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
     if let Some(nodeinfo) = cached {
         Ok(nodeinfo)
     } else {
-        let nodeinfo = get_new_nodeinfo_2_1().await?;
+        let nodeinfo = generate_nodeinfo_2_1().await?;
         cache::set(NODEINFO_2_1_CACHE_KEY, &nodeinfo, 60 * 60)?;
         Ok(nodeinfo)
     }

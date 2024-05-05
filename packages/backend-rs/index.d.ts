@@ -1155,8 +1155,106 @@ export interface Webhook {
   latestStatus: number | null
 }
 export function initializeRustLogger(): void
+export function fetchNodeinfo(host: string): Promise<Nodeinfo>
 export function nodeinfo_2_1(): Promise<any>
 export function nodeinfo_2_0(): Promise<any>
+/** NodeInfo schema version 2.0. https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.0 */
+export interface Nodeinfo {
+  /** The schema version, must be 2.0. */
+  version: string
+  /** Metadata about server software in use. */
+  software: Software20
+  /** The protocols supported on this server. */
+  protocols: Array<Protocol>
+  /** The third party sites this server can connect to via their application API. */
+  services: Services
+  /** Whether this server allows open self-registration. */
+  openRegistrations: boolean
+  /** Usage statistics for this server. */
+  usage: Usage
+  /** Free form key value pairs for software specific values. Clients should not rely on any specific key present. */
+  metadata: Record<string, any>
+}
+/** Metadata about server software in use (version 2.0). */
+export interface Software20 {
+  /** The canonical name of this server software. */
+  name: string
+  /** The version of this server software. */
+  version: string
+}
+export enum Protocol {
+  Activitypub = 'activitypub',
+  Buddycloud = 'buddycloud',
+  Dfrn = 'dfrn',
+  Diaspora = 'diaspora',
+  Libertree = 'libertree',
+  Ostatus = 'ostatus',
+  Pumpio = 'pumpio',
+  Tent = 'tent',
+  Xmpp = 'xmpp',
+  Zot = 'zot'
+}
+/** The third party sites this server can connect to via their application API. */
+export interface Services {
+  /** The third party sites this server can retrieve messages from for combined display with regular traffic. */
+  inbound: Array<Inbound>
+  /** The third party sites this server can publish messages to on the behalf of a user. */
+  outbound: Array<Outbound>
+}
+/** The third party sites this server can retrieve messages from for combined display with regular traffic. */
+export enum Inbound {
+  Atom1 = 'atom1',
+  Gnusocial = 'gnusocial',
+  Imap = 'imap',
+  Pnut = 'pnut',
+  Pop3 = 'pop3',
+  Pumpio = 'pumpio',
+  Rss2 = 'rss2',
+  Twitter = 'twitter'
+}
+/** The third party sites this server can publish messages to on the behalf of a user. */
+export enum Outbound {
+  Atom1 = 'atom1',
+  Blogger = 'blogger',
+  Buddycloud = 'buddycloud',
+  Diaspora = 'diaspora',
+  Dreamwidth = 'dreamwidth',
+  Drupal = 'drupal',
+  Facebook = 'facebook',
+  Friendica = 'friendica',
+  Gnusocial = 'gnusocial',
+  Google = 'google',
+  Insanejournal = 'insanejournal',
+  Libertree = 'libertree',
+  Linkedin = 'linkedin',
+  Livejournal = 'livejournal',
+  Mediagoblin = 'mediagoblin',
+  Myspace = 'myspace',
+  Pinterest = 'pinterest',
+  Pnut = 'pnut',
+  Posterous = 'posterous',
+  Pumpio = 'pumpio',
+  Redmatrix = 'redmatrix',
+  Rss2 = 'rss2',
+  Smtp = 'smtp',
+  Tent = 'tent',
+  Tumblr = 'tumblr',
+  Twitter = 'twitter',
+  Wordpress = 'wordpress',
+  Xmpp = 'xmpp'
+}
+/** Usage statistics for this server. */
+export interface Usage {
+  users: Users
+  localPosts: number | null
+  localComments: number | null
+}
+/** statistics about the users of this server. */
+export interface Users {
+  total: number | null
+  activeHalfyear: number | null
+  activeMonth: number | null
+}
 export function watchNote(watcherId: string, noteAuthorId: string, noteId: string): Promise<void>
 export function unwatchNote(watcherId: string, noteId: string): Promise<void>
 export function publishToChannelStream(channelId: string, userId: string): void
