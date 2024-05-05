@@ -28,13 +28,14 @@ async fn get_latest_version() -> Result<String, Error> {
         version: String,
     }
 
-    let mut response = http_client::client()?
-        .get(UPSTREAM_PACKAGE_JSON_URL)?;
+    let mut response = http_client::client()?.get(UPSTREAM_PACKAGE_JSON_URL)?;
 
     if !response.status().is_success() {
         tracing::info!("status: {}", response.status());
         tracing::debug!("response body: {:#?}", response.body());
-        return Err(Error::HttpErr("Failed to fetch version from Firefish GitLab".to_string()));
+        return Err(Error::HttpErr(
+            "Failed to fetch version from Firefish GitLab".to_string(),
+        ));
     }
 
     let res_parsed: Response = serde_json::from_str(&response.text()?)?;
