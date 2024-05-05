@@ -1,24 +1,33 @@
 use crate::config::CONFIG;
+use isahc::{config::*, HttpClient};
 use once_cell::sync::OnceCell;
-use reqwest::{Client, Error, NoProxy, Proxy};
 use std::time::Duration;
 
-static CLIENT: OnceCell<Client> = OnceCell::new();
+#[derive(thiserror::Error, Debug)]
+pub enum Error {
+    #[error("Isahc error: {0}")]
+    IsahcErr(#[from] isahc::Error),
+    #[error("Url parse error: {0}")]
+    UrlParseErr(#[from] isahc::http::uri::InvalidUri),
+}
 
-pub fn http_client() -> Result<Client, Error> {
+static CLIENT: OnceCell<HttpClient> = OnceCell::new();
+
+pub fn client() -> Result<HttpClient, Error> {
     CLIENT
         .get_or_try_init(|| {
-            let mut builder = Client::builder().timeout(Duration::from_secs(5));
+            let mut builder = HttpClient::builder()
+                .timeout(Duration::from_secs(10))
+                .dns_cache(DnsCache::Timeout(Duration::from_secs(60 * 60)));
 
             if let Some(proxy_url) = &CONFIG.proxy {
-                let mut proxy = Proxy::all(proxy_url)?;
+                builder = builder.proxy(Some(proxy_url.parse()?));
                 if let Some(proxy_bypass_hosts) = &CONFIG.proxy_bypass_hosts {
-                    proxy = proxy.no_proxy(NoProxy::from_string(&proxy_bypass_hosts.join(",")));
+                    builder = builder.proxy_blacklist(proxy_bypass_hosts);
                 }
-                builder = builder.proxy(proxy);
             }
 
-            builder.build()
+            Ok(builder.build()?)
         })
         .cloned()
 }
