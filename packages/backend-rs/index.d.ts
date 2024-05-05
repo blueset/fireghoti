@@ -214,19 +214,26 @@ export function stringToAcct(acct: string): Acct
 export function acctToString(acct: Acct): string
 export function addNoteToAntenna(antennaId: string, note: Note): void
 /**
- * @param host punycoded instance host
- * @returns whether the given host should be blocked
-*/
+ * Checks if a server is blocked.
+ *
+ * ## Argument
+ * `host` - punycoded instance host
+ */
 export function isBlockedServer(host: string): Promise<boolean>
 /**
- * @param host punycoded instance host
- * @returns whether the given host should be limited
-*/
+ * Checks if a server is silenced.
+ *
+ * ## Argument
+ * `host` - punycoded instance host
+ */
 export function isSilencedServer(host: string): Promise<boolean>
 /**
- * @param host punycoded instance host
- * @returns whether the given host is allowlisted (this is always true if private mode is disabled)
-*/
+ * Checks if a server is allowlisted.
+ * Returns `Ok(true)` if private mode is disabled.
+ *
+ * ## Argument
+ * `host` - punycoded instance host
+ */
 export function isAllowedServer(host: string): Promise<boolean>
 /** TODO: handle name collisions better */
 export interface NoteLikeForCheckWordMute {
