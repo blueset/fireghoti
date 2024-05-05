@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 
 await (async () => {
+	await fs.rm("built/_client_dist_/locales", { recursive: true, force: true });
 	await Promise.all([
 		fs.cp("packages/backend/src/server/web", "packages/backend/built/server/web", { recursive: true }),
 		fs.cp("custom/assets", "packages/backend/assets", { recursive: true }),
