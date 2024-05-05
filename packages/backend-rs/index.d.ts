@@ -1155,6 +1155,8 @@ export interface Webhook {
   latestStatus: number | null
 }
 export function initializeRustLogger(): void
+export function nodeinfo_2_1(): Promise<any>
+export function nodeinfo_2_0(): Promise<any>
 export function watchNote(watcherId: string, noteAuthorId: string, noteId: string): Promise<void>
 export function unwatchNote(watcherId: string, noteId: string): Promise<void>
 export function publishToChannelStream(channelId: string, userId: string): void
