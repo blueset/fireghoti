@@ -24,6 +24,7 @@ Firefish depends on the following software.
   - `build-essential` on Debian/Ubuntu Linux
   - `base-devel` on Arch Linux
 - [Python 3](https://www.python.org/)
+- [Perl](https://www.perl.org/)
 
 This document shows an example procedure for installing these dependencies and Firefish on Debian 12. Note that there is much room for customizing the server setup; this document merely demonstrates a simple installation.
 

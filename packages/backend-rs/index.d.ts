@@ -261,6 +261,7 @@ export interface NoteLikeForGetNoteSummary {
   hasPoll: boolean
 }
 export function getNoteSummary(note: NoteLikeForGetNoteSummary): string
+export function latestVersion(): Promise<string>
 export function toMastodonId(firefishId: string): string | null
 export function fromMastodonId(mastodonId: string): string | null
 export function fetchMeta(useCache: boolean): Promise<Meta>

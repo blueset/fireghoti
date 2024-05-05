@@ -284,44 +284,44 @@ export default defineComponent({
 											? "perspective(128px) rotateY"
 											: "rotate";
 									const degrees = Number.parseFloat(
-										token.props.args.deg.toString() ?? "90",
+										(token.props.args.deg ?? "90").toString(),
 									);
 									style = `transform: ${rotate}(${degrees}deg); transform-origin: center center;`;
 									break;
 								}
 								case "position": {
 									const x = Number.parseFloat(
-										token.props.args.x.toString() ?? "0",
+										(token.props.args.x ?? "0").toString(),
 									);
 									const y = Number.parseFloat(
-										token.props.args.y.toString() ?? "0",
+										(token.props.args.y ?? "0").toString(),
 									);
 									style = `transform: translateX(${x}em) translateY(${y}em);`;
 									break;
 								}
 								case "crop": {
 									const top = Number.parseFloat(
-										token.props.args.top.toString() ?? "0",
+										(token.props.args.top ?? "0").toString(),
 									);
 									const right = Number.parseFloat(
-										token.props.args.right.toString() ?? "0",
+										(token.props.args.right ?? "0").toString(),
 									);
 									const bottom = Number.parseFloat(
-										token.props.args.bottom.toString() ?? "0",
+										(token.props.args.bottom ?? "0").toString(),
 									);
 									const left = Number.parseFloat(
-										token.props.args.left.toString() ?? "0",
+										(token.props.args.left ?? "0").toString(),
 									);
 									style = `clip-path: inset(${top}% ${right}% ${bottom}% ${left}%);`;
 									break;
 								}
 								case "scale": {
 									const x = Math.min(
-										Number.parseFloat(token.props.args.x.toString() ?? "1"),
+										Number.parseFloat((token.props.args.x ?? "1").toString()),
 										5,
 									);
 									const y = Math.min(
-										Number.parseFloat(token.props.args.y.toString() ?? "1"),
+										Number.parseFloat((token.props.args.y ?? "1").toString()),
 										5,
 									);
 									style = `transform: scale(${x}, ${y});`;

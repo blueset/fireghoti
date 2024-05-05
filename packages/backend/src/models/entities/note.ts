@@ -139,7 +139,6 @@ export class Note {
 
 	// FIXME: file id is not removed from this array even if the file is deleted
 	// TODO: drop this column and use note_files
-	@Index()
 	@Column({
 		...id(),
 		array: true,
@@ -147,7 +146,6 @@ export class Note {
 	})
 	public fileIds: DriveFile["id"][];
 
-	@Index()
 	@Column("varchar", {
 		length: 256,
 		array: true,
@@ -163,7 +161,6 @@ export class Note {
 	})
 	public visibleUserIds: User["id"][];
 
-	@Index()
 	@Column({
 		...id(),
 		array: true,
@@ -184,7 +181,6 @@ export class Note {
 	})
 	public emojis: string[];
 
-	@Index()
 	@Column("varchar", {
 		length: 128,
 		array: true,

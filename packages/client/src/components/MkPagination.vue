@@ -173,11 +173,15 @@ const rootEl = ref<HTMLElement>();
 const items = ref<Item[]>([]);
 const foldedItems = ref([]) as Ref<Fold[]>;
 
+function toReversed<T>(arr: T[]) {
+	return [...arr].reverse();
+}
+
 // To improve performance, we do not use vue’s `computed` here
 function calculateItems() {
 	function getItems<T>(folder: (ns: Item[]) => T[]) {
 		const res = [
-			folder(prepended.value.toReversed()),
+			folder(toReversed(prepended.value)),
 			...arrItems.value.map((arr) => folder(arr)),
 			folder(appended.value),
 		].flat(1);
@@ -351,7 +355,7 @@ async function fetch(firstFetching?: boolean) {
 
 				if (firstFetching && props.folder != null) {
 					// In this way, prepended has some initial values for folding
-					prepended.value = res.toReversed();
+					prepended.value = toReversed(res);
 				} else {
 					// For ascending and offset modes, append and prepend may cause item duplication
 					// so they need to be filtered out.
@@ -398,7 +402,7 @@ const prepend = (...item: Item[]): void => {
 		prepended.value.length >
 		(props.pagination.secondFetchLimit || SECOND_FETCH_LIMIT_DEFAULT)
 	) {
-		arrItems.value.unshift(prepended.value.toReversed());
+		arrItems.value.unshift(toReversed(prepended.value));
 		prepended.value = [];
 		// We don't need to calculate here because it won't cause any changes in items
 	}

@@ -928,7 +928,7 @@ colored: "Coloré"
 label: "Étiquette"
 localOnly: "Local seulement"
 account: "Comptes"
-getQrCode: "Obtenir le code QR"
+getQrCode: "Afficher le code QR"
 
 _emailUnavailable:
   used: "Adresse non disponible"
@@ -1836,6 +1836,7 @@ _notification:
   reacted: a réagit à votre publication
   renoted: a boosté votre publication
   voted: a voté pour votre sondage
+  andCountUsers: et {count} utilisateur(s) de plus {acted}
 _deck:
   alwaysShowMainColumn: "Toujours afficher la colonne principale"
   columnAlign: "Aligner les colonnes"
@@ -2321,3 +2322,13 @@ markLocalFilesNsfwByDefaultDescription: Indépendamment de ce réglage, les util
   ne sont pas affectés.
 noteEditHistory: Historique des publications
 media: Multimédia
+antennaLimit: Le nombre maximal d'antennes que chaque utilisateur peut créer
+showAddFileDescriptionAtFirstPost: Ouvrez automatiquement un formulaire pour écrire
+  une description lorsque vous tentez de publier des fichiers sans description
+foldNotification: Grouper les notifications similaires
+cannotEditVisibility: Vous ne pouvez pas modifier la visibilité
+useThisAccountConfirm: Voulez-vous continuer avec ce compte ?
+inputAccountId: Veuillez saisir votre compte (par exemple, @firefish@info.firefish.dev)
+remoteFollow: Abonnement à distance
+copyRemoteFollowUrl: Copier l'URL d'abonnement à distance
+slashQuote: Citation enchaînée

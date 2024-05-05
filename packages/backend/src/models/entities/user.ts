@@ -116,7 +116,6 @@ export class User {
 	})
 	public bannerId: DriveFile["id"] | null;
 
-	@Index()
 	@Column("varchar", {
 		length: 128,
 		array: true,

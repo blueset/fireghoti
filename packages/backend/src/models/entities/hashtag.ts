@@ -19,7 +19,6 @@ export class Hashtag {
 	})
 	public mentionedUserIds: User["id"][];
 
-	@Index()
 	@Column("integer", {
 		default: 0,
 	})
@@ -43,7 +42,6 @@ export class Hashtag {
 	})
 	public mentionedRemoteUserIds: User["id"][];
 
-	@Index()
 	@Column("integer", {
 		default: 0,
 	})
@@ -55,7 +53,6 @@ export class Hashtag {
 	})
 	public attachedUserIds: User["id"][];
 
-	@Index()
 	@Column("integer", {
 		default: 0,
 	})
