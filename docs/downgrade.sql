@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'AddUserProfileLanguage1714888400293',
     'DropUnusedIndexes1714643926317',
     'AlterAkaType1714099399879',
     'AddDriveFileUsage1713451569342',
