@@ -16,8 +16,8 @@ workflow:
 cache:
   paths:
     - node_modules
-    - /cache/cargo/registry/index
-    - /cache/cargo/registry/cache
+    # - /usr/local/cargo/registry/index
+    # - /usr/local/cargo/registry/cache
     - target/debug/deps
     - target/debug/build
 
@@ -33,18 +33,18 @@ variables:
   CARGO_PROFILE_DEV_OPT_LEVEL: '0'
   CARGO_PROFILE_DEV_LTO: 'off'
   CARGO_PROFILE_DEV_DEBUG: 'none'
-  CARGO_HOME: '/cache/cargo'
 
 default:
   before_script:
-    - apt-get -y install curl
-    - curl -fsSL 'https://deb.nodesource.com/setup_18.x' | sudo -E bash -
-    - apt-get update && apt-get upgrade
-    - apt-get install -y build-essential clang mold python3 perl nodejs postgresql-client
+    - mkdir -p "${CARGO_HOME}"
+    - apt-get update && apt-get -y upgrade
+    - apt-get -y --no-install-recommends install curl
+    - curl -fsSL 'https://deb.nodesource.com/setup_18.x' | bash -
+    - apt-get install -y --no-install-recommends build-essential clang mold python3 perl nodejs postgresql-client
     - corepack enable
     - corepack prepare pnpm@latest --activate
     - cp .config/ci.yml .config/default.yml
-    - cp ci/cargo/config.toml "${CARGO_HOME}/config.toml"
+    - cp ci/cargo/config.toml /usr/local/cargo/config.toml
     - export PGPASSWORD="${POSTGRES_PASSWORD}"
     - psql --host postgres --user "${POSTGRES_USER}" --dbname "${POSTGRES_DB}" --command 'CREATE EXTENSION pgroonga'
 
