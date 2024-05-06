@@ -29,7 +29,7 @@ variables:
 
 default:
   before_script:
-    - apk add build-base linux-headers curl ca-certificates python3 perl
+    - apk add build-base linux-headers curl ca-certificates python3 perl postgresql-client
     - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
     - . "${HOME}/.cargo/env"
     - corepack enable
