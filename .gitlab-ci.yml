@@ -68,8 +68,8 @@ container_image_build:
     - apt-get update && apt-get -y upgrade
     - apt-get install -y --no-install-recommends buildah ca-certificates
     - buildah login --username "${CI_REGISTRY_USER}" --password "${CI_REGISTRY_PASSWORD}" "${CI_REGISTRY}"
-    - buildah build --tag "${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production" --platform linux/amd64 .
-    - buildah push "${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
+    - buildah build --security-opt seccomp=unconfined --cap-add all --tag "${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production" --platform linux/amd64 .
+    - buildah push "${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production" "docker://${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
 
 cargo_unit_test:
   stage: test
