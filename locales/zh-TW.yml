@@ -662,7 +662,7 @@ confirmToUnclipAlreadyClippedNote: "此貼文已包含在摘錄「{name}」中�
 public: "公開"
 i18nInfo: "Firefish已經被志願者們翻譯成各種語言版本，如果想要幫忙的話，可以進入{link}幫助翻譯。"
 i18nServerInfo: "新客戶端將默認使用 {language}。"
-i18nServerChange: "改爲 {language}。"
+i18nServerChange: "改為 {language}。"
 i18nServerSet: "設定新客戶端使用 {language}。"
 manageAccessTokens: "管理存取權杖"
 accountInfo: "帳戶資訊"
