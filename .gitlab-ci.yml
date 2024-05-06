@@ -1,8 +1,10 @@
 image: docker.io/node:18-alpine
 
 services:
-  - docker.io/groonga/pgroonga:latest-alpine-12-slim
-  - docker.io/redis:7-alpine
+  - name: docker.io/groonga/pgroonga:latest-alpine-12-slim
+    alias: postgres
+  - name: docker.io/redis:7-alpine
+    alias: redis
 
 workflow:
   rules:
