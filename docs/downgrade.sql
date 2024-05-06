@@ -764,9 +764,6 @@ CREATE SEQUENCE public.__chart_day__users_id_seq
     CACHE 1;
 ALTER SEQUENCE public.__chart_day__users_id_seq OWNED BY public.__chart_day__users.id;
 
--- drop-user-profile-language
-ALTER TABLE "user_profile" ADD COLUMN "lang" character varying(32);
-
 -- emoji-moderator
 ALTER TABLE "user" DROP COLUMN "emojiModPerm";
 DROP TYPE "public"."user_emojimodperm_enum";
