@@ -512,6 +512,7 @@ export const UserRepository = db.getRepository(User).extend({
 						description: profile!.description,
 						location: profile!.location,
 						birthday: profile!.birthday,
+						lang: profile!.lang,
 						fields: profile!.fields,
 						followersCount: followersCount ?? null,
 						followingCount: followingCount ?? null,

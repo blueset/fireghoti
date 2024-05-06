@@ -1129,6 +1129,7 @@ export interface UserProfile {
   preventAiLearning: boolean
   isIndexable: boolean
   mutedPatterns: Array<string>
+  lang: string | null
 }
 export interface UserPublickey {
   userId: string
