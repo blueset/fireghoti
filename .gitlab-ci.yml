@@ -24,6 +24,7 @@ cache:
 
 stages:
   - test
+  - build
 
 variables:
   POSTGRES_DB: 'firefish_db'
@@ -37,7 +38,6 @@ variables:
 
 default:
   before_script:
-    - mkdir -p "${CARGO_HOME}"
     - apt-get update && apt-get -y upgrade
     - apt-get -y --no-install-recommends install curl
     - curl -fsSL 'https://deb.nodesource.com/setup_18.x' | bash -
@@ -56,7 +56,20 @@ build_test:
     - pnpm run build:debug
     - pnpm run migrate
 
-build_and_cargo_unit_test:
+container_image_build:
+  stage: build
+  image: docker.io/debian:bookworm-slim
+  before_script: []
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'develop'
+  script:
+    - apt-get update && apt-get -y upgrade
+    - apt-get install -y --no-install-recommends buildah
+    - echo "${CI_REGISTRY_PASSWORD}" | buildah login "${CI_REGISTRY}" --username "${CI_REGISTRY_USER}" --password-stdin
+    - buildah build --tag "${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production" --platform linux/amd64 .
+    - buildah push "${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
+
+cargo_unit_test:
   stage: test
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
@@ -77,7 +90,7 @@ build_and_cargo_unit_test:
     - pnpm --filter='!backend-rs' run build:debug
     - cargo test
 
-clippy:
+cargo_clippy:
   stage: test
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
