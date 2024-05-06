@@ -2,7 +2,7 @@
 
 Breaking changes are indicated by the :warning: icon.
 
-- Adding `lang` from the response of `i` and the request parameter of `i/update`.
+- Adding `lang` to the response of `i` and the request parameter of `i/update`.
 
 ## v20240504
 
