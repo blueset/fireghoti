@@ -39,14 +39,10 @@ default:
     - export PGPASSWORD="${POSTGRES_PASSWORD}"
     - psql --host postgres --user "${POSTGRES_USER}" --dbname "${POSTGRES_DB}" --command 'CREATE EXTENSION pgroonga'
 
-build_test:
+build_and_cargo_unit_test:
   stage: test
   script:
     - pnpm install --frozen-lockfile
     - pnpm run build:debug
     - pnpm run migrate
-
-cargo_test:
-  stage: test
-  script:
     - cargo test
