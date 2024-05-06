@@ -1,0 +1,109 @@
+image: docker.io/node:alpine-16
+
+services:
+  - docker.io/groonga/pgroonga:latest-alpine-12-slim
+  - docker.io/redis:7-alpine
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+      when: always
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'main'
+      when: never
+
+cache:
+  paths:
+    - node_modules/
+    - target/
+
+stages:
+  - auto_update
+
+variables:
+  POSTGRES_DB: firefish_db
+  POSTGRES_USER: firefish
+  POSTGRES_PASSWORD: password
+  POSTGRES_HOST_AUTH_METHOD: trust
+
+default:
+  before_script:
+    - apk add build-base linux-headers curl ca-certificates python3 perl
+    - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    - . "${HOME}/.cargo/env"
+    - corepack enable
+    - corepack prepare pnpm@latest --activate
+    - cp .config/ci.yml .config/default.yml
+    - export PGPASSWORD="${POSTGRES_PASSWORD}"
+    - psql --host postgres --user "${POSTGRES_USER}" --dbname "${POSTGRES_DB}" --command 'CREATE EXTENSION pgroonga'
+
+auto_update:
+  stage: auto_update
+  script:
+    # setup git
+    - apk add git
+    - git config user.name "${GITLAB_USER_NAME}"
+    - git config user.email "${GITLAB_USER_EMAIL}"
+    - git remote set-url origin "${CI_MERGE_REQUEST_SOURCE_PROJECT_URL}"
+    - git fetch origin
+    - git switch "${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}"
+    # update pnpm lockfile
+    - pnpm install
+    # commit
+    - |-
+      if [ `git status -s | wc -l` -gt 0 ]; then
+        git add .
+        git commit --message 'chore: update lockfile'
+        git push --push-option=ci.skip origin "${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}"
+      fi
+    # run format
+    - pnpm run format
+    # commit
+    - |-
+      if [ `git status -s | wc -l` -gt 0 ]; then
+        git add .
+        git commit --message 'chore: format'
+        git push --push-option=ci.skip origin "${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}"
+      fi
+    # update packages/backend-rs/src/model/entity
+    - cargo install sea-orm-cli
+    - pnpm --filter backend run build:debug
+    - pnpm run migrate
+    - cd packages/backend-rs
+    - mv src/model/entity src/model/entity.bak
+    - |-
+      sea-orm-cli generate entity \
+        --output-dir='src/model/entity' \
+        --date-time-crate='chrono' \
+        --model-extra-attributes='NAPI_EXTRA_ATTR_PLACEHOLDER' \
+        --database-url="postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}"
+    - |-
+      for file in src/model/entity/*; do
+        base=$(basename -- "${file}")
+        jsname=$(printf '%s\n' "${base%.*}" | perl -pe 's/(^|_)./uc($&)/ge;s/_//g')
+        attribute=$(printf 'cfg_attr(feature = "napi", napi_derive::napi(object, js_name = "%s", use_nullable = true))' "${jsname}")
+        sed -i "s/NAPI_EXTRA_ATTR_PLACEHOLDER/${attribute}/" "${file}"
+        sed -i 's/#\[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)\]/#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, serde::Serialize, serde::Deserialize)]\n#[serde(rename_all = "camelCase")]/' "${file}"
+      done
+    - |-
+      sed -i 's/#\[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum)\]/#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, serde::Serialize, serde::Deserialize)]\n#[serde(rename_all = "camelCase")]\n#[cfg_attr(not(feature = "napi"), derive(Clone))]\n#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]/' \
+        src/model/entity/sea_orm_active_enums.rs
+    - rm --recursive --force src/model/entity.bak
+    - cargo fmt --all --
+    # commit
+    - |-
+      if [ `git status -s | wc -l` -gt 0 ]; then
+        git add .
+        git commit --message 'chore (backend-rs): regenerate entity'
+        git push --push-option=ci.skip origin "${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}"
+      fi
+    # update packages/backend-rs/index.{js,d.ts}
+    - pnpm run build:debug
+    - /bin/cp --force built/index.js index.js
+    - /bin/cp --force built/index.d.ts index.d.ts
+    - sed -i 's/^ \*r"/ */g' index.d.ts
+    - |-
+      if [ `git status -s | wc -l` -gt 0 ]; then
+        git add .
+        git commit --message 'chore (backend-rs): regenerate index'
+        git push --push-option=ci.skip origin "${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}"
+      fi
