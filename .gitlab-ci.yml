@@ -6,6 +6,14 @@ services:
   - name: docker.io/redis:7-alpine
     alias: redis
 
+workflow:
+  rules:
+    - if: $CI_PROJECT_PATH == 'firefish/firefish'
+      when: always
+    - if: $CI_MERGE_REQUEST_PROJECT_PATH == 'firefish/firefish'
+      when: always
+    - when: never
+
 cache:
   paths:
     - node_modules
