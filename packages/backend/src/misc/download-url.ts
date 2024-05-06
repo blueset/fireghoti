@@ -7,10 +7,10 @@ import chalk from "chalk";
 import Logger from "@/services/logger.js";
 import IPCIDR from "ip-cidr";
 import PrivateIp from "private-ip";
-import { isValidUrl } from "./is-valid-url.js";
+import { isSafeUrl } from "backend-rs";
 
 export async function downloadUrl(url: string, path: string): Promise<void> {
-	if (!isValidUrl(url)) {
+	if (!isSafeUrl(url)) {
 		throw new StatusError("Invalid URL", 400);
 	}
 
@@ -43,8 +43,8 @@ export async function downloadUrl(url: string, path: string): Promise<void> {
 				limit: 0,
 			},
 		})
-		.on("redirect", (res: Got.Response, opts: Got.NormalizedOptions) => {
-			if (!isValidUrl(opts.url)) {
+		.on("redirect", (_res: Got.Response, opts: Got.NormalizedOptions) => {
+			if (!isSafeUrl(opts.url)) {
 				downloadLogger.warn(`Invalid URL: ${opts.url}`);
 				req.destroy();
 			}

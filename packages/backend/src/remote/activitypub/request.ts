@@ -5,8 +5,8 @@ import { StatusError, getResponse } from "@/misc/fetch.js";
 import { createSignedPost, createSignedGet } from "./ap-request.js";
 import type { Response } from "node-fetch";
 import type { IObject } from "./type.js";
-import { isValidUrl } from "@/misc/is-valid-url.js";
 import { apLogger } from "@/remote/activitypub/logger.js";
+import { isSafeUrl } from "backend-rs";
 
 export default async (user: { id: User["id"] }, url: string, object: any) => {
 	const body = JSON.stringify(object);
@@ -44,7 +44,7 @@ export async function apGet(
 	user?: ILocalUser,
 	redirects: boolean = true,
 ): Promise<{ finalUrl: string; content: IObject }> {
-	if (!isValidUrl(url)) {
+	if (!isSafeUrl(url)) {
 		throw new StatusError("Invalid URL", 400);
 	}
 

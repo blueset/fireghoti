@@ -268,6 +268,7 @@ export interface NoteLikeForGetNoteSummary {
   hasPoll: boolean
 }
 export function getNoteSummary(note: NoteLikeForGetNoteSummary): string
+export function isSafeUrl(url: string): boolean
 export function latestVersion(): Promise<string>
 export function toMastodonId(firefishId: string): string | null
 export function fromMastodonId(mastodonId: string): string | null
