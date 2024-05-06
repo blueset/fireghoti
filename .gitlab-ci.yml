@@ -1,4 +1,4 @@
-image: docker.io/node:alpine-16
+image: docker.io/node:18-alpine
 
 services:
   - docker.io/groonga/pgroonga:latest-alpine-12-slim
