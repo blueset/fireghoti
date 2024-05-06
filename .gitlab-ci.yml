@@ -30,7 +30,7 @@ variables:
 default:
   before_script:
     - apk add build-base linux-headers curl ca-certificates python3 perl
-    - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
     - . "${HOME}/.cargo/env"
     - corepack enable
     - corepack prepare pnpm@latest --activate
