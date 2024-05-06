@@ -25,6 +25,7 @@ cache:
 stages:
   - test
   - build
+  - dependency
 
 variables:
   POSTGRES_DB: 'firefish_db'
@@ -65,7 +66,7 @@ container_image_build:
     - if: $CI_COMMIT_BRANCH == 'develop'
   script:
     - apt-get update && apt-get -y upgrade
-    - apt-get install -y --no-install-recommends buildah
+    - apt-get install -y --no-install-recommends buildah ca-certificates
     - buildah login --username "${CI_REGISTRY_USER}" --password "${CI_REGISTRY_PASSWORD}" "${CI_REGISTRY}"
     - buildah build --tag "${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production" --platform linux/amd64 .
     - buildah push "${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
@@ -105,3 +106,15 @@ cargo_clippy:
       when: never
   script:
     - cargo clippy -- -D warnings
+
+renovate:
+  stage: dependency
+  image:
+    name: docker.io/renovate/renovate:37-slim
+    entrypoint: [""]
+  rules:
+    - if: $RENOVATE && $CI_PIPELINE_SOURCE == 'schedule'
+  services: []
+  before_script: []
+  script:
+    - renovate --platform gitlab --token "${API_TOKEN}" --endpoint "${CI_SERVER_URL}/api/v4" "${CI_PROJECT_PATH}"
