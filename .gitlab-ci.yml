@@ -29,7 +29,7 @@ variables:
 
 default:
   before_script:
-    - apk add build-base linux-headers curl ca-certificates python3 perl postgresql-client
+    - apk add --update build-base linux-headers curl ca-certificates python3 perl postgresql-client pkgconfig openssl-dev
     - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
     - . "${HOME}/.cargo/env"
     - corepack enable
@@ -45,7 +45,7 @@ auto_update:
     - apk add git
     - git config user.name 'GitLab CI'
     - git config user.email 'noreply@firefish.dev'
-    - git remote set-url origin "https://gitlab-ci-token:${CI_JOB_TOKEN}@firefish.dev/${CI_MERGE_REQUEST_PROJECT_PATH}"
+    - git remote set-url origin "https://gitlab-ci-token:${CI_JOB_TOKEN}@firefish.dev/${CI_MERGE_REQUEST_SOURCE_PROJECT_PATH}"
     - git fetch origin
     - git switch "${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}"
     # update pnpm lockfile
