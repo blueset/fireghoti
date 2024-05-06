@@ -59,13 +59,14 @@ build_test:
 container_image_build:
   stage: build
   image: docker.io/debian:bookworm-slim
+  services: []
   before_script: []
   rules:
     - if: $CI_COMMIT_BRANCH == 'develop'
   script:
     - apt-get update && apt-get -y upgrade
     - apt-get install -y --no-install-recommends buildah
-    - echo "${CI_REGISTRY_PASSWORD}" | buildah login "${CI_REGISTRY}" --username "${CI_REGISTRY_USER}" --password-stdin
+    - buildah login --username "${CI_REGISTRY_USER}" --password "${CI_REGISTRY_PASSWORD}" "${CI_REGISTRY}"
     - buildah build --tag "${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production" --platform linux/amd64 .
     - buildah push "${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
 
