@@ -26,7 +26,6 @@ variables:
   POSTGRES_USER: firefish
   POSTGRES_PASSWORD: password
   POSTGRES_HOST_AUTH_METHOD: trust
-  GIT_CLEAN_FLAGS: -ffdx --exclude node_modules/ --exclude target/
 
 default:
   before_script:
