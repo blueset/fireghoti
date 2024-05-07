@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'CreateScheduledNoteCreation1714728200194',
     'AlterAkaType1714099399879',
     'AddDriveFileUsage1713451569342',
     'ConvertCwVarcharToText1713225866247',
@@ -24,6 +25,9 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- create-scheduled-note-creation
+DROP TABLE "scheduled_note_creation";
 
 -- alter-aka-type
 ALTER TABLE "user" RENAME COLUMN "alsoKnownAs" TO "alsoKnownAsOld";

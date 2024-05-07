@@ -6,11 +6,10 @@ export class CreateScheduledNoteCreation1714728200194
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.query(
 			`CREATE TABLE "scheduled_note_creation" (
-				"id" character varying(32) NOT NULL,
+				"id" character varying(32) NOT NULL PRIMARY KEY,
 				"noteId" character varying(32) NOT NULL,
 				"userId" character varying(32) NOT NULL,
-				"scheduledAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-				CONSTRAINT "PK_id_ScheduledNoteCreation" PRIMARY KEY ("id")
+				"scheduledAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL
 		)`,
 		);
 		await queryRunner.query(`
@@ -24,31 +23,19 @@ export class CreateScheduledNoteCreation1714728200194
 		`);
 		await queryRunner.query(`
 			ALTER TABLE "scheduled_note_creation"
-			ADD CONSTRAINT "FK_noteId_ScheduledNoteCreation"
-			FOREIGN KEY ("noteId")
-			REFERENCES "note"("id")
+			ADD FOREIGN KEY ("noteId") REFERENCES "note"("id")
 			ON DELETE CASCADE
 			ON UPDATE NO ACTION
 		`);
 		await queryRunner.query(`
 			ALTER TABLE "scheduled_note_creation"
-			ADD CONSTRAINT "FK_userId_ScheduledNoteCreation"
-			FOREIGN KEY ("userId")
-			REFERENCES "user"("id")
+			ADD FOREIGN KEY ("userId") REFERENCES "user"("id")
 			ON DELETE CASCADE
 			ON UPDATE NO ACTION
 		`);
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
-		await queryRunner.query(`
-			ALTER TABLE "scheduled_note_creation" DROP CONSTRAINT "FK_noteId_ScheduledNoteCreation"
-		`);
-		await queryRunner.query(`
-			ALTER TABLE "scheduled_note_creation" DROP CONSTRAINT "FK_userId_ScheduledNoteCreation"
-		`);
-		await queryRunner.query(`
-			DROP TABLE "scheduled_note_creation"
-		`);
+		await queryRunner.query(`DROP TABLE "scheduled_note_creation"`);
 	}
 }
