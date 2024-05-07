@@ -12,6 +12,11 @@ workflow:
       when: always
     - if: $CI_MERGE_REQUEST_PROJECT_PATH == 'firefish/firefish'
       when: always
+    - if: $CI_PROJECT_PATH != 'firefish/firefish'
+      changes:
+        paths:
+          - .gitlab-ci.yml
+      when: never
     - when: never
 
 cache:
