@@ -120,7 +120,19 @@ container_image_build:
     - buildah login --username "${CI_REGISTRY_USER}" --password "${CI_REGISTRY_PASSWORD}" "${CI_REGISTRY}"
     - export IMAGE_TAG="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
   script:
-    - buildah build --isolation chroot --device /dev/fuse:rw --security-opt seccomp=unconfined --security-opt apparmor=unconfined --cap-add all --tag "${IMAGE_TAG}" --platform linux/amd64 .
+    - |-
+      buildah build \
+        --isolation chroot \
+        --device /dev/fuse:rw \
+        --security-opt seccomp=unconfined \
+        --security-opt apparmor=unconfined \
+        --cap-add all \
+        --platform linux/amd64 \
+        --layers \
+        --cache-to "${IMAGE_TAG}/cache" \
+        --cache-from "${IMAGE_TAG}/cache" \
+        --tag "${IMAGE_TAG}" \
+        .
     - buildah inspect "${IMAGE_TAG}"
     - buildah push "${IMAGE_TAG}"
 
