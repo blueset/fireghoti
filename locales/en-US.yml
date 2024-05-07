@@ -2244,5 +2244,5 @@ incorrectLanguageWarning: "It looks like your post is in {detected}, but you sel
 noteEditHistory: "Post edit history"
 slashQuote: "Chain quote"
 foldNotification: "Group similar notifications"
-mergeThreadInTimeline: "Merge posts in timeline into threads if possible"
-mergeRenotesInTimeline: "Merge boosts"
+mergeThreadInTimeline: "Merge multiple posts in the same thread in timelines"
+mergeRenotesInTimeline: "Group multiple boosts of the same post"
