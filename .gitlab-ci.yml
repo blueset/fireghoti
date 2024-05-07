@@ -86,10 +86,7 @@ client_build_test:
           - packages/client/*
           - packages/firefish-js/*
           - packages/sw/*
-          - scripts/**/*
           - locales/**/*
-          - package.json
-          - pnpm-lock.yaml
     - if: $CI_PIPELINE_SOURCE == 'push' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
         paths:
