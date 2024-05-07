@@ -82,7 +82,7 @@ container_image_build:
   script:
     - buildah build --isolation chroot --device /dev/fuse:rw --security-opt seccomp=unconfined --security-opt apparmor=unconfined --cap-add all --tag "${IMAGE_TAG}" --platform linux/amd64 .
     - buildah inspect "${IMAGE_TAG}"
-    - buildah push "${IMAGE_TAG}" "docker://${IMAGE_TAG}"
+    - buildah push "${IMAGE_TAG}"
 
 cargo_unit_test:
   stage: test
