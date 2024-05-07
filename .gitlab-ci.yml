@@ -3,8 +3,10 @@ image: docker.io/rust:slim-bookworm
 services:
   - name: docker.io/groonga/pgroonga:latest-alpine-12-slim
     alias: postgres
+    pull_policy: if-not-present
   - name: docker.io/redis:7-alpine
     alias: redis
+    pull_policy: if-not-present
 
 workflow:
   rules:
@@ -98,6 +100,7 @@ client_build_test:
           - Cargo.toml
           - Cargo.lock
       when: never
+  services: []
   script:
     - pnpm install --frozen-lockfile
     - pnpm --filter 'firefish-js' --filter 'client' --filter 'sw' run build:debug
