@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { i18n } from "@/i18n";
 import { dateTimeFormat } from "@/scripts/intl-const";
 
@@ -25,7 +25,7 @@ const props = withDefaults(
 	},
 );
 
-const _time =
+const _time = computed(() =>
 	props.time == null
 		? Number.NaN
 		: typeof props.time === "number"
@@ -33,16 +33,19 @@ const _time =
 			: (props.time instanceof Date
 					? props.time
 					: new Date(props.time)
-				).getTime();
-const invalid = Number.isNaN(_time);
-const absolute = !invalid ? dateTimeFormat.format(_time) : i18n.ts._ago.invalid;
+				).getTime(),
+);
+const invalid = computed(() => Number.isNaN(_time.value));
+const absolute = computed(() =>
+	!invalid.value ? dateTimeFormat.format(_time.value) : i18n.ts._ago.invalid,
+);
 
 const now = ref(props.origin?.getTime() ?? Date.now());
 const relative = computed<string>(() => {
 	if (props.mode === "absolute") return ""; // absoluteではrelativeを使わないので計算しない
-	if (invalid) return i18n.ts._ago.invalid;
+	if (invalid.value) return i18n.ts._ago.invalid;
 
-	const ago = (now.value - _time) / 1000; /* ms */
+	const ago = (now.value - _time.value) / 1000; /* ms */
 	return ago >= 31536000
 		? i18n.t("_ago.yearsAgo", { n: Math.floor(ago / 31536000).toString() })
 		: ago >= 2592000
@@ -74,15 +77,25 @@ const relative = computed<string>(() => {
 									: i18n.ts._ago.future;
 });
 
-let tickId: number;
+let tickId: number | undefined;
 
 function tick() {
+	if (
+		invalid.value ||
+		props.origin ||
+		(props.mode !== "relative" && props.mode !== "detail")
+	) {
+		if (tickId) window.clearInterval(tickId);
+		tickId = undefined;
+		return;
+	}
+
 	const _now = Date.now();
-	const agoPrev = (now.value - _time) / 1000; /* ms */ // 現状のinterval
+	const agoPrev = (now.value - _time.value) / 1000; /* ms */ // 現状のinterval
 
 	now.value = _now;
 
-	const ago = (now.value - _time) / 1000; /* ms */ // 次のinterval
+	const ago = (now.value - _time.value) / 1000; /* ms */ // 次のinterval
 	const prev = agoPrev < 60 ? 10000 : agoPrev < 3600 ? 60000 : 180000;
 	const next = ago < 60 ? 10000 : ago < 3600 ? 60000 : 180000;
 
@@ -94,16 +107,13 @@ function tick() {
 	}
 }
 
-if (
-	!invalid &&
-	!props.origin &&
-	(props.mode === "relative" || props.mode === "detail")
-) {
-	onMounted(() => {
-		tick();
-	});
-	onUnmounted(() => {
-		if (tickId) window.clearInterval(tickId);
-	});
-}
+watch(() => props.time, tick);
+
+onMounted(() => {
+	tick();
+});
+
+onUnmounted(() => {
+	if (tickId) window.clearInterval(tickId);
+});
 </script>
