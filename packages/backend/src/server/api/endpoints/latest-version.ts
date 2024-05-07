@@ -1,4 +1,5 @@
 import define from "@/server/api/define.js";
+import { latestVersion } from "backend-rs";
 
 export const meta = {
 	tags: ["meta"],
@@ -14,14 +15,7 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async () => {
-	let latest_version;
-	await fetch("https://firefish.dev/firefish/firefish/-/raw/main/package.json")
-		.then((response) => response.json())
-		.then((data) => {
-			latest_version = data.version;
-		});
-
 	return {
-		latest_version,
+		latest_version: await latestVersion(),
 	};
 });

@@ -71,7 +71,7 @@ import { foldNotifications } from "@/scripts/fold";
 import { defaultStore } from "@/store";
 
 const props = defineProps<{
-	includeTypes?: (typeof notificationTypes)[number][];
+	includeTypes?: (typeof notificationTypes)[number][] | null;
 	unreadOnly?: boolean;
 }>();
 

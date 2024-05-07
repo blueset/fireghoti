@@ -7,6 +7,8 @@
   - Node.js
   - pnpm
   - Rust toolchain
+	- Python 3
+	- Perl
   - FFmpeg
   - Container runtime
     - [Docker](https://docs.docker.com/get-docker/)
@@ -31,7 +33,7 @@ You can refer to [local-installation.md](./local-installation.md) to install the
 1. Copy example config file
     ```sh
     cp dev/config.example.env dev/config.env
-    # If you use container runtime other than Docker, you need to modify the "COMPOSE" variable
+    # If you use container runtime other than Podman, you need to modify the "COMPOSE" variable
     # vim dev/config.env
     ```
 1. Create `.config/default.yml` with the following content
@@ -51,12 +53,7 @@ You can refer to [local-installation.md](./local-installation.md) to install the
       host: localhost
       port: 26379
 
-    logLevel: [
-      'error',
-      'success',
-      'warning',
-      'info'
-    ]
+    maxlogLevel: 'debug'  # or 'trace'
     ```
 1. Start database containers
     ```sh
@@ -83,6 +80,19 @@ You can refer to [local-installation.md](./local-installation.md) to install the
     DONE *  [core boot]     All workers started
     DONE *  [core boot]     Now listening on port 3000 on http://localhost:3000
     ```
+
+## Update auto-generated files in `package/backend-rs`
+
+You need to install `sea-orm-cli` to regenerate database entities.
+
+```sh
+cargo install sea-orm-cli
+```
+
+```sh
+make entities
+make napi
+```
 
 ## Reset the environment
 

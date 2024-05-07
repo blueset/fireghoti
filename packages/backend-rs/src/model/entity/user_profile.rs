@@ -78,6 +78,7 @@ pub struct Model {
     pub is_indexable: bool,
     #[sea_orm(column_name = "mutedPatterns")]
     pub muted_patterns: Vec<String>,
+    pub lang: Option<String>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
