@@ -130,7 +130,7 @@
 						v-else-if="item.type === 'parent'"
 						class="_button item parent"
 						:class="{ childShowing: childShowingItem === item }"
-						@mouseenter="showChildren(item, $event)"
+						@mouseenter.passive="showChildren(item, $event)"
 						@click.stop="showChildren(item, $event)"
 					>
 						<i
@@ -318,6 +318,7 @@ function onItemMouseLeave(_item) {
 
 async function showChildren(item: MenuParent, ev: MouseEvent) {
 	if (props.asDrawer) {
+		if (ev.type === "mouseenter") return;
 		os.popupMenu(item.children, (ev.currentTarget ?? ev.target) as HTMLElement);
 		close();
 	} else {

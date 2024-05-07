@@ -141,12 +141,7 @@ sudo apt install ffmpeg
       host: localhost
       port: 6379
     
-    logLevel: [
-      'error',
-      'success',
-      'warning',
-      'info'
-    ]
+    maxLogLevel: 'debug'  # or 'trace'
     ```
 
 ## 4. Build and start Firefish

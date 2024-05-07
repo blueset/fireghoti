@@ -2,6 +2,14 @@
 
 Breaking changes are indicated by the :warning: icon.
 
+## Unreleased
+
+- Adding `lang` to the response of `i` and the request parameter of `i/update`.
+
+## v20240504
+
+- :warning: Removed `release` endpoint.
+
 ## v20240424
 
 - Added `antennaLimit` field to the response of `meta` and `admin/meta`, and the request of `admin/update-meta` (optional).
