@@ -233,7 +233,7 @@ export default define(meta, paramDef, async (ps, user) => {
 
 		// Check blocking
 		if (renote.userId !== user.id) {
-			const isBlocked = await Blockings.exist({
+			const isBlocked = await Blockings.exists({
 				where: {
 					blockerId: renote.userId,
 					blockeeId: user.id,
@@ -260,7 +260,7 @@ export default define(meta, paramDef, async (ps, user) => {
 
 		// Check blocking
 		if (reply.userId !== user.id) {
-			const isBlocked = await Blockings.exist({
+			const isBlocked = await Blockings.exists({
 				where: {
 					blockerId: reply.userId,
 					blockeeId: user.id,
@@ -280,14 +280,13 @@ export default define(meta, paramDef, async (ps, user) => {
 			if (
 				ps.poll.expiresAt &&
 				ps.scheduledAt &&
-				ps.poll.expiresAt < Number(new Date(ps.scheduledAt))
+				ps.poll.expiresAt < ps.scheduledAt
 			) {
 				throw new ApiError(meta.errors.cannotCreateAlreadyExpiredPoll);
 			}
 		} else if (typeof ps.poll.expiredAfter === "number") {
-			if (ps.scheduledAt) {
-				ps.poll.expiresAt =
-					Number(new Date(ps.scheduledAt)) + ps.poll.expiredAfter;
+			if (ps.scheduledAt != null) {
+				ps.poll.expiresAt = ps.scheduledAt + ps.poll.expiredAfter;
 			} else {
 				ps.poll.expiresAt = Date.now() + ps.poll.expiredAfter;
 			}
@@ -305,7 +304,7 @@ export default define(meta, paramDef, async (ps, user) => {
 
 	let delay: number | null = null;
 	if (ps.scheduledAt) {
-		delay = Number(ps.scheduledAt) - Number(new Date());
+		delay = ps.scheduledAt - Date.now();
 		if (delay < 0) {
 			delay = null;
 		}
