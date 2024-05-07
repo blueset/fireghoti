@@ -52,6 +52,17 @@ default:
 
 build_test:
   stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'push' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+      changes:
+        paths:
+          - packages/**/*
+          - scripts/**/*
+          - locales/**/*
+          - package.json
+          - pnpm-lock.yaml
+          - Cargo.toml
+          - Cargo.lock
   script:
     - pnpm install --frozen-lockfile
     - pnpm run build:debug
