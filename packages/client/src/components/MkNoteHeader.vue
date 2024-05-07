@@ -48,8 +48,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
-
 import type { entities } from "firefish-js";
 import { defaultStore } from "@/store";
 import MkVisibility from "@/components/MkVisibility.vue";
@@ -66,18 +64,16 @@ const props = defineProps<{
 	canOpenServerInfo?: boolean;
 }>();
 
-const note = ref(props.note);
-
 const showTicker =
 	defaultStore.state.instanceTicker === "always" ||
-	(defaultStore.state.instanceTicker === "remote" && note.value.user.instance);
+	(defaultStore.state.instanceTicker === "remote" && props.note.user.instance);
 
 function openServerInfo() {
 	if (!props.canOpenServerInfo || !defaultStore.state.openServerInfo) return;
 	const instanceInfoUrl =
-		note.value.user.host == null
+		props.note.user.host == null
 			? "/about"
-			: `/instance-info/${note.value.user.host}`;
+			: `/instance-info/${props.note.user.host}`;
 	pageWindow(instanceInfoUrl);
 }
 </script>

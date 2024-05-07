@@ -140,6 +140,12 @@
 			<FormSwitch v-model="foldNotification" class="_formBlock">{{
 				i18n.ts.foldNotification
 			}}</FormSwitch>
+			<FormSwitch v-model="mergeThreadInTimeline" class="_formBlock">{{
+				i18n.ts.mergeThreadInTimeline
+			}}</FormSwitch>
+			<FormSwitch v-model="mergeRenotesInTimeline" class="_formBlock">{{
+				i18n.ts.mergeRenotesInTimeline
+			}}</FormSwitch>
 
 			<FormSelect v-model="serverDisconnectedBehavior" class="_formBlock">
 				<template #label>{{ i18n.ts.whenServerDisconnected }}</template>
@@ -556,6 +562,12 @@ const autocorrectNoteLanguage = computed(
 const foldNotification = computed(
 	defaultStore.makeGetterSetter("foldNotification"),
 );
+const mergeThreadInTimeline = computed(
+	defaultStore.makeGetterSetter("mergeThreadInTimeline"),
+);
+const mergeRenotesInTimeline = computed(
+	defaultStore.makeGetterSetter("mergeRenotesInTimeline"),
+);
 
 // This feature (along with injectPromo) is currently disabled
 // function onChangeInjectFeaturedNote(v) {
@@ -632,7 +644,6 @@ watch(
 		enableTimelineStreaming,
 		enablePullToRefresh,
 		pullToRefreshThreshold,
-		foldNotification,
 	],
 	async () => {
 		await reloadAsk();

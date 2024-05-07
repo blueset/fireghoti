@@ -1,22 +1,62 @@
 import type { Ref } from "vue";
-import { onUnmounted } from "vue";
-import type { entities } from "firefish-js";
+import { onUnmounted, ref } from "vue";
 import { useStream } from "@/stream";
 import { isSignedIn, me } from "@/me";
 import * as os from "@/os";
+import type { NoteType } from "@/types/note";
+
+export const deletedNoteIds = new Map<NoteType["id"], boolean>();
+
+const noteRefs = new Map<NoteType["id"], Ref<NoteType>[]>();
+
+function addToNoteRefs(note: Ref<NoteType>) {
+	const refs = noteRefs.get(note.value.id);
+	if (refs) {
+		refs.push(note);
+	} else {
+		noteRefs.set(note.value.id, [note]);
+	}
+}
+
+function eachNote(id: NoteType["id"], cb: (note: Ref<NoteType>) => void) {
+	const refs = noteRefs.get(id);
+	if (refs) {
+		for (const n of refs) {
+			// n.value.id maybe changed
+			if (n.value.id === id) {
+				cb(n);
+			}
+		}
+	}
+}
 
 export function useNoteCapture(props: {
 	rootEl: Ref<HTMLElement | null>;
-	note: Ref<entities.Note>;
-	isDeletedRef: Ref<boolean>;
-	onReplied?: (note: entities.Note) => void;
+	note: Ref<NoteType>;
+	isDeletedRef?: Ref<boolean>;
+	onReplied?: (note: NoteType) => void;
 }) {
+	let closed = false;
 	const note = props.note;
 	const connection = isSignedIn(me) ? useStream() : null;
+	addToNoteRefs(note);
+
+	function onDeleted() {
+		if (props.isDeletedRef) props.isDeletedRef.value = true;
+		deletedNoteIds.set(note.value.id, true);
+
+		if (note.value.replyId) {
+			eachNote(note.value.replyId, (n) => n.value.repliesCount--);
+		}
+		if (note.value.renoteId) {
+			eachNote(note.value.renoteId, (n) => n.value.renoteCount--);
+		}
+	}
 
 	async function onStreamNoteUpdated(noteData): Promise<void> {
 		const { type, id, body } = noteData;
 
+		if (closed) return;
 		if (id !== note.value.id) return;
 
 		switch (type) {
@@ -87,7 +127,7 @@ export function useNoteCapture(props: {
 			}
 
 			case "deleted": {
-				props.isDeletedRef.value = true;
+				onDeleted();
 				break;
 			}
 
@@ -96,17 +136,14 @@ export function useNoteCapture(props: {
 					const editedNote = await os.api("notes/show", {
 						noteId: id,
 					});
-
-					const keys = new Set<string>();
-					Object.keys(editedNote)
-						.concat(Object.keys(note.value))
-						.forEach((key) => keys.add(key));
-					keys.forEach((key) => {
+					for (const key of [
+						...new Set(Object.keys(editedNote).concat(Object.keys(note.value))),
+					]) {
 						note.value[key] = editedNote[key];
-					});
+					}
 				} catch {
 					// delete the note if failing to get the edited note
-					props.isDeletedRef.value = true;
+					onDeleted();
 				}
 				break;
 			}
@@ -147,4 +184,10 @@ export function useNoteCapture(props: {
 			connection.off("_connected_", onStreamConnected);
 		}
 	});
+
+	return {
+		close: () => {
+			closed = true;
+		},
+	};
 }
