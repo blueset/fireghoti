@@ -178,8 +178,11 @@ cargo_clippy:
           - Cargo.lock
     - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'main'
       when: never
-  script:
+  services: []
+  before_script:
+    - cp ci/cargo/config.toml /usr/local/cargo/config.toml
     - rustup component add clippy
+  script:
     - cargo clippy -- -D warnings
 
 renovate:
