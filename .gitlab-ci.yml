@@ -98,6 +98,14 @@ client_build_test:
           - Cargo.lock
       when: never
   services: []
+  before_script:
+    - apt-get update && apt-get -y upgrade
+    - apt-get -y --no-install-recommends install curl
+    - curl -fsSL 'https://deb.nodesource.com/setup_18.x' | bash -
+    - apt-get install -y --no-install-recommends build-essential python3 perl nodejs
+    - corepack enable
+    - corepack prepare pnpm@latest --activate
+    - cp .config/ci.yml .config/default.yml
   script:
     - pnpm install --frozen-lockfile
     - pnpm --filter 'firefish-js' --filter 'client' --filter 'sw' run build:debug
@@ -177,6 +185,7 @@ cargo_clippy:
       when: never
   services: []
   before_script:
+    - apt-get install -y --no-install-recommends build-essential clang mold perl
     - cp ci/cargo/config.toml /usr/local/cargo/config.toml
     - rustup component add clippy
   script:
