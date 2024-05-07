@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import type { entities } from "firefish-js";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 import PhotoSwipe from "photoswipe";
@@ -207,9 +207,9 @@ const isModule = (file: entities.DriveFile): boolean => {
 	);
 };
 
-const previewableCount = props.mediaList.filter((media) =>
-	previewable(media),
-).length;
+const previewableCount = computed(
+	() => props.mediaList.filter((media) => previewable(media)).length,
+);
 </script>
 
 <style lang="scss" scoped>
