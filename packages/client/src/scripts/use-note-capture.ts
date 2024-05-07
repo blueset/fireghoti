@@ -1,5 +1,5 @@
 import type { Ref } from "vue";
-import { onUnmounted } from "vue";
+import { onUnmounted, ref } from "vue";
 import { useStream } from "@/stream";
 import { isSignedIn, me } from "@/me";
 import * as os from "@/os";
@@ -33,7 +33,7 @@ function eachNote(id: NoteType["id"], cb: (note: Ref<NoteType>) => void) {
 export function useNoteCapture(props: {
 	rootEl: Ref<HTMLElement | null>;
 	note: Ref<NoteType>;
-	isDeletedRef: Ref<boolean>;
+	isDeletedRef?: Ref<boolean>;
 	onReplied?: (note: NoteType) => void;
 }) {
 	let closed = false;
@@ -42,7 +42,7 @@ export function useNoteCapture(props: {
 	addToNoteRefs(note);
 
 	function onDeleted() {
-		props.isDeletedRef.value = true;
+		if (props.isDeletedRef) props.isDeletedRef.value = true;
 		deletedNoteIds.set(note.value.id, true);
 
 		if (note.value.replyId) {
