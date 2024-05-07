@@ -5,7 +5,6 @@ pub mod chat_index;
 pub mod custom_emoji;
 pub mod group_chat;
 pub mod moderation;
-pub mod new_note;
 
 use crate::config::CONFIG;
 use crate::database::redis_conn;
@@ -26,7 +25,7 @@ pub enum Stream {
     #[strum(to_string = "noteStream:{note_id}")]
     Note { note_id: String },
     #[strum(serialize = "notesStream")]
-    NewNote,
+    Notes,
     #[strum(to_string = "userListStream:{list_id}")]
     UserList { list_id: String },
     #[strum(to_string = "mainStream:{user_id}")]

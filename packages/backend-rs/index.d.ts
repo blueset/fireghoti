@@ -1292,7 +1292,6 @@ export interface AbuseUserReportLike {
   comment: string
 }
 export function publishToModerationStream(moderatorId: string, report: AbuseUserReportLike): void
-export function publishToNotesStream(note: Note): void
 export function getTimestamp(id: string): number
 /**
  * The generated ID results in the form of `[8 chars timestamp] + [cuid2]`.

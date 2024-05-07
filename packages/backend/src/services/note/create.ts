@@ -1,5 +1,9 @@
 import * as mfm from "mfm-js";
-import { publishMainStream, publishNoteStream } from "@/services/stream.js";
+import {
+	publishMainStream,
+	publishNotesStream,
+	publishNoteStream,
+} from "@/services/stream.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
 import renderCreate from "@/remote/activitypub/renderer/create.js";
@@ -45,7 +49,6 @@ import {
 	genId,
 	genIdAt,
 	isSilencedServer,
-	publishToNotesStream,
 } from "backend-rs";
 import { countSameRenotes } from "@/misc/count-same-renotes.js";
 import { deliverToRelays, getCachedRelays } from "../relay.js";
@@ -508,7 +511,7 @@ export default async (
 								30,
 							);
 						}
-						publishToNotesStream(toRustObject(noteToPublish));
+						publishNotesStream(noteToPublish);
 					}
 				} finally {
 					await lock.release();
