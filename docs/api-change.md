@@ -2,6 +2,8 @@
 
 Breaking changes are indicated by the :warning: icon.
 
+- Adding `lang` to the response of `i` and the request parameter of `i/update`.
+
 ## v20240504
 
 - :warning: Removed `release` endpoint.

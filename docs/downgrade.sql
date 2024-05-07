@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'AddUserProfileLanguage1714888400293',
     'DropUnusedIndexes1714643926317',
     'AlterAkaType1714099399879',
     'AddDriveFileUsage1713451569342',
@@ -764,9 +765,6 @@ CREATE SEQUENCE public.__chart_day__users_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart_day__users_id_seq OWNED BY public.__chart_day__users.id;
-
--- drop-user-profile-language
-ALTER TABLE "user_profile" ADD COLUMN "lang" character varying(32);
 
 -- emoji-moderator
 ALTER TABLE "user" DROP COLUMN "emojiModPerm";

@@ -1,13 +1,20 @@
 use crate::database::cache;
-use crate::util::http_client::http_client;
+use crate::util::http_client;
+use isahc::ReadResponseExt;
 use serde::{Deserialize, Serialize};
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Cache error: {0}")]
     CacheErr(#[from] cache::Error),
-    #[error("Reqwest error: {0}")]
-    ReqwestErr(#[from] reqwest::Error),
+    #[error("Isahc error: {0}")]
+    IsahcErr(#[from] isahc::Error),
+    #[error("HTTP client aquisition error: {0}")]
+    HttpClientErr(#[from] http_client::Error),
+    #[error("HTTP error: {0}")]
+    HttpErr(String),
+    #[error("Response parsing error: {0}")]
+    IoErr(#[from] std::io::Error),
     #[error("Failed to deserialize JSON: {0}")]
     JsonErr(#[from] serde_json::Error),
 }
@@ -21,13 +28,17 @@ async fn get_latest_version() -> Result<String, Error> {
         version: String,
     }
 
-    let res = http_client()?
-        .get(UPSTREAM_PACKAGE_JSON_URL)
-        .send()
-        .await?
-        .text()
-        .await?;
-    let res_parsed: Response = serde_json::from_str(&res)?;
+    let mut response = http_client::client()?.get(UPSTREAM_PACKAGE_JSON_URL)?;
+
+    if !response.status().is_success() {
+        tracing::info!("status: {}", response.status());
+        tracing::debug!("response body: {:#?}", response.body());
+        return Err(Error::HttpErr(
+            "Failed to fetch version from Firefish GitLab".to_string(),
+        ));
+    }
+
+    let res_parsed: Response = serde_json::from_str(&response.text()?)?;
 
     Ok(res_parsed.version)
 }

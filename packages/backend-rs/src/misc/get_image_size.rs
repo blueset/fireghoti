@@ -1,6 +1,7 @@
 use crate::database::cache;
 use crate::util::http_client;
 use image::{io::Reader, ImageError, ImageFormat};
+use isahc::ReadResponseExt;
 use nom_exif::{parse_jpeg_exif, EntryValue, ExifTag};
 use std::io::Cursor;
 use tokio::sync::Mutex;
@@ -9,8 +10,12 @@ use tokio::sync::Mutex;
 pub enum Error {
     #[error("Redis cache error: {0}")]
     CacheErr(#[from] cache::Error),
-    #[error("Reqwest error: {0}")]
-    ReqwestErr(#[from] reqwest::Error),
+    #[error("HTTP client aquisition error: {0}")]
+    HttpClientErr(#[from] http_client::Error),
+    #[error("Isahc error: {0}")]
+    IsahcErr(#[from] isahc::Error),
+    #[error("HTTP error: {0}")]
+    HttpErr(String),
     #[error("Image decoding error: {0}")]
     ImageErr(#[from] ImageError),
     #[error("Image decoding error: {0}")]
@@ -64,7 +69,16 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
 
     tracing::info!("retrieving image size from {}", url);
 
-    let image_bytes = http_client()?.get(url).send().await?.bytes().await?;
+    let mut response = http_client::client()?.get(url)?;
+
+    if !response.status().is_success() {
+        tracing::info!("status: {}", response.status());
+        tracing::debug!("response body: {:#?}", response.body());
+        return Err(Error::HttpErr(format!("Failed to get image from {}", url)));
+    }
+
+    let image_bytes = response.bytes()?;
+
     let reader = Reader::new(Cursor::new(&image_bytes)).with_guessed_format()?;
 
     let format = reader.format();

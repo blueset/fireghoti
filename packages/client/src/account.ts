@@ -132,6 +132,9 @@ export async function signIn(token: Account["token"], redirect?: string) {
 	if (_DEV_) console.log("logging as token ", token);
 	const newAccount = await fetchAccount(token);
 	localStorage.setItem("account", JSON.stringify(newAccount));
+	if (newAccount.lang) {
+		localStorage.setItem("lang", newAccount.lang);
+	}
 	document.cookie = `token=${token}; path=/; max-age=31536000`; // bull dashboardの認証とかで使う
 	await addAccount(newAccount.id, token);
 

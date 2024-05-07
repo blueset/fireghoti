@@ -57,6 +57,12 @@ export class UserProfile {
 	public mentions: IMentionedRemoteUsers;
 
 	@Column("varchar", {
+		length: 32,
+		nullable: true,
+	})
+	public lang: string | null;
+
+	@Column("varchar", {
 		length: 512,
 		nullable: true,
 		comment: "Remote URL of the user.",

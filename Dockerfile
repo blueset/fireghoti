@@ -45,7 +45,7 @@ COPY packages/backend-rs/index.js packages/backend-rs/built/index.js
 # Copy in the rest of the files to compile
 COPY . ./
 RUN NODE_ENV='production' pnpm run --filter firefish-js build
-RUN NODE_ENV='production' pnpm run --recursive --parallel --filter '!backend-rs' --filter '!firefish-js' build && pnpm run gulp
+RUN NODE_ENV='production' pnpm run --recursive --parallel --filter '!backend-rs' --filter '!firefish-js' build && pnpm run build:assets
 
 # Trim down the dependencies to only those for production
 RUN find . -path '*/node_modules/*' -delete && pnpm install --prod --frozen-lockfile
