@@ -193,9 +193,10 @@ class Publisher {
 	// 	);
 	// };
 
-	public publishNotesStream = (note: Note): void => {
-		this.publish("notesStream", null, note);
-	};
+	/* ported to backend-rs */
+	// public publishNotesStream = (note: Note): void => {
+	// 	this.publish("notesStream", null, note);
+	// };
 
 	/* ported to backend-rs */
 	// public publishAdminStream = <K extends keyof AdminStreamTypes>(
@@ -221,7 +222,7 @@ export const publishUserEvent = publisher.publishUserEvent;
 export const publishMainStream = publisher.publishMainStream;
 export const publishDriveStream = publisher.publishDriveStream;
 export const publishNoteStream = publisher.publishNoteStream;
-export const publishNotesStream = publisher.publishNotesStream;
+// export const publishNotesStream = publisher.publishNotesStream;
 // export const publishChannelStream = publisher.publishChannelStream;
 export const publishUserListStream = publisher.publishUserListStream;
 // export const publishAntennaStream = publisher.publishAntennaStream;
