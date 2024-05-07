@@ -40,8 +40,8 @@ coverage
 
 # misskey
 built
-elasticsearch
-redis
+/db
+/redis
 npm-debug.log
 *.pem
 run.bat
