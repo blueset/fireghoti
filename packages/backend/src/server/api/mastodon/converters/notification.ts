@@ -18,6 +18,7 @@ import { SwSubscription } from "@/models/entities/sw-subscription.js";
 import { fetchMeta } from "backend-rs";
 import type { pushNotificationsTypes } from "@/services/push-notification.js";
 import { getNoteSummary } from "backend-rs";
+import { I18n } from "@/misc/i18n";
 
 type NotificationType = (typeof notificationTypes)[number];
 
@@ -180,8 +181,12 @@ export class NotificationConverter {
 		subscription: SwSubscription,
 		type: T,
 		body: pushNotificationsTypes[T],
+		lang: string = "en",
 	): Promise<Partial<MastodonEntity.NotificationPayload>> {
 		if (!subscription.appAccessToken) return {};
+
+		const i18n = new I18n(lang);
+
 		const app = subscription.appAccessToken.appId
 			? await Apps.findOneBy({ id: subscription.appAccessToken.appId })
 			: null;
@@ -190,7 +195,7 @@ export class NotificationConverter {
 		let notification_id = "";
 		let notification_type = "others";
 		let icon: string | undefined = undefined;
-		let title = `New ${type} notification`;
+		let title = i18n.t("notificationType") + type;
 		let description = "";
 		if (type === "notification") {
 			const notificationBody = body as pushNotificationsTypes["notification"];
@@ -223,46 +228,43 @@ export class NotificationConverter {
 
 			switch (notificationBody.type) {
 				case "mention":
-					title = `${displayName} mentioned you`;
+					title = i18n.t("_notification.youGotMention", { name: displayName });
 					break;
 				case "reply":
-					title = `${displayName} replied to you`;
+					title = i18n.t("_notification.youGotReply", { name: displayName });
 					break;
-				case "renote":
-					title = `${displayName} boosted your note`;
+					case "renote":
+					title = i18n.t("_notification.youRenoted", { name: displayName });
 					break;
-				case "quote":
-					title = `${displayName} quoted your note`;
+					case "quote":
+					title = i18n.t("_notification.youGotQuote", { name: displayName });
 					break;
 				case "reaction":
-					title = `${displayName} reacted to your note`;
+					title = displayName + " " + i18n.t("_notification.reacted");
 					break;
 				case "pollVote":
-					title = `${displayName} voted ${
-						notificationBody.note?.poll.choices[notificationBody.choice || 0]
-							?.text
-					}`;
+					title = i18n.t("_notification.youGotPoll", { name: displayName });
 					break;
 				case "pollEnded":
-					title = `${displayName} closed a poll`;
+					title = i18n.t("_notification.pollEnded");
 					break;
 				case "followRequestAccepted":
-					title = `${displayName} accepted your follow request`;
+					title = i18n.t("_notification.yourFollowRequestAccepted");
 					break;
 				case "groupInvited":
-					title = `${displayName} invited you to ${notificationBody.invitation.group.name}`;
+					title = i18n.t("_notification.youWereInvitedToGroup", { userName: displayName });
 					break;
 				case "follow":
-					title = `${displayName} followed you`;
+					title = displayName + " " + i18n.t("_notification.youWereFollowed");
 					break;
 				case "receiveFollowRequest":
-					title = `${displayName} sent you a follow request`;
+					title = i18n.t("_notification.youReceivedFollowRequest");
 					break;
 				case "app":
 					title = `${notificationBody.header}`;
 					break;
 				default:
-					title = `New ${type} (${notificationBody.type}) notification`;
+					title = i18n.t("notificationType") + `${type} (${notificationBody.type})`;
 			}
 			description =
 				(effectiveNote && getNoteSummary(effectiveNote)) ||

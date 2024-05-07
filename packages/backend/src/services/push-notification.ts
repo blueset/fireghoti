@@ -1,6 +1,6 @@
 import push from "web-push";
 import { config } from "@/config.js";
-import { SwSubscriptions } from "@/models/index.js";
+import { SwSubscriptions, UserProfiles } from "@/models/index.js";
 import { fetchMeta, getNoteSummary } from "backend-rs";
 import type { Packed } from "@/misc/schema.js";
 import { NotificationConverter } from "@/server/api/mastodon/converters/notification.js";
@@ -62,6 +62,7 @@ export async function pushNotification<T extends keyof pushNotificationsTypes>(
 		where: { userId: userId },
 		relations: ["appAccessToken"],
 	});
+	const userProfile = await UserProfiles.findOneBy({ userId: userId });
 
 	for (const subscription of subscriptions) {
 		if (
@@ -88,21 +89,27 @@ export async function pushNotification<T extends keyof pushNotificationsTypes>(
 				p256dh: subscription.publickey,
 			},
 		};
-		const notificationPayload = subscription.appAccessToken
-			? await NotificationConverter.encodePushNotificationPayload(
-					subscription,
-					type,
-					body,
-				)
-			: {
-					type,
-					body:
-						type === "notification"
-							? truncateNotification(body as Packed<"Notification">)
-							: body,
-					userId,
-					dateTime: Date.now(),
-				};
+		
+		let notificationPayload: Record<string, unknown>;
+
+		if (subscription.appAccessToken) {
+			notificationPayload = await NotificationConverter.encodePushNotificationPayload(
+				subscription,
+				type,
+				body,
+				userProfile?.lang ?? "en",
+			);
+		} else {
+			notificationPayload = {
+				type,
+				body:
+					type === "notification"
+						? truncateNotification(body as Packed<"Notification">)
+						: body,
+				userId,
+				dateTime: Date.now(),
+			};
+		}
 				
 		console.log(
 			"Push notification, pushSubscription:",
