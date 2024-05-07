@@ -124,6 +124,7 @@ container_image_build:
     - apt-get install -y --no-install-recommends buildah ca-certificates fuse-overlayfs
     - buildah login --username "${CI_REGISTRY_USER}" --password "${CI_REGISTRY_PASSWORD}" "${CI_REGISTRY}"
     - export IMAGE_TAG="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
+    - export IMAGE_CACHE="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop/cache"
   script:
     - |-
       buildah build \
@@ -134,8 +135,8 @@ container_image_build:
         --cap-add all \
         --platform linux/amd64 \
         --layers \
-        --cache-to "${IMAGE_TAG}/cache" \
-        --cache-from "${IMAGE_TAG}/cache" \
+        --cache-to "${IMAGE_CACHE}" \
+        --cache-from "${IMAGE_CACHE}" \
         --tag "${IMAGE_TAG}" \
         .
     - buildah inspect "${IMAGE_TAG}"
