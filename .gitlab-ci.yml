@@ -56,9 +56,11 @@ build_test:
     - if: $CI_PIPELINE_SOURCE == 'push' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
         paths:
-          - packages/**/*
+          - packages/backend/*
+          - packages/backend-rs/*
+          - packages/macro-rs/*
+          - packages/megalodon/*
           - scripts/**/*
-          - locales/**/*
           - package.json
           - pnpm-lock.yaml
           - Cargo.toml
@@ -67,6 +69,33 @@ build_test:
     - pnpm install --frozen-lockfile
     - pnpm run build:debug
     - pnpm run migrate
+
+client_build_test:
+  stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'push' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+      changes:
+        paths:
+          - packages/client/*
+          - packages/firefish-js/*
+          - packages/sw/*
+          - scripts/**/*
+          - locales/**/*
+          - package.json
+          - pnpm-lock.yaml
+    - if: $CI_PIPELINE_SOURCE == 'push' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+      changes:
+        paths:
+          - packages/backend/*
+          - packages/backend-rs/*
+          - packages/macro-rs/*
+          - packages/megalodon/*
+          - Cargo.toml
+          - Cargo.lock
+      when: never
+  script:
+    - pnpm install --frozen-lockfile
+    - pnpm --filter 'client' --filter 'sw' run build:debug
 
 container_image_build:
   stage: build
