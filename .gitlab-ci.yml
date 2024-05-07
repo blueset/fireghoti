@@ -74,6 +74,17 @@ container_image_build:
   services: []
   rules:
     - if: $CI_COMMIT_BRANCH == 'develop'
+      changes:
+        paths:
+          - packages/**/*
+          - locales/**/*
+          - scripts/copy-assets.mjs
+          - package.json
+          - pnpm-lock.yaml
+          - Cargo.toml
+          - Cargo.lock
+          - Dockerfile
+          - .dockerignore
   before_script:
     - apt-get update && apt-get -y upgrade
     - apt-get install -y --no-install-recommends buildah ca-certificates fuse-overlayfs
@@ -87,7 +98,7 @@ container_image_build:
 cargo_unit_test:
   stage: test
   rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event' || $CI_COMMIT_BRANCH == 'develop'
       changes:
         paths:
           - packages/backend-rs/**/*
