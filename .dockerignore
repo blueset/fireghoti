@@ -51,6 +51,7 @@ title.svg
 /dev
 /docs
 /scripts
+!/scripts/copy-assets.mjs
 biome.json
 COPYING
 CODE_OF_CONDUCT.md
