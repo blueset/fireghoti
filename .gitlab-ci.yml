@@ -95,7 +95,7 @@ client_build_test:
       when: never
   script:
     - pnpm install --frozen-lockfile
-    - pnpm --filter 'client' --filter 'sw' run build:debug
+    - pnpm --filter 'firefish-js' --filter 'client' --filter 'sw' run build:debug
 
 container_image_build:
   stage: build
