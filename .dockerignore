@@ -53,11 +53,9 @@ title.svg
 /scripts
 !/scripts/copy-assets.mjs
 biome.json
-COPYING
 CODE_OF_CONDUCT.md
 CONTRIBUTING.md
 Dockerfile
-LICENSE
 Procfile
 README.md
 SECURITY.md
