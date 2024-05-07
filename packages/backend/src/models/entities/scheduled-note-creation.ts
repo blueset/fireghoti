@@ -5,6 +5,7 @@ import {
 	ManyToOne,
 	PrimaryColumn,
 	Index,
+	type Relation,
 } from "typeorm";
 import { Note } from "./note.js";
 import { id } from "../id.js";
@@ -34,11 +35,12 @@ export class ScheduledNoteCreation {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	public note: Note;
+	public note: Relation<Note>;
+
 	@ManyToOne(() => User, {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	public user: User;
+	public user: Relation<User>;
 	//#endregion
 }
