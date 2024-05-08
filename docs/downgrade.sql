@@ -804,5 +804,6 @@ VALUES
 -- sw subscription per access token
 ALTER TABLE "sw_subscription" DROP CONSTRAINT "FK_98a1aa2db2a5253924f42f38767";
 ALTER TABLE "sw_subscription" DROP COLUMN "appAccessTokenId";
+ALTER TABLE "sw_subscription" DROP COLUMN "subscriptionTypes";
 
 COMMIT;

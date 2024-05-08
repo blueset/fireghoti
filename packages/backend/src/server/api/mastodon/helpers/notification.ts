@@ -151,11 +151,15 @@ export class NotificationHelpers {
 			endpoint: string;
 			keys: { p256dh: string; auth: string };
 		};
+		const alerts = body.data.alerts as Record<MastodonEntity.NotificationType, boolean>;
 
 		const existing = await SwSubscriptions.findOneBy({
 			userId: user.id,
 			appAccessTokenId: tokenId,
 		});
+
+		const types = (Object.keys(alerts) as MastodonEntity.NotificationType[]).filter((k) => alerts[k]);
+
 		if (existing) {
 			await SwSubscriptions.update(
 				{ userId: user.id, appAccessTokenId: tokenId },
@@ -165,6 +169,7 @@ export class NotificationHelpers {
 					auth: subscription.keys.auth,
 					sendReadMessage: false,
 					appAccessTokenId: tokenId,
+					subscriptionTypes: types,
 				},
 			);
 		} else {
@@ -177,12 +182,37 @@ export class NotificationHelpers {
 				auth: subscription.keys.auth,
 				sendReadMessage: false,
 				appAccessTokenId: tokenId,
+				subscriptionTypes: types,
 			});
 		}
 		return SwSubscriptions.findOneByOrFail({
 			userId: user.id,
 			appAccessTokenId: tokenId,
 		});
+	}
+
+	public static async putPushSubscription(subscription: SwSubscription, ctx: MastoContext) {
+		const body = ctx.request.body as any;
+		const alerts = body.data.alerts as Record<MastodonEntity.NotificationType, boolean>;
+		const types = subscription.subscriptionTypes;
+		for (const type of Object.keys(alerts) as MastodonEntity.NotificationType[]) {
+			if (alerts[type]) {
+				if (!types.includes(type)) {
+					types.push(type);
+				}
+			} else {
+				const index = types.indexOf(type);
+				if (index !== -1) {
+					types.splice(index, 1);
+				}
+			}
+		}
+		await SwSubscriptions.update(
+			{ userId: subscription.userId, appAccessTokenId: subscription.appAccessTokenId ?? undefined },
+			{
+				subscriptionTypes: types,
+			},
+		);
 	}
 
 	public static async deletePushSubscription(ctx: MastoContext): Promise<void> {

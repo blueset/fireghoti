@@ -49,6 +49,17 @@ export class SwSubscription {
 	})
 	@JoinColumn()
 	public user: Relation<User>;
+
+	/**
+	 * Type of subscription, used for Mastodon API notifications.
+	 * Empty for Misskey notifications.
+	 */
+	@Column("varchar", {
+		length: 64,
+		array: true,
+		default: "{}",
+	})
+	public subscriptionTypes: string[];
 	
 	/**
 	 * App notification app (token for), used for Mastodon API notifications

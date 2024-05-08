@@ -12,12 +12,14 @@ namespace MastodonEntity {
 	};
 
 	export type NotificationType =
-		| "follow"
-		| "favourite"
-		| "reblog"
-		| "mention"
-		| "reaction"
-		| "follow_request"
-		| "status"
-		| "poll";
+		| "mention" 
+		| "status" 
+		| "reblog" 
+		| "follow" 
+		| "follow_request" 
+		| "favourite" 
+		| "poll" 
+		| "update" 
+		| "admin.sign_up" 
+		| "admin.report";
 }

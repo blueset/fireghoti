@@ -111,9 +111,9 @@ export function setupEndpointsNotifications(router: Router): void {
 		"/v1/push/subscription",
 		auth(true, ["write:notifications"]),
 		async (ctx) => {
-			// FIXME: implement alerts
 			const subscription =
 				await NotificationHelpers.getPushSubscriptionOr404(ctx);
+			await NotificationHelpers.putPushSubscription(subscription, ctx);
 			ctx.body = await NotificationConverter.encodeSubscription(
 				subscription,
 				ctx,

@@ -65,21 +65,21 @@ export async function pushNotification<T extends keyof pushNotificationsTypes>(
 	const userProfile = await UserProfiles.findOneBy({ userId: userId });
 
 	for (const subscription of subscriptions) {
-		if (
-			[
-				"readNotifications",
-				"readAllNotifications",
-				"readAllMessagingMessages",
-				"readAllMessagingMessagesOfARoom",
-			].includes(type) &&
-			!subscription.sendReadMessage
-		)
-			continue;
-		if (
-			(type === "notification" &&
-				(body as Packed<"Notification">).type === "followRequestAccepted") && // TODO: filter notification type by registered types
-			!subscription.appAccessTokenId) {
-			continue;
+		if (subscription.appAccessTokenId) {
+			if (
+				type === "readNotifications" ||
+				type === "readAllNotifications" ||
+				type === "readAllMessagingMessages" ||
+				type === "readAllMessagingMessagesOfARoom"
+			) {
+				continue;
+			}
+			if (type === "notification") {
+				const notificatonType = await NotificationConverter.encodeNotificationTypeOrDefault((body as Packed<"Notification">).type);
+				if (!subscription.subscriptionTypes.includes(notificatonType)) {
+					continue;
+				}
+			}
 		}
 
 		const pushSubscription = {
@@ -97,7 +97,7 @@ export async function pushNotification<T extends keyof pushNotificationsTypes>(
 				subscription,
 				type,
 				body,
-				userProfile?.lang ?? "en",
+				userProfile?.lang ?? undefined,
 			);
 		} else {
 			notificationPayload = {

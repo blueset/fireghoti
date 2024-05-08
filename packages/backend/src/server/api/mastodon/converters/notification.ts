@@ -18,10 +18,9 @@ import { SwSubscription } from "@/models/entities/sw-subscription.js";
 import { fetchMeta } from "backend-rs";
 import type { pushNotificationsTypes } from "@/services/push-notification.js";
 import { getNoteSummary } from "backend-rs";
-import { I18n } from "@/misc/i18n";
+import { I18n } from "@/misc/i18n.js";
 
-// const locales = await import('../../../../../../../locales/index.js');
-import locales from '../../../../../../../locales/index.js';
+import locales from '../../../../../../../locales/index.mjs';
 
 type NotificationType = (typeof notificationTypes)[number];
 
@@ -166,13 +165,12 @@ export class NotificationConverter {
 			endpoint: subscription.endpoint,
 			server_key: instance.swPublicKey ?? "",
 			alerts: {
-				// FIXME: Implement alerts
-				follow: true,
-				favourite: true,
-				mention: true,
-				reblog: true,
-				poll: true,
-				status: true,
+				follow: subscription.subscriptionTypes.includes("follow"),
+				favourite: subscription.subscriptionTypes.includes("favourite"),
+				mention: subscription.subscriptionTypes.includes("mention"),
+				reblog: subscription.subscriptionTypes.includes("reblog"),
+				poll: subscription.subscriptionTypes.includes("poll"),
+				status: subscription.subscriptionTypes.includes("status"),
 			},
 		};
 	}
@@ -193,7 +191,7 @@ export class NotificationConverter {
 			? await Apps.findOneBy({ id: subscription.appAccessToken.appId })
 			: null;
 		const access_token = subscription.appAccessToken.token;
-		let preferred_locale = "en";
+		let preferred_locale = lang;
 		let notification_id = "";
 		let notification_type = "others";
 		let icon: string | undefined = undefined;
