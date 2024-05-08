@@ -23,9 +23,17 @@
 						"useTemplate": "warn",
 						"noNonNullAssertion": "off",
 						"useNodejsImportProtocol": "off"
-					},
+					}
+				}
+			}
+		},
+		{
+			"include": ["packages/backend/src/server/api/mastodon/**/*.ts"],
+			"linter": {
+				"rules": {
 					"complexity": {
-						"noStaticOnlyClass": "off"
+						"noStaticOnlyClass": "off",
+						"noThisInStatic": "off"
 					}
 				}
 			}

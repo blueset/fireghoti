@@ -146,7 +146,10 @@ export function setupEndpointsStatus(router: Router): void {
 
 			ctx.body = await NoteHelpers.reactToNote(note, reaction, ctx).then((p) =>
 				NoteConverter.encode(p, ctx),
-			);
+			).then((p) => {
+				p.favourited = true;
+				return p;
+			});
 		},
 	);
 	router.post<{ Params: { id: string } }>(
@@ -157,7 +160,10 @@ export function setupEndpointsStatus(router: Router): void {
 
 			ctx.body = await NoteHelpers.removeReactFromNote(note, ctx).then((p) =>
 				NoteConverter.encode(p, ctx),
-			);
+			).then((p) => {
+				p.favourited = false;
+				return p;
+			});
 		},
 	);
 
@@ -169,7 +175,10 @@ export function setupEndpointsStatus(router: Router): void {
 
 			ctx.body = await NoteHelpers.reblogNote(note, ctx).then((p) =>
 				NoteConverter.encode(p, ctx),
-			);
+			).then((p) => {
+				p.reblogged = true;
+				return p;
+			});
 		},
 	);
 
@@ -181,7 +190,10 @@ export function setupEndpointsStatus(router: Router): void {
 
 			ctx.body = await NoteHelpers.unreblogNote(note, ctx).then((p) =>
 				NoteConverter.encode(p, ctx),
-			);
+			).then((p) => {
+				p.reblogged = false;
+				return p;
+			});
 		},
 	);
 
@@ -193,7 +205,10 @@ export function setupEndpointsStatus(router: Router): void {
 
 			ctx.body = await NoteHelpers.bookmarkNote(note, ctx).then((p) =>
 				NoteConverter.encode(p, ctx),
-			);
+			).then((p) => {
+				p.bookmarked = true;
+				return p;
+			});
 		},
 	);
 
@@ -205,7 +220,10 @@ export function setupEndpointsStatus(router: Router): void {
 
 			ctx.body = await NoteHelpers.unbookmarkNote(note, ctx).then((p) =>
 				NoteConverter.encode(p, ctx),
-			);
+			).then((p) => {
+				p.bookmarked = false;
+				return p;
+			});
 		},
 	);
 
@@ -217,7 +235,10 @@ export function setupEndpointsStatus(router: Router): void {
 
 			ctx.body = await NoteHelpers.pinNote(note, ctx).then((p) =>
 				NoteConverter.encode(p, ctx),
-			);
+			).then((p) => {
+				p.pinned = true;
+				return p;
+			});
 		},
 	);
 
@@ -229,7 +250,10 @@ export function setupEndpointsStatus(router: Router): void {
 
 			ctx.body = await NoteHelpers.unpinNote(note, ctx).then((p) =>
 				NoteConverter.encode(p, ctx),
-			);
+			).then((p) => {
+				p.pinned = false;
+				return p;
+			});
 		},
 	);
 

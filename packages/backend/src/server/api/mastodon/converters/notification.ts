@@ -20,6 +20,9 @@ import type { pushNotificationsTypes } from "@/services/push-notification.js";
 import { getNoteSummary } from "backend-rs";
 import { I18n } from "@/misc/i18n";
 
+// const locales = await import('../../../../../../../locales/index.js');
+import locales from '../../../../../../../locales/index.js';
+
 type NotificationType = (typeof notificationTypes)[number];
 
 export class NotificationConverter {
@@ -51,9 +54,8 @@ export class NotificationConverter {
 				: null);
 
 		if (note) {
-			const isPureRenote = note.renoteId !== null && !isQuote(note);
-			const encodedNote = isPureRenote
-				? getNote(note.renoteId!, localUser).then((note) =>
+			const encodedNote = (note.renoteId !== null && !isQuote(note))
+				? getNote(note.renoteId, localUser).then((note) =>
 						NoteConverter.encode(note, ctx),
 					)
 				: NoteConverter.encode(note, ctx);
@@ -181,11 +183,11 @@ export class NotificationConverter {
 		subscription: SwSubscription,
 		type: T,
 		body: pushNotificationsTypes[T],
-		lang: string = "en",
+		lang = "en_US",
 	): Promise<Partial<MastodonEntity.NotificationPayload>> {
 		if (!subscription.appAccessToken) return {};
-
-		const i18n = new I18n(lang);
+		const locale = locales[lang] || locales.en_US;
+		const i18n = new I18n(locale);
 
 		const app = subscription.appAccessToken.appId
 			? await Apps.findOneBy({ id: subscription.appAccessToken.appId })
@@ -240,7 +242,7 @@ export class NotificationConverter {
 					title = i18n.t("_notification.youGotQuote", { name: displayName });
 					break;
 				case "reaction":
-					title = displayName + " " + i18n.t("_notification.reacted");
+					title = `${displayName} ${i18n.t("_notification.reacted")}`;
 					break;
 				case "pollVote":
 					title = i18n.t("_notification.youGotPoll", { name: displayName });
@@ -255,7 +257,7 @@ export class NotificationConverter {
 					title = i18n.t("_notification.youWereInvitedToGroup", { userName: displayName });
 					break;
 				case "follow":
-					title = displayName + " " + i18n.t("_notification.youWereFollowed");
+					title = `${displayName} ${i18n.t("_notification.youWereFollowed")}`;
 					break;
 				case "receiveFollowRequest":
 					title = i18n.t("_notification.youReceivedFollowRequest");
@@ -264,7 +266,7 @@ export class NotificationConverter {
 					title = `${notificationBody.header}`;
 					break;
 				default:
-					title = i18n.t("notificationType") + `${type} (${notificationBody.type})`;
+					title = `${i18n.t("notificationType")} ${type} (${notificationBody.type})`;
 			}
 			description =
 				(effectiveNote && getNoteSummary(effectiveNote)) ||
