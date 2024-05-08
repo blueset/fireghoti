@@ -1,21 +1,17 @@
-import { type HTMLElement, Window } from "happy-dom";
+import { JSDOM } from "jsdom";
 import type * as mfm from "mfm-js";
 import katex from "katex";
 import { config } from "@/config.js";
 import { intersperse } from "@/prelude/array.js";
 import type { IMentionedRemoteUsers } from "@/models/entities/note.js";
 
-function toMathMl(code: string, displayMode: boolean): HTMLElement | null {
-	const { window } = new Window();
-	const document = window.document;
-
-	document.body.innerHTML = katex.renderToString(code, {
+function toMathMl(code: string, displayMode: boolean): MathMLElement | null {
+	const rendered = katex.renderToString(code, {
 		throwOnError: false,
 		output: "mathml",
 		displayMode,
 	});
-
-	return document.querySelector("math");
+	return JSDOM.fragment(rendered).querySelector("math");
 }
 
 export function toHtml(
@@ -26,7 +22,7 @@ export function toHtml(
 		return null;
 	}
 
-	const { window } = new Window();
+	const { window } = new JSDOM("");
 
 	const doc = window.document;
 

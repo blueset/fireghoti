@@ -1,8 +1,8 @@
 import { URL } from "node:url";
-import { Window } from "happy-dom";
+import { type DOMWindow, JSDOM } from "jsdom";
 import fetch from "node-fetch";
 import tinycolor from "tinycolor2";
-import { getJson, getAgentByUrl } from "@/misc/fetch.js";
+import { getJson, getHtml, getAgentByUrl } from "@/misc/fetch.js";
 import {
 	type Instance,
 	MAX_LENGTH_INSTANCE,
@@ -112,18 +112,13 @@ export async function fetchInstanceMetadata(
 	}
 }
 
-async function fetchDom(instance: Instance): Promise<Window["document"]> {
+async function fetchDom(instance: Instance): Promise<DOMWindow["document"]> {
 	logger.info(`Fetching HTML of ${instance.host} ...`);
-	const url = `https://${instance.host}`;
-	const window = new Window({
-		url: `https://${instance.host}`,
-	});
-	window.document.open();
-	window.document.write(await getHtml(url));
-	window.document.close();
-	const doc = window.document;
 
-	return doc;
+	const html = await getHtml(`https://${instance.host}`);
+	const { window } = new JSDOM(html);
+
+	return window.document;
 }
 
 async function fetchManifest(
@@ -140,7 +135,7 @@ async function fetchManifest(
 
 async function fetchFaviconUrl(
 	instance: Instance,
-	doc: Window["document"] | null,
+	doc: DOMWindow["document"] | null,
 ): Promise<string | null> {
 	const url = `https://${instance.host}`;
 
@@ -172,7 +167,7 @@ async function fetchFaviconUrl(
 
 async function fetchIconUrl(
 	instance: Instance,
-	doc: Window["document"] | null,
+	doc: DOMWindow["document"] | null,
 	manifest: Record<string, any> | null,
 ): Promise<string | null> {
 	if (manifest?.icons && manifest.icons.length > 0 && manifest.icons[0].src) {
@@ -222,9 +217,9 @@ async function getThemeColor(
 
 async function getSiteName(
 	info: Nodeinfo | null,
-	doc: Window["document"] | null,
+	doc: DOMWindow["document"] | null,
 	manifest: Record<string, any> | null,
-): Promise<string | undefined | null> {
+): Promise<string | null> {
 	if (info?.metadata) {
 		if (info.metadata.nodeName || info.metadata.name) {
 			return info.metadata.nodeName || info.metadata.name;
@@ -250,7 +245,7 @@ async function getSiteName(
 
 async function getDescription(
 	info: Nodeinfo | null,
-	doc: Window["document"] | null,
+	doc: DOMWindow["document"] | null,
 	manifest: Record<string, any> | null,
 ): Promise<string | null> {
 	if (info?.metadata) {

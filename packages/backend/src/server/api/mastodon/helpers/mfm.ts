@@ -1,4 +1,4 @@
-import { Window as HappyDom } from "happy-dom";
+import { JSDOM } from "jsdom";
 import { config } from "@/config.js";
 import { intersperse } from "@/prelude/array.js";
 import { resolveMentionFromCache } from "@/remote/resolve-user.js";
@@ -21,7 +21,7 @@ export class MfmHelpers {
 
 		const mastodonApp: string | null = ctx?.tokenApp?.name;
 
-		const { window } = new HappyDom();
+		const { window } = new JSDOM("");
 
 		const doc = window.document;
 

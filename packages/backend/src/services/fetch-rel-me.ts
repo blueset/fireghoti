@@ -1,26 +1,11 @@
-import { Window } from "happy-dom";
-import type { HTMLAnchorElement, HTMLLinkElement } from "happy-dom";
+import { JSDOM } from "jsdom";
 import { config } from "@/config.js";
 import { getHtml } from "@/misc/fetch.js";
 
 async function getRelMeLinks(url: string): Promise<string[]> {
 	try {
-		// const html = await getHtml(url);
-		const dom = new Window({
-			url: url,
-			settings: {
-				disableJavaScriptEvaluation: true,
-				disableJavaScriptFileLoading: true,
-				disableCSSFileLoading: true,
-				disableComputedStyleRendering: true,
-				disableIframePageLoading: true,
-			},
-		});
-		dom.document.open();
-		dom.document.write(await getHtml(url));
-		dom.document.close();
-		// await new Promise<void>((resolve) => dom.document.readyState === "complete" ? resolve() : dom.document.addEventListener("load", () => resolve()));
-		// await dom.happyDOM.waitUntilComplete();
+		const html = await getHtml(url);
+		const dom = new JSDOM(html);
 		const allLinks = [...dom.window.document.querySelectorAll("a, link")];
 		const relMeLinks = allLinks
 			.filter((a) => {

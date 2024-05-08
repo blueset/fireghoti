@@ -3,8 +3,10 @@ image: docker.io/rust:slim-bookworm
 services:
   - name: docker.io/groonga/pgroonga:latest-alpine-12-slim
     alias: postgres
+    pull_policy: if-not-present
   - name: docker.io/redis:7-alpine
     alias: redis
+    pull_policy: if-not-present
 
 workflow:
   rules:
@@ -12,6 +14,11 @@ workflow:
       when: always
     - if: $CI_MERGE_REQUEST_PROJECT_PATH == 'firefish/firefish'
       when: always
+    - if: $CI_PROJECT_PATH != 'firefish/firefish'
+      changes:
+        paths:
+          - .gitlab-ci.yml
+      when: never
     - when: never
 
 cache:
@@ -52,29 +59,101 @@ default:
 
 build_test:
   stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'push' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+      changes:
+        paths:
+          - packages/backend/*
+          - packages/backend-rs/*
+          - packages/macro-rs/*
+          - packages/megalodon/*
+          - scripts/**/*
+          - package.json
+          - pnpm-lock.yaml
+          - Cargo.toml
+          - Cargo.lock
   script:
     - pnpm install --frozen-lockfile
     - pnpm run build:debug
     - pnpm run migrate
 
+client_build_test:
+  stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'push' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+      changes:
+        paths:
+          - packages/client/*
+          - packages/firefish-js/*
+          - packages/sw/*
+          - locales/**/*
+    - if: $CI_PIPELINE_SOURCE == 'push' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+      changes:
+        paths:
+          - packages/backend/*
+          - packages/backend-rs/*
+          - packages/macro-rs/*
+          - packages/megalodon/*
+          - Cargo.toml
+          - Cargo.lock
+      when: never
+  services: []
+  before_script:
+    - apt-get update && apt-get -y upgrade
+    - apt-get -y --no-install-recommends install curl
+    - curl -fsSL 'https://deb.nodesource.com/setup_18.x' | bash -
+    - apt-get install -y --no-install-recommends build-essential python3 perl nodejs
+    - corepack enable
+    - corepack prepare pnpm@latest --activate
+    - cp .config/ci.yml .config/default.yml
+  script:
+    - pnpm install --frozen-lockfile
+    - pnpm --filter 'firefish-js' --filter 'client' --filter 'sw' run build:debug
+
 container_image_build:
   stage: build
   image: docker.io/debian:bookworm-slim
   services: []
-  before_script: []
   rules:
     - if: $CI_COMMIT_BRANCH == 'develop'
-  script:
+      changes:
+        paths:
+          - packages/**/*
+          - locales/**/*
+          - scripts/copy-assets.mjs
+          - package.json
+          - pnpm-lock.yaml
+          - Cargo.toml
+          - Cargo.lock
+          - Dockerfile
+          - .dockerignore
+  before_script:
     - apt-get update && apt-get -y upgrade
-    - apt-get install -y --no-install-recommends buildah ca-certificates
+    - apt-get install -y --no-install-recommends buildah ca-certificates fuse-overlayfs
     - buildah login --username "${CI_REGISTRY_USER}" --password "${CI_REGISTRY_PASSWORD}" "${CI_REGISTRY}"
-    - buildah build --security-opt seccomp=unconfined --cap-add all --tag "${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production" --platform linux/amd64 .
-    - buildah push "${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production" "docker://${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
+    - export IMAGE_TAG="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
+    - export IMAGE_CACHE="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop/cache"
+  script:
+    - |-
+      buildah build \
+        --isolation chroot \
+        --device /dev/fuse:rw \
+        --security-opt seccomp=unconfined \
+        --security-opt apparmor=unconfined \
+        --cap-add all \
+        --platform linux/amd64 \
+        --layers \
+        --cache-to "${IMAGE_CACHE}" \
+        --cache-from "${IMAGE_CACHE}" \
+        --tag "${IMAGE_TAG}" \
+        .
+    - buildah inspect "${IMAGE_TAG}"
+    - buildah push "${IMAGE_TAG}"
 
 cargo_unit_test:
   stage: test
   rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event' || $CI_COMMIT_BRANCH == 'develop'
       changes:
         paths:
           - packages/backend-rs/**/*
@@ -95,7 +174,7 @@ cargo_unit_test:
 cargo_clippy:
   stage: test
   rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event' || $CI_COMMIT_BRANCH == 'develop'
       changes:
         paths:
           - packages/backend-rs/**/*
@@ -104,6 +183,12 @@ cargo_clippy:
           - Cargo.lock
     - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'main'
       when: never
+  services: []
+  before_script:
+    - apt-get update && apt-get -y upgrade
+    - apt-get install -y --no-install-recommends build-essential clang mold perl
+    - cp ci/cargo/config.toml /usr/local/cargo/config.toml
+    - rustup component add clippy
   script:
     - cargo clippy -- -D warnings
 
