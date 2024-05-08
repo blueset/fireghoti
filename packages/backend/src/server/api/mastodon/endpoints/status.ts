@@ -24,13 +24,14 @@ export function setupEndpointsStatus(router: Router): void {
 			}
 		}
 
-		let request = NoteHelpers.normalizeComposeOptions(ctx.request.body);
-		ctx.body = await NoteHelpers.createNote(request, ctx).then((p) =>
+		const request = NoteHelpers.normalizeComposeOptions(ctx.request.body);
+		const status = await NoteHelpers.createNote(request, ctx).then((p) =>
 			NoteConverter.encode(p, ctx),
 		);
+		ctx.body = status;
 
 		if (key !== null)
-			NoteHelpers.postIdempotencyCache.set(key, { status: ctx.body });
+			NoteHelpers.postIdempotencyCache.set(key, { status });
 	});
 	router.put(
 		"/v1/statuses/:id",
