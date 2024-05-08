@@ -13,7 +13,7 @@
 		"build:assets": "pnpm node ./scripts/copy-assets.mjs",
 		"build:debug": "pnpm run clean && pnpm node ./scripts/dev-build.mjs && pnpm run build:assets",
 		"start": "pnpm --filter backend run start",
-		"start:container": "pnpm run build:assets && pnpm run migrate && pnpm run start",
+		"start:container": "pnpm run migrate && pnpm run start",
 		"start:test": "pnpm --filter backend run start:test",
 		"init": "pnpm run migrate",
 		"migrate": "pnpm --filter backend run migration:run",
