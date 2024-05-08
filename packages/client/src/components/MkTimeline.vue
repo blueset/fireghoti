@@ -28,9 +28,9 @@
 			ref="tlComponent"
 			:no-gap="!defaultStore.state.showGapBetweenNotesInTimeline"
 			:pagination="pagination"
+			:folder
 			@queue="(x) => (queue = x)"
 			@status="pullToRefreshComponent?.setDisabled($event)"
-			:folder
 		/>
 	</MkPullToRefresh>
 	<XNotes
@@ -38,9 +38,9 @@
 		ref="tlComponent"
 		:no-gap="!defaultStore.state.showGapBetweenNotesInTimeline"
 		:pagination="pagination"
+		:folder
 		@queue="(x) => (queue = x)"
 		@status="pullToRefreshComponent?.setDisabled($event)"
-		:folder
 	/>
 </template>
 

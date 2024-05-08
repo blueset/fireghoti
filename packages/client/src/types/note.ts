@@ -12,19 +12,19 @@ export type NoteType = entities.Note & {
 	_prId_?: string;
 };
 
-export type NoteFolded = {
+export interface NoteFolded {
 	id: string;
 	key: string;
 	createdAt: entities.Note["createdAt"];
 	folded: "renote";
 	note: entities.Note;
 	renotesArr: entities.Note[];
-};
+}
 
-export type NoteThread = {
+export interface NoteThread {
 	id: string;
 	createdAt: entities.Note["createdAt"];
 	folded: "thread";
 	note: entities.Note;
 	parents: entities.Note[];
-};
+}

@@ -1,9 +1,9 @@
 <template>
 	<div
 		v-show="!deleted"
+		ref="el"
 		v-size="{ min: [350, 500] }"
 		class="yohlumlk"
-		ref="el"
 	>
 		<MkAvatar class="avatar" :user="note.user" />
 		<div class="main">
@@ -17,9 +17,9 @@
 
 <script lang="ts" setup>
 import type { entities } from "firefish-js";
+import { computed, ref, watch } from "vue";
 import XNoteHeader from "@/components/MkNoteHeader.vue";
 import MkSubNoteContent from "@/components/MkSubNoteContent.vue";
-import { computed, ref, watch } from "vue";
 import { deepClone } from "@/scripts/clone";
 import { useNoteCapture } from "@/scripts/use-note-capture";
 import { isDeleted } from "@/scripts/note";

@@ -1,11 +1,11 @@
 import type { entities } from "firefish-js";
+import { isDeleted, isRenote } from "./note";
 import type {
 	FoldableNotification,
 	NotificationFolded,
 } from "@/types/notification";
-import type { NoteType, NoteThread, NoteFolded } from "@/types/note";
+import type { NoteFolded, NoteThread, NoteType } from "@/types/note";
 import { me } from "@/me";
-import { isDeleted, isRenote } from "./note";
 
 interface FoldOption {
 	/** If items length is 1, skip aggregation */
