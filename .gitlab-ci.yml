@@ -185,6 +185,7 @@ cargo_clippy:
       when: never
   services: []
   before_script:
+    - apt-get update && apt-get -y upgrade
     - apt-get install -y --no-install-recommends build-essential clang mold perl
     - cp ci/cargo/config.toml /usr/local/cargo/config.toml
     - rustup component add clippy
