@@ -1,4 +1,4 @@
-pub use macro_rs::export;
+pub use macro_rs::{export, ts_only_warn};
 
 pub mod config;
 pub mod database;
