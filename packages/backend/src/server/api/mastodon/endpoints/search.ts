@@ -1,4 +1,4 @@
-import Router from "@koa/router";
+import type Router from "@koa/router";
 import { argsToBools, limitToInt, normalizeUrlQuery } from "./timeline.js";
 import { SearchHelpers } from "@/server/api/mastodon/helpers/search.js";
 import { auth } from "@/server/api/mastodon/middleware/auth.js";

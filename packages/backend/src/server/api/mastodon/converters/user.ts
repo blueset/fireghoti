@@ -7,13 +7,13 @@ import { escapeMFM } from "@/server/api/mastodon/converters/mfm.js";
 import mfm from "mfm-js";
 import { awaitAll } from "@/prelude/await-all.js";
 import {
-	AccountCache,
+	type AccountCache,
 	UserHelpers,
 } from "@/server/api/mastodon/helpers/user.js";
 import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
-import { MastoContext } from "@/server/api/mastodon/index.js";
-import { IMentionedRemoteUsers, Note } from "@/models/entities/note.js";
-import { UserProfile } from "@/models/entities/user-profile.js";
+import type { MastoContext } from "@/server/api/mastodon/index.js";
+import type { IMentionedRemoteUsers, Note } from "@/models/entities/note.js";
+import type { UserProfile } from "@/models/entities/user-profile.js";
 import { In } from "typeorm";
 import { unique } from "@/prelude/array.js";
 import { Cache } from "@/misc/cache.js";

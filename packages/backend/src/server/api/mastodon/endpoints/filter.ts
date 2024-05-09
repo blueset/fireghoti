@@ -1,4 +1,4 @@
-import Router from "@koa/router";
+import type Router from "@koa/router";
 import { auth } from "@/server/api/mastodon/middleware/auth.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 

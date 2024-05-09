@@ -1,4 +1,4 @@
-import { Middleware } from "@koa/router";
+import type { Middleware } from "@koa/router";
 import { HttpMethodEnum, koaBody } from "koa-body";
 
 interface Part {

@@ -1,5 +1,5 @@
-import { Packed } from "@/misc/schema.js";
-import { MastoContext } from "..";
+import type { Packed } from "@/misc/schema.js";
+import type { MastoContext } from "..";
 
 export class FileConverter {
 	public static encode(f: Packed<"DriveFile">, ctx?: MastoContext): MastodonEntity.Attachment {

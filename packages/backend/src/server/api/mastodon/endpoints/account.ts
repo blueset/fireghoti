@@ -1,4 +1,4 @@
-import Router from "@koa/router";
+import type Router from "@koa/router";
 import { argsToBools, limitToInt, normalizeUrlQuery } from "./timeline.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";

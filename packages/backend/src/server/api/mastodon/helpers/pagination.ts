@@ -1,5 +1,5 @@
-import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
-import { MastoContext } from "@/server/api/mastodon/index.js";
+import type { ObjectLiteral, SelectQueryBuilder } from "typeorm";
+import type { MastoContext } from "@/server/api/mastodon/index.js";
 import { generatePaginationData } from "@/server/api/mastodon/middleware/pagination.js";
 
 export class PaginationHelpers {

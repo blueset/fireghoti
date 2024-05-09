@@ -1,14 +1,13 @@
-import OAuth from "@/server/api/mastodon/entities/oauth/oauth.js";
+import type OAuth from "@/server/api/mastodon/entities/oauth/oauth.js";
 import { secureRndstr } from "backend-rs";
 import { Apps, AccessTokens } from "@/models/index.js";
 import { genId } from "backend-rs";
 import { fetchMeta } from "backend-rs";
-import { MastoContext } from "@/server/api/mastodon/index.js";
+import type { MastoContext } from "@/server/api/mastodon/index.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import { difference, toSingleLast, unique } from "@/prelude/array.js";
-import { ILocalUser } from "@/models/entities/user.js";
-import { splitCamelCaseIntoWords } from "@redocly/openapi-core/lib/utils";
-import { App } from "@/models/entities/app";
+import type { ILocalUser } from "@/models/entities/user.js";
+import type { App } from "@/models/entities/app";
 import { toMastodonId } from "backend-rs";
 
 export class AuthHelpers {

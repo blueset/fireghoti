@@ -1,6 +1,6 @@
-import { User } from "@/models/entities/user.js";
+import type { User } from "@/models/entities/user.js";
 import { config } from "@/config.js";
-import { IMentionedRemoteUsers } from "@/models/entities/note.js";
+import type { IMentionedRemoteUsers } from "@/models/entities/note.js";
 
 export class MentionConverter {
 	public static encode(

@@ -1,4 +1,4 @@
-import { PopulatedEmoji } from "@/misc/populate-emojis.js";
+import type { PopulatedEmoji } from "@/misc/populate-emojis.js";
 
 export class EmojiConverter {
 	public static encode(e: PopulatedEmoji): MastodonEntity.Emoji {

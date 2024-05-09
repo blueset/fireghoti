@@ -1,4 +1,4 @@
-import { MastoContext } from "@/server/api/mastodon/index.js";
+import type { MastoContext } from "@/server/api/mastodon/index.js";
 import { config } from "@/config.js";
 
 type PaginationData = {

@@ -6,14 +6,13 @@ import {
 	NoteFavorites,
 	NoteReactions,
 	Notes,
-	Polls,
 	UserNotePinings,
 } from "@/models/index.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
 import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
 import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
-import { Note } from "@/models/entities/note.js";
-import { ILocalUser, User } from "@/models/entities/user.js";
+import type { Note } from "@/models/entities/note.js";
+import type { ILocalUser, User } from "@/models/entities/user.js";
 import { getNote } from "@/server/api/common/getters.js";
 import createReaction from "@/services/note/reaction/create.js";
 import deleteReaction from "@/services/note/reaction/delete.js";
@@ -39,7 +38,7 @@ import { IdentifiableError } from "@/misc/identifiable-error.js";
 import { IsNull } from "typeorm";
 import {
 	getStubMastoContext,
-	MastoContext,
+	type MastoContext,
 } from "@/server/api/mastodon/index.js";
 import { fetchMeta } from "backend-rs";
 import { translate } from "@/misc/translate.js";

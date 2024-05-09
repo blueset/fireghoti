@@ -1,4 +1,4 @@
-import { MastoContext } from "@/server/api/mastodon/index.js";
+import type { MastoContext } from "@/server/api/mastodon/index.js";
 
 const headers = {
 	"Access-Control-Expose-Headers":

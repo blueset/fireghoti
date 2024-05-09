@@ -1,5 +1,5 @@
-import { ILocalUser } from "@/models/entities/user.js";
-import { MastoContext } from "@/server/api/mastodon/index.js";
+import type { ILocalUser } from "@/models/entities/user.js";
+import type { MastoContext } from "@/server/api/mastodon/index.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import { Apps, AccessTokens } from "@/models/index.js";
 import authenticate from "@/server/api/authenticate.js";

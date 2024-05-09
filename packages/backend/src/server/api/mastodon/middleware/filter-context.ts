@@ -1,4 +1,4 @@
-import { MastoContext } from "@/server/api/mastodon/index.js";
+import type { MastoContext } from "@/server/api/mastodon/index.js";
 
 export function filterContext(context: string) {
 	return async function filterContext(

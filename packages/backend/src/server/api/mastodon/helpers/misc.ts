@@ -13,8 +13,8 @@ import {
 import { IsNull } from "typeorm";
 import { awaitAll } from "@/prelude/await-all.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
-import { Announcement } from "@/models/entities/announcement.js";
-import { ILocalUser, User } from "@/models/entities/user.js";
+import type { Announcement } from "@/models/entities/announcement.js";
+import type { ILocalUser, User } from "@/models/entities/user.js";
 import { AnnouncementConverter } from "@/server/api/mastodon/converters/announcement.js";
 import { genId, stringToAcct } from "backend-rs";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
@@ -25,7 +25,7 @@ import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
 import { populateEmojis } from "@/misc/populate-emojis.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
-import { MastoContext } from "@/server/api/mastodon/index.js";
+import type { MastoContext } from "@/server/api/mastodon/index.js";
 
 export class MiscHelpers {
 	public static async getInstance(

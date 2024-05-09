@@ -1,4 +1,4 @@
-import { MastodonStreamingConnection } from ".";
+import type { MastodonStreamingConnection } from ".";
 
 export abstract class MastodonStream {
 	protected connection: MastodonStreamingConnection;

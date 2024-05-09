@@ -1,4 +1,4 @@
-import Router from "@koa/router";
+import type Router from "@koa/router";
 import { limitToInt, normalizeUrlQuery } from "./timeline.js";
 import { NotificationHelpers } from "@/server/api/mastodon/helpers/notification.js";
 import { NotificationConverter } from "@/server/api/mastodon/converters/notification.js";

@@ -1,4 +1,4 @@
-import Router from "@koa/router";
+import type Router from "@koa/router";
 import { MiscHelpers } from "@/server/api/mastodon/helpers/misc.js";
 import {
 	argsToBools,

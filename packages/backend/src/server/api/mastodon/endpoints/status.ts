@@ -1,4 +1,4 @@
-import Router from "@koa/router";
+import type Router from "@koa/router";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 import {

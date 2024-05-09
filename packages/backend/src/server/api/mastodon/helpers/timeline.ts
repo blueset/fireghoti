@@ -1,5 +1,5 @@
-import { Note } from "@/models/entities/note.js";
-import { ILocalUser, User } from "@/models/entities/user.js";
+import type { Note } from "@/models/entities/note.js";
+import type { ILocalUser, User } from "@/models/entities/user.js";
 import {
 	Followings,
 	Notes,
@@ -16,7 +16,7 @@ import { generateBlockedUserQuery } from "@/server/api/common/generate-block-que
 import { generateMutedUserRenotesQueryForNotes } from "@/server/api/common/generated-muted-renote-query.js";
 import { fetchMeta } from "backend-rs";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
-import { UserList } from "@/models/entities/user-list.js";
+import type { UserList } from "@/models/entities/user-list.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
@@ -24,7 +24,7 @@ import { awaitAll } from "@/prelude/await-all.js";
 import { unique } from "@/prelude/array.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import { generatePaginationData } from "@/server/api/mastodon/middleware/pagination.js";
-import { MastoContext } from "@/server/api/mastodon/index.js";
+import type { MastoContext } from "@/server/api/mastodon/index.js";
 import { generateListQuery } from "@/server/api/common/generate-list-query.js";
 import { generateFollowingQuery } from "@/server/api/common/generate-following-query.js";
 import { genId } from "backend-rs";

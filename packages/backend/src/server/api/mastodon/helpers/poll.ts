@@ -1,7 +1,7 @@
-import { Note } from "@/models/entities/note.js";
+import type { Note } from "@/models/entities/note.js";
 import { populatePoll } from "@/models/repositories/note.js";
 import { PollConverter } from "@/server/api/mastodon/converters/poll.js";
-import { ILocalUser, IRemoteUser } from "@/models/entities/user.js";
+import type { ILocalUser, IRemoteUser } from "@/models/entities/user.js";
 import {
 	Blockings,
 	Notes,
@@ -21,7 +21,7 @@ import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js"
 import { populateEmojis } from "@/misc/populate-emojis.js";
 import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
-import { MastoContext } from "@/server/api/mastodon/index.js";
+import type { MastoContext } from "@/server/api/mastodon/index.js";
 
 export class PollHelpers {
 	public static async getPoll(

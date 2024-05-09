@@ -1,4 +1,4 @@
-import { ILocalUser, User } from "@/models/entities/user.js";
+import type { ILocalUser, User } from "@/models/entities/user.js";
 import {
 	Blockings,
 	Followings,
@@ -7,11 +7,11 @@ import {
 	Users,
 } from "@/models/index.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
-import { UserList } from "@/models/entities/user-list.js";
+import type { UserList } from "@/models/entities/user-list.js";
 import { pushUserToUserList } from "@/services/user-list/push.js";
 import { genId } from "backend-rs";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
-import { MastoContext } from "@/server/api/mastodon/index.js";
+import type { MastoContext } from "@/server/api/mastodon/index.js";
 import { pullUserFromUserList } from "@/services/user-list/pull.js";
 import { publishUserEvent } from "@/services/stream.js";
 

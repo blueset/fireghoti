@@ -1,17 +1,17 @@
-import { ILocalUser } from "@/models/entities/user.js";
+import type { ILocalUser } from "@/models/entities/user.js";
 import { Notes, Notifications, SwSubscriptions } from "@/models/index.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
-import { Notification } from "@/models/entities/notification.js";
+import type { Notification } from "@/models/entities/notification.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
-import { MastoContext } from "@/server/api/mastodon/index.js";
-import { SwSubscription } from "@/models/entities/sw-subscription";
+import type { MastoContext } from "@/server/api/mastodon/index.js";
+import type { SwSubscription } from "@/models/entities/sw-subscription";
 
 export class NotificationHelpers {
 	public static async getNotifications(
 		maxId: string | undefined,
 		sinceId: string | undefined,
 		minId: string | undefined,
-		limit: number = 40,
+		limit = 40,
 		types: string[] | undefined,
 		excludeTypes: string[] | undefined,
 		accountId: string | undefined,

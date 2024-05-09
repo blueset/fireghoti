@@ -1,5 +1,6 @@
-import { DefaultContext } from "koa";
-import Router, { RouterContext } from "@koa/router";
+import type { DefaultContext } from "koa";
+import type Router from "@koa/router";
+import type { RouterContext } from "@koa/router";
 import { setupEndpointsAuth } from "./endpoints/auth.js";
 import { setupEndpointsAccount } from "./endpoints/account.js";
 import { setupEndpointsStatus } from "./endpoints/status.js";
@@ -19,7 +20,7 @@ import { NormalizeQueryMiddleware } from "@/server/api/mastodon/middleware/norma
 import { PaginationMiddleware } from "@/server/api/mastodon/middleware/pagination.js";
 import { SetHeadersMiddleware } from "@/server/api/mastodon/middleware/set-headers.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
-import { ILocalUser } from "@/models/entities/user.js";
+import type { ILocalUser } from "@/models/entities/user.js";
 import { setupEndpointsStreaming } from "@/server/api/mastodon/endpoints/streaming.js";
 
 export const logger = apiLogger.createSubLogger("mastodon");

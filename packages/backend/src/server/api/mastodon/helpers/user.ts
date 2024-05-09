@@ -1,5 +1,5 @@
-import { Note } from "@/models/entities/note.js";
-import { ILocalUser, IRemoteUser, User } from "@/models/entities/user.js";
+import type { Note } from "@/models/entities/note.js";
+import type { ILocalUser, IRemoteUser, User } from "@/models/entities/user.js";
 import {
 	Blockings,
 	DriveFiles,
@@ -28,23 +28,23 @@ import cancelFollowRequest from "@/services/following/requests/cancel.js";
 import createBlocking from "@/services/blocking/create.js";
 import deleteBlocking from "@/services/blocking/delete.js";
 import { genId } from "backend-rs";
-import { Muting } from "@/models/entities/muting.js";
+import type { Muting } from "@/models/entities/muting.js";
 import { publishUserEvent } from "@/services/stream.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import acceptFollowRequest from "@/services/following/requests/accept.js";
 import { rejectFollowRequest } from "@/services/following/reject.js";
 import { Brackets, IsNull } from "typeorm";
 import {
-	FirefishVisibility,
+	type FirefishVisibility,
 	VisibilityConverter,
 } from "@/server/api/mastodon/converters/visibility.js";
-import { Files } from "formidable";
+import type { File } from "@/server/api/mastodon/entities/files.js";
 import { toSingleLast } from "@/prelude/array.js";
 import { MediaHelpers } from "@/server/api/mastodon/helpers/media.js";
-import { UserProfile } from "@/models/entities/user-profile.js";
+import type { UserProfile } from "@/models/entities/user-profile.js";
 import { verifyLink } from "@/services/fetch-rel-me.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
-import { MastoContext } from "@/server/api/mastodon/index.js";
+import type { MastoContext } from "@/server/api/mastodon/index.js";
 import { resolveUser } from "@/remote/resolve-user.js";
 import { updatePerson } from "@/remote/activitypub/models/person.js";
 import { promiseEarlyReturn } from "@/prelude/promise.js";

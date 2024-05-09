@@ -1,4 +1,4 @@
-import type { EventEmitter } from "events";
+import type { EventEmitter } from "node:events";
 import type * as websocket from "websocket";
 import type { ILocalUser, User } from "@/models/entities/user.js";
 import type { MastodonStream } from "./channel.js";
@@ -7,7 +7,6 @@ import {
 	Followings,
 	Mutings,
 	RenoteMutings,
-	UserListJoinings,
 	UserProfiles,
 } from "@/models/index.js";
 import type { UserProfile } from "@/models/entities/user-profile.js";

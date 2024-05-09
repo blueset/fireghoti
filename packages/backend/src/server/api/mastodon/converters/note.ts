@@ -1,14 +1,14 @@
-import { ILocalUser, User } from "@/models/entities/user.js";
+import type { ILocalUser, User } from "@/models/entities/user.js";
 import { getNote } from "@/server/api/common/getters.js";
-import { Note } from "@/models/entities/note.js";
+import type { Note } from "@/models/entities/note.js";
 import { config } from "@/config.js";
-import mfm, { MfmLink, MfmUrl } from "mfm-js";
+import mfm, { type MfmLink, type MfmUrl } from "mfm-js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
 import { escapeMFM } from "@/server/api/mastodon/converters/mfm.js";
 import {
 	aggregateNoteEmojis,
-	PopulatedEmoji,
+	type PopulatedEmoji,
 	populateEmojis,
 	prefetchEmojis,
 } from "@/misc/populate-emojis.js";
@@ -28,19 +28,18 @@ import { populatePoll } from "@/models/repositories/note.js";
 import { FileConverter } from "@/server/api/mastodon/converters/file.js";
 import { awaitAll } from "@/prelude/await-all.js";
 import {
-	AccountCache,
 	UserHelpers,
 } from "@/server/api/mastodon/helpers/user.js";
 import { In, IsNull } from "typeorm";
 import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
 import {
 	getStubMastoContext,
-	MastoContext,
+	type MastoContext,
 } from "@/server/api/mastodon/index.js";
 import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 import isQuote from "@/misc/is-quote.js";
 import { unique } from "@/prelude/array.js";
-import { NoteReaction } from "@/models/entities/note-reaction.js";
+import type { NoteReaction } from "@/models/entities/note-reaction.js";
 import { Cache } from "@/misc/cache.js";
 import { isFiltered } from "@/misc/is-filtered.js";
 import { unfurl } from "unfurl.js";

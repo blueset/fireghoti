@@ -1,4 +1,4 @@
-import { MastoContext } from "@/server/api/mastodon/index.js";
+import type { MastoContext } from "@/server/api/mastodon/index.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 
 export async function CacheMiddleware(

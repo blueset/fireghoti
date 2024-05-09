@@ -1,6 +1,6 @@
-import { ILocalUser, User } from "@/models/entities/user.js";
-import { Notification } from "@/models/entities/notification.js";
-import { notificationTypes } from "@/types.js";
+import type { ILocalUser, User } from "@/models/entities/user.js";
+import type { Notification } from "@/models/entities/notification.js";
+import type { notificationTypes } from "@/types.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { awaitAll } from "@/prelude/await-all.js";
@@ -8,19 +8,19 @@ import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { getNote } from "@/server/api/common/getters.js";
 import {
 	getStubMastoContext,
-	MastoContext,
+	type MastoContext,
 } from "@/server/api/mastodon/index.js";
 import { Apps, Notifications } from "@/models/index.js";
 import isQuote from "@/misc/is-quote.js";
 import { unique } from "@/prelude/array.js";
-import { Note } from "@/models/entities/note.js";
-import { SwSubscription } from "@/models/entities/sw-subscription.js";
+import type { Note } from "@/models/entities/note.js";
+import type { SwSubscription } from "@/models/entities/sw-subscription.js";
 import { fetchMeta } from "backend-rs";
 import type { pushNotificationsTypes } from "@/services/push-notification.js";
 import { getNoteSummary } from "backend-rs";
 import { I18n } from "@/misc/i18n.js";
 
-import locales from '../../../../../../../locales/index.mjs';
+import locales from "../../../../../../../locales/index.mjs";
 
 type NotificationType = (typeof notificationTypes)[number];
 

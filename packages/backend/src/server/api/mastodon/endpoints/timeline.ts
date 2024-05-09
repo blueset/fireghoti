@@ -1,5 +1,5 @@
-import Router from "@koa/router";
-import { ParsedUrlQuery } from "querystring";
+import type Router from "@koa/router";
+import type { ParsedUrlQuery } from "node:querystring";
 import { TimelineHelpers } from "@/server/api/mastodon/helpers/timeline.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { UserLists } from "@/models/index.js";

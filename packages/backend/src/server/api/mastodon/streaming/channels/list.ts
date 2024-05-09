@@ -1,9 +1,9 @@
 import { MastodonStream } from "../channel.js";
-import { Note } from "@/models/entities/note.js";
+import type { Note } from "@/models/entities/note.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
-import { StreamMessages } from "@/server/api/stream/types.js";
-import { Packed } from "@/misc/schema.js";
-import { User } from "@/models/entities/user.js";
+import type { StreamMessages } from "@/server/api/stream/types.js";
+import type { Packed } from "@/misc/schema.js";
+import type { User } from "@/models/entities/user.js";
 import { UserListJoinings } from "@/models/index.js";
 
 export class MastodonStreamList extends MastodonStream {

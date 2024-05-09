@@ -1,27 +1,29 @@
 import { addFile } from "@/services/drive/add-file.js";
-import { ILocalUser } from "@/models/entities/user.js";
+import type { ILocalUser } from "@/models/entities/user.js";
 import { DriveFiles } from "@/models/index.js";
-import { Packed } from "@/misc/schema.js";
-import { DriveFile } from "@/models/entities/drive-file.js";
-import { File, Files } from "formidable";
+import type { Packed } from "@/misc/schema.js";
+import type { DriveFile } from "@/models/entities/drive-file.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
-import { MastoContext } from "@/server/api/mastodon/index.js";
+import type { MastoContext } from "@/server/api/mastodon/index.js";
 import { toSingleLast } from "@/prelude/array.js";
 import * as fs from "node:fs";
+import type { File } from "@/server/api/mastodon/entities/files.js";
 
 export class MediaHelpers {
 	public static async uploadMedia(
 		ctx: MastoContext,
 	): Promise<Packed<"DriveFile">> {
-		const files = ctx.request.files as Files | undefined;
+		const files = ctx.request.files;
 		const file = toSingleLast(files?.file);
 		const user = ctx.user as ILocalUser;
-		const body = ctx.request.body as any;
+		const body = ctx.request.body;
 		let description: string | undefined = body?.description ?? undefined;
 
-		if (!description && files.description) {
-			const path = toSingleLast(files.description).filepath;
-			description = fs.readFileSync(path, "utf-8");
+		if (!description && files?.description) {
+			const path = toSingleLast(files?.description)?.filepath;
+			if (path) {
+				description = fs.readFileSync(path, "utf-8");
+			}
 		}
 
 		if (!file)

@@ -1,9 +1,9 @@
 import { MastodonStream } from "../channel.js";
 import { isUserRelated } from "@/misc/is-user-related.js";
 import { isInstanceMuted } from "@/misc/is-instance-muted.js";
-import { Note } from "@/models/entities/note.js";
+import type { Note } from "@/models/entities/note.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
-import { StreamMessages } from "@/server/api/stream/types.js";
+import type { StreamMessages } from "@/server/api/stream/types.js";
 import isQuote from "@/misc/is-quote.js";
 
 export class MastodonStreamTag extends MastodonStream {

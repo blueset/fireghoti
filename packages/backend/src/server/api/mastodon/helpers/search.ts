@@ -3,9 +3,9 @@ import { sqlLikeEscape } from "backend-rs";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
 import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
 import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
-import { Note } from "@/models/entities/note.js";
+import type { Note } from "@/models/entities/note.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
-import { ILocalUser, User } from "@/models/entities/user.js";
+import type { ILocalUser, User } from "@/models/entities/user.js";
 import { Brackets, IsNull } from "typeorm";
 import { awaitAll } from "@/prelude/await-all.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
@@ -17,7 +17,7 @@ import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { resolveUser } from "@/remote/resolve-user.js";
 import { createNote } from "@/remote/activitypub/models/note.js";
 import { config } from "@/config.js";
-import { logger, MastoContext } from "@/server/api/mastodon/index.js";
+import { logger, type MastoContext } from "@/server/api/mastodon/index.js";
 import { generateFtsQuery } from "@/server/api/common/generate-fts-query.js";
 
 export class SearchHelpers {

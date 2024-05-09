@@ -1,4 +1,4 @@
-import { logger, MastoContext } from "@/server/api/mastodon/index.js";
+import { logger, type MastoContext } from "@/server/api/mastodon/index.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
 import { ApiError } from "@/server/api/error.js";
 

@@ -1,4 +1,4 @@
-import Router from "@koa/router";
+import type Router from "@koa/router";
 import { MediaHelpers } from "@/server/api/mastodon/helpers/media.js";
 import { FileConverter } from "@/server/api/mastodon/converters/file.js";
 import { auth } from "@/server/api/mastodon/middleware/auth.js";
