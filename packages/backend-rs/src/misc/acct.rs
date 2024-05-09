@@ -1,3 +1,6 @@
+use std::fmt;
+use std::str::FromStr;
+
 #[derive(Debug, PartialEq)]
 #[crate::export(object)]
 pub struct Acct {
@@ -5,38 +8,57 @@ pub struct Acct {
     pub host: Option<String>,
 }
 
-#[crate::export]
-pub fn string_to_acct(acct: &str) -> Acct {
-    let split: Vec<&str> = if let Some(stripped) = acct.strip_prefix('@') {
-        stripped
-    } else {
-        acct
-    }
-    .split('@')
-    .collect();
+impl FromStr for Acct {
+    type Err = ();
 
-    Acct {
-        username: split[0].to_string(),
-        host: if split.len() == 1 {
-            None
+    /// This never throw errors. Feel free to `.unwrap()` the result.
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        let split: Vec<&str> = if let Some(stripped) = value.strip_prefix('@') {
+            stripped
         } else {
-            Some(split[1].to_string())
-        },
+            value
+        }
+        .split('@')
+        .collect();
+
+        Ok(Self {
+            username: split[0].to_string(),
+            host: if split.len() == 1 {
+                None
+            } else {
+                Some(split[1].to_string())
+            },
+        })
     }
 }
 
+impl fmt::Display for Acct {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let result = match &self.host {
+            Some(host) => format!("{}@{}", self.username, host),
+            None => self.username.clone(),
+        };
+        write!(f, "{result}")
+    }
+}
+
+#[crate::ts_only_warn("Use `acct.parse().unwrap()` or `Acct::from_str(acct).unwrap()` instead.")]
+#[crate::export]
+pub fn string_to_acct(acct: &str) -> Acct {
+    Acct::from_str(acct).unwrap()
+}
+
+#[crate::ts_only_warn("Use `acct.to_string()` instead.")]
 #[crate::export]
 pub fn acct_to_string(acct: &Acct) -> String {
-    match &acct.host {
-        Some(host) => format!("{}@{}", acct.username, host),
-        None => acct.username.clone(),
-    }
+    acct.to_string()
 }
 
 #[cfg(test)]
 mod unit_test {
-    use super::{acct_to_string, string_to_acct, Acct};
+    use super::Acct;
     use pretty_assertions::assert_eq;
+    use std::str::FromStr;
 
     #[test]
     fn test_acct_to_string() {
@@ -49,10 +71,10 @@ mod unit_test {
             host: None,
         };
 
-        assert_eq!(acct_to_string(&remote_acct), "firefish@example.com");
-        assert_ne!(acct_to_string(&remote_acct), "mastodon@example.com");
-        assert_eq!(acct_to_string(&local_acct), "MisakaMikoto");
-        assert_ne!(acct_to_string(&local_acct), "ShiraiKuroko");
+        assert_eq!(remote_acct.to_string(), "firefish@example.com");
+        assert_ne!(remote_acct.to_string(), "mastodon@example.com");
+        assert_eq!(local_acct.to_string(), "MisakaMikoto");
+        assert_ne!(local_acct.to_string(), "ShiraiKuroko");
     }
 
     #[test]
@@ -66,9 +88,12 @@ mod unit_test {
             host: None,
         };
 
-        assert_eq!(string_to_acct("@firefish@example.com"), remote_acct);
-        assert_eq!(string_to_acct("firefish@example.com"), remote_acct);
-        assert_eq!(string_to_acct("@MisakaMikoto"), local_acct);
-        assert_eq!(string_to_acct("MisakaMikoto"), local_acct);
+        assert_eq!(
+            Acct::from_str("@firefish@example.com").unwrap(),
+            remote_acct
+        );
+        assert_eq!(Acct::from_str("firefish@example.com").unwrap(), remote_acct);
+        assert_eq!(Acct::from_str("@MisakaMikoto").unwrap(), local_acct);
+        assert_eq!(Acct::from_str("MisakaMikoto").unwrap(), local_acct);
     }
 }
