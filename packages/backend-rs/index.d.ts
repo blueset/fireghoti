@@ -1304,4 +1304,6 @@ export function getTimestamp(id: string): number
 export function genId(): string
 /** Generate an ID using a specific datetime */
 export function genIdAt(date: Date): string
-export function secureRndstr(length?: number | undefined | null): string
+/** Generate random string based on [thread_rng] and [Alphanumeric]. */
+export function generateSecureRandomString(length: number): string
+export function generateUserToken(): string
