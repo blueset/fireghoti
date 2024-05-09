@@ -40,7 +40,7 @@ export class UserConverter {
 			const identifier = `${u.id}:${(
 				u.lastFetchedAt ?? u.createdAt
 			).getTime()}`;
-			let fqn = `${u.username}@${u.host ?? config.host}`;
+			const fqn = `${u.username}@${u.host ?? config.host}`;
 			let acct = u.username;
 			let acctUrl = `https://${u.host || config.host}/@${u.username}`;
 			if (u.host) {

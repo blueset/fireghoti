@@ -24,13 +24,13 @@ export class SearchHelpers {
 	public static async search(
 		q: string | undefined,
 		type: string | undefined,
-		resolve: boolean = false,
-		following: boolean = false,
+		resolve = false,
+		following = false,
 		accountId: string | undefined,
-		excludeUnreviewed: boolean = false,
+		excludeUnreviewed = false,
 		maxId: string | undefined,
 		minId: string | undefined,
-		limit: number = 20,
+		limit = 20,
 		offset: number | undefined,
 		ctx: MastoContext,
 	): Promise<MastodonEntity.Search> {

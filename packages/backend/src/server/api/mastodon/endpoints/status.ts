@@ -38,7 +38,7 @@ export function setupEndpointsStatus(router: Router): void {
 		auth(true, ["write:statuses"]),
 		async (ctx) => {
 			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
-			let request = NoteHelpers.normalizeEditOptions(ctx.request.body);
+			const request = NoteHelpers.normalizeEditOptions(ctx.request.body);
 			ctx.body = await NoteHelpers.editNote(request, note, ctx).then((p) =>
 				NoteConverter.encode(p, ctx),
 			);
@@ -310,7 +310,7 @@ export function setupEndpointsStatus(router: Router): void {
 			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
 
 			const body: any = ctx.request.body;
-			const choices = toArray(body.choices ?? []).map((p) => parseInt(p));
+			const choices = toArray(body.choices ?? []).map((p) => Number.parseInt(p));
 			if (choices.length < 1)
 				throw new MastoApiError(400, "Must vote for at least one option");
 

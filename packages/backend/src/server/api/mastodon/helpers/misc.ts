@@ -187,7 +187,7 @@ export class MiscHelpers {
 	}
 
 	public static async getAnnouncements(
-		includeRead: boolean = false,
+		includeRead = false,
 		ctx: MastoContext,
 	): Promise<MastodonEntity.Announcement[]> {
 		const user = ctx.user as ILocalUser;
@@ -341,8 +341,8 @@ export class MiscHelpers {
 	}
 
 	public static async getTrendingStatuses(
-		limit: number = 20,
-		offset: number = 0,
+		limit = 20,
+		offset = 0,
 		ctx: MastoContext,
 	): Promise<MastodonEntity.Status[]> {
 		if (limit > 40) limit = 40;
@@ -364,8 +364,8 @@ export class MiscHelpers {
 	}
 
 	public static async getTrendingHashtags(
-		limit: number = 10,
-		offset: number = 0,
+		limit = 10,
+		offset = 0,
 	): Promise<MastodonEntity.Tag[]> {
 		if (limit > 20) limit = 20;
 		return [];

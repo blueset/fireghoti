@@ -34,7 +34,7 @@ export class TimelineHelpers {
 		maxId: string | undefined,
 		sinceId: string | undefined,
 		minId: string | undefined,
-		limit: number = 20,
+		limit = 20,
 		ctx: MastoContext,
 	): Promise<Note[]> {
 		if (limit > 40) limit = 40;
@@ -72,10 +72,10 @@ export class TimelineHelpers {
 		maxId: string | undefined,
 		sinceId: string | undefined,
 		minId: string | undefined,
-		limit: number = 20,
-		onlyMedia: boolean = false,
-		local: boolean = false,
-		remote: boolean = false,
+		limit = 20,
+		onlyMedia = false,
+		local = false,
+		remote = false,
 		ctx: MastoContext,
 	): Promise<Note[]> {
 		if (limit > 40) limit = 40;
@@ -131,7 +131,7 @@ export class TimelineHelpers {
 		maxId: string | undefined,
 		sinceId: string | undefined,
 		minId: string | undefined,
-		limit: number = 20,
+		limit = 20,
 		ctx: MastoContext,
 	): Promise<Note[]> {
 		if (limit > 40) limit = 40;
@@ -169,13 +169,13 @@ export class TimelineHelpers {
 		maxId: string | undefined,
 		sinceId: string | undefined,
 		minId: string | undefined,
-		limit: number = 20,
+		limit = 20,
 		any: string[],
 		all: string[],
 		none: string[],
-		onlyMedia: boolean = false,
-		local: boolean = false,
-		remote: boolean = false,
+		onlyMedia = false,
+		local = false,
+		remote = false,
 		ctx: MastoContext,
 	): Promise<Note[]> {
 		if (limit > 40) limit = 40;
@@ -234,7 +234,7 @@ export class TimelineHelpers {
 		maxId: string | undefined,
 		sinceId: string | undefined,
 		minId: string | undefined,
-		limit: number = 20,
+		limit = 20,
 		ctx: MastoContext,
 	): Promise<MastodonEntity.Conversation[]> {
 		if (limit > 40) limit = 40;

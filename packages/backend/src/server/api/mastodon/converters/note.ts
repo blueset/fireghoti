@@ -56,7 +56,7 @@ export class NoteConverter {
 	public static async encode(
 		note: Note,
 		ctx: MastoContext,
-		recurseCounter: number = 2,
+		recurseCounter = 2,
 	): Promise<MastodonEntity.Status> {
 		const user = ctx.user as ILocalUser | null;
 		const noteUser = note.user ?? UserHelpers.getUserCached(note.userId, ctx);

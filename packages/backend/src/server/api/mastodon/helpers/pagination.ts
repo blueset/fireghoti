@@ -8,7 +8,7 @@ export class PaginationHelpers {
 		sinceId?: string,
 		maxId?: string,
 		minId?: string,
-		idField: string = `${q.alias}.id`,
+		idField = `${q.alias}.id`,
 	) {
 		if (sinceId && minId)
 			throw new Error("Can't user both sinceId and minId params");

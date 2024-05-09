@@ -203,7 +203,7 @@ export class NoteHelpers {
 		maxId: string | undefined,
 		sinceId: string | undefined,
 		minId: string | undefined,
-		limit: number = 40,
+		limit = 40,
 		ctx: MastoContext,
 	): Promise<User[]> {
 		if (limit > 80) limit = 80;
@@ -297,7 +297,7 @@ export class NoteHelpers {
 		maxId: string | undefined,
 		sinceId: string | undefined,
 		minId: string | undefined,
-		limit: number = 40,
+		limit = 40,
 		ctx: MastoContext,
 	): Promise<User[]> {
 		if (limit > 80) limit = 80;
@@ -328,8 +328,8 @@ export class NoteHelpers {
 
 	public static async getNoteDescendants(
 		note: Note | string,
-		limit: number = 10,
-		depth: number = 2,
+		limit = 10,
+		depth = 2,
 		ctx: MastoContext,
 	): Promise<Note[]> {
 		const user = ctx.user as ILocalUser | null;
@@ -352,7 +352,7 @@ export class NoteHelpers {
 
 	public static async getNoteAncestors(
 		rootNote: Note,
-		limit: number = 10,
+		limit = 10,
 		ctx: MastoContext,
 	): Promise<Note[]> {
 		const user = ctx.user as ILocalUser | null;
@@ -498,7 +498,7 @@ export class NoteHelpers {
 
 		if (body.poll) {
 			result.poll = {
-				expires_in: parseInt(body.poll.expires_in, 10),
+				expires_in: Number.parseInt(body.poll.expires_in, 10),
 				options: body.poll.options,
 				multiple: !!body.poll.multiple,
 			};
@@ -532,7 +532,7 @@ export class NoteHelpers {
 
 		if (body.poll) {
 			result.poll = {
-				expires_in: parseInt(body.poll.expires_in, 10),
+				expires_in: Number.parseInt(body.poll.expires_in, 10),
 				options: body.poll.options,
 				multiple: !!body.poll.multiple,
 			};

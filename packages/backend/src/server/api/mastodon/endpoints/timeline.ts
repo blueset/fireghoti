@@ -9,13 +9,13 @@ import { filterContext } from "@/server/api/mastodon/middleware/filter-context.j
 
 //TODO: Move helper functions to a helper class
 export function limitToInt(q: ParsedUrlQuery, additional: string[] = []) {
-	let object: any = q;
+	const object: any = q;
 	if (q.limit)
-		if (typeof q.limit === "string") object.limit = parseInt(q.limit, 10);
+		if (typeof q.limit === "string") object.limit = Number.parseInt(q.limit, 10);
 	if (q.offset)
-		if (typeof q.offset === "string") object.offset = parseInt(q.offset, 10);
+		if (typeof q.offset === "string") object.offset = Number.parseInt(q.offset, 10);
 	for (const key of additional)
-		if (typeof q[key] === "string") object[key] = parseInt(<string>q[key], 10);
+		if (typeof q[key] === "string") object[key] = Number.parseInt(<string>q[key], 10);
 	return object;
 }
 
@@ -28,7 +28,7 @@ export function argsToBools(q: ParsedUrlQuery, additional: string[] = []) {
 	// - https://docs.joinmastodon.org/methods/accounts/#statuses
 	// - https://docs.joinmastodon.org/methods/timelines/#public
 	// - https://docs.joinmastodon.org/methods/timelines/#tag
-	let keys = [
+	const keys = [
 		"only_media",
 		"exclude_replies",
 		"exclude_reblogs",
@@ -36,7 +36,7 @@ export function argsToBools(q: ParsedUrlQuery, additional: string[] = []) {
 		"local",
 		"remote",
 	].concat(additional);
-	let object: any = q;
+	const object: any = q;
 
 	for (const key of keys)
 		if (q[key] && typeof q[key] === "string")
@@ -172,7 +172,7 @@ export function setupEndpointsTimeline(router: Router): void {
 		"/v1/markers",
 		auth(true, ["write:statuses"]),
 		async (ctx, reply) => {
-			const body = ctx.request.body as any;
+			const body = ctx.request.body;
 			ctx.body = await TimelineHelpers.setMarkers(body, ctx);
 		},
 	);

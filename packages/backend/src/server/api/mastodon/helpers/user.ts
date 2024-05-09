@@ -132,8 +132,8 @@ export class UserHelpers {
 
 	public static async muteUser(
 		target: User,
-		notifications: boolean = true,
-		duration: number = 0,
+		notifications = true,
+		duration = 0,
 		ctx: MastoContext,
 	): Promise<MastodonEntity.Relationship> {
 		//FIXME: respect notifications parameter
@@ -330,7 +330,7 @@ export class UserHelpers {
 		maxId: string | undefined,
 		sinceId: string | undefined,
 		minId: string | undefined,
-		limit: number = 40,
+		limit = 40,
 		ctx: MastoContext,
 	): Promise<MastodonEntity.MutedAccount[]> {
 		if (limit > 80) limit = 80;
@@ -371,7 +371,7 @@ export class UserHelpers {
 		maxId: string | undefined,
 		sinceId: string | undefined,
 		minId: string | undefined,
-		limit: number = 40,
+		limit = 40,
 		ctx: MastoContext,
 	): Promise<User[]> {
 		if (limit > 80) limit = 80;
@@ -402,7 +402,7 @@ export class UserHelpers {
 		maxId: string | undefined,
 		sinceId: string | undefined,
 		minId: string | undefined,
-		limit: number = 40,
+		limit = 40,
 		ctx: MastoContext,
 	): Promise<User[]> {
 		if (limit > 80) limit = 80;
@@ -434,11 +434,11 @@ export class UserHelpers {
 		maxId: string | undefined,
 		sinceId: string | undefined,
 		minId: string | undefined,
-		limit: number = 20,
-		onlyMedia: boolean = false,
-		excludeReplies: boolean = false,
-		excludeReblogs: boolean = false,
-		pinned: boolean = false,
+		limit = 20,
+		onlyMedia = false,
+		excludeReplies = false,
+		excludeReblogs = false,
+		pinned = false,
 		tagged: string | undefined,
 		ctx: MastoContext,
 	): Promise<Note[]> {
@@ -516,7 +516,7 @@ export class UserHelpers {
 		maxId: string | undefined,
 		sinceId: string | undefined,
 		minId: string | undefined,
-		limit: number = 20,
+		limit = 20,
 		ctx: MastoContext,
 	): Promise<Note[]> {
 		if (limit > 40) limit = 40;
@@ -545,7 +545,7 @@ export class UserHelpers {
 		maxId: string | undefined,
 		sinceId: string | undefined,
 		minId: string | undefined,
-		limit: number = 20,
+		limit = 20,
 		ctx: MastoContext,
 	): Promise<Note[]> {
 		if (limit > 40) limit = 40;
@@ -576,7 +576,7 @@ export class UserHelpers {
 		maxId: string | undefined,
 		sinceId: string | undefined,
 		minId: string | undefined,
-		limit: number = 40,
+		limit = 40,
 		ctx: MastoContext,
 	): Promise<User[]> {
 		if (limit > 80) limit = 80;
@@ -633,7 +633,7 @@ export class UserHelpers {
 		maxId: string | undefined,
 		sinceId: string | undefined,
 		minId: string | undefined,
-		limit: number = 40,
+		limit = 40,
 		ctx: MastoContext,
 	): Promise<User[]> {
 		return this.getUserRelationships(
@@ -652,7 +652,7 @@ export class UserHelpers {
 		maxId: string | undefined,
 		sinceId: string | undefined,
 		minId: string | undefined,
-		limit: number = 40,
+		limit = 40,
 		ctx: MastoContext,
 	): Promise<User[]> {
 		return this.getUserRelationships(

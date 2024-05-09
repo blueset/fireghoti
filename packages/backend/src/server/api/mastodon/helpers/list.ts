@@ -61,7 +61,7 @@ export class ListHelpers {
 		maxId: string | undefined,
 		sinceId: string | undefined,
 		minId: string | undefined,
-		limit: number = 40,
+		limit = 40,
 		ctx: MastoContext,
 	): Promise<User[]> {
 		if (limit > 80) limit = 80;
