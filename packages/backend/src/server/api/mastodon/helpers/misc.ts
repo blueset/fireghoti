@@ -55,7 +55,7 @@ export class MiscHelpers {
 				meta.description ||
 				"This is an Firefish instance. It doesn’t seem to have a description.",
 			email: meta.maintainerEmail || "",
-			version: `4.2.1 (compatible; Firefish ${config.version})`,
+			version: `4.2.8 (compatible; Firefish ${config.version})`,
 			urls: {
 				streaming_api: `${config.url.replace(/^http(?=s?:\/\/)/, "ws")}`,
 			},
@@ -124,7 +124,7 @@ export class MiscHelpers {
 		const res = {
 			domain: config.host,
 			title: meta.name || "Firefish",
-			version: `4.2.1 (compatible; Firefish ${config.version})`,
+			version: `4.2.8 (compatible; Firefish ${config.version})`,
 			source_url: meta.repositoryUrl,
 			description:
 				meta.description ||
@@ -204,7 +204,7 @@ export class MiscHelpers {
 
 			return Promise.all(
 				announcements.map(async (p) =>
-					AnnouncementConverter.encode(p, reads.includes(p.id)),
+					AnnouncementConverter.encode(p, reads.includes(p.id), ctx),
 				),
 			);
 		}
@@ -221,7 +221,7 @@ export class MiscHelpers {
 		return query
 			.getMany()
 			.then((p) =>
-				Promise.all(p.map(async (x) => AnnouncementConverter.encode(x, false))),
+				Promise.all(p.map(async (x) => AnnouncementConverter.encode(x, false, ctx))),
 			);
 	}
 

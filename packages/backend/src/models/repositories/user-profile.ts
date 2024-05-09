@@ -2,8 +2,8 @@ import { db } from "@/db/postgre.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
 import mfm from "mfm-js";
 import { extractMentions } from "@/misc/extract-mentions.js";
-import { resolveMentionToUserAndProfile } from "@/remote/resolve-user.js";
-import { IMentionedRemoteUsers } from "@/models/entities/note.js";
+import { type ProfileMention, resolveMentionToUserAndProfile } from "@/remote/resolve-user.js";
+import type { IMentionedRemoteUser, IMentionedRemoteUsers } from "@/models/entities/note.js";
 import { unique } from "@/prelude/array.js";
 import { config } from "@/config.js";
 import { Mutex, Semaphore } from "async-mutex";
@@ -24,8 +24,7 @@ export const UserProfileRepository = db.getRepository(UserProfile).extend({
 		if (profile.fields.length > 0)
 			tokens.push(
 				...profile.fields
-					.map((p) => mfm.parse(p.value).concat(mfm.parse(p.name)))
-					.flat(),
+					.flatMap((p) => mfm.parse(p.value).concat(mfm.parse(p.name))),
 			);
 
 		return queue.runExclusive(async () => {
@@ -50,19 +49,18 @@ async function populateMentions(
 	);
 	const remote = resolved
 		.filter(
-			(p) =>
-				p &&
+			(p): p is ProfileMention =>
+				!!p &&
 				p.data.host !== config.host &&
 				(p.data.host !== null || objectHost !== null),
-		)
-		.map((p) => p!);
+		);
 	const res = remote.map((m) => {
 		return {
-			uri: m.user.uri!,
+			uri: m.user.uri,
 			url: m.profile?.url ?? undefined,
 			username: m.data.username,
-			host: m.data.host!,
-		};
+			host: m.data.host,
+		} as IMentionedRemoteUser;
 	});
 
 	return unique(res);
@@ -71,7 +69,7 @@ async function populateMentions(
 export class RecursionLimiter {
 	private counter;
 	private mutex = new Mutex();
-	constructor(count: number = 10) {
+	constructor(count = 10) {
 		this.counter = count;
 	}
 

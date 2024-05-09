@@ -13,6 +13,7 @@ import { inspect } from "node:util";
 import type { UserProfile } from "@/models/entities/user-profile.js";
 import { RecursionLimiter } from "@/models/repositories/user-profile.js";
 import { promiseEarlyReturn } from "@/prelude/promise.js";
+import type { IMentionedRemoteUsers } from "@/models/entities/note.js";
 
 const logger = remoteLogger.createSubLogger("resolve-user");
 const localUsernameCache = new Cache<string | null>(
@@ -24,7 +25,7 @@ const profileMentionCache = new Cache<ProfileMention | null>(
 	60 * 60,
 );
 
-type ProfileMention = {
+export type ProfileMention = {
 	user: User;
 	profile: UserProfile | null;
 	data: {
@@ -99,7 +100,7 @@ export async function resolveUser(
 		const subjectHost = m ? m[2] : undefined;
 
 		// If subject is different, we're dealing with a split domain setup (that's already been validated by resolveUserWebFinger)
-		if (acctLower != finalAcctLower) {
+		if (acctLower !== finalAcctLower) {
 			logger.info("re-resolving split domain redirect user...");
 			const m = finalAcct.match(/^([^@]+)@(.*)/);
 			if (m) {
@@ -181,7 +182,7 @@ export async function resolveUser(
 		const finalHost = m ? m[2] : null;
 
 		// Update user.host if we're dealing with an account that's part of a split domain setup that hasn't been fixed yet
-		if (m && user.host != finalHost) {
+		if (m && user.host !== finalHost) {
 			logger.info(
 				`updating user host to subject acct host: ${user.host} -> ${finalHost}`,
 			);
@@ -345,7 +346,7 @@ export async function resolveMentionToUserAndProfile(
 
 async function resolveUserWebFinger(
 	acctLower: string,
-	recurse: boolean = true,
+	recurse = true,
 ): Promise<{
 	subject: string;
 	self: {

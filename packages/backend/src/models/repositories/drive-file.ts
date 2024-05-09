@@ -234,7 +234,7 @@ export const DriveFileRepository = db.getRepository(DriveFile).extend({
 		const meta = await fetchMeta(true);
 		const baseUrl = meta
 			? meta.objectStorageBaseUrl ??
-				`${meta.objectStorageUseSSL ? "https" : "http"}://${
+				`${meta.objectStorageUseSsl ? "https" : "http"}://${
 					meta.objectStorageEndpoint
 				}${meta.objectStoragePort ? `:${meta.objectStoragePort}` : ""}/${
 					meta.objectStorageBucket

@@ -1,4 +1,4 @@
-import { Brackets, SelectQueryBuilder, WhereExpressionBuilder } from "typeorm";
+import { Brackets, type SelectQueryBuilder, type WhereExpressionBuilder } from "typeorm";
 import { sqlLikeEscape } from "backend-rs";
 import { sqlRegexEscape } from "@/misc/sql-regex-escape.js";
 import {
@@ -7,6 +7,9 @@ import {
 	NoteReactions,
 	Users,
 } from "@/models/index.js";
+import type { Note } from "@/models/entities/note";
+import type { Following } from "@/models/entities/following";
+import type { NoteFavorite } from "@/models/entities/note-favorite";
 
 const filters = {
 	from: fromFilter,
@@ -34,16 +37,16 @@ const filters = {
 	has: attachmentFilter,
 } as Record<
 	string,
-	(query: SelectQueryBuilder<any>, search: string, id: number) => any
+	(query: SelectQueryBuilder<Note>, search: string, id: number) => void
 >;
 
 export function generateFtsQuery(
-	query: SelectQueryBuilder<any>,
+	query: SelectQueryBuilder<Note>,
 	q: string,
 ): void {
 	const components = q.trim().split(" ");
 	const terms: string[] = [];
-	let finalTerms: string[] = [];
+	const finalTerms: string[] = [];
 	let counter = 0;
 	let caseSensitive = false;
 	let matchWords = false;
@@ -105,7 +108,7 @@ export function generateFtsQuery(
 		}
 	}
 
-	if (state != "idle") {
+	if (state !== "idle") {
 		finalTerms.push(
 			...extractToken(terms, idx, terms.length - 1, false)
 				.substring(1)
@@ -129,7 +132,7 @@ export function generateFtsQuery(
 }
 
 function fromFilter(
-	query: SelectQueryBuilder<any>,
+	query: SelectQueryBuilder<Note>,
 	filter: string,
 	id: number,
 ) {
@@ -139,7 +142,7 @@ function fromFilter(
 }
 
 function fromFilterInverse(
-	query: SelectQueryBuilder<any>,
+	query: SelectQueryBuilder<Note>,
 	filter: string,
 	id: number,
 ) {
@@ -149,7 +152,7 @@ function fromFilterInverse(
 }
 
 function mentionFilter(
-	query: SelectQueryBuilder<any>,
+	query: SelectQueryBuilder<Note>,
 	filter: string,
 	id: number,
 ) {
@@ -164,7 +167,7 @@ function mentionFilter(
 }
 
 function mentionFilterInverse(
-	query: SelectQueryBuilder<any>,
+	query: SelectQueryBuilder<Note>,
 	filter: string,
 	id: number,
 ) {
@@ -179,7 +182,7 @@ function mentionFilterInverse(
 }
 
 function replyFilter(
-	query: SelectQueryBuilder<any>,
+	query: SelectQueryBuilder<Note>,
 	filter: string,
 	id: number,
 ) {
@@ -189,7 +192,7 @@ function replyFilter(
 }
 
 function replyFilterInverse(
-	query: SelectQueryBuilder<any>,
+	query: SelectQueryBuilder<Note>,
 	filter: string,
 	id: number,
 ) {
@@ -198,21 +201,21 @@ function replyFilterInverse(
 	query.setParameters(userQuery.getParameters());
 }
 
-function beforeFilter(query: SelectQueryBuilder<any>, filter: string) {
+function beforeFilter(query: SelectQueryBuilder<Note>, filter: string) {
 	query.andWhere("note.createdAt < :before", { before: filter });
 }
 
-function afterFilter(query: SelectQueryBuilder<any>, filter: string) {
+function afterFilter(query: SelectQueryBuilder<Note>, filter: string) {
 	query.andWhere("note.createdAt > :after", { after: filter });
 }
 
 function instanceFilter(
-	query: SelectQueryBuilder<any>,
+	query: SelectQueryBuilder<Note>,
 	filter: string,
 	id: number,
 ) {
 	if (filter === "local") {
-		query.andWhere(`note.userHost IS NULL`);
+		query.andWhere("note.userHost IS NULL");
 	} else {
 		query.andWhere(`note.userHost = :instance_${id}`);
 		query.setParameter(`instance_${id}`, filter);
@@ -220,20 +223,20 @@ function instanceFilter(
 }
 
 function instanceFilterInverse(
-	query: SelectQueryBuilder<any>,
+	query: SelectQueryBuilder<Note>,
 	filter: string,
 	id: number,
 ) {
 	if (filter === "local") {
-		query.andWhere(`note.userHost IS NOT NULL`);
+		query.andWhere("note.userHost IS NOT NULL");
 	} else {
 		query.andWhere(`note.userHost <> :instance_${id}`);
 		query.setParameter(`instance_${id}`, filter);
 	}
 }
 
-function miscFilter(query: SelectQueryBuilder<any>, filter: string) {
-	let subQuery: SelectQueryBuilder<any> | null = null;
+function miscFilter(query: SelectQueryBuilder<Note>, filter: string) {
+	let subQuery: SelectQueryBuilder<Following> | null = null;
 	if (filter === "followers") {
 		subQuery = Followings.createQueryBuilder("following")
 			.select("following.followerId")
@@ -257,8 +260,8 @@ function miscFilter(query: SelectQueryBuilder<any>, filter: string) {
 		query.andWhere(`note.userId IN (${subQuery.getQuery()})`);
 }
 
-function miscFilterInverse(query: SelectQueryBuilder<any>, filter: string) {
-	let subQuery: SelectQueryBuilder<any> | null = null;
+function miscFilterInverse(query: SelectQueryBuilder<Note>, filter: string) {
+	let subQuery: SelectQueryBuilder<Following> | null = null;
 	if (filter === "followers") {
 		subQuery = Followings.createQueryBuilder("following")
 			.select("following.followerId")
@@ -282,8 +285,8 @@ function miscFilterInverse(query: SelectQueryBuilder<any>, filter: string) {
 		query.andWhere(`note.userId NOT IN (${subQuery.getQuery()})`);
 }
 
-function inFilter(query: SelectQueryBuilder<any>, filter: string) {
-	let subQuery: SelectQueryBuilder<any> | null = null;
+function inFilter(query: SelectQueryBuilder<Note>, filter: string) {
+	let subQuery: SelectQueryBuilder<NoteFavorite> | null = null;
 	if (filter === "bookmarks") {
 		subQuery = NoteFavorites.createQueryBuilder("bookmark")
 			.select("bookmark.noteId")
@@ -302,8 +305,8 @@ function inFilter(query: SelectQueryBuilder<any>, filter: string) {
 	if (subQuery !== null) query.andWhere(`note.id IN (${subQuery.getQuery()})`);
 }
 
-function inFilterInverse(query: SelectQueryBuilder<any>, filter: string) {
-	let subQuery: SelectQueryBuilder<any> | null = null;
+function inFilterInverse(query: SelectQueryBuilder<Note>, filter: string) {
+	let subQuery: SelectQueryBuilder<NoteFavorite> | null = null;
 	if (filter === "bookmarks") {
 		subQuery = NoteFavorites.createQueryBuilder("bookmark")
 			.select("bookmark.noteId")
@@ -323,7 +326,7 @@ function inFilterInverse(query: SelectQueryBuilder<any>, filter: string) {
 		query.andWhere(`note.id NOT IN (${subQuery.getQuery()})`);
 }
 
-function attachmentFilter(query: SelectQueryBuilder<any>, filter: string) {
+function attachmentFilter(query: SelectQueryBuilder<Note>, filter: string) {
 	switch (filter) {
 		case "image":
 			query.andWhere(`note."attachedFileTypes"::varchar ILIKE '%image/%'`);
@@ -374,7 +377,7 @@ function extractToken(
 	array: string[],
 	start: number,
 	end: number,
-	trim: boolean = true,
+	trim = true,
 ) {
 	const slice = array.slice(start, end + 1).join(" ");
 	return trim ? trimStartAndEnd(slice) : slice;
@@ -387,8 +390,8 @@ function trimStartAndEnd(str: string) {
 function appendSearchQuery(
 	term: string,
 	mode: "and" | "or",
-	query: SelectQueryBuilder<any>,
-	qb: SelectQueryBuilder<any> | WhereExpressionBuilder,
+	query: SelectQueryBuilder<Note>,
+	qb: SelectQueryBuilder<Note> | WhereExpressionBuilder,
 	id: number,
 	negate: boolean,
 	matchWords: boolean,
