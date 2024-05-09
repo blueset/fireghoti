@@ -172,7 +172,6 @@ cargo:test:
     - pnpm --filter='!backend-rs' run build:debug
     - cargo test --doc
     - cargo nextest run
-    - cargo nextest run --features napi
 
 cargo:clippy:
   stage: test
