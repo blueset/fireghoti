@@ -88,7 +88,7 @@
 							:class="[$style.permission]"
 						>
 							<i
-								:class="[`ph-${getIcon(p)}`]"
+								:class="[getIcon(p)]"
 								class="ph-bold ph-xl"
 								style="margin-right: 0.5rem"
 							></i>
@@ -122,6 +122,7 @@ import { signIn, openAccountMenu as openAccountMenu_ } from "@/account";
 import { appendQuery, query } from "@/scripts/url";
 import { i18n } from "@/i18n";
 import * as config from "@/config.js";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	response_type: string;
@@ -163,11 +164,11 @@ if (redirectUri !== props.redirect_uri)
 	);
 
 function getIcon(p: string) {
-	if (p.startsWith("write")) return "pencil-simple";
-	else if (p.startsWith("read")) return "eye";
-	else if (p.startsWith("push")) return "bell-ringing";
-	else if (p.startsWith("follow")) return "users";
-	else return "check-fat";
+	if (p.startsWith("write")) return icon("ph-pencil-simple");
+	else if (p.startsWith("read")) return icon("ph-eye");
+	else if (p.startsWith("push")) return icon("ph-bell-ringing");
+	else if (p.startsWith("follow")) return icon("ph-users");
+	else return icon("ph-check-fat");
 }
 
 async function accept(): Promise<void> {
@@ -184,7 +185,7 @@ async function accept(): Promise<void> {
 			throw r;
 		});
 
-	if (props.redirect_uri !== "urn:ietf:wg:oauth:2.0:oob") {
+	if (props.redirect_uri !== "urn:ietf:wg:oauth:2.0:oob" && redirectUri) {
 		state.value = "accepted";
 		location.href = appendQuery(
 			redirectUri,
