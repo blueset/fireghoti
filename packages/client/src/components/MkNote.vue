@@ -123,7 +123,11 @@
 							v-if="isMyNote"
 							:class="icon('ph-dots-three-outline dropdownIcon')"
 						></i>
-						<MkTime :time="note.createdAt" />
+						<MkTime 
+							v-if="(renotesSliced && renotesSliced.length > 0)"
+							:time="renotesSliced[0].createdAt"
+						/>
+						<MkTime v-else :time="note.createdAt" />
 					</button>
 					<MkVisibility :note="note" />
 				</div>
