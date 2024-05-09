@@ -7,7 +7,7 @@
 			i18n.ts._accountDelete.sendEmail
 		}}</FormInfo>
 		<FormButton
-			v-if="!me.isDeleted"
+			v-if="!me?.isDeleted"
 			danger
 			class="_formBlock"
 			@click="deleteAccount"
@@ -27,6 +27,7 @@ import { signOut } from "@/account";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
+import { me } from "@/me";
 
 async function deleteAccount() {
 	{
