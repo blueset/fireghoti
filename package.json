@@ -9,9 +9,9 @@
 	"private": true,
 	"scripts": {
 		"rebuild": "pnpm run clean && pnpm run build",
-		"build": "pnpm node ./scripts/build.mjs && pnpm run build:assets",
+		"build": "pnpm --recursive --color run build && pnpm node ./scripts/copy-index.mjs && pnpm run build:assets",
 		"build:assets": "pnpm node ./scripts/copy-assets.mjs",
-		"build:debug": "pnpm run clean && pnpm node ./scripts/dev-build.mjs && pnpm run build:assets",
+		"build:debug": "pnpm run clean && pnpm --recursive --color run build:debug && pnpm node ./scripts/copy-index-dev.mjs && pnpm run build:assets",
 		"start": "pnpm --filter backend run start",
 		"start:container": "pnpm run build:assets && pnpm run migrate && pnpm run start",
 		"start:test": "pnpm --filter backend run start:test",
