@@ -239,6 +239,8 @@ sast:
   stage: scan
   services: []
   before_script: []
+  variables:
+    SAST_EXCLUDED_PATHS: .git,.config,.gitlab,.vscode,ci,custom,dev,docs,locales,node_modules,target
 
 container_scanning:
   stage: scan
