@@ -2,9 +2,12 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:base"],
   "rangeStrategy": "bump",
-	"branchConcurrentLimit": 5,
 	"enabledManagers": ["npm", "cargo"],
 	"baseBranches": ["develop"],
+	"ignorePaths": [
+		"packages/megalodon/package.json",
+		"packages/backend-rs/npm"
+	],
 	"lockFileMaintenance": {
 		"enabled": true,
 		"recreateWhen": "always",
