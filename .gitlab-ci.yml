@@ -61,7 +61,7 @@ default:
 build:
   stage: test
   rules:
-    - if: $CI_PIPELINE_SOURCE == 'push' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
         paths:
           - packages/backend/*
@@ -81,20 +81,23 @@ build:
 build:client:
   stage: test
   rules:
-    - if: $CI_PIPELINE_SOURCE == 'push' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
         paths:
           - packages/client/*
           - packages/firefish-js/*
           - packages/sw/*
           - locales/**/*
-    - if: $CI_PIPELINE_SOURCE == 'push' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
         paths:
           - packages/backend/*
           - packages/backend-rs/*
           - packages/macro-rs/*
           - packages/megalodon/*
+          - scripts/**/*
+          - package.json
+          - pnpm-lock.yaml
           - Cargo.toml
           - Cargo.lock
       when: never
@@ -154,7 +157,7 @@ build:container:
 cargo:test:
   stage: test
   rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event' || $CI_COMMIT_BRANCH == 'develop'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
         paths:
           - packages/backend-rs/**/*
@@ -176,7 +179,7 @@ cargo:test:
 cargo:clippy:
   stage: test
   rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event' || $CI_COMMIT_BRANCH == 'develop'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
         paths:
           - packages/backend-rs/**/*
