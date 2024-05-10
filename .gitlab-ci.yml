@@ -33,6 +33,7 @@ stages:
   - dependency
   - test
   - build
+  - scan
 
 variables:
   POSTGRES_DB: 'firefish_db'
@@ -58,7 +59,7 @@ default:
     - export PGPASSWORD="${POSTGRES_PASSWORD}"
     - psql --host postgres --user "${POSTGRES_USER}" --dbname "${POSTGRES_DB}" --command 'CREATE EXTENSION pgroonga'
 
-build:
+test:build:
   stage: test
   rules:
     - if: $TEST == 'false'
@@ -76,12 +77,17 @@ build:
           - Cargo.toml
           - Cargo.lock
       when: always
+  needs:
+    - job: cargo:clippy
+      optional: true
+    - job: cargo:test
+      optional: true
   script:
     - pnpm install --frozen-lockfile
     - pnpm run build:debug
     - pnpm run migrate
 
-build:client:
+test:build:client_only:
   stage: test
   rules:
     - if: $TEST == 'false'
@@ -140,6 +146,11 @@ build:container:
           - Dockerfile
           - .dockerignore
       when: always
+  needs:
+    - job: test:build
+      optional: true
+    - job: test:build:client_only
+      optional: true
   before_script:
     - apt-get update && apt-get -y upgrade
     - apt-get install -y --no-install-recommends buildah ca-certificates fuse-overlayfs
@@ -225,11 +236,35 @@ renovate:
     - renovate --platform gitlab --token "${API_TOKEN}" --endpoint "${CI_SERVER_URL}/api/v4" "${CI_PROJECT_PATH}"
 
 sast:
-  stage: test
+  stage: scan
+  services: []
+  before_script: []
+
+container_scanning:
+  stage: scan
   services: []
   before_script: []
   rules:
-    - if: $TEST == 'false'
+    - if: $BUILD == 'false'
       when: never
+    - if: $CI_COMMIT_BRANCH == 'develop'
+      changes:
+        paths:
+          - packages/**/*
+          - locales/**/*
+          - scripts/copy-assets.mjs
+          - package.json
+          - pnpm-lock.yaml
+          - Cargo.toml
+          - Cargo.lock
+          - Dockerfile
+          - .dockerignore
+      when: always
+  needs:
+    - build:container
+  variables:
+    CS_IMAGE: "${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
+
 include:
   - template: Security/SAST.gitlab-ci.yml
+  - template: Jobs/Container-Scanning.gitlab-ci.yml
