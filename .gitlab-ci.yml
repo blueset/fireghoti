@@ -61,6 +61,8 @@ default:
 build:
   stage: test
   rules:
+    - if: $TEST == 'false'
+      when: never
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
         paths:
@@ -73,6 +75,7 @@ build:
           - pnpm-lock.yaml
           - Cargo.toml
           - Cargo.lock
+      when: always
   script:
     - pnpm install --frozen-lockfile
     - pnpm run build:debug
@@ -81,6 +84,8 @@ build:
 build:client:
   stage: test
   rules:
+    - if: $TEST == 'false'
+      when: never
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
         paths:
@@ -120,6 +125,8 @@ build:container:
   image: docker.io/debian:bookworm-slim
   services: []
   rules:
+    - if: $BUILD == 'false'
+      when: never
     - if: $CI_COMMIT_BRANCH == 'develop'
       changes:
         paths:
@@ -132,6 +139,7 @@ build:container:
           - Cargo.lock
           - Dockerfile
           - .dockerignore
+      when: always
   before_script:
     - apt-get update && apt-get -y upgrade
     - apt-get install -y --no-install-recommends buildah ca-certificates fuse-overlayfs
@@ -158,6 +166,10 @@ build:container:
 cargo:test:
   stage: test
   rules:
+    - if: $TEST == 'false'
+      when: never
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'main'
+      when: never
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
         paths:
@@ -165,8 +177,7 @@ cargo:test:
           - packages/macro-rs/**/*
           - Cargo.toml
           - Cargo.lock
-    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'main'
-      when: never
+      when: always
   script:
     - curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C /usr/local/cargo/bin
     - pnpm install --frozen-lockfile
@@ -180,6 +191,10 @@ cargo:test:
 cargo:clippy:
   stage: test
   rules:
+    - if: $TEST == 'false'
+      when: never
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'main'
+      when: never
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
         paths:
@@ -187,8 +202,7 @@ cargo:clippy:
           - packages/macro-rs/**/*
           - Cargo.toml
           - Cargo.lock
-    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'main'
-      when: never
+      when: always
   services: []
   before_script:
     - apt-get update && apt-get -y upgrade
