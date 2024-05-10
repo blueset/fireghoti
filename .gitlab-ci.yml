@@ -30,9 +30,9 @@ cache:
     - target/debug/build
 
 stages:
+  - dependency
   - test
   - build
-  - dependency
 
 variables:
   POSTGRES_DB: 'firefish_db'
@@ -84,13 +84,6 @@ build:client:
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
         paths:
-          - packages/client/*
-          - packages/firefish-js/*
-          - packages/sw/*
-          - locales/**/*
-    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
-      changes:
-        paths:
           - packages/backend/*
           - packages/backend-rs/*
           - packages/macro-rs/*
@@ -101,6 +94,14 @@ build:client:
           - Cargo.toml
           - Cargo.lock
       when: never
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+      changes:
+        paths:
+          - packages/client/*
+          - packages/firefish-js/*
+          - packages/sw/*
+          - locales/**/*
+      when: always
   services: []
   before_script:
     - apt-get update && apt-get -y upgrade
