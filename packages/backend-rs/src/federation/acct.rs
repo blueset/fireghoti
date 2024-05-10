@@ -42,9 +42,9 @@ impl fmt::Display for Acct {
     }
 }
 
-impl Into<String> for Acct {
-    fn into(self) -> String {
-        self.to_string()
+impl From<Acct> for String {
+    fn from(value: Acct) -> Self {
+        value.to_string()
     }
 }
 
