@@ -1,0 +1,25 @@
+[nodejs-scan]
+  description = "Custom njsscan ruleset"
+
+  [[nodejs-scan.passthrough]]
+    type = "raw"
+		value = '''
+---
+- nodejs-extensions:
+  - .js
+	- .mjs
+	- .cjs
+
+  ignore-paths:
+	- .git
+  - .config
+	- .gitlab
+	- .vscode
+	- ci
+  - custom
+	- dev
+	- docs
+	- locales
+	- node_modules
+	- target
+'''
