@@ -42,6 +42,12 @@ impl fmt::Display for Acct {
     }
 }
 
+impl Into<String> for Acct {
+    fn into(self) -> String {
+        self.to_string()
+    }
+}
+
 #[crate::ts_only_warn("Use `acct.parse().unwrap()` or `Acct::from_str(acct).unwrap()` instead.")]
 #[crate::export]
 pub fn string_to_acct(acct: &str) -> Acct {
