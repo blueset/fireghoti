@@ -5,8 +5,12 @@ import perform from "@/remote/activitypub/perform.js";
 import Logger from "@/services/logger.js";
 import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
 import { Instances } from "@/models/index.js";
-import { isAllowedServer, isBlockedServer } from "backend-rs";
-import { toPuny, extractHost } from "backend-rs";
+import {
+	extractHost,
+	isAllowedServer,
+	isBlockedServer,
+	toPuny,
+} from "backend-rs";
 import { getApId } from "@/remote/activitypub/type.js";
 import { fetchInstanceMetadata } from "@/services/fetch-instance-metadata.js";
 import type { InboxJobData } from "../types.js";

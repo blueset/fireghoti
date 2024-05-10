@@ -8,9 +8,12 @@ import chalkTemplate from "chalk-template";
 import semver from "semver";
 
 import Logger from "@/services/logger.js";
-import type { Config } from "backend-rs";
-import { initializeRustLogger } from "backend-rs";
-import { fetchMeta, removeOldAttestationChallenges } from "backend-rs";
+import {
+	fetchMeta,
+	initializeRustLogger,
+	removeOldAttestationChallenges,
+	type Config,
+} from "backend-rs";
 import { config, envOption } from "@/config.js";
 import { showMachineInfo } from "@/misc/show-machine-info.js";
 import { db, initDb } from "@/db/postgre.js";
