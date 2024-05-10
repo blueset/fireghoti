@@ -223,3 +223,13 @@ renovate:
   before_script: []
   script:
     - renovate --platform gitlab --token "${API_TOKEN}" --endpoint "${CI_SERVER_URL}/api/v4" "${CI_PROJECT_PATH}"
+
+sast:
+  stage: test
+  services: []
+  before_script: []
+  rules:
+    - if: $TEST == 'false'
+      when: never
+include:
+  - template: Security/SAST.gitlab-ci.yml
