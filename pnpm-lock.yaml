@@ -528,8 +528,8 @@ importers:
   packages/backend-rs:
     devDependencies:
       '@napi-rs/cli':
-        specifier: 2.18.1
-        version: 2.18.1
+        specifier: 2.18.3
+        version: 2.18.3
 
   packages/client:
     devDependencies:
@@ -2152,8 +2152,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@napi-rs/cli@2.18.1':
-    resolution: {integrity: sha512-N4iTeip2VSk0RftgDGuk7IBrgOST/WPUSA3lYstILXsNifR3tHugcbLzo04+OtSrMc+ZUPsXo3Jd1t3dlswAlw==}
+  '@napi-rs/cli@2.18.3':
+    resolution: {integrity: sha512-L0f4kP0dyG8W5Qtc7MtP73VvLLrOLyRcUEBzknIfu8Jk4Jfhrsx1ItMHgyalYqMSslWdY3ojEfAaU5sx1VyeQQ==}
     engines: {node: '>= 10'}
     hasBin: true
 
@@ -9964,7 +9964,7 @@ snapshots:
   '@msgpackr-extract/msgpackr-extract-win32-x64@3.0.2':
     optional: true
 
-  '@napi-rs/cli@2.18.1': {}
+  '@napi-rs/cli@2.18.3': {}
 
   '@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1':
     dependencies:
