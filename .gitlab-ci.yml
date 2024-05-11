@@ -28,6 +28,8 @@ cache:
     # - /usr/local/cargo/registry/cache
     - target/debug/deps
     - target/debug/build
+    - packages/backend-rs/built
+    - built
 
 stages:
   - dependency
@@ -68,10 +70,8 @@ test:build:
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
         paths:
-          - packages/backend/*
-          - packages/backend-rs/*
-          - packages/macro-rs/*
-          - packages/megalodon/*
+          - packages/backend-rs/**/*
+          - packages/macro-rs/**/*
           - scripts/**/*
           - package.json
           - pnpm-lock.yaml
@@ -86,6 +86,42 @@ test:build:
   script:
     - pnpm install --frozen-lockfile
     - pnpm run build:debug
+    - pnpm run migrate
+
+test:build:backend_ts_only:
+  stage: test
+  rules:
+    - if: $TEST == 'false'
+      when: never
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+      changes:
+        paths:
+          - packages/backend-rs/*
+          - packages/macro-rs/*
+          - scripts/**/*
+          - package.json
+          - pnpm-lock.yaml
+          - Cargo.toml
+          - Cargo.lock
+      when: never 
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+      changes:
+        paths:
+          - packages/backend/**/*
+          - packages/megalodon/**/*
+      when: always
+  before_script:
+    - apt-get update && apt-get -y upgrade
+    - apt-get -y --no-install-recommends install curl
+    - curl -fsSL 'https://deb.nodesource.com/setup_18.x' | bash -
+    - apt-get install -y --no-install-recommends build-essential python3 nodejs postgresql-client
+    - corepack enable
+    - corepack prepare pnpm@latest --activate
+    - export PGPASSWORD="${POSTGRES_PASSWORD}"
+    - psql --host postgres --user "${POSTGRES_USER}" --dbname "${POSTGRES_DB}" --command 'CREATE EXTENSION pgroonga'
+  script:
+    - pnpm install --frozen-lockfile
+    - pnpm --filter 'backend' --filter 'megalodon' run build:debug
     - pnpm run migrate
 
 test:build:client_only:
@@ -109,9 +145,9 @@ test:build:client_only:
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
         paths:
-          - packages/client/*
-          - packages/firefish-js/*
-          - packages/sw/*
+          - packages/client/**/*
+          - packages/firefish-js/**/*
+          - packages/sw/**/*
           - locales/**/*
       when: always
   services: []
@@ -149,6 +185,8 @@ build:container:
       when: always
   needs:
     - job: test:build
+      optional: true
+    - job: test:build:backend_ts_only
       optional: true
     - job: test:build:client_only
       optional: true
