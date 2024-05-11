@@ -132,10 +132,8 @@ test:build:client_only:
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
         paths:
-          - packages/backend/*
-          - packages/backend-rs/*
-          - packages/macro-rs/*
-          - packages/megalodon/*
+          - packages/backend-rs/**/*
+          - packages/macro-rs/**/*
           - scripts/**/*
           - package.json
           - pnpm-lock.yaml
