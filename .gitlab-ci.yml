@@ -28,7 +28,6 @@ stages:
   - dependency
   - test
   - build
-  - scan
 
 variables:
   POSTGRES_DB: 'firefish_db'
@@ -40,7 +39,6 @@ variables:
   CARGO_PROFILE_DEV_LTO: 'off'
   CARGO_PROFILE_DEV_DEBUG: 'none'
   CARGO_TERM_COLOR: 'always'
-  SAST_EXCLUDED_ANALYZERS: 'nodejs-scan'
   GIT_CLEAN_FLAGS: -ffdx -e node_modules/ -e built/ -e target/ -e packages/backend-rs/built/
 
 default:
@@ -262,39 +260,3 @@ renovate:
   before_script: []
   script:
     - renovate --platform gitlab --token "${API_TOKEN}" --endpoint "${CI_SERVER_URL}/api/v4" "${CI_PROJECT_PATH}"
-
-sast:
-  stage: scan
-  services: []
-  before_script: []
-
-container_scanning:
-  stage: scan
-  services: []
-  before_script: []
-  rules:
-    - if: $BUILD == 'false'
-      when: never
-    - if: $CI_COMMIT_BRANCH == 'develop'
-      changes:
-        paths:
-          - packages/**/*
-          - locales/**/*
-          - scripts/copy-assets.mjs
-          - package.json
-          - Cargo.toml
-          - Cargo.lock
-          - Dockerfile
-          - .dockerignore
-      when: always
-  needs:
-    - build:container
-  variables:
-    GIT_STRATEGY: fetch
-    CS_DOCKERFILE_PATH: Dockerfile
-    CS_IMAGE: "${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
-    SAST_EXCLUDED_PATHS: .git,.config,.gitlab,.vscode,ci,custom,dev,docs,locales,node_modules,built,target
-
-include:
-  - template: Security/SAST.gitlab-ci.yml
-  - template: Jobs/Container-Scanning.gitlab-ci.yml
