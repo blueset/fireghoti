@@ -8,7 +8,7 @@ RUN curl --proto '=https' --tlsv1.2 --silent --show-error --fail https://sh.rust
 ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Copy only backend-rs dependency-related files first, to cache efficiently
-COPY package.json pnpm*.yaml ./
+COPY package.json pnpm-workspace.yaml ./
 COPY packages/backend-rs/package.json packages/backend-rs/package.json
 COPY packages/backend-rs/npm/linux-x64-musl/package.json packages/backend-rs/npm/linux-x64-musl/package.json
 COPY packages/backend-rs/npm/linux-arm64-musl/package.json packages/backend-rs/npm/linux-arm64-musl/package.json
@@ -21,7 +21,7 @@ COPY packages/macro-rs/Cargo.toml packages/macro-rs/Cargo.toml
 COPY packages/macro-rs/src/lib.rs packages/macro-rs/src/
 
 # Configure pnpm, and install backend-rs dependencies
-RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm --filter backend-rs install --frozen-lockfile
+RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm --filter backend-rs install
 RUN cargo fetch --locked --manifest-path /firefish/packages/backend-rs/Cargo.toml
 
 # Copy in the rest of the rust files
@@ -40,6 +40,7 @@ COPY packages/client/package.json packages/client/package.json
 COPY packages/sw/package.json packages/sw/package.json
 COPY packages/firefish-js/package.json packages/firefish-js/package.json
 COPY packages/megalodon/package.json packages/megalodon/package.json
+COPY pnpm-lock.yaml ./
 
 # Install dev mode dependencies for compilation
 RUN pnpm install --frozen-lockfile
