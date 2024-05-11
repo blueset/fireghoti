@@ -44,13 +44,13 @@ importers:
     dependencies:
       '@bull-board/api':
         specifier: 5.16.0
-        version: 5.16.0(@bull-board/ui@5.16.0)
+        version: 5.16.0(@bull-board/ui@5.17.1)
       '@bull-board/koa':
         specifier: 5.16.0
         version: 5.16.0(@types/koa@2.15.0)(lodash@4.17.21)(pug@3.0.2)
       '@bull-board/ui':
-        specifier: 5.16.0
-        version: 5.16.0
+        specifier: 5.17.1
+        version: 5.17.1
       '@discordapp/twemoji':
         specifier: ^15.0.3
         version: 15.0.3
@@ -1365,11 +1365,19 @@ packages:
     peerDependencies:
       '@bull-board/ui': 5.16.0
 
+  '@bull-board/api@5.17.1':
+    resolution: {integrity: sha512-KQaH3z2YJxN2h+Kh4ZJ341NNEFwrsNeZAu9FtQX8h4G0nkSw3FSlgWDO6UrN0b448+co/gWTT6qZz0st2fFmPg==}
+    peerDependencies:
+      '@bull-board/ui': 5.17.1
+
   '@bull-board/koa@5.16.0':
     resolution: {integrity: sha512-AB5ys7bKBlCpyFncVsVGAYIVFFJk6vGBtLHn7xNAVqeBAUM3r+n9VxbxW/Or+L6XJWWEzDIElmQgD3OM/sv4aw==}
 
   '@bull-board/ui@5.16.0':
     resolution: {integrity: sha512-XJoHVKUDWCjOb0kMTKs1wTqn5p9mvFUFurTVNcbhPuqkIPoPJLuKhE8a7FvpTIK+HA5NhFRllaRK3K9/Y8JzIA==}
+
+  '@bull-board/ui@5.17.1':
+    resolution: {integrity: sha512-/BO4C454w7ar5ZaHfcThEY2A2SYD9YkQkBizq8o9sjglVctpnnnh37YY2iOVRZCZFXMKIe7t05Kd9/9p3IPvSw==}
 
   '@cbor-extract/cbor-extract-darwin-arm64@2.2.0':
     resolution: {integrity: sha512-P7swiOAdF7aSi0H+tHtHtr6zrpF3aAq/W9FXx5HektRvLTM2O89xCyXF3pk7pLc7QpaY7AoaE8UowVf9QBdh3w==}
@@ -9026,6 +9034,16 @@ snapshots:
       '@bull-board/ui': 5.16.0
       redis-info: 3.1.0
 
+  '@bull-board/api@5.16.0(@bull-board/ui@5.17.1)':
+    dependencies:
+      '@bull-board/ui': 5.17.1
+      redis-info: 3.1.0
+
+  '@bull-board/api@5.17.1(@bull-board/ui@5.17.1)':
+    dependencies:
+      '@bull-board/ui': 5.17.1
+      redis-info: 3.1.0
+
   '@bull-board/koa@5.16.0(@types/koa@2.15.0)(lodash@4.17.21)(pug@3.0.2)':
     dependencies:
       '@bull-board/api': 5.16.0(@bull-board/ui@5.16.0)
@@ -9095,6 +9113,10 @@ snapshots:
   '@bull-board/ui@5.16.0':
     dependencies:
       '@bull-board/api': 5.16.0(@bull-board/ui@5.16.0)
+
+  '@bull-board/ui@5.17.1':
+    dependencies:
+      '@bull-board/api': 5.17.1(@bull-board/ui@5.17.1)
 
   '@cbor-extract/cbor-extract-darwin-arm64@2.2.0':
     optional: true

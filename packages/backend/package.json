@@ -24,7 +24,7 @@
 	"dependencies": {
 		"@bull-board/api": "5.16.0",
 		"@bull-board/koa": "5.16.0",
-		"@bull-board/ui": "5.16.0",
+		"@bull-board/ui": "5.17.1",
 		"@discordapp/twemoji": "^15.0.3",
 		"@koa/cors": "5.0.0",
 		"@koa/multer": "3.0.2",
