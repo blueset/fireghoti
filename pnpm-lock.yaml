@@ -241,8 +241,8 @@ importers:
         specifier: 0.0.14
         version: 0.0.14
       otpauth:
-        specifier: ^9.2.3
-        version: 9.2.3
+        specifier: ^9.2.4
+        version: 9.2.4
       parse5:
         specifier: 7.1.2
         version: 7.1.2
@@ -6591,8 +6591,8 @@ packages:
   os-utils@0.0.14:
     resolution: {integrity: sha512-ajB8csaHLBvJOYsHJkp8YdO2FvlBbf/ZxaYQwXXRDyQ84UoE+uTuLXxqd0shekXMX6Qr/pt/DDyLMRAMsgfWzg==}
 
-  otpauth@9.2.3:
-    resolution: {integrity: sha512-oAG55Ch4MBL5Jdg+RXfKiRCZ2lCwa/UIQKsmSfYbGGLSI4dErY1HPZv0JGPPESIYGyDO3s9iJqM4HU/1IppMoQ==}
+  otpauth@9.2.4:
+    resolution: {integrity: sha512-t0Nioq2Up2ZaT5AbpXZLTjrsNtLc/g/rVSaEThmKLErAuT9mrnAKJryiPOKc3rCH+3ycWBgKpRHYn+DHqfaPiQ==}
 
   p-cancelable@2.1.1:
     resolution: {integrity: sha512-BZOr3nRQHOntUjTrH8+Lh54smKHoHyur8We1V8DSMVrl5A2malOOwuJRnKRDjSnkoeBh4at6BwEnb5I7Jl31wg==}
@@ -15274,7 +15274,7 @@ snapshots:
 
   os-utils@0.0.14: {}
 
-  otpauth@9.2.3:
+  otpauth@9.2.4:
     dependencies:
       jssha: 3.3.1
 
