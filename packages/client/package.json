@@ -48,7 +48,7 @@
 		"cropperjs": "2.0.0-beta.5",
 		"date-fns": "3.6.0",
 		"emojilib": "^3.0.12",
-		"eslint-plugin-file-progress": "^1.3.0",
+		"eslint-plugin-file-progress": "^1.4.0",
 		"eventemitter3": "5.0.1",
 		"fast-blurhash": "^1.1.2",
 		"firefish-js": "workspace:*",
