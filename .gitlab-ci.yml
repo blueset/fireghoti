@@ -107,6 +107,9 @@ test:build:backend_ts_only:
     - apt-get install -y --no-install-recommends build-essential python3 nodejs postgresql-client
     - corepack enable
     - corepack prepare pnpm@latest --activate
+    - mkdir -p packages/backend-rs/built
+    - cp packages/backend-rs/index.js packages/backend-rs/built/index.js
+    - cp packages/backend-rs/index.d.ts packages/backend-rs/built/index.d.ts
     - cp .config/ci.yml .config/default.yml
     - export PGPASSWORD="${POSTGRES_PASSWORD}"
     - psql --host postgres --user "${POSTGRES_USER}" --dbname "${POSTGRES_DB}" --command 'CREATE EXTENSION pgroonga'
