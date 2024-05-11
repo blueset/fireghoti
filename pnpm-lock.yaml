@@ -310,8 +310,8 @@ importers:
         specifier: 1.0.0
         version: 1.0.0
       systeminformation:
-        specifier: 5.22.7
-        version: 5.22.7
+        specifier: 5.22.8
+        version: 5.22.8
       tar-stream:
         specifier: ^3.1.7
         version: 3.1.7
@@ -7662,8 +7662,8 @@ packages:
     resolution: {integrity: sha512-7SNMJKtQBJlwBUp1jxFT7bXya71cnINXPCYJ2AVhlQE4MKL7o2QiPdAXbMdWRiLeykQ2rx+7TNrnoGzvzhO+eA==}
     engines: {node: '>=10.0.0'}
 
-  systeminformation@5.22.7:
-    resolution: {integrity: sha512-AWxlP05KeHbpGdgvZkcudJpsmChc2Y5Eo/GvxG/iUA/Aws5LZKHAMSeAo+V+nD+nxWZaxrwpWcnx4SH3oxNL3A==}
+  systeminformation@5.22.8:
+    resolution: {integrity: sha512-F1iWQ+PSfOzvLMGh2UXASaWLDq5o+1h1db13Kddl6ojcQ47rsJhpMtRrmBXfTA5QJgutC4KV67YRmXLuroIxrA==}
     engines: {node: '>=8.0.0'}
     os: [darwin, linux, win32, freebsd, openbsd, netbsd, sunos, android]
     hasBin: true
@@ -16415,7 +16415,7 @@ snapshots:
     dependencies:
       moment: 2.29.4
 
-  systeminformation@5.22.7: {}
+  systeminformation@5.22.8: {}
 
   syuilo-password-strength@0.0.1: {}
 
