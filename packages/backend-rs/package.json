@@ -22,7 +22,7 @@
 		}
 	},
 	"devDependencies": {
-		"@napi-rs/cli": "2.18.1"
+		"@napi-rs/cli": "2.18.3"
 	},
 	"engines": {
 		"node": ">= 10"
