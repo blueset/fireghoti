@@ -24,16 +24,6 @@ workflow:
       when: always
     - when: never
 
-cache:
-  paths:
-    - node_modules
-    # - /usr/local/cargo/registry/index
-    # - /usr/local/cargo/registry/cache
-    - target/debug/deps
-    - target/debug/build
-    - packages/backend-rs/built
-    - built
-
 stages:
   - dependency
   - test
@@ -51,6 +41,7 @@ variables:
   CARGO_PROFILE_DEV_DEBUG: 'none'
   CARGO_TERM_COLOR: 'always'
   SAST_EXCLUDED_ANALYZERS: 'nodejs-scan'
+  GIT_CLEAN_FLAGS: -ffdx -e node_modules/ -e built/ -e target/ -e packages/backend-rs/built/
 
 default:
   before_script:
