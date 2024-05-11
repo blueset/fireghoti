@@ -573,8 +573,8 @@ importers:
         specifier: 0.19.6
         version: 0.19.6
       '@types/prismjs':
-        specifier: ^1.26.3
-        version: 1.26.3
+        specifier: ^1.26.4
+        version: 1.26.4
       '@types/punycode':
         specifier: 2.1.4
         version: 2.1.4
@@ -2715,8 +2715,8 @@ packages:
   '@types/pg@8.11.6':
     resolution: {integrity: sha512-/2WmmBXHLsfRqzfHW7BNZ8SbYzE8OSk7i3WjFYvfgRHj7S1xj+16Je5fUKv3lVdVzk/zn9TXOqf+avFCFIE0yQ==}
 
-  '@types/prismjs@1.26.3':
-    resolution: {integrity: sha512-A0D0aTXvjlqJ5ZILMz3rNfDBOx9hHxLZYv2by47Sm/pqW35zzjusrZTryatjN/Rf8Us2gZrJD+KeHbUSTux1Cw==}
+  '@types/prismjs@1.26.4':
+    resolution: {integrity: sha512-rlAnzkW2sZOjbqZ743IHUhFcvzaGbqijwOu8QZnZCjfQzBqFE3s4lOTJEsxikImav9uzz/42I+O7YUs1mWgMlg==}
 
   '@types/probe-image-size@7.2.4':
     resolution: {integrity: sha512-HVqYj3L+D+S/6qpQRv5qMxrD/5pglzZuhP7ZIqgVSZ+Ck4z1TCFkNIRG8WesFueQTqWFTSgkkAl6f8lwxFPQSw==}
@@ -10517,7 +10517,7 @@ snapshots:
       pg-protocol: 1.6.1
       pg-types: 4.0.1
 
-  '@types/prismjs@1.26.3': {}
+  '@types/prismjs@1.26.4': {}
 
   '@types/probe-image-size@7.2.4':
     dependencies:
