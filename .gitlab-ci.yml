@@ -299,6 +299,8 @@ container_scanning:
   needs:
     - build:container
   variables:
+    GIT_STRATEGY: fetch
+    CS_DOCKERFILE_PATH: Dockerfile
     CS_IMAGE: "${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
 
 include:
