@@ -24,9 +24,6 @@
 	"devDependencies": {
 		"@napi-rs/cli": "2.18.3"
 	},
-	"engines": {
-		"node": ">= 10"
-	},
 	"scripts": {
 		"artifacts": "napi artifacts",
 		"build": "napi build --features napi --no-const-enum --platform --release ./built/",
