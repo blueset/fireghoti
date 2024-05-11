@@ -96,8 +96,8 @@ test:build:backend_ts_only:
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
         paths:
-          - packages/backend-rs/*
-          - packages/macro-rs/*
+          - packages/backend-rs/**/*
+          - packages/macro-rs/**/*
           - scripts/**/*
           - package.json
           - pnpm-lock.yaml
