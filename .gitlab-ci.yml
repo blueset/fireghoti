@@ -10,30 +10,24 @@ services:
 
 workflow:
   rules:
-    - if: $CI_PROJECT_PATH == 'firefish/firefish'
-      when: always
-    - if: $CI_MERGE_REQUEST_PROJECT_PATH == 'firefish/firefish'
-      when: always
-    - if: $CI_PROJECT_PATH != 'firefish/firefish'
+    - if: $CI_PROJECT_PATH == 'firefish/firefish' || $CI_MERGE_REQUEST_PROJECT_PATH == 'firefish/firefish'
       changes:
         paths:
-          - .gitlab-ci.yml
-      when: never
+          - packages/**/*
+          - locales/**/*
+          - scripts/**/*
+          - package.json
+          - Cargo.toml
+          - Cargo.lock
+          - Dockerfile
+          - .dockerignore
+      when: always
     - when: never
-
-cache:
-  paths:
-    - node_modules
-    # - /usr/local/cargo/registry/index
-    # - /usr/local/cargo/registry/cache
-    - target/debug/deps
-    - target/debug/build
 
 stages:
   - dependency
   - test
   - build
-  - scan
 
 variables:
   POSTGRES_DB: 'firefish_db'
@@ -45,6 +39,7 @@ variables:
   CARGO_PROFILE_DEV_LTO: 'off'
   CARGO_PROFILE_DEV_DEBUG: 'none'
   CARGO_TERM_COLOR: 'always'
+  GIT_CLEAN_FLAGS: -ffdx -e node_modules/ -e built/ -e target/ -e packages/backend-rs/built/
 
 default:
   before_script:
@@ -67,13 +62,10 @@ test:build:
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
         paths:
-          - packages/backend/*
-          - packages/backend-rs/*
-          - packages/macro-rs/*
-          - packages/megalodon/*
+          - packages/backend-rs/**/*
+          - packages/macro-rs/**/*
           - scripts/**/*
           - package.json
-          - pnpm-lock.yaml
           - Cargo.toml
           - Cargo.lock
       when: always
@@ -87,6 +79,42 @@ test:build:
     - pnpm run build:debug
     - pnpm run migrate
 
+test:build:backend_ts_only:
+  stage: test
+  rules:
+    - if: $TEST == 'false'
+      when: never
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+      changes:
+        paths:
+          - packages/backend-rs/**/*
+          - packages/macro-rs/**/*
+          - scripts/**/*
+          - package.json
+          - Cargo.toml
+          - Cargo.lock
+      when: never 
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+      changes:
+        paths:
+          - packages/backend/**/*
+          - packages/megalodon/**/*
+      when: always
+  before_script:
+    - apt-get update && apt-get -y upgrade
+    - apt-get -y --no-install-recommends install curl
+    - curl -fsSL 'https://deb.nodesource.com/setup_18.x' | bash -
+    - apt-get install -y --no-install-recommends build-essential python3 nodejs postgresql-client
+    - corepack enable
+    - corepack prepare pnpm@latest --activate
+    - cp .config/ci.yml .config/default.yml
+    - export PGPASSWORD="${POSTGRES_PASSWORD}"
+    - psql --host postgres --user "${POSTGRES_USER}" --dbname "${POSTGRES_DB}" --command 'CREATE EXTENSION pgroonga'
+  script:
+    - pnpm install --frozen-lockfile
+    - pnpm --filter 'backend' --filter 'megalodon' run build:debug
+    - pnpm run migrate
+
 test:build:client_only:
   stage: test
   rules:
@@ -95,22 +123,19 @@ test:build:client_only:
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
         paths:
-          - packages/backend/*
-          - packages/backend-rs/*
-          - packages/macro-rs/*
-          - packages/megalodon/*
+          - packages/backend-rs/**/*
+          - packages/macro-rs/**/*
           - scripts/**/*
           - package.json
-          - pnpm-lock.yaml
           - Cargo.toml
           - Cargo.lock
       when: never
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
         paths:
-          - packages/client/*
-          - packages/firefish-js/*
-          - packages/sw/*
+          - packages/client/**/*
+          - packages/firefish-js/**/*
+          - packages/sw/**/*
           - locales/**/*
       when: always
   services: []
@@ -140,7 +165,6 @@ build:container:
           - locales/**/*
           - scripts/copy-assets.mjs
           - package.json
-          - pnpm-lock.yaml
           - Cargo.toml
           - Cargo.lock
           - Dockerfile
@@ -148,6 +172,8 @@ build:container:
       when: always
   needs:
     - job: test:build
+      optional: true
+    - job: test:build:backend_ts_only
       optional: true
     - job: test:build:client_only
       optional: true
@@ -234,39 +260,3 @@ renovate:
   before_script: []
   script:
     - renovate --platform gitlab --token "${API_TOKEN}" --endpoint "${CI_SERVER_URL}/api/v4" "${CI_PROJECT_PATH}"
-
-sast:
-  stage: scan
-  services: []
-  before_script: []
-  variables:
-    SAST_EXCLUDED_PATHS: .git,.config,.gitlab,.vscode,ci,custom,dev,docs,locales,node_modules,target
-
-container_scanning:
-  stage: scan
-  services: []
-  before_script: []
-  rules:
-    - if: $BUILD == 'false'
-      when: never
-    - if: $CI_COMMIT_BRANCH == 'develop'
-      changes:
-        paths:
-          - packages/**/*
-          - locales/**/*
-          - scripts/copy-assets.mjs
-          - package.json
-          - pnpm-lock.yaml
-          - Cargo.toml
-          - Cargo.lock
-          - Dockerfile
-          - .dockerignore
-      when: always
-  needs:
-    - build:container
-  variables:
-    CS_IMAGE: "${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
-
-include:
-  - template: Security/SAST.gitlab-ci.yml
-  - template: Jobs/Container-Scanning.gitlab-ci.yml

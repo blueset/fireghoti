@@ -24,7 +24,7 @@
 	"dependencies": {
 		"@bull-board/api": "5.16.0",
 		"@bull-board/koa": "5.16.0",
-		"@bull-board/ui": "5.16.0",
+		"@bull-board/ui": "5.17.1",
 		"@discordapp/twemoji": "^15.0.3",
 		"@koa/cors": "5.0.0",
 		"@koa/multer": "3.0.2",
@@ -34,9 +34,9 @@
 		"@redocly/openapi-core": "1.12.0",
 		"@sinonjs/fake-timers": "11.2.2",
 		"adm-zip": "0.5.10",
-		"ajv": "8.12.0",
+		"ajv": "8.13.0",
 		"archiver": "7.0.1",
-		"aws-sdk": "2.1608.0",
+		"aws-sdk": "2.1618.0",
 		"axios": "^1.6.8",
 		"backend-rs": "workspace:*",
 		"blurhash": "2.0.5",
@@ -111,9 +111,9 @@
 		"stringz": "2.1.0",
 		"summaly": "2.7.0",
 		"syslog-pro": "1.0.0",
-		"systeminformation": "5.22.7",
+		"systeminformation": "5.22.8",
 		"tar-stream": "^3.1.7",
-		"tesseract.js": "^5.0.5",
+		"tesseract.js": "^5.1.0",
 		"tinycolor2": "1.6.0",
 		"tmp": "0.2.3",
 		"typeorm": "0.3.20",
@@ -133,7 +133,7 @@
 		"@types/fluent-ffmpeg": "2.1.24",
 		"@types/jsdom": "21.1.6",
 		"@types/jsonld": "1.5.13",
-		"@types/jsrsasign": "10.5.13",
+		"@types/jsrsasign": "10.5.14",
 		"@types/katex": "0.16.7",
 		"@types/koa": "2.15.0",
 		"@types/koa-bodyparser": "4.3.12",
@@ -148,7 +148,7 @@
 		"@types/mocha": "10.0.6",
 		"@types/node": "20.12.7",
 		"@types/node-fetch": "2.6.11",
-		"@types/nodemailer": "6.4.14",
+		"@types/nodemailer": "6.4.15",
 		"@types/oauth": "0.9.4",
 		"@types/opencc-js": "^1.0.3",
 		"@types/pg": "^8.11.5",
@@ -182,6 +182,6 @@
 		"type-fest": "4.17.0",
 		"typescript": "5.4.5",
 		"webpack": "^5.91.0",
-		"ws": "8.16.0"
+		"ws": "8.17.0"
 	}
 }
