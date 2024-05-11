@@ -22,7 +22,7 @@ COPY packages/macro-rs/src/lib.rs packages/macro-rs/src/
 
 # Configure pnpm, and install backend-rs dependencies
 RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm --filter backend-rs install
-RUN cargo fetch --locked --manifest-path /firefish/packages/backend-rs/Cargo.toml
+RUN cargo fetch --locked --manifest-path Cargo.toml
 
 # Copy in the rest of the rust files
 COPY packages/backend-rs packages/backend-rs/
