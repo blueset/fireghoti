@@ -10,15 +10,18 @@ services:
 
 workflow:
   rules:
-    - if: $CI_PROJECT_PATH == 'firefish/firefish'
-      when: always
-    - if: $CI_MERGE_REQUEST_PROJECT_PATH == 'firefish/firefish'
-      when: always
-    - if: $CI_PROJECT_PATH != 'firefish/firefish'
+    - if: $CI_PROJECT_PATH == 'firefish/firefish' || $CI_MERGE_REQUEST_PROJECT_PATH == 'firefish/firefish'
       changes:
         paths:
-          - .gitlab-ci.yml
-      when: never
+          - packages/**/*
+          - locales/**/*
+          - scripts/**/*
+          - package.json
+          - Cargo.toml
+          - Cargo.lock
+          - Dockerfile
+          - .dockerignore
+      when: always
     - when: never
 
 cache:
@@ -74,7 +77,6 @@ test:build:
           - packages/macro-rs/**/*
           - scripts/**/*
           - package.json
-          - pnpm-lock.yaml
           - Cargo.toml
           - Cargo.lock
       when: always
@@ -100,7 +102,6 @@ test:build:backend_ts_only:
           - packages/macro-rs/**/*
           - scripts/**/*
           - package.json
-          - pnpm-lock.yaml
           - Cargo.toml
           - Cargo.lock
       when: never 
@@ -137,7 +138,6 @@ test:build:client_only:
           - packages/macro-rs/**/*
           - scripts/**/*
           - package.json
-          - pnpm-lock.yaml
           - Cargo.toml
           - Cargo.lock
       when: never
@@ -176,7 +176,6 @@ build:container:
           - locales/**/*
           - scripts/copy-assets.mjs
           - package.json
-          - pnpm-lock.yaml
           - Cargo.toml
           - Cargo.lock
           - Dockerfile
@@ -292,7 +291,6 @@ container_scanning:
           - locales/**/*
           - scripts/copy-assets.mjs
           - package.json
-          - pnpm-lock.yaml
           - Cargo.toml
           - Cargo.lock
           - Dockerfile
