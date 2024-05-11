@@ -429,8 +429,8 @@ importers:
         specifier: ^1.0.3
         version: 1.0.3
       '@types/pg':
-        specifier: ^8.11.5
-        version: 8.11.5
+        specifier: ^8.11.6
+        version: 8.11.6
       '@types/probe-image-size':
         specifier: ^7.2.4
         version: 7.2.4
@@ -2712,8 +2712,8 @@ packages:
   '@types/parse-link-header@2.0.2':
     resolution: {integrity: sha512-RKU5SIF0oyM2ZI0ubw66FkM/0RJUv/r84I7vJcXkcICcfeOpd1WXfpcqkFJPaWli5z3YdxMsfWojyU5uofT6sA==}
 
-  '@types/pg@8.11.5':
-    resolution: {integrity: sha512-2xMjVviMxneZHDHX5p5S6tsRRs7TpDHeeK7kTTMe/kAC/mRRNjWHjZg0rkiY+e17jXSZV3zJYDxXV8Cy72/Vuw==}
+  '@types/pg@8.11.6':
+    resolution: {integrity: sha512-/2WmmBXHLsfRqzfHW7BNZ8SbYzE8OSk7i3WjFYvfgRHj7S1xj+16Je5fUKv3lVdVzk/zn9TXOqf+avFCFIE0yQ==}
 
   '@types/prismjs@1.26.3':
     resolution: {integrity: sha512-A0D0aTXvjlqJ5ZILMz3rNfDBOx9hHxLZYv2by47Sm/pqW35zzjusrZTryatjN/Rf8Us2gZrJD+KeHbUSTux1Cw==}
@@ -10520,7 +10520,7 @@ snapshots:
 
   '@types/parse-link-header@2.0.2': {}
 
-  '@types/pg@8.11.5':
+  '@types/pg@8.11.6':
     dependencies:
       '@types/node': 20.12.7
       pg-protocol: 1.6.1
