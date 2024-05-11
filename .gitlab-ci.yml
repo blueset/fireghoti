@@ -302,6 +302,7 @@ container_scanning:
     GIT_STRATEGY: fetch
     CS_DOCKERFILE_PATH: Dockerfile
     CS_IMAGE: "${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
+    SAST_EXCLUDED_PATHS: .git,.config,.gitlab,.vscode,ci,custom,dev,docs,locales,node_modules,built,target
 
 include:
   - template: Security/SAST.gitlab-ci.yml
