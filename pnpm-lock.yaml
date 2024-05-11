@@ -598,7 +598,7 @@ importers:
         version: 9.0.8
       '@vitejs/plugin-vue':
         specifier: 5.0.4
-        version: 5.0.4(vite@5.2.10(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0))(vue@3.4.27(typescript@5.4.5))
+        version: 5.0.4(vite@5.2.11(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0))(vue@3.4.27(typescript@5.4.5))
       '@vue/runtime-core':
         specifier: 3.4.27
         version: 3.4.27
@@ -753,11 +753,11 @@ importers:
         specifier: 9.0.1
         version: 9.0.1
       vite:
-        specifier: 5.2.10
-        version: 5.2.10(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0)
+        specifier: 5.2.11
+        version: 5.2.11(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0)
       vite-plugin-compression:
         specifier: ^0.5.1
-        version: 0.5.1(vite@5.2.10(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0))
+        version: 0.5.1(vite@5.2.11(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0))
       vue:
         specifier: 3.4.27
         version: 3.4.27(typescript@5.4.5)
@@ -945,11 +945,11 @@ importers:
         specifier: ^6.2.1
         version: 6.2.1
       vite:
-        specifier: 5.2.10
-        version: 5.2.10(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0)
+        specifier: 5.2.11
+        version: 5.2.11(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0)
       vite-plugin-compression:
         specifier: ^0.5.1
-        version: 0.5.1(vite@5.2.10(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0))
+        version: 0.5.1(vite@5.2.11(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0))
 
 packages:
 
@@ -8157,8 +8157,8 @@ packages:
     peerDependencies:
       vite: '>=2.0.0'
 
-  vite@5.2.10:
-    resolution: {integrity: sha512-PAzgUZbP7msvQvqdSD+ErD5qGnSFiGOoWmV5yAKUEI0kdhjbH6nMWVyZQC/hSc4aXwc0oJ9aEdIiF9Oje0JFCw==}
+  vite@5.2.11:
+    resolution: {integrity: sha512-HndV31LWW05i1BLPMUCE1B9E9GFbOu1MbenhS58FuK6owSO5qHm7GiCotrNY1YE5rMeQSFBGmT5ZaLEjFizgiQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -10853,9 +10853,9 @@ snapshots:
       '@typescript-eslint/types': 6.21.0
       eslint-visitor-keys: 3.4.3
 
-  '@vitejs/plugin-vue@5.0.4(vite@5.2.10(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0))(vue@3.4.27(typescript@5.4.5))':
+  '@vitejs/plugin-vue@5.0.4(vite@5.2.11(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0))(vue@3.4.27(typescript@5.4.5))':
     dependencies:
-      vite: 5.2.10(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0)
+      vite: 5.2.11(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0)
       vue: 3.4.27(typescript@5.4.5)
 
   '@volar/language-core@2.2.0-alpha.10':
@@ -15505,7 +15505,7 @@ snapshots:
       debug: 4.3.4(supports-color@8.1.1)
       fast-diff: 1.3.0
       lodash.sortedlastindex: 4.1.0
-      postcss: 8.4.31
+      postcss: 8.4.38
       stylus: 0.57.0
     transitivePeerDependencies:
       - supports-color
@@ -16892,16 +16892,16 @@ snapshots:
       core-util-is: 1.0.2
       extsprintf: 1.3.0
 
-  vite-plugin-compression@0.5.1(vite@5.2.10(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0)):
+  vite-plugin-compression@0.5.1(vite@5.2.11(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0)):
     dependencies:
       chalk: 4.1.2
       debug: 4.3.4(supports-color@8.1.1)
       fs-extra: 10.1.0
-      vite: 5.2.10(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0)
+      vite: 5.2.11(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0)
     transitivePeerDependencies:
       - supports-color
 
-  vite@5.2.10(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0):
+  vite@5.2.11(@types/node@20.12.7)(sass@1.75.0)(stylus@0.57.0)(terser@5.27.0):
     dependencies:
       esbuild: 0.20.2
       postcss: 8.4.38
