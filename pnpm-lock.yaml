@@ -375,8 +375,8 @@ importers:
         specifier: 1.5.13
         version: 1.5.13
       '@types/jsrsasign':
-        specifier: 10.5.13
-        version: 10.5.13
+        specifier: 10.5.14
+        version: 10.5.14
       '@types/katex':
         specifier: 0.16.7
         version: 0.16.7
@@ -2616,8 +2616,8 @@ packages:
   '@types/jsonld@1.5.13':
     resolution: {integrity: sha512-n7fUU6W4kSYK8VQlf/LsE9kddBHPKhODoVOjsZswmve+2qLwBy6naWxs/EiuSZN9NU0N06Ra01FR+j87C62T0A==}
 
-  '@types/jsrsasign@10.5.13':
-    resolution: {integrity: sha512-vvVHLrXxoUZgBWTcJnTMSC4FAQcG2loK7N1Uy20I3nr/aUhetbGdfuwSzXkrMoll2RoYKW0IcMIN0I0bwMwVMQ==}
+  '@types/jsrsasign@10.5.14':
+    resolution: {integrity: sha512-lppSlfK6etu+cuKs40K4rg8As79PH6hzIB+v55zSqImbSH3SE6Fm8MBHCiI91cWlAP3Z4igtJK1VL3fSN09blQ==}
 
   '@types/katex@0.16.7':
     resolution: {integrity: sha512-HMwFiRujE5PjrgwHQ25+bsLJgowjGjm5Z8FVSf0N6PwgJrwxH0QxzHYDcKsTfV3wva0vzrpqMTJS2jXPr5BMEQ==}
@@ -10403,7 +10403,7 @@ snapshots:
 
   '@types/jsonld@1.5.13': {}
 
-  '@types/jsrsasign@10.5.13': {}
+  '@types/jsrsasign@10.5.14': {}
 
   '@types/katex@0.16.7': {}
 
