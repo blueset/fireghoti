@@ -2332,3 +2332,9 @@ inputAccountId: Veuillez saisir votre compte (par exemple, @firefish@info.firefi
 remoteFollow: Abonnement à distance
 copyRemoteFollowUrl: Copier l'URL d'abonnement à distance
 slashQuote: Citation enchaînée
+i18nServerInfo: Les nouveaux clients seront en {language} par défaut.
+i18nServerChange: Utilisez {language} à la place.
+i18nServerSet: Utilisez {langue} pour les nouveaux clients.
+mergeThreadInTimeline: Fusionner plusieurs publications dans le même fil dans les
+  fils d'actualités
+mergeRenotesInTimeline: Regrouper plusieurs boosts du même publication
