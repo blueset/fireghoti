@@ -9,16 +9,17 @@ import {
 } from "@/models/index.js";
 import {
 	genId,
+	sendPushNotification,
 	publishToChatStream,
 	publishToGroupChatStream,
 	publishToChatIndexStream,
 	toPuny,
 	ChatEvent,
 	ChatIndexEvent,
+	PushNotificationKind,
 } from "backend-rs";
 import type { MessagingMessage } from "@/models/entities/messaging-message.js";
 import { publishMainStream } from "@/services/stream.js";
-import { pushNotification } from "@/services/push-notification.js";
 import { Not } from "typeorm";
 import type { Note } from "@/models/entities/note.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
@@ -118,7 +119,11 @@ export async function createMessage(
 			//#endregion
 
 			publishMainStream(recipientUser.id, "unreadMessagingMessage", messageObj);
-			pushNotification(recipientUser.id, "unreadMessagingMessage", messageObj);
+			sendPushNotification(
+				recipientUser.id,
+				PushNotificationKind.Chat,
+				messageObj,
+			);
 		} else if (recipientGroup) {
 			const joinings = await UserGroupJoinings.findBy({
 				userGroupId: recipientGroup.id,
@@ -127,7 +132,11 @@ export async function createMessage(
 			for (const joining of joinings) {
 				if (freshMessage.reads.includes(joining.userId)) return; // 既読
 				publishMainStream(joining.userId, "unreadMessagingMessage", messageObj);
-				pushNotification(joining.userId, "unreadMessagingMessage", messageObj);
+				sendPushNotification(
+					joining.userId,
+					PushNotificationKind.Chat,
+					messageObj,
+				);
 			}
 		}
 	}, 2000);

@@ -1,4 +1,7 @@
+use serde::{Deserialize, Serialize};
+
 // TODO: handle name collisions in a better way
+#[derive(Debug, Deserialize, Serialize)]
 #[crate::export(object, js_name = "NoteLikeForGetNoteSummary")]
 pub struct NoteLike {
     pub file_ids: Vec<String>,
