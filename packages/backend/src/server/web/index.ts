@@ -149,7 +149,7 @@ router.get<{ Params: { path: string } }>("/emoji/:path(.*)", async (ctx) => {
 		return;
 	}
 
-	let url = new URL(`${config.mediaProxy || config.url + "/proxy"}/emoji.webp`);
+	const url = new URL(`${config.mediaProxy || `${config.url}/proxy`}/emoji.webp`);
 	// || emoji.originalUrl してるのは後方互換性のため
 	url.searchParams.append("url", emoji.publicUrl || emoji.originalUrl);
 	url.searchParams.append("emoji", "1");
@@ -370,9 +370,7 @@ const getFeed = async (
 };
 
 // As the /@user[.json|.rss|.atom]/sub endpoint is complicated, we will use a regex to switch between them.
-const reUser = new RegExp(
-	"^/@(?<user>[^/]+?)(?:.(?<feed>json|rss|atom)(?:\\?[^/]*)?)?(?:/(?<sub>[^/]+))?$",
-);
+const reUser = /^\/@(?<user>[^\/]+?)(?:.(?<feed>json|rss|atom)(?:\?[^\/]*)?)?(?:\/(?<sub>[^\/]+))?$/;
 router.get(reUser, async (ctx, next) => {
 	const groups = reUser.exec(ctx.originalUrl)?.groups;
 	if (!groups) {

@@ -5,7 +5,8 @@ import { config } from "@/config.js";
 const manifest = {
 	short_name: "Firefish",
 	name: "Firefish",
-	description: "An open source, decentralized social media platform that's free forever!",
+	description:
+		"An open source, decentralized social media platform that's free forever!",
 	start_url: "/",
 	scope: "/",
 	display: "standalone",
@@ -17,34 +18,34 @@ const manifest = {
 			src: "/static-assets/icons/192.png",
 			sizes: "192x192",
 			type: "image/png",
-			purpose: "any"
+			purpose: "any",
 		},
 		{
 			src: "/static-assets/icons/512.png",
 			sizes: "512x512",
 			type: "image/png",
-			purpose: "any"
+			purpose: "any",
 		},
 		{
 			src: "/static-assets/icons/maskable.png",
 			sizes: "512x512",
 			type: "image/png",
-			purpose: "maskable"
+			purpose: "maskable",
 		},
 		{
 			src: "/static-assets/icons/monochrome.png",
 			sizes: "512x512",
 			type: "image/png",
-			purpose: "monochrome"
-		}
+			purpose: "monochrome",
+		},
 	],
 	share_target: {
 		action: "/share/",
 		params: {
 			title: "title",
 			text: "text",
-			url: "url"
-		}
+			url: "url",
+		},
 	},
 	screenshots: [
 		{
@@ -52,28 +53,28 @@ const manifest = {
 			sizes: "1080x2340",
 			type: "image/webp",
 			platform: "narrow",
-			label: "Profile page"
+			label: "Profile page",
 		},
 		{
 			src: "/static-assets/screenshots/2.webp",
 			sizes: "1080x2340",
 			type: "image/webp",
 			platform: "narrow",
-			label: "Posts"
-		}
+			label: "Posts",
+		},
 	],
 	shortcuts: [
 		{
 			name: "Notifications",
 			short_name: "Notifs",
-			url: "/my/notifications"
+			url: "/my/notifications",
 		},
 		{
 			name: "Chats",
-			url: "/my/messaging"
-		}
+			url: "/my/messaging",
+		},
 	],
-	categories: ["social"]
+	categories: ["social"],
 };
 
 export const manifestHandler = async (ctx: Koa.Context) => {
