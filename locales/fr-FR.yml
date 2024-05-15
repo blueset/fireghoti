@@ -1142,8 +1142,8 @@ _wordMute:
   mutedNotes: "Publications masquées"
   muteLangsDescription2: Utiliser les codes de langue (i.e en, fr, ja, zh).
   lang: Langue
-  langDescription: Cacher du fil de publication les publications qui correspondent
-    à ces langues.
+  langDescription: Cachez les publications qui correspondent à la langue définie dans
+    le fil d'actualité.
   muteLangs: Langues filtrées
   muteLangsDescription: Séparer avec des espaces ou des retours à la ligne pour une
     condition OU (OR).
@@ -1260,7 +1260,7 @@ _tutorial:
   step2_2: "En fournissant quelques informations sur qui vous êtes, il sera plus facile
     pour les autres de savoir s'ils veulent voir vos publcations ou s'abonner à vous."
   step3_1: "Maintenant il est temps de vous abonner à des gens !"
-  step3_2: "Vos fils d'actualités Principal et Social sont basés sur les personnes
+  step3_2: "Vos fils d'actualité Principal et Social sont basés sur les personnes
     que vous êtes abonné, alors essayez de vous abonner à quelques comptes pour commencer.\n
     Cliquez sur le cercle « plus » en haut à droite d'un profil pour vous abonner."
   step4_1: "On y va."
@@ -2334,7 +2334,7 @@ copyRemoteFollowUrl: Copier l'URL d'abonnement à distance
 slashQuote: Citation enchaînée
 i18nServerInfo: Les nouveaux clients seront en {language} par défaut.
 i18nServerChange: Utilisez {language} à la place.
-i18nServerSet: Utilisez {langue} pour les nouveaux clients.
+i18nServerSet: Utilisez {language} pour les nouveaux clients.
 mergeThreadInTimeline: Fusionner plusieurs publications dans le même fil dans les
-  fils d'actualités
+  fils d'actualité
 mergeRenotesInTimeline: Regrouper plusieurs boosts du même publication
