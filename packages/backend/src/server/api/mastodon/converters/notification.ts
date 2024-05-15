@@ -181,10 +181,10 @@ export class NotificationConverter {
 		subscription: SwSubscription,
 		type: T,
 		body: pushNotificationsTypes[T],
-		lang = "en_US",
+		lang = "en-US",
 	): Promise<Partial<MastodonEntity.NotificationPayload>> {
 		if (!subscription.appAccessToken) return {};
-		const locale = locales[lang] || locales.en_US;
+		const locale = locales[lang] || locales["en-US"];
 		const i18n = new I18n(locale);
 
 		const app = subscription.appAccessToken.appId
