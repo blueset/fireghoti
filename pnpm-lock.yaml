@@ -756,8 +756,8 @@ importers:
         specifier: 3.4.27
         version: 3.4.27(typescript@5.4.5)
       vue-draggable-plus:
-        specifier: 0.4.0
-        version: 0.4.0(@types/sortablejs@1.15.8)
+        specifier: 0.4.1
+        version: 0.4.1(@types/sortablejs@1.15.8)
       vue-plyr:
         specifier: 7.0.0
         version: 7.0.0
@@ -7770,8 +7770,8 @@ packages:
   vscode-textmate@8.0.0:
     resolution: {integrity: sha512-AFbieoL7a5LMqcnOF04ji+rpXadgOXnZsxQr//r83kLPr7biP7am3g9zbaZIaBGwBRWeSvoMD4mgPdX3e4NWBg==}
 
-  vue-draggable-plus@0.4.0:
-    resolution: {integrity: sha512-CcvSopMmSZY9McCdQ56QsAydT5cZilx9LzLU0UIz6KDYe9ll6QnmNHN80t6wnxN402ZECSXc5X1dm/myiMFi+A==}
+  vue-draggable-plus@0.4.1:
+    resolution: {integrity: sha512-KNi+c482OQUZTZ2kXIGc41fEwknkNF+LlngjBr5TVtBLNvpX2dmwRJJ3J7dy5dGcijXb7V1j+mhqce4iHOoi6Q==}
     peerDependencies:
       '@types/sortablejs': ^1.15.0
       '@vue/composition-api': '*'
@@ -16008,7 +16008,7 @@ snapshots:
 
   vscode-textmate@8.0.0: {}
 
-  vue-draggable-plus@0.4.0(@types/sortablejs@1.15.8):
+  vue-draggable-plus@0.4.1(@types/sortablejs@1.15.8):
     dependencies:
       '@types/sortablejs': 1.15.8
 
