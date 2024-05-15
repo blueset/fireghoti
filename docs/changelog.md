@@ -8,6 +8,8 @@ Critical security updates are indicated by the :warning: icon.
 ## Unreleased
 
 - Improve timeline UX
+- Remove `$[center]` MFM function
+	- This function was suddenly added last year (https://firefish.dev/firefish/firefish/-/commit/1a971efa689323d54eebb4d3646e102fb4d1d95a), but according to the [MFM spec](https://github.com/misskey-dev/mfm.js/blob/develop/docs/syntax.md#fn), `$[something]` must be an inline element (while `center` is a block element), so such a syntax is not expected by MFM renderers. Please use `<center></center>` instead.
 - Fix bugs
 
 ## [v20240504](https://firefish.dev/firefish/firefish/-/merge_requests/10790/commits)

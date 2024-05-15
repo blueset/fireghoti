@@ -349,17 +349,6 @@ export default defineComponent({
 										),
 									];
 								}
-								case "center": {
-									return [
-										h(
-											"div",
-											{
-												style: "text-align: center;",
-											},
-											genEl(token.children),
-										),
-									];
-								}
 							}
 							if (style == null) {
 								return [
