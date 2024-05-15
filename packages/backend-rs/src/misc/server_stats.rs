@@ -34,7 +34,7 @@ pub fn cpu_info() -> Result<Cpu, SystemMutexError> {
 
     Ok(Cpu {
         model: match system_info.cpus() {
-            cpus if cpus.is_empty() => {
+            [] => {
                 tracing::debug!("failed to get CPU info");
                 "unknown".to_string()
             }
