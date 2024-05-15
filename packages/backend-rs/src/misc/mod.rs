@@ -15,3 +15,4 @@ pub mod nyaify;
 pub mod password;
 pub mod reaction;
 pub mod remove_old_attestation_challenges;
+pub mod server_stats;

@@ -1,8 +1,12 @@
 import * as os from "node:os";
-import si from "systeminformation";
 import define from "@/server/api/define.js";
 import { redisClient } from "@/db/redis.js";
 import { db } from "@/db/postgre.js";
+import {
+	cpuInfo,
+	memoryUsage,
+	storageUsage,
+} from "backend-rs";
 
 export const meta = {
 	requireCredential: true,
@@ -85,19 +89,6 @@ export const meta = {
 					},
 				},
 			},
-			net: {
-				type: "object",
-				optional: false,
-				nullable: false,
-				properties: {
-					interface: {
-						type: "string",
-						optional: false,
-						nullable: false,
-						example: "eth0",
-					},
-				},
-			},
 		},
 	},
 } as const;
@@ -109,13 +100,10 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async () => {
-	const memStats = await si.mem();
-	const fsStats = await si.fsSize();
-	const netInterface = await si.networkInterfaceDefault();
-
 	const redisServerInfo = await redisClient.info("Server");
-	const m = redisServerInfo.match(new RegExp("^redis_version:(.*)", "m"));
+	const m = redisServerInfo.match(/^redis_version:(.*)/m);
 	const redis_version = m?.[1];
+	const storage = storageUsage();
 
 	return {
 		machine: os.hostname(),
@@ -125,19 +113,13 @@ export default define(meta, paramDef, async () => {
 			.query("SHOW server_version")
 			.then((x) => x[0].server_version),
 		redis: redis_version,
-		cpu: {
-			model: os.cpus()[0].model,
-			cores: os.cpus().length,
-		},
+		cpu: cpuInfo(),
 		mem: {
-			total: memStats.total,
+			total: memoryUsage().total,
 		},
 		fs: {
-			total: fsStats[0].size,
-			used: fsStats[0].used,
-		},
-		net: {
-			interface: netInterface,
+			total: storage?.total ?? 0,
+			used: storage?.used ?? 0,
 		},
 	};
 });

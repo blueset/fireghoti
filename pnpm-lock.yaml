@@ -237,9 +237,6 @@ importers:
       opencc-js:
         specifier: 1.0.5
         version: 1.0.5
-      os-utils:
-        specifier: 0.0.14
-        version: 0.0.14
       otpauth:
         specifier: 9.2.4
         version: 9.2.4
@@ -309,9 +306,6 @@ importers:
       syslog-pro:
         specifier: 1.0.0
         version: 1.0.0
-      systeminformation:
-        specifier: 5.22.8
-        version: 5.22.8
       tar-stream:
         specifier: 3.1.7
         version: 3.1.7
@@ -6210,9 +6204,6 @@ packages:
     resolution: {integrity: sha512-uksVLsqG3pVdzzPvmAHpBK0wKxYItuzZr7SziusRPoz67tGV8rL1szZ6IdeUrbqLjGDwApBtN29eEE3IqGHOjg==}
     engines: {node: '>=4'}
 
-  os-utils@0.0.14:
-    resolution: {integrity: sha512-ajB8csaHLBvJOYsHJkp8YdO2FvlBbf/ZxaYQwXXRDyQ84UoE+uTuLXxqd0shekXMX6Qr/pt/DDyLMRAMsgfWzg==}
-
   otpauth@9.2.4:
     resolution: {integrity: sha512-t0Nioq2Up2ZaT5AbpXZLTjrsNtLc/g/rVSaEThmKLErAuT9mrnAKJryiPOKc3rCH+3ycWBgKpRHYn+DHqfaPiQ==}
 
@@ -7284,12 +7275,6 @@ packages:
   syslog-pro@1.0.0:
     resolution: {integrity: sha512-7SNMJKtQBJlwBUp1jxFT7bXya71cnINXPCYJ2AVhlQE4MKL7o2QiPdAXbMdWRiLeykQ2rx+7TNrnoGzvzhO+eA==}
     engines: {node: '>=10.0.0'}
-
-  systeminformation@5.22.8:
-    resolution: {integrity: sha512-F1iWQ+PSfOzvLMGh2UXASaWLDq5o+1h1db13Kddl6ojcQ47rsJhpMtRrmBXfTA5QJgutC4KV67YRmXLuroIxrA==}
-    engines: {node: '>=8.0.0'}
-    os: [darwin, linux, win32, freebsd, openbsd, netbsd, sunos, android]
-    hasBin: true
 
   syuilo-password-strength@0.0.1:
     resolution: {integrity: sha512-g9rPT3V1Q4WjWFZ/t5BdGC1mT/FpYnsLdBl+M5e6MlRkuE1RSR+R43wcY/3mKI59B9KEr+vxdWCuWNMD3oNHKA==}
@@ -14397,8 +14382,6 @@ snapshots:
     dependencies:
       arch: 2.2.0
 
-  os-utils@0.0.14: {}
-
   otpauth@9.2.4:
     dependencies:
       jssha: 3.3.1
@@ -15536,8 +15519,6 @@ snapshots:
   syslog-pro@1.0.0:
     dependencies:
       moment: 2.30.1
-
-  systeminformation@5.22.8: {}
 
   syuilo-password-strength@0.0.1: {}
 

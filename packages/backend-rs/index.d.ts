@@ -212,6 +212,8 @@ export interface Acct {
 }
 export function stringToAcct(acct: string): Acct
 export function acctToString(acct: Acct): string
+export function initializeRustLogger(): void
+export function showServerInfo(): void
 export function addNoteToAntenna(antennaId: string, note: Note): void
 /**
  * Checks if a server is blocked.
@@ -299,6 +301,28 @@ export function countReactions(reactions: Record<string, number>): Record<string
 export function toDbReaction(reaction?: string | undefined | null, host?: string | undefined | null): Promise<string>
 /** Delete all entries in the "attestation_challenge" table created at more than 5 minutes ago */
 export function removeOldAttestationChallenges(): Promise<void>
+export interface Cpu {
+  model: string
+  cores: number
+}
+export interface Memory {
+  /** Total memory amount in bytes */
+  total: number
+  /** Used memory amount in bytes */
+  used: number
+  /** Available (for (re)use) memory amount in bytes */
+  available: number
+}
+export interface Storage {
+  /** Total storage space in bytes */
+  total: number
+  /** Used storage space in bytes */
+  used: number
+}
+export function cpuInfo(): Cpu
+export function cpuUsage(): number
+export function memoryUsage(): Memory
+export function storageUsage(): Storage | null
 export interface AbuseUserReport {
   id: string
   createdAt: Date
@@ -1156,7 +1180,6 @@ export interface Webhook {
   latestSentAt: Date | null
   latestStatus: number | null
 }
-export function initializeRustLogger(): void
 export function fetchNodeinfo(host: string): Promise<Nodeinfo>
 export function nodeinfo_2_1(): Promise<any>
 export function nodeinfo_2_0(): Promise<any>

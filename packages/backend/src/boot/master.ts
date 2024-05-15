@@ -12,10 +12,10 @@ import {
 	fetchMeta,
 	initializeRustLogger,
 	removeOldAttestationChallenges,
+	showServerInfo,
 	type Config,
 } from "backend-rs";
 import { config, envOption } from "@/config.js";
-import { showMachineInfo } from "@/misc/show-machine-info.js";
 import { db, initDb } from "@/db/postgre.js";
 import { inspect } from "node:util";
 
@@ -93,12 +93,12 @@ function greet() {
 export async function masterMain() {
 	// initialize app
 	try {
+		initializeRustLogger();
 		greet();
 		showEnvironment();
-		await showMachineInfo(bootLogger);
+		showServerInfo();
 		showNodejsVersion();
 		await connectDb();
-		initializeRustLogger();
 	} catch (e) {
 		bootLogger.error(
 			`Fatal error occurred during initialization:\n${inspect(e)}`,
