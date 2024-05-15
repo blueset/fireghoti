@@ -26,23 +26,18 @@
 				:connection="connection"
 				:meta="meta"
 			/>
-			<XNet
+			<XCpu
 				v-else-if="widgetProps.view === 1"
 				:connection="connection"
 				:meta="meta"
 			/>
-			<XCpu
+			<XMemory
 				v-else-if="widgetProps.view === 2"
 				:connection="connection"
 				:meta="meta"
 			/>
-			<XMemory
-				v-else-if="widgetProps.view === 3"
-				:connection="connection"
-				:meta="meta"
-			/>
 			<XDisk
-				v-else-if="widgetProps.view === 4"
+				v-else-if="widgetProps.view === 3"
 				:connection="connection"
 				:meta="meta"
 			/>
@@ -52,10 +47,13 @@
 
 <script lang="ts" setup>
 import { onUnmounted, ref } from "vue";
-import type { Widget, WidgetComponentExpose } from "../widget";
+import type {
+	WidgetComponentEmits,
+	WidgetComponentExpose,
+	WidgetComponentProps,
+} from "../widget";
 import { useWidgetPropsManager } from "../widget";
 import XCpuMemory from "./cpu-mem.vue";
-import XNet from "./net.vue";
 import XCpu from "./cpu.vue";
 import XMemory from "./mem.vue";
 import XDisk from "./disk.vue";
@@ -87,11 +85,8 @@ const widgetPropsDef = {
 
 type WidgetProps = GetFormResultType<typeof widgetPropsDef>;
 
-// 現時点ではvueの制限によりimportしたtypeをジェネリックに渡せない
-// const props = defineProps<WidgetComponentProps<WidgetProps>>();
-// const emit = defineEmits<WidgetComponentEmits<WidgetProps>>();
-const props = defineProps<{ widget?: Widget<WidgetProps> }>();
-const emit = defineEmits<{ (ev: "updateProps", props: WidgetProps) }>();
+const props = defineProps<WidgetComponentProps<WidgetProps>>();
+const emit = defineEmits<WidgetComponentEmits<WidgetProps>>();
 
 const { widgetProps, configure, save } = useWidgetPropsManager(
 	name,
@@ -107,14 +102,7 @@ os.apiGet("server-info", {}).then((res) => {
 });
 
 const toggleView = () => {
-	if (
-		(widgetProps.view === 5 && instance.features.searchFilters) ||
-		(widgetProps.view === 4 && !instance.features.searchFilters)
-	) {
-		widgetProps.view = 0;
-	} else {
-		widgetProps.view++;
-	}
+	widgetProps.view = (widgetProps.view + 1) % 4;
 	save();
 };
 

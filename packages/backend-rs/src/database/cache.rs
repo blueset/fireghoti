@@ -49,7 +49,7 @@ fn wildcard(category: Category) -> String {
 /// ## Example
 ///
 /// ```
-/// use backend_rs::database::cache;
+/// # use backend_rs::database::cache;
 /// let key = "apple";
 /// let data = "I want to cache this string".to_string();
 ///
@@ -85,8 +85,7 @@ pub fn set<V: for<'a> Deserialize<'a> + Serialize>(
 /// ## Example
 ///
 /// ```
-/// use backend_rs::database::cache;
-///
+/// # use backend_rs::database::cache;
 /// let key = "banana";
 /// let data = "I want to cache this string".to_string();
 ///
@@ -121,20 +120,19 @@ pub fn get<V: for<'a> Deserialize<'a> + Serialize>(key: &str) -> Result<Option<V
 /// ## Example
 ///
 /// ```
-/// use backend_rs::database::cache::{set, get, delete};
-///
+/// # use backend_rs::database::cache;
 /// let key = "chocolate";
 /// let value = "I want to cache this string".to_string();
 ///
 /// // set cache
-/// set(key, &value, 10).unwrap();
+/// cache::set(key, &value, 10).unwrap();
 ///
 /// // delete the cache
-/// delete("foo").unwrap();
-/// delete("nonexistent").unwrap(); // this is okay
+/// cache::delete("foo").unwrap();
+/// cache::delete("nonexistent").unwrap(); // this is okay
 ///
 /// // the cache is gone
-/// let cached_value = get::<String>("foo").unwrap();
+/// let cached_value = cache::get::<String>("foo").unwrap();
 /// assert!(cached_value.is_none());
 /// ```
 pub fn delete(key: &str) -> Result<(), Error> {

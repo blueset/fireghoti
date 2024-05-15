@@ -1,6 +1,6 @@
 import define from "@/server/api/define.js";
 import { AccessTokens } from "@/models/index.js";
-import { genId, secureRndstr } from "backend-rs";
+import { genId, generateSecureRandomString } from "backend-rs";
 
 export const meta = {
 	tags: ["auth"],
@@ -43,7 +43,7 @@ export const paramDef = {
 
 export default define(meta, paramDef, async (ps, user) => {
 	// Generate access token
-	const accessToken = secureRndstr(32);
+	const accessToken = generateSecureRandomString(32);
 
 	const now = new Date();
 

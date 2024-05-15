@@ -36,7 +36,7 @@
 			/>
 			<text x="1" y="5">
 				CPU
-				<tspan>{{ cpuP }}%</tspan>
+				<tspan>{{ cpuUsage }}%</tspan>
 			</text>
 		</svg>
 		<svg :viewBox="`0 0 ${viewBoxX} ${viewBoxY}`">
@@ -75,7 +75,7 @@
 			/>
 			<text x="1" y="5">
 				MEM
-				<tspan>{{ memP }}%</tspan>
+				<tspan>{{ memUsage }}%</tspan>
 			</text>
 		</svg>
 	</div>
@@ -87,26 +87,25 @@ import { v4 as uuid } from "uuid";
 
 const props = defineProps<{
 	connection: any;
-	meta: any;
 }>();
 
-const viewBoxX: number = ref(50);
-const viewBoxY: number = ref(30);
-const stats: any[] = ref([]);
+const viewBoxX = ref(50);
+const viewBoxY = ref(30);
+const stats = ref<any[]>([]);
 const cpuGradientId = uuid();
 const cpuMaskId = uuid();
 const memGradientId = uuid();
 const memMaskId = uuid();
-const cpuPolylinePoints: string = ref("");
-const memPolylinePoints: string = ref("");
-const cpuPolygonPoints: string = ref("");
-const memPolygonPoints: string = ref("");
-const cpuHeadX: any = ref(null);
-const cpuHeadY: any = ref(null);
-const memHeadX: any = ref(null);
-const memHeadY: any = ref(null);
-const cpuP: string = ref("");
-const memP: string = ref("");
+const cpuPolylinePoints = ref("");
+const memPolylinePoints = ref("");
+const cpuPolygonPoints = ref("");
+const memPolygonPoints = ref("");
+const cpuHeadX = ref<number>();
+const cpuHeadY = ref<number>();
+const memHeadX = ref<number>();
+const memHeadY = ref<number>();
+const cpuUsage = ref<string>();
+const memUsage = ref<string>();
 
 onMounted(() => {
 	props.connection.on("stats", onStats);
@@ -127,11 +126,11 @@ function onStats(connStats) {
 
 	const cpuPolylinePointsStats = stats.value.map((s, i) => [
 		viewBoxX.value - (stats.value.length - 1 - i),
-		(1 - s.cpu) * viewBoxY.value,
+		(1 - s.cpu / 100) * viewBoxY.value,
 	]);
 	const memPolylinePointsStats = stats.value.map((s, i) => [
 		viewBoxX.value - (stats.value.length - 1 - i),
-		(1 - s.mem.active / s.mem.total) * viewBoxY.value,
+		(1 - s.mem.used / s.mem.total) * viewBoxY.value,
 	]);
 	cpuPolylinePoints.value = cpuPolylinePointsStats
 		.map((xy) => `${xy[0]},${xy[1]}`)
@@ -152,8 +151,10 @@ function onStats(connStats) {
 	memHeadX.value = memPolylinePointsStats[memPolylinePointsStats.length - 1][0];
 	memHeadY.value = memPolylinePointsStats[memPolylinePointsStats.length - 1][1];
 
-	cpuP.value = (connStats.cpu * 100).toFixed(0);
-	memP.value = ((connStats.mem.active / connStats.mem.total) * 100).toFixed(0);
+	cpuUsage.value = connStats.cpu.toFixed(1);
+	memUsage.value = ((connStats.mem.used / connStats.mem.total) * 100).toFixed(
+		1,
+	);
 }
 
 function onStatsLog(statsLog) {

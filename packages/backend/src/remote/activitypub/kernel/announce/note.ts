@@ -5,12 +5,11 @@ import type { IAnnounce } from "../../type.js";
 import { getApId } from "../../type.js";
 import { fetchNote, resolveNote } from "../../models/note.js";
 import { apLogger } from "../../logger.js";
-import { extractHost } from "backend-rs";
+import { extractHost, isBlockedServer } from "backend-rs";
 import { getApLock } from "@/misc/app-lock.js";
 import { parseAudience } from "../../audience.js";
 import { StatusError } from "@/misc/fetch.js";
 import { Notes } from "@/models/index.js";
-import { isBlockedServer } from "backend-rs";
 import { inspect } from "node:util";
 
 /**

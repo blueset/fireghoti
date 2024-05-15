@@ -19,7 +19,7 @@
 			:stroke="color"
 		/>
 		<text x="50%" y="50%" dy="0.05" text-anchor="middle">
-			{{ (value * 100).toFixed(0) }}%
+			{{ (value * 100).toFixed(1) }}%
 		</text>
 	</svg>
 </template>

@@ -3,10 +3,9 @@ import {
 	publishMainStream,
 	publishUserEvent,
 } from "@/services/stream.js";
-import generateUserToken from "@/server/api/common/generate-native-user-token.js";
 import define from "@/server/api/define.js";
 import { Users, UserProfiles } from "@/models/index.js";
-import { verifyPassword } from "backend-rs";
+import { generateUserToken, verifyPassword } from "backend-rs";
 
 export const meta = {
 	requireCredential: true,

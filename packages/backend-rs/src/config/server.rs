@@ -22,7 +22,7 @@ struct ServerConfig {
     pub proxy_bypass_hosts: Option<Vec<String>>,
 
     pub allowed_private_networks: Option<Vec<String>>,
-    /// `NapiValue` is not implemented for `u64`
+    // TODO: i64 -> u64 (NapiValue is not implemented for u64)
     pub max_file_size: Option<i64>,
     pub access_log: Option<String>,
     pub cluster_limits: Option<WorkerConfigInternal>,
@@ -298,7 +298,7 @@ fn read_manifest() -> Manifest {
 }
 
 #[crate::export]
-fn load_config() -> Config {
+pub fn load_config() -> Config {
     let server_config = read_config_file();
     let version = read_meta().version;
     let manifest = read_manifest();

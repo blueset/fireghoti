@@ -1,6 +1,6 @@
 import { reactive, ref } from "vue";
 import type { entities } from "firefish-js";
-import { readAndCompressImage } from "browser-image-resizer";
+import { readAndCompressImage } from "@misskey-dev/browser-image-resizer";
 import { defaultStore } from "@/store";
 import { apiUrl } from "@/config";
 import { me } from "@/me";

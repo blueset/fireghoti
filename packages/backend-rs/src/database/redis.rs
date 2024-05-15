@@ -1,7 +1,8 @@
 use crate::config::CONFIG;
+use once_cell::sync::OnceCell;
 use redis::{Client, Connection, RedisError};
 
-static REDIS_CLIENT: once_cell::sync::OnceCell<Client> = once_cell::sync::OnceCell::new();
+static REDIS_CLIENT: OnceCell<Client> = OnceCell::new();
 
 fn init_redis() -> Result<Client, RedisError> {
     let redis_url = {
@@ -26,7 +27,7 @@ fn init_redis() -> Result<Client, RedisError> {
         params.concat()
     };
 
-    tracing::info!("Initializing Redis connection");
+    tracing::info!("Initializing Redis client");
 
     Client::open(redis_url)
 }
@@ -38,8 +39,8 @@ pub fn redis_conn() -> Result<Connection, RedisError> {
     }
 }
 
-#[inline]
 /// prefix redis key
+#[inline]
 pub fn key(key: impl ToString) -> String {
     format!("{}:{}", CONFIG.redis_key_prefix, key.to_string())
 }

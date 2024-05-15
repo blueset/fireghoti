@@ -2,6 +2,7 @@ use convert_case::{Case, Casing};
 use proc_macro2::{TokenStream, TokenTree};
 use quote::{quote, ToTokens};
 
+/// Export this function, struct, enum, const, etc. to TypeScript.
 #[proc_macro_attribute]
 pub fn export(
     attr: proc_macro::TokenStream,
@@ -12,6 +13,53 @@ pub fn export(
 
     quote! {
         #[cfg_attr(feature = "napi", macro_rs::napi(#attr))]
+        #item
+    }
+    .into()
+}
+
+/// Denotes that this function should only be used in TypeScript.
+///
+/// # Example
+/// ```
+/// # use macro_rs::ts_only_warn;
+/// # use std::fmt::{Display, Formatter, Result};
+/// # pub struct Thing {}
+/// # impl Display for Thing { fn fmt(&self, fmt: &mut Formatter) -> Result { Ok(()) } }  // dummy
+/// #[ts_only_warn("Use `thing.to_string()` instead.")]
+/// pub fn thing_to_string(thing: Thing) -> String {
+///     thing.to_string()
+/// }
+/// ```
+/// generates
+/// ```
+/// # use macro_rs::ts_only_warn;
+/// # use std::fmt::{Display, Formatter, Result};
+/// # pub struct Thing {}
+/// # impl Display for Thing { fn fmt(&self, fmt: &mut Formatter) -> Result { Ok(()) } }  // dummy
+/// #[cfg_attr(not(feature = "napi"), deprecated = "This function is only for TypeScript export. Use `thing.to_string()` instead.")]
+/// pub fn thing_to_string(thing: Thing) -> String {
+///     thing.to_string()
+/// }
+/// ```
+#[proc_macro_attribute]
+pub fn ts_only_warn(
+    attr: proc_macro::TokenStream,
+    item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+    let item: TokenStream = item.into();
+
+    let attr_str = Into::<TokenStream>::into(attr).to_string();
+    let msg = {
+        let mut chars = attr_str.as_str().chars();
+        chars.next();
+        chars.next_back();
+        chars.as_str()
+    };
+    let prefixed_msg = format!("This function is only for TypeScript export. {}", msg);
+
+    quote! {
+        #[cfg_attr(not(feature = "napi"), deprecated = #prefixed_msg)]
         #item
     }
     .into()

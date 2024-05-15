@@ -1,10 +1,9 @@
 import { v4 as uuid } from "uuid";
-import generateNativeUserToken from "@/server/api/common/generate-native-user-token.js";
 import { genRsaKeyPair } from "@/misc/gen-key-pair.js";
 import { User } from "@/models/entities/user.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
 import { IsNull } from "typeorm";
-import { genId, hashPassword } from "backend-rs";
+import { generateUserToken, genId, hashPassword } from "backend-rs";
 import { UserKeypair } from "@/models/entities/user-keypair.js";
 import { UsedUsername } from "@/models/entities/used-username.js";
 import { db } from "@/db/postgre.js";
@@ -16,7 +15,7 @@ export async function createSystemUser(username: string) {
 	const hash = hashPassword(password);
 
 	// Generate secret
-	const secret = generateNativeUserToken();
+	const secret = generateUserToken();
 
 	const keyPair = await genRsaKeyPair(4096);
 

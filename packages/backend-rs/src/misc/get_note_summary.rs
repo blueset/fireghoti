@@ -1,4 +1,4 @@
-/// TODO: handle name collisions better
+// TODO: handle name collisions in a better way
 #[crate::export(object, js_name = "NoteLikeForGetNoteSummary")]
 pub struct NoteLike {
     pub file_ids: Vec<String>,

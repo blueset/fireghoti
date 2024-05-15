@@ -488,9 +488,7 @@ const preview_bold = ref(`**${i18n.ts._mfm.dummy}**`);
 const preview_small = ref(
 	`<small>${i18n.ts._mfm.dummy}</small> $[small ${i18n.ts._mfm.dummy}]`,
 );
-const preview_center = ref(
-	`<center>${i18n.ts._mfm.dummy}</center>\n$[center ${i18n.ts._mfm.dummy}]`,
-);
+const preview_center = ref(`<center>${i18n.ts._mfm.dummy}</center>`);
 const preview_inlineCode = ref('`<: "Hello, world!"`');
 const preview_blockCode = ref(
 	'```\n~ (#i, 100) {\n\t<: ? ((i % 15) = 0) "FizzBuzz"\n\t\t.? ((i % 3) = 0) "Fizz"\n\t\t.? ((i % 5) = 0) "Buzz"\n\t\t. i\n}\n```',

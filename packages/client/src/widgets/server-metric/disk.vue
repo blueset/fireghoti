@@ -4,7 +4,7 @@
 		<div>
 			<p><i :class="icon('ph-hard-drives')"></i>Disk</p>
 			<p>Total: {{ bytes(total, 1) }}</p>
-			<p>Free: {{ bytes(available, 1) }}</p>
+			<p>Available: {{ bytes(available, 1) }}</p>
 			<p>Used: {{ bytes(used, 1) }}</p>
 		</div>
 	</div>
@@ -18,7 +18,12 @@ import bytes from "@/filters/bytes";
 import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	meta: any; // TODO
+	meta: {
+		fs: {
+			used: number;
+			total: number;
+		};
+	};
 }>();
 
 const usage = computed(() => props.meta.fs.used / props.meta.fs.total);

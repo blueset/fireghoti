@@ -5,13 +5,13 @@
 		"type": "git",
 		"url": "https://firefish.dev/firefish/firefish.git"
 	},
-	"packageManager": "pnpm@8.15.7",
+	"packageManager": "pnpm@9.1.1",
 	"private": true,
 	"scripts": {
 		"rebuild": "pnpm run clean && pnpm run build",
-		"build": "pnpm node ./scripts/build.mjs && pnpm run build:assets",
+		"build": "pnpm --recursive --color run build && pnpm node ./scripts/copy-index.mjs && pnpm run build:assets",
 		"build:assets": "pnpm node ./scripts/copy-assets.mjs",
-		"build:debug": "pnpm run clean && pnpm node ./scripts/dev-build.mjs && pnpm run build:assets",
+		"build:debug": "pnpm run clean && pnpm --recursive --color run build:debug && pnpm node ./scripts/copy-index-dev.mjs && pnpm run build:assets",
 		"start": "pnpm --filter backend run start",
 		"start:container": "pnpm run migrate && pnpm run start",
 		"start:test": "pnpm --filter backend run start:test",
@@ -41,14 +41,14 @@
 		"js-yaml": "4.1.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.7.1",
-		"@biomejs/cli-darwin-arm64": "^1.7.1",
-		"@biomejs/cli-darwin-x64": "^1.7.1",
-		"@biomejs/cli-linux-arm64": "^1.7.1",
-		"@biomejs/cli-linux-x64": "^1.7.1",
-		"@types/node": "20.12.7",
-		"execa": "8.0.1",
-		"pnpm": "8.15.7",
+		"@biomejs/biome": "1.7.3",
+		"@biomejs/cli-darwin-arm64": "1.7.3",
+		"@biomejs/cli-darwin-x64": "1.7.3",
+		"@biomejs/cli-linux-arm64": "1.7.3",
+		"@biomejs/cli-linux-x64": "1.7.3",
+		"@types/node": "20.12.12",
+		"execa": "9.1.0",
+		"pnpm": "9.1.1",
 		"typescript": "5.4.5"
 	}
 }

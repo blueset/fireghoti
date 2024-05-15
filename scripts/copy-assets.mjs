@@ -15,7 +15,7 @@ await (async () => {
 	]);
 
 	const locales = (await import("../locales/index.mjs")).default;
-	const meta = (await import("../built/meta.json", { assert: { type: "json" } })).default;
+	const meta = JSON.parse(await fs.readFile(file("built/meta.json")));
 
 	for await (const [lang, locale] of Object.entries(locales)) {
 		await fs.writeFile(
