@@ -2,11 +2,7 @@ import * as os from "node:os";
 import define from "@/server/api/define.js";
 import { redisClient } from "@/db/redis.js";
 import { db } from "@/db/postgre.js";
-import {
-	cpuInfo,
-	memoryUsage,
-	storageUsage,
-} from "backend-rs";
+import { cpuInfo, memoryUsage, storageUsage } from "backend-rs";
 
 export const meta = {
 	requireCredential: true,
