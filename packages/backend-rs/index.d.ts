@@ -1279,6 +1279,15 @@ export interface Users {
 }
 export function watchNote(watcherId: string, noteAuthorId: string, noteId: string): Promise<void>
 export function unwatchNote(watcherId: string, noteId: string): Promise<void>
+export enum PushNotificationKind {
+  Generic = 'generic',
+  Chat = 'chat',
+  ReadAllChats = 'readAllChats',
+  ReadAllChatsInTheRoom = 'readAllChatsInTheRoom',
+  ReadNotifications = 'readNotifications',
+  ReadAllNotifications = 'readAllNotifications'
+}
+export function sendPushNotification(receiverUserId: string, kind: PushNotificationKind, content: any): Promise<void>
 export function publishToChannelStream(channelId: string, userId: string): void
 export enum ChatEvent {
   Message = 'message',

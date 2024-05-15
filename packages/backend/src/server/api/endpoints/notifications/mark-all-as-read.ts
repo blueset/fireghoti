@@ -1,5 +1,5 @@
 import { publishMainStream } from "@/services/stream.js";
-import { pushNotification } from "@/services/push-notification.js";
+import { sendPushNotification, PushNotificationKind } from "backend-rs";
 import { Notifications } from "@/models/index.js";
 import define from "@/server/api/define.js";
 
@@ -17,7 +17,7 @@ export const paramDef = {
 	required: [],
 } as const;
 
-export default define(meta, paramDef, async (ps, user) => {
+export default define(meta, paramDef, async (_, user) => {
 	// Update documents
 	await Notifications.update(
 		{
@@ -31,5 +31,5 @@ export default define(meta, paramDef, async (ps, user) => {
 
 	// 全ての通知を読みましたよというイベントを発行
 	publishMainStream(user.id, "readAllNotifications");
-	pushNotification(user.id, "readAllNotifications", undefined);
+	sendPushNotification(user.id, PushNotificationKind.ReadAllNotifications, {});
 });

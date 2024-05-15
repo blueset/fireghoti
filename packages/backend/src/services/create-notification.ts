@@ -1,5 +1,4 @@
 import { publishMainStream } from "@/services/stream.js";
-import { pushNotification } from "@/services/push-notification.js";
 import {
 	Notifications,
 	Mutings,
@@ -8,7 +7,12 @@ import {
 	Users,
 	Followings,
 } from "@/models/index.js";
-import { genId, isSilencedServer } from "backend-rs";
+import {
+	genId,
+	isSilencedServer,
+	sendPushNotification,
+	PushNotificationKind,
+} from "backend-rs";
 import type { User } from "@/models/entities/user.js";
 import type { Notification } from "@/models/entities/notification.js";
 import { sendEmailNotification } from "./send-email-notification.js";
@@ -81,7 +85,7 @@ export async function createNotification(
 		if (fresh == null) return; // 既に削除されているかもしれない
 		// We execute this before, because the server side "read" check doesnt work well with push notifications, the app and service worker will decide themself
 		// when it is best to show push notifications
-		pushNotification(notifieeId, "notification", packed);
+		sendPushNotification(notifieeId, PushNotificationKind.Generic, packed);
 		if (fresh.isRead) return;
 
 		//#region ただしミュートしているユーザーからの通知なら無視
