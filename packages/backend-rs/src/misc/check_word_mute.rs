@@ -4,7 +4,7 @@ use once_cell::sync::Lazy;
 use regex::Regex;
 use sea_orm::{prelude::*, QuerySelect};
 
-/// TODO: handle name collisions better
+// TODO: handle name collisions in a better way
 #[crate::export(object, js_name = "NoteLikeForCheckWordMute")]
 pub struct NoteLike {
     pub file_ids: Vec<String>,

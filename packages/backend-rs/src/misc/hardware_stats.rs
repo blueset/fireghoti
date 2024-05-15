@@ -1,4 +1,4 @@
-use crate::init::server_stats::{system, SystemMutexError};
+use crate::init::hardware_stats::{system, SystemMutexError};
 use sysinfo::{Disks, MemoryRefreshKind};
 
 // TODO: i64 -> u64 (we can't export u64 to Node.js)

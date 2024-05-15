@@ -1,2 +1,2 @@
+pub mod hardware_stats;
 pub mod log;
-pub mod server_stats;

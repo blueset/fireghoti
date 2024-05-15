@@ -1,8 +1,9 @@
 use crate::config::CONFIG;
+use once_cell::sync::OnceCell;
 use sea_orm::{ConnectOptions, Database, DbConn, DbErr};
 use tracing::log::LevelFilter;
 
-static DB_CONN: once_cell::sync::OnceCell<DbConn> = once_cell::sync::OnceCell::new();
+static DB_CONN: OnceCell<DbConn> = OnceCell::new();
 
 async fn init_database() -> Result<&'static DbConn, DbErr> {
     let database_uri = format!(
