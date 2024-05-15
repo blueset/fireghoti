@@ -97,8 +97,8 @@ importers:
         specifier: 2.0.5
         version: 2.0.5
       bull:
-        specifier: 4.12.3
-        version: 4.12.3
+        specifier: 4.12.4
+        version: 4.12.4
       cacheable-lookup:
         specifier: TheEssem/cacheable-lookup
         version: https://codeload.github.com/TheEssem/cacheable-lookup/tar.gz/dd2fb616366a3c68dcf321a57a67295967b204bf
@@ -3203,8 +3203,8 @@ packages:
   builtins@5.1.0:
     resolution: {integrity: sha512-SW9lzGTLvWTP1AY8xeAMZimqDrIaSdLQUcVr9DMef51niJ022Ri87SwRRKYm4A6iHfkPaiVUu/Duw2Wc4J7kKg==}
 
-  bull@4.12.3:
-    resolution: {integrity: sha512-TGHuvHr6NYN6mQyHTFHJELdEu4JMCir8zcNd9Uv91qTWILiTpoglC3Un1PsxMwNXr49BVfdWE0xuB1nV4+cJPA==}
+  bull@4.12.4:
+    resolution: {integrity: sha512-a+xWS52Mmc9L7S0zYLEPMUwx/r5IkQyMKKKGVKkUurl3zXeg1ktPZjp9NvdaFY/40XtD/RP80KURjjkjAQnF0g==}
     engines: {node: '>=12'}
 
   busboy@1.6.0:
@@ -10739,7 +10739,7 @@ snapshots:
     dependencies:
       semver: 7.6.2
 
-  bull@4.12.3:
+  bull@4.12.4:
     dependencies:
       cron-parser: 4.9.0
       get-port: 5.1.1
