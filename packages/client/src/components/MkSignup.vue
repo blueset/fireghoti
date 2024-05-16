@@ -248,7 +248,7 @@
 				v-model="hCaptchaResponse"
 				class="_formBlock captcha"
 				provider="hcaptcha"
-				:sitekey="instance.hcaptchaSiteKey"
+				:sitekey="instance.hcaptchaSiteKey!"
 			/>
 			<MkCaptcha
 				v-if="instance.enableRecaptcha"
@@ -256,7 +256,7 @@
 				v-model="reCaptchaResponse"
 				class="_formBlock captcha"
 				provider="recaptcha"
-				:sitekey="instance.recaptchaSiteKey"
+				:sitekey="instance.recaptchaSiteKey!"
 			/>
 			<MkButton
 				class="_formBlock"
@@ -296,7 +296,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	(ev: "signup", user: Record<string, any>): void;
+	(ev: "signup", user: { id: string; i: string }): void;
 	(ev: "signupEmailPending"): void;
 }>();
 

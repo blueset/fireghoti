@@ -1,6 +1,8 @@
-export function collectPageVars(content) {
-	const pageVars = [];
-	const collect = (xs: any[]) => {
+import type { PageContent, PageVar } from "@/types/page";
+
+export function collectPageVars(content: PageContent[]) {
+	const pageVars: PageVar[] = [];
+	const collect = (xs: PageContent[]) => {
 		for (const x of xs) {
 			if (x.type === "textInput") {
 				pageVars.push({
@@ -24,7 +26,7 @@ export function collectPageVars(content) {
 				pageVars.push({
 					name: x.name,
 					type: "boolean",
-					value: x.default,
+					value: x.default!,
 				});
 			} else if (x.type === "counter") {
 				pageVars.push({

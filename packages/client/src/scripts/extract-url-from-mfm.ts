@@ -14,7 +14,7 @@ export function extractUrlFromMfm(
 			node.type === "url" ||
 			(node.type === "link" && !(respectSilentFlag && node.props.silent))
 		);
-	});
+	}) as (mfm.MfmLink | mfm.MfmUrl)[];
 	const urls: string[] = unique(urlNodes.map((x) => x.props.url));
 
 	return urls.reduce((array, url) => {

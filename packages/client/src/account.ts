@@ -7,6 +7,7 @@ import { alert, api, popup, popupMenu, waiting } from "@/os";
 import icon from "@/scripts/icon";
 import { del, get, set } from "@/scripts/idb-proxy";
 import { reloadChannel, unisonReload } from "@/scripts/unison-reload";
+import type { MenuButton, MenuUser } from "./types/menu";
 
 // TODO: 他のタブと永続化されたstateを同期
 
@@ -16,7 +17,7 @@ export async function signOut() {
 	waiting();
 	localStorage.removeItem("account");
 
-	await removeAccount(me.id);
+	await removeAccount(me!.id);
 
 	const accounts = await getAccounts();
 
@@ -26,12 +27,9 @@ export async function signOut() {
 			const registration = await navigator.serviceWorker.ready;
 			const push = await registration.pushManager.getSubscription();
 			if (push) {
-				await fetch(`${apiUrl}/sw/unregister`, {
-					method: "POST",
-					body: JSON.stringify({
-						i: me.token,
-						endpoint: push.endpoint,
-					}),
+				await api("sw/unregister", {
+					endpoint: push.endpoint,
+					i: me!.token, // FIXME: This parameter seems to be removable but I didn't test it
 				});
 			}
 		}
@@ -117,13 +115,13 @@ function showSuspendedDialog() {
 
 export function updateAccount(accountData) {
 	for (const [key, value] of Object.entries(accountData)) {
-		me[key] = value;
+		me![key] = value;
 	}
 	localStorage.setItem("account", JSON.stringify(me));
 }
 
 export async function refreshAccount() {
-	const accountData = await fetchAccount(me.token);
+	const accountData = await fetchAccount(me!.token);
 	return updateAccount(accountData);
 }
 
@@ -189,7 +187,7 @@ export async function openAccountMenu(
 
 	async function switchAccount(account: entities.UserDetailed) {
 		const storedAccounts = await getAccounts();
-		const token = storedAccounts.find((x) => x.id === account.id).token;
+		const token = storedAccounts.find((x) => x.id === account.id)!.token;
 		switchAccountWithToken(token);
 	}
 
@@ -198,15 +196,15 @@ export async function openAccountMenu(
 	}
 
 	const storedAccounts = await getAccounts().then((accounts) =>
-		accounts.filter((x) => x.id !== me.id),
+		accounts.filter((x) => x.id !== me!.id),
 	);
 	const accountsPromise = api("users/show", {
 		userIds: storedAccounts.map((x) => x.id),
 	});
 
-	function createItem(account: entities.UserDetailed) {
+	function createItem(account: entities.UserDetailed): MenuUser {
 		return {
-			type: "user",
+			type: "user" as const,
 			user: account,
 			active: opts.active != null ? opts.active === account.id : false,
 			action: () => {
@@ -221,10 +219,14 @@ export async function openAccountMenu(
 
 	const accountItemPromises = storedAccounts.map(
 		(a) =>
-			new Promise((res) => {
+			new Promise<MenuUser>((res) => {
 				accountsPromise.then((accounts) => {
 					const account = accounts.find((x) => x.id === a.id);
-					if (account == null) return res(null);
+					if (account == null) {
+						// The user is deleted, remove it
+						removeAccount(a.id);
+						return res(null as unknown as MenuUser);
+					}
 					res(createItem(account));
 				});
 			}),
@@ -233,74 +235,72 @@ export async function openAccountMenu(
 	if (opts.withExtraOperation) {
 		popupMenu(
 			[
-				...[
-					...(isMobile ?? false
-						? [
-								{
-									type: "parent",
-									icon: `${icon("ph-plus")}`,
-									text: i18n.ts.addAccount,
-									children: [
-										{
-											text: i18n.ts.existingAccount,
-											action: () => {
-												showSigninDialog();
-											},
+				...(isMobile ?? false
+					? [
+							{
+								type: "parent" as const,
+								icon: `${icon("ph-plus")}`,
+								text: i18n.ts.addAccount,
+								children: [
+									{
+										text: i18n.ts.existingAccount,
+										action: () => {
+											showSigninDialog();
 										},
-										{
-											text: i18n.ts.createAccount,
-											action: () => {
-												createAccount();
-											},
+									},
+									{
+										text: i18n.ts.createAccount,
+										action: () => {
+											createAccount();
 										},
-									],
-								},
-							]
-						: [
-								{
-									type: "link",
-									text: i18n.ts.profile,
-									to: `/@${me.username}`,
-									avatar: me,
-								},
-								null,
-							]),
-					...(opts.includeCurrentAccount ? [createItem(me)] : []),
-					...accountItemPromises,
-					...(isMobile ?? false
-						? [
-								null,
-								{
-									type: "link",
-									text: i18n.ts.profile,
-									to: `/@${me.username}`,
-									avatar: me,
-								},
-							]
-						: [
-								{
-									type: "parent",
-									icon: `${icon("ph-plus")}`,
-									text: i18n.ts.addAccount,
-									children: [
-										{
-											text: i18n.ts.existingAccount,
-											action: () => {
-												showSigninDialog();
-											},
+									},
+								],
+							},
+						]
+					: [
+							{
+								type: "link" as const,
+								text: i18n.ts.profile,
+								to: `/@${me!.username}`,
+								avatar: me!,
+							},
+							null,
+						]),
+				...(opts.includeCurrentAccount ? [createItem(me!)] : []),
+				...accountItemPromises,
+				...(isMobile ?? false
+					? [
+							null,
+							{
+								type: "link" as const,
+								text: i18n.ts.profile,
+								to: `/@${me!.username}`,
+								avatar: me!,
+							},
+						]
+					: [
+							{
+								type: "parent" as const,
+								icon: `${icon("ph-plus")}`,
+								text: i18n.ts.addAccount,
+								children: [
+									{
+										text: i18n.ts.existingAccount,
+										action: () => {
+											showSigninDialog();
 										},
-										{
-											text: i18n.ts.createAccount,
-											action: () => {
-												createAccount();
-											},
+									},
+									{
+										text: i18n.ts.createAccount,
+										action: () => {
+											createAccount();
 										},
-									],
-								},
-							]),
-				],
+									},
+								],
+							},
+						]),
 			],
-			ev.currentTarget ?? ev.target,
+			(ev.currentTarget ?? ev.target) as HTMLElement,
 			{
 				align: "left",
 			},
@@ -308,10 +308,10 @@ export async function openAccountMenu(
 	} else {
 		popupMenu(
 			[
-				...(opts.includeCurrentAccount ? [createItem(me)] : []),
+				...(opts.includeCurrentAccount ? [createItem(me!)] : []),
 				...accountItemPromises,
 			],
-			ev.currentTarget ?? ev.target,
+			(ev.currentTarget ?? ev.target) as HTMLElement,
 			{
 				align: "left",
 			},

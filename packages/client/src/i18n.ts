@@ -1,6 +1,7 @@
 import { markRaw } from "vue";
 import { locale } from "@/config";
 
+// biome-ignore lint/suspicious/noExplicitAny: temporary use any
 class I18n<T extends Record<string, any>> {
 	public ts: T;
 

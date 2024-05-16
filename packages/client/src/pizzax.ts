@@ -5,12 +5,13 @@ import { onUnmounted, ref, watch } from "vue";
 import { api } from "./os";
 import { useStream } from "./stream";
 import { isSignedIn, me } from "@/me";
+import type { TypeUtils } from "firefish-js";
 
 type StateDef = Record<
 	string,
 	{
 		where: "account" | "device" | "deviceAccount";
-		default: any;
+		default: unknown;
 	}
 >;
 
@@ -82,11 +83,12 @@ export class Storage<T extends StateDef> {
 		for (const [k, v] of Object.entries(state)) {
 			reactiveState[k] = ref(v);
 		}
-		this.state = state as any;
-		this.reactiveState = reactiveState as any;
+		this.state = state as typeof this.state;
+		this.reactiveState = reactiveState as typeof this.reactiveState;
 
 		if (isSignedIn(me)) {
 			// なぜかsetTimeoutしないとapi関数内でエラーになる(おそらく循環参照してることに原因がありそう)
+			// For some reason, if I don't setTimeout, an error occurs in the api function (probably caused by circular references)
 			window.setTimeout(() => {
 				api("i/registry/get-all", { scope: ["client", this.key] }).then(
 					(kvs) => {
@@ -104,7 +106,7 @@ export class Storage<T extends StateDef> {
 							}
 						}
 						localStorage.setItem(
-							`${this.keyForLocalStorage}::cache::${me.id}`,
+							`${this.keyForLocalStorage}::cache::${me!.id}`,
 							JSON.stringify(cache),
 						);
 					},
@@ -118,11 +120,12 @@ export class Storage<T extends StateDef> {
 					key,
 					value,
 				}: {
-					scope: string[];
+					scope?: string[];
 					key: keyof T;
 					value: T[typeof key]["default"];
 				}) => {
 					if (
+						scope == null ||
 						scope.length !== 2 ||
 						scope[0] !== "client" ||
 						scope[1] !== this.key ||
@@ -135,13 +138,13 @@ export class Storage<T extends StateDef> {
 
 					const cache = JSON.parse(
 						localStorage.getItem(
-							`${this.keyForLocalStorage}::cache::${me.id}`,
+							`${this.keyForLocalStorage}::cache::${me!.id}`,
 						) || "{}",
 					);
 					if (cache[key] !== value) {
 						cache[key] = value;
 						localStorage.setItem(
-							`${this.keyForLocalStorage}::cache::${me.id}`,
+							`${this.keyForLocalStorage}::cache::${me!.id}`,
 							JSON.stringify(cache),
 						);
 					}
@@ -150,7 +153,7 @@ export class Storage<T extends StateDef> {
 		}
 	}
 
-	public set<K extends keyof T>(key: K, value: T[K]["default"]): void {
+	public set<K extends keyof T>(key: K & string, value: T[K]["default"]): void {
 		if (_DEV_) console.log("set", key, value);
 
 		this.state[key] = value;
@@ -201,15 +204,15 @@ export class Storage<T extends StateDef> {
 		}
 	}
 
-	public push<K extends keyof T>(
-		key: K,
+	public push<K extends TypeUtils.PropertyOfType<T, { default: unknown[] }>>(
+		key: K & string,
 		value: ArrayElement<T[K]["default"]>,
 	): void {
-		const currentState = this.state[key];
+		const currentState = this.state[key] as unknown[];
 		this.set(key, [...currentState, value]);
 	}
 
-	public reset(key: keyof T) {
+	public reset(key: keyof T & string) {
 		this.set(key, this.def[key].default);
 	}
 
@@ -218,11 +221,11 @@ export class Storage<T extends StateDef> {
 	 * 主にvue場で設定コントロールのmodelとして使う用
 	 */
 	public makeGetterSetter<K extends keyof T>(
-		key: K,
-		getter?: (v: T[K]) => unknown,
-		setter?: (v: unknown) => T[K],
+		key: K & string,
+		getter?: (oldV: T[K]["default"]) => T[K]["default"],
+		setter?: (oldV: T[K]["default"]) => T[K]["default"],
 	) {
-		const valueRef = ref(this.state[key]);
+		const valueRef = ref(this.state[key]) as Ref<T[K]["default"]>;
 
 		const stop = watch(this.reactiveState[key], (val) => {
 			valueRef.value = val;
@@ -242,7 +245,7 @@ export class Storage<T extends StateDef> {
 					return valueRef.value;
 				}
 			},
-			set: (value: unknown) => {
+			set: (value: T[K]["default"]) => {
 				const val = setter ? setter(value) : value;
 				this.set(key, val);
 				valueRef.value = val;

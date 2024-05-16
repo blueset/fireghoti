@@ -42,7 +42,20 @@ export function install(plugin) {
 	aiscript.exec(parser.parse(plugin.src));
 }
 
-function createPluginEnv(opts) {
+interface Plugin {
+	config?: Record<
+		string,
+		{
+			default: unknown;
+			[k: string]: unknown;
+		}
+	>;
+	configData: Record<string, unknown>;
+	token: string;
+	id: string;
+}
+
+function createPluginEnv(opts: { plugin: Plugin; storageKey: string }) {
 	const config = new Map<string, values.Value>();
 	for (const [k, v] of Object.entries(opts.plugin.config ?? {})) {
 		config.set(
@@ -172,7 +185,7 @@ function registerNoteAction({ pluginId, title, handler }) {
 			if (!pluginContext) {
 				return;
 			}
-			pluginContext.execFn(handler, [utils.jsToVal(user)]);
+			pluginContext.execFn(handler, [utils.jsToVal(note)]);
 		},
 	});
 }
@@ -205,16 +218,18 @@ function registerNotePostInterruptor({ pluginId, handler }) {
 	});
 }
 
+// FIXME: where is pageViewInterruptors?
+// This function currently can't do anything
 function registerPageViewInterruptor({ pluginId, handler }): void {
-	pageViewInterruptors.push({
-		handler: async (page) => {
-			const pluginContext = pluginContexts.get(pluginId);
-			if (!pluginContext) {
-				return;
-			}
-			return utils.valToJs(
-				await pluginContext.execFn(handler, [utils.jsToVal(page)]),
-			);
-		},
-	});
+	// pageViewInterruptors.push({
+	// 	handler: async (page) => {
+	// 		const pluginContext = pluginContexts.get(pluginId);
+	// 		if (!pluginContext) {
+	// 			return;
+	// 		}
+	// 		return utils.valToJs(
+	// 			await pluginContext.execFn(handler, [utils.jsToVal(page)]),
+	// 		);
+	// 	},
+	// });
 }

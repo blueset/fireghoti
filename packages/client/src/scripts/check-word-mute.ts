@@ -1,4 +1,5 @@
 import type { entities } from "firefish-js";
+import { detectLanguage, languageContains } from "./language-utils";
 
 export interface Muted {
 	muted: boolean;
@@ -12,11 +13,12 @@ function checkLangMute(
 	note: entities.Note,
 	mutedLangs: Array<string | string[]>,
 ): Muted {
-	const mutedLangList = new Set(
-		mutedLangs.reduce((arr, x) => [...arr, ...(Array.isArray(x) ? x : [x])]),
-	);
-	if (mutedLangList.has((note.lang?.[0]?.lang || "").split("-")[0])) {
-		return { muted: true, matched: [note.lang?.[0]?.lang] };
+	const mutedLangList = mutedLangs.flat();
+	const noteLang = note.lang ?? detectLanguage(note.text ?? "") ?? "no-lang";
+	for (const mutedLang of mutedLangList) {
+		if (languageContains(mutedLang, noteLang)) {
+			return { muted: true, matched: [noteLang] };
+		}
 	}
 	return NotMuted;
 }
@@ -32,7 +34,7 @@ function checkWordMute(
 
 	if (text === "") return NotMuted;
 
-	const result = { muted: false, matched: [] };
+	const result = { muted: false, matched: [] as string[] };
 
 	for (const mutePattern of mutedWords) {
 		if (Array.isArray(mutePattern)) {
@@ -74,7 +76,7 @@ function checkWordMute(
 }
 
 export function getWordSoftMute(
-	note: firefish.entities.Note,
+	note: entities.Note,
 	meId: string | null | undefined,
 	mutedWords: Array<string | string[]>,
 	mutedLangs: Array<string | string[]>,

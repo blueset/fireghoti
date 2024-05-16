@@ -160,7 +160,7 @@ const hCaptchaResponse = ref(null);
 const reCaptchaResponse = ref(null);
 
 const emit = defineEmits<{
-	(ev: "login", v: any): void;
+	login: [v: { id: string; i: string }];
 }>();
 
 const props = defineProps({

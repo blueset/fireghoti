@@ -182,7 +182,7 @@ export default {
 const props = defineProps<{
 	type: string;
 	q: string | null;
-	textarea: HTMLTextAreaElement;
+	textarea: HTMLTextAreaElement | HTMLInputElement;
 	close: () => void;
 	x: number;
 	y: number;
@@ -435,7 +435,7 @@ onUpdated(() => {
 onMounted(() => {
 	setPosition();
 
-	props.textarea.addEventListener("keydown", onKeydown);
+	(props.textarea as HTMLTextAreaElement).addEventListener("keydown", onKeydown);
 	document.body.addEventListener("mousedown", onMousedown);
 
 	nextTick(() => {
@@ -453,7 +453,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-	props.textarea.removeEventListener("keydown", onKeydown);
+	(props.textarea as HTMLTextAreaElement).removeEventListener("keydown", onKeydown);
 	document.body.removeEventListener("mousedown", onMousedown);
 });
 </script>
