@@ -2,8 +2,8 @@
 	<MkModal
 		ref="modal"
 		:z-priority="'middle'"
-		@click="$refs.modal.close()"
-		@closed="$emit('closed')"
+		@click="modal!.close()"
+		@closed="emit('closed')"
 	>
 		<div :class="$style.root">
 			<div :class="$style.title">
@@ -14,7 +14,7 @@
 				:class="$style.gotIt"
 				primary
 				full
-				@click="$refs.modal.close()"
+				@click="modal!.close()"
 				>{{ i18n.ts.gotIt }}</MkButton
 			>
 		</div>

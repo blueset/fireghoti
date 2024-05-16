@@ -141,6 +141,9 @@ importers:
       file-type:
         specifier: 19.0.0
         version: 19.0.0
+      firefish-js:
+        specifier: workspace:*
+        version: link:../firefish-js
       fluent-ffmpeg:
         specifier: 2.1.2
         version: 2.1.2

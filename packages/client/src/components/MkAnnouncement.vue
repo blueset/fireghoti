@@ -1,5 +1,5 @@
 <template>
-	<MkModal ref="modal" :z-priority="'middle'" @closed="$emit('closed')">
+	<MkModal ref="modal" :z-priority="'middle'" @closed="emit('closed')">
 		<div :class="$style.root">
 			<div :class="$style.title">
 				<MkSparkle v-if="isGoodNews">{{ title }}</MkSparkle>
@@ -39,6 +39,10 @@ import * as os from "@/os";
 
 const props = defineProps<{
 	announcement: entities.Announcement;
+}>();
+
+const emit = defineEmits<{
+	closed: [];
 }>();
 
 const { id, text, title, imageUrl, isGoodNews } = props.announcement;

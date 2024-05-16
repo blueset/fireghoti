@@ -1,7 +1,7 @@
 import { ApiError } from "@/server/api/error.js";
 import { getNote } from "@/server/api/common/getters.js";
 import { translate } from "@/misc/translate.js";
-import type { PostLanguage } from "@/misc/langmap.js";
+import type { PostLanguage } from "firefish-js";
 import define from "@/server/api/define.js";
 
 export const meta = {

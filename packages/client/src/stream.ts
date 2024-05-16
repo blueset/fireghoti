@@ -31,6 +31,7 @@ export function reloadStream() {
 
 	isReloading = true;
 	stream.close();
+	// biome-ignore lint/suspicious/noAssignInExpressions: assign intentionally
 	stream.once("_connected_", () => (isReloading = false));
 	stream.stream.reconnect();
 	isReloading = false;

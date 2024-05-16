@@ -17,7 +17,8 @@ export async function fetchThemes(): Promise<void> {
 			key: "themes",
 		});
 		localStorage.setItem(lsCacheKey, JSON.stringify(themes));
-	} catch (err) {
+		// biome-ignore lint/suspicious/noExplicitAny: Safely any
+	} catch (err: any) {
 		if (err.code === "NO_SUCH_KEY") return;
 		throw err;
 	}

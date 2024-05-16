@@ -1,4 +1,4 @@
-import { langmap } from "@/misc/langmap.js";
+import { langmap } from "../misc/langmap.js";
 
 export const packedNoteSchema = {
 	type: "object",
@@ -207,16 +207,6 @@ export const packedNoteSchema = {
 			type: "object",
 			optional: true,
 			nullable: true,
-		},
-		myRenoteCount: {
-			type: "number",
-			optional: true,
-			nullable: false,
-		},
-		quoteCount: {
-			type: "number",
-			optional: false,
-			nullable: false,
 		},
 	},
 } as const;

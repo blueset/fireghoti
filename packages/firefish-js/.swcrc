@@ -17,7 +17,7 @@
 	},
 	"minify": false,
 	"module": {
-		"type": "commonjs",
+		"type": "es6",
 		"strict": true,
 		"resolveFully": true
 	}

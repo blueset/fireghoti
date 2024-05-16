@@ -1,4 +1,3 @@
-// TODO: sharedに置いてバックエンドのと統合したい
 export const iso639Langs1 = {
 	af: {
 		nativeName: "Afrikaans",

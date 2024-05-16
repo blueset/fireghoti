@@ -1,7 +1,7 @@
 // NIRAX --- A lightweight router
 
 import { EventEmitter } from "eventemitter3";
-import type { Component, ShallowRef } from "vue";
+import type { Component } from "vue";
 import { shallowRef } from "vue";
 import { safeURIDecode } from "@/scripts/safe-uri-decode";
 import { pleaseLogin } from "@/scripts/please-login";
@@ -36,6 +36,7 @@ export interface Resolved {
 function parsePath(path: string): ParsedPath {
 	const res = [] as ParsedPath;
 
+	// biome-ignore lint/style/noParameterAssign: assign it intentionally
 	path = path.substring(1);
 
 	for (const part of path.split("/")) {
@@ -76,13 +77,13 @@ export class Router extends EventEmitter<{
 	same: () => void;
 }> {
 	private routes: RouteDef[];
-	public current: Resolved;
-	public currentRef: ShallowRef<Resolved> = shallowRef();
-	public currentRoute: ShallowRef<RouteDef> = shallowRef();
+	public current!: Resolved; // It is assigned in this.navigate
+	public currentRef = shallowRef<Resolved>();
+	public currentRoute = shallowRef<RouteDef>();
 	private currentPath: string;
 	private currentKey = Date.now().toString();
 
-	public navHook: ((path: string, flag?: any) => boolean) | null = null;
+	public navHook: ((path: string, flag?: unknown) => boolean) | null = null;
 
 	constructor(routes: Router["routes"], currentPath: Router["currentPath"]) {
 		super();
@@ -92,9 +93,10 @@ export class Router extends EventEmitter<{
 		this.navigate(currentPath, null, false);
 	}
 
-	public resolve(path: string): Resolved | null {
+	public resolve(_path: string): Resolved | null {
 		let queryString: string | null = null;
 		let hash: string | null = null;
+		let path = _path;
 		if (path[0] === "/") path = path.substring(1);
 		if (path.includes("#")) {
 			hash = path.substring(path.indexOf("#") + 1);
@@ -168,9 +170,16 @@ export class Router extends EventEmitter<{
 					}
 
 					if (route.query != null && queryString != null) {
-						const queryObject = [
-							...new URLSearchParams(queryString).entries(),
-						].reduce((obj, entry) => ({ ...obj, [entry[0]]: entry[1] }), {});
+						// const queryObject = [
+						// 	...new URLSearchParams(queryString).entries(),
+						// ].reduce((obj, entry) => ({ ...obj, [entry[0]]: entry[1] }), {});
+
+						const queryObject: Record<string, string> = Object.assign(
+							{},
+							...[...new URLSearchParams(queryString).entries()].map(
+								(entry) => ({ [entry[0]]: entry[1] }),
+							),
+						);
 
 						for (const q in route.query) {
 							const as = route.query[q];
@@ -227,6 +236,7 @@ export class Router extends EventEmitter<{
 		}
 
 		const isSamePath = beforePath === path;
+		// biome-ignore lint/style/noParameterAssign: assign it intentionally
 		if (isSamePath && key == null) key = this.currentKey;
 		this.current = res;
 		this.currentRef.value = res;
@@ -253,7 +263,7 @@ export class Router extends EventEmitter<{
 		return this.currentKey;
 	}
 
-	public push(path: string, flag?: any) {
+	public push(path: string, flag?: unknown) {
 		const beforePath = this.currentPath;
 		if (path === beforePath) {
 			this.emit("same");
