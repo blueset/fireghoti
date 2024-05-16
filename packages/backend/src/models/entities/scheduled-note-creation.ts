@@ -3,6 +3,7 @@ import {
 	JoinColumn,
 	Column,
 	ManyToOne,
+	OneToOne,
 	PrimaryColumn,
 	Index,
 	type Relation,
@@ -31,7 +32,7 @@ export class ScheduledNoteCreation {
 	public scheduledAt: Date;
 
 	//#region Relations
-	@ManyToOne(() => Note, {
+	@OneToOne(() => Note, {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
