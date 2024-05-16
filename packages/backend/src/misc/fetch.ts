@@ -5,7 +5,7 @@ import CacheableLookup from "cacheable-lookup";
 import fetch, { type RequestRedirect } from "node-fetch";
 import { HttpProxyAgent, HttpsProxyAgent } from "hpagent";
 import { config } from "@/config.js";
-import { isValidUrl } from "./is-valid-url.js";
+import { isSafeUrl } from "backend-rs";
 
 export async function getJson(
 	url: string,
@@ -60,7 +60,7 @@ export async function getResponse(args: {
 	size?: number;
 	redirect?: RequestRedirect;
 }) {
-	if (!isValidUrl(args.url)) {
+	if (!isSafeUrl(args.url)) {
 		throw new StatusError("Invalid URL", 400);
 	}
 
@@ -83,7 +83,7 @@ export async function getResponse(args: {
 	});
 
 	if (args.redirect === "manual" && [301, 302, 307, 308].includes(res.status)) {
-		if (!isValidUrl(res.url)) {
+		if (!isSafeUrl(res.url)) {
 			throw new StatusError("Invalid URL", 400);
 		}
 		return res;

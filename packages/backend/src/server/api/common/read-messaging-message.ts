@@ -3,10 +3,11 @@ import {
 	publishToChatStream,
 	publishToGroupChatStream,
 	publishToChatIndexStream,
+	sendPushNotification,
 	ChatEvent,
 	ChatIndexEvent,
+	PushNotificationKind,
 } from "backend-rs";
-import { pushNotification } from "@/services/push-notification.js";
 import type { User, IRemoteUser } from "@/models/entities/user.js";
 import type { MessagingMessage } from "@/models/entities/messaging-message.js";
 import { MessagingMessages, UserGroupJoinings, Users } from "@/models/index.js";
@@ -62,20 +63,19 @@ export async function readUserMessagingMessage(
 	if (!(await Users.getHasUnreadMessagingMessage(userId))) {
 		// 全ての(いままで未読だった)自分宛てのメッセージを(これで)読みましたよというイベントを発行
 		publishMainStream(userId, "readAllMessagingMessages");
-		pushNotification(userId, "readAllMessagingMessages", undefined);
+		sendPushNotification(userId, PushNotificationKind.ReadAllChats, {});
 	} else {
 		// そのユーザーとのメッセージで未読がなければイベント発行
-		const count = await MessagingMessages.count({
+		const hasUnread = await MessagingMessages.exists({
 			where: {
 				userId: otherpartyId,
 				recipientId: userId,
 				isRead: false,
 			},
-			take: 1,
 		});
 
-		if (!count) {
-			pushNotification(userId, "readAllMessagingMessagesOfARoom", {
+		if (!hasUnread) {
+			sendPushNotification(userId, PushNotificationKind.ReadAllChatsInTheRoom, {
 				userId: otherpartyId,
 			});
 		}
@@ -137,10 +137,10 @@ export async function readGroupMessagingMessage(
 	if (!(await Users.getHasUnreadMessagingMessage(userId))) {
 		// 全ての(いままで未読だった)自分宛てのメッセージを(これで)読みましたよというイベントを発行
 		publishMainStream(userId, "readAllMessagingMessages");
-		pushNotification(userId, "readAllMessagingMessages", undefined);
+		sendPushNotification(userId, PushNotificationKind.ReadAllChats, {});
 	} else {
 		// そのグループにおいて未読がなければイベント発行
-		const unreadExist = await MessagingMessages.createQueryBuilder("message")
+		const hasUnread = await MessagingMessages.createQueryBuilder("message")
 			.where("message.groupId = :groupId", { groupId: groupId })
 			.andWhere("message.userId != :userId", { userId: userId })
 			.andWhere("NOT (:userId = ANY(message.reads))", { userId: userId })
@@ -150,8 +150,10 @@ export async function readGroupMessagingMessage(
 			.getOne()
 			.then((x) => x != null);
 
-		if (!unreadExist) {
-			pushNotification(userId, "readAllMessagingMessagesOfARoom", { groupId });
+		if (!hasUnread) {
+			sendPushNotification(userId, PushNotificationKind.ReadAllChatsInTheRoom, {
+				groupId,
+			});
 		}
 	}
 }

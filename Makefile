@@ -3,7 +3,7 @@ export
 
 
 .PHONY: pre-commit
-pre-commit: format entities napi-index
+pre-commit: format entities napi
 
 .PHONY: format
 format:
@@ -11,11 +11,12 @@ format:
 
 .PHONY: entities
 entities:
+	pnpm --filter=backend run build:debug
 	pnpm run migrate
 	$(MAKE) -C ./packages/backend-rs regenerate-entities
 
-.PHONY: napi-index
-napi-index:
+.PHONY: napi
+napi:
 	$(MAKE) -C ./packages/backend-rs update-index
 
 

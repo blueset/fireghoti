@@ -15,12 +15,12 @@
 
 <script lang="ts" setup>
 import { shallowRef } from "vue";
+import QRCodeVue3 from "qrcode-vue3";
 import MkModal from "@/components/MkModal.vue";
 import MkButton from "@/components/MkButton.vue";
 import { i18n } from "@/i18n";
-import QRCodeVue3 from "qrcode-vue3";
 
-const props = defineProps<{
+defineProps<{
 	qrCode: string;
 }>();
 

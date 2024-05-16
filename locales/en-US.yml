@@ -766,6 +766,9 @@ confirmToUnclipAlreadyClippedNote: "This post is already part of the \"{name}\" 
 public: "Public"
 i18nInfo: "Firefish is being translated into various languages by volunteers. You
   can help at {link}."
+i18nServerInfo: "New clients will be in {language} by default."
+i18nServerChange: "Use {language} instead."
+i18nServerSet: "Use {language} for new clients."
 manageAccessTokens: "Manage access tokens"
 accountInfo: "Account Info"
 notesCount: "Number of posts"
@@ -2239,4 +2242,7 @@ autocorrectNoteLanguage: "Show a warning if the post language does not match the
 incorrectLanguageWarning: "It looks like your post is in {detected}, but you selected
   {current}.\nWould you like to set the language to {detected} instead?"
 noteEditHistory: "Post edit history"
+slashQuote: "Chain quote"
 foldNotification: "Group similar notifications"
+mergeThreadInTimeline: "Merge multiple posts in the same thread in timelines"
+mergeRenotesInTimeline: "Group multiple boosts of the same post"

@@ -1,8 +1,8 @@
 import { URL } from "node:url";
-import { Window } from "happy-dom";
+import { type DOMWindow, JSDOM } from "jsdom";
 import fetch from "node-fetch";
 import tinycolor from "tinycolor2";
-import { getJson, getAgentByUrl } from "@/misc/fetch.js";
+import { getJson, getHtml, getAgentByUrl } from "@/misc/fetch.js";
 import {
 	type Instance,
 	MAX_LENGTH_INSTANCE,
@@ -10,6 +10,7 @@ import {
 import { Instances } from "@/models/index.js";
 import { getFetchInstanceMetadataLock } from "@/misc/app-lock.js";
 import Logger from "@/services/logger.js";
+import { type Nodeinfo, fetchNodeinfo } from "backend-rs";
 import { inspect } from "node:util";
 
 const logger = new Logger("metadata", "cyan");
@@ -36,7 +37,7 @@ export async function fetchInstanceMetadata(
 
 	try {
 		const [info, dom, manifest] = await Promise.all([
-			fetchNodeinfo(instance).catch(() => null),
+			fetchNodeinfo(instance.host).catch(() => null),
 			fetchDom(instance).catch(() => null),
 			fetchManifest(instance).catch(() => null),
 		]);
@@ -57,30 +58,26 @@ export async function fetchInstanceMetadata(
 
 		if (info) {
 			updates.softwareName =
-				info.software?.name
-					?.toLowerCase()
+				info.software.name
+					.toLowerCase()
 					.substring(0, MAX_LENGTH_INSTANCE.softwareName) || null;
 			updates.softwareVersion =
-				info.software?.version?.substring(
+				info.software.version.substring(
 					0,
 					MAX_LENGTH_INSTANCE.softwareVersion,
 				) || null;
 			updates.openRegistrations = info.openRegistrations;
-			updates.maintainerName = info.metadata
-				? info.metadata.maintainer
-					? info.metadata.maintainer.name?.substring(
-							0,
-							MAX_LENGTH_INSTANCE.maintainerName,
-						) || null
-					: null
+			updates.maintainerName = info.metadata.maintainer
+				? info.metadata.maintainer.name?.substring(
+						0,
+						MAX_LENGTH_INSTANCE.maintainerName,
+					) || null
 				: null;
-			updates.maintainerEmail = info.metadata
-				? info.metadata.maintainer
-					? info.metadata.maintainer.email?.substring(
-							0,
-							MAX_LENGTH_INSTANCE.maintainerEmail,
-						) || null
-					: null
+			updates.maintainerEmail = info.metadata.maintainer
+				? info.metadata.maintainer.email?.substring(
+						0,
+						MAX_LENGTH_INSTANCE.maintainerEmail,
+					) || null
 				: null;
 		}
 
@@ -115,84 +112,13 @@ export async function fetchInstanceMetadata(
 	}
 }
 
-type NodeInfo = {
-	openRegistrations?: boolean;
-	software?: {
-		name?: string;
-		version?: string;
-	};
-	metadata?: {
-		name?: string;
-		nodeName?: string;
-		nodeDescription?: string;
-		description?: string;
-		maintainer?: {
-			name?: string;
-			email?: string;
-		};
-	};
-};
-
-async function fetchNodeinfo(instance: Instance): Promise<NodeInfo> {
-	logger.info(`Fetching nodeinfo of ${instance.host} ...`);
-
-	try {
-		const wellknown = (await getJson(
-			`https://${instance.host}/.well-known/nodeinfo`,
-		).catch((e) => {
-			if (e.statusCode === 404) {
-				throw new Error("No nodeinfo provided");
-			} else {
-				throw new Error(inspect(e));
-			}
-		})) as Record<string, unknown>;
-
-		if (wellknown.links == null || !Array.isArray(wellknown.links)) {
-			throw new Error("No wellknown links");
-		}
-
-		const links = wellknown.links as any[];
-
-		const lnik1_0 = links.find(
-			(link) => link.rel === "http://nodeinfo.diaspora.software/ns/schema/1.0",
-		);
-		const lnik2_0 = links.find(
-			(link) => link.rel === "http://nodeinfo.diaspora.software/ns/schema/2.0",
-		);
-		const lnik2_1 = links.find(
-			(link) => link.rel === "http://nodeinfo.diaspora.software/ns/schema/2.1",
-		);
-		const link = lnik2_1 || lnik2_0 || lnik1_0;
-
-		if (link == null) {
-			throw new Error("No nodeinfo link provided");
-		}
-
-		const info = await getJson(link.href).catch((e) => {
-			throw new Error(inspect(e));
-		});
-
-		logger.info(`Successfuly fetched nodeinfo of ${instance.host}`);
-
-		return info as NodeInfo;
-	} catch (e) {
-		logger.error(
-			`Failed to fetch nodeinfo of ${instance.host}:\n${inspect(e)}`,
-		);
-
-		throw e;
-	}
-}
-
-async function fetchDom(instance: Instance): Promise<Window["document"]> {
+async function fetchDom(instance: Instance): Promise<DOMWindow["document"]> {
 	logger.info(`Fetching HTML of ${instance.host} ...`);
 
-	const window = new Window({
-		url: `https://${instance.host}`,
-	});
-	const doc = window.document;
+	const html = await getHtml(`https://${instance.host}`);
+	const { window } = new JSDOM(html);
 
-	return doc;
+	return window.document;
 }
 
 async function fetchManifest(
@@ -209,7 +135,7 @@ async function fetchManifest(
 
 async function fetchFaviconUrl(
 	instance: Instance,
-	doc: Window["document"] | null,
+	doc: DOMWindow["document"] | null,
 ): Promise<string | null> {
 	const url = `https://${instance.host}`;
 
@@ -241,7 +167,7 @@ async function fetchFaviconUrl(
 
 async function fetchIconUrl(
 	instance: Instance,
-	doc: Window["document"] | null,
+	doc: DOMWindow["document"] | null,
 	manifest: Record<string, any> | null,
 ): Promise<string | null> {
 	if (manifest?.icons && manifest.icons.length > 0 && manifest.icons[0].src) {
@@ -272,7 +198,7 @@ async function fetchIconUrl(
 }
 
 async function getThemeColor(
-	info: NodeInfo | null,
+	info: Nodeinfo | null,
 	doc: Window["document"] | null,
 	manifest: Record<string, any> | null,
 ): Promise<string | null> {
@@ -290,10 +216,10 @@ async function getThemeColor(
 }
 
 async function getSiteName(
-	info: NodeInfo | null,
-	doc: Window["document"] | null,
+	info: Nodeinfo | null,
+	doc: DOMWindow["document"] | null,
 	manifest: Record<string, any> | null,
-): Promise<string | undefined | null> {
+): Promise<string | null> {
 	if (info?.metadata) {
 		if (info.metadata.nodeName || info.metadata.name) {
 			return info.metadata.nodeName || info.metadata.name;
@@ -318,8 +244,8 @@ async function getSiteName(
 }
 
 async function getDescription(
-	info: NodeInfo | null,
-	doc: Window["document"] | null,
+	info: Nodeinfo | null,
+	doc: DOMWindow["document"] | null,
 	manifest: Record<string, any> | null,
 ): Promise<string | null> {
 	if (info?.metadata) {

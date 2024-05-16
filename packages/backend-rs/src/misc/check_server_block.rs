@@ -1,10 +1,10 @@
 use crate::misc::meta::fetch_meta;
 use sea_orm::DbErr;
 
-/**
- * @param host punycoded instance host
- * @returns whether the given host should be blocked
- */
+/// Checks if a server is blocked.
+///
+/// ## Argument
+/// `host` - punycoded instance host
 #[crate::export]
 pub async fn is_blocked_server(host: &str) -> Result<bool, DbErr> {
     Ok(fetch_meta(true)
@@ -16,10 +16,10 @@ pub async fn is_blocked_server(host: &str) -> Result<bool, DbErr> {
         }))
 }
 
-/**
- * @param host punycoded instance host
- * @returns whether the given host should be limited
- */
+/// Checks if a server is silenced.
+///
+/// ## Argument
+/// `host` - punycoded instance host
 #[crate::export]
 pub async fn is_silenced_server(host: &str) -> Result<bool, DbErr> {
     Ok(fetch_meta(true)
@@ -31,10 +31,11 @@ pub async fn is_silenced_server(host: &str) -> Result<bool, DbErr> {
         }))
 }
 
-/**
- * @param host punycoded instance host
- * @returns whether the given host is allowlisted (this is always true if private mode is disabled)
- */
+/// Checks if a server is allowlisted.
+/// Returns `Ok(true)` if private mode is disabled.
+///
+/// ## Argument
+/// `host` - punycoded instance host
 #[crate::export]
 pub async fn is_allowed_server(host: &str) -> Result<bool, DbErr> {
     let meta = fetch_meta(true).await?;

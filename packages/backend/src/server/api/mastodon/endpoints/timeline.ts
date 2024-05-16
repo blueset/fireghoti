@@ -1,6 +1,6 @@
-import Router from "@koa/router";
+import type Router from "@koa/router";
 import { getClient } from "../ApiMastodonCompatibleService.js";
-import { ParsedUrlQuery } from "querystring";
+import type { ParsedUrlQuery } from "node:querystring";
 import {
 	convertAccount,
 	convertConversation,

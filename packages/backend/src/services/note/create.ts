@@ -66,7 +66,7 @@ import { Mutex } from "redis-semaphore";
 import { langmap } from "firefish-js";
 import Logger from "@/services/logger.js";
 import { inspect } from "node:util";
-import { undefinedToNull } from "@/prelude/undefined-to-null.js";
+import { toRustObject } from "@/prelude/undefined-to-null.js";
 
 const logger = new Logger("create-note");
 
@@ -404,7 +404,7 @@ export default async (
 			checkHitAntenna(antenna, note, user).then((hit) => {
 				if (hit) {
 					// TODO: do this more sanely
-					addNoteToAntenna(antenna.id, undefinedToNull(note) as Note);
+					addNoteToAntenna(antenna.id, toRustObject(note));
 				}
 			});
 		}

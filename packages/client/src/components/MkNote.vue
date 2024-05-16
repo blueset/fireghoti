@@ -1,7 +1,7 @@
 <template>
 	<div
 		v-if="!muted.muted"
-		v-show="!isDeleted"
+		v-show="!isDeleted && renotes?.length !== 0"
 		:id="appearNote.historyId || appearNote.id"
 		ref="el"
 		v-hotkey="keymap"
@@ -10,11 +10,18 @@
 		:aria-label="accessibleLabel"
 		class="tkcbzcuz note-container"
 		:tabindex="!isDeleted ? '-1' : undefined"
-		:class="{ renote: isRenote }"
+		:class="{ renote: isRenote || (renotesSliced && renotesSliced.length > 0) }"
 	>
 		<MkNoteSub
-			v-if="appearNote.reply && !detailedView && !collapsedReply"
+			v-if="appearNote.reply && !detailedView && !collapsedReply && !parents"
 			:note="appearNote.reply"
+			class="reply-to"
+		/>
+		<MkNoteSub
+			v-for="n of parents"
+			v-else-if="!detailedView && !collapsedReply && parents"
+			:key="n.id"
+			:note="n"
 			class="reply-to"
 		/>
 		<div
@@ -41,35 +48,6 @@
 			<div v-if="pinned" class="info">
 				<i :class="icon('ph-push-pin')"></i>{{ i18n.ts.pinnedNote }}
 			</div>
-			<div v-if="isRenote" class="renote">
-				<i :class="icon('ph-rocket-launch')"></i>
-				<I18n :src="i18n.ts.renotedBy" tag="span">
-					<template #user>
-						<MkA
-							v-user-preview="note.userId"
-							class="name"
-							:to="userPage(note.user)"
-							@click.stop
-						>
-							<MkUserName :user="note.user" />
-						</MkA>
-					</template>
-				</I18n>
-				<div class="info">
-					<button
-						ref="renoteTime"
-						class="_button time"
-						@click.stop="showRenoteMenu()"
-					>
-						<i
-							v-if="isMyRenote"
-							:class="icon('ph-dots-three-outline dropdownIcon')"
-						></i>
-						<MkTime :time="note.createdAt" />
-					</button>
-					<MkVisibility :note="note" />
-				</div>
-			</div>
 			<div v-if="collapsedReply && appearNote.reply" class="info">
 				<MkAvatar class="avatar" :user="appearNote.reply.user" />
 				<MkUserName
@@ -84,6 +62,75 @@
 					:lang="appearNote.reply.lang"
 					:custom-emojis="note.emojis"
 				/>
+			</div>
+			<div v-if="isRenote || (renotesSliced && renotesSliced.length > 0)" class="renote">
+				<i :class="icon('ph-rocket-launch')"></i>
+				<I18n
+					v-if="renotesSliced == null"
+					:src="i18n.ts.renotedBy"
+					tag="span"
+				>
+					<template #user>
+						<MkAvatar class="avatar" :user="note.user" />
+						<MkA
+							v-user-preview="note.userId"
+							class="name"
+							:to="userPage(note.user)"
+							@click.stop
+						>
+							<MkUserName :user="note.user" />
+						</MkA>
+					</template>
+				</I18n>
+				<I18n
+					v-else
+					:src="i18n.ts.renotedBy"
+					tag="span"
+				>
+					<template #user>
+						<template
+							v-for="(renote, index) in renotesSliced"
+						>
+							<MkAvatar
+								class="avatar"
+								:user="renote.user"
+							/>
+							<MkA
+								v-user-preview="renote.userId"
+								class="name"
+								:to="userPage(renote.user)"
+								@click.stop
+							>
+								<MkUserName :user="renote.user" />
+							</MkA>
+							{{
+								index !== renotesSliced.length - 1
+									? ", "
+									: renotesSliced.length < renotes!.length
+										? "..."
+										: ""
+							}}
+						</template>
+					</template>
+				</I18n>
+				<div class="info">
+					<button
+						ref="renoteTime"
+						class="_button time"
+						@click.stop="showRenoteMenu()"
+					>
+						<i
+							v-if="isMyNote"
+							:class="icon('ph-dots-three-outline dropdownIcon')"
+						></i>
+						<MkTime 
+							v-if="(renotesSliced && renotesSliced.length > 0)"
+							:time="renotesSliced[0].createdAt"
+						/>
+						<MkTime v-else :time="note.createdAt" />
+					</button>
+					<MkVisibility :note="note" />
+				</div>
 			</div>
 		</div>
 		<article
@@ -215,7 +262,7 @@
 						@click.stop="react()"
 					>
 						<i :class="icon('ph-smiley')"></i>
-						<p class="count" v-if="reactionCount > 0 && hideEmojiViewer">{{reactionCount}}</p>
+						<p v-if="reactionCount > 0 && hideEmojiViewer" class="count">{{reactionCount}}</p>
 					</button>
 					<button
 						v-if="
@@ -228,7 +275,7 @@
 						@click.stop="undoReact(appearNote)"
 					>
 						<i :class="icon('ph-minus')"></i>
-						<p class="count" v-if="reactionCount > 0 && hideEmojiViewer">{{reactionCount}}</p>
+						<p v-if="reactionCount > 0 && hideEmojiViewer" class="count">{{reactionCount}}</p>
 					</button>
 					<XQuoteButton class="button" :note="appearNote" />
 					<button
@@ -279,7 +326,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref } from "vue";
+import { computed, inject, onMounted, ref, watch } from "vue";
 import type { Ref } from "vue";
 import type { entities } from "firefish-js";
 import MkSubNoteContent from "./MkSubNoteContent.vue";
@@ -310,17 +357,13 @@ import { notePage } from "@/filters/note";
 import { deepClone } from "@/scripts/clone";
 import { getNoteSummary } from "@/scripts/get-note-summary";
 import icon from "@/scripts/icon";
-import type { NoteTranslation } from "@/types/note";
-
-const router = useRouter();
-
-type NoteType = entities.Note & {
-	_featuredId_?: string;
-	_prId_?: string;
-};
+import type { NoteTranslation, NoteType } from "@/types/note";
+import { isDeleted as _isDeleted, isRenote as _isRenote } from "@/scripts/note";
 
 const props = defineProps<{
 	note: NoteType;
+	parents?: NoteType[];
+	renotes?: entities.Note[];
 	pinned?: boolean;
 	detailedView?: boolean;
 	collapsedReply?: boolean;
@@ -329,37 +372,20 @@ const props = defineProps<{
 	isLongJudger?: (note: entities.Note) => boolean;
 }>();
 
+// #region Constants
+const router = useRouter();
 const inChannel = inject("inChannel", null);
-
-const note = ref(deepClone(props.note));
-
-const softMuteReasonI18nSrc = (what?: string) => {
-	if (what === "note") return i18n.ts.userSaysSomethingReason;
-	if (what === "reply") return i18n.ts.userSaysSomethingReasonReply;
-	if (what === "renote") return i18n.ts.userSaysSomethingReasonRenote;
-	if (what === "quote") return i18n.ts.userSaysSomethingReasonQuote;
-
-	// I don't think here is reachable, but just in case
-	return i18n.ts.userSaysSomething;
+const keymap = {
+	r: () => reply(true),
+	"e|a|plus": () => react(true),
+	q: () => renoteButton.value!.renote(true),
+	"up|k": focusBefore,
+	"down|j": focusAfter,
+	esc: blur,
+	"m|o": () => menu(true),
+	// FIXME: What's this?
+	// s: () => showContent.value !== showContent.value,
 };
-
-// plugin
-if (noteViewInterruptors.length > 0) {
-	onMounted(async () => {
-		let result = deepClone(note.value);
-		for (const interruptor of noteViewInterruptors) {
-			result = await interruptor.handler(result);
-		}
-		note.value = result;
-	});
-}
-
-const isRenote =
-	note.value.renote != null &&
-	note.value.text == null &&
-	note.value.fileIds.length === 0 &&
-	note.value.poll == null;
-
 const el = ref<HTMLElement | null>(null);
 const footerEl = ref<HTMLElement>();
 const menuButton = ref<HTMLElement>();
@@ -367,42 +393,179 @@ const starButton = ref<InstanceType<typeof XStarButton>>();
 const renoteButton = ref<InstanceType<typeof XRenoteButton> | null>(null);
 const renoteTime = ref<HTMLElement>();
 const reactButton = ref<HTMLElement | null>(null);
-const appearNote = computed(() =>
-	isRenote ? (note.value.renote as NoteType) : note.value,
-);
-const isMyRenote = isSignedIn(me) && me.id === note.value.userId;
-// const showContent = ref(false);
-const isDeleted = ref(false);
-const muted = ref(
-	getWordSoftMute(
-		note.value,
-		me?.id,
-		defaultStore.state.mutedWords,
-		defaultStore.state.mutedLangs,
-	),
-);
-const translation = ref<NoteTranslation | null>(null);
-const translating = ref(false);
-const enableEmojiReactions = defaultStore.state.enableEmojiReactions;
-const expandOnNoteClick = defaultStore.state.expandOnNoteClick;
+const enableEmojiReactions = defaultStore.reactiveState.enableEmojiReactions;
+const expandOnNoteClick = defaultStore.reactiveState.expandOnNoteClick;
 const lang = localStorage.getItem("lang");
 const translateLang = localStorage.getItem("translateLang");
 const targetLang = (translateLang || lang || navigator.language)?.slice(0, 2);
+const currentClipPage = inject<Ref<entities.Clip> | null>(
+	"currentClipPage",
+	null,
+);
+// #endregion
 
-const isForeignLanguage: boolean =
-	defaultStore.state.detectPostLanguage &&
-	appearNote.value.text != null &&
-	(() => {
-		const postLang = detectLanguage(appearNote.value.text);
-		return postLang !== "" && postLang !== targetLang;
-	})();
+// #region Variables bound to Notes
+let capture: ReturnType<typeof useNoteCapture> | undefined;
+const note = ref(deepClone(props.note));
+const postIsExpanded = ref(false);
+const translation = ref<NoteTranslation | null>(null);
+const translating = ref(false);
+const isDeleted = ref(false);
+const renotes = ref(props.renotes?.filter((rn) => !_isDeleted(rn.id)));
+// #endregion
 
+// #region computed
+
+const renotesSliced = computed(() => renotes.value?.slice(0, 5));
+
+const isRenote = computed(() => _isRenote(note.value));
+const appearNote = computed(() =>
+	isRenote.value ? (note.value.renote as NoteType) : note.value,
+);
+const isMyNote = computed(
+	() => isSignedIn(me) && me.id === note.value.userId && props.renotes == null,
+);
+const muted = computed(() =>
+	getWordSoftMute(
+		note.value,
+		me?.id,
+		defaultStore.reactiveState.mutedWords.value,
+		defaultStore.reactiveState.mutedLangs.value,
+	),
+);
+const isForeignLanguage = computed(
+	() =>
+		defaultStore.state.detectPostLanguage &&
+		appearNote.value.text != null &&
+		(() => {
+			const postLang = detectLanguage(appearNote.value.text);
+			return postLang !== "" && postLang !== targetLang;
+		})(),
+);
 const reactionCount = computed(() =>
 	Object.values(appearNote.value.reactions).reduce(
 		(partialSum, val) => partialSum + val,
 		0,
 	),
 );
+const accessibleLabel = computed(() => {
+	let label = `${appearNote.value.user.username}; `;
+	if (appearNote.value.renote) {
+		label += `${i18n.ts.renoted} ${appearNote.value.renote.user.username}; `;
+		if (appearNote.value.renote.cw) {
+			label += `${i18n.ts.cw}: ${appearNote.value.renote.cw}; `;
+			if (postIsExpanded.value) {
+				label += `${appearNote.value.renote.text}; `;
+			}
+		} else {
+			label += `${appearNote.value.renote.text}; `;
+		}
+	} else {
+		if (appearNote.value.cw) {
+			label += `${i18n.ts.cw}: ${appearNote.value.cw}; `;
+			if (postIsExpanded.value) {
+				label += `${appearNote.value.text}; `;
+			}
+		} else {
+			label += `${appearNote.value.text}; `;
+		}
+	}
+	const date = new Date(appearNote.value.createdAt);
+	label += `${date.toLocaleTimeString()}`;
+	return label;
+});
+// #endregion
+
+async function pluginInit(newNote: NoteType) {
+	// plugin
+	if (noteViewInterruptors.length > 0) {
+		let result = deepClone(newNote);
+		for (const interruptor of noteViewInterruptors) {
+			result = await interruptor.handler(result);
+		}
+		note.value = result;
+	}
+}
+
+function recalculateRenotes() {
+	renotes.value = props.renotes?.filter((rn) => !_isDeleted(rn.id));
+}
+
+async function init(newNote: NoteType, first = false) {
+	if (!first) {
+		// plugin
+		if (noteViewInterruptors.length > 0) {
+			await pluginInit(newNote);
+		} else {
+			note.value = deepClone(newNote);
+		}
+	}
+
+	translation.value = null;
+	translating.value = false;
+	postIsExpanded.value = false;
+	isDeleted.value = _isDeleted(note.value.id);
+	if (appearNote.value.historyId == null) {
+		capture?.close();
+		capture = useNoteCapture({
+			rootEl: el,
+			note: appearNote,
+			isDeletedRef: isDeleted,
+		});
+		if (isRenote.value === true) {
+			useNoteCapture({
+				rootEl: el,
+				note,
+				isDeletedRef: isDeleted,
+			});
+		}
+		if (props.renotes) {
+			const renoteDeletedTrigger = ref(false);
+			for (const renote of props.renotes) {
+				useNoteCapture({
+					rootEl: el,
+					note: ref(renote),
+					isDeletedRef: renoteDeletedTrigger,
+				});
+			}
+			watch(renoteDeletedTrigger, recalculateRenotes);
+		}
+	}
+}
+
+init(props.note, true);
+
+onMounted(() => {
+	pluginInit(note.value);
+});
+
+watch(isDeleted, () => {
+	if (isDeleted.value === true) {
+		if (props.parents && props.parents.length > 0) {
+			let noteTakePlace: NoteType | null = null;
+			while (noteTakePlace == null || _isDeleted(noteTakePlace.id)) {
+				if (props.parents.length === 0) {
+					return;
+				}
+				noteTakePlace = props.parents[props.parents.length - 1];
+				props.parents.pop();
+			}
+			noteTakePlace.repliesCount -= 1;
+			init(noteTakePlace);
+			isDeleted.value = false;
+		}
+	}
+});
+
+watch(
+	() => props.note.id,
+	(o, n) => {
+		if (o !== n && _isDeleted(note.value.id) !== true) {
+			init(props.note);
+		}
+	},
+);
+watch(() => props.renotes?.length, recalculateRenotes);
 
 async function translate_(noteId: string, targetLang: string) {
 	return await os.api("notes/translate", {
@@ -431,24 +594,14 @@ async function translate() {
 	translating.value = false;
 }
 
-const keymap = {
-	r: () => reply(true),
-	"e|a|plus": () => react(true),
-	q: () => renoteButton.value!.renote(true),
-	"up|k": focusBefore,
-	"down|j": focusAfter,
-	esc: blur,
-	"m|o": () => menu(true),
-	// FIXME: What's this?
-	// s: () => showContent.value !== showContent.value,
-};
+function softMuteReasonI18nSrc(what?: string) {
+	if (what === "note") return i18n.ts.userSaysSomethingReason;
+	if (what === "reply") return i18n.ts.userSaysSomethingReasonReply;
+	if (what === "renote") return i18n.ts.userSaysSomethingReasonRenote;
+	if (what === "quote") return i18n.ts.userSaysSomethingReasonQuote;
 
-if (appearNote.value.historyId == null) {
-	useNoteCapture({
-		rootEl: el,
-		note: appearNote,
-		isDeletedRef: isDeleted,
-	});
+	// I don't think here is reachable, but just in case
+	return i18n.ts.userSaysSomething;
 }
 
 function reply(_viaKeyboard = false): void {
@@ -488,11 +641,6 @@ function undoReact(note: NoteType): void {
 		noteId: note.id,
 	});
 }
-
-const currentClipPage = inject<Ref<entities.Clip> | null>(
-	"currentClipPage",
-	null,
-);
 
 function onContextmenu(ev: MouseEvent): void {
 	const isLink = (el: HTMLElement): boolean => {
@@ -546,6 +694,7 @@ function onContextmenu(ev: MouseEvent): void {
 					text: i18n.ts.copyLink,
 					action: () => {
 						copyToClipboard(`${url}${notePage(appearNote.value)}`);
+						os.success();
 					},
 				},
 				appearNote.value.user.host != null
@@ -581,7 +730,7 @@ function menu(viaKeyboard = false): void {
 }
 
 function showRenoteMenu(viaKeyboard = false): void {
-	if (!isMyRenote) return;
+	if (!isMyNote.value) return;
 	os.popupMenu(
 		[
 			{
@@ -642,38 +791,9 @@ function readPromo() {
 	isDeleted.value = true;
 }
 
-const postIsExpanded = ref(false);
-
 function setPostExpanded(val: boolean) {
 	postIsExpanded.value = val;
 }
-
-const accessibleLabel = computed(() => {
-	let label = `${appearNote.value.user.username}; `;
-	if (appearNote.value.renote) {
-		label += `${i18n.ts.renoted} ${appearNote.value.renote.user.username}; `;
-		if (appearNote.value.renote.cw) {
-			label += `${i18n.ts.cw}: ${appearNote.value.renote.cw}; `;
-			if (postIsExpanded.value) {
-				label += `${appearNote.value.renote.text}; `;
-			}
-		} else {
-			label += `${appearNote.value.renote.text}; `;
-		}
-	} else {
-		if (appearNote.value.cw) {
-			label += `${i18n.ts.cw}: ${appearNote.value.cw}; `;
-			if (postIsExpanded.value) {
-				label += `${appearNote.value.text}; `;
-			}
-		} else {
-			label += `${appearNote.value.text}; `;
-		}
-	}
-	const date = new Date(appearNote.value.createdAt);
-	label += `${date.toLocaleTimeString()}`;
-	return label;
-});
 
 defineExpose({
 	focus,
@@ -748,6 +868,7 @@ defineExpose({
 		position: relative;
 		padding: 0 32px 0 32px;
 		display: flex;
+		flex-wrap: wrap;
 		z-index: 1;
 		&:first-child {
 			margin-top: 20px;
@@ -798,6 +919,16 @@ defineExpose({
 
 			> i {
 				margin-right: 4px;
+			}
+
+			.avatar {
+				width: 1.2em;
+				height: 1.2em;
+				border-radius: 2em;
+				overflow: hidden;
+				margin-right: 0.4em;
+				background: var(--panelHighlight);
+				transform: translateY(-4px);
 			}
 
 			> span {

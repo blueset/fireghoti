@@ -685,6 +685,9 @@ unclip: "クリップ解除"
 confirmToUnclipAlreadyClippedNote: "この投稿はすでにクリップ「{name}」に含まれています。投稿をこのクリップから除外しますか？"
 public: "公開"
 i18nInfo: "Firefishは有志によって様々な言語に翻訳されています。{link}で翻訳に協力できます。"
+i18nServerInfo: "新しい端末では{language}が既定の言語になります。"
+i18nServerChange: "{language}に変更する。"
+i18nServerSet: "新しい端末での表示言語を{language}にします。"
 manageAccessTokens: "アクセストークンの管理"
 accountInfo: "アカウント情報"
 notesCount: "投稿の数"
@@ -1902,7 +1905,7 @@ _notification:
   reacted: がリアクションしました
   renoted: がブーストしました
   voted: が投票しました
-  andCountUsers: と{count}人が{acted}しました
+  andCountUsers: と{count}人{acted}
 _deck:
   alwaysShowMainColumn: "常にメインカラムを表示"
   columnAlign: "カラムの寄せ"
@@ -2067,3 +2070,6 @@ useThisAccountConfirm: このアカウントで操作を続けますか？
 getQrCode: QRコードを表示
 copyRemoteFollowUrl: リモートからフォローするURLをコピー
 foldNotification: 同じ種類の通知をまとめて表示する
+slashQuote: 繋げて引用
+mergeRenotesInTimeline: タイムラインで同じ投稿のブーストをまとめる
+mergeThreadInTimeline: タイムラインで同じスレッドの投稿をまとめる

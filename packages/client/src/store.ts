@@ -455,7 +455,15 @@ export const defaultStore = markRaw(
 		},
 		foldNotification: {
 			where: "deviceAccount",
-			default: false,
+			default: true,
+		},
+		mergeThreadInTimeline: {
+			where: "deviceAccount",
+			default: true,
+		},
+		mergeRenotesInTimeline: {
+			where: "deviceAccount",
+			default: true,
 		},
 	}),
 );

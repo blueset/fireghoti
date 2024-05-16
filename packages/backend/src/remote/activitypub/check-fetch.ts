@@ -1,11 +1,15 @@
-import { URL } from "url";
+import { URL } from "node:url";
 import httpSignature, { type IParsedSignature } from "@peertube/http-signature";
 import { config } from "@/config.js";
-import { fetchMeta, isAllowedServer, isBlockedServer } from "backend-rs";
-import { toPuny } from "backend-rs";
+import {
+	fetchMeta,
+	isAllowedServer,
+	isBlockedServer,
+	toPuny,
+} from "backend-rs";
 import DbResolver from "@/remote/activitypub/db-resolver.js";
 import { getApId } from "@/remote/activitypub/type.js";
-import type { IncomingMessage } from "http";
+import type { IncomingMessage } from "node:http";
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
 import type { UserPublickey } from "@/models/entities/user-publickey.js";
 import { verify } from "node:crypto";

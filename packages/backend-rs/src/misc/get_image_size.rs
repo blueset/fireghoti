@@ -1,6 +1,7 @@
-use crate::misc::redis_cache::{get_cache, set_cache, CacheError};
+use crate::database::cache;
 use crate::util::http_client;
 use image::{io::Reader, ImageError, ImageFormat};
+use isahc::ReadResponseExt;
 use nom_exif::{parse_jpeg_exif, EntryValue, ExifTag};
 use std::io::Cursor;
 use tokio::sync::Mutex;
@@ -8,9 +9,13 @@ use tokio::sync::Mutex;
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Redis cache error: {0}")]
-    CacheErr(#[from] CacheError),
-    #[error("Reqwest error: {0}")]
-    ReqwestErr(#[from] reqwest::Error),
+    CacheErr(#[from] cache::Error),
+    #[error("HTTP client aquisition error: {0}")]
+    HttpClientErr(#[from] http_client::Error),
+    #[error("Isahc error: {0}")]
+    IsahcErr(#[from] isahc::Error),
+    #[error("HTTP error: {0}")]
+    HttpErr(String),
     #[error("Image decoding error: {0}")]
     ImageErr(#[from] ImageError),
     #[error("Image decoding error: {0}")]
@@ -50,11 +55,10 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
     {
         let _ = MTX_GUARD.lock().await;
 
-        let key = format!("fetchImage:{}", url);
-        attempted = get_cache::<bool>(&key)?.is_some();
+        attempted = cache::get_one::<bool>(cache::Category::FetchUrl, url)?.is_some();
 
         if !attempted {
-            set_cache(&key, &true, 10 * 60)?;
+            cache::set_one(cache::Category::FetchUrl, url, &true, 10 * 60)?;
         }
     }
 
@@ -65,7 +69,16 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
 
     tracing::info!("retrieving image size from {}", url);
 
-    let image_bytes = http_client()?.get(url).send().await?.bytes().await?;
+    let mut response = http_client::client()?.get(url)?;
+
+    if !response.status().is_success() {
+        tracing::info!("status: {}", response.status());
+        tracing::debug!("response body: {:#?}", response.body());
+        return Err(Error::HttpErr(format!("Failed to get image from {}", url)));
+    }
+
+    let image_bytes = response.bytes()?;
+
     let reader = Reader::new(Cursor::new(&image_bytes)).with_guessed_format()?;
 
     let format = reader.format();
@@ -109,7 +122,7 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
 #[cfg(test)]
 mod unit_test {
     use super::{get_image_size_from_url, ImageSize};
-    use crate::misc::redis_cache::delete_cache;
+    use crate::database::cache;
     use pretty_assertions::assert_eq;
 
     #[tokio::test]
@@ -124,17 +137,8 @@ mod unit_test {
         let gif_url = "https://firefish.dev/firefish/firefish/-/raw/b9c3dfbd3d473cb2cee20c467eeae780bc401271/packages/backend/test/resources/anime.gif";
         let mp3_url = "https://firefish.dev/firefish/firefish/-/blob/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/sounds/aisha/1.mp3";
 
-        // Delete caches in case you run this test multiple times
-        // (should be disabled in CI tasks)
-        delete_cache(&format!("fetchImage:{}", png_url_1)).unwrap();
-        delete_cache(&format!("fetchImage:{}", png_url_2)).unwrap();
-        delete_cache(&format!("fetchImage:{}", png_url_3)).unwrap();
-        delete_cache(&format!("fetchImage:{}", rotated_jpeg_url)).unwrap();
-        delete_cache(&format!("fetchImage:{}", webp_url_1)).unwrap();
-        delete_cache(&format!("fetchImage:{}", webp_url_2)).unwrap();
-        delete_cache(&format!("fetchImage:{}", ico_url)).unwrap();
-        delete_cache(&format!("fetchImage:{}", gif_url)).unwrap();
-        delete_cache(&format!("fetchImage:{}", mp3_url)).unwrap();
+        // delete caches in case you run this test multiple times
+        cache::delete_all(cache::Category::FetchUrl).unwrap();
 
         let png_size_1 = ImageSize {
             width: 1024,
@@ -196,5 +200,16 @@ mod unit_test {
         assert_eq!(ico_size, get_image_size_from_url(ico_url).await.unwrap());
         assert_eq!(gif_size, get_image_size_from_url(gif_url).await.unwrap());
         assert!(get_image_size_from_url(mp3_url).await.is_err());
+    }
+
+    #[tokio::test]
+    async fn too_many_attempts() {
+        let url = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/splash.png";
+
+        // delete caches in case you run this test multiple times
+        cache::delete_one(cache::Category::FetchUrl, url).unwrap();
+
+        assert!(get_image_size_from_url(url).await.is_ok());
+        assert!(get_image_size_from_url(url).await.is_err());
     }
 }

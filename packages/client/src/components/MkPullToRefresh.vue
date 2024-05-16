@@ -44,6 +44,7 @@ const FIRE_THRESHOLD = defaultStore.state.pullToRefreshThreshold;
 const RELEASE_TRANSITION_DURATION = 200;
 const PULL_BRAKE_BASE = 1.5;
 const PULL_BRAKE_FACTOR = 170;
+const MAX_PULL_TAN_ANGLE = Math.tan((1 / 6) * Math.PI); // 30°
 
 const pullStarted = ref(false);
 const pullEnded = ref(false);
@@ -53,6 +54,7 @@ const pullDistance = ref(0);
 let disabled = false;
 const supportPointerDesktop = false;
 let startScreenY: number | null = null;
+let startScreenX: number | null = null;
 
 const rootEl = shallowRef<HTMLDivElement>();
 let scrollEl: HTMLElement | null = null;
@@ -72,11 +74,16 @@ function getScreenY(event) {
 	if (supportPointerDesktop) return event.screenY;
 	return event.touches[0].screenY;
 }
+function getScreenX(event) {
+	if (supportPointerDesktop) return event.screenX;
+	return event.touches[0].screenX;
+}
 
 function moveStart(event) {
 	if (!pullStarted.value && !isRefreshing.value && !disabled) {
 		pullStarted.value = true;
 		startScreenY = getScreenY(event);
+		startScreenX = getScreenX(event);
 		pullDistance.value = 0;
 	}
 }
@@ -117,6 +124,7 @@ async function closeContent() {
 function moveEnd() {
 	if (pullStarted.value && !isRefreshing.value) {
 		startScreenY = null;
+		startScreenX = null;
 		if (pullEnded.value) {
 			pullEnded.value = false;
 			isRefreshing.value = true;
@@ -146,11 +154,17 @@ function moving(event: TouchEvent | PointerEvent) {
 		moveEnd();
 		return;
 	}
-	if (startScreenY === null) {
-		startScreenY = getScreenY(event);
-	}
+	startScreenX ??= getScreenX(event);
+	startScreenY ??= getScreenY(event);
 	const moveScreenY = getScreenY(event);
+	const moveScreenX = getScreenX(event);
 	const moveHeight = moveScreenY - startScreenY!;
+	const moveWidth = moveScreenX - startScreenX!;
+	if (Math.abs(moveWidth / moveHeight) > MAX_PULL_TAN_ANGLE) {
+		if (Math.abs(moveWidth) > 30) pullStarted.value = false;
+		return;
+	}
+
 	pullDistance.value = Math.min(Math.max(moveHeight, 0), MAX_PULL_DISTANCE);
 
 	if (pullDistance.value > 0) {
@@ -203,7 +217,7 @@ function unregisterEventListenersForReadyToPull() {
 onMounted(() => {
 	if (rootEl.value == null) return;
 
-	scrollEl = getScrollContainer(rootEl.value);
+	scrollEl = getScrollContainer(rootEl.value) ?? document.querySelector("HTML");
 	if (scrollEl == null) return;
 
 	scrollEl.addEventListener("scroll", onScrollContainerScroll, {

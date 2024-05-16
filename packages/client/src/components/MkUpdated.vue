@@ -10,17 +10,6 @@
 				<MkSparkle>{{ i18n.ts.misskeyUpdated }}</MkSparkle>
 			</div>
 			<div :class="$style.version">✨ {{ version }} 🚀</div>
-			<div v-if="newRelease" :class="$style.releaseNotes">
-				<Mfm :text="data?.notes ?? ''" />
-				<div v-if="data?.screenshots && data.screenshots.length > 0" style="max-width: 500">
-					<img
-						v-for="i in data.screenshots"
-						:key="i"
-						:src="i"
-						alt="screenshot"
-					/>
-				</div>
-			</div>
 			<MkButton
 				:class="$style.gotIt"
 				primary
@@ -33,33 +22,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, shallowRef } from "vue";
+import { shallowRef } from "vue";
 import MkModal from "@/components/MkModal.vue";
 import MkSparkle from "@/components/MkSparkle.vue";
 import MkButton from "@/components/MkButton.vue";
 import { version } from "@/config";
 import { i18n } from "@/i18n";
-import * as os from "@/os";
-import type { Endpoints } from "firefish-js";
-
-const emit = defineEmits<{
-	closed: [];
-}>();
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
-
-const newRelease = ref(false);
-const data = ref<Endpoints["release"]["res"] | null>(null);
-
-os.api("release").then((res) => {
-	data.value = res;
-	newRelease.value = version === data.value?.version;
-});
-
-console.log(`Version: ${version}`);
-console.log(`Data version: ${data.value?.version}`);
-console.log(newRelease.value);
-console.log(data.value);
 </script>
 
 <style lang="scss" module>
@@ -85,11 +55,5 @@ console.log(data.value);
 
 .gotIt {
 	margin: 8px 0 0 0;
-}
-
-.releaseNotes {
-	> img {
-		border-radius: 10px;
-	}
 }
 </style>

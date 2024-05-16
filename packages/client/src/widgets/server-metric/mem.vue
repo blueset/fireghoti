@@ -5,7 +5,7 @@
 			<p><i :class="icon('ph-microchip')"></i>RAM</p>
 			<p>Total: {{ bytes(total, 1) }}</p>
 			<p>Used: {{ bytes(used, 1) }}</p>
-			<p>Free: {{ bytes(free, 1) }}</p>
+			<p>Available: {{ bytes(available, 1) }}</p>
 		</div>
 	</div>
 </template>
@@ -18,19 +18,18 @@ import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	connection: any;
-	meta: any;
 }>();
 
 const usage = ref<number>(0);
 const total = ref<number>(0);
 const used = ref<number>(0);
-const free = ref<number>(0);
+const available = ref<number>(0);
 
 function onStats(stats) {
-	usage.value = stats.mem.active / stats.mem.total;
+	usage.value = stats.mem.used / stats.mem.total;
 	total.value = stats.mem.total;
-	used.value = stats.mem.active;
-	free.value = total.value - used.value;
+	used.value = stats.mem.used;
+	available.value = stats.mem.available;
 }
 
 onMounted(() => {

@@ -17,7 +17,6 @@ export class NoteReaction {
 	@PrimaryColumn(id())
 	public id: string;
 
-	@Index()
 	@Column("timestamp without time zone", {
 		comment: "The created date of the NoteReaction.",
 	})

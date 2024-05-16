@@ -14,6 +14,12 @@
 						>
 					</template>
 				</I18n>
+				<I18n v-if="serverLang" :src="i18n.ts.i18nServerInfo" tag="span">
+					<template #language><strong>{{ langs.find(a => a[0] === serverLang)?.[1] ?? serverLang }}</strong></template>
+				</I18n>
+				<button v-if="lang && lang !== serverLang" class="_textButton" @click="updateServerLang">
+					{{i18n.t(serverLang ? "i18nServerChange" : "i18nServerSet", { language: langs.find(a => a[0] === lang)?.[1] ?? lang })}}
+				</button>
 			</template>
 		</FormSelect>
 
@@ -129,6 +135,16 @@
 			}}</FormSwitch>
 			<FormSwitch v-model="autocorrectNoteLanguage" class="_formBlock">{{
 				i18n.ts.autocorrectNoteLanguage
+			}}</FormSwitch>
+
+			<FormSwitch v-model="foldNotification" class="_formBlock">{{
+				i18n.ts.foldNotification
+			}}</FormSwitch>
+			<FormSwitch v-model="mergeThreadInTimeline" class="_formBlock">{{
+				i18n.ts.mergeThreadInTimeline
+			}}</FormSwitch>
+			<FormSwitch v-model="mergeRenotesInTimeline" class="_formBlock">{{
+				i18n.ts.mergeRenotesInTimeline
 			}}</FormSwitch>
 
 			<FormSelect v-model="serverDisconnectedBehavior" class="_formBlock">
@@ -328,13 +344,6 @@
 		</FormSection>
 
 		<FormSection>
-			<template #label>{{ i18n.ts.experimentalFeatures }}</template>
-			<FormSwitch v-model="foldNotification" class="_formBlock">{{
-				i18n.ts.foldNotification
-			}}</FormSwitch>
-		</FormSection>
-
-		<FormSection>
 			<template #label>{{ i18n.ts.forMobile }}</template>
 			<FormSwitch
 				v-model="replaceChatButtonWithAccountButton"
@@ -407,6 +416,7 @@ import { deviceKind } from "@/scripts/device-kind";
 import icon from "@/scripts/icon";
 
 const lang = ref(localStorage.getItem("lang"));
+const serverLang = ref(me?.lang);
 const translateLang = ref(localStorage.getItem("translateLang"));
 const fontSize = ref(localStorage.getItem("fontSize"));
 const useSystemFont = ref(localStorage.getItem("useSystemFont") !== "f");
@@ -552,6 +562,12 @@ const autocorrectNoteLanguage = computed(
 const foldNotification = computed(
 	defaultStore.makeGetterSetter("foldNotification"),
 );
+const mergeThreadInTimeline = computed(
+	defaultStore.makeGetterSetter("mergeThreadInTimeline"),
+);
+const mergeRenotesInTimeline = computed(
+	defaultStore.makeGetterSetter("mergeRenotesInTimeline"),
+);
 
 // This feature (along with injectPromo) is currently disabled
 // function onChangeInjectFeaturedNote(v) {
@@ -561,6 +577,14 @@ const foldNotification = computed(
 // 		me!.injectFeaturedNote = i.injectFeaturedNote;
 // 	});
 // }
+
+function updateServerLang() {
+	os.api("i/update", {
+		lang: lang.value,
+	}).then((i) => {
+		serverLang.value = i.lang;
+	});
+}
 
 watch(swipeOnDesktop, () => {
 	defaultStore.set("swipeOnMobile", true);
@@ -620,7 +644,6 @@ watch(
 		enableTimelineStreaming,
 		enablePullToRefresh,
 		pullToRefreshThreshold,
-		foldNotification,
 	],
 	async () => {
 		await reloadAsk();

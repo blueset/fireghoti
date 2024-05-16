@@ -178,7 +178,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { computed, ref, watch } from "vue";
 import type { entities } from "firefish-js";
 import * as mfm from "mfm-js";
 import * as os from "@/os";
@@ -226,24 +226,35 @@ const emit = defineEmits<{
 const cwButton = ref<HTMLElement>();
 const showMoreButton = ref<HTMLElement>();
 
-const isLong =
-	!props.detailedView &&
-	props.note.cw == null &&
-	props.isLongJudger(props.note);
-const collapsed = ref(props.note.cw == null && isLong);
-const urls = props.note.text
-	? extractUrlFromMfm(mfm.parse(props.note.text)).slice(0, 5)
-	: null;
-
-const showContent = ref(false);
-
-const mfms = props.note.text
-	? extractMfmWithAnimation(mfm.parse(props.note.text))
-	: null;
-
-const hasMfm = ref(mfms && mfms.length > 0);
+const isLong = computed(
+	() =>
+		!props.detailedView &&
+		props.note.cw == null &&
+		props.isLongJudger(props.note),
+);
+const urls = computed(() =>
+	props.note.text
+		? extractUrlFromMfm(mfm.parse(props.note.text)).slice(0, 5)
+		: null,
+);
+const mfms = computed(() =>
+	props.note.text ? extractMfmWithAnimation(mfm.parse(props.note.text)) : null,
+);
+const hasMfm = computed(() => mfms.value && mfms.value.length > 0);
 
 const disableMfm = ref(defaultStore.state.animatedMfm);
+const showContent = ref(false);
+const collapsed = ref(props.note.cw == null && isLong.value);
+
+watch(
+	() => props.note.id,
+	(o, n) => {
+		if (o !== n) return;
+		disableMfm.value = defaultStore.state.animatedMfm;
+		showContent.value = false;
+		collapsed.value = props.note.cw == null && isLong.value;
+	},
+);
 
 async function toggleMfm() {
 	if (disableMfm.value) {
@@ -382,7 +393,7 @@ function focusFooter(ev) {
 			> .body {
 				min-height: 2em;
 				max-height: 5em;
-				filter: blur(4px);
+				filter: blur(5px);
 				:deep(span) {
 					animation: none !important;
 					transform: none !important;

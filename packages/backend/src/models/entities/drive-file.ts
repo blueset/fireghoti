@@ -23,7 +23,6 @@ export class DriveFile {
 	@PrimaryColumn(id())
 	public id: string;
 
-	@Index()
 	@Column("timestamp without time zone", {
 		comment: "The created date of the DriveFile.",
 	})
@@ -147,7 +146,6 @@ export class DriveFile {
 	})
 	public webpublicAccessKey: string | null;
 
-	@Index()
 	@Column("varchar", {
 		length: 512,
 		nullable: true,

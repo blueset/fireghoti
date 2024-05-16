@@ -1,4 +1,4 @@
-import { readdir } from "fs/promises";
+import { readdir } from "node:fs/promises";
 import define from "@/server/api/define.js";
 
 export const meta = {

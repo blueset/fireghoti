@@ -19,10 +19,10 @@ const props = defineProps<{
 	meta: any;
 }>();
 
-const usage: number = ref(0);
+const usage = ref(0);
 
 function onStats(stats) {
-	usage.value = stats.cpu;
+	usage.value = stats.cpu / 100;
 }
 
 onMounted(() => {

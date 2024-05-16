@@ -7,20 +7,16 @@ import probeImageSize from "probe-image-size";
 import isSvg from "is-svg";
 import sharp from "sharp";
 import { encode } from "blurhash";
-import { inspect } from "node:util";
 
-export type FileInfo = {
+type FileInfo = {
 	size: number;
 	md5: string;
-	type: {
-		mime: string;
-		ext: string | null;
-	};
+	mime: string;
+	fileExtension: string | null;
 	width?: number;
 	height?: number;
 	orientation?: number;
 	blurhash?: string;
-	warnings: string[];
 };
 
 const TYPE_OCTET_STREAM = {
@@ -37,8 +33,6 @@ const TYPE_SVG = {
  * Get file information
  */
 export async function getFileInfo(path: string): Promise<FileInfo> {
-	const warnings = [] as string[];
-
 	const size = await getFileSize(path);
 	const md5 = await calcHash(path);
 
@@ -63,14 +57,12 @@ export async function getFileInfo(path: string): Promise<FileInfo> {
 			"image/avif",
 		].includes(type.mime)
 	) {
-		const imageSize = await detectImageSize(path).catch((e) => {
-			warnings.push(`detectImageSize failed:\n${inspect(e)}`);
+		const imageSize = await detectImageSize(path).catch((_) => {
 			return undefined;
 		});
 
 		// うまく判定できない画像は octet-stream にする
 		if (!imageSize) {
-			warnings.push("cannot detect image dimensions");
 			type = TYPE_OCTET_STREAM;
 		} else if (imageSize.wUnits === "px") {
 			width = imageSize.width;
@@ -79,11 +71,8 @@ export async function getFileInfo(path: string): Promise<FileInfo> {
 
 			// 制限を超えている画像は octet-stream にする
 			if (imageSize.width > 16383 || imageSize.height > 16383) {
-				warnings.push("image dimensions exceeds limits");
 				type = TYPE_OCTET_STREAM;
 			}
-		} else {
-			warnings.push(`unsupported unit type: ${imageSize.wUnits}`);
 		}
 	}
 
@@ -100,8 +89,7 @@ export async function getFileInfo(path: string): Promise<FileInfo> {
 			"image/avif",
 		].includes(type.mime)
 	) {
-		blurhash = await getBlurhash(path).catch((e) => {
-			warnings.push(`getBlurhash failed:\n${inspect(e)}`);
+		blurhash = await getBlurhash(path).catch((_) => {
 			return undefined;
 		});
 	}
@@ -109,12 +97,12 @@ export async function getFileInfo(path: string): Promise<FileInfo> {
 	return {
 		size,
 		md5,
-		type,
+		mime: type.mime,
+		fileExtension: type.ext,
 		width,
 		height,
 		orientation,
 		blurhash,
-		warnings,
 	};
 }
 

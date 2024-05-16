@@ -1,5 +1,10 @@
 <template>
-	<div v-size="{ min: [350, 500] }" class="yohlumlk">
+	<div
+		v-show="!deleted"
+		ref="el"
+		v-size="{ min: [350, 500] }"
+		class="yohlumlk"
+	>
 		<MkAvatar class="avatar" :user="note.user" />
 		<div class="main">
 			<XNoteHeader class="header" :note="note" :mini="true" />
@@ -12,13 +17,42 @@
 
 <script lang="ts" setup>
 import type { entities } from "firefish-js";
+import { computed, ref, watch } from "vue";
 import XNoteHeader from "@/components/MkNoteHeader.vue";
 import MkSubNoteContent from "@/components/MkSubNoteContent.vue";
+import { deepClone } from "@/scripts/clone";
+import { useNoteCapture } from "@/scripts/use-note-capture";
+import { isDeleted } from "@/scripts/note";
 
-defineProps<{
+const props = defineProps<{
 	note: entities.Note;
 	pinned?: boolean;
 }>();
+
+const rootEl = ref<HTMLElement | null>(null);
+const note = ref(deepClone(props.note));
+const deleted = computed(() => isDeleted(note.value.id));
+let capture = useNoteCapture({
+	note,
+	rootEl,
+});
+
+function reload() {
+	note.value = deepClone(props.note);
+	capture.close();
+	capture = useNoteCapture({
+		note,
+		rootEl,
+	});
+}
+
+watch(
+	() => props.note.id,
+	(o, n) => {
+		if (o === n) return;
+		reload();
+	},
+);
 </script>
 
 <style lang="scss" scoped>

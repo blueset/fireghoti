@@ -1,7 +1,7 @@
 // https://gist.github.com/tkrotoff/a6baf96eb6b61b445a9142e5555511a0
 import type { Primitive } from "type-fest";
 
-type NullToUndefined<T> = T extends null
+export type NullToUndefined<T> = T extends null
 	? undefined
 	: T extends Primitive | Function | Date | RegExp
 		? T
@@ -15,7 +15,7 @@ type NullToUndefined<T> = T extends null
 						? { [K in keyof T]: NullToUndefined<T[K]> }
 						: unknown;
 
-type UndefinedToNull<T> = T extends undefined
+export type UndefinedToNull<T> = T extends undefined
 	? null
 	: T extends Primitive | Function | Date | RegExp
 		? T
@@ -47,6 +47,16 @@ function _nullToUndefined<T>(obj: T): NullToUndefined<T> {
 	return obj as any;
 }
 
+/**
+ * Recursively converts all null values to undefined.
+ *
+ * @param obj object to convert
+ * @returns a copy of the object with all its null values converted to undefined
+ */
+export function fromRustObject<T>(obj: T) {
+	return _nullToUndefined(structuredClone(obj));
+}
+
 function _undefinedToNull<T>(obj: T): UndefinedToNull<T> {
 	if (obj === undefined) {
 		return null as any;
@@ -71,6 +81,6 @@ function _undefinedToNull<T>(obj: T): UndefinedToNull<T> {
  * @param obj object to convert
  * @returns a copy of the object with all its undefined values converted to null
  */
-export function undefinedToNull<T>(obj: T) {
+export function toRustObject<T>(obj: T) {
 	return _undefinedToNull(structuredClone(obj));
 }

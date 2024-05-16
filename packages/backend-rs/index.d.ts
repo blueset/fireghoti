@@ -41,7 +41,6 @@ export interface ServerConfig {
   proxySmtp?: string
   proxyBypassHosts?: Array<string>
   allowedPrivateNetworks?: Array<string>
-  /** `NapiValue` is not implemented for `u64` */
   maxFileSize?: number
   accessLog?: string
   clusterLimits?: WorkerConfigInternal
@@ -212,23 +211,31 @@ export interface Acct {
 }
 export function stringToAcct(acct: string): Acct
 export function acctToString(acct: Acct): string
+export function showServerInfo(): void
+export function initializeRustLogger(): void
 export function addNoteToAntenna(antennaId: string, note: Note): void
 /**
- * @param host punycoded instance host
- * @returns whether the given host should be blocked
-*/
+ * Checks if a server is blocked.
+ *
+ * ## Argument
+ * `host` - punycoded instance host
+ */
 export function isBlockedServer(host: string): Promise<boolean>
 /**
- * @param host punycoded instance host
- * @returns whether the given host should be limited
-*/
+ * Checks if a server is silenced.
+ *
+ * ## Argument
+ * `host` - punycoded instance host
+ */
 export function isSilencedServer(host: string): Promise<boolean>
 /**
- * @param host punycoded instance host
- * @returns whether the given host is allowlisted (this is always true if private mode is disabled)
-*/
+ * Checks if a server is allowlisted.
+ * Returns `Ok(true)` if private mode is disabled.
+ *
+ * ## Argument
+ * `host` - punycoded instance host
+ */
 export function isAllowedServer(host: string): Promise<boolean>
-/** TODO: handle name collisions better */
 export interface NoteLikeForCheckWordMute {
   fileIds: Array<string>
   userId: string | null
@@ -253,7 +260,6 @@ export interface ImageSize {
   height: number
 }
 export function getImageSizeFromUrl(url: string): Promise<ImageSize>
-/** TODO: handle name collisions better */
 export interface NoteLikeForGetNoteSummary {
   fileIds: Array<string>
   text: string | null
@@ -261,6 +267,30 @@ export interface NoteLikeForGetNoteSummary {
   hasPoll: boolean
 }
 export function getNoteSummary(note: NoteLikeForGetNoteSummary): string
+export interface Cpu {
+  model: string
+  cores: number
+}
+export interface Memory {
+  /** Total memory amount in bytes */
+  total: number
+  /** Used memory amount in bytes */
+  used: number
+  /** Available (for (re)use) memory amount in bytes */
+  available: number
+}
+export interface Storage {
+  /** Total storage space in bytes */
+  total: number
+  /** Used storage space in bytes */
+  used: number
+}
+export function cpuInfo(): Cpu
+export function cpuUsage(): number
+export function memoryUsage(): Memory
+export function storageUsage(): Storage | null
+export function isSafeUrl(url: string): boolean
+export function latestVersion(): Promise<string>
 export function toMastodonId(firefishId: string): string | null
 export function fromMastodonId(mastodonId: string): string | null
 export function fetchMeta(useCache: boolean): Promise<Meta>
@@ -1121,6 +1151,7 @@ export interface UserProfile {
   preventAiLearning: boolean
   isIndexable: boolean
   mutedPatterns: Array<string>
+  lang: string | null
 }
 export interface UserPublickey {
   userId: string
@@ -1146,9 +1177,117 @@ export interface Webhook {
   latestSentAt: Date | null
   latestStatus: number | null
 }
-export function initializeRustLogger(): void
+export function fetchNodeinfo(host: string): Promise<Nodeinfo>
+export function nodeinfo_2_1(): Promise<any>
+export function nodeinfo_2_0(): Promise<any>
+/** NodeInfo schema version 2.0. https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.0 */
+export interface Nodeinfo {
+  /** The schema version, must be 2.0. */
+  version: string
+  /** Metadata about server software in use. */
+  software: Software20
+  /** The protocols supported on this server. */
+  protocols: Array<Protocol>
+  /** The third party sites this server can connect to via their application API. */
+  services: Services
+  /** Whether this server allows open self-registration. */
+  openRegistrations: boolean
+  /** Usage statistics for this server. */
+  usage: Usage
+  /** Free form key value pairs for software specific values. Clients should not rely on any specific key present. */
+  metadata: Record<string, any>
+}
+/** Metadata about server software in use (version 2.0). */
+export interface Software20 {
+  /** The canonical name of this server software. */
+  name: string
+  /** The version of this server software. */
+  version: string
+}
+export enum Protocol {
+  Activitypub = 'activitypub',
+  Buddycloud = 'buddycloud',
+  Dfrn = 'dfrn',
+  Diaspora = 'diaspora',
+  Libertree = 'libertree',
+  Ostatus = 'ostatus',
+  Pumpio = 'pumpio',
+  Tent = 'tent',
+  Xmpp = 'xmpp',
+  Zot = 'zot'
+}
+/** The third party sites this server can connect to via their application API. */
+export interface Services {
+  /** The third party sites this server can retrieve messages from for combined display with regular traffic. */
+  inbound: Array<Inbound>
+  /** The third party sites this server can publish messages to on the behalf of a user. */
+  outbound: Array<Outbound>
+}
+/** The third party sites this server can retrieve messages from for combined display with regular traffic. */
+export enum Inbound {
+  Atom1 = 'atom1',
+  Gnusocial = 'gnusocial',
+  Imap = 'imap',
+  Pnut = 'pnut',
+  Pop3 = 'pop3',
+  Pumpio = 'pumpio',
+  Rss2 = 'rss2',
+  Twitter = 'twitter'
+}
+/** The third party sites this server can publish messages to on the behalf of a user. */
+export enum Outbound {
+  Atom1 = 'atom1',
+  Blogger = 'blogger',
+  Buddycloud = 'buddycloud',
+  Diaspora = 'diaspora',
+  Dreamwidth = 'dreamwidth',
+  Drupal = 'drupal',
+  Facebook = 'facebook',
+  Friendica = 'friendica',
+  Gnusocial = 'gnusocial',
+  Google = 'google',
+  Insanejournal = 'insanejournal',
+  Libertree = 'libertree',
+  Linkedin = 'linkedin',
+  Livejournal = 'livejournal',
+  Mediagoblin = 'mediagoblin',
+  Myspace = 'myspace',
+  Pinterest = 'pinterest',
+  Pnut = 'pnut',
+  Posterous = 'posterous',
+  Pumpio = 'pumpio',
+  Redmatrix = 'redmatrix',
+  Rss2 = 'rss2',
+  Smtp = 'smtp',
+  Tent = 'tent',
+  Tumblr = 'tumblr',
+  Twitter = 'twitter',
+  Wordpress = 'wordpress',
+  Xmpp = 'xmpp'
+}
+/** Usage statistics for this server. */
+export interface Usage {
+  users: Users
+  localPosts: number | null
+  localComments: number | null
+}
+/** statistics about the users of this server. */
+export interface Users {
+  total: number | null
+  activeHalfyear: number | null
+  activeMonth: number | null
+}
 export function watchNote(watcherId: string, noteAuthorId: string, noteId: string): Promise<void>
 export function unwatchNote(watcherId: string, noteId: string): Promise<void>
+export enum PushNotificationKind {
+  Generic = 'generic',
+  Chat = 'chat',
+  ReadAllChats = 'readAllChats',
+  ReadAllChatsInTheRoom = 'readAllChatsInTheRoom',
+  ReadNotifications = 'readNotifications',
+  ReadAllNotifications = 'readAllNotifications'
+}
+export function sendPushNotification(receiverUserId: string, kind: PushNotificationKind, content: any): Promise<void>
 export function publishToChannelStream(channelId: string, userId: string): void
 export enum ChatEvent {
   Message = 'message',
@@ -1194,4 +1333,6 @@ export function getTimestamp(id: string): number
 export function genId(): string
 /** Generate an ID using a specific datetime */
 export function genIdAt(date: Date): string
-export function secureRndstr(length?: number | undefined | null): string
+/** Generate random string based on [thread_rng] and [Alphanumeric]. */
+export function generateSecureRandomString(length: number): string
+export function generateUserToken(): string

@@ -246,6 +246,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 			text: i18n.ts.copyUsername,
 			action: () => {
 				copyToClipboard(`@${user.username}@${user.host || host}`);
+				os.success();
 			},
 		},
 		{
@@ -264,14 +265,19 @@ export function getUserMenu(user, router: Router = mainRouter) {
 					icon: "ph-qr-code ph-bold ph-lg",
 					text: i18n.ts.getQrCode,
 					action: () => {
-						os.displayQrCode(`https://${host}/follow-me?acct=${user.username}`);
+						os.displayQrCode(
+							`https://${host}/follow-me?acct=${acct.toString(user)}`,
+						);
 					},
 				},
 				{
 					icon: `${icon("ph-hand-waving")}`,
 					text: i18n.ts.copyRemoteFollowUrl,
 					action: () => {
-						copyToClipboard(`https://${host}/follow-me?acct=${user.username}`);
+						copyToClipboard(
+							`https://${host}/follow-me?acct=${acct.toString(user)}`,
+						);
+						os.success();
 					},
 				},
 			],
@@ -286,6 +292,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 					text: i18n.ts._feeds.rss,
 					action: () => {
 						copyToClipboard(`https://${host}/@${user.username}.rss`);
+						os.success();
 					},
 				},
 				{
@@ -293,6 +300,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 					text: i18n.ts._feeds.atom,
 					action: () => {
 						copyToClipboard(`https://${host}/@${user.username}.atom`);
+						os.success();
 					},
 				},
 				{
@@ -300,6 +308,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 					text: i18n.ts._feeds.jsonFeed,
 					action: () => {
 						copyToClipboard(`https://${host}/@${user.username}.json`);
+						os.success();
 					},
 				},
 			],
@@ -316,7 +325,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 					icon: `${icon("ph-hand-waving")}`,
 					text: i18n.ts.remoteFollow,
 					action: () => {
-						router.push(`/follow-me?acct=${user.username}`);
+						router.push(`/follow-me?acct=${acct.toString(user)}`);
 					},
 				}
 			: undefined,

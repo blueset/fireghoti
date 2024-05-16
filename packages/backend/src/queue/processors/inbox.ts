@@ -5,8 +5,12 @@ import perform from "@/remote/activitypub/perform.js";
 import Logger from "@/services/logger.js";
 import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
 import { Instances } from "@/models/index.js";
-import { isAllowedServer, isBlockedServer } from "backend-rs";
-import { toPuny, extractHost } from "backend-rs";
+import {
+	extractHost,
+	isAllowedServer,
+	isBlockedServer,
+	toPuny,
+} from "backend-rs";
 import { getApId } from "@/remote/activitypub/type.js";
 import { fetchInstanceMetadata } from "@/services/fetch-instance-metadata.js";
 import type { InboxJobData } from "../types.js";
@@ -24,7 +28,7 @@ const logger = new Logger("inbox");
 // Processing when an activity arrives in the user's inbox
 export default async (job: Bull.Job<InboxJobData>): Promise<string> => {
 	const signature = job.data.signature; // HTTP-signature
-	const activity = job.data.activity;
+	let activity = job.data.activity;
 
 	//#region Log
 	const info = Object.assign({}, activity) as any;
@@ -148,6 +152,8 @@ export default async (job: Bull.Job<InboxJobData>): Promise<string> => {
 			if (!verified) {
 				return "skip: LD-Signatureの検証に失敗しました";
 			}
+
+			activity = await ldSignature.compactToWellKnown(activity);
 
 			// もう一度actorチェック
 			if (authUser.user.uri !== activity.actor) {

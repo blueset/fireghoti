@@ -1,0 +1,21 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+	"rangeStrategy": "bump",
+  "branchConcurrentLimit": 0,
+	"prHourlyLimit": 20,
+  "prConcurrentLimit": 20,
+	"enabledManagers": ["npm", "cargo"],
+	"baseBranches": ["develop"],
+	"ignorePaths": [
+		"packages/megalodon/package.json",
+		"packages/backend-rs/npm"
+	],
+	"lockFileMaintenance": {
+		"enabled": true,
+		"recreateWhen": "always",
+		"rebaseStalePrs": true,
+		"branchTopic": "lock-file-maintenance",
+		"commitMessageAction": "Lock file maintenance"
+	}
+}
