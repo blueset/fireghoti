@@ -1588,7 +1588,7 @@ _ago:
   yearsAgo: "{n}y ago"
 _later:
   future: "Future"
-  justNow: "Immediate"
+  justNow: "Right now"
   secondsAgo: "{n}s later"
   minutesAgo: "{n}m later"
   hoursAgo: "{n}h later"
