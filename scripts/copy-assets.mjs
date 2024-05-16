@@ -10,7 +10,6 @@ await (async () => {
 	await Promise.all([
 		fs.cp(file("packages/backend/src/server/web"), file("packages/backend/built/server/web"), { recursive: true }),
 		fs.cp(file("custom/assets"), file("packages/backend/assets"), { recursive: true }),
-		fs.cp(file("packages/client/node_modules/three/examples/fonts"), file("built/_client_dist_/fonts"), { recursive: true }),
 		fs.mkdir(file("built/_client_dist_/locales"), { recursive: true }),
 	]);
 
@@ -25,16 +24,16 @@ await (async () => {
 		);
 	}
 
-	const js_assets = [
+	const jsAssets = [
 		file("packages/backend/built/server/web/boot.js"),
 		file("packages/backend/built/server/web/bios.js"),
 		file("packages/backend/built/server/web/cli.js"),
 	];
 
-	for await (const js_file of js_assets) {
-		const content = (await fs.readFile(js_file, "utf-8"))
+	for await (const jsFile of jsAssets) {
+		const content = (await fs.readFile(jsFile, "utf-8"))
 			.replace("SUPPORTED_LANGS", JSON.stringify(Object.keys(locales)));
-		await fs.writeFile(js_file, content, "utf-8");
+		await fs.writeFile(jsFile, content, "utf-8");
 	}
 
 	// TODO?: minify packages/backend/built/server/web/*.css
