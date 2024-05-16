@@ -1,7 +1,6 @@
 import { IsNull } from "typeorm";
 import { Users } from "@/models/index.js";
-import { fetchMeta } from "backend-rs";
-import { stringToAcct } from "backend-rs";
+import { fetchMeta, stringToAcct } from "backend-rs";
 import type { User } from "@/models/entities/user.js";
 import define from "@/server/api/define.js";
 

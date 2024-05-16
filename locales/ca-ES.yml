@@ -2301,3 +2301,9 @@ getQrCode: Mostrar el codi QR
 copyRemoteFollowUrl: Còpia la adreça URL del seguidor remot
 foldNotification: Agrupar les notificacions similars
 slashQuote: Cita encadenada
+i18nServerInfo: Els nous clients els trobares en {language} per defecte.
+i18nServerChange: Fes servir {language} en comptes.
+i18nServerSet: Fes servir {language} per els nous clients.
+mergeThreadInTimeline: Fusiona diferents publicacions en un mateix fil a les línies
+  de temps
+mergeRenotesInTimeline: Agrupa diferents impulsos d'una mateixa publicació

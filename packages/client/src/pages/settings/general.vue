@@ -14,10 +14,10 @@
 						>
 					</template>
 				</I18n>
-				<I18n :src="i18n.ts.i18nServerInfo" v-if="serverLang" tag="span">
+				<I18n v-if="serverLang" :src="i18n.ts.i18nServerInfo" tag="span">
 					<template #language><strong>{{ langs.find(a => a[0] === serverLang)?.[1] ?? serverLang }}</strong></template>
 				</I18n>
-				<button class="_textButton" @click="updateServerLang" v-if="lang && lang !== serverLang">
+				<button v-if="lang && lang !== serverLang" class="_textButton" @click="updateServerLang">
 					{{i18n.t(serverLang ? "i18nServerChange" : "i18nServerSet", { language: langs.find(a => a[0] === lang)?.[1] ?? lang })}}
 				</button>
 			</template>
@@ -139,6 +139,12 @@
 
 			<FormSwitch v-model="foldNotification" class="_formBlock">{{
 				i18n.ts.foldNotification
+			}}</FormSwitch>
+			<FormSwitch v-model="mergeThreadInTimeline" class="_formBlock">{{
+				i18n.ts.mergeThreadInTimeline
+			}}</FormSwitch>
+			<FormSwitch v-model="mergeRenotesInTimeline" class="_formBlock">{{
+				i18n.ts.mergeRenotesInTimeline
 			}}</FormSwitch>
 
 			<FormSelect v-model="serverDisconnectedBehavior" class="_formBlock">
@@ -556,6 +562,12 @@ const autocorrectNoteLanguage = computed(
 const foldNotification = computed(
 	defaultStore.makeGetterSetter("foldNotification"),
 );
+const mergeThreadInTimeline = computed(
+	defaultStore.makeGetterSetter("mergeThreadInTimeline"),
+);
+const mergeRenotesInTimeline = computed(
+	defaultStore.makeGetterSetter("mergeRenotesInTimeline"),
+);
 
 // This feature (along with injectPromo) is currently disabled
 // function onChangeInjectFeaturedNote(v) {
@@ -632,7 +644,6 @@ watch(
 		enableTimelineStreaming,
 		enablePullToRefresh,
 		pullToRefreshThreshold,
-		foldNotification,
 	],
 	async () => {
 		await reloadAsk();

@@ -5,6 +5,13 @@ Critical security updates are indicated by the :warning: icon.
 - Server administrators should check [notice-for-admins.md](./notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](./api-change.md) as well.
 
+## [v20240516](https://firefish.dev/firefish/firefish/-/merge_requests/10854/commits)
+
+- Improve timeline UX (you can restore the original appearance by settings)
+- Remove `$[center]` MFM function
+	- This function was suddenly added last year (https://firefish.dev/firefish/firefish/-/commit/1a971efa689323d54eebb4d3646e102fb4d1d95a), but according to the [MFM spec](https://github.com/misskey-dev/mfm.js/blob/6aaf68089023c6adebe44123eebbc4dcd75955e0/docs/syntax.md#fn), `$[something]` must be an inline element (while `center` is a block element), so such a syntax is not expected by MFM renderers. Please use `<center></center>` instead.
+- Fix bugs
+
 ## [v20240504](https://firefish.dev/firefish/firefish/-/merge_requests/10790/commits)
 
 - Fix bugs

@@ -44,7 +44,6 @@ import icon from "@/scripts/icon";
 const stream = useStream();
 
 const meta = await os.api("server-info", {});
-const serverStats = await os.api("stats");
 
 const cpuUsage = ref(0);
 

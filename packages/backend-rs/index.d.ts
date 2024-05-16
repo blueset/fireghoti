@@ -41,7 +41,6 @@ export interface ServerConfig {
   proxySmtp?: string
   proxyBypassHosts?: Array<string>
   allowedPrivateNetworks?: Array<string>
-  /** `NapiValue` is not implemented for `u64` */
   maxFileSize?: number
   accessLog?: string
   clusterLimits?: WorkerConfigInternal
@@ -212,6 +211,8 @@ export interface Acct {
 }
 export function stringToAcct(acct: string): Acct
 export function acctToString(acct: Acct): string
+export function showServerInfo(): void
+export function initializeRustLogger(): void
 export function addNoteToAntenna(antennaId: string, note: Note): void
 /**
  * Checks if a server is blocked.
@@ -235,7 +236,6 @@ export function isSilencedServer(host: string): Promise<boolean>
  * `host` - punycoded instance host
  */
 export function isAllowedServer(host: string): Promise<boolean>
-/** TODO: handle name collisions better */
 export interface NoteLikeForCheckWordMute {
   fileIds: Array<string>
   userId: string | null
@@ -260,7 +260,6 @@ export interface ImageSize {
   height: number
 }
 export function getImageSizeFromUrl(url: string): Promise<ImageSize>
-/** TODO: handle name collisions better */
 export interface NoteLikeForGetNoteSummary {
   fileIds: Array<string>
   text: string | null
@@ -268,6 +267,28 @@ export interface NoteLikeForGetNoteSummary {
   hasPoll: boolean
 }
 export function getNoteSummary(note: NoteLikeForGetNoteSummary): string
+export interface Cpu {
+  model: string
+  cores: number
+}
+export interface Memory {
+  /** Total memory amount in bytes */
+  total: number
+  /** Used memory amount in bytes */
+  used: number
+  /** Available (for (re)use) memory amount in bytes */
+  available: number
+}
+export interface Storage {
+  /** Total storage space in bytes */
+  total: number
+  /** Used storage space in bytes */
+  used: number
+}
+export function cpuInfo(): Cpu
+export function cpuUsage(): number
+export function memoryUsage(): Memory
+export function storageUsage(): Storage | null
 export function isSafeUrl(url: string): boolean
 export function latestVersion(): Promise<string>
 export function toMastodonId(firefishId: string): string | null
@@ -1156,7 +1177,6 @@ export interface Webhook {
   latestSentAt: Date | null
   latestStatus: number | null
 }
-export function initializeRustLogger(): void
 export function fetchNodeinfo(host: string): Promise<Nodeinfo>
 export function nodeinfo_2_1(): Promise<any>
 export function nodeinfo_2_0(): Promise<any>
@@ -1259,6 +1279,15 @@ export interface Users {
 }
 export function watchNote(watcherId: string, noteAuthorId: string, noteId: string): Promise<void>
 export function unwatchNote(watcherId: string, noteId: string): Promise<void>
+export enum PushNotificationKind {
+  Generic = 'generic',
+  Chat = 'chat',
+  ReadAllChats = 'readAllChats',
+  ReadAllChatsInTheRoom = 'readAllChatsInTheRoom',
+  ReadNotifications = 'readNotifications',
+  ReadAllNotifications = 'readAllNotifications'
+}
+export function sendPushNotification(receiverUserId: string, kind: PushNotificationKind, content: any): Promise<void>
 export function publishToChannelStream(channelId: string, userId: string): void
 export enum ChatEvent {
   Message = 'message',
@@ -1304,4 +1333,6 @@ export function getTimestamp(id: string): number
 export function genId(): string
 /** Generate an ID using a specific datetime */
 export function genIdAt(date: Date): string
-export function secureRndstr(length?: number | undefined | null): string
+/** Generate random string based on [thread_rng] and [Alphanumeric]. */
+export function generateSecureRandomString(length: number): string
+export function generateUserToken(): string

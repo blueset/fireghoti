@@ -22,5 +22,4 @@ export const MFM_TAGS = [
 	"rotate",
 	"fade",
 	"small",
-	"center",
 ];

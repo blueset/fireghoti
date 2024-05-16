@@ -1,10 +1,9 @@
 import * as os from "node:os";
-import si from "systeminformation";
 import define from "@/server/api/define.js";
-import { fetchMeta } from "backend-rs";
+import { fetchMeta, cpuInfo, memoryUsage, storageUsage } from "backend-rs";
 
 export const meta = {
-	requireCredential: false,
+	requireCredential: true,
 	requireCredentialPrivateMode: true,
 	allowGet: true,
 	cacheSec: 30,
@@ -18,19 +17,8 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async () => {
-	const memStats = await si.mem();
-	const fsStats = await si.fsSize();
-
-	let fsIndex = 0;
-	// Get the first index of fs sizes that are actualy used.
-	for (const [i, stat] of fsStats.entries()) {
-		if (stat.rw === true && stat.used > 0) {
-			fsIndex = i;
-			break;
-		}
-	}
-
 	const instanceMeta = await fetchMeta(true);
+
 	if (!instanceMeta.enableServerMachineStats) {
 		return {
 			machine: "Not specified",
@@ -47,18 +35,19 @@ export default define(meta, paramDef, async () => {
 			},
 		};
 	}
+
+	const memory = memoryUsage();
+	const storage = storageUsage();
+
 	return {
 		machine: os.hostname(),
-		cpu: {
-			model: os.cpus()[0].model,
-			cores: os.cpus().length,
-		},
+		cpu: cpuInfo(),
 		mem: {
-			total: memStats.total,
+			total: memory.total,
 		},
 		fs: {
-			total: fsStats[fsIndex].size,
-			used: fsStats[fsIndex].used,
+			total: storage?.total ?? 0,
+			used: storage?.used ?? 0,
 		},
 	};
 });
