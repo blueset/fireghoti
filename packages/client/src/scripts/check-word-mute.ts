@@ -13,9 +13,7 @@ function checkLangMute(
 	note: entities.Note,
 	mutedLangs: Array<string | string[]>,
 ): Muted {
-	console.log(note);
 	const mutedLangList = mutedLangs.flat();
-	console.log(mutedLangList);
 	const noteLang = note.lang ?? detectLanguage(note.text ?? "") ?? "no-lang";
 	for (const mutedLang of mutedLangList) {
 		if (languageContains(mutedLang, noteLang)) {
