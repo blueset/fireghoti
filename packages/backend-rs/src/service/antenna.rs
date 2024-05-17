@@ -46,6 +46,7 @@ pub async fn update_antennas_on_new_note(
     note_author: &Acct,
     note_muted_users: Vec<String>,
 ) -> Result<(), Error> {
+    // TODO: do this in parallel
     for antenna in antennas().await?.iter() {
         if note_muted_users.contains(&antenna.user_id) {
             continue;
