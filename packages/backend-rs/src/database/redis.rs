@@ -1,6 +1,45 @@
 use crate::config::CONFIG;
+use async_trait::async_trait;
 use once_cell::sync::OnceCell;
-use redis::{aio::MultiplexedConnection, Client, RedisError};
+use redis::{aio::MultiplexedConnection, Client, ErrorKind, IntoConnectionInfo, RedisError};
+
+/// A `bb8::ManageConnection` for `redis::Client::get_async_connection`.
+#[derive(Clone, Debug)]
+pub struct RedisConnectionManager {
+    client: Client,
+}
+
+impl RedisConnectionManager {
+    /// Create a new `RedisConnectionManager`.
+    /// See `redis::Client::open` for a description of the parameter types.
+    pub fn new<T: IntoConnectionInfo>(info: T) -> Result<Self, RedisError> {
+        Ok(Self {
+            client: Client::open(info.into_connection_info()?)?,
+        })
+    }
+}
+
+#[async_trait]
+impl bb8::ManageConnection for RedisConnectionManager {
+    type Connection = MultiplexedConnection;
+    type Error = RedisError;
+
+    async fn connect(&self) -> Result<Self::Connection, Self::Error> {
+        self.client.get_multiplexed_async_connection().await
+    }
+
+    async fn is_valid(&self, conn: &mut Self::Connection) -> Result<(), Self::Error> {
+        let pong: String = redis::cmd("PING").query_async(conn).await?;
+        match pong.as_str() {
+            "PONG" => Ok(()),
+            _ => Err((ErrorKind::ResponseError, "ping request").into()),
+        }
+    }
+
+    fn has_broken(&self, _: &mut Self::Connection) -> bool {
+        false
+    }
+}
 
 static REDIS_CLIENT: OnceCell<Client> = OnceCell::new();
 
