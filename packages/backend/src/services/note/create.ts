@@ -402,13 +402,9 @@ export default async (
 			});
 
 		// type errors will be resolved by https://github.com/napi-rs/napi-rs/pull/2054
-		const _note = toRustObject(note)
+		const _note = toRustObject(note);
 		if (note.renoteId == null || isQuote(_note)) {
-			await updateAntennasOnNewNote(
-				_note,
-				user,
-				thisNoteIsMutedBy,
-			);
+			await updateAntennasOnNewNote(_note, user, thisNoteIsMutedBy);
 		}
 
 		// Channel
