@@ -573,7 +573,7 @@ export const UserRepository = db.getRepository(User).extend({
 						hasUnreadNotification: this.getHasUnreadNotification(user.id),
 						hasPendingReceivedFollowRequest:
 							this.getHasPendingReceivedFollowRequest(user.id),
-						mutedWords: profile?.mutedWords,
+						mutedWords: profile?.mutedWords.map((row) => row.split(" ")),
 						mutedPatterns: profile?.mutedPatterns,
 						mutedInstances: profile?.mutedInstances,
 						mutingNotificationTypes: profile?.mutingNotificationTypes,

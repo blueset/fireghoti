@@ -244,7 +244,7 @@ export interface NoteLikeForCheckWordMute {
   renoteId: string | null
   replyId: string | null
 }
-export function checkWordMute(note: NoteLikeForCheckWordMute, mutedWordLists: Array<Array<string>>, mutedPatterns: Array<string>): Promise<boolean>
+export function checkWordMute(note: NoteLikeForCheckWordMute, mutedWords: Array<string>, mutedPatterns: Array<string>): Promise<boolean>
 export function getFullApAccount(username: string, host?: string | undefined | null): string
 export function isSelfHost(host?: string | undefined | null): boolean
 export function isSameOrigin(uri: string): boolean
@@ -381,7 +381,6 @@ export interface Antenna {
   name: string
   src: AntennaSrcEnum
   userListId: string | null
-  keywords: Json
   withFile: boolean
   expression: string | null
   notify: boolean
@@ -389,8 +388,9 @@ export interface Antenna {
   withReplies: boolean
   userGroupJoiningId: string | null
   users: Array<string>
-  excludeKeywords: Json
-  instances: Json
+  instances: Array<string>
+  keywords: Array<string>
+  excludeKeywords: Array<string>
 }
 export interface App {
   id: string
@@ -1128,7 +1128,6 @@ export interface UserProfile {
   twoFactorSecret: string | null
   twoFactorEnabled: boolean
   password: string | null
-  clientData: Json
   autoAcceptFollowed: boolean
   alwaysMarkNsfw: boolean
   carefulBot: boolean
@@ -1136,21 +1135,20 @@ export interface UserProfile {
   securityKeysAvailable: boolean
   usePasswordLessLogin: boolean
   pinnedPageId: string | null
-  room: Json
   injectFeaturedNote: boolean
   enableWordMute: boolean
-  mutedWords: Json
   mutingNotificationTypes: Array<UserProfileMutingnotificationtypesEnum>
   noCrawle: boolean
   receiveAnnouncementEmail: boolean
   emailNotificationTypes: Json
-  mutedInstances: Json
   publicReactions: boolean
   ffVisibility: UserProfileFfvisibilityEnum
   moderationNote: string
   preventAiLearning: boolean
   isIndexable: boolean
   mutedPatterns: Array<string>
+  mutedInstances: Array<string>
+  mutedWords: Array<string>
   lang: string | null
 }
 export interface UserPublickey {

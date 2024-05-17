@@ -59,20 +59,30 @@ export class Antenna {
 	})
 	public users: string[];
 
-	@Column("jsonb", {
-		default: [],
+	@Column("varchar", {
+		length: 512,
+		array: true,
+		default: "{}",
 	})
 	public instances: string[];
 
-	@Column("jsonb", {
-		default: [],
+	// whitespace: AND condition
+	// array items: OR condition
+	// e.g., ["alpha beta", "gamma"]
+	//   does match     "alpha beta", "beta alpha alpha", "gamma alpha", "gamma epsilon"
+	//   does not match "alpha", "beta gamma", "alpha alpha", "eplison"
+	@Column("text", {
+		array: true,
+		default: "{}",
 	})
-	public keywords: string[][];
+	public keywords: string[];
 
-	@Column("jsonb", {
-		default: [],
+	// same match rule as `keywords`, except that this field is for excluded words
+	@Column("text", {
+		array: true,
+		default: "{}",
 	})
-	public excludeKeywords: string[][];
+	public excludeKeywords: string[];
 
 	@Column("boolean", {
 		default: false,

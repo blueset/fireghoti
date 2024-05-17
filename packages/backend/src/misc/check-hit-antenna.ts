@@ -46,44 +46,38 @@ export async function checkHitAntenna(
 		if (!instances.includes(noteUser.host?.toLowerCase() ?? "")) return false;
 	}
 
-	const keywords = antenna.keywords
-		// Clean up
-		.map((xs) => xs.filter((x) => x !== ""))
-		.filter((xs) => xs.length > 0);
-
 	let text = `${note.text ?? ""} ${note.cw ?? ""}`;
 	if (note.files != null)
 		text += ` ${note.files.map((f) => f.comment ?? "").join(" ")}`;
 	text = text.trim();
 
-	if (keywords.length > 0) {
+	if (antenna.keywords.length > 0) {
 		if (note.text == null) return false;
 
-		const matched = keywords.some((and) =>
-			and.every((keyword) =>
-				antenna.caseSensitive
-					? text.includes(keyword)
-					: text.toLowerCase().includes(keyword.toLowerCase()),
-			),
+		const matched = antenna.keywords.some((item) =>
+			item
+				.split(" ")
+				.every((keyword) =>
+					antenna.caseSensitive
+						? text.includes(keyword)
+						: text.toLowerCase().includes(keyword.toLowerCase()),
+				),
 		);
 
 		if (!matched) return false;
 	}
 
-	const excludeKeywords = antenna.excludeKeywords
-		// Clean up
-		.map((xs) => xs.filter((x) => x !== ""))
-		.filter((xs) => xs.length > 0);
-
-	if (excludeKeywords.length > 0) {
+	if (antenna.excludeKeywords.length > 0) {
 		if (note.text == null) return false;
 
-		const matched = excludeKeywords.some((and) =>
-			and.every((keyword) =>
-				antenna.caseSensitive
-					? note.text?.includes(keyword)
-					: note.text?.toLowerCase().includes(keyword.toLowerCase()),
-			),
+		const matched = antenna.excludeKeywords.some((item) =>
+			item
+				.split(" ")
+				.every((keyword) =>
+					antenna.caseSensitive
+						? note.text?.includes(keyword)
+						: note.text?.toLowerCase().includes(keyword.toLowerCase()),
+				),
 		);
 
 		if (matched) return false;

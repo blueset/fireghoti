@@ -87,14 +87,13 @@ fn convert_regex(js_regex: &str) -> String {
 
 fn check_word_mute_impl(
     texts: &[String],
-    muted_word_lists: &[Vec<String>],
+    muted_words: &[String],
     muted_patterns: &[String],
 ) -> bool {
-    muted_word_lists.iter().any(|muted_word_list| {
+    muted_words.iter().any(|item| {
         texts.iter().any(|text| {
             let text_lower = text.to_lowercase();
-            muted_word_list
-                .iter()
+            item.split_whitespace()
                 .all(|muted_word| text_lower.contains(&muted_word.to_lowercase()))
         })
     }) || muted_patterns.iter().any(|muted_pattern| {
@@ -107,16 +106,16 @@ fn check_word_mute_impl(
 #[crate::export]
 pub async fn check_word_mute(
     note: NoteLike,
-    muted_word_lists: Vec<Vec<String>>,
-    muted_patterns: Vec<String>,
+    muted_words: &[String],
+    muted_patterns: &[String],
 ) -> Result<bool, DbErr> {
-    if muted_word_lists.is_empty() && muted_patterns.is_empty() {
+    if muted_words.is_empty() && muted_patterns.is_empty() {
         Ok(false)
     } else {
         Ok(check_word_mute_impl(
             &all_texts(note).await?,
-            &muted_word_lists,
-            &muted_patterns,
+            muted_words,
+            muted_patterns,
         ))
     }
 }

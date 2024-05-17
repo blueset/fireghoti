@@ -104,8 +104,22 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, user) => {
+	const flatten = (arr: string[][]) =>
+		JSON.stringify(arr) === "[[]]"
+			? ([] as string[])
+			: arr.map((row) => row.join(" "));
+
+	const keywords = flatten(
+		ps.keywords.map((row) => row.filter((word) => word.trim().length > 0)),
+	);
+	const excludedWords = flatten(
+		ps.excludeKeywords.map((row) =>
+			row.filter((word) => word.trim().length > 0),
+		),
+	);
+
 	if (user.movedToUri != null) throw new ApiError(meta.errors.noSuchUserGroup);
-	if (ps.keywords.length === 0) throw new ApiError(meta.errors.noKeywords);
+	if (keywords.length === 0) throw new ApiError(meta.errors.noKeywords);
 	let userList;
 	let userGroupJoining;
 
@@ -146,10 +160,10 @@ export default define(meta, paramDef, async (ps, user) => {
 		src: ps.src,
 		userListId: userList ? userList.id : null,
 		userGroupJoiningId: userGroupJoining ? userGroupJoining.id : null,
-		keywords: ps.keywords,
-		excludeKeywords: ps.excludeKeywords,
+		keywords: keywords,
+		excludeKeywords: excludedWords,
 		users: ps.users,
-		instances: ps.instances,
+		instances: ps.instances.filter((instance) => instance.trim().length > 0),
 		caseSensitive: ps.caseSensitive,
 		withReplies: ps.withReplies,
 		withFile: ps.withFile,
