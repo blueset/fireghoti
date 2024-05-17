@@ -267,6 +267,7 @@ export interface NoteLikeForGetNoteSummary {
   hasPoll: boolean
 }
 export function getNoteSummary(note: NoteLikeForGetNoteSummary): string
+export function isQuote(note: Note): boolean
 export function isSafeUrl(url: string): boolean
 export function latestVersion(): Promise<string>
 export function toMastodonId(firefishId: string): string | null
@@ -1175,7 +1176,7 @@ export interface Webhook {
   latestSentAt: Date | null
   latestStatus: number | null
 }
-export function updateAntennaOnCreateNote(antenna: Antenna, note: Note, noteAuthor: Acct): Promise<void>
+export function updateAntennasOnNewNote(note: Note, noteAuthor: Acct, noteMutedUsers: Array<string>): Promise<void>
 export function fetchNodeinfo(host: string): Promise<Nodeinfo>
 export function nodeinfo_2_1(): Promise<any>
 export function nodeinfo_2_0(): Promise<any>

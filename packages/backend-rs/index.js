@@ -310,7 +310,7 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { SECOND, MINUTE, HOUR, DAY, USER_ONLINE_THRESHOLD, USER_ACTIVE_THRESHOLD, FILE_TYPE_BROWSERSAFE, loadEnv, loadConfig, stringToAcct, acctToString, initializeRustLogger, showServerInfo, isBlockedServer, isSilencedServer, isAllowedServer, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getImageSizeFromUrl, getNoteSummary, isSafeUrl, latestVersion, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, removeOldAttestationChallenges, cpuInfo, cpuUsage, memoryUsage, storageUsage, AntennaSrcEnum, DriveFileUsageHintEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, updateAntennaOnCreateNote, fetchNodeinfo, nodeinfo_2_1, nodeinfo_2_0, Protocol, Inbound, Outbound, watchNote, unwatchNote, PushNotificationKind, sendPushNotification, publishToChannelStream, ChatEvent, publishToChatStream, ChatIndexEvent, publishToChatIndexStream, publishToBroadcastStream, publishToGroupChatStream, publishToModerationStream, getTimestamp, genId, genIdAt, generateSecureRandomString, generateUserToken } = nativeBinding
+const { SECOND, MINUTE, HOUR, DAY, USER_ONLINE_THRESHOLD, USER_ACTIVE_THRESHOLD, FILE_TYPE_BROWSERSAFE, loadEnv, loadConfig, stringToAcct, acctToString, initializeRustLogger, showServerInfo, isBlockedServer, isSilencedServer, isAllowedServer, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getImageSizeFromUrl, getNoteSummary, isQuote, isSafeUrl, latestVersion, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, removeOldAttestationChallenges, cpuInfo, cpuUsage, memoryUsage, storageUsage, AntennaSrcEnum, DriveFileUsageHintEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, updateAntennasOnNewNote, fetchNodeinfo, nodeinfo_2_1, nodeinfo_2_0, Protocol, Inbound, Outbound, watchNote, unwatchNote, PushNotificationKind, sendPushNotification, publishToChannelStream, ChatEvent, publishToChatStream, ChatIndexEvent, publishToChatIndexStream, publishToBroadcastStream, publishToGroupChatStream, publishToModerationStream, getTimestamp, genId, genIdAt, generateSecureRandomString, generateUserToken } = nativeBinding
 
 module.exports.SECOND = SECOND
 module.exports.MINUTE = MINUTE
@@ -340,6 +340,7 @@ module.exports.safeForSql = safeForSql
 module.exports.formatMilliseconds = formatMilliseconds
 module.exports.getImageSizeFromUrl = getImageSizeFromUrl
 module.exports.getNoteSummary = getNoteSummary
+module.exports.isQuote = isQuote
 module.exports.isSafeUrl = isSafeUrl
 module.exports.latestVersion = latestVersion
 module.exports.toMastodonId = toMastodonId
@@ -369,7 +370,7 @@ module.exports.RelayStatusEnum = RelayStatusEnum
 module.exports.UserEmojimodpermEnum = UserEmojimodpermEnum
 module.exports.UserProfileFfvisibilityEnum = UserProfileFfvisibilityEnum
 module.exports.UserProfileMutingnotificationtypesEnum = UserProfileMutingnotificationtypesEnum
-module.exports.updateAntennaOnCreateNote = updateAntennaOnCreateNote
+module.exports.updateAntennasOnNewNote = updateAntennasOnNewNote
 module.exports.fetchNodeinfo = fetchNodeinfo
 module.exports.nodeinfo_2_1 = nodeinfo_2_1
 module.exports.nodeinfo_2_0 = nodeinfo_2_0

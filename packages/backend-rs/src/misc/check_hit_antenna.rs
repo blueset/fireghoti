@@ -1,11 +1,8 @@
 use crate::config::CONFIG;
 use crate::database::{cache, db_conn};
 use crate::federation::acct::Acct;
-use crate::misc::check_word_mute::check_word_mute_bare;
 use crate::misc::get_note_all_texts::{all_texts, NoteLike};
-use crate::model::entity::{
-    antenna, blocking, following, note, sea_orm_active_enums::*, user_profile,
-};
+use crate::model::entity::{antenna, blocking, following, note, sea_orm_active_enums::*};
 use sea_orm::{ColumnTrait, DbErr, EntityTrait, QueryFilter, QuerySelect};
 
 #[derive(thiserror::Error, Debug)]
@@ -150,35 +147,6 @@ pub async fn check_hit_antenna(
         if !following_user_ids.contains(&note.user_id) {
             return Ok(false);
         }
-    }
-
-    type WordMute = (
-        Vec<String>, // muted words
-        Vec<String>, // muted patterns
-    );
-
-    let word_mute: WordMute = cache::get_one(cache::Category::WordMute, &antenna.user_id)?
-        .unwrap_or({
-            // cache miss
-            let mute = user_profile::Entity::find()
-                .select_only()
-                .columns([
-                    user_profile::Column::MutedWords,
-                    user_profile::Column::MutedPatterns,
-                ])
-                .into_tuple::<WordMute>()
-                .one(db)
-                .await?
-                .ok_or({
-                    tracing::warn!("there is no user_profile for user {}", &antenna.user_id);
-                    AntennaCheckError::UserProfileNotFoundErr(antenna.user_id.clone())
-                })?;
-            cache::set_one(cache::Category::WordMute, &antenna.user_id, &mute, 10 * 60)?;
-            mute
-        });
-
-    if check_word_mute_bare(&note_texts, &word_mute.0, &word_mute.1) {
-        return Ok(false);
     }
 
     Ok(true)

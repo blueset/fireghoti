@@ -10,8 +10,6 @@ pub enum Category {
     Block,
     #[strum(serialize = "following")]
     Follow,
-    #[strum(serialize = "wordMute")]
-    WordMute,
     #[cfg(test)]
     #[strum(serialize = "usedOnlyForTesting")]
     Test,

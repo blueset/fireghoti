@@ -8,7 +8,7 @@ fn convert_regex(js_regex: &str) -> String {
     RE.replace(js_regex, "(?$2)$1").to_string()
 }
 
-pub fn check_word_mute_bare(
+fn check_word_mute_impl(
     texts: &[String],
     muted_words: &[String],
     muted_patterns: &[String],
@@ -35,7 +35,7 @@ pub async fn check_word_mute(
     if muted_words.is_empty() && muted_patterns.is_empty() {
         Ok(false)
     } else {
-        Ok(check_word_mute_bare(
+        Ok(check_word_mute_impl(
             &all_texts(note).await?,
             muted_words,
             muted_patterns,

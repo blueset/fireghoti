@@ -8,6 +8,7 @@ pub mod format_milliseconds;
 pub mod get_image_size;
 pub mod get_note_all_texts;
 pub mod get_note_summary;
+pub mod is_quote;
 pub mod is_safe_url;
 pub mod latest_version;
 pub mod mastodon_id;
