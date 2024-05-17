@@ -18,10 +18,11 @@ pub struct PackedEmoji {
 }
 
 #[crate::export(js_name = "publishToBroadcastStream")]
-pub fn publish(emoji: &PackedEmoji) -> Result<(), Error> {
+pub async fn publish(emoji: &PackedEmoji) -> Result<(), Error> {
     publish_to_stream(
         &Stream::CustomEmoji,
         Some("emojiAdded".to_string()),
         Some(format!("{{\"emoji\":{}}}", serde_json::to_string(emoji)?)),
     )
+    .await
 }

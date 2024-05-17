@@ -12,10 +12,11 @@ pub struct AbuseUserReportLike {
 }
 
 #[crate::export(js_name = "publishToModerationStream")]
-pub fn publish(moderator_id: String, report: &AbuseUserReportLike) -> Result<(), Error> {
+pub async fn publish(moderator_id: String, report: &AbuseUserReportLike) -> Result<(), Error> {
     publish_to_stream(
         &Stream::Moderation { moderator_id },
         Some("newAbuseUserReport".to_string()),
         Some(serde_json::to_string(report)?),
     )
+    .await
 }

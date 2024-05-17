@@ -104,7 +104,8 @@ pub async fn check_hit_antenna(
 
     let db = db_conn().await?;
 
-    let blocked_user_ids: Vec<String> = cache::get_one(cache::Category::Block, &note.user_id)?
+    let blocked_user_ids: Vec<String> = cache::get_one(cache::Category::Block, &note.user_id)
+        .await?
         .unwrap_or({
             // cache miss
             let blocks = blocking::Entity::find()
@@ -114,7 +115,7 @@ pub async fn check_hit_antenna(
                 .into_tuple::<String>()
                 .all(db)
                 .await?;
-            cache::set_one(cache::Category::Block, &note.user_id, &blocks, 10 * 60)?;
+            cache::set_one(cache::Category::Block, &note.user_id, &blocks, 10 * 60).await?;
             blocks
         });
 
@@ -125,23 +126,26 @@ pub async fn check_hit_antenna(
 
     if [NoteVisibilityEnum::Home, NoteVisibilityEnum::Followers].contains(&note.visibility) {
         let following_user_ids: Vec<String> =
-            cache::get_one(cache::Category::Follow, &antenna.user_id)?.unwrap_or({
-                // cache miss
-                let following = following::Entity::find()
-                    .select_only()
-                    .column(following::Column::FolloweeId)
-                    .filter(following::Column::FollowerId.eq(&antenna.user_id))
-                    .into_tuple::<String>()
-                    .all(db)
+            cache::get_one(cache::Category::Follow, &antenna.user_id)
+                .await?
+                .unwrap_or({
+                    // cache miss
+                    let following = following::Entity::find()
+                        .select_only()
+                        .column(following::Column::FolloweeId)
+                        .filter(following::Column::FollowerId.eq(&antenna.user_id))
+                        .into_tuple::<String>()
+                        .all(db)
+                        .await?;
+                    cache::set_one(
+                        cache::Category::Follow,
+                        &antenna.user_id,
+                        &following,
+                        10 * 60,
+                    )
                     .await?;
-                cache::set_one(
-                    cache::Category::Follow,
-                    &antenna.user_id,
-                    &following,
-                    10 * 60,
-                )?;
-                following
-            });
+                    following
+                });
 
         // if the antenna owner is not following the note author, return false
         if !following_user_ids.contains(&note.user_id) {

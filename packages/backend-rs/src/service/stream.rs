@@ -8,7 +8,7 @@ pub mod moderation;
 
 use crate::config::CONFIG;
 use crate::database::redis_conn;
-use redis::{Commands, RedisError};
+use redis::{AsyncCommands, RedisError};
 
 #[derive(strum::Display)]
 pub enum Stream {
@@ -55,7 +55,7 @@ pub enum Error {
     ValueError(String),
 }
 
-pub fn publish_to_stream(
+pub async fn publish_to_stream(
     stream: &Stream,
     kind: Option<String>,
     value: Option<String>,
@@ -70,10 +70,13 @@ pub fn publish_to_stream(
         value.ok_or(Error::ValueError("Invalid streaming message".to_string()))?
     };
 
-    redis_conn()?.publish(
-        &CONFIG.host,
-        format!("{{\"channel\":\"{}\",\"message\":{}}}", stream, message),
-    )?;
+    redis_conn()
+        .await?
+        .publish(
+            &CONFIG.host,
+            format!("{{\"channel\":\"{}\",\"message\":{}}}", stream, message),
+        )
+        .await?;
 
     Ok(())
 }

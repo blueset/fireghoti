@@ -85,7 +85,11 @@ export async function createNotification(
 		if (fresh == null) return; // 既に削除されているかもしれない
 		// We execute this before, because the server side "read" check doesnt work well with push notifications, the app and service worker will decide themself
 		// when it is best to show push notifications
-		sendPushNotification(notifieeId, PushNotificationKind.Generic, packed);
+		await sendPushNotification(
+			notifieeId,
+			PushNotificationKind.Generic,
+			packed,
+		);
 		if (fresh.isRead) return;
 
 		//#region ただしミュートしているユーザーからの通知なら無視

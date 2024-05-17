@@ -351,11 +351,11 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 
 	// 鍵垢を解除したとき、溜まっていたフォローリクエストがあるならすべて承認
 	if (user.isLocked && ps.isLocked === false) {
-		acceptAllFollowRequests(user);
+		await acceptAllFollowRequests(user);
 	}
 
 	// フォロワーにUpdateを配信
-	publishToFollowers(user.id);
+	await publishToFollowers(user.id);
 
 	return iObj;
 });

@@ -287,10 +287,10 @@ export default class Connection {
 				// クライアントの事情を考慮したとき、入力フォームはノートチャンネルやメッセージのメインコンポーネントとは別
 				// なこともあるため、それらのコンポーネントがそれぞれ各チャンネルに接続するようにするのは面倒なため。
 				case "typingOnChannel":
-					this.typingOnChannel(body.channel);
+					await this.typingOnChannel(body.channel);
 					break;
 				case "typingOnMessaging":
-					this.typingOnMessaging(body);
+					await this.typingOnMessaging(body);
 					break;
 			}
 		}
@@ -513,26 +513,30 @@ export default class Connection {
 		}
 	}
 
-	private typingOnChannel(channelId: ChannelModel["id"]) {
+	private async typingOnChannel(channelId: ChannelModel["id"]) {
 		if (this.user) {
-			publishToChannelStream(channelId, this.user.id);
+			await publishToChannelStream(channelId, this.user.id);
 		}
 	}
 
-	private typingOnMessaging(param: {
+	private async typingOnMessaging(param: {
 		partner?: User["id"];
 		group?: UserGroup["id"];
 	}) {
 		if (this.user) {
 			if (param.partner) {
-				publishToChatStream(
+				await publishToChatStream(
 					param.partner,
 					this.user.id,
 					ChatEvent.Typing,
 					this.user.id,
 				);
 			} else if (param.group != null) {
-				publishToGroupChatStream(param.group, ChatEvent.Typing, this.user.id);
+				await publishToGroupChatStream(
+					param.group,
+					ChatEvent.Typing,
+					this.user.id,
+				);
 			}
 		}
 	}

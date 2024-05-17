@@ -1288,19 +1288,19 @@ export enum PushNotificationKind {
   ReadAllNotifications = 'readAllNotifications'
 }
 export function sendPushNotification(receiverUserId: string, kind: PushNotificationKind, content: any): Promise<void>
-export function publishToChannelStream(channelId: string, userId: string): void
+export function publishToChannelStream(channelId: string, userId: string): Promise<void>
 export enum ChatEvent {
   Message = 'message',
   Read = 'read',
   Deleted = 'deleted',
   Typing = 'typing'
 }
-export function publishToChatStream(senderUserId: string, receiverUserId: string, kind: ChatEvent, object: any): void
+export function publishToChatStream(senderUserId: string, receiverUserId: string, kind: ChatEvent, object: any): Promise<void>
 export enum ChatIndexEvent {
   Message = 'message',
   Read = 'read'
 }
-export function publishToChatIndexStream(userId: string, kind: ChatIndexEvent, object: any): void
+export function publishToChatIndexStream(userId: string, kind: ChatIndexEvent, object: any): Promise<void>
 export interface PackedEmoji {
   id: string
   aliases: Array<string>
@@ -1312,15 +1312,15 @@ export interface PackedEmoji {
   width: number | null
   height: number | null
 }
-export function publishToBroadcastStream(emoji: PackedEmoji): void
-export function publishToGroupChatStream(groupId: string, kind: ChatEvent, object: any): void
+export function publishToBroadcastStream(emoji: PackedEmoji): Promise<void>
+export function publishToGroupChatStream(groupId: string, kind: ChatEvent, object: any): Promise<void>
 export interface AbuseUserReportLike {
   id: string
   targetUserId: string
   reporterId: string
   comment: string
 }
-export function publishToModerationStream(moderatorId: string, report: AbuseUserReportLike): void
+export function publishToModerationStream(moderatorId: string, report: AbuseUserReportLike): Promise<void>
 export function getTimestamp(id: string): number
 /**
  * The generated ID results in the form of `[8 chars timestamp] + [cuid2]`.

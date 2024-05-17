@@ -17,7 +17,7 @@ pub enum ChatEvent {
 // https://github.com/napi-rs/napi-rs/issues/2036
 
 #[crate::export(js_name = "publishToChatStream")]
-pub fn publish(
+pub async fn publish(
     sender_user_id: String,
     receiver_user_id: String,
     kind: ChatEvent,
@@ -31,4 +31,5 @@ pub fn publish(
         Some(kind.to_string()),
         Some(serde_json::to_string(object)?),
     )
+    .await
 }
