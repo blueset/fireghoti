@@ -1,4 +1,4 @@
-pub mod add_note_to_antenna;
+pub mod check_hit_antenna;
 pub mod check_server_block;
 pub mod check_word_mute;
 pub mod convert_host;
@@ -6,6 +6,7 @@ pub mod emoji;
 pub mod escape_sql;
 pub mod format_milliseconds;
 pub mod get_image_size;
+pub mod get_note_all_texts;
 pub mod get_note_summary;
 pub mod is_safe_url;
 pub mod latest_version;

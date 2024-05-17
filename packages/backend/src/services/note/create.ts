@@ -42,9 +42,8 @@ import type { IPoll } from "@/models/entities/poll.js";
 import { Poll } from "@/models/entities/poll.js";
 import { createNotification } from "@/services/create-notification.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
-import { checkHitAntenna } from "@/misc/check-hit-antenna.js";
 import {
-	addNoteToAntenna,
+	updateAntennaOnCreateNote,
 	checkWordMute,
 	genId,
 	genIdAt,
@@ -401,12 +400,11 @@ export default async (
 
 		// Antenna
 		for (const antenna of await getAntennas()) {
-			checkHitAntenna(antenna, note, user).then((hit) => {
-				if (hit) {
-					// TODO: do this more sanely
-					addNoteToAntenna(antenna.id, toRustObject(note));
-				}
-			});
+			await updateAntennaOnCreateNote(
+				toRustObject(antenna),
+				toRustObject(note),
+				user,
+			);
 		}
 
 		// Channel

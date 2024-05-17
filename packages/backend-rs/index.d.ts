@@ -213,7 +213,6 @@ export function stringToAcct(acct: string): Acct
 export function acctToString(acct: Acct): string
 export function initializeRustLogger(): void
 export function showServerInfo(): void
-export function addNoteToAntenna(antennaId: string, note: Note): void
 /**
  * Checks if a server is blocked.
  *
@@ -236,15 +235,7 @@ export function isSilencedServer(host: string): Promise<boolean>
  * `host` - punycoded instance host
  */
 export function isAllowedServer(host: string): Promise<boolean>
-export interface NoteLikeForCheckWordMute {
-  fileIds: Array<string>
-  userId: string | null
-  text: string | null
-  cw: string | null
-  renoteId: string | null
-  replyId: string | null
-}
-export function checkWordMute(note: NoteLikeForCheckWordMute, mutedWords: Array<string>, mutedPatterns: Array<string>): Promise<boolean>
+export function checkWordMute(note: NoteLike, mutedWords: Array<string>, mutedPatterns: Array<string>): Promise<boolean>
 export function getFullApAccount(username: string, host?: string | undefined | null): string
 export function isSelfHost(host?: string | undefined | null): boolean
 export function isSameOrigin(uri: string): boolean
@@ -260,6 +251,15 @@ export interface ImageSize {
   height: number
 }
 export function getImageSizeFromUrl(url: string): Promise<ImageSize>
+/** TODO: handle name collisions better */
+export interface NoteLikeForAllTexts {
+  fileIds: Array<string>
+  userId: string
+  text: string | null
+  cw: string | null
+  renoteId: string | null
+  replyId: string | null
+}
 export interface NoteLikeForGetNoteSummary {
   fileIds: Array<string>
   text: string | null
@@ -1175,6 +1175,7 @@ export interface Webhook {
   latestSentAt: Date | null
   latestStatus: number | null
 }
+export function updateAntennaOnCreateNote(antenna: Antenna, note: Note, noteAuthor: Acct): Promise<void>
 export function fetchNodeinfo(host: string): Promise<Nodeinfo>
 export function nodeinfo_2_1(): Promise<any>
 export function nodeinfo_2_0(): Promise<any>
