@@ -1,5 +1,5 @@
 use crate::database::cache;
-use crate::database::{db_conn, redis_conn, redis_key};
+use crate::database::{db_conn, redis_conn, redis_key, RedisConnError};
 use crate::federation::acct::Acct;
 use crate::misc::check_hit_antenna::{check_hit_antenna, AntennaCheckError};
 use crate::model::entity::{antenna, note};
@@ -16,6 +16,8 @@ pub enum Error {
     CacheErr(#[from] cache::Error),
     #[error("Redis error: {0}")]
     RedisErr(#[from] RedisError),
+    #[error("Redis connection error: {0}")]
+    RedisConnErr(#[from] RedisConnError),
     #[error("Invalid ID: {0}")]
     InvalidIdErr(#[from] InvalidIdErr),
     #[error("Stream error: {0}")]

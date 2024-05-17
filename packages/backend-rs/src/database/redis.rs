@@ -1,9 +1,10 @@
 use crate::config::CONFIG;
 use async_trait::async_trait;
-use once_cell::sync::OnceCell;
+use bb8::{ManageConnection, Pool, PooledConnection, RunError};
 use redis::{aio::MultiplexedConnection, Client, ErrorKind, IntoConnectionInfo, RedisError};
+use tokio::sync::OnceCell;
 
-/// A `bb8::ManageConnection` for `redis::Client::get_async_connection`.
+/// A `bb8::ManageConnection` for `redis::Client::get_multiplexed_async_connection`.
 #[derive(Clone, Debug)]
 pub struct RedisConnectionManager {
     client: Client,
@@ -20,7 +21,7 @@ impl RedisConnectionManager {
 }
 
 #[async_trait]
-impl bb8::ManageConnection for RedisConnectionManager {
+impl ManageConnection for RedisConnectionManager {
     type Connection = MultiplexedConnection;
     type Error = RedisError;
 
@@ -41,9 +42,9 @@ impl bb8::ManageConnection for RedisConnectionManager {
     }
 }
 
-static REDIS_CLIENT: OnceCell<Client> = OnceCell::new();
+static CONN_POOL: OnceCell<Pool<RedisConnectionManager>> = OnceCell::const_new();
 
-fn init_redis() -> Result<Client, RedisError> {
+async fn init_conn_pool() -> Result<(), RedisError> {
     let redis_url = {
         let mut params = vec!["redis://".to_owned()];
 
@@ -66,16 +67,40 @@ fn init_redis() -> Result<Client, RedisError> {
         params.concat()
     };
 
-    tracing::info!("Initializing Redis client");
+    tracing::info!("Initializing connection manager");
+    let manager = RedisConnectionManager::new(redis_url)?;
 
-    Client::open(redis_url)
+    tracing::info!("Creating connection pool");
+    let pool = Pool::builder().build(manager).await?;
+
+    CONN_POOL.get_or_init(|| async { pool }).await;
+    Ok(())
 }
 
-pub async fn redis_conn() -> Result<MultiplexedConnection, RedisError> {
-    match REDIS_CLIENT.get() {
-        Some(client) => Ok(client.get_multiplexed_async_connection().await?),
-        None => init_redis()?.get_multiplexed_async_connection().await,
+#[derive(thiserror::Error, Debug)]
+pub enum RedisConnError {
+    #[error("Failed to initialize Redis connection pool: {0}")]
+    RedisErr(RedisError),
+    #[error("Redis connection pool error: {0}")]
+    Bb8PoolErr(RunError<RedisError>),
+}
+
+pub async fn redis_conn(
+) -> Result<PooledConnection<'static, RedisConnectionManager>, RedisConnError> {
+    if !CONN_POOL.initialized() {
+        let init_res = init_conn_pool().await;
+
+        if let Err(err) = init_res {
+            return Err(RedisConnError::RedisErr(err));
+        }
     }
+
+    CONN_POOL
+        .get()
+        .unwrap()
+        .get()
+        .await
+        .map_err(RedisConnError::Bb8PoolErr)
 }
 
 /// prefix redis key

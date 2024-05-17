@@ -1,4 +1,4 @@
-use crate::database::{redis_conn, redis_key};
+use crate::database::{redis_conn, redis_key, RedisConnError};
 use redis::{AsyncCommands, RedisError};
 use serde::{Deserialize, Serialize};
 
@@ -18,11 +18,13 @@ pub enum Category {
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Redis error: {0}")]
-    RedisError(#[from] RedisError),
+    RedisErr(#[from] RedisError),
+    #[error("Redis connection error: {0}")]
+    RedisConnErr(#[from] RedisConnError),
     #[error("Data serialization error: {0}")]
-    SerializeError(#[from] rmp_serde::encode::Error),
+    SerializeErr(#[from] rmp_serde::encode::Error),
     #[error("Data deserialization error: {0}")]
-    DeserializeError(#[from] rmp_serde::decode::Error),
+    DeserializeErr(#[from] rmp_serde::decode::Error),
 }
 
 #[inline]

@@ -7,7 +7,7 @@ pub mod group_chat;
 pub mod moderation;
 
 use crate::config::CONFIG;
-use crate::database::redis_conn;
+use crate::database::{redis_conn, RedisConnError};
 use redis::{AsyncCommands, RedisError};
 
 #[derive(strum::Display)]
@@ -49,6 +49,8 @@ pub enum Stream {
 pub enum Error {
     #[error("Redis error: {0}")]
     RedisError(#[from] RedisError),
+    #[error("Redis connection error: {0}")]
+    RedisConnErr(#[from] RedisConnError),
     #[error("Json (de)serialization error: {0}")]
     JsonError(#[from] serde_json::Error),
     #[error("Value error: {0}")]
