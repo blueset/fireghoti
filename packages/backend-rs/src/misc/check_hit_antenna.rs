@@ -56,7 +56,7 @@ pub async fn check_hit_antenna(
             return Ok(false);
         }
     } else if antenna.src == AntennaSrcEnum::Instances {
-        let is_from_one_of_specified_servers = !antenna.instances.iter().any(|host| {
+        let is_from_one_of_specified_servers = antenna.instances.iter().any(|host| {
             host.to_ascii_lowercase()
                 == note_author
                     .host
