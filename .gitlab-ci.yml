@@ -184,7 +184,8 @@ build:container:
   before_script:
     - apt-get update && apt-get -y upgrade
     - apt-get install -y --no-install-recommends buildah ca-certificates fuse-overlayfs
-    - buildah login --username "${CI_REGISTRY_USER}" --password "${CI_REGISTRY_PASSWORD}" "${CI_REGISTRY}"
+    - buildah prune --all
+    - echo "${CI_REGISTRY_PASSWORD}" | buildah login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
     - export IMAGE_TAG="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
     - export IMAGE_CACHE="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop/cache"
   script:
