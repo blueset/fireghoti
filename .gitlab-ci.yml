@@ -186,7 +186,7 @@ build:container:
     - apt-get install -y --no-install-recommends ca-certificates fuse-overlayfs
     - echo 'deb https://deb.debian.org/debian trixie main' | tee /etc/apt/sources.list
     - apt-get update && apt-get install -y --no-install-recommends --target-release trixie buildah
-    - buildah prune --all | true
+    - buildah prune --all --force || true
     - echo "${CI_REGISTRY_PASSWORD}" | buildah login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
     - export IMAGE_TAG="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
     - export IMAGE_CACHE="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop/cache"
