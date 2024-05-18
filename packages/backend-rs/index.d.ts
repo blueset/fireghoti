@@ -191,18 +191,6 @@ export interface Config {
   authUrl: string
   driveUrl: string
   userAgent: string
-  clientEntry: Manifest
-}
-export interface Manifest {
-  file: string
-  name: string
-  src: string
-  isEntry: boolean
-  isDynamicEntry: boolean
-  imports: Array<string>
-  dynamicImports: Array<string>
-  css: Array<string>
-  assets: Array<string>
 }
 export function loadConfig(): Config
 export interface Acct {
