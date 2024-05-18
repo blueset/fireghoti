@@ -59,7 +59,7 @@ test:build:
   rules:
     - if: $TEST == 'false'
       when: never
-    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
       changes:
         paths:
           - packages/backend-rs/**/*
@@ -84,7 +84,7 @@ test:build:backend_ts_only:
   rules:
     - if: $TEST == 'false'
       when: never
-    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
       changes:
         paths:
           - packages/backend-rs/**/*
@@ -94,7 +94,7 @@ test:build:backend_ts_only:
           - Cargo.toml
           - Cargo.lock
       when: never 
-    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
       changes:
         paths:
           - packages/backend/**/*
@@ -124,7 +124,7 @@ test:build:client_only:
   rules:
     - if: $TEST == 'false'
       when: never
-    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
       changes:
         paths:
           - packages/backend-rs/**/*
@@ -134,7 +134,7 @@ test:build:client_only:
           - Cargo.toml
           - Cargo.lock
       when: never
-    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
       changes:
         paths:
           - packages/client/**/*
@@ -206,9 +206,7 @@ cargo:test:
   rules:
     - if: $TEST == 'false'
       when: never
-    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'main'
-      when: never
-    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
       changes:
         paths:
           - packages/backend-rs/**/*
@@ -227,9 +225,7 @@ cargo:clippy:
   rules:
     - if: $TEST == 'false'
       when: never
-    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'main'
-      when: never
-    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
       changes:
         paths:
           - packages/backend-rs/**/*
