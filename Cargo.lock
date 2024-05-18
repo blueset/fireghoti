@@ -221,7 +221,7 @@ dependencies = [
  "idna",
  "image",
  "isahc",
- "macro_rs",
+ "macro-rs",
  "napi",
  "napi-build",
  "napi-derive",
@@ -1738,7 +1738,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "macro_rs"
+name = "macro-rs"
 version = "0.0.0"
 dependencies = [
  "convert_case",

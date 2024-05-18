@@ -1,5 +1,5 @@
 [package]
-name = "macro_rs"
+name = "macro-rs"
 version = "0.0.0"
 edition = "2021"
 rust-version = "1.74"

@@ -3,7 +3,7 @@ members = ["packages/backend-rs", "packages/macro-rs"]
 resolver = "2"
 
 [workspace.dependencies]
-macro_rs = { path = "packages/macro-rs" }
+macro-rs = { path = "packages/macro-rs" }
 
 napi = { version = "2.16.6", default-features = false }
 napi-derive = "2.16.4"
