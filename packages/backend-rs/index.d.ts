@@ -199,6 +199,7 @@ export interface Acct {
 }
 export function stringToAcct(acct: string): Acct
 export function acctToString(acct: Acct): string
+export function greet(): void
 export function initializeRustLogger(): void
 export function showServerInfo(): void
 /**

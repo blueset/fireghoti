@@ -3,6 +3,8 @@ use serde::Deserialize;
 use std::env;
 use std::fs;
 
+pub const VERSION: &str = macro_rs::read_version_from_package_json!();
+
 #[derive(Clone, Debug, PartialEq, Deserialize)]
 #[serde(rename_all = "camelCase")]
 #[crate::export(object, use_nullable = false)]
@@ -251,8 +253,6 @@ fn read_config_file() -> ServerConfig {
 
     data
 }
-
-const VERSION: &str = macro_rs::read_version_from_package_json!();
 
 #[crate::export]
 pub fn load_config() -> Config {
