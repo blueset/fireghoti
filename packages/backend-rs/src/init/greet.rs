@@ -11,7 +11,7 @@ const GREETING_MESSAGE: &str = "\
  If you like Firefish, please consider contributing to the repo. https://firefish.dev/firefish/firefish
 ";
 
-#[macro_rs::export]
+#[crate::export]
 pub fn greet() {
     println!("{}", GREETING_MESSAGE);
 
