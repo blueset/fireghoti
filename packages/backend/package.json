@@ -169,7 +169,7 @@
 		"@types/websocket": "1.0.10",
 		"@types/ws": "8.5.10",
 		"cross-env": "7.0.3",
-		"eslint": "9.2.0",
+		"eslint": "9.3.0",
 		"mocha": "10.4.0",
 		"pug": "3.0.2",
 		"strict-event-emitter-types": "2.0.0",
