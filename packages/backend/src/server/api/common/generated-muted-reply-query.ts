@@ -1,5 +1,5 @@
-import { Brackets, SelectQueryBuilder } from "typeorm";
-import { User } from "@/models/entities/user.js";
+import { Brackets, type SelectQueryBuilder } from "typeorm";
+import type { User } from "@/models/entities/user.js";
 import { ReplyMutings } from "@/models/index.js";
 
 export function generateMutedUserRepliesQueryForNotes(

@@ -1,4 +1,4 @@
-import { notificationTypes } from "@/types.js";
+import { notificationTypes } from "../consts.js";
 
 export const packedNotificationSchema = {
 	type: "object",

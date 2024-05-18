@@ -39,7 +39,7 @@ export function languageContains(
 ) {
 	if (!langCode1 || !langCode2) return false;
 
-	return parentLanguage(langCode2) === langCode1;
+	return langCode1 === langCode2 || parentLanguage(langCode2) === langCode1;
 }
 
 export function parentLanguage(langCode: string | null) {

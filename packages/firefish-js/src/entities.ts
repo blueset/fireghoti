@@ -1,4 +1,5 @@
-import type * as consts from "./consts";
+import type * as consts from "./consts.js";
+import type { Packed } from "./misc/schema.js";
 
 export type ID = string;
 export type DateString = string;
@@ -116,6 +117,7 @@ export type MeDetailed = UserDetailed & {
 	preventAiLearning: boolean;
 	receiveAnnouncementEmail: boolean;
 	usePasswordLessLogin: boolean;
+	token: string;
 	[other: string]: any;
 };
 
@@ -481,7 +483,7 @@ export type Announcement = {
 	imageUrl: string | null;
 	isRead?: boolean;
 	isGoodNews: boolean;
-	showPopUp: boolean;
+	showPopup: boolean;
 };
 
 export type Antenna = {
@@ -512,7 +514,7 @@ export type AuthSession = {
 
 export type Ad = TODO;
 
-export type Clip = TODO;
+export type Clip = Packed<"Clip">;
 
 export type NoteFavorite = {
 	id: ID;

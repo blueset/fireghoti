@@ -59,7 +59,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		carefulBot: profile.carefulBot,
 		injectFeaturedNote: profile.injectFeaturedNote,
 		receiveAnnouncementEmail: profile.receiveAnnouncementEmail,
-		mutedWords: profile.mutedWords,
+		mutedWords: profile.mutedWords.map((row) => row.split(" ")),
 		mutedPatterns: profile.mutedPatterns,
 		mutedInstances: profile.mutedInstances,
 		mutingNotificationTypes: profile.mutingNotificationTypes,

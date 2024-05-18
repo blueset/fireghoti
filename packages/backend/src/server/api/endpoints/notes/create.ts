@@ -17,7 +17,7 @@ import { ApiError } from "@/server/api/error.js";
 import define from "@/server/api/define.js";
 import { HOUR } from "backend-rs";
 import { getNote } from "@/server/api/common/getters.js";
-import { langmap } from "@/misc/langmap.js";
+import { langmap } from "firefish-js";
 
 export const meta = {
 	tags: ["notes"],

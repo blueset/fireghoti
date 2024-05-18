@@ -13,7 +13,7 @@ export class Autocomplete {
 	} | null;
 
 	private textarea: HTMLInputElement | HTMLTextAreaElement;
-	private currentType: string;
+	private currentType?: string;
 	private textRef: Ref<string>;
 	private opening: boolean;
 
@@ -69,7 +69,7 @@ export class Autocomplete {
 	 * テキスト入力時
 	 */
 	private onInput() {
-		const caretPos = this.textarea.selectionStart;
+		const caretPos = this.textarea.selectionStart!;
 		const text = this.text.substring(0, caretPos).split("\n").pop()!;
 
 		const mentionIndex = text.lastIndexOf("@");
@@ -147,10 +147,10 @@ export class Autocomplete {
 		this.opening = true;
 		this.currentType = type;
 
-		// #region サジェストを表示すべき位置を計算
+		// #region Calculate the position where suggestions should be displayed
 		const caretPosition = getCaretCoordinates(
 			this.textarea,
-			this.textarea.selectionStart,
+			this.textarea.selectionStart!,
 		);
 
 		const rect = this.textarea.getBoundingClientRect();
@@ -216,7 +216,7 @@ export class Autocomplete {
 	private complete({ type, value }) {
 		this.close();
 
-		const caret = this.textarea.selectionStart;
+		const caret = this.textarea.selectionStart!;
 
 		if (type === "user") {
 			const source = this.text;

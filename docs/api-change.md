@@ -2,7 +2,7 @@
 
 Breaking changes are indicated by the :warning: icon.
 
-## Unreleased
+## v20240516
 
 - :warning: `server-info` (an endpoint to get server hardware information) now requires credentials.
 - :warning: `net` (server's default network interface) has been removed from `admin/server-info`.

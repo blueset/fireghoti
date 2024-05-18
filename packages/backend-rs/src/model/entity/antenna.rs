@@ -21,8 +21,6 @@ pub struct Model {
     pub src: AntennaSrcEnum,
     #[sea_orm(column_name = "userListId")]
     pub user_list_id: Option<String>,
-    #[sea_orm(column_type = "JsonBinary")]
-    pub keywords: Json,
     #[sea_orm(column_name = "withFile")]
     pub with_file: bool,
     pub expression: Option<String>,
@@ -34,10 +32,10 @@ pub struct Model {
     #[sea_orm(column_name = "userGroupJoiningId")]
     pub user_group_joining_id: Option<String>,
     pub users: Vec<String>,
-    #[sea_orm(column_name = "excludeKeywords", column_type = "JsonBinary")]
-    pub exclude_keywords: Json,
-    #[sea_orm(column_type = "JsonBinary")]
-    pub instances: Json,
+    pub instances: Vec<String>,
+    pub keywords: Vec<String>,
+    #[sea_orm(column_name = "excludeKeywords")]
+    pub exclude_keywords: Vec<String>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

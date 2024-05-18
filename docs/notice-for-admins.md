@@ -2,9 +2,11 @@
 
 You can skip intermediate versions when upgrading from an old version, but please read the notices and follow the instructions for each intermediate version before [upgrading](./upgrade.md).
 
-## Unreleased
+## v20240516
 
-Firefish is now compatible with [Node v22](https://nodejs.org/en/blog/announcements/v22-release-announce).
+### For all users
+
+Firefish is now compatible with [Node v22](https://nodejs.org/en/blog/announcements/v22-release-announce). The pre-built OCI container image will still be using the latest LTS version (v20.13.1 as of now).
 
 ## v20240430
 

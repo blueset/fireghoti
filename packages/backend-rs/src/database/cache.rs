@@ -6,6 +6,10 @@ use serde::{Deserialize, Serialize};
 pub enum Category {
     #[strum(serialize = "fetchUrl")]
     FetchUrl,
+    #[strum(serialize = "blocking")]
+    Block,
+    #[strum(serialize = "following")]
+    Follow,
     #[cfg(test)]
     #[strum(serialize = "usedOnlyForTesting")]
     Test,

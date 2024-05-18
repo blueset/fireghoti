@@ -1,4 +1,4 @@
-use crate::init::hardware_stats::{system, SystemMutexError};
+use crate::init::system_info::{system, SysinfoPoisonError};
 use sysinfo::{Disks, MemoryRefreshKind};
 
 // TODO: i64 -> u64 (we can't export u64 to Node.js)
@@ -29,7 +29,7 @@ pub struct Storage {
 }
 
 #[crate::export]
-pub fn cpu_info() -> Result<Cpu, SystemMutexError> {
+pub fn cpu_info() -> Result<Cpu, SysinfoPoisonError> {
     let system_info = system()?;
 
     Ok(Cpu {
@@ -45,7 +45,7 @@ pub fn cpu_info() -> Result<Cpu, SystemMutexError> {
 }
 
 #[crate::export]
-pub fn cpu_usage() -> Result<f32, SystemMutexError> {
+pub fn cpu_usage() -> Result<f32, SysinfoPoisonError> {
     let mut system_info = system()?;
     system_info.refresh_cpu_usage();
 
@@ -56,7 +56,7 @@ pub fn cpu_usage() -> Result<f32, SystemMutexError> {
 }
 
 #[crate::export]
-pub fn memory_usage() -> Result<Memory, SystemMutexError> {
+pub fn memory_usage() -> Result<Memory, SysinfoPoisonError> {
     let mut system_info = system()?;
 
     system_info.refresh_memory_specifics(MemoryRefreshKind::new().with_ram());

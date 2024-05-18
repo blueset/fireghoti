@@ -32,8 +32,6 @@ pub struct Model {
     #[sea_orm(column_name = "twoFactorEnabled")]
     pub two_factor_enabled: bool,
     pub password: Option<String>,
-    #[sea_orm(column_name = "clientData", column_type = "JsonBinary")]
-    pub client_data: Json,
     #[sea_orm(column_name = "autoAcceptFollowed")]
     pub auto_accept_followed: bool,
     #[sea_orm(column_name = "alwaysMarkNsfw")]
@@ -48,14 +46,10 @@ pub struct Model {
     pub use_password_less_login: bool,
     #[sea_orm(column_name = "pinnedPageId", unique)]
     pub pinned_page_id: Option<String>,
-    #[sea_orm(column_type = "JsonBinary")]
-    pub room: Json,
     #[sea_orm(column_name = "injectFeaturedNote")]
     pub inject_featured_note: bool,
     #[sea_orm(column_name = "enableWordMute")]
     pub enable_word_mute: bool,
-    #[sea_orm(column_name = "mutedWords", column_type = "JsonBinary")]
-    pub muted_words: Json,
     #[sea_orm(column_name = "mutingNotificationTypes")]
     pub muting_notification_types: Vec<UserProfileMutingnotificationtypesEnum>,
     #[sea_orm(column_name = "noCrawle")]
@@ -64,8 +58,6 @@ pub struct Model {
     pub receive_announcement_email: bool,
     #[sea_orm(column_name = "emailNotificationTypes", column_type = "JsonBinary")]
     pub email_notification_types: Json,
-    #[sea_orm(column_name = "mutedInstances", column_type = "JsonBinary")]
-    pub muted_instances: Json,
     #[sea_orm(column_name = "publicReactions")]
     pub public_reactions: bool,
     #[sea_orm(column_name = "ffVisibility")]
@@ -78,6 +70,10 @@ pub struct Model {
     pub is_indexable: bool,
     #[sea_orm(column_name = "mutedPatterns")]
     pub muted_patterns: Vec<String>,
+    #[sea_orm(column_name = "mutedInstances")]
+    pub muted_instances: Vec<String>,
+    #[sea_orm(column_name = "mutedWords")]
+    pub muted_words: Vec<String>,
     pub lang: Option<String>,
 }
 

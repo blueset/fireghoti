@@ -38,6 +38,7 @@
 				<span class="avatars">
 					<MkAvatar
 						v-for="user in users"
+						:key="user.id"
 						class="avatar"
 						:user="user"
 					/>

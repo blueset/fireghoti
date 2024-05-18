@@ -33,7 +33,7 @@ import renderNote from "@/remote/activitypub/renderer/note.js";
 import renderUpdate from "@/remote/activitypub/renderer/update.js";
 import { deliverToRelays } from "@/services/relay.js";
 // import { deliverQuestionUpdate } from "@/services/note/polls/update.js";
-import { langmap } from "@/misc/langmap.js";
+import { langmap } from "firefish-js";
 
 export const meta = {
 	tags: ["notes"],

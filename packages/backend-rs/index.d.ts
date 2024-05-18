@@ -211,9 +211,8 @@ export interface Acct {
 }
 export function stringToAcct(acct: string): Acct
 export function acctToString(acct: Acct): string
-export function showServerInfo(): void
 export function initializeRustLogger(): void
-export function addNoteToAntenna(antennaId: string, note: Note): void
+export function showServerInfo(): void
 /**
  * Checks if a server is blocked.
  *
@@ -236,15 +235,7 @@ export function isSilencedServer(host: string): Promise<boolean>
  * `host` - punycoded instance host
  */
 export function isAllowedServer(host: string): Promise<boolean>
-export interface NoteLikeForCheckWordMute {
-  fileIds: Array<string>
-  userId: string | null
-  text: string | null
-  cw: string | null
-  renoteId: string | null
-  replyId: string | null
-}
-export function checkWordMute(note: NoteLikeForCheckWordMute, mutedWordLists: Array<Array<string>>, mutedPatterns: Array<string>): Promise<boolean>
+export function checkWordMute(note: NoteLike, mutedWords: Array<string>, mutedPatterns: Array<string>): Promise<boolean>
 export function getFullApAccount(username: string, host?: string | undefined | null): string
 export function isSelfHost(host?: string | undefined | null): boolean
 export function isSameOrigin(uri: string): boolean
@@ -260,6 +251,15 @@ export interface ImageSize {
   height: number
 }
 export function getImageSizeFromUrl(url: string): Promise<ImageSize>
+/** TODO: handle name collisions better */
+export interface NoteLikeForAllTexts {
+  fileIds: Array<string>
+  userId: string
+  text: string | null
+  cw: string | null
+  renoteId: string | null
+  replyId: string | null
+}
 export interface NoteLikeForGetNoteSummary {
   fileIds: Array<string>
   text: string | null
@@ -267,28 +267,7 @@ export interface NoteLikeForGetNoteSummary {
   hasPoll: boolean
 }
 export function getNoteSummary(note: NoteLikeForGetNoteSummary): string
-export interface Cpu {
-  model: string
-  cores: number
-}
-export interface Memory {
-  /** Total memory amount in bytes */
-  total: number
-  /** Used memory amount in bytes */
-  used: number
-  /** Available (for (re)use) memory amount in bytes */
-  available: number
-}
-export interface Storage {
-  /** Total storage space in bytes */
-  total: number
-  /** Used storage space in bytes */
-  used: number
-}
-export function cpuInfo(): Cpu
-export function cpuUsage(): number
-export function memoryUsage(): Memory
-export function storageUsage(): Storage | null
+export function isQuote(note: Note): boolean
 export function isSafeUrl(url: string): boolean
 export function latestVersion(): Promise<string>
 export function toMastodonId(firefishId: string): string | null
@@ -320,6 +299,28 @@ export function countReactions(reactions: Record<string, number>): Record<string
 export function toDbReaction(reaction?: string | undefined | null, host?: string | undefined | null): Promise<string>
 /** Delete all entries in the "attestation_challenge" table created at more than 5 minutes ago */
 export function removeOldAttestationChallenges(): Promise<void>
+export interface Cpu {
+  model: string
+  cores: number
+}
+export interface Memory {
+  /** Total memory amount in bytes */
+  total: number
+  /** Used memory amount in bytes */
+  used: number
+  /** Available (for (re)use) memory amount in bytes */
+  available: number
+}
+export interface Storage {
+  /** Total storage space in bytes */
+  total: number
+  /** Used storage space in bytes */
+  used: number
+}
+export function cpuInfo(): Cpu
+export function cpuUsage(): number
+export function memoryUsage(): Memory
+export function storageUsage(): Storage | null
 export interface AbuseUserReport {
   id: string
   createdAt: Date
@@ -381,7 +382,6 @@ export interface Antenna {
   name: string
   src: AntennaSrcEnum
   userListId: string | null
-  keywords: Json
   withFile: boolean
   expression: string | null
   notify: boolean
@@ -389,8 +389,9 @@ export interface Antenna {
   withReplies: boolean
   userGroupJoiningId: string | null
   users: Array<string>
-  excludeKeywords: Json
-  instances: Json
+  instances: Array<string>
+  keywords: Array<string>
+  excludeKeywords: Array<string>
 }
 export interface App {
   id: string
@@ -1128,7 +1129,6 @@ export interface UserProfile {
   twoFactorSecret: string | null
   twoFactorEnabled: boolean
   password: string | null
-  clientData: Json
   autoAcceptFollowed: boolean
   alwaysMarkNsfw: boolean
   carefulBot: boolean
@@ -1136,21 +1136,20 @@ export interface UserProfile {
   securityKeysAvailable: boolean
   usePasswordLessLogin: boolean
   pinnedPageId: string | null
-  room: Json
   injectFeaturedNote: boolean
   enableWordMute: boolean
-  mutedWords: Json
   mutingNotificationTypes: Array<UserProfileMutingnotificationtypesEnum>
   noCrawle: boolean
   receiveAnnouncementEmail: boolean
   emailNotificationTypes: Json
-  mutedInstances: Json
   publicReactions: boolean
   ffVisibility: UserProfileFfvisibilityEnum
   moderationNote: string
   preventAiLearning: boolean
   isIndexable: boolean
   mutedPatterns: Array<string>
+  mutedInstances: Array<string>
+  mutedWords: Array<string>
   lang: string | null
 }
 export interface UserPublickey {
@@ -1177,6 +1176,7 @@ export interface Webhook {
   latestSentAt: Date | null
   latestStatus: number | null
 }
+export function updateAntennasOnNewNote(note: Note, noteAuthor: Acct, noteMutedUsers: Array<string>): Promise<void>
 export function fetchNodeinfo(host: string): Promise<Nodeinfo>
 export function nodeinfo_2_1(): Promise<any>
 export function nodeinfo_2_0(): Promise<any>
@@ -1279,6 +1279,15 @@ export interface Users {
 }
 export function watchNote(watcherId: string, noteAuthorId: string, noteId: string): Promise<void>
 export function unwatchNote(watcherId: string, noteId: string): Promise<void>
+export enum PushNotificationKind {
+  Generic = 'generic',
+  Chat = 'chat',
+  ReadAllChats = 'readAllChats',
+  ReadAllChatsInTheRoom = 'readAllChatsInTheRoom',
+  ReadNotifications = 'readNotifications',
+  ReadAllNotifications = 'readAllNotifications'
+}
+export function sendPushNotification(receiverUserId: string, kind: PushNotificationKind, content: any): Promise<void>
 export function publishToChannelStream(channelId: string, userId: string): void
 export enum ChatEvent {
   Message = 'message',

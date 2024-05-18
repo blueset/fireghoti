@@ -1,6 +1,9 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'UserprofileJsonbToArray1714270605574',
+    'DropUnusedUserprofileColumns1714259023878',
+    'AntennaJsonbToArray1714192520471',
     'AddUserProfileLanguage1714888400293',
     'DropUnusedIndexes1714643926317',
     'AlterAkaType1714099399879',
@@ -27,6 +30,45 @@ DELETE FROM "migrations" WHERE name IN (
     'RemoveNativeUtilsMigration1705877093218',
     'SwSubscriptionAccessToken1709395223611'
 );
+
+-- userprofile-jsonb-to-array
+ALTER TABLE "user_profile" RENAME COLUMN "mutedInstances" TO "mutedInstances_old";
+ALTER TABLE "user_profile" ADD COLUMN "mutedInstances" jsonb NOT NULL DEFAULT '[]';
+UPDATE "user_profile" SET "mutedInstances" = to_jsonb("mutedInstances_old");
+ALTER TABLE "user_profile" DROP COLUMN "mutedInstances_old";
+ALTER TABLE "user_profile" RENAME COLUMN "mutedWords" TO "mutedWords_old";
+ALTER TABLE "user_profile" ADD COLUMN "mutedWords" jsonb NOT NULL DEFAULT '[]';
+CREATE TEMP TABLE "BCrsGgLCUeMMLARy" ("userId" character varying(32), "kws" jsonb NOT NULL DEFAULT '[]');
+INSERT INTO "BCrsGgLCUeMMLARy" ("userId", "kws") SELECT "userId", jsonb_agg("X"."w") FROM (SELECT "userId", to_jsonb(string_to_array(unnest("mutedWords_old"), ' ')) AS "w" FROM "user_profile") AS "X" GROUP BY "userId";
+UPDATE "user_profile" SET "mutedWords" = "kws" FROM "BCrsGgLCUeMMLARy" WHERE "user_profile"."userId" = "BCrsGgLCUeMMLARy"."userId";
+ALTER TABLE "user_profile" DROP COLUMN "mutedWords_old";
+
+-- drop-unused-userprofile-columns
+ALTER TABLE "user_profile" ADD "room" jsonb NOT NULL DEFAULT '{}';
+COMMENT ON COLUMN "user_profile"."room" IS 'The room data of the User.';
+ALTER TABLE "user_profile" ADD "clientData" jsonb NOT NULL DEFAULT '{}';
+COMMENT ON COLUMN "user_profile"."clientData" IS 'The client-specific data of the User.';
+
+-- antenna-jsonb-to-array
+UPDATE "antenna" SET "instances" = '{""}' WHERE "instances" = '{}';
+ALTER TABLE "antenna" RENAME COLUMN "instances" TO "instances_old";
+ALTER TABLE "antenna" ADD COLUMN "instances" jsonb NOT NULL DEFAULT '[]';
+UPDATE "antenna" SET "instances" = to_jsonb("instances_old");
+ALTER TABLE "antenna" DROP COLUMN "instances_old";
+UPDATE "antenna" SET "keywords" = '{""}' WHERE "keywords" = '{}';
+ALTER TABLE "antenna" RENAME COLUMN "keywords" TO "keywords_old";
+ALTER TABLE "antenna" ADD COLUMN "keywords" jsonb NOT NULL DEFAULT '[]';
+CREATE TEMP TABLE "QvPNcMitBFkqqBgm" ("id" character varying(32), "kws" jsonb NOT NULL DEFAULT '[]');
+INSERT INTO "QvPNcMitBFkqqBgm" ("id", "kws") SELECT "id", jsonb_agg("X"."w") FROM (SELECT "id", to_jsonb(string_to_array(unnest("keywords_old"), ' ')) AS "w" FROM "antenna") AS "X" GROUP BY "id";
+UPDATE "antenna" SET "keywords" = "kws" FROM "QvPNcMitBFkqqBgm" WHERE "antenna"."id" = "QvPNcMitBFkqqBgm"."id";
+ALTER TABLE "antenna" DROP COLUMN "keywords_old";
+UPDATE "antenna" SET "excludeKeywords" = '{""}' WHERE "excludeKeywords" = '{}';
+ALTER TABLE "antenna" RENAME COLUMN "excludeKeywords" TO "excludeKeywords_old";
+ALTER TABLE "antenna" ADD COLUMN "excludeKeywords" jsonb NOT NULL DEFAULT '[]';
+CREATE TEMP TABLE "MZvVSjHzYcGXmGmz" ("id" character varying(32), "kws" jsonb NOT NULL DEFAULT '[]');
+INSERT INTO "MZvVSjHzYcGXmGmz" ("id", "kws") SELECT "id", jsonb_agg("X"."w") FROM (SELECT "id", to_jsonb(string_to_array(unnest("excludeKeywords_old"), ' ')) AS "w" FROM "antenna") AS "X" GROUP BY "id";
+UPDATE "antenna" SET "excludeKeywords" = "kws" FROM "MZvVSjHzYcGXmGmz" WHERE "antenna"."id" = "MZvVSjHzYcGXmGmz"."id";
+ALTER TABLE "antenna" DROP COLUMN "excludeKeywords_old";
 
 -- drop-unused-indexes
 CREATE INDEX "IDX_01f4581f114e0ebd2bbb876f0b" ON "note_reaction" ("createdAt");

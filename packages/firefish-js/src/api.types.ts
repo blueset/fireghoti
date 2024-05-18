@@ -38,7 +38,7 @@ import type {
 	UserList,
 	UserLite,
 	UserSorting,
-} from "./entities";
+} from "./entities.js";
 
 import type * as consts from "./consts";
 
@@ -263,9 +263,9 @@ export type Endpoints = {
 
 	// clips
 	"clips/add-note": { req: TODO; res: TODO };
-	"clips/create": { req: TODO; res: TODO };
+	"clips/create": { req: TODO; res: Clip };
 	"clips/delete": { req: { clipId: Clip["id"] }; res: null };
-	"clips/list": { req: TODO; res: TODO };
+	"clips/list": { req: TODO; res: Clip[] };
 	"clips/notes": { req: TODO; res: TODO };
 	"clips/show": { req: TODO; res: TODO };
 	"clips/update": { req: TODO; res: TODO };
@@ -360,6 +360,16 @@ export type Endpoints = {
 			untilId?: DriveFile["id"];
 		};
 		res: DriveFile[];
+	};
+
+	"email-address/available": {
+		req: {
+			emailAddress: string;
+		};
+		res: {
+			available?: boolean;
+			reason: string | null;
+		};
 	};
 
 	// endpoint
@@ -738,6 +748,18 @@ export type Endpoints = {
 		};
 		res: Note[];
 	};
+	"notes/thread-muting/create": {
+		req: {
+			noteId: Note["id"];
+		};
+		res: null;
+	};
+	"notes/thread-muting/delete": {
+		req: {
+			noteId: Note["id"];
+		};
+		res: null;
+	};
 	"notes/hybrid-timeline": {
 		req: {
 			limit?: number;
@@ -757,6 +779,12 @@ export type Endpoints = {
 			untilDate?: number;
 		};
 		res: Note[];
+	};
+	"notes/make-private": {
+		req: {
+			noteId: Note["id"];
+		};
+		res: null;
 	};
 	"notes/mentions": {
 		req: {
@@ -899,6 +927,16 @@ export type Endpoints = {
 	// promo
 	"promo/read": { req: TODO; res: TODO };
 
+	// release
+	release: {
+		req: null;
+		res: {
+			version: string;
+			notes: string;
+			screenshots: string[];
+		};
+	};
+
 	// request-reset-password
 	"request-reset-password": {
 		req: { username: string; email: string };
@@ -921,8 +959,36 @@ export type Endpoints = {
 	// ck specific
 	"latest-version": { req: NoParams; res: TODO };
 
+	// signin
+	signin: {
+		req: {
+			username: string;
+			password: string;
+			"hcaptcha-response"?: null | string;
+			"g-recaptcha-response"?: null | string;
+		};
+		res:
+			| {
+					id: User["id"];
+					i: string;
+			  }
+			| {
+					challenge: string;
+					challengeId: string;
+					securityKeys: {
+						id: string;
+					}[];
+			  };
+	};
+
 	// sw
 	"sw/register": { req: TODO; res: TODO };
+	"sw/unregister": {
+		req: {
+			endpoint: string;
+		};
+		res: null;
+	};
 
 	// username
 	"username/available": {

@@ -144,20 +144,6 @@ export class UserProfile {
 	})
 	public moderationNote: string | null;
 
-	// TODO: そのうち消す
-	@Column("jsonb", {
-		default: {},
-		comment: "The client-specific data of the User.",
-	})
-	public clientData: Record<string, any>;
-
-	// TODO: そのうち消す
-	@Column("jsonb", {
-		default: {},
-		comment: "The room data of the User.",
-	})
-	public room: Record<string, any>;
-
 	@Column("boolean", {
 		default: false,
 	})
@@ -206,12 +192,6 @@ export class UserProfile {
 	})
 	public pinnedPageId: Page["id"] | null;
 
-	@OneToOne((type) => Page, {
-		onDelete: "SET NULL",
-	})
-	@JoinColumn()
-	public pinnedPage: Page | null;
-
 	@Index()
 	@Column("boolean", {
 		default: false,
@@ -219,19 +199,28 @@ export class UserProfile {
 	})
 	public enableWordMute: boolean;
 
-	@Column("jsonb", {
-		default: [],
+	// whitespace: AND condition
+	// array items: OR condition
+	// e.g., ["alpha beta", "gamma"]
+	//   does match     "alpha beta", "beta alpha alpha", "gamma alpha", "gamma epsilon"
+	//   does not match "alpha", "beta gamma", "alpha alpha", "eplison"
+	@Column("text", {
+		array: true,
+		default: "{}",
 	})
-	public mutedWords: string[][];
+	public mutedWords: string[];
 
+	// array of regular expressions
 	@Column("text", {
 		array: true,
 		nullable: false,
 	})
 	public mutedPatterns: string[];
 
-	@Column("jsonb", {
-		default: [],
+	@Column("varchar", {
+		length: 512,
+		array: true,
+		default: "{}",
 		comment: "List of instances muted by the user.",
 	})
 	public mutedInstances: string[];
@@ -259,6 +248,13 @@ export class UserProfile {
 	})
 	@JoinColumn()
 	public user: Relation<User>;
+
+	@OneToOne(() => Page, {
+		onDelete: "SET NULL",
+		nullable: true,
+	})
+	@JoinColumn()
+	public pinnedPage: Relation<Page | null>;
 	//#endregion
 
 	constructor(data: Partial<UserProfile>) {

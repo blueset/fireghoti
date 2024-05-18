@@ -42,19 +42,18 @@ import type { IPoll } from "@/models/entities/poll.js";
 import { Poll } from "@/models/entities/poll.js";
 import { createNotification } from "@/services/create-notification.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
-import { checkHitAntenna } from "@/misc/check-hit-antenna.js";
 import {
-	addNoteToAntenna,
+	updateAntennasOnNewNote,
 	checkWordMute,
 	genId,
 	genIdAt,
+	isQuote,
 	isSilencedServer,
 } from "backend-rs";
 import { countSameRenotes } from "@/misc/count-same-renotes.js";
 import { deliverToRelays, getCachedRelays } from "../relay.js";
 import type { Channel } from "@/models/entities/channel.js";
 import { normalizeForSearch } from "@/misc/normalize-for-search.js";
-import { getAntennas } from "@/misc/antenna-cache.js";
 import { endedPollNotificationQueue } from "@/queue/queues.js";
 import { webhookDeliver } from "@/queue/index.js";
 import { Cache } from "@/misc/cache.js";
@@ -63,7 +62,7 @@ import { db } from "@/db/postgre.js";
 import { getActiveWebhooks } from "@/misc/webhook-cache.js";
 import { redisClient } from "@/db/redis.js";
 import { Mutex } from "redis-semaphore";
-import { langmap } from "@/misc/langmap.js";
+import { langmap } from "firefish-js";
 import Logger from "@/services/logger.js";
 import { inspect } from "node:util";
 import { toRustObject } from "@/prelude/undefined-to-null.js";
@@ -371,8 +370,10 @@ export default async (
 		// Increment notes count (user)
 		incNotesCountOfUser(user);
 
-		// Word mute
-		hardMutesCache
+		// Word mutes & antenna
+		const thisNoteIsMutedBy: string[] = [];
+
+		await hardMutesCache
 			.fetch(null, () =>
 				UserProfiles.find({
 					where: {
@@ -381,12 +382,13 @@ export default async (
 					select: ["userId", "mutedWords", "mutedPatterns"],
 				}),
 			)
-			.then((us) => {
+			.then(async (us) => {
 				for (const u of us) {
 					if (u.userId === user.id) return;
-					checkWordMute(note, u.mutedWords, u.mutedPatterns).then(
+					await checkWordMute(note, u.mutedWords, u.mutedPatterns).then(
 						(shouldMute: boolean) => {
 							if (shouldMute) {
+								thisNoteIsMutedBy.push(u.userId);
 								MutedNotes.insert({
 									id: genId(),
 									userId: u.userId,
@@ -399,14 +401,10 @@ export default async (
 				}
 			});
 
-		// Antenna
-		for (const antenna of await getAntennas()) {
-			checkHitAntenna(antenna, note, user).then((hit) => {
-				if (hit) {
-					// TODO: do this more sanely
-					addNoteToAntenna(antenna.id, toRustObject(note));
-				}
-			});
+		// type errors will be resolved by https://github.com/napi-rs/napi-rs/pull/2054
+		const _note = toRustObject(note);
+		if (note.renoteId == null || isQuote(_note)) {
+			await updateAntennasOnNewNote(_note, user, thisNoteIsMutedBy);
 		}
 
 		// Channel

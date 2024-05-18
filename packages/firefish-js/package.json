@@ -4,6 +4,7 @@
 	"description": "Firefish SDK for JavaScript",
 	"homepage": "https://firefish.dev/firefish/firefish/-/tree/develop/packages/firefish-js",
 	"main": "./built/index.js",
+	"type": "module",
 	"types": "./src/index.ts",
 	"license": "MIT",
 	"scripts": {
@@ -35,7 +36,7 @@
 		"typescript": "5.4.5"
 	},
 	"files": [
-		"built"
+		"built", "src"
 	],
 	"dependencies": {
 		"eventemitter3": "5.0.1",
