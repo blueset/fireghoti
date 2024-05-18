@@ -1,4 +1,4 @@
-import { langmap } from "@/misc/langmap.js";
+import { langmap } from "../misc/langmap.js";
 
 export const packedNoteSchema = {
 	type: "object",

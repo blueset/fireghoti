@@ -42,7 +42,6 @@ import {
 } from "@/server/api/mastodon/index.js";
 import { fetchMeta } from "backend-rs";
 import { translate } from "@/misc/translate.js";
-import type { PostLanguage } from "@/misc/langmap.js";
 
 export class NoteHelpers {
 	public static postIdempotencyCache = new Cache<{
@@ -650,16 +649,16 @@ export class NoteHelpers {
 		if (provider === undefined)
 			throw new Error("No translator is set up on this server.");
 
-		let sourceLang = (status.language as PostLanguage) ?? "";
+		let sourceLang = (status.language) ?? "";
 		let translatedText = "";
 		if (status.content) {
 			const translated = await translate(
 				status.content,
 				sourceLang,
-				targetLang as PostLanguage,
+				targetLang,
 			);
 			translatedText = translated.text;
-			sourceLang = (translated.sourceLang as PostLanguage) ?? sourceLang;
+			sourceLang = (translated.sourceLang) ?? sourceLang;
 		}
 
 		const translateText = (text: string) =>

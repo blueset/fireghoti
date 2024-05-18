@@ -1,5 +1,5 @@
 import type OAuth from "@/server/api/mastodon/entities/oauth/oauth.js";
-import { secureRndstr } from "backend-rs";
+import { generateSecureRandomString } from "backend-rs";
 import { Apps, AccessTokens } from "@/models/index.js";
 import { genId } from "backend-rs";
 import { fetchMeta } from "backend-rs";
@@ -48,7 +48,7 @@ export class AuthHelpers {
 
 			app = await Apps.insert({
 				id,
-				secret: secureRndstr(32),
+				secret: generateSecureRandomString(32),
 				createdAt: new Date(),
 				name: client_name,
 				description: website,
@@ -102,7 +102,7 @@ export class AuthHelpers {
 			);
 		if (!app.callbackUrl?.startsWith(body.redirect_uri))
 			throw new MastoApiError(400, "Redirect URI not in list");
-		const secret = secureRndstr(32);
+		const secret = generateSecureRandomString(32);
 		const token = await AccessTokens.insert({
 			id: genId(),
 			token: secret,
@@ -188,7 +188,7 @@ export class AuthHelpers {
 			if (!app || body.client_secret !== app.secret) throw invalidClientError;
 			if (difference(scopes, app.permission).length > 0) throw invalidScopeError;
 	
-			const secret = secureRndstr(32);
+			const secret = generateSecureRandomString(32);
 			const token = await AccessTokens.insert({
 				id: genId(),
 				token: secret,
