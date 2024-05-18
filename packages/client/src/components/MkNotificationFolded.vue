@@ -12,6 +12,10 @@
 						v-if="notification.type === 'renote'"
 						:class="icon('ph-rocket-launch', false)"
 					></i>
+					<i
+						v-if="notification.type === 'pollVote'"
+						:class="icon('ph-microphone-stage', false)"
+					></i>
 					<XReactionIcon
 						v-else-if="
 							showEmojiReactions && notification.type === 'reaction'
@@ -141,6 +145,8 @@ function getText() {
 		case "reaction":
 			res = i18n.ts._notification.reacted;
 			break;
+		case "pollVote":
+			res = i18n.ts._notification.voted;
 	}
 	if (userleft.value > 0) {
 		res = i18n.t("_notification.andCountUsers", {
