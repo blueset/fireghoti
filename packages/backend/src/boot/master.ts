@@ -1,15 +1,11 @@
-import * as fs from "node:fs";
-import { fileURLToPath } from "node:url";
-import { dirname } from "node:path";
 import * as os from "node:os";
 import cluster from "node:cluster";
-import chalk from "chalk";
-import chalkTemplate from "chalk-template";
 import semver from "semver";
 
 import Logger from "@/services/logger.js";
 import {
 	fetchMeta,
+	greet,
 	initializeRustLogger,
 	removeOldAttestationChallenges,
 	showServerInfo,
@@ -19,73 +15,8 @@ import { config, envOption } from "@/config.js";
 import { db, initDb } from "@/db/postgre.js";
 import { inspect } from "node:util";
 
-const _filename = fileURLToPath(import.meta.url);
-const _dirname = dirname(_filename);
-
-const meta = JSON.parse(
-	fs.readFileSync(`${_dirname}/../../../../built/meta.json`, "utf-8"),
-);
-
 const logger = new Logger("core", "cyan");
 const bootLogger = logger.createSubLogger("boot", "magenta", false);
-
-const themeColor = chalk.hex("#31748f");
-
-function greet() {
-	//#region Firefish logo
-	console.log(
-		themeColor(
-			"██████╗ ██╗██████╗ ███████╗███████╗██╗███████╗██╗  ██╗    ○     ▄    ▄    ",
-		),
-	);
-	console.log(
-		themeColor(
-			"██╔════╝██║██╔══██╗██╔════╝██╔════╝██║██╔════╝██║  ██║      ⚬   █▄▄  █▄▄ ",
-		),
-	);
-	console.log(
-		themeColor(
-			"█████╗  ██║██████╔╝█████╗  █████╗  ██║███████╗███████║      ▄▄▄▄▄▄   ▄    ",
-		),
-	);
-	console.log(
-		themeColor(
-			"██╔══╝  ██║██╔══██╗██╔══╝  ██╔══╝  ██║╚════██║██╔══██║     █      █  █▄▄  ",
-		),
-	);
-	console.log(
-		themeColor(
-			"██║     ██║██║  ██║███████╗██║     ██║███████║██║  ██║     █ ● ●  █       ",
-		),
-	);
-	console.log(
-		themeColor(
-			"╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═╝     ▀▄▄▄▄▄▄▀       ",
-		),
-	);
-	//#endregion
-
-	console.log(
-		" Firefish is an open-source decentralized microblogging platform.",
-	);
-	console.log(
-		chalk.rgb(
-			255,
-			136,
-			0,
-		)(
-			" If you like Firefish, please consider contributing to the repo. https://firefish.dev/firefish/firefish",
-		),
-	);
-
-	console.log("");
-	console.log(
-		chalkTemplate`--- ${os.hostname()} {gray (PID: ${process.pid.toString()})} ---`,
-	);
-
-	bootLogger.info("Welcome to Firefish!");
-	bootLogger.info(`Firefish v${meta.version}`, null, true);
-}
 
 /**
  * Init master process

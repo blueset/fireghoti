@@ -26,7 +26,7 @@ export class Webhook {
 	@PrimaryColumn(id())
 	public id: string;
 
-	@Column("timestamp without time zone", {
+	@Column("timestamp with time zone", {
 		comment: "The created date of the Antenna.",
 	})
 	public createdAt: Date;
@@ -71,7 +71,7 @@ export class Webhook {
 	/**
 	 * 直近のリクエスト送信日時
 	 */
-	@Column("timestamp without time zone", {
+	@Column("timestamp with time zone", {
 		nullable: true,
 	})
 	public latestSentAt: Date | null;

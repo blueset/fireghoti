@@ -56,46 +56,54 @@ export async function createMessage(
 
 	if (recipientUser) {
 		if (Users.isLocalUser(user)) {
-			// 自分のストリーム
-			publishToChatStream(
-				message.userId,
-				recipientUser.id,
-				ChatEvent.Message,
-				messageObj,
-			);
-			publishToChatIndexStream(
-				message.userId,
-				ChatIndexEvent.Message,
-				messageObj,
-			);
+			// my stream
+			await Promise.all([
+				publishToChatStream(
+					message.userId,
+					recipientUser.id,
+					ChatEvent.Message,
+					messageObj,
+				),
+				publishToChatIndexStream(
+					message.userId,
+					ChatIndexEvent.Message,
+					messageObj,
+				),
+			]);
 			publishMainStream(message.userId, "messagingMessage", messageObj);
 		}
 
 		if (Users.isLocalUser(recipientUser)) {
-			// 相手のストリーム
-			publishToChatStream(
-				recipientUser.id,
-				message.userId,
-				ChatEvent.Message,
-				messageObj,
-			);
-			publishToChatIndexStream(
-				recipientUser.id,
-				ChatIndexEvent.Message,
-				messageObj,
-			);
+			// recipient's stream
+			await Promise.all([
+				publishToChatStream(
+					recipientUser.id,
+					message.userId,
+					ChatEvent.Message,
+					messageObj,
+				),
+				publishToChatIndexStream(
+					recipientUser.id,
+					ChatIndexEvent.Message,
+					messageObj,
+				),
+			]);
 			publishMainStream(recipientUser.id, "messagingMessage", messageObj);
 		}
 	} else if (recipientGroup != null) {
 		// group's stream
-		publishToGroupChatStream(recipientGroup.id, ChatEvent.Message, messageObj);
+		await publishToGroupChatStream(
+			recipientGroup.id,
+			ChatEvent.Message,
+			messageObj,
+		);
 
 		// member's stream
 		const joinings = await UserGroupJoinings.findBy({
 			userGroupId: recipientGroup.id,
 		});
-		for (const joining of joinings) {
-			publishToChatIndexStream(
+		for await (const joining of joinings) {
+			await publishToChatIndexStream(
 				joining.userId,
 				ChatIndexEvent.Message,
 				messageObj,
@@ -121,7 +129,7 @@ export async function createMessage(
 
 			publishMainStream(recipientUser.id, "unreadMessagingMessage", messageObj);
 			pushNotification(recipientUser.id, "unreadMessagingMessage", messageObj);
-			// sendPushNotification(
+			// await sendPushNotification(
 			// 	recipientUser.id,
 			// 	PushNotificationKind.Chat,
 			// 	messageObj,
@@ -131,11 +139,11 @@ export async function createMessage(
 				userGroupId: recipientGroup.id,
 				userId: Not(user.id),
 			});
-			for (const joining of joinings) {
+			for await (const joining of joinings) {
 				if (freshMessage.reads.includes(joining.userId)) return; // 既読
 				publishMainStream(joining.userId, "unreadMessagingMessage", messageObj);
 				pushNotification(joining.userId, "unreadMessagingMessage", messageObj);
-				// sendPushNotification(
+				// await sendPushNotification(
 				// 	joining.userId,
 				// 	PushNotificationKind.Chat,
 				// 	messageObj,

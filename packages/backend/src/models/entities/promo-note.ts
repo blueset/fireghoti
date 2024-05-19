@@ -16,7 +16,7 @@ export class PromoNote {
 	@PrimaryColumn(id())
 	public noteId: Note["id"];
 
-	@Column("timestamp without time zone")
+	@Column("timestamp with time zone")
 	public expiresAt: Date;
 
 	//#region Denormalized fields

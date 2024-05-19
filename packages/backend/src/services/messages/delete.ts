@@ -18,18 +18,20 @@ export async function deleteMessage(message: MessagingMessage) {
 
 async function postDeleteMessage(message: MessagingMessage) {
 	if (message.recipientId) {
-		const user = await Users.findOneByOrFail({ id: message.userId });
-		const recipient = await Users.findOneByOrFail({ id: message.recipientId });
+		const [user, recipient] = await Promise.all([
+			Users.findOneByOrFail({ id: message.userId }),
+			Users.findOneByOrFail({ id: message.recipientId }),
+		]);
 
 		if (Users.isLocalUser(user))
-			publishToChatStream(
+			await publishToChatStream(
 				message.userId,
 				message.recipientId,
 				ChatEvent.Deleted,
 				message.id,
 			);
 		if (Users.isLocalUser(recipient))
-			publishToChatStream(
+			await publishToChatStream(
 				message.recipientId,
 				message.userId,
 				ChatEvent.Deleted,
@@ -46,6 +48,10 @@ async function postDeleteMessage(message: MessagingMessage) {
 			deliver(user, activity, recipient.inbox);
 		}
 	} else if (message.groupId != null) {
-		publishToGroupChatStream(message.groupId, ChatEvent.Deleted, message.id);
+		await publishToGroupChatStream(
+			message.groupId,
+			ChatEvent.Deleted,
+			message.id,
+		);
 	}
 }

@@ -17,7 +17,7 @@ pub struct Model {
     #[sea_orm(column_name = "announcementId")]
     pub announcement_id: String,
     #[sea_orm(column_name = "createdAt")]
-    pub created_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

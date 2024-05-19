@@ -13,7 +13,7 @@ pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,
     #[sea_orm(column_name = "createdAt")]
-    pub created_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
     pub token: String,
     pub hash: String,
     #[sea_orm(column_name = "userId")]
@@ -21,7 +21,7 @@ pub struct Model {
     #[sea_orm(column_name = "appId")]
     pub app_id: Option<String>,
     #[sea_orm(column_name = "lastUsedAt")]
-    pub last_used_at: Option<DateTime>,
+    pub last_used_at: Option<DateTimeWithTimeZone>,
     pub session: Option<String>,
     pub name: Option<String>,
     pub description: Option<String>,

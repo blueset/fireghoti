@@ -2,6 +2,28 @@
 
 You can skip intermediate versions when upgrading from an old version, but please read the notices and follow the instructions for each intermediate version before [upgrading](./upgrade.md).
 
+## Unreleased
+
+### For all users
+
+We regret to inform you that the upgrade may take a long time to fix a regression we have introduced. The time required to upgrade should be the same as [v20240413](<https://firefish.dev/firefish/firefish/-/blob/main/docs/notice-for-admins.md#v20240413>). This is not a security fix, so please upgrade your server when you have enough time. We are sorry for the inconvenience.
+
+<details>
+
+There are two data types in PostgreSQL to store time: `timestamptz` (`timestamp with time zone`) and `timestamp` (`timestamp without time zone`) [[ref]](<https://www.postgresql.org/docs/current/datatype-datetime.html>).
+
+In Node.js, we manipulate the database using [TypeORM](<https://typeorm.io/>). TypeORM handles time data as a JavaScript `Date` object. Since `Date` doesn't have timezone information [[ref]](<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_components_and_time_zones>), we don't use the timezone information in the Node.js backend, and both `timestamptz` and `timestamp` behave in the same way. (Technically, the type names are a little confusing, and `timestamptz` (`timestamp with time zone`) doesn't store the timezone data. Please read PostgreSQL documentation for more information.)
+
+In Rust, we manipulate the database using [SeaORM](<https://www.sea-ql.org/SeaORM/>), which does distinguish between `timestamptz` and `timestamp`. `timestamptz` is converted to [`DateTime<FixedOffset>`](<https://docs.rs/chrono/latest/chrono/struct.DateTime.html>) type, whereas `timestamp` is converted to [`NaiveDateTime`](<https://docs.rs/chrono/latest/chrono/struct.NaiveDateTime.html>).
+
+We are using [napi-rs](<https://napi.rs/>) to implement some of the backend features in Rust, which did not support `DateTime<FixedOffset>`. We used to store time data as `timestamptz`, but we converted them to `timestamp` for this reason. As we don't use timezone data, we thought this was okay, and indeed it worked fine.
+
+However, we did not consider the case of migrating a server (hardware) to another timezone. With `timestamp`, there may be inconsistencies in the time data if you migrate your server to another system with a different timezone setting (Docker/Podman users should not be affected by this, as UTC is always used in containers unless you explicitly set one).
+
+Therefore, we have contributed to napi-rs to add support for `DateTime<FixedOffset>` (<https://github.com/napi-rs/napi-rs/pull/2074>) and decided to migrate back from `timestamp` to `timestamptz` to properly address this problem. The migration process takes time roughly proportional to the number of stored posts.
+
+</details>
+
 ## v20240516
 
 ### For all users

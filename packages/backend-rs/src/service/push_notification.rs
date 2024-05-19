@@ -47,6 +47,7 @@ pub enum PushNotificationKind {
     ReadNotifications,
     #[strum(serialize = "readAllNotifications")]
     ReadAllNotifications,
+    Mastodon,
 }
 
 fn compact_content(
@@ -158,14 +159,28 @@ pub async fn send_push_notification(
         .all(db)
         .await?;
 
-    let payload = format!(
-        "{{\"type\":\"{}\",\"userId\":\"{}\",\"dateTime\":{},\"body\":{}}}",
-        kind,
-        receiver_user_id,
-        chrono::Utc::now().timestamp_millis(),
-        serde_json::to_string(&compact_content(&kind, content.clone())?)?
-    );
+    // TODO: refactoring
+    let payload = if kind == PushNotificationKind::Mastodon {
+        // Leave the `content` as it is
+        serde_json::to_string(content)?
+    } else {
+        // Format the `content` passed from the TypeScript backend
+        // for Firefish push notifications
+        format!(
+            "{{\"type\":\"{}\",\"userId\":\"{}\",\"dateTime\":{},\"body\":{}}}",
+            kind,
+            receiver_user_id,
+            chrono::Utc::now().timestamp_millis(),
+            serde_json::to_string(&compact_content(&kind, content.clone())?)?
+        )
+    };
     tracing::trace!("payload: {:#?}", payload);
+
+    let encoding = if kind == PushNotificationKind::Mastodon {
+        ContentEncoding::AesGcm
+    } else {
+        ContentEncoding::Aes128Gcm
+    };
 
     for subscription in subscriptions.iter() {
         if !subscription.send_read_message
@@ -211,7 +226,7 @@ pub async fn send_push_notification(
 
         let mut message_builder = WebPushMessageBuilder::new(&subscription_info);
         message_builder.set_ttl(1000);
-        message_builder.set_payload(ContentEncoding::Aes128Gcm, payload.as_bytes());
+        message_builder.set_payload(encoding, payload.as_bytes());
         message_builder.set_vapid_signature(signature.unwrap());
 
         let message = message_builder.build();

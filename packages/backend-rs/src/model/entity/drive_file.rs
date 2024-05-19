@@ -14,7 +14,7 @@ pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,
     #[sea_orm(column_name = "createdAt")]
-    pub created_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
     #[sea_orm(column_name = "userId")]
     pub user_id: Option<String>,
     #[sea_orm(column_name = "userHost")]

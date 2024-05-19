@@ -2,7 +2,8 @@ import type { entities } from "firefish-js";
 
 export type FoldableNotification =
 	| entities.RenoteNotification
-	| entities.ReactionNotification;
+	| entities.ReactionNotification
+	| entities.PollVoteNotification;
 
 interface Fold<T extends FoldableNotification> {
 	id: string;
@@ -21,11 +22,16 @@ export type ReactionNotificationFolded = Fold<entities.ReactionNotification> & {
 	reaction: string;
 };
 
+export type PollVotedNotificationFolded = Fold<entities.PollVoteNotification>;
+
 export type GetNotificationFoldedType<T extends FoldableNotification> =
 	T["type"] extends "renote"
 		? RenoteNotificationFolded
-		: ReactionNotificationFolded;
+		: T["type"] extends "reaction"
+			? ReactionNotificationFolded
+			: PollVotedNotificationFolded;
 
 export type NotificationFolded =
 	| RenoteNotificationFolded
-	| ReactionNotificationFolded;
+	| ReactionNotificationFolded
+	| PollVotedNotificationFolded;

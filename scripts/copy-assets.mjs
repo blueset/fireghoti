@@ -14,12 +14,12 @@ await (async () => {
 	]);
 
 	const locales = (await import("../locales/index.mjs")).default;
-	const meta = JSON.parse(await fs.readFile(file("built/meta.json")));
+	const { version } = JSON.parse(await fs.readFile(file("package.json")));
 
 	for await (const [lang, locale] of Object.entries(locales)) {
 		await fs.writeFile(
-			file(`built/_client_dist_/locales/${lang}.${meta.version}.json`),
-			JSON.stringify({ ...locale, _version_: meta.version }),
+			file(`built/_client_dist_/locales/${lang}.${version}.json`),
+			JSON.stringify({ ...locale, _version_: version }),
 			"utf-8",
 		);
 	}

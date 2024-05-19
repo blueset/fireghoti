@@ -13,7 +13,7 @@ pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,
     #[sea_orm(column_name = "updatedAt")]
-    pub updated_at: Option<DateTime>,
+    pub updated_at: Option<DateTimeWithTimeZone>,
     pub name: String,
     pub host: Option<String>,
     #[sea_orm(column_name = "originalUrl")]

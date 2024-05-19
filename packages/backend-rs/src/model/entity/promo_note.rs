@@ -13,7 +13,7 @@ pub struct Model {
     #[sea_orm(column_name = "noteId", primary_key, auto_increment = false, unique)]
     pub note_id: String,
     #[sea_orm(column_name = "expiresAt")]
-    pub expires_at: DateTime,
+    pub expires_at: DateTimeWithTimeZone,
     #[sea_orm(column_name = "userId")]
     pub user_id: String,
 }

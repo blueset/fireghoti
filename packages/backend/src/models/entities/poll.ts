@@ -17,7 +17,7 @@ export class Poll {
 	@PrimaryColumn(id())
 	public noteId: Note["id"];
 
-	@Column("timestamp without time zone", {
+	@Column("timestamp with time zone", {
 		nullable: true,
 	})
 	public expiresAt: Date | null;

@@ -1,11 +1,11 @@
 use crate::database::cache;
-use crate::database::{db_conn, redis_conn, redis_key};
+use crate::database::{db_conn, redis_conn, redis_key, RedisConnError};
 use crate::federation::acct::Acct;
 use crate::misc::check_hit_antenna::{check_hit_antenna, AntennaCheckError};
 use crate::model::entity::{antenna, note};
 use crate::service::stream;
 use crate::util::id::{get_timestamp, InvalidIdErr};
-use redis::{streams::StreamMaxlen, Commands, RedisError};
+use redis::{streams::StreamMaxlen, AsyncCommands, RedisError};
 use sea_orm::{DbErr, EntityTrait};
 
 #[derive(thiserror::Error, Debug)]
@@ -16,6 +16,8 @@ pub enum Error {
     CacheErr(#[from] cache::Error),
     #[error("Redis error: {0}")]
     RedisErr(#[from] RedisError),
+    #[error("Redis connection error: {0}")]
+    RedisConnErr(#[from] RedisConnError),
     #[error("Invalid ID: {0}")]
     InvalidIdErr(#[from] InvalidIdErr),
     #[error("Stream error: {0}")]
@@ -33,9 +35,9 @@ type Note = note::Model;
 async fn antennas() -> Result<Vec<Antenna>, Error> {
     const CACHE_KEY: &str = "antennas";
 
-    Ok(cache::get::<Vec<Antenna>>(CACHE_KEY)?.unwrap_or({
+    Ok(cache::get::<Vec<Antenna>>(CACHE_KEY).await?.unwrap_or({
         let antennas = antenna::Entity::find().all(db_conn().await?).await?;
-        cache::set(CACHE_KEY, &antennas, 5 * 60)?;
+        cache::set(CACHE_KEY, &antennas, 5 * 60).await?;
         antennas
     }))
 }
@@ -52,22 +54,25 @@ pub async fn update_antennas_on_new_note(
             continue;
         }
         if check_hit_antenna(antenna, note.clone(), note_author).await? {
-            add_note_to_antenna(&antenna.id, &note)?;
+            add_note_to_antenna(&antenna.id, &note).await?;
         }
     }
 
     Ok(())
 }
 
-pub fn add_note_to_antenna(antenna_id: &str, note: &Note) -> Result<(), Error> {
+pub async fn add_note_to_antenna(antenna_id: &str, note: &Note) -> Result<(), Error> {
     // for timeline API
-    redis_conn()?.xadd_maxlen(
-        redis_key(format!("antennaTimeline:{}", antenna_id)),
-        StreamMaxlen::Approx(200),
-        format!("{}-*", get_timestamp(&note.id)?),
-        &[("note", &note.id)],
-    )?;
+    redis_conn()
+        .await?
+        .xadd_maxlen(
+            redis_key(format!("antennaTimeline:{}", antenna_id)),
+            StreamMaxlen::Approx(200),
+            format!("{}-*", get_timestamp(&note.id)?),
+            &[("note", &note.id)],
+        )
+        .await?;
 
     // for streaming API
-    Ok(stream::antenna::publish(antenna_id.to_string(), note)?)
+    Ok(stream::antenna::publish(antenna_id.to_string(), note).await?)
 }

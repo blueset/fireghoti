@@ -84,8 +84,8 @@ export default define(meta, paramDef, async (ps, me) => {
 			],
 		});
 
-		for (const moderator of moderators) {
-			publishToModerationStream(moderator.id, {
+		for await (const moderator of moderators) {
+			await publishToModerationStream(moderator.id, {
 				id: report.id,
 				targetUserId: report.targetUserId,
 				reporterId: report.reporterId,

@@ -13,13 +13,15 @@ ci = []
 crate-type = ["cdylib", "lib"]
 
 [dependencies]
-macro_rs = { workspace = true }
+macro-rs = { workspace = true }
 
 napi = { workspace = true, optional = true, default-features = false, features = ["napi9", "tokio_rt", "chrono_date", "serde-json"] }
 napi-derive = { workspace = true, optional = true }
 
 argon2 = { workspace = true, features = ["std"] }
+async-trait = { workspace = true }
 basen = { workspace = true }
+bb8 = { workspace = true }
 bcrypt = { workspace = true }
 chrono = { workspace = true }
 cuid2 = { workspace = true }
@@ -31,7 +33,7 @@ nom-exif = { workspace = true }
 once_cell = { workspace = true }
 openssl = { workspace = true, features = ["vendored"] }
 rand = { workspace = true }
-redis = { workspace = true }
+redis = { workspace = true, default-features = false, features = ["streams", "tokio-comp"] }
 regex = { workspace = true }
 rmp-serde = { workspace = true }
 sea-orm = { workspace = true, features = ["sqlx-postgres", "runtime-tokio-rustls"] }
@@ -50,6 +52,7 @@ web-push = { workspace = true }
 
 [dev-dependencies]
 pretty_assertions = { workspace = true }
+tokio-test = { workspace = true }
 
 [build-dependencies]
 napi-build = { workspace = true }

@@ -13,7 +13,7 @@ pub enum ChatIndexEvent {
 // https://github.com/napi-rs/napi-rs/issues/2036
 
 #[crate::export(js_name = "publishToChatIndexStream")]
-pub fn publish(
+pub async fn publish(
     user_id: String,
     kind: ChatIndexEvent,
     object: &serde_json::Value,
@@ -23,4 +23,5 @@ pub fn publish(
         Some(kind.to_string()),
         Some(serde_json::to_string(object)?),
     )
+    .await
 }
