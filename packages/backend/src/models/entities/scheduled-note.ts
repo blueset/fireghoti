@@ -28,7 +28,7 @@ export class ScheduledNote {
 	@Column(id())
 	public userId: User["id"];
 
-	@Column("timestamp without time zone")
+	@Column("timestamp with time zone")
 	public scheduledAt: Date;
 
 	//#region Relations

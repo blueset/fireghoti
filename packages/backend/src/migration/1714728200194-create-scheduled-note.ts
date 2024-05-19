@@ -9,7 +9,7 @@ export class CreateScheduledNote1714728200194
 				"id" character varying(32) NOT NULL PRIMARY KEY,
 				"noteId" character varying(32) NOT NULL,
 				"userId" character varying(32) NOT NULL,
-				"scheduledAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL
+				"scheduledAt" TIMESTAMP WITH TIME ZONE NOT NULL
 		)`,
 		);
 		await queryRunner.query(`
