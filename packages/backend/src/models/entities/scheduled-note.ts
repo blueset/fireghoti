@@ -13,14 +13,14 @@ import { id } from "../id.js";
 import { User } from "./user.js";
 
 @Entity()
-export class ScheduledNoteCreation {
+export class ScheduledNote {
 	@PrimaryColumn(id())
 	public id: string;
 
 	@Index()
 	@Column({
 		...id(),
-		comment: "The ID of note scheduled.",
+		comment: "The ID of the temporarily created note that corresponds to the schedule.",
 	})
 	public noteId: Note["id"];
 

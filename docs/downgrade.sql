@@ -1,7 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
-    'CreateScheduledNoteCreation1714728200194',
+    'CreateScheduledNote1714728200194',
     'AddBackTimezone1715351290096',
     'UserprofileJsonbToArray1714270605574',
     'DropUnusedUserprofileColumns1714259023878',
@@ -32,8 +32,8 @@ DELETE FROM "migrations" WHERE name IN (
     'RemoveNativeUtilsMigration1705877093218'
 );
 
--- create-scheduled-note-creation
-DROP TABLE "scheduled_note_creation";
+-- create-scheduled-note
+DROP TABLE "scheduled_note";
 
 -- userprofile-jsonb-to-array
 ALTER TABLE "user_profile" RENAME COLUMN "mutedInstances" TO "mutedInstances_old";

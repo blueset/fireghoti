@@ -74,10 +74,10 @@ import { Webhook } from "@/models/entities/webhook.js";
 import { UserIp } from "@/models/entities/user-ip.js";
 import { NoteEdit } from "@/models/entities/note-edit.js";
 import { NoteFile } from "@/models/entities/note-file.js";
+import { ScheduledNote } from "@/models/entities/scheduled-note.js";
 
 import { entities as charts } from "@/services/chart/entities.js";
 import { dbLogger } from "./logger.js";
-import { ScheduledNoteCreation } from "@/models/entities/scheduled-note-creation.js";
 
 const sqlLogger = dbLogger.createSubLogger("sql", "gray", false);
 
@@ -183,7 +183,7 @@ export const entities = [
 	UserPending,
 	Webhook,
 	UserIp,
-	ScheduledNoteCreation,
+	ScheduledNote,
 	...charts,
 ];
 
