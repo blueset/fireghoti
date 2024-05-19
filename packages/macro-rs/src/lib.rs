@@ -2,6 +2,21 @@ use convert_case::{Case, Casing};
 use proc_macro2::{TokenStream, TokenTree};
 use quote::{quote, ToTokens};
 
+/// Read the version field in the project root package.json at compile time
+#[proc_macro]
+pub fn read_version_from_package_json(_item: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    #[derive(serde::Deserialize)]
+    struct PackageJson {
+        version: String,
+    }
+
+    let file = std::fs::File::open("package.json").expect("Failed to open package.json");
+    let json: PackageJson = serde_json::from_reader(file).unwrap();
+    let version = &json.version;
+
+    quote! { #version }.into()
+}
+
 /// Export this function, struct, enum, const, etc. to TypeScript.
 #[proc_macro_attribute]
 pub fn export(

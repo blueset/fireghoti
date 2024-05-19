@@ -191,18 +191,6 @@ export interface Config {
   authUrl: string
   driveUrl: string
   userAgent: string
-  clientEntry: Manifest
-}
-export interface Manifest {
-  file: string
-  name: string
-  src: string
-  isEntry: boolean
-  isDynamicEntry: boolean
-  imports: Array<string>
-  dynamicImports: Array<string>
-  css: Array<string>
-  assets: Array<string>
 }
 export function loadConfig(): Config
 export interface Acct {
@@ -211,9 +199,9 @@ export interface Acct {
 }
 export function stringToAcct(acct: string): Acct
 export function acctToString(acct: Acct): string
-export function showServerInfo(): void
+export function greet(): void
 export function initializeRustLogger(): void
-export function addNoteToAntenna(antennaId: string, note: Note): void
+export function showServerInfo(): void
 /**
  * Checks if a server is blocked.
  *
@@ -236,15 +224,7 @@ export function isSilencedServer(host: string): Promise<boolean>
  * `host` - punycoded instance host
  */
 export function isAllowedServer(host: string): Promise<boolean>
-export interface NoteLikeForCheckWordMute {
-  fileIds: Array<string>
-  userId: string | null
-  text: string | null
-  cw: string | null
-  renoteId: string | null
-  replyId: string | null
-}
-export function checkWordMute(note: NoteLikeForCheckWordMute, mutedWordLists: Array<Array<string>>, mutedPatterns: Array<string>): Promise<boolean>
+export function checkWordMute(note: NoteLike, mutedWords: Array<string>, mutedPatterns: Array<string>): Promise<boolean>
 export function getFullApAccount(username: string, host?: string | undefined | null): string
 export function isSelfHost(host?: string | undefined | null): boolean
 export function isSameOrigin(uri: string): boolean
@@ -260,6 +240,15 @@ export interface ImageSize {
   height: number
 }
 export function getImageSizeFromUrl(url: string): Promise<ImageSize>
+/** TODO: handle name collisions better */
+export interface NoteLikeForAllTexts {
+  fileIds: Array<string>
+  userId: string
+  text: string | null
+  cw: string | null
+  renoteId: string | null
+  replyId: string | null
+}
 export interface NoteLikeForGetNoteSummary {
   fileIds: Array<string>
   text: string | null
@@ -267,28 +256,7 @@ export interface NoteLikeForGetNoteSummary {
   hasPoll: boolean
 }
 export function getNoteSummary(note: NoteLikeForGetNoteSummary): string
-export interface Cpu {
-  model: string
-  cores: number
-}
-export interface Memory {
-  /** Total memory amount in bytes */
-  total: number
-  /** Used memory amount in bytes */
-  used: number
-  /** Available (for (re)use) memory amount in bytes */
-  available: number
-}
-export interface Storage {
-  /** Total storage space in bytes */
-  total: number
-  /** Used storage space in bytes */
-  used: number
-}
-export function cpuInfo(): Cpu
-export function cpuUsage(): number
-export function memoryUsage(): Memory
-export function storageUsage(): Storage | null
+export function isQuote(note: Note): boolean
 export function isSafeUrl(url: string): boolean
 export function latestVersion(): Promise<string>
 export function toMastodonId(firefishId: string): string | null
@@ -320,9 +288,31 @@ export function countReactions(reactions: Record<string, number>): Record<string
 export function toDbReaction(reaction?: string | undefined | null, host?: string | undefined | null): Promise<string>
 /** Delete all entries in the "attestation_challenge" table created at more than 5 minutes ago */
 export function removeOldAttestationChallenges(): Promise<void>
+export interface Cpu {
+  model: string
+  cores: number
+}
+export interface Memory {
+  /** Total memory amount in bytes */
+  total: number
+  /** Used memory amount in bytes */
+  used: number
+  /** Available (for (re)use) memory amount in bytes */
+  available: number
+}
+export interface Storage {
+  /** Total storage space in bytes */
+  total: number
+  /** Used storage space in bytes */
+  used: number
+}
+export function cpuInfo(): Cpu
+export function cpuUsage(): number
+export function memoryUsage(): Memory
+export function storageUsage(): Storage | null
 export interface AbuseUserReport {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   targetUserId: string
   reporterId: string
   assigneeId: string | null
@@ -334,12 +324,12 @@ export interface AbuseUserReport {
 }
 export interface AccessToken {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   token: string
   hash: string
   userId: string
   appId: string | null
-  lastUsedAt: Date | null
+  lastUsedAt: DateTimeWithTimeZone | null
   session: string | null
   name: string | null
   description: string | null
@@ -349,8 +339,8 @@ export interface AccessToken {
 }
 export interface Ad {
   id: string
-  createdAt: Date
-  expiresAt: Date
+  createdAt: DateTimeWithTimeZone
+  expiresAt: DateTimeWithTimeZone
   place: string
   priority: string
   url: string
@@ -360,11 +350,11 @@ export interface Ad {
 }
 export interface Announcement {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   text: string
   title: string
   imageUrl: string | null
-  updatedAt: Date | null
+  updatedAt: DateTimeWithTimeZone | null
   showPopup: boolean
   isGoodNews: boolean
 }
@@ -372,16 +362,15 @@ export interface AnnouncementRead {
   id: string
   userId: string
   announcementId: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
 }
 export interface Antenna {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   name: string
   src: AntennaSrcEnum
   userListId: string | null
-  keywords: Json
   withFile: boolean
   expression: string | null
   notify: boolean
@@ -389,12 +378,13 @@ export interface Antenna {
   withReplies: boolean
   userGroupJoiningId: string | null
   users: Array<string>
-  excludeKeywords: Json
-  instances: Json
+  instances: Array<string>
+  keywords: Array<string>
+  excludeKeywords: Array<string>
 }
 export interface App {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string | null
   secret: string
   name: string
@@ -406,26 +396,26 @@ export interface AttestationChallenge {
   id: string
   userId: string
   challenge: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   registrationChallenge: boolean
 }
 export interface AuthSession {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   token: string
   userId: string | null
   appId: string
 }
 export interface Blocking {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   blockeeId: string
   blockerId: string
 }
 export interface Channel {
   id: string
-  createdAt: Date
-  lastNotedAt: Date | null
+  createdAt: DateTimeWithTimeZone
+  lastNotedAt: DateTimeWithTimeZone | null
   userId: string | null
   name: string
   description: string | null
@@ -435,19 +425,19 @@ export interface Channel {
 }
 export interface ChannelFollowing {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   followeeId: string
   followerId: string
 }
 export interface ChannelNotePining {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   channelId: string
   noteId: string
 }
 export interface Clip {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   name: string
   isPublic: boolean
@@ -460,7 +450,7 @@ export interface ClipNote {
 }
 export interface DriveFile {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string | null
   userHost: string | null
   md5: string
@@ -489,14 +479,14 @@ export interface DriveFile {
 }
 export interface DriveFolder {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   name: string
   userId: string | null
   parentId: string | null
 }
 export interface Emoji {
   id: string
-  updatedAt: Date | null
+  updatedAt: DateTimeWithTimeZone | null
   name: string
   host: string | null
   originalUrl: string
@@ -511,7 +501,7 @@ export interface Emoji {
 }
 export interface FollowRequest {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   followeeId: string
   followerId: string
   requestId: string | null
@@ -524,7 +514,7 @@ export interface FollowRequest {
 }
 export interface Following {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   followeeId: string
   followerId: string
   followerHost: string | null
@@ -536,14 +526,14 @@ export interface Following {
 }
 export interface GalleryLike {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   postId: string
 }
 export interface GalleryPost {
   id: string
-  createdAt: Date
-  updatedAt: Date
+  createdAt: DateTimeWithTimeZone
+  updatedAt: DateTimeWithTimeZone
   title: string
   description: string | null
   userId: string
@@ -570,16 +560,16 @@ export interface Hashtag {
 }
 export interface Instance {
   id: string
-  caughtAt: Date
+  caughtAt: DateTimeWithTimeZone
   host: string
   usersCount: number
   notesCount: number
   followingCount: number
   followersCount: number
-  latestRequestSentAt: Date | null
+  latestRequestSentAt: DateTimeWithTimeZone | null
   latestStatus: number | null
-  latestRequestReceivedAt: Date | null
-  lastCommunicatedAt: Date
+  latestRequestReceivedAt: DateTimeWithTimeZone | null
+  lastCommunicatedAt: DateTimeWithTimeZone
   isNotResponding: boolean
   softwareName: string | null
   softwareVersion: string | null
@@ -588,7 +578,7 @@ export interface Instance {
   description: string | null
   maintainerName: string | null
   maintainerEmail: string | null
-  infoUpdatedAt: Date | null
+  infoUpdatedAt: DateTimeWithTimeZone | null
   isSuspended: boolean
   iconUrl: string | null
   themeColor: string | null
@@ -596,7 +586,7 @@ export interface Instance {
 }
 export interface MessagingMessage {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   recipientId: string | null
   text: string | null
@@ -700,7 +690,7 @@ export interface Migrations {
 }
 export interface ModerationLog {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   type: string
   info: Json
@@ -713,14 +703,14 @@ export interface MutedNote {
 }
 export interface Muting {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   muteeId: string
   muterId: string
-  expiresAt: Date | null
+  expiresAt: DateTimeWithTimeZone | null
 }
 export interface Note {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   replyId: string | null
   renoteId: string | null
   text: string | null
@@ -750,7 +740,7 @@ export interface Note {
   url: string | null
   channelId: string | null
   threadId: string | null
-  updatedAt: Date | null
+  updatedAt: DateTimeWithTimeZone | null
   lang: string | null
 }
 export interface NoteEdit {
@@ -759,12 +749,12 @@ export interface NoteEdit {
   text: string | null
   cw: string | null
   fileIds: Array<string>
-  updatedAt: Date
+  updatedAt: DateTimeWithTimeZone
   emojis: Array<string>
 }
 export interface NoteFavorite {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   noteId: string
 }
@@ -775,14 +765,14 @@ export interface NoteFile {
 }
 export interface NoteReaction {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   noteId: string
   reaction: string
 }
 export interface NoteThreadMuting {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   threadId: string
 }
@@ -797,14 +787,14 @@ export interface NoteUnread {
 }
 export interface NoteWatching {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   noteId: string
   noteUserId: string
 }
 export interface Notification {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   notifieeId: string
   notifierId: string | null
   isRead: boolean
@@ -821,8 +811,8 @@ export interface Notification {
 }
 export interface Page {
   id: string
-  createdAt: Date
-  updatedAt: Date
+  createdAt: DateTimeWithTimeZone
+  updatedAt: DateTimeWithTimeZone
   title: string
   name: string
   summary: string | null
@@ -841,19 +831,19 @@ export interface Page {
 }
 export interface PageLike {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   pageId: string
 }
 export interface PasswordResetRequest {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   token: string
   userId: string
 }
 export interface Poll {
   noteId: string
-  expiresAt: Date | null
+  expiresAt: DateTimeWithTimeZone | null
   multiple: boolean
   choices: Array<string>
   votes: Array<number>
@@ -863,31 +853,31 @@ export interface Poll {
 }
 export interface PollVote {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   noteId: string
   choice: number
 }
 export interface PromoNote {
   noteId: string
-  expiresAt: Date
+  expiresAt: DateTimeWithTimeZone
   userId: string
 }
 export interface PromoRead {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   noteId: string
 }
 export interface RegistrationTicket {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   code: string
 }
 export interface RegistryItem {
   id: string
-  createdAt: Date
-  updatedAt: Date
+  createdAt: DateTimeWithTimeZone
+  updatedAt: DateTimeWithTimeZone
   userId: string
   key: string
   scope: Array<string>
@@ -901,13 +891,13 @@ export interface Relay {
 }
 export interface RenoteMuting {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   muteeId: string
   muterId: string
 }
 export interface ReplyMuting {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   muteeId: string
   muterId: string
 }
@@ -993,7 +983,7 @@ export enum UserProfileMutingnotificationtypesEnum {
 }
 export interface Signin {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   ip: string
   headers: Json
@@ -1001,7 +991,7 @@ export interface Signin {
 }
 export interface SwSubscription {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   endpoint: string
   auth: string
@@ -1010,13 +1000,13 @@ export interface SwSubscription {
 }
 export interface UsedUsername {
   username: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
 }
 export interface User {
   id: string
-  createdAt: Date
-  updatedAt: Date | null
-  lastFetchedAt: Date | null
+  createdAt: DateTimeWithTimeZone
+  updatedAt: DateTimeWithTimeZone | null
+  lastFetchedAt: DateTimeWithTimeZone | null
   username: string
   usernameLower: string
   name: string | null
@@ -1042,7 +1032,7 @@ export interface User {
   token: string | null
   isExplorable: boolean
   followersUri: string | null
-  lastActiveDate: Date | null
+  lastActiveDate: DateTimeWithTimeZone | null
   hideOnlineStatus: boolean
   isDeleted: boolean
   driveCapacityOverrideMb: number | null
@@ -1054,32 +1044,32 @@ export interface User {
 }
 export interface UserGroup {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   name: string
   userId: string
   isPrivate: boolean
 }
 export interface UserGroupInvitation {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   userGroupId: string
 }
 export interface UserGroupInvite {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   userGroupId: string
 }
 export interface UserGroupJoining {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   userGroupId: string
 }
 export interface UserIp {
   id: number
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   ip: string
 }
@@ -1090,25 +1080,25 @@ export interface UserKeypair {
 }
 export interface UserList {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   name: string
 }
 export interface UserListJoining {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   userListId: string
 }
 export interface UserNotePining {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   noteId: string
 }
 export interface UserPending {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   code: string
   username: string
   email: string
@@ -1128,7 +1118,6 @@ export interface UserProfile {
   twoFactorSecret: string | null
   twoFactorEnabled: boolean
   password: string | null
-  clientData: Json
   autoAcceptFollowed: boolean
   alwaysMarkNsfw: boolean
   carefulBot: boolean
@@ -1136,21 +1125,20 @@ export interface UserProfile {
   securityKeysAvailable: boolean
   usePasswordLessLogin: boolean
   pinnedPageId: string | null
-  room: Json
   injectFeaturedNote: boolean
   enableWordMute: boolean
-  mutedWords: Json
   mutingNotificationTypes: Array<UserProfileMutingnotificationtypesEnum>
   noCrawle: boolean
   receiveAnnouncementEmail: boolean
   emailNotificationTypes: Json
-  mutedInstances: Json
   publicReactions: boolean
   ffVisibility: UserProfileFfvisibilityEnum
   moderationNote: string
   preventAiLearning: boolean
   isIndexable: boolean
   mutedPatterns: Array<string>
+  mutedInstances: Array<string>
+  mutedWords: Array<string>
   lang: string | null
 }
 export interface UserPublickey {
@@ -1162,21 +1150,22 @@ export interface UserSecurityKey {
   id: string
   userId: string
   publicKey: string
-  lastUsed: Date
+  lastUsed: DateTimeWithTimeZone
   name: string
 }
 export interface Webhook {
   id: string
-  createdAt: Date
+  createdAt: DateTimeWithTimeZone
   userId: string
   name: string
   on: Array<string>
   url: string
   secret: string
   active: boolean
-  latestSentAt: Date | null
+  latestSentAt: DateTimeWithTimeZone | null
   latestStatus: number | null
 }
+export function updateAntennasOnNewNote(note: Note, noteAuthor: Acct, noteMutedUsers: Array<string>): Promise<void>
 export function fetchNodeinfo(host: string): Promise<Nodeinfo>
 export function nodeinfo_2_1(): Promise<any>
 export function nodeinfo_2_0(): Promise<any>
@@ -1285,22 +1274,23 @@ export enum PushNotificationKind {
   ReadAllChats = 'readAllChats',
   ReadAllChatsInTheRoom = 'readAllChatsInTheRoom',
   ReadNotifications = 'readNotifications',
-  ReadAllNotifications = 'readAllNotifications'
+  ReadAllNotifications = 'readAllNotifications',
+  Mastodon = 'mastodon'
 }
 export function sendPushNotification(receiverUserId: string, kind: PushNotificationKind, content: any): Promise<void>
-export function publishToChannelStream(channelId: string, userId: string): void
+export function publishToChannelStream(channelId: string, userId: string): Promise<void>
 export enum ChatEvent {
   Message = 'message',
   Read = 'read',
   Deleted = 'deleted',
   Typing = 'typing'
 }
-export function publishToChatStream(senderUserId: string, receiverUserId: string, kind: ChatEvent, object: any): void
+export function publishToChatStream(senderUserId: string, receiverUserId: string, kind: ChatEvent, object: any): Promise<void>
 export enum ChatIndexEvent {
   Message = 'message',
   Read = 'read'
 }
-export function publishToChatIndexStream(userId: string, kind: ChatIndexEvent, object: any): void
+export function publishToChatIndexStream(userId: string, kind: ChatIndexEvent, object: any): Promise<void>
 export interface PackedEmoji {
   id: string
   aliases: Array<string>
@@ -1312,15 +1302,15 @@ export interface PackedEmoji {
   width: number | null
   height: number | null
 }
-export function publishToBroadcastStream(emoji: PackedEmoji): void
-export function publishToGroupChatStream(groupId: string, kind: ChatEvent, object: any): void
+export function publishToBroadcastStream(emoji: PackedEmoji): Promise<void>
+export function publishToGroupChatStream(groupId: string, kind: ChatEvent, object: any): Promise<void>
 export interface AbuseUserReportLike {
   id: string
   targetUserId: string
   reporterId: string
   comment: string
 }
-export function publishToModerationStream(moderatorId: string, report: AbuseUserReportLike): void
+export function publishToModerationStream(moderatorId: string, report: AbuseUserReportLike): Promise<void>
 export function getTimestamp(id: string): number
 /**
  * The generated ID results in the form of `[8 chars timestamp] + [cuid2]`.

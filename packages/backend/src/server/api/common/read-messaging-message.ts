@@ -57,13 +57,15 @@ export async function readUserMessagingMessage(
 	);
 
 	// Publish event
-	publishToChatStream(otherpartyId, userId, ChatEvent.Read, messageIds);
-	publishToChatIndexStream(userId, ChatIndexEvent.Read, messageIds);
+	await Promise.all([
+		publishToChatStream(otherpartyId, userId, ChatEvent.Read, messageIds),
+		publishToChatIndexStream(userId, ChatIndexEvent.Read, messageIds),
+	]);
 
 	if (!(await Users.getHasUnreadMessagingMessage(userId))) {
 		// 全ての(いままで未読だった)自分宛てのメッセージを(これで)読みましたよというイベントを発行
 		publishMainStream(userId, "readAllMessagingMessages");
-		sendPushNotification(userId, PushNotificationKind.ReadAllChats, {});
+		await sendPushNotification(userId, PushNotificationKind.ReadAllChats, {});
 	} else {
 		// そのユーザーとのメッセージで未読がなければイベント発行
 		const hasUnread = await MessagingMessages.exists({
@@ -75,9 +77,13 @@ export async function readUserMessagingMessage(
 		});
 
 		if (!hasUnread) {
-			sendPushNotification(userId, PushNotificationKind.ReadAllChatsInTheRoom, {
-				userId: otherpartyId,
-			});
+			await sendPushNotification(
+				userId,
+				PushNotificationKind.ReadAllChatsInTheRoom,
+				{
+					userId: otherpartyId,
+				},
+			);
 		}
 	}
 }
@@ -127,17 +133,19 @@ export async function readGroupMessagingMessage(
 		reads.push(message.id);
 	}
 
-	// Publish event
-	publishToGroupChatStream(groupId, ChatEvent.Read, {
-		ids: reads,
-		userId,
-	});
-	publishToChatIndexStream(userId, ChatIndexEvent.Read, reads);
+	// Publish events
+	await Promise.all([
+		publishToGroupChatStream(groupId, ChatEvent.Read, {
+			ids: reads,
+			userId,
+		}),
+		publishToChatIndexStream(userId, ChatIndexEvent.Read, reads),
+	]);
 
 	if (!(await Users.getHasUnreadMessagingMessage(userId))) {
 		// 全ての(いままで未読だった)自分宛てのメッセージを(これで)読みましたよというイベントを発行
 		publishMainStream(userId, "readAllMessagingMessages");
-		sendPushNotification(userId, PushNotificationKind.ReadAllChats, {});
+		await sendPushNotification(userId, PushNotificationKind.ReadAllChats, {});
 	} else {
 		// そのグループにおいて未読がなければイベント発行
 		const hasUnread = await MessagingMessages.createQueryBuilder("message")
@@ -151,9 +159,13 @@ export async function readGroupMessagingMessage(
 			.then((x) => x != null);
 
 		if (!hasUnread) {
-			sendPushNotification(userId, PushNotificationKind.ReadAllChatsInTheRoom, {
-				groupId,
-			});
+			await sendPushNotification(
+				userId,
+				PushNotificationKind.ReadAllChatsInTheRoom,
+				{
+					groupId,
+				},
+			);
 		}
 	}
 }

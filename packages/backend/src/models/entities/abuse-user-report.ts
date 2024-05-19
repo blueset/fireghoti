@@ -16,7 +16,7 @@ export class AbuseUserReport {
 	public id: string;
 
 	@Index()
-	@Column("timestamp without time zone", {
+	@Column("timestamp with time zone", {
 		comment: "The created date of the AbuseUserReport.",
 	})
 	public createdAt: Date;

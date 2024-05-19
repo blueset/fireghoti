@@ -59,7 +59,7 @@ test:build:
   rules:
     - if: $TEST == 'false'
       when: never
-    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
       changes:
         paths:
           - packages/backend-rs/**/*
@@ -84,7 +84,7 @@ test:build:backend_ts_only:
   rules:
     - if: $TEST == 'false'
       when: never
-    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
       changes:
         paths:
           - packages/backend-rs/**/*
@@ -94,7 +94,7 @@ test:build:backend_ts_only:
           - Cargo.toml
           - Cargo.lock
       when: never 
-    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
       changes:
         paths:
           - packages/backend/**/*
@@ -124,7 +124,7 @@ test:build:client_only:
   rules:
     - if: $TEST == 'false'
       when: never
-    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
       changes:
         paths:
           - packages/backend-rs/**/*
@@ -134,7 +134,7 @@ test:build:client_only:
           - Cargo.toml
           - Cargo.lock
       when: never
-    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
       changes:
         paths:
           - packages/client/**/*
@@ -157,7 +157,7 @@ test:build:client_only:
 
 build:container:
   stage: build
-  image: docker.io/debian:bookworm-slim
+  image: quay.io/buildah/stable:latest
   services: []
   rules:
     - if: $BUILD == 'false'
@@ -181,20 +181,17 @@ build:container:
       optional: true
     - job: test:build:client_only
       optional: true
+  variables:
+    STORAGE_DRIVER: overlay2
   before_script:
-    - apt-get update && apt-get -y upgrade
-    - apt-get install -y --no-install-recommends buildah ca-certificates fuse-overlayfs
-    - buildah login --username "${CI_REGISTRY_USER}" --password "${CI_REGISTRY_PASSWORD}" "${CI_REGISTRY}"
+    - buildah version
+    - buildah prune --all --force || true
+    - echo "${CI_REGISTRY_PASSWORD}" | buildah login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
     - export IMAGE_TAG="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
     - export IMAGE_CACHE="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop/cache"
   script:
     - |-
       buildah build \
-        --isolation chroot \
-        --device /dev/fuse:rw \
-        --security-opt seccomp=unconfined \
-        --security-opt apparmor=unconfined \
-        --cap-add all \
         --platform linux/amd64 \
         --layers \
         --cache-to "${IMAGE_CACHE}" \
@@ -209,23 +206,17 @@ cargo:test:
   rules:
     - if: $TEST == 'false'
       when: never
-    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'main'
-      when: never
-    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
       changes:
         paths:
           - packages/backend-rs/**/*
           - packages/macro-rs/**/*
           - Cargo.toml
           - Cargo.lock
+          - package.json
       when: always
   script:
     - curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C /usr/local/cargo/bin
-    - pnpm install --frozen-lockfile
-    - mkdir -p packages/backend-rs/built
-    - cp packages/backend-rs/index.js packages/backend-rs/built/index.js
-    - cp packages/backend-rs/index.d.ts packages/backend-rs/built/index.d.ts
-    - pnpm --filter='!backend-rs' run build:debug
     - cargo test --doc
     - cargo nextest run
 
@@ -234,9 +225,7 @@ cargo:clippy:
   rules:
     - if: $TEST == 'false'
       when: never
-    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'main'
-      when: never
-    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
       changes:
         paths:
           - packages/backend-rs/**/*

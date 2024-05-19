@@ -125,7 +125,8 @@ export default define(meta, paramDef, async (ps, user) => {
 	query.andWhere(
 		new Brackets((qb) => {
 			qb.andWhere("notifier.host IS NULL").orWhere(
-				`NOT (( ${mutingInstanceQuery.getQuery()} )::jsonb ? notifier.host)`,
+				`NOT EXISTS (SELECT 1 FROM "user_profile" WHERE "userId" = :muterId AND notifier.host = ANY("mutedInstances"))`,
+				{ muterId: user.id },
 			);
 		}),
 	);

@@ -46,7 +46,7 @@ async fn get_latest_version() -> Result<String, Error> {
 #[crate::export]
 pub async fn latest_version() -> Result<String, Error> {
     let version: Option<String> =
-        cache::get_one(cache::Category::FetchUrl, UPSTREAM_PACKAGE_JSON_URL)?;
+        cache::get_one(cache::Category::FetchUrl, UPSTREAM_PACKAGE_JSON_URL).await?;
 
     if let Some(v) = version {
         tracing::trace!("use cached value: {}", v);
@@ -61,7 +61,8 @@ pub async fn latest_version() -> Result<String, Error> {
             UPSTREAM_PACKAGE_JSON_URL,
             &fetched_version,
             3 * 60 * 60,
-        )?;
+        )
+        .await?;
         Ok(fetched_version)
     }
 }
@@ -97,7 +98,9 @@ mod unit_test {
     #[tokio::test]
     async fn check_version() {
         // delete caches in case you run this test multiple times
-        cache::delete_one(cache::Category::FetchUrl, UPSTREAM_PACKAGE_JSON_URL).unwrap();
+        cache::delete_one(cache::Category::FetchUrl, UPSTREAM_PACKAGE_JSON_URL)
+            .await
+            .unwrap();
 
         // fetch from firefish.dev
         validate_version(latest_version().await.unwrap());

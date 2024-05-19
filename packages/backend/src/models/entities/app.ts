@@ -15,7 +15,7 @@ export class App {
 	public id: string;
 
 	@Index()
-	@Column("timestamp without time zone", {
+	@Column("timestamp with time zone", {
 		comment: "The created date of the App.",
 	})
 	public createdAt: Date;

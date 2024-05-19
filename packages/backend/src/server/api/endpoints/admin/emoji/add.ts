@@ -77,9 +77,10 @@ export default define(meta, paramDef, async (ps, me) => {
 		height: size?.height || null,
 	}).then((x) => Emojis.findOneByOrFail(x.identifiers[0]));
 
-	await db.queryResultCache!.remove(["meta_emojis"]);
-
-	publishToBroadcastStream(await Emojis.pack(emoji));
+	await Promise.all([
+		db.queryResultCache!.remove(["meta_emojis"]),
+		publishToBroadcastStream(await Emojis.pack(emoji)),
+	]);
 
 	insertModerationLog(me, "addEmoji", {
 		emojiId: emoji.id,

@@ -178,26 +178,11 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 		}
 	}
 	if (ps.mutedWords !== undefined) {
-		// for backward compatibility
-		for (const item of ps.mutedWords) {
-			if (Array.isArray(item)) continue;
-
-			const regexp = item.match(/^\/(.+)\/(.*)$/);
-			if (!regexp) throw new ApiError(meta.errors.invalidRegexp);
-
-			try {
-				new RegExp(regexp[1], regexp[2]);
-			} catch (err) {
-				throw new ApiError(meta.errors.invalidRegexp);
-			}
-
-			profileUpdates.mutedPatterns = profileUpdates.mutedPatterns ?? [];
-			profileUpdates.mutedPatterns.push(item);
-		}
-
-		profileUpdates.mutedWords = ps.mutedWords.filter((item) =>
-			Array.isArray(item),
-		);
+		const flatten = (arr: string[][]) =>
+			JSON.stringify(arr) === "[[]]"
+				? ([] as string[])
+				: arr.map((row) => row.join(" "));
+		profileUpdates.mutedWords = flatten(ps.mutedWords);
 	}
 	if (
 		profileUpdates.mutedWords !== undefined ||
@@ -366,11 +351,11 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 
 	// 鍵垢を解除したとき、溜まっていたフォローリクエストがあるならすべて承認
 	if (user.isLocked && ps.isLocked === false) {
-		acceptAllFollowRequests(user);
+		await acceptAllFollowRequests(user);
 	}
 
 	// フォロワーにUpdateを配信
-	publishToFollowers(user.id);
+	await publishToFollowers(user.id);
 
 	return iObj;
 });

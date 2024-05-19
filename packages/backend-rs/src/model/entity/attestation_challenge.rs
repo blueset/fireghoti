@@ -16,7 +16,7 @@ pub struct Model {
     pub user_id: String,
     pub challenge: String,
     #[sea_orm(column_name = "createdAt")]
-    pub created_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
     #[sea_orm(column_name = "registrationChallenge")]
     pub registration_challenge: bool,
 }

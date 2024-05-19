@@ -15,7 +15,7 @@ export class ModerationLog {
 	@PrimaryColumn(id())
 	public id: string;
 
-	@Column("timestamp without time zone", {
+	@Column("timestamp with time zone", {
 		comment: "The created date of the ModerationLog.",
 	})
 	public createdAt: Date;

@@ -102,7 +102,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		acceptAllFollowRequests(user);
 	}
 
-	publishToFollowers(user.id);
+	await publishToFollowers(user.id);
 
 	return iObj;
 });

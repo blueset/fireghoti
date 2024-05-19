@@ -116,13 +116,13 @@ async fn generate_nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
 pub async fn nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
     const NODEINFO_2_1_CACHE_KEY: &str = "nodeinfo_2_1";
 
-    let cached = cache::get::<Nodeinfo21>(NODEINFO_2_1_CACHE_KEY)?;
+    let cached = cache::get::<Nodeinfo21>(NODEINFO_2_1_CACHE_KEY).await?;
 
     if let Some(nodeinfo) = cached {
         Ok(nodeinfo)
     } else {
         let nodeinfo = generate_nodeinfo_2_1().await?;
-        cache::set(NODEINFO_2_1_CACHE_KEY, &nodeinfo, 60 * 60)?;
+        cache::set(NODEINFO_2_1_CACHE_KEY, &nodeinfo, 60 * 60).await?;
         Ok(nodeinfo)
     }
 }

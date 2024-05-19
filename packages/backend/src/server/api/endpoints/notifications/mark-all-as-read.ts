@@ -31,5 +31,9 @@ export default define(meta, paramDef, async (_, user) => {
 
 	// 全ての通知を読みましたよというイベントを発行
 	publishMainStream(user.id, "readAllNotifications");
-	sendPushNotification(user.id, PushNotificationKind.ReadAllNotifications, {});
+	await sendPushNotification(
+		user.id,
+		PushNotificationKind.ReadAllNotifications,
+		{},
+	);
 });

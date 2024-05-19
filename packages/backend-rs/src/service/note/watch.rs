@@ -12,7 +12,7 @@ pub async fn watch_note(
     if watcher_id != note_author_id {
         note_watching::Entity::insert(note_watching::ActiveModel {
             id: ActiveValue::set(gen_id()),
-            created_at: ActiveValue::set(chrono::Local::now().naive_local()),
+            created_at: ActiveValue::set(chrono::Utc::now().into()),
             user_id: ActiveValue::Set(watcher_id.to_string()),
             note_user_id: ActiveValue::Set(note_author_id.to_string()),
             note_id: ActiveValue::Set(note_id.to_string()),

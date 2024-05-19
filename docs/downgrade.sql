@@ -2,6 +2,10 @@ BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
     'CreateScheduledNoteCreation1714728200194',
+    'AddBackTimezone1715351290096',
+    'UserprofileJsonbToArray1714270605574',
+    'DropUnusedUserprofileColumns1714259023878',
+    'AntennaJsonbToArray1714192520471',
     'AddUserProfileLanguage1714888400293',
     'DropUnusedIndexes1714643926317',
     'AlterAkaType1714099399879',
@@ -30,6 +34,45 @@ DELETE FROM "migrations" WHERE name IN (
 
 -- create-scheduled-note-creation
 DROP TABLE "scheduled_note_creation";
+
+-- userprofile-jsonb-to-array
+ALTER TABLE "user_profile" RENAME COLUMN "mutedInstances" TO "mutedInstances_old";
+ALTER TABLE "user_profile" ADD COLUMN "mutedInstances" jsonb NOT NULL DEFAULT '[]';
+UPDATE "user_profile" SET "mutedInstances" = to_jsonb("mutedInstances_old");
+ALTER TABLE "user_profile" DROP COLUMN "mutedInstances_old";
+ALTER TABLE "user_profile" RENAME COLUMN "mutedWords" TO "mutedWords_old";
+ALTER TABLE "user_profile" ADD COLUMN "mutedWords" jsonb NOT NULL DEFAULT '[]';
+CREATE TEMP TABLE "BCrsGgLCUeMMLARy" ("userId" character varying(32), "kws" jsonb NOT NULL DEFAULT '[]');
+INSERT INTO "BCrsGgLCUeMMLARy" ("userId", "kws") SELECT "userId", jsonb_agg("X"."w") FROM (SELECT "userId", to_jsonb(string_to_array(unnest("mutedWords_old"), ' ')) AS "w" FROM "user_profile") AS "X" GROUP BY "userId";
+UPDATE "user_profile" SET "mutedWords" = "kws" FROM "BCrsGgLCUeMMLARy" WHERE "user_profile"."userId" = "BCrsGgLCUeMMLARy"."userId";
+ALTER TABLE "user_profile" DROP COLUMN "mutedWords_old";
+
+-- drop-unused-userprofile-columns
+ALTER TABLE "user_profile" ADD "room" jsonb NOT NULL DEFAULT '{}';
+COMMENT ON COLUMN "user_profile"."room" IS 'The room data of the User.';
+ALTER TABLE "user_profile" ADD "clientData" jsonb NOT NULL DEFAULT '{}';
+COMMENT ON COLUMN "user_profile"."clientData" IS 'The client-specific data of the User.';
+
+-- antenna-jsonb-to-array
+UPDATE "antenna" SET "instances" = '{""}' WHERE "instances" = '{}';
+ALTER TABLE "antenna" RENAME COLUMN "instances" TO "instances_old";
+ALTER TABLE "antenna" ADD COLUMN "instances" jsonb NOT NULL DEFAULT '[]';
+UPDATE "antenna" SET "instances" = to_jsonb("instances_old");
+ALTER TABLE "antenna" DROP COLUMN "instances_old";
+UPDATE "antenna" SET "keywords" = '{""}' WHERE "keywords" = '{}';
+ALTER TABLE "antenna" RENAME COLUMN "keywords" TO "keywords_old";
+ALTER TABLE "antenna" ADD COLUMN "keywords" jsonb NOT NULL DEFAULT '[]';
+CREATE TEMP TABLE "QvPNcMitBFkqqBgm" ("id" character varying(32), "kws" jsonb NOT NULL DEFAULT '[]');
+INSERT INTO "QvPNcMitBFkqqBgm" ("id", "kws") SELECT "id", jsonb_agg("X"."w") FROM (SELECT "id", to_jsonb(string_to_array(unnest("keywords_old"), ' ')) AS "w" FROM "antenna") AS "X" GROUP BY "id";
+UPDATE "antenna" SET "keywords" = "kws" FROM "QvPNcMitBFkqqBgm" WHERE "antenna"."id" = "QvPNcMitBFkqqBgm"."id";
+ALTER TABLE "antenna" DROP COLUMN "keywords_old";
+UPDATE "antenna" SET "excludeKeywords" = '{""}' WHERE "excludeKeywords" = '{}';
+ALTER TABLE "antenna" RENAME COLUMN "excludeKeywords" TO "excludeKeywords_old";
+ALTER TABLE "antenna" ADD COLUMN "excludeKeywords" jsonb NOT NULL DEFAULT '[]';
+CREATE TEMP TABLE "MZvVSjHzYcGXmGmz" ("id" character varying(32), "kws" jsonb NOT NULL DEFAULT '[]');
+INSERT INTO "MZvVSjHzYcGXmGmz" ("id", "kws") SELECT "id", jsonb_agg("X"."w") FROM (SELECT "id", to_jsonb(string_to_array(unnest("excludeKeywords_old"), ' ')) AS "w" FROM "antenna") AS "X" GROUP BY "id";
+UPDATE "antenna" SET "excludeKeywords" = "kws" FROM "MZvVSjHzYcGXmGmz" WHERE "antenna"."id" = "MZvVSjHzYcGXmGmz"."id";
+ALTER TABLE "antenna" DROP COLUMN "excludeKeywords_old";
 
 -- drop-unused-indexes
 CREATE INDEX "IDX_01f4581f114e0ebd2bbb876f0b" ON "note_reaction" ("createdAt");
@@ -66,83 +109,6 @@ CREATE INDEX "IDX_8e3bbbeb3df04d1a8105da4c8f" ON "note" USING "pgroonga" ("cw" p
 -- fix-chat-file-constraint
 ALTER TABLE "messaging_message" DROP CONSTRAINT "FK_535def119223ac05ad3fa9ef64b";
 ALTER TABLE "messaging_message" ADD CONSTRAINT "FK_535def119223ac05ad3fa9ef64b" FOREIGN KEY ("fileId") REFERENCES "drive_file"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
-
--- drop-time-zone
-ALTER TABLE "abuse_user_report" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "access_token" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "access_token" ALTER "lastUsedAt" TYPE timestamp with time zone;
-ALTER TABLE "ad" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "ad" ALTER "expiresAt" TYPE timestamp with time zone;
-ALTER TABLE "announcement" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "announcement" ALTER "updatedAt" TYPE timestamp with time zone;
-ALTER TABLE "announcement_read" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "antenna" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "app" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "attestation_challenge" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "auth_session" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "blocking" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "channel" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "channel" ALTER "lastNotedAt" TYPE timestamp with time zone;
-ALTER TABLE "channel_following" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "channel_note_pining" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "clip" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "drive_file" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "drive_folder" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "emoji" ALTER "updatedAt" TYPE timestamp with time zone;
-ALTER TABLE "following" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "follow_request" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "gallery_like" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "gallery_post" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "gallery_post" ALTER "updatedAt" TYPE timestamp with time zone;
-ALTER TABLE "instance" ALTER "caughtAt" TYPE timestamp with time zone;
-ALTER TABLE "instance" ALTER "infoUpdatedAt" TYPE timestamp with time zone;
-ALTER TABLE "instance" ALTER "lastCommunicatedAt" TYPE timestamp with time zone;
-ALTER TABLE "instance" ALTER "latestRequestReceivedAt" TYPE timestamp with time zone;
-ALTER TABLE "instance" ALTER "latestRequestSentAt" TYPE timestamp with time zone;
-ALTER TABLE "messaging_message" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "moderation_log" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "muting" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "muting" ALTER "expiresAt" TYPE timestamp with time zone;
-ALTER TABLE "note" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "note" ALTER "updatedAt" TYPE timestamp with time zone;
-ALTER TABLE "note_edit" ALTER "updatedAt" TYPE timestamp with time zone;
-ALTER TABLE "note_favorite" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "note_reaction" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "note_thread_muting" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "note_watching" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "notification" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "page" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "page" ALTER "updatedAt" TYPE timestamp with time zone;
-ALTER TABLE "page_like" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "password_reset_request" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "poll" ALTER "expiresAt" TYPE timestamp with time zone;
-ALTER TABLE "poll_vote" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "promo_note" ALTER "expiresAt" TYPE timestamp with time zone;
-ALTER TABLE "promo_read" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "registration_ticket" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "registry_item" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "registry_item" ALTER "updatedAt" TYPE timestamp with time zone;
-ALTER TABLE "renote_muting" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "reply_muting" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "signin" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "sw_subscription" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "used_username" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "user" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "user" ALTER "lastActiveDate" TYPE timestamp with time zone;
-ALTER TABLE "user" ALTER "lastFetchedAt" TYPE timestamp with time zone;
-ALTER TABLE "user" ALTER "updatedAt" TYPE timestamp with time zone;
-ALTER TABLE "user_group" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "user_group_invitation" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "user_group_invite" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "user_group_joining" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "user_ip" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "user_list" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "user_list_joining" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "user_note_pining" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "user_pending" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "user_security_key" ALTER "lastUsed" TYPE timestamp with time zone;
-ALTER TABLE "webhook" ALTER "createdAt" TYPE timestamp with time zone;
-ALTER TABLE "webhook" ALTER "latestSentAt" TYPE timestamp with time zone;
 
 -- expand-note-edit
 ALTER TABLE "note_edit" DROP COLUMN "emojis";

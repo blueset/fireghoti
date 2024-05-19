@@ -3,6 +3,8 @@ use serde::Deserialize;
 use std::env;
 use std::fs;
 
+pub const VERSION: &str = macro_rs::read_version_from_package_json!();
+
 #[derive(Clone, Debug, PartialEq, Deserialize)]
 #[serde(rename_all = "camelCase")]
 #[crate::export(object, use_nullable = false)]
@@ -231,34 +233,6 @@ pub struct Config {
     pub auth_url: String,
     pub drive_url: String,
     pub user_agent: String,
-    pub client_entry: Manifest,
-}
-
-#[derive(Clone, Debug, PartialEq, Deserialize)]
-#[serde(rename_all = "camelCase")]
-struct Meta {
-    pub version: String,
-}
-
-#[derive(Clone, Debug, PartialEq, Deserialize)]
-struct ManifestJson {
-    #[serde(rename = "src/init.ts")]
-    pub init_ts: Manifest,
-}
-
-#[derive(Clone, Debug, PartialEq, Deserialize)]
-#[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
-pub struct Manifest {
-    pub file: String,
-    pub name: String,
-    pub src: String,
-    pub is_entry: bool,
-    pub is_dynamic_entry: bool,
-    pub imports: Vec<String>,
-    pub dynamic_imports: Vec<String>,
-    pub css: Vec<String>,
-    pub assets: Vec<String>,
 }
 
 fn read_config_file() -> ServerConfig {
@@ -280,28 +254,10 @@ fn read_config_file() -> ServerConfig {
     data
 }
 
-fn read_meta() -> Meta {
-    let cwd = env::current_dir().unwrap();
-    let meta_json = fs::File::open(cwd.join("../../built/meta.json"))
-        .expect("Failed to open 'built/meta.json'");
-    serde_json::from_reader(meta_json).expect("Failed to parse built/meta.json")
-}
-
-fn read_manifest() -> Manifest {
-    let cwd = env::current_dir().unwrap();
-    let manifest_json = fs::File::open(cwd.join("../../built/_client_dist_/manifest.json"))
-        .expect("Failed to open 'built/_client_dist_/manifest.json'");
-    let manifest: ManifestJson = serde_json::from_reader(manifest_json)
-        .expect("Failed to parse built/_client_dist_/manifest.json");
-
-    manifest.init_ts
-}
-
 #[crate::export]
 pub fn load_config() -> Config {
     let server_config = read_config_file();
-    let version = read_meta().version;
-    let manifest = read_manifest();
+    let version = VERSION.to_owned();
     let url = url::Url::parse(&server_config.url).expect("Config url is invalid");
     let hostname = url
         .host_str()
@@ -379,7 +335,6 @@ pub fn load_config() -> Config {
         redis_key_prefix,
         scheme,
         ws_scheme,
-        client_entry: manifest,
     }
 }
 

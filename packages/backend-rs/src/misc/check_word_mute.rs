@@ -1,84 +1,7 @@
-use crate::database::db_conn;
-use crate::model::entity::{drive_file, note};
+use crate::misc::get_note_all_texts::{all_texts, NoteLike};
 use once_cell::sync::Lazy;
 use regex::Regex;
-use sea_orm::{prelude::*, QuerySelect};
-
-// TODO: handle name collisions in a better way
-#[crate::export(object, js_name = "NoteLikeForCheckWordMute")]
-pub struct NoteLike {
-    pub file_ids: Vec<String>,
-    pub user_id: Option<String>,
-    pub text: Option<String>,
-    pub cw: Option<String>,
-    pub renote_id: Option<String>,
-    pub reply_id: Option<String>,
-}
-
-async fn all_texts(note: NoteLike) -> Result<Vec<String>, DbErr> {
-    let db = db_conn().await?;
-
-    let mut texts: Vec<String> = vec![];
-
-    if let Some(text) = note.text {
-        texts.push(text);
-    }
-    if let Some(cw) = note.cw {
-        texts.push(cw);
-    }
-
-    texts.extend(
-        drive_file::Entity::find()
-            .select_only()
-            .column(drive_file::Column::Comment)
-            .filter(drive_file::Column::Id.is_in(note.file_ids))
-            .into_tuple::<Option<String>>()
-            .all(db)
-            .await?
-            .into_iter()
-            .flatten(),
-    );
-
-    if let Some(renote_id) = &note.renote_id {
-        if let Some((text, cw)) = note::Entity::find_by_id(renote_id)
-            .select_only()
-            .columns([note::Column::Text, note::Column::Cw])
-            .into_tuple::<(Option<String>, Option<String>)>()
-            .one(db)
-            .await?
-        {
-            if let Some(t) = text {
-                texts.push(t);
-            }
-            if let Some(c) = cw {
-                texts.push(c);
-            }
-        } else {
-            tracing::warn!("nonexistent renote id: {:#?}", renote_id);
-        }
-    }
-
-    if let Some(reply_id) = &note.reply_id {
-        if let Some((text, cw)) = note::Entity::find_by_id(reply_id)
-            .select_only()
-            .columns([note::Column::Text, note::Column::Cw])
-            .into_tuple::<(Option<String>, Option<String>)>()
-            .one(db)
-            .await?
-        {
-            if let Some(t) = text {
-                texts.push(t);
-            }
-            if let Some(c) = cw {
-                texts.push(c);
-            }
-        } else {
-            tracing::warn!("nonexistent reply id: {:#?}", reply_id);
-        }
-    }
-
-    Ok(texts)
-}
+use sea_orm::DbErr;
 
 fn convert_regex(js_regex: &str) -> String {
     static RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"^/(.+)/(.*)$").unwrap());
@@ -87,14 +10,13 @@ fn convert_regex(js_regex: &str) -> String {
 
 fn check_word_mute_impl(
     texts: &[String],
-    muted_word_lists: &[Vec<String>],
+    muted_words: &[String],
     muted_patterns: &[String],
 ) -> bool {
-    muted_word_lists.iter().any(|muted_word_list| {
+    muted_words.iter().any(|item| {
         texts.iter().any(|text| {
             let text_lower = text.to_lowercase();
-            muted_word_list
-                .iter()
+            item.split_whitespace()
                 .all(|muted_word| text_lower.contains(&muted_word.to_lowercase()))
         })
     }) || muted_patterns.iter().any(|muted_pattern| {
@@ -107,16 +29,138 @@ fn check_word_mute_impl(
 #[crate::export]
 pub async fn check_word_mute(
     note: NoteLike,
-    muted_word_lists: Vec<Vec<String>>,
-    muted_patterns: Vec<String>,
+    muted_words: &[String],
+    muted_patterns: &[String],
 ) -> Result<bool, DbErr> {
-    if muted_word_lists.is_empty() && muted_patterns.is_empty() {
+    if muted_words.is_empty() && muted_patterns.is_empty() {
         Ok(false)
     } else {
         Ok(check_word_mute_impl(
             &all_texts(note).await?,
-            &muted_word_lists,
-            &muted_patterns,
+            muted_words,
+            muted_patterns,
         ))
+    }
+}
+
+#[cfg(test)]
+mod unit_test {
+    use super::check_word_mute_impl;
+
+    #[test]
+    fn test_word_mute_match() {
+        let texts = vec![
+            "The quick brown fox jumps over the lazy dog.".to_string(),
+            "色は匂へど 散りぬるを 我が世誰ぞ 常ならむ".to_string(),
+            "😇".to_string(),
+        ];
+
+        let hiragana_1 = r#"/[\u{3040}-\u{309f}]/u"#.to_string();
+        let hiragana_2 = r#"/[あ-ん]/u"#.to_string();
+        let katakana_1 = r#"/[\u{30a1}-\u{30ff}]/u"#.to_string();
+        let katakana_2 = r#"/[ア-ン]/u"#.to_string();
+        let emoji = r#"/[\u{1f300}-\u{1f5ff}\u{1f900}-\u{1f9ff}\u{1f600}-\u{1f64f}\u{1f680}-\u{1f6ff}\u{2600}-\u{26ff}\u{2700}-\u{27bf}\u{1f1e6}-\u{1f1ff}\u{1f191}-\u{1f251}\u{1f004}\u{1f0cf}\u{1f170}-\u{1f171}\u{1f17e}-\u{1f17f}\u{1f18e}\u{3030}\u{2b50}\u{2b55}\u{2934}-\u{2935}\u{2b05}-\u{2b07}\u{2b1b}-\u{2b1c}\u{3297}\u{3299}\u{303d}\u{00a9}\u{00ae}\u{2122}\u{23f3}\u{24c2}\u{23e9}-\u{23ef}\u{25b6}\u{23f8}-\u{23fa}]/u"#.to_string();
+
+        assert!(check_word_mute_impl(&texts, &[], &["/the/i".to_string()]));
+
+        assert!(!check_word_mute_impl(&texts, &[], &["/the/".to_string()]));
+
+        assert!(check_word_mute_impl(&texts, &[], &["/QuICk/i".to_string()]));
+
+        assert!(!check_word_mute_impl(&texts, &[], &["/QuICk/".to_string()]));
+
+        assert!(check_word_mute_impl(
+            &texts,
+            &[
+                "我".to_string(),
+                "有為の奥山 今日越えて 浅き夢見し 酔ひもせず".to_string()
+            ],
+            &[]
+        ));
+
+        assert!(!check_word_mute_impl(
+            &texts,
+            &["有為の奥山 今日越えて 浅き夢見し 酔ひもせず".to_string()],
+            &[]
+        ));
+
+        assert!(!check_word_mute_impl(
+            &texts,
+            &[
+                "有為の奥山".to_string(),
+                "今日越えて".to_string(),
+                "浅き夢見し".to_string(),
+                "酔ひもせず".to_string()
+            ],
+            &[]
+        ));
+
+        assert!(check_word_mute_impl(
+            &texts,
+            &["yellow fox".to_string(), "mastodon".to_string()],
+            &[hiragana_1.clone()]
+        ));
+
+        assert!(check_word_mute_impl(
+            &texts,
+            &["yellow fox".to_string(), "mastodon".to_string()],
+            &[hiragana_2.clone()]
+        ));
+
+        assert!(!check_word_mute_impl(
+            &texts,
+            &["yellow fox".to_string(), "mastodon".to_string()],
+            &[katakana_1.clone()]
+        ));
+
+        assert!(!check_word_mute_impl(
+            &texts,
+            &["yellow fox".to_string(), "mastodon".to_string()],
+            &[katakana_2.clone()]
+        ));
+
+        assert!(check_word_mute_impl(
+            &texts,
+            &["brown fox".to_string(), "mastodon".to_string()],
+            &[katakana_1.clone()]
+        ));
+
+        assert!(check_word_mute_impl(
+            &texts,
+            &["brown fox".to_string(), "mastodon".to_string()],
+            &[katakana_2.clone()]
+        ));
+
+        assert!(check_word_mute_impl(
+            &texts,
+            &["yellow fox".to_string(), "dog".to_string()],
+            &[katakana_1.clone()]
+        ));
+
+        assert!(check_word_mute_impl(
+            &texts,
+            &["yellow fox".to_string(), "dog".to_string()],
+            &[katakana_2.clone()]
+        ));
+
+        assert!(check_word_mute_impl(
+            &texts,
+            &["yellow fox".to_string(), "mastodon".to_string()],
+            &[hiragana_1.clone(), katakana_1.clone()]
+        ));
+
+        assert!(check_word_mute_impl(
+            &texts,
+            &["😇".to_string(), "🥲".to_string(), "🥴".to_string()],
+            &[]
+        ));
+
+        assert!(!check_word_mute_impl(
+            &texts,
+            &["🙂".to_string(), "🥲".to_string(), "🥴".to_string()],
+            &[]
+        ));
+
+        assert!(check_word_mute_impl(&texts, &[], &[emoji.clone()]));
     }
 }

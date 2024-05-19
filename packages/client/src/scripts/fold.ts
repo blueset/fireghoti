@@ -68,6 +68,8 @@ export function foldNotifications(ns: entities.Notification[]) {
 					return `renote-${n.note.renote.id}`;
 				case "reaction":
 					return `reaction-${n.reaction}-of-${n.note.id}`;
+				case "pollVote":
+					return `pollVote-${n.note.id}`;
 				default: {
 					return `${n.id}`;
 				}
@@ -78,7 +80,11 @@ export function foldNotifications(ns: entities.Notification[]) {
 			function check(
 				ns: entities.Notification[],
 			): ns is FoldableNotification[] {
-				return represent.type === "renote" || represent.type === "reaction";
+				return (
+					represent.type === "renote" ||
+					represent.type === "reaction" ||
+					represent.type === "pollVote"
+				);
 			}
 			if (!check(ns)) {
 				return represent;

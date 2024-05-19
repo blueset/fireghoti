@@ -26,8 +26,8 @@ export async function readNotification(
 	if (result.affected === 0) return;
 
 	if (!(await Users.getHasUnreadNotification(userId)))
-		return postReadAllNotifications(userId);
-	else return postReadNotifications(userId, notificationIds);
+		return await postReadAllNotifications(userId);
+	else return await postReadNotifications(userId, notificationIds);
 }
 
 export async function readNotificationByQuery(
