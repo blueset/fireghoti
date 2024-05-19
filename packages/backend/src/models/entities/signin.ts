@@ -15,7 +15,7 @@ export class Signin {
 	@PrimaryColumn(id())
 	public id: string;
 
-	@Column("timestamp without time zone", {
+	@Column("timestamp with time zone", {
 		comment: "The created date of the Signin.",
 	})
 	public createdAt: Date;

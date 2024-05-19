@@ -14,7 +14,7 @@ pub struct Model {
     #[sea_orm(column_name = "noteId", primary_key, auto_increment = false, unique)]
     pub note_id: String,
     #[sea_orm(column_name = "expiresAt")]
-    pub expires_at: Option<DateTime>,
+    pub expires_at: Option<DateTimeWithTimeZone>,
     pub multiple: bool,
     pub choices: Vec<String>,
     pub votes: Vec<i32>,

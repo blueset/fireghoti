@@ -13,13 +13,13 @@ pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,
     #[sea_orm(column_name = "createdAt")]
-    pub created_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
     pub text: String,
     pub title: String,
     #[sea_orm(column_name = "imageUrl")]
     pub image_url: Option<String>,
     #[sea_orm(column_name = "updatedAt")]
-    pub updated_at: Option<DateTime>,
+    pub updated_at: Option<DateTimeWithTimeZone>,
     #[sea_orm(column_name = "showPopup")]
     pub show_popup: bool,
     #[sea_orm(column_name = "isGoodNews")]

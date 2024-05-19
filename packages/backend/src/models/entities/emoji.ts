@@ -7,7 +7,7 @@ export class Emoji {
 	@PrimaryColumn(id())
 	public id: string;
 
-	@Column("timestamp without time zone", {
+	@Column("timestamp with time zone", {
 		nullable: true,
 	})
 	public updatedAt: Date | null;

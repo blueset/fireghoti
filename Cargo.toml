@@ -5,7 +5,7 @@ resolver = "2"
 [workspace.dependencies]
 macro-rs = { path = "packages/macro-rs" }
 
-napi = { version = "2.16.6", default-features = false }
+napi = { git = "https://github.com/napi-rs/napi-rs.git", rev = "ca2cd5c35a0c39ec4a94e93c6c5695b681046df2", default-features = false }
 napi-derive = "2.16.5"
 napi-build = "2.1.3"
 

@@ -8,7 +8,7 @@ export class UserIp {
 	@PrimaryGeneratedColumn()
 	public id: string;
 
-	@Column("timestamp without time zone", {})
+	@Column("timestamp with time zone", {})
 	public createdAt: Date;
 
 	@Index()

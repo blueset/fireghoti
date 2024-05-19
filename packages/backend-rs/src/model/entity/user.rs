@@ -14,11 +14,11 @@ pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,
     #[sea_orm(column_name = "createdAt")]
-    pub created_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
     #[sea_orm(column_name = "updatedAt")]
-    pub updated_at: Option<DateTime>,
+    pub updated_at: Option<DateTimeWithTimeZone>,
     #[sea_orm(column_name = "lastFetchedAt")]
-    pub last_fetched_at: Option<DateTime>,
+    pub last_fetched_at: Option<DateTimeWithTimeZone>,
     pub username: String,
     #[sea_orm(column_name = "usernameLower")]
     pub username_lower: String,
@@ -62,7 +62,7 @@ pub struct Model {
     #[sea_orm(column_name = "followersUri")]
     pub followers_uri: Option<String>,
     #[sea_orm(column_name = "lastActiveDate")]
-    pub last_active_date: Option<DateTime>,
+    pub last_active_date: Option<DateTimeWithTimeZone>,
     #[sea_orm(column_name = "hideOnlineStatus")]
     pub hide_online_status: bool,
     #[sea_orm(column_name = "isDeleted")]
