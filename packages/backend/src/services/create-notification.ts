@@ -1,5 +1,4 @@
 import { publishMainStream } from "@/services/stream.js";
-import { pushNotification } from "@/services/push-notification.js";
 import {
 	Notifications,
 	Mutings,
@@ -17,6 +16,7 @@ import {
 import type { User } from "@/models/entities/user.js";
 import type { Notification } from "@/models/entities/notification.js";
 import { sendEmailNotification } from "./send-email-notification.js";
+import { NotificationConverter } from "@/server/api/mastodon/converters/notification.js";
 
 export async function createNotification(
 	notifieeId: User["id"],
@@ -86,12 +86,18 @@ export async function createNotification(
 		if (fresh == null) return; // 既に削除されているかもしれない
 		// We execute this before, because the server side "read" check doesnt work well with push notifications, the app and service worker will decide themself
 		// when it is best to show push notifications
-		pushNotification(notifieeId, "notification", packed);
-		// await sendPushNotification(
-		// 	notifieeId,
-		// 	PushNotificationKind.Generic,
-		// 	packed,
-		// );
+		await sendPushNotification(
+			notifieeId,
+			PushNotificationKind.Generic,
+			packed,
+		);
+
+		const userProfileLang = (await UserProfiles.findOneBy({ userId: notifieeId }))?.lang ?? undefined;
+		await sendPushNotification(
+			notifieeId,
+			PushNotificationKind.Mastodon,
+			await NotificationConverter.encodePushNotificationPayloadForRust(packed, userProfileLang),
+		);
 		if (fresh.isRead) return;
 
 		//#region ただしミュートしているユーザーからの通知なら無視

@@ -16,11 +16,11 @@ import { unique } from "@/prelude/array.js";
 import type { Note } from "@/models/entities/note.js";
 import type { SwSubscription } from "@/models/entities/sw-subscription.js";
 import { fetchMeta } from "backend-rs";
-import type { pushNotificationsTypes } from "@/services/push-notification.js";
 import { getNoteSummary } from "backend-rs";
 import { I18n } from "@/misc/i18n.js";
 
 import locales from "../../../../../../../locales/index.mjs";
+import { Packed } from "@/misc/schema";
 
 type NotificationType = (typeof notificationTypes)[number];
 
@@ -175,123 +175,95 @@ export class NotificationConverter {
 		};
 	}
 
-	public static async encodePushNotificationPayload<
-		T extends keyof pushNotificationsTypes,
-	>(
-		subscription: SwSubscription,
-		type: T,
-		body: pushNotificationsTypes[T],
+	public static async encodePushNotificationPayloadForRust(
+		body: Packed<"Notification">,
 		lang = "en-US",
 	): Promise<Partial<MastodonEntity.NotificationPayload>> {
-		if (!subscription.appAccessToken) return {};
 		const locale = locales[lang] || locales["en-US"];
 		const i18n = new I18n(locale);
 
-		const app = subscription.appAccessToken.appId
-			? await Apps.findOneBy({ id: subscription.appAccessToken.appId })
-			: null;
-		const access_token = subscription.appAccessToken.token;
 		let preferred_locale = lang;
 		let notification_id = "";
 		let notification_type = "others";
 		let icon: string | undefined = undefined;
-		let title = i18n.t("notificationType") + type;
+		let title = i18n.t("notificationType");
 		let description = "";
-		if (type === "notification") {
-			const notificationBody = body as pushNotificationsTypes["notification"];
-			preferred_locale = notificationBody.note?.lang ?? preferred_locale;
-			notification_id = notificationBody.id;
-			notification_type = await this.encodeNotificationTypeOrDefault(
-				notificationBody.type,
-			);
-			const effectiveNote =
-				notificationBody.note?.renote ?? notificationBody.note;
 
-			icon =
-				notificationBody.user?.avatarUrl ??
-				notificationBody.note?.user.avatarUrl ??
-				notificationBody.icon ??
-				undefined;
-			const displayName =
-				notificationBody.user?.name ||
-				(notificationBody.user?.host &&
-					`@${notificationBody.user?.username}@${notificationBody.user?.host}`) ||
-				(notificationBody.user?.username &&
-					`@${notificationBody.user?.username}`) ||
-				"Someone";
-			const username =
-				(notificationBody.user?.host &&
-					`@${notificationBody.user?.username}@${notificationBody.user?.host}`) ||
-				(notificationBody.user?.username &&
-					`@${notificationBody.user?.username}`) ||
-				"";
+		const notificationBody = body;
+		preferred_locale = notificationBody.note?.lang ?? preferred_locale;
+		notification_id = notificationBody.id;
+		notification_type = await this.encodeNotificationTypeOrDefault(
+			notificationBody.type,
+		);
+		const effectiveNote =
+			notificationBody.note?.renote ?? notificationBody.note;
 
-			switch (notificationBody.type) {
-				case "mention":
-					title = i18n.t("_notification.youGotMention", { name: displayName });
-					break;
-				case "reply":
-					title = i18n.t("_notification.youGotReply", { name: displayName });
-					break;
-					case "renote":
-					title = i18n.t("_notification.youRenoted", { name: displayName });
-					break;
-					case "quote":
-					title = i18n.t("_notification.youGotQuote", { name: displayName });
-					break;
-				case "reaction":
-					title = `${displayName} ${i18n.t("_notification.reacted")}`;
-					break;
-				case "pollVote":
-					title = i18n.t("_notification.youGotPoll", { name: displayName });
-					break;
-				case "pollEnded":
-					title = i18n.t("_notification.pollEnded");
-					break;
-				case "followRequestAccepted":
-					title = i18n.t("_notification.yourFollowRequestAccepted");
-					break;
-				case "groupInvited":
-					title = i18n.t("_notification.youWereInvitedToGroup", { userName: displayName });
-					break;
-				case "follow":
-					title = `${displayName} ${i18n.t("_notification.youWereFollowed")}`;
-					break;
-				case "receiveFollowRequest":
-					title = i18n.t("_notification.youReceivedFollowRequest");
-					break;
-				case "app":
-					title = `${notificationBody.header}`;
-					break;
-				default:
-					title = `${i18n.t("notificationType")} ${type} (${notificationBody.type})`;
-			}
-			description =
-				(effectiveNote && getNoteSummary(effectiveNote)) ||
-				notificationBody.body ||
-				username ||
-				"";
-		} else if (type === "unreadMessagingMessage") {
-			const notificationBody =
-				body as pushNotificationsTypes["unreadMessagingMessage"];
-			notification_id = notificationBody.id;
-			notification_type = "messaging";
-			icon = notificationBody.user?.avatarUrl ?? "";
-			description = notificationBody.text || "";
+		icon =
+			notificationBody.user?.avatarUrl ??
+			notificationBody.note?.user.avatarUrl ??
+			notificationBody.icon ??
+			undefined;
+		const displayName =
+			notificationBody.user?.name ||
+			(notificationBody.user?.host &&
+				`@${notificationBody.user?.username}@${notificationBody.user?.host}`) ||
+			(notificationBody.user?.username &&
+				`@${notificationBody.user?.username}`) ||
+			"Someone";
+		const username =
+			(notificationBody.user?.host &&
+				`@${notificationBody.user?.username}@${notificationBody.user?.host}`) ||
+			(notificationBody.user?.username &&
+				`@${notificationBody.user?.username}`) ||
+			"";
+
+		switch (notificationBody.type) {
+			case "mention":
+				title = i18n.t("_notification.youGotMention", { name: displayName });
+				break;
+			case "reply":
+				title = i18n.t("_notification.youGotReply", { name: displayName });
+				break;
+				case "renote":
+				title = i18n.t("_notification.youRenoted", { name: displayName });
+				break;
+				case "quote":
+				title = i18n.t("_notification.youGotQuote", { name: displayName });
+				break;
+			case "reaction":
+				title = `${displayName} ${i18n.t("_notification.reacted")}`;
+				break;
+			case "pollVote":
+				title = i18n.t("_notification.youGotPoll", { name: displayName });
+				break;
+			case "pollEnded":
+				title = i18n.t("_notification.pollEnded");
+				break;
+			case "followRequestAccepted":
+				title = i18n.t("_notification.yourFollowRequestAccepted");
+				break;
+			case "groupInvited":
+				title = i18n.t("_notification.youWereInvitedToGroup", { userName: displayName });
+				break;
+			case "follow":
+				title = `${displayName} ${i18n.t("_notification.youWereFollowed")}`;
+				break;
+			case "receiveFollowRequest":
+				title = i18n.t("_notification.youReceivedFollowRequest");
+				break;
+			case "app":
+				title = `${notificationBody.header}`;
+				break;
+			default:
+				title = `${i18n.t("notificationType")} ${notificationBody.type}`;
 		}
-
-		// App-specific compats
-		if (
-			app?.name === "Mastodon for Android" ||
-			app?.name === "Megalodon" ||
-			app?.name === "Moshidon"
-		) {
-			// Mastodon for Android (and forks) require notification_id to be convertible to a long int, but never use it.
-			notification_id = new Date().getTime().toString();
-		}
+		description =
+			(effectiveNote && getNoteSummary(effectiveNote)) ||
+			notificationBody.body ||
+			username ||
+			"";
 
 		return {
-			access_token,
 			preferred_locale,
 			notification_id,
 			notification_type,

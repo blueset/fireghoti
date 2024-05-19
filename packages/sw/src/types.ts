@@ -10,7 +10,6 @@ export type SwMessage = {
 	[x: string]: unknown;
 };
 
-// Defined also @/services/push-notification.ts#L7-L14
 type PushNotificationDataSourceMap = {
 	notification: entities.Notification;
 	unreadAntennaNote: {
