@@ -20,7 +20,8 @@ export class ScheduledNote {
 	@Index()
 	@Column({
 		...id(),
-		comment: "The ID of the temporarily created note that corresponds to the schedule.",
+		comment:
+			"The ID of the temporarily created note that corresponds to the schedule.",
 	})
 	public noteId: Note["id"];
 

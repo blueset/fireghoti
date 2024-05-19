@@ -1,8 +1,6 @@
 import type { MigrationInterface, QueryRunner } from "typeorm";
 
-export class CreateScheduledNote1714728200194
-	implements MigrationInterface
-{
+export class CreateScheduledNote1714728200194 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.query(
 			`CREATE TABLE "scheduled_note" (
