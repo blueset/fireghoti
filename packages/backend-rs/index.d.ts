@@ -901,6 +901,12 @@ export interface ReplyMuting {
   muteeId: string
   muterId: string
 }
+export interface ScheduledNote {
+  id: string
+  noteId: string
+  userId: string
+  scheduledAt: DateTimeWithTimeZone
+}
 export enum AntennaSrcEnum {
   All = 'all',
   Group = 'group',
