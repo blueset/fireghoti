@@ -176,6 +176,12 @@ pub async fn send_push_notification(
     };
     tracing::trace!("payload: {:#?}", payload);
 
+    let encoding = if kind == PushNotificationKind::Mastodon {
+        ContentEncoding::AesGcm
+    } else {
+        ContentEncoding::Aes128Gcm
+    };
+
     for subscription in subscriptions.iter() {
         if !subscription.send_read_message
             && [
@@ -217,12 +223,6 @@ pub async fn send_push_notification(
                 .await?;
             continue;
         }
-
-        let encoding = if kind == PushNotificationKind::Mastodon {
-            ContentEncoding::AesGcm
-        } else {
-            ContentEncoding::Aes128Gcm
-        };
 
         let mut message_builder = WebPushMessageBuilder::new(&subscription_info);
         message_builder.set_ttl(1000);
