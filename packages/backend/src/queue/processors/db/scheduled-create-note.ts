@@ -1,4 +1,4 @@
-import { Users, Notes, ScheduledNoteCreations } from "@/models/index.js";
+import { Users, Notes, ScheduledNotes } from "@/models/index.js";
 import type { DbUserScheduledCreateNoteData } from "@/queue/types.js";
 import { queueLogger } from "../../logger.js";
 import type Bull from "bull";
@@ -32,7 +32,7 @@ export async function scheduledCreateNote(
 		return;
 	}
 
-	await ScheduledNoteCreations.delete({
+	await ScheduledNotes.delete({
 		noteId: note.id,
 		userId: user.id,
 	});

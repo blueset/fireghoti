@@ -11,7 +11,7 @@ import {
 	Polls,
 	Channels,
 	Notes,
-	ScheduledNoteCreations,
+	ScheduledNote,
 } from "../index.js";
 import type { Packed } from "@/misc/schema.js";
 import { countReactions, decodeReaction, nyaify } from "backend-rs";
@@ -202,7 +202,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 		let scheduledAt: string | undefined;
 		if (note.visibility === "specified" && note.visibleUserIds.length === 0) {
 			scheduledAt = (
-				await ScheduledNoteCreations.findOneBy({
+				await ScheduledNote.findOneBy({
 					noteId: note.id,
 				})
 			)?.scheduledAt?.toISOString();
