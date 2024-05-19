@@ -18,7 +18,7 @@ export class NoteWatching {
 	public id: string;
 
 	@Index()
-	@Column("timestamp without time zone", {
+	@Column("timestamp with time zone", {
 		comment: "The created date of the NoteWatching.",
 	})
 	public createdAt: Date;

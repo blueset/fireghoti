@@ -20,7 +20,7 @@ pub struct Model {
     #[sea_orm(column_name = "fileIds")]
     pub file_ids: Vec<String>,
     #[sea_orm(column_name = "updatedAt")]
-    pub updated_at: DateTime,
+    pub updated_at: DateTimeWithTimeZone,
     pub emojis: Vec<String>,
 }
 

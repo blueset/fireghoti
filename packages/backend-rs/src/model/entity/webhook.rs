@@ -13,7 +13,7 @@ pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,
     #[sea_orm(column_name = "createdAt")]
-    pub created_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
     #[sea_orm(column_name = "userId")]
     pub user_id: String,
     pub name: String,
@@ -22,7 +22,7 @@ pub struct Model {
     pub secret: String,
     pub active: bool,
     #[sea_orm(column_name = "latestSentAt")]
-    pub latest_sent_at: Option<DateTime>,
+    pub latest_sent_at: Option<DateTimeWithTimeZone>,
     #[sea_orm(column_name = "latestStatus")]
     pub latest_status: Option<i32>,
 }

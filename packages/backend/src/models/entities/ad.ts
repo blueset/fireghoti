@@ -7,13 +7,13 @@ export class Ad {
 	public id: string;
 
 	@Index()
-	@Column("timestamp without time zone", {
+	@Column("timestamp with time zone", {
 		comment: "The created date of the Ad.",
 	})
 	public createdAt: Date;
 
 	@Index()
-	@Column("timestamp without time zone", {
+	@Column("timestamp with time zone", {
 		comment: "The expired date of the Ad.",
 	})
 	public expiresAt: Date;

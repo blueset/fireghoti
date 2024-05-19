@@ -28,7 +28,7 @@ export class UserSecurityKey {
 	})
 	public publicKey: string;
 
-	@Column("timestamp without time zone", {
+	@Column("timestamp with time zone", {
 		comment:
 			"The date of the last time the UserSecurityKey was successfully validated.",
 	})

@@ -17,7 +17,7 @@ pub struct Model {
     #[sea_orm(column_name = "publicKey")]
     pub public_key: String,
     #[sea_orm(column_name = "lastUsed")]
-    pub last_used: DateTime,
+    pub last_used: DateTimeWithTimeZone,
     pub name: String,
 }
 

@@ -14,7 +14,7 @@ pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,
     #[sea_orm(column_name = "createdAt")]
-    pub created_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
     #[sea_orm(column_name = "replyId")]
     pub reply_id: Option<String>,
     #[sea_orm(column_name = "renoteId")]
@@ -66,7 +66,7 @@ pub struct Model {
     #[sea_orm(column_name = "threadId")]
     pub thread_id: Option<String>,
     #[sea_orm(column_name = "updatedAt")]
-    pub updated_at: Option<DateTime>,
+    pub updated_at: Option<DateTimeWithTimeZone>,
     pub lang: Option<String>,
 }
 
