@@ -1274,7 +1274,8 @@ export enum PushNotificationKind {
   ReadAllChats = 'readAllChats',
   ReadAllChatsInTheRoom = 'readAllChatsInTheRoom',
   ReadNotifications = 'readNotifications',
-  ReadAllNotifications = 'readAllNotifications'
+  ReadAllNotifications = 'readAllNotifications',
+  Mastodon = 'mastodon'
 }
 export function sendPushNotification(receiverUserId: string, kind: PushNotificationKind, content: any): Promise<void>
 export function publishToChannelStream(channelId: string, userId: string): Promise<void>
