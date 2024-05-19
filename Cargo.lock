@@ -1812,14 +1812,12 @@ dependencies = [
 
 [[package]]
 name = "napi"
-version = "2.16.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dfc300228808a0e6aea5a58115c82889240bcf8dab16fc25ad675b33e454b368"
+version = "3.0.0-alpha.2"
+source = "git+https://github.com/napi-rs/napi-rs.git?rev=ca2cd5c35a0c39ec4a94e93c6c5695b681046df2#ca2cd5c35a0c39ec4a94e93c6c5695b681046df2"
 dependencies = [
  "bitflags 2.5.0",
  "chrono",
  "ctor",
- "napi-derive",
  "napi-sys",
  "once_cell",
  "serde",
@@ -1865,8 +1863,7 @@ dependencies = [
 [[package]]
 name = "napi-sys"
 version = "2.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "427802e8ec3a734331fec1035594a210ce1ff4dc5bc1950530920ab717964ea3"
+source = "git+https://github.com/napi-rs/napi-rs.git?rev=ca2cd5c35a0c39ec4a94e93c6c5695b681046df2#ca2cd5c35a0c39ec4a94e93c6c5695b681046df2"
 dependencies = [
  "libloading",
 ]
