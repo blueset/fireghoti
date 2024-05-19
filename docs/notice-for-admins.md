@@ -4,6 +4,8 @@ You can skip intermediate versions when upgrading from an old version, but pleas
 
 ## Unreleased
 
+### For all users
+
 We regret to inform you that the upgrade may take a long time to fix a regression we have introduced. The time required to upgrade should be the same as [v20240413](<https://firefish.dev/firefish/firefish/-/blob/main/docs/notice-for-admins.md#v20240413>). This is not a security fix, so please upgrade your server when you have enough time. We are sorry for the inconvenience.
 
 <details>
