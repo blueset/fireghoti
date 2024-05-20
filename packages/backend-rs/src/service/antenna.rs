@@ -26,6 +26,7 @@ pub enum Error {
     AntennaCheckErr(#[from] AntennaCheckError),
 }
 
+// for napi export
 // https://github.com/napi-rs/napi-rs/issues/2060
 type Antenna = antenna::Model;
 type Note = note::Model;
