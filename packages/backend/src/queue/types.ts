@@ -26,7 +26,7 @@ export type DbJobData =
 	| DbUserImportJobData
 	| DbUserDeleteJobData
 	| DbUserImportMastoPostJobData
-	| DbUserScheduledCreateNoteData;
+	| DbUserScheduledNoteData;
 
 export type DbUserJobData = {
 	user: ThinUser;
@@ -57,7 +57,7 @@ export type DbUserImportMastoPostJobData = {
 	parent: Note | null;
 };
 
-export type DbUserScheduledCreateNoteData = {
+export type DbUserScheduledNoteData = {
 	user: ThinUser;
 	option: {
 		visibility: string;

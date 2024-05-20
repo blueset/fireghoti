@@ -19,7 +19,7 @@ import define from "@/server/api/define.js";
 import { HOUR, genId } from "backend-rs";
 import { getNote } from "@/server/api/common/getters.js";
 import { langmap } from "firefish-js";
-import { createScheduledCreateNoteJob } from "@/queue/index.js";
+import { createScheduledNoteJob } from "@/queue/index.js";
 
 export const meta = {
 	tags: ["notes"],
@@ -353,7 +353,7 @@ export default define(meta, paramDef, async (ps, user) => {
 						scheduledAt: new Date(ps.scheduledAt as number),
 					});
 
-					createScheduledCreateNoteJob(
+					createScheduledNoteJob(
 						{
 							user: { id: user.id },
 							noteId: note.id,

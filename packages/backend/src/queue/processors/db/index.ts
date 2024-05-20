@@ -16,7 +16,7 @@ import { importMastoPost } from "./import-masto-post.js";
 import { importCkPost } from "./import-firefish-post.js";
 import { importBlocking } from "./import-blocking.js";
 import { importCustomEmojis } from "./import-custom-emojis.js";
-import { scheduledCreateNote } from "./scheduled-create-note.js";
+import { scheduledNote } from "./scheduled-note.js";
 
 const jobs = {
 	deleteDriveFiles,
@@ -35,7 +35,7 @@ const jobs = {
 	importCkPost,
 	importCustomEmojis,
 	deleteAccount,
-	scheduledCreateNote,
+	scheduledNote,
 } as Record<
 	string,
 	| Bull.ProcessCallbackFunction<DbJobData>

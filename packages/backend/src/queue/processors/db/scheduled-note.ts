@@ -1,5 +1,5 @@
 import { Users, Notes, ScheduledNotes } from "@/models/index.js";
-import type { DbUserScheduledCreateNoteData } from "@/queue/types.js";
+import type { DbUserScheduledNoteData } from "@/queue/types.js";
 import { queueLogger } from "../../logger.js";
 import type Bull from "bull";
 import deleteNote from "@/services/note/delete.js";
@@ -8,11 +8,11 @@ import { In } from "typeorm";
 
 const logger = queueLogger.createSubLogger("scheduled-post");
 
-export async function scheduledCreateNote(
-	job: Bull.Job<DbUserScheduledCreateNoteData>,
+export async function scheduledNote(
+	job: Bull.Job<DbUserScheduledNoteData>,
 	done: () => void,
 ): Promise<void> {
-	logger.info("Scheduled creating note...");
+	logger.info(`Creating: ${job.data.noteId}`);
 
 	const user = await Users.findOneBy({ id: job.data.user.id });
 	if (user == null) {
