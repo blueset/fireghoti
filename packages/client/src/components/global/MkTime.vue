@@ -52,48 +52,48 @@ const relative = computed<string>(() => {
 	if (props.mode === "absolute") return ""; // absoluteではrelativeを使わないので計算しない
 	if (invalid.value) return i18n.ts._ago.invalid;
 
-	const ago = Math.abs(now.value - _time.value) / 1000; /* ms */
-	const agoType = now.value > _time.value ? "_ago" : "_later";
+	const time = Math.abs(now.value - _time.value) / 1000; /* ms */
+	const agoOrLater = now.value > _time.value ? "_ago" : "_later";
 
-	if (ago >= 31536000) {
-		return i18n.t(`${agoType}.yearsAgo`, {
-			n: Math.floor(ago / 31536000).toString(),
+	if (time >= 31536000) {
+		return i18n.t(`${agoOrLater}.yearsAgo`, {
+			n: Math.floor(time / 31536000).toString(),
 		});
 	}
-	if (ago >= 2592000) {
-		return i18n.t(`${agoType}.monthsAgo`, {
-			n: Math.floor(ago / 2592000).toString(),
+	if (time >= 2592000) {
+		return i18n.t(`${agoOrLater}.monthsAgo`, {
+			n: Math.floor(time / 2592000).toString(),
 		});
 	}
-	if (ago >= 604800) {
-		return i18n.t(`${agoType}.weeksAgo`, {
-			n: Math.floor(ago / 604800).toString(),
+	if (time >= 604800) {
+		return i18n.t(`${agoOrLater}.weeksAgo`, {
+			n: Math.floor(time / 604800).toString(),
 		});
 	}
-	if (ago >= 86400) {
-		return i18n.t(`${agoType}.daysAgo`, {
-			n: Math.floor(ago / 86400).toString(),
+	if (time >= 86400) {
+		return i18n.t(`${agoOrLater}.daysAgo`, {
+			n: Math.floor(time / 86400).toString(),
 		});
 	}
-	if (ago >= 3600) {
-		return i18n.t(`${agoType}.hoursAgo`, {
-			n: Math.floor(ago / 3600).toString(),
+	if (time >= 3600) {
+		return i18n.t(`${agoOrLater}.hoursAgo`, {
+			n: Math.floor(time / 3600).toString(),
 		});
 	}
-	if (ago >= 60) {
-		return i18n.t(`${agoType}.minutesAgo`, {
-			n: (~~(ago / 60)).toString(),
+	if (time >= 60) {
+		return i18n.t(`${agoOrLater}.minutesAgo`, {
+			n: (~~(time / 60)).toString(),
 		});
 	}
-	if (ago >= 10) {
-		return i18n.t(`${agoType}.secondsAgo`, {
-			n: (~~(ago % 60)).toString(),
+	if (time >= 10) {
+		return i18n.t(`${agoOrLater}.secondsAgo`, {
+			n: (~~(time % 60)).toString(),
 		});
 	}
-	if (ago >= -1) {
-		return i18n.ts[agoType].justNow;
+	if (time >= -1) {
+		return i18n.ts[agoOrLater].justNow;
 	}
-	return i18n.ts[agoType].future;
+	return i18n.ts[agoOrLater].future;
 });
 
 let tickId: number | undefined;
@@ -110,13 +110,13 @@ function tick(forceUpdateTicker = false) {
 	}
 
 	const _now = Date.now();
-	const agoPrev = (now.value - _time.value) / 1000; /* ms */ // 現状のinterval
+	const currentInterval = (now.value - _time.value) / 1000; /* ms */
 
 	now.value = _now;
 
-	const ago = (now.value - _time.value) / 1000; /* ms */ // 次のinterval
-	const prev = agoPrev < 60 ? 10000 : agoPrev < 3600 ? 60000 : 180000;
-	const next = ago < 60 ? 10000 : ago < 3600 ? 60000 : 180000;
+	const newInterval = (now.value - _time.value) / 1000; /* ms */
+	const prev = currentInterval < 60 ? 10000 : currentInterval < 3600 ? 60000 : 180000;
+	const next = newInterval < 60 ? 10000 : newInterval < 3600 ? 60000 : 180000;
 
 	if (!tickId) {
 		tickId = window.setInterval(tick, next);
