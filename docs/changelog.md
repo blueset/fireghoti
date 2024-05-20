@@ -7,6 +7,7 @@ Critical security updates are indicated by the :warning: icon.
 
 ## Unreleased
 
+- Add scheduled posts
 - Fix bugs
 
 ## [v20240516](https://firefish.dev/firefish/firefish/-/merge_requests/10854/commits)
