@@ -6,7 +6,7 @@
   - git
   - Node.js
   - pnpm
-  - Rust toolchain
+  - Rust toolchain and [cargo-nextest](https://nexte.st/)
 	- Python 3
 	- Perl
   - FFmpeg

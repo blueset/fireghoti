@@ -40,6 +40,14 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 cargo --version
 ```
 
+### Cargo nextest
+
+Instructions can be found at [this page](https://nexte.st/book/pre-built-binaries).
+
+```sh
+curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C ${CARGO_HOME:-~/.cargo}/bin
+```
+
 ### PostgreSQL and PGroonga
 
 Firefish requires PostgreSQL v12 or later. We recommend that you install v12.x for the same reason as Node.js.
