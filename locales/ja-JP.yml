@@ -2073,3 +2073,15 @@ foldNotification: 同じ種類の通知をまとめて表示する
 slashQuote: 繋げて引用
 mergeRenotesInTimeline: タイムラインで同じ投稿のブーストをまとめる
 mergeThreadInTimeline: タイムラインで同じスレッドの投稿をまとめる
+_later:
+  future: 未来
+  minutesAgo: '{n}分後'
+  daysAgo: '{n}日後'
+  justNow: 間もなく
+  secondsAgo: '{n}秒後'
+  hoursAgo: '{n}時間後'
+  weeksAgo: '{n}週間後'
+  monthsAgo: '{n}ヶ月後'
+  yearsAgo: '{n}年後'
+scheduledPost: 予約投稿
+scheduledDate: 予定日
