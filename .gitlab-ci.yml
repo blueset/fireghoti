@@ -182,10 +182,9 @@ build:container:
     - job: test:build:client_only
       optional: true
   variables:
-    STORAGE_DRIVER: overlay2
+    STORAGE_DRIVER: overlay
   before_script:
     - buildah version
-    - buildah prune --all --force || true
     - echo "${CI_REGISTRY_PASSWORD}" | buildah login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
     - export IMAGE_TAG="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
     - export IMAGE_CACHE="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop/cache"
