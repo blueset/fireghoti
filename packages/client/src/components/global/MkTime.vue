@@ -115,7 +115,8 @@ function tick(forceUpdateTicker = false) {
 	now.value = _now;
 
 	const newInterval = (now.value - _time.value) / 1000; /* ms */
-	const prev = currentInterval < 60 ? 10000 : currentInterval < 3600 ? 60000 : 180000;
+	const prev =
+		currentInterval < 60 ? 10000 : currentInterval < 3600 ? 60000 : 180000;
 	const next = newInterval < 60 ? 10000 : newInterval < 3600 ? 60000 : 180000;
 
 	if (!tickId) {
