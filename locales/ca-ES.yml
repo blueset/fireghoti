@@ -1854,8 +1854,8 @@ _instanceMute:
   instanceMuteDescription2: Separar amb noves línies
   heading: Llista de servidors que cal silenciar
 _ago:
-  future: Futur
-  justNow: Ara mateix
+  future: futur
+  justNow: ara mateix
   minutesAgo: Fa {n}m
   hoursAgo: Fa {n}h
   daysAgo: Fa {n}d
@@ -2307,3 +2307,15 @@ i18nServerSet: Fes servir {language} per els nous clients.
 mergeThreadInTimeline: Fusiona diferents publicacions en un mateix fil a les línies
   de temps
 mergeRenotesInTimeline: Agrupa diferents impulsos d'una mateixa publicació
+_later:
+  future: futur
+  justNow: ara mateix
+  secondsAgo: en {n}s
+  minutesAgo: en {n}m
+  daysAgo: en {n}d
+  weeksAgo: en {n}s
+  monthsAgo: en {n}me
+  yearsAgo: en {n}a
+  hoursAgo: en {n}h
+scheduledDate: Programat per
+scheduledPost: Programa aquesta publicació
