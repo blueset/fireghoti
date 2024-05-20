@@ -78,6 +78,7 @@ test:build:
     - pnpm install --frozen-lockfile
     - pnpm run build:debug
     - pnpm run migrate
+    - psql --host postgres --user "${POSTGRES_USER}" --dbname "${POSTGRES_DB}" --command "$(cat docs/downgrade.sql)"
 
 test:build:backend_ts_only:
   stage: test
@@ -93,6 +94,7 @@ test:build:backend_ts_only:
           - package.json
           - Cargo.toml
           - Cargo.lock
+          - docs/downgrade.sql
       when: never 
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
       changes:
@@ -118,6 +120,7 @@ test:build:backend_ts_only:
     - pnpm install --frozen-lockfile
     - pnpm --filter 'backend' --filter 'firefish-js' --filter 'megalodon' run build:debug
     - pnpm run migrate
+    - psql --host postgres --user "${POSTGRES_USER}" --dbname "${POSTGRES_DB}" --command "$(cat docs/downgrade.sql)"
 
 test:build:client_only:
   stage: test
