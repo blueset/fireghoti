@@ -7,7 +7,7 @@ import {
 	Notes,
 	Channels,
 	Blockings,
-	ScheduledNote,
+	ScheduledNotes,
 } from "@/models/index.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { Note } from "@/models/entities/note.js";
@@ -346,7 +346,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		false,
 		delay
 			? async (note) => {
-					await ScheduledNote.insert({
+					await ScheduledNotes.insert({
 						id: genId(),
 						noteId: note.id,
 						userId: user.id,
