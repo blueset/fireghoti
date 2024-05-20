@@ -230,8 +230,6 @@ cargo:clippy:
         paths:
           - packages/backend-rs/**/*
           - packages/macro-rs/**/*
-          - Cargo.toml
-          - Cargo.lock
       when: always
   services: []
   before_script:
