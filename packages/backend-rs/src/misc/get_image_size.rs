@@ -69,7 +69,7 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
         return Err(Error::TooManyAttempts(url.to_string()));
     }
 
-    tracing::info!("retrieving image size from {}", url);
+    tracing::info!("retrieving image from {}", url);
 
     let mut response = http_client::client()?.get(url)?;
 

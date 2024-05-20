@@ -16,5 +16,5 @@ pub fn greet() {
     println!("{}", GREETING_MESSAGE);
 
     tracing::info!("Welcome to Firefish!");
-    tracing::info!("Firefish {VERSION}");
+    tracing::info!("Firefish v{VERSION}");
 }

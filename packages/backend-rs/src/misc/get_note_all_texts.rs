@@ -52,7 +52,7 @@ pub async fn all_texts(note: NoteLike) -> Result<Vec<String>, DbErr> {
                 texts.push(c);
             }
         } else {
-            tracing::warn!("nonexistent renote id: {:#?}", renote_id);
+            tracing::warn!("nonexistent renote id: {}", renote_id);
         }
     }
 
@@ -71,7 +71,7 @@ pub async fn all_texts(note: NoteLike) -> Result<Vec<String>, DbErr> {
                 texts.push(c);
             }
         } else {
-            tracing::warn!("nonexistent reply id: {:#?}", reply_id);
+            tracing::warn!("nonexistent reply id: {}", reply_id);
         }
     }
 

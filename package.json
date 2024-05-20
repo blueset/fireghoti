@@ -28,7 +28,7 @@
 		"mocha": "pnpm --filter backend run mocha",
 		"test": "pnpm run test:ts && pnpm run test:rs",
 		"test:ts": "pnpm run mocha",
-		"test:rs": "cargo test",
+		"test:rs": "cargo test --doc && cargo nextest run",
 		"format": "pnpm run format:ts; pnpm run format:rs",
 		"format:ts": "pnpm -r --parallel run format",
 		"format:rs": "cargo fmt --all --",

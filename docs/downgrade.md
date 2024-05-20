@@ -1,10 +1,11 @@
 # Downgrading to `v20240206`
 
-## systemd
+## systemd/pm2
 
 1. Stop the Firefish service
     ```sh
     sudo systemctl stop your-firefish-service.service
+		# or pm2 stop firefish
     ```
 1. Take a backup
 1. Revert database migrations
@@ -22,7 +23,7 @@
     ```
 1. Switch back to the `v20240206` tag
     ```sh
-    git switch v20240206
+    git switch --detach v20240206
     ```
 1. Rebuild Firefish
     ```sh
@@ -32,6 +33,7 @@
 1. Start the Firefish service and confirm that Firefish is downgraded
     ```sh
     sudo systemctl start your-firefish-service.service
+		# or pm2 start firefish
     ```
 
 ## Docker/Podman

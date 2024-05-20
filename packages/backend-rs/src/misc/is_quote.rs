@@ -1,5 +1,6 @@
 use crate::model::entity::note;
 
+// for napi export
 // https://github.com/napi-rs/napi-rs/issues/2060
 type Note = note::Model;
 
