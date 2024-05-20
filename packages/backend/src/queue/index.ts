@@ -459,7 +459,7 @@ export function createScheduledNoteJob(
 	options: DbUserScheduledNoteData,
 	delay: number,
 ) {
-	return dbQueue.add("scheduledCreateNote", options, {
+	return dbQueue.add("scheduledNote", options, {
 		delay,
 		removeOnComplete: true,
 		removeOnFail: true,
