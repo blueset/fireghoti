@@ -7,6 +7,7 @@ import {
 	Notes,
 	Channels,
 	Blockings,
+	ScheduledNotes,
 } from "@/models/index.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { Note } from "@/models/entities/note.js";
@@ -15,9 +16,10 @@ import { config } from "@/config.js";
 import { noteVisibilities } from "@/types.js";
 import { ApiError } from "@/server/api/error.js";
 import define from "@/server/api/define.js";
-import { HOUR } from "backend-rs";
+import { HOUR, genId } from "backend-rs";
 import { getNote } from "@/server/api/common/getters.js";
 import { langmap } from "firefish-js";
+import { createScheduledNoteJob } from "@/queue/index.js";
 
 export const meta = {
 	tags: ["notes"],
@@ -156,6 +158,7 @@ export const paramDef = {
 			},
 			required: ["choices"],
 		},
+		scheduledAt: { type: "integer", nullable: true },
 	},
 	anyOf: [
 		{
@@ -230,7 +233,7 @@ export default define(meta, paramDef, async (ps, user) => {
 
 		// Check blocking
 		if (renote.userId !== user.id) {
-			const isBlocked = await Blockings.exist({
+			const isBlocked = await Blockings.exists({
 				where: {
 					blockerId: renote.userId,
 					blockeeId: user.id,
@@ -257,7 +260,7 @@ export default define(meta, paramDef, async (ps, user) => {
 
 		// Check blocking
 		if (reply.userId !== user.id) {
-			const isBlocked = await Blockings.exist({
+			const isBlocked = await Blockings.exists({
 				where: {
 					blockerId: reply.userId,
 					blockeeId: user.id,
@@ -274,8 +277,19 @@ export default define(meta, paramDef, async (ps, user) => {
 			if (ps.poll.expiresAt < Date.now()) {
 				throw new ApiError(meta.errors.cannotCreateAlreadyExpiredPoll);
 			}
+			if (
+				ps.poll.expiresAt &&
+				ps.scheduledAt &&
+				ps.poll.expiresAt < ps.scheduledAt
+			) {
+				throw new ApiError(meta.errors.cannotCreateAlreadyExpiredPoll);
+			}
 		} else if (typeof ps.poll.expiredAfter === "number") {
-			ps.poll.expiresAt = Date.now() + ps.poll.expiredAfter;
+			if (ps.scheduledAt != null) {
+				ps.poll.expiresAt = ps.scheduledAt + ps.poll.expiredAfter;
+			} else {
+				ps.poll.expiresAt = Date.now() + ps.poll.expiredAfter;
+			}
 		}
 	}
 
@@ -288,31 +302,80 @@ export default define(meta, paramDef, async (ps, user) => {
 		}
 	}
 
+	let delay: number | null = null;
+	if (ps.scheduledAt) {
+		delay = ps.scheduledAt - Date.now();
+		if (delay < 0) {
+			delay = null;
+		}
+	}
+
 	// Create a post
-	const note = await create(user, {
-		createdAt: new Date(),
-		files: files,
-		poll: ps.poll
-			? {
-					choices: ps.poll.choices,
-					multiple: ps.poll.multiple,
-					expiresAt: ps.poll.expiresAt ? new Date(ps.poll.expiresAt) : null,
+	const note = await create(
+		user,
+		{
+			createdAt: new Date(),
+			files: files,
+			poll: ps.poll
+				? {
+						choices: ps.poll.choices,
+						multiple: ps.poll.multiple,
+						expiresAt: ps.poll.expiresAt ? new Date(ps.poll.expiresAt) : null,
+					}
+				: undefined,
+			text: ps.text || undefined,
+			lang: ps.lang,
+			reply,
+			renote,
+			cw: ps.cw,
+			localOnly: ps.localOnly,
+			...(delay != null
+				? {
+						visibility: "specified",
+						visibleUsers: [],
+					}
+				: {
+						visibility: ps.visibility,
+						visibleUsers,
+					}),
+			channel,
+			apMentions: ps.noExtractMentions ? [] : undefined,
+			apHashtags: ps.noExtractHashtags ? [] : undefined,
+			apEmojis: ps.noExtractEmojis ? [] : undefined,
+		},
+		false,
+		delay
+			? async (note) => {
+					await ScheduledNotes.insert({
+						id: genId(),
+						noteId: note.id,
+						userId: user.id,
+						scheduledAt: new Date(ps.scheduledAt as number),
+					});
+
+					createScheduledNoteJob(
+						{
+							user: { id: user.id },
+							noteId: note.id,
+							option: {
+								poll: ps.poll
+									? {
+											choices: ps.poll.choices,
+											multiple: ps.poll.multiple,
+											expiresAt: ps.poll.expiresAt
+												? new Date(ps.poll.expiresAt)
+												: null,
+										}
+									: undefined,
+								visibility: ps.visibility,
+								visibleUserIds: ps.visibleUserIds,
+							},
+						},
+						delay,
+					);
 				}
 			: undefined,
-		text: ps.text || undefined,
-		lang: ps.lang,
-		reply,
-		renote,
-		cw: ps.cw,
-		localOnly: ps.localOnly,
-		visibility: ps.visibility,
-		visibleUsers,
-		channel,
-		apMentions: ps.noExtractMentions ? [] : undefined,
-		apHashtags: ps.noExtractHashtags ? [] : undefined,
-		apEmojis: ps.noExtractEmojis ? [] : undefined,
-	});
-
+	);
 	return {
 		createdNote: await Notes.pack(note, user),
 	};

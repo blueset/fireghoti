@@ -55,6 +55,15 @@
 					></span>
 				</button>
 				<button
+					v-if="editId == null"
+					v-tooltip="i18n.ts.scheduledPost"
+					class="_button schedule"
+					:class="{ active: scheduledAt }"
+					@click="setScheduledAt"
+				>
+					<i :class="icon('ph-clock')"></i>
+				</button>
+				<button
 					ref="languageButton"
 					v-tooltip="i18n.ts.language"
 					class="_button language"
@@ -432,6 +441,7 @@ const recentHashtags = ref(
 	JSON.parse(localStorage.getItem("hashtags") || "[]"),
 );
 const imeText = ref("");
+const scheduledAt = ref<number | null>(null);
 
 const typing = throttle(3000, () => {
 	if (props.channel) {
@@ -770,6 +780,38 @@ function setVisibility() {
 		},
 		"closed",
 	);
+}
+
+async function setScheduledAt() {
+	function getDateStr(type: "date" | "time", value: number) {
+		const tmp = document.createElement("input");
+		tmp.type = type;
+		tmp.valueAsNumber = value - new Date().getTimezoneOffset() * 60000;
+		return tmp.value;
+	}
+
+	const at = scheduledAt.value ?? Date.now();
+
+	const result = await os.form(i18n.ts.scheduledPost, {
+		at_date: {
+			type: "date",
+			label: i18n.ts.scheduledDate,
+			default: getDateStr("date", at),
+		},
+		at_time: {
+			type: "time",
+			label: i18n.ts._poll.deadlineTime,
+			default: getDateStr("time", at),
+		},
+	});
+
+	if (!result.canceled && result.result) {
+		scheduledAt.value = Number(
+			new Date(`${result.result.at_date}T${result.result.at_time}`),
+		);
+	} else {
+		scheduledAt.value = null;
+	}
 }
 
 const language = ref<string | null>(
@@ -1180,6 +1222,7 @@ async function post() {
 				: visibility.value === "specified"
 					? visibleUsers.value.map((u) => u.id)
 					: undefined,
+		scheduledAt: scheduledAt.value,
 	};
 
 	if (withHashtags.value && hashtags.value && hashtags.value.trim() !== "") {
@@ -1228,6 +1271,7 @@ async function post() {
 				}
 				posting.value = false;
 				postAccount.value = null;
+				scheduledAt.value = null;
 				nextTick(() => autosize.update(textareaEl.value!));
 			});
 		})
@@ -1437,6 +1481,14 @@ onMounted(() => {
 			right: 0;
 			display: flex;
 			align-items: center;
+
+			> .schedule {
+				width: 34px;
+				height: 34px;
+				&.active {
+					color: var(--accent);
+				}
+			}
 
 			> .text-count {
 				opacity: 0.7;

@@ -48,6 +48,36 @@
 			<div v-if="pinned" class="info">
 				<i :class="icon('ph-push-pin')"></i>{{ i18n.ts.pinnedNote }}
 			</div>
+			<div v-if="isRenote" class="renote">
+				<i :class="icon('ph-rocket-launch')"></i>
+				<I18n :src="i18n.ts.renotedBy" tag="span">
+					<template #user>
+						<MkA
+							v-user-preview="note.userId"
+							class="name"
+							:to="userPage(note.user)"
+							@click.stop
+						>
+							<MkUserName :user="note.user" />
+						</MkA>
+					</template>
+				</I18n>
+				<div class="info">
+					<button
+						ref="renoteTime"
+						class="_button time"
+						@click.stop="showRenoteMenu()"
+					>
+						<i
+							v-if="isMyRenote"
+							:class="icon('ph-dots-three-outline dropdownIcon')"
+						></i>
+						<MkTime v-if="note.scheduledAt != null" :time="note.scheduledAt"/>
+						<MkTime v-else :time="note.createdAt" />
+					</button>
+					<MkVisibility :note="note" />
+				</div>
+			</div>
 			<div v-if="collapsedReply && appearNote.reply" class="info">
 				<MkAvatar class="avatar" :user="appearNote.reply.user" />
 				<MkUserName
@@ -194,7 +224,8 @@
 						class="created-at"
 						:to="notePage(appearNote)"
 					>
-						<MkTime :time="appearNote.createdAt" mode="absolute" />
+						<MkTime v-if="appearNote.scheduledAt != null" :time="appearNote.scheduledAt"/>
+						<MkTime v-else :time="appearNote.createdAt" mode="absolute" />
 					</MkA>
 					<MkA
 						v-if="appearNote.channel && !inChannel"
@@ -220,6 +251,7 @@
 						v-tooltip.noDelay.bottom="i18n.ts.reply"
 						class="button _button"
 						@click.stop="reply()"
+						:disabled="note.scheduledAt != null"
 					>
 						<i :class="icon('ph-arrow-u-up-left')"></i>
 						<template
@@ -234,6 +266,7 @@
 						:note="appearNote"
 						:count="appearNote.renoteCount"
 						:detailed-view="detailedView"
+						:disabled="note.scheduledAt != null"
 					/>
 					<XStarButtonNoEmoji
 						v-if="!enableEmojiReactions"
@@ -241,6 +274,7 @@
 						:note="appearNote"
 						:count="reactionCount"
 						:reacted="appearNote.myReaction != null"
+						:disabled="note.scheduledAt != null"
 					/>
 					<XStarButton
 						v-if="
@@ -250,6 +284,7 @@
 						ref="starButton"
 						class="button"
 						:note="appearNote"
+						:disabled="note.scheduledAt != null"
 					/>
 					<button
 						v-if="
@@ -260,6 +295,7 @@
 						v-tooltip.noDelay.bottom="i18n.ts.reaction"
 						class="button _button"
 						@click.stop="react()"
+						:disabled="note.scheduledAt != null"
 					>
 						<i :class="icon('ph-smiley')"></i>
 						<p v-if="reactionCount > 0 && hideEmojiViewer" class="count">{{reactionCount}}</p>
@@ -273,11 +309,12 @@
 						v-tooltip.noDelay.bottom="i18n.ts.removeReaction"
 						class="button _button reacted"
 						@click.stop="undoReact(appearNote)"
+						:disabled="note.scheduledAt != null"
 					>
 						<i :class="icon('ph-minus')"></i>
 						<p v-if="reactionCount > 0 && hideEmojiViewer" class="count">{{reactionCount}}</p>
 					</button>
-					<XQuoteButton class="button" :note="appearNote" />
+					<XQuoteButton class="button" :note="appearNote" :disabled="note.scheduledAt != null"/>
 					<button
 						v-if="
 							isSignedIn(me) &&

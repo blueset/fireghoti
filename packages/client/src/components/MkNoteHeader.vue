@@ -17,7 +17,8 @@
 			<div>
 				<div class="info">
 					<MkA class="created-at" :to="notePage(note)">
-						<MkTime :time="note.createdAt" />
+						<MkTime v-if="note.scheduledAt != null" :time="note.scheduledAt"/>
+						<MkTime v-else :time="note.createdAt" />
 						<i
 							v-if="note.updatedAt"
 							v-tooltip.noDelay="

@@ -1,5 +1,6 @@
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { Note } from "@/models/entities/note";
+import type { IPoll } from "@/models/entities/poll";
 import type { User } from "@/models/entities/user.js";
 import type { Webhook } from "@/models/entities/webhook";
 import type { IActivity } from "@/remote/activitypub/type.js";
@@ -24,7 +25,8 @@ export type DbJobData =
 	| DbUserImportPostsJobData
 	| DbUserImportJobData
 	| DbUserDeleteJobData
-	| DbUserImportMastoPostJobData;
+	| DbUserImportMastoPostJobData
+	| DbUserScheduledNoteData;
 
 export type DbUserJobData = {
 	user: ThinUser;
@@ -53,6 +55,16 @@ export type DbUserImportMastoPostJobData = {
 	post: any;
 	signatureCheck: boolean;
 	parent: Note | null;
+};
+
+export type DbUserScheduledNoteData = {
+	user: ThinUser;
+	option: {
+		visibility: string;
+		visibleUserIds?: string[] | null;
+		poll?: IPoll;
+	};
+	noteId: Note["id"];
 };
 
 export type ObjectStorageJobData =

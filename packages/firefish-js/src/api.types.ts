@@ -69,6 +69,7 @@ export type NoteSubmitReq = {
 		expiredAfter: number | null;
 	};
 	lang?: string;
+	scheduledAt?: number | null;
 };
 
 export type Endpoints = {

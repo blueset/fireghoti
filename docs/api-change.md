@@ -2,6 +2,10 @@
 
 Breaking changes are indicated by the :warning: icon.
 
+## Unreleased
+
+- Added `scheduledAt` optional parameter to `notes/create` (!10789)
+
 ## v20240516
 
 - :warning: `server-info` (an endpoint to get server hardware information) now requires credentials.

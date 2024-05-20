@@ -11,6 +11,7 @@ import {
 	Polls,
 	Channels,
 	Notes,
+	ScheduledNotes,
 } from "../index.js";
 import type { Packed } from "@/misc/schema.js";
 import { countReactions, decodeReaction, nyaify } from "backend-rs";
@@ -198,6 +199,15 @@ export const NoteRepository = db.getRepository(Note).extend({
 			host,
 		);
 
+		let scheduledAt: string | undefined;
+		if (note.visibility === "specified" && note.visibleUserIds.length === 0) {
+			scheduledAt = (
+				await ScheduledNotes.findOneBy({
+					noteId: note.id,
+				})
+			)?.scheduledAt?.toISOString();
+		}
+
 		const reactionEmoji = await populateEmojis(reactionEmojiNames, host);
 		const packed: Packed<"Note"> = await awaitAll({
 			id: note.id,
@@ -231,6 +241,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 						},
 					})
 				: undefined,
+			scheduledAt,
 			reactions: countReactions(note.reactions),
 			reactionEmojis: reactionEmoji,
 			emojis: noteEmoji,
