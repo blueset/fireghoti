@@ -88,8 +88,8 @@ importers:
         specifier: 2.1623.0
         version: 2.1623.0
       axios:
-        specifier: 1.6.8
-        version: 1.6.8
+        specifier: 1.7.0
+        version: 1.7.0
       backend-rs:
         specifier: workspace:*
         version: link:../backend-rs
@@ -3040,8 +3040,8 @@ packages:
   axios@1.2.2:
     resolution: {integrity: sha512-bz/J4gS2S3I7mpN/YZfGFTqhXTYzRho8Ay38w2otuuDR322KzFIWm/4W2K6gIwvWaws5n+mnb7D1lN9uD+QH6Q==}
 
-  axios@1.6.8:
-    resolution: {integrity: sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==}
+  axios@1.7.0:
+    resolution: {integrity: sha512-IiB0wQeKyPRdsFVhBgIo31FbzOyf2M6wYl7/NVutFwFBRMiAbjNiydJIHKeLmPugF4kJLfA1uWZ82Is2QzqqFA==}
 
   b4a@1.6.6:
     resolution: {integrity: sha512-5Tk1HLk6b6ctmjIkAcU/Ujv/1WqiDl0F0JdRCR80VsOcUlHcu7pWeWRlOqQLHfDEsVx9YH/aif5AG4ehoCtTmg==}
@@ -10494,7 +10494,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  axios@1.6.8:
+  axios@1.7.0:
     dependencies:
       follow-redirects: 1.15.6
       form-data: 4.0.0
@@ -11277,7 +11277,7 @@ snapshots:
   deepl-node@1.13.0:
     dependencies:
       '@types/node': 20.12.12
-      axios: 1.6.8
+      axios: 1.7.0
       form-data: 3.0.1
       loglevel: 1.9.1
     transitivePeerDependencies:
