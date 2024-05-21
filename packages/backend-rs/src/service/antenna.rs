@@ -1,5 +1,4 @@
-use crate::database::cache;
-use crate::database::{db_conn, redis_conn, redis_key, RedisConnError};
+use crate::database::{cache, db_conn, redis_conn, redis_key, RedisConnError};
 use crate::federation::acct::Acct;
 use crate::misc::check_hit_antenna::{check_hit_antenna, AntennaCheckError};
 use crate::model::entity::{antenna, note};

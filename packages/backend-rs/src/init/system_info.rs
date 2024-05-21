@@ -3,15 +3,15 @@ use sysinfo::System;
 
 pub type SysinfoPoisonError = PoisonError<MutexGuard<'static, System>>;
 
-// TODO: handle this in a more proper way when we move the entry point to backend-rs
-pub fn system() -> Result<MutexGuard<'static, System>, SysinfoPoisonError> {
-    pub static SYSTEM: OnceLock<Mutex<System>> = OnceLock::new();
-    SYSTEM.get_or_init(|| Mutex::new(System::new_all())).lock()
+static SYSTEM_INFO: OnceLock<Mutex<System>> = OnceLock::new();
+
+pub fn system_info() -> &'static std::sync::Mutex<sysinfo::System> {
+    SYSTEM_INFO.get_or_init(|| Mutex::new(System::new_all()))
 }
 
 #[crate::export]
 pub fn show_server_info() -> Result<(), SysinfoPoisonError> {
-    let system_info = system()?;
+    let system_info = system_info().lock()?;
 
     tracing::info!(
         "Hostname: {}",

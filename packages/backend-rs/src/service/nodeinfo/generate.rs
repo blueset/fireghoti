@@ -1,6 +1,5 @@
 use crate::config::CONFIG;
-use crate::database::cache;
-use crate::database::db_conn;
+use crate::database::{cache, db_conn};
 use crate::misc::meta::fetch_meta;
 use crate::model::entity::{note, user};
 use crate::service::nodeinfo::schema::*;

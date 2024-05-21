@@ -1,5 +1,6 @@
 use crate::database::db_conn;
-use crate::misc::{convert_host::to_puny, meta::fetch_meta};
+use crate::misc::convert_host::to_puny;
+use crate::misc::meta::fetch_meta;
 use crate::model::entity::emoji;
 use once_cell::sync::Lazy;
 use regex::Regex;
