@@ -21,9 +21,9 @@ pub enum Error {
 async fn statistics() -> Result<(u64, u64, u64, u64), DbErr> {
     let db = db_conn().await?;
 
-    let now = chrono::Local::now().naive_local();
-    const MONTH: chrono::TimeDelta = chrono::Duration::seconds(2592000000);
-    const HALF_YEAR: chrono::TimeDelta = chrono::Duration::seconds(15552000000);
+    let now = chrono::Utc::now();
+    const MONTH: chrono::TimeDelta = chrono::Duration::days(30);
+    const HALF_YEAR: chrono::TimeDelta = chrono::Duration::days(183);
 
     let local_users = user::Entity::find()
         .filter(user::Column::Host.is_null())
