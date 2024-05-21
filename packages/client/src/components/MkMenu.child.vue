@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, ref } from "vue";
+import { nextTick, onMounted, ref, watch } from "vue";
 import MkMenu from "./MkMenu.vue";
 import type { MenuItem } from "@/types/menu";
 
@@ -35,7 +35,13 @@ const align = "left";
 function setPosition() {
 	const rootRect = props.rootElement.getBoundingClientRect();
 	const rect = props.targetElement.getBoundingClientRect();
-	const left = props.targetElement.offsetWidth;
+	let left = props.targetElement.offsetWidth;
+	if (rootRect.x + left > window.innerWidth - rect.width) {
+		left = -rect.width;
+	}
+	if (rect.x + left < 0) {
+		left = -rect.x;
+	}
 	const top = rect.top - rootRect.top - 8;
 	el.value!.style.left = `${left}px`;
 	el.value!.style.top = `${top}px`;
@@ -55,6 +61,15 @@ onMounted(() => {
 		setPosition();
 	});
 });
+
+watch(
+	() => props.items,
+	() => {
+		nextTick(() => {
+			setPosition();
+		});
+	},
+);
 
 defineExpose({
 	checkHit: (ev: MouseEvent) => {

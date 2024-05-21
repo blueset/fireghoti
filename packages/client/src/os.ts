@@ -916,6 +916,10 @@ export function popupMenu(
 		width?: number;
 		viaKeyboard?: boolean;
 		noReturnFocus?: boolean;
+		anchor?: {
+			x: "left" | "center" | "right";
+			y: "top" | "center" | "bottom";
+		};
 	},
 ) {
 	return new Promise<void>((resolve, _reject) => {
@@ -929,6 +933,7 @@ export function popupMenu(
 			{
 				items,
 				src,
+				anchor: options?.anchor,
 				width: options?.width,
 				align: options?.align,
 				viaKeyboard: options?.viaKeyboard,
