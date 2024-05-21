@@ -1,18 +1,17 @@
 use crate::config::CONFIG;
 use crate::database::{cache, db_conn};
 use crate::federation::acct::Acct;
-use crate::misc::get_note_all_texts::{all_texts, NoteLike};
 use crate::model::entity::{antenna, blocking, following, note, sea_orm_active_enums::*};
 use sea_orm::{ColumnTrait, DbErr, EntityTrait, QueryFilter, QuerySelect};
 
 #[derive(thiserror::Error, Debug)]
 pub enum AntennaCheckError {
     #[error("Database error: {0}")]
-    DbErr(#[from] DbErr),
+    Db(#[from] DbErr),
     #[error("Cache error: {0}")]
-    CacheErr(#[from] cache::Error),
+    Cache(#[from] cache::Error),
     #[error("User profile not found: {0}")]
-    UserProfileNotFoundErr(String),
+    UserProfileNotFound(String),
 }
 
 fn match_all(space_separated_words: &str, text: &str, case_sensitive: bool) -> bool {
@@ -30,7 +29,8 @@ fn match_all(space_separated_words: &str, text: &str, case_sensitive: bool) -> b
 
 pub async fn check_hit_antenna(
     antenna: &antenna::Model,
-    note: note::Model,
+    note: &note::Model,
+    note_all_texts: &[String],
     note_author: &Acct,
 ) -> Result<bool, AntennaCheckError> {
     if note.visibility == NoteVisibilityEnum::Specified {
@@ -72,21 +72,8 @@ pub async fn check_hit_antenna(
 
     // "Home", "Group", "List" sources are currently disabled
 
-    let note_texts = all_texts(
-        NoteLike {
-            file_ids: note.file_ids,
-            user_id: note.user_id.clone(),
-            text: note.text,
-            cw: note.cw,
-            renote_id: note.renote_id,
-            reply_id: note.reply_id,
-        },
-        false,
-    )
-    .await?;
-
     let has_keyword = antenna.keywords.iter().any(|words| {
-        note_texts
+        note_all_texts
             .iter()
             .any(|text| match_all(words, text, antenna.case_sensitive))
     });
@@ -96,7 +83,7 @@ pub async fn check_hit_antenna(
     }
 
     let has_excluded_word = antenna.exclude_keywords.iter().any(|words| {
-        note_texts
+        note_all_texts
             .iter()
             .any(|text| match_all(words, text, antenna.case_sensitive))
     });

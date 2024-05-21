@@ -1,7 +1,8 @@
 use crate::database::{cache, db_conn, redis_conn, redis_key, RedisConnError};
 use crate::federation::acct::Acct;
-use crate::misc::check_hit_antenna::{check_hit_antenna, AntennaCheckError};
+use crate::misc::get_note_all_texts::{all_texts, NoteLike};
 use crate::model::entity::{antenna, note};
+use crate::service::antenna::check_hit::{check_hit_antenna, AntennaCheckError};
 use crate::service::stream;
 use crate::util::id::{get_timestamp, InvalidIdErr};
 use redis::{streams::StreamMaxlen, AsyncCommands, RedisError};
@@ -46,15 +47,29 @@ async fn antennas() -> Result<Vec<Antenna>, Error> {
 pub async fn update_antennas_on_new_note(
     note: Note,
     note_author: &Acct,
-    note_muted_users: Vec<String>,
+    note_muted_users: &[String],
 ) -> Result<(), Error> {
+    let note_cloned = note.clone();
+    let note_all_texts = all_texts(
+        NoteLike {
+            file_ids: note.file_ids,
+            user_id: note.user_id,
+            text: note.text,
+            cw: note.cw,
+            renote_id: note.renote_id,
+            reply_id: note.reply_id,
+        },
+        false,
+    )
+    .await?;
+
     // TODO: do this in parallel
     for antenna in antennas().await?.iter() {
         if note_muted_users.contains(&antenna.user_id) {
             continue;
         }
-        if check_hit_antenna(antenna, note.clone(), note_author).await? {
-            add_note_to_antenna(&antenna.id, &note).await?;
+        if check_hit_antenna(antenna, &note_cloned, &note_all_texts, note_author).await? {
+            add_note_to_antenna(&antenna.id, &note_cloned).await?;
         }
     }
 
