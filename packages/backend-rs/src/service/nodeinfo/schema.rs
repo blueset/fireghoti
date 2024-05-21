@@ -252,12 +252,21 @@ mod unit_test {
         assert_eq!(parsed_2.software.version, "10.102.699-m544");
 
         let json_str_3 = r##"{"metadata":{"enableGlobalTimeline":true,"enableGuestTimeline":false,"enableLocalTimeline":true,"enableRecommendedTimeline":false,"maintainer":{"name":"Firefish dev team"},"nodeDescription":"","nodeName":"Firefish","repositoryUrl":"https://firefish.dev/firefish/firefish","themeColor":"#F25A85"},"openRegistrations":false,"protocols":["activitypub"],"services":{"inbound":[],"outbound":["atom1.0","rss2.0"]},"software":{"homepage":"https://firefish.dev/firefish/firefish","name":"firefish","repository":"https://firefish.dev/firefish/firefish","version":"20240504"},"usage":{"localPosts":23857,"users":{"activeHalfyear":7,"activeMonth":7,"total":9}},"version":"2.1"}"##;
-        let parsed_3: Nodeinfo20 = serde_json::from_str(json_str_3).unwrap();
+        let parsed_3: Nodeinfo21 = serde_json::from_str(json_str_3).unwrap();
         let serialized_3 = serde_json::to_string(&parsed_3).unwrap();
-        let reparsed_3: Nodeinfo20 = serde_json::from_str(&serialized_3).unwrap();
+        let reparsed_3: Nodeinfo21 = serde_json::from_str(&serialized_3).unwrap();
 
         assert_eq!(parsed_3, reparsed_3);
         assert_eq!(parsed_3.software.name, "firefish");
         assert_eq!(parsed_3.software.version, "20240504");
+
+        let json_str_4 = r#"{"version":"2.1","software":{"name":"activity-relay","version":"2.0.5","repository":"https://github.com/yukimochi/Activity-Relay"},"protocols":["activitypub"],"services":{"inbound":[],"outbound":[]},"openRegistrations":true,"usage":{"users":{"total":1,"activeMonth":1,"activeHalfyear":1}},"metadata":{}}"#;
+        let parsed_4: Nodeinfo21 = serde_json::from_str(json_str_4).unwrap();
+        let serialized_4 = serde_json::to_string(&parsed_4).unwrap();
+        let reparsed_4: Nodeinfo21 = serde_json::from_str(&serialized_4).unwrap();
+
+        assert_eq!(parsed_4, reparsed_4);
+        assert_eq!(parsed_4.software.name, "activity-relay");
+        assert_eq!(parsed_4.software.version, "2.0.5");
     }
 }
