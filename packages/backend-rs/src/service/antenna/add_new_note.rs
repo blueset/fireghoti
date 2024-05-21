@@ -36,11 +36,13 @@ type Note = note::Model;
 async fn antennas() -> Result<Vec<Antenna>, Error> {
     const CACHE_KEY: &str = "antennas";
 
-    Ok(cache::get::<Vec<Antenna>>(CACHE_KEY).await?.unwrap_or({
+    if let Some(antennas) = cache::get::<Vec<Antenna>>(CACHE_KEY).await? {
+        Ok(antennas)
+    } else {
         let antennas = antenna::Entity::find().all(db_conn().await?).await?;
         cache::set(CACHE_KEY, &antennas, 5 * 60).await?;
-        antennas
-    }))
+        Ok(antennas)
+    }
 }
 
 #[crate::export]
