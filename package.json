@@ -5,7 +5,7 @@
 		"type": "git",
 		"url": "https://firefish.dev/firefish/firefish.git"
 	},
-	"packageManager": "pnpm@9.1.1",
+	"packageManager": "pnpm@9.1.2",
 	"private": true,
 	"scripts": {
 		"rebuild": "pnpm run clean && pnpm run build",
@@ -48,7 +48,7 @@
 		"@biomejs/cli-linux-x64": "1.7.3",
 		"@types/node": "20.12.12",
 		"execa": "9.1.0",
-		"pnpm": "9.1.1",
+		"pnpm": "9.1.2",
 		"typescript": "5.4.5"
 	}
 }
