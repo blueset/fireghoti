@@ -38,7 +38,11 @@
 
 <script lang="ts" setup>
 import { ref, watch } from "vue";
-import type { Widget, WidgetComponentExpose } from "./widget";
+import type {
+	WidgetComponentExpose,
+	WidgetComponentProps,
+	WidgetComponentEmits,
+} from "./widget";
 import { useWidgetPropsManager } from "./widget";
 import MarqueeText from "@/components/MkMarquee.vue";
 import type { GetFormResultType } from "@/scripts/form";
@@ -85,11 +89,8 @@ const widgetPropsDef = {
 
 type WidgetProps = GetFormResultType<typeof widgetPropsDef>;
 
-// 現時点ではvueの制限によりimportしたtypeをジェネリックに渡せない
-// const props = defineProps<WidgetComponentProps<WidgetProps>>();
-// const emit = defineEmits<WidgetComponentEmits<WidgetProps>>();
-const props = defineProps<{ widget?: Widget<WidgetProps> }>();
-const emit = defineEmits<{ (ev: "updateProps", props: WidgetProps) }>();
+const props = defineProps<WidgetComponentProps<WidgetProps>>();
+const emit = defineEmits<WidgetComponentEmits<WidgetProps>>();
 
 const { widgetProps, configure } = useWidgetPropsManager(
 	name,

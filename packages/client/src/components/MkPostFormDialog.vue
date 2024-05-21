@@ -51,9 +51,7 @@ const props = defineProps<{
 	];
 }>();
 
-const emit = defineEmits<{
-	(ev: "closed"): void;
-}>();
+const emit = defineEmits<(ev: "closed") => void>();
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 const form = shallowRef<InstanceType<typeof MkPostForm>>();
