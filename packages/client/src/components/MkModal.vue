@@ -250,7 +250,7 @@ const align = () => {
 	if (props.anchor.x === "center") {
 		left = x + props.src.offsetWidth / 2 - width / 2;
 	} else if (props.anchor.x === "left") {
-		// TODO
+		left = x + props.src.offsetWidth - width;
 	} else if (props.anchor.x === "right") {
 		left = x + props.src.offsetWidth;
 	}
@@ -317,6 +317,9 @@ const align = () => {
 		top = MARGIN;
 	}
 
+	if (left > window.innerWidth - width - MARGIN) {
+		left = window.innerWidth - width - MARGIN;
+	}
 	if (left < 0) {
 		left = 0;
 	}
