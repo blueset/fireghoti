@@ -48,14 +48,12 @@ impl From<Acct> for String {
     }
 }
 
-#[crate::ts_only_warn("Use `acct.parse().unwrap()` or `Acct::from_str(acct).unwrap()` instead.")]
-#[crate::export]
+#[crate::ts_export]
 pub fn string_to_acct(acct: &str) -> Acct {
     Acct::from_str(acct).unwrap()
 }
 
-#[crate::ts_only_warn("Use `acct.to_string()` instead.")]
-#[crate::export]
+#[crate::ts_export]
 pub fn acct_to_string(acct: &Acct) -> String {
     acct.to_string()
 }

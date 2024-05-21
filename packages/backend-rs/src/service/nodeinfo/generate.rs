@@ -130,12 +130,12 @@ pub async fn nodeinfo_2_0() -> Result<Nodeinfo20, Error> {
     Ok(nodeinfo_2_1().await?.into())
 }
 
-#[crate::export(js_name = "nodeinfo_2_1")]
+#[crate::ts_export(js_name = "nodeinfo_2_1")]
 pub async fn nodeinfo_2_1_as_json() -> Result<serde_json::Value, Error> {
     Ok(serde_json::to_value(nodeinfo_2_1().await?)?)
 }
 
-#[crate::export(js_name = "nodeinfo_2_0")]
+#[crate::ts_export(js_name = "nodeinfo_2_0")]
 pub async fn nodeinfo_2_0_as_json() -> Result<serde_json::Value, Error> {
     Ok(serde_json::to_value(nodeinfo_2_0().await?)?)
 }
