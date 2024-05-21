@@ -72,14 +72,17 @@ pub async fn check_hit_antenna(
 
     // "Home", "Group", "List" sources are currently disabled
 
-    let note_texts = all_texts(NoteLike {
-        file_ids: note.file_ids,
-        user_id: note.user_id.clone(),
-        text: note.text,
-        cw: note.cw,
-        renote_id: note.renote_id,
-        reply_id: note.reply_id,
-    })
+    let note_texts = all_texts(
+        NoteLike {
+            file_ids: note.file_ids,
+            user_id: note.user_id.clone(),
+            text: note.text,
+            cw: note.cw,
+            renote_id: note.renote_id,
+            reply_id: note.reply_id,
+        },
+        false,
+    )
     .await?;
 
     let has_keyword = antenna.keywords.iter().any(|words| {

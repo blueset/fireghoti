@@ -36,7 +36,7 @@ pub async fn check_word_mute(
         Ok(false)
     } else {
         Ok(check_word_mute_impl(
-            &all_texts(note).await?,
+            &all_texts(note, true).await?,
             muted_words,
             muted_patterns,
         ))
