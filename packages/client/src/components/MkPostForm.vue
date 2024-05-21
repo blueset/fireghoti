@@ -55,15 +55,6 @@
 					></span>
 				</button>
 				<button
-					v-if="editId == null"
-					v-tooltip="i18n.ts.scheduledPost"
-					class="_button schedule"
-					:class="{ active: scheduledAt }"
-					@click="setScheduledAt"
-				>
-					<i :class="icon('ph-clock')"></i>
-				</button>
-				<button
 					ref="languageButton"
 					v-tooltip="i18n.ts.language"
 					class="_button language"
@@ -265,13 +256,12 @@
 				>
 					<i :class="icon('ph-plug')"></i>
 				</button>
-				<!--	v-if="showMfmCheatsheet" -->
 				<button
-					v-tooltip="i18n.ts._mfm.cheatSheet"
-					class="_button right"
-					@click="openCheatSheet"
+					v-tooltip="i18n.ts.more"
+					class="_button"
+					@click="showMoreMenu"
 				>
-					<i :class="icon('ph-question')"></i>
+					<i :class="icon('ph-dots-three-outline')"></i>
 				</button>
 				<div v-if="showBigPostButton">
 					<button
@@ -553,7 +543,7 @@ if (
 		(props.reply.user.host != null && props.reply.user.host !== host))
 ) {
 	text.value = `@${props.reply.user.username}${
-		props.reply.user.host != null ? "@" + toASCII(props.reply.user.host) : ""
+		props.reply.user.host != null ? `@${toASCII(props.reply.user.host)}` : ""
 	} `;
 }
 
@@ -782,7 +772,7 @@ function setVisibility() {
 	);
 }
 
-async function setScheduledAt() {
+async function setSchedule() {
 	function getDateStr(type: "date" | "time", value: number) {
 		const tmp = document.createElement("input");
 		tmp.type = type;
@@ -1320,8 +1310,30 @@ async function insertEmoji(ev: MouseEvent) {
 	);
 }
 
-async function openCheatSheet(ev: MouseEvent) {
+async function openCheatSheet(_ev: MouseEvent) {
 	os.popup(XCheatSheet, {}, {}, "closed");
+}
+
+function showMoreMenu(ev: MouseEvent) {
+	os.popupMenu(
+		[
+			{
+				type: "button",
+				text: i18n.ts.scheduledPost,
+				icon: `${icon("ph-clock")}`,
+				accent: scheduledAt.value != null,
+				hidden: props.editId != null,
+				action: setSchedule,
+			},
+			{
+				type: "button",
+				text: i18n.ts._mfm.cheatSheet,
+				icon: `${icon("ph-question")}`,
+				action: openCheatSheet,
+			},
+		],
+		(ev.currentTarget ?? ev.target) as HTMLElement,
+	);
 }
 
 function showActions(ev: MouseEvent) {
@@ -1481,14 +1493,6 @@ onMounted(() => {
 			right: 0;
 			display: flex;
 			align-items: center;
-
-			> .schedule {
-				width: 34px;
-				height: 34px;
-				&.active {
-					color: var(--accent);
-				}
-			}
 
 			> .text-count {
 				opacity: 0.7;
@@ -1695,7 +1699,7 @@ onMounted(() => {
 		}
 	}
 
-	&.max-width_500px {
+	&.max-width_500px, &.widget {
 		> header {
 			height: 50px;
 
@@ -1732,17 +1736,11 @@ onMounted(() => {
 
 			> footer {
 				padding: 0 8px 8px 8px;
-			}
-		}
-	}
 
-	&.max-width_310px {
-		> .form {
-			> footer {
 				> button {
 					font-size: 14px;
-					width: 44px;
-					height: 44px;
+					width: 42px;
+					height: 42px;
 				}
 			}
 		}
