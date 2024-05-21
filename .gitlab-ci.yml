@@ -160,7 +160,7 @@ test:build:client_only:
 
 build:container:
   stage: build
-  image: quay.io/buildah/stable:latest
+  image: docker.io/debian:bookworm-slim
   services: []
   rules:
     - if: $BUILD == 'false'
@@ -187,19 +187,23 @@ build:container:
   variables:
     STORAGE_DRIVER: overlay
   before_script:
-    - buildah version
+    - apt-get update && apt-get -y upgrade
+    - apt-get install -y --no-install-recommends ca-certificates fuse-overlayfs
+    - echo 'deb https://deb.debian.org/debian trixie main' | tee /etc/apt/sources.list
+    - apt-get update && apt-get install -y --no-install-recommends --target-release trixie buildah
     - echo "${CI_REGISTRY_PASSWORD}" | buildah login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
     - export IMAGE_TAG="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
     - export IMAGE_CACHE="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop/cache"
+    - buildah version
   script:
     - |-
       buildah build \
         --isolation chroot \
-        --platform linux/amd64 \
         --device=/dev/fuse:rw \
         --security-opt seccomp=unconfined \
         --security-opt apparmor=unconfined \
         --cap-add all \
+        --platform linux/amd64 \
         --layers \
         --cache-to "${IMAGE_CACHE}" \
         --cache-from "${IMAGE_CACHE}" \
