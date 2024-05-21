@@ -24,6 +24,16 @@ Therefore, we have contributed to napi-rs to add support for `DateTime<FixedOffs
 
 </details>
 
+### For systemd/pm2 users
+
+There is a bug where `pnpm install --frozen-lockfile` may fail when using Node v22 on Linux 6.9.x ([GitHub issue](<https://github.com/nodejs/node/issues/53051>)). We recommend that you avoid this combination until the issue is resolved.
+
+To check your Linux kernel version, run:
+
+```sh
+uname --kernel-release
+```
+
 ## v20240516
 
 ### For all users
