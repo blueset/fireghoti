@@ -12,7 +12,7 @@ We regret to inform you that the upgrade may take a long time to fix a regressio
 
 There are two data types in PostgreSQL to store time: `timestamptz` (`timestamp with time zone`) and `timestamp` (`timestamp without time zone`) [[ref]](<https://www.postgresql.org/docs/current/datatype-datetime.html>).
 
-In Node.js, we manipulate the database using [TypeORM](<https://typeorm.io/>). TypeORM handles time data as a JavaScript `Date` object. Since `Date` doesn't have timezone information [[ref]](<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_components_and_time_zones>), we don't use the timezone information in the Node.js backend, and both `timestamptz` and `timestamp` behave in the same way. (Technically, the type names are a little confusing, and `timestamptz` (`timestamp with time zone`) doesn't store the timezone data. Please read PostgreSQL documentation for more information.)
+In Node.js, we manipulate the database using [TypeORM](<https://typeorm.io/>). TypeORM handles time data as a JavaScript `Date` object. Since `Date` doesn't have timezone information [[ref]](<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_components_and_time_zones>), we don't use the timezone information in the Node.js backend, and both `timestamptz` and `timestamp` behave in the same way. (Technically, the type names are a little confusing, and `timestamptz` (`timestamp with time zone`) doesn't store the timezone data either. Please read PostgreSQL documentation for more information.)
 
 In Rust, we manipulate the database using [SeaORM](<https://www.sea-ql.org/SeaORM/>), which does distinguish between `timestamptz` and `timestamp`. `timestamptz` is converted to [`DateTime<FixedOffset>`](<https://docs.rs/chrono/latest/chrono/struct.DateTime.html>) type, whereas `timestamp` is converted to [`NaiveDateTime`](<https://docs.rs/chrono/latest/chrono/struct.NaiveDateTime.html>).
 
@@ -26,7 +26,7 @@ Therefore, we have contributed to napi-rs to add support for `DateTime<FixedOffs
 
 ### For systemd/pm2 users
 
-There is a bug where `pnpm install --frozen-lockfile` may fail when using Node v22 on Linux 6.9.x ([GitHub issue](<https://github.com/nodejs/node/issues/53051>)). We recommend that you avoid this combination until the issue is resolved.
+There is a bug where `pnpm install --frozen-lockfile` may fail on Linux 6.9.x ([GitHub issue](<https://github.com/nodejs/node/issues/53051>)).
 
 To check your Linux kernel version, run:
 
