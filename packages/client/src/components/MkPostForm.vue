@@ -1369,27 +1369,6 @@ function showMoreMenu(ev: MouseEvent) {
 	os.popupMenu(menu, (ev.currentTarget ?? ev.target) as HTMLElement);
 }
 
-// function showActions(ev: MouseEvent) {
-// 	os.popupMenu(
-// 		postFormActions.map((action) => ({
-// 			text: action.title,
-// 			action: () => {
-// 				action.handler(
-// 					{
-// 						text: text.value,
-// 					},
-// 					(key, value) => {
-// 						if (key === "text") {
-// 							text.value = value;
-// 						}
-// 					},
-// 				);
-// 			},
-// 		})),
-// 		(ev.currentTarget ?? ev.target) as HTMLElement,
-// 	);
-// }
-
 const postAccount = ref<entities.UserDetailed | null>(null);
 
 function openAccountMenu(ev: MouseEvent) {
@@ -1772,8 +1751,8 @@ onMounted(() => {
 
 				> button {
 					font-size: 14px;
-					width: 42px;
-					height: 42px;
+					width: 44px;
+					height: 44px;
 				}
 			}
 		}
