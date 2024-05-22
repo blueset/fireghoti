@@ -13,7 +13,7 @@
 		<i
 			v-else-if="note.visibility === 'specified' && note.scheduledAt"
 			ref="specified"
-			v-tooltip="`scheduled at ${note.scheduledAt}`"
+			v-tooltip="i18n.t('scheduledPostAt', { time: note.scheduledAt })"
 			:class="icon('ph-clock')"
 		></i>
 		<i

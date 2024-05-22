@@ -96,15 +96,7 @@
 					/>
 					<i
 						v-else
-						:class="
-							icon(
-								reply
-									? 'ph-arrow-u-up-left'
-									: renote
-										? 'ph-quotes'
-										: 'ph-paper-plane-tilt',
-							)
-						"
+						:class="submitIcon"
 					></i>
 				</button>
 			</div>
@@ -142,14 +134,28 @@
 				</div>
 			</div>
 			<MkInfo
-				v-if="hasNotSpecifiedMentions"
+				v-if="hasNotSpecifiedMentions && visibility === 'specified'"
 				warn
-				class="hasNotSpecifiedMentions"
-				>{{ i18n.ts.notSpecifiedMentionWarning }} -
+				class="form-info"
+			>
+				{{ i18n.ts.notSpecifiedMentionWarning }} -
 				<button class="_textButton" @click="addMissingMention()">
 					{{ i18n.ts.add }}
-				</button></MkInfo
+				</button>
+			</MkInfo>
+			<MkInfo
+				v-if="scheduledAt"
+				class="form-info"
 			>
+				<I18n
+					:src="i18n.ts.scheduledPostAt"
+					tag="span"
+				>
+					<template #time>
+						<MkTime :time="scheduledAt"></MkTime>
+					</template>
+				</I18n>
+			</MkInfo>
 			<input
 				v-show="useCw"
 				ref="cwInputEl"
@@ -226,13 +232,13 @@
 				>
 					<i :class="icon('ph-eye-slash')"></i>
 				</button>
-				<button
+				<!-- <button
 					v-tooltip="i18n.ts.mention"
 					class="_button"
 					@click="insertMention"
 				>
 					<i :class="icon('ph-at')"></i>
-				</button>
+				</button> -->
 				<button
 					v-tooltip="i18n.ts.hashtags"
 					class="_button"
@@ -249,16 +255,8 @@
 					<i :class="icon('ph-smiley')"></i>
 				</button>
 				<button
-					v-if="postFormActions.length > 0"
-					v-tooltip="i18n.ts.plugin"
-					class="_button"
-					@click="showActions"
-				>
-					<i :class="icon('ph-plug')"></i>
-				</button>
-				<button
 					v-tooltip="i18n.ts.more"
-					class="_button"
+					class="_button right"
 					@click="showMoreMenu"
 				>
 					<i :class="icon('ph-dots-three-outline')"></i>
@@ -273,13 +271,7 @@
 					>
 						{{ submitText
 						}}<i
-							:class="
-								reply
-									? 'ph-arrow-u-up-left ph-bold ph-lg'
-									: renote
-										? 'ph-quotes ph-bold ph-lg'
-										: 'ph-paper-plane-tilt ph-bold ph-lg'
-							"
+							:class="submitIcon"
 						></i>
 					</button>
 				</div>
@@ -486,6 +478,19 @@ const submitText = computed((): string => {
 				? i18n.ts.toReply
 				: i18n.ts.toPost;
 });
+const submitIcon = computed(() =>
+	icon(
+		props.editId
+			? "ph-pencil"
+			: scheduledAt.value
+				? "ph-clock"
+				: props.reply
+					? "ph-arrow-u-up-left"
+					: props.renote
+						? "ph-quotes"
+						: "ph-paper-plane-tilt",
+	),
+);
 
 const textLength = computed((): number => {
 	return length((preprocess(text.value) + imeText.value).trim());
@@ -799,9 +804,11 @@ async function setSchedule() {
 		scheduledAt.value = Number(
 			new Date(`${result.result.at_date}T${result.result.at_time}`),
 		);
-	} else {
-		scheduledAt.value = null;
 	}
+}
+
+function removeScheduledAt() {
+	scheduledAt.value = null;
 }
 
 const language = ref<string | null>(
@@ -1315,46 +1322,51 @@ async function openCheatSheet(_ev: MouseEvent) {
 }
 
 function showMoreMenu(ev: MouseEvent) {
-	os.popupMenu(
-		[
-			{
-				type: "button",
-				text: i18n.ts.scheduledPost,
-				icon: `${icon("ph-clock")}`,
-				accent: scheduledAt.value != null,
-				hidden: props.editId != null,
-				action: setSchedule,
-			},
-			{
-				type: "button",
-				text: i18n.ts._mfm.cheatSheet,
-				icon: `${icon("ph-question")}`,
-				action: openCheatSheet,
-			},
-		],
-		(ev.currentTarget ?? ev.target) as HTMLElement,
-	);
-}
+	const pluginMenu: MenuItem[] = postFormActions.map((action) => ({
+		text: action.title,
+		icon: icon("ph-plug"),
+		action: () => {
+			action.handler(
+				{
+					text: text.value,
+				},
+				(key: string, value: string) => {
+					if (key === "text") {
+						text.value = value;
+					}
+				},
+			);
+		},
+	}));
+	const menu: MenuItem[] = [
+		{
+			text: i18n.ts.scheduledPost,
+			icon: icon("ph-clock"),
+			action: setSchedule,
+		},
+		scheduledAt.value != null
+			? {
+					text: i18n.ts.cancelScheduledPost,
+					icon: icon("ph-clock-countdown"),
+					danger: true,
+					action: removeScheduledAt,
+				}
+			: undefined,
+		null, // divider
+		{
+			text: i18n.ts.mention,
+			icon: icon("ph-at"),
+			action: insertMention,
+		},
+		{
+			text: i18n.ts._mfm.cheatSheet,
+			icon: icon("ph-question"),
+			action: openCheatSheet,
+		},
+		...(pluginMenu.length > 0 ? [null, ...pluginMenu] : []),
+	];
 
-function showActions(ev: MouseEvent) {
-	os.popupMenu(
-		postFormActions.map((action) => ({
-			text: action.title,
-			action: () => {
-				action.handler(
-					{
-						text: text.value,
-					},
-					(key, value) => {
-						if (key === "text") {
-							text.value = value;
-						}
-					},
-				);
-			},
-		})),
-		(ev.currentTarget ?? ev.target) as HTMLElement,
-	);
+	os.popupMenu(menu, (ev.currentTarget ?? ev.target) as HTMLElement);
 }
 
 const postAccount = ref<entities.UserDetailed | null>(null);
@@ -1625,7 +1637,7 @@ onMounted(() => {
 			}
 		}
 
-		> .hasNotSpecifiedMentions {
+		> .form-info {
 			margin: 0 20px 16px 20px;
 		}
 
@@ -1739,8 +1751,8 @@ onMounted(() => {
 
 				> button {
 					font-size: 14px;
-					width: 42px;
-					height: 42px;
+					width: 44px;
+					height: 44px;
 				}
 			}
 		}
