@@ -134,7 +134,7 @@
 				</div>
 			</div>
 			<MkInfo
-				v-if="hasNotSpecifiedMentions"
+				v-if="hasNotSpecifiedMentions && visibility === 'specified'"
 				warn
 				class="form-info"
 			>
