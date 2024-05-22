@@ -24,7 +24,7 @@ import {
 	endedPollNotificationQueue,
 	webhookDeliverQueue,
 } from "./queues.js";
-import type { ThinUser } from "./types.js";
+import type { DbUserScheduledNoteData, ThinUser } from "./types.js";
 import type { Note } from "@/models/entities/note.js";
 
 function renderError(e: Error): any {
@@ -453,6 +453,17 @@ export function createDeleteAccountJob(
 			removeOnFail: true,
 		},
 	);
+}
+
+export function createScheduledNoteJob(
+	options: DbUserScheduledNoteData,
+	delay: number,
+) {
+	return dbQueue.add("scheduledNote", options, {
+		delay,
+		removeOnComplete: true,
+		removeOnFail: true,
+	});
 }
 
 export function createDeleteObjectStorageFileJob(key: string) {

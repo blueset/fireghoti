@@ -13,7 +13,7 @@ pub struct NoteLike {
     pub reply_id: Option<String>,
 }
 
-pub async fn all_texts(note: NoteLike) -> Result<Vec<String>, DbErr> {
+pub async fn all_texts(note: NoteLike, include_in_reply_to: bool) -> Result<Vec<String>, DbErr> {
     let db = db_conn().await?;
 
     let mut texts: Vec<String> = vec![];
@@ -52,12 +52,12 @@ pub async fn all_texts(note: NoteLike) -> Result<Vec<String>, DbErr> {
                 texts.push(c);
             }
         } else {
-            tracing::warn!("nonexistent renote id: {:#?}", renote_id);
+            tracing::warn!("nonexistent renote id: {}", renote_id);
         }
     }
 
-    if let Some(reply_id) = &note.reply_id {
-        if let Some((text, cw)) = note::Entity::find_by_id(reply_id)
+    if include_in_reply_to && note.reply_id.is_some() {
+        if let Some((text, cw)) = note::Entity::find_by_id(note.reply_id.as_ref().unwrap())
             .select_only()
             .columns([note::Column::Text, note::Column::Cw])
             .into_tuple::<(Option<String>, Option<String>)>()
@@ -71,7 +71,7 @@ pub async fn all_texts(note: NoteLike) -> Result<Vec<String>, DbErr> {
                 texts.push(c);
             }
         } else {
-            tracing::warn!("nonexistent reply id: {:#?}", reply_id);
+            tracing::warn!("nonexistent reply id: {}", note.reply_id.unwrap());
         }
     }
 

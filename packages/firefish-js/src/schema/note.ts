@@ -16,6 +16,12 @@ export const packedNoteSchema = {
 			nullable: false,
 			format: "date-time",
 		},
+		scheduledAt: {
+			type: "string",
+			optional: true,
+			nullable: false,
+			format: "date-time",
+		},
 		text: {
 			type: "string",
 			optional: false,

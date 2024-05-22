@@ -11,6 +11,12 @@
 			:class="icon('ph-lock')"
 		></i>
 		<i
+			v-else-if="note.visibility === 'specified' && note.scheduledAt"
+			ref="specified"
+			v-tooltip="new Date(note.scheduledAt).toLocaleString()"
+			:class="icon('ph-clock')"
+		></i>
+		<i
 			v-else-if="
 				note.visibility === 'specified' &&
 				note.visibleUserIds != null &&
@@ -41,13 +47,10 @@ import * as os from "@/os";
 import { useTooltip } from "@/scripts/use-tooltip";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
+import type { entities } from "firefish-js";
 
 const props = defineProps<{
-	note: {
-		visibility: string;
-		localOnly?: boolean;
-		visibleUserIds?: string[];
-	};
+	note: entities.Note;
 }>();
 
 const specified = ref<HTMLElement>();

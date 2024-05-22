@@ -1,12 +1,11 @@
 {
 	"name": "firefish",
-	"version": "20240516.fork",
-
+	"version": "20240523.fork",
 	"repository": {
 		"type": "git",
 		"url": "https://firefish.dev/firefish/firefish.git"
 	},
-	"packageManager": "pnpm@9.1.1",
+	"packageManager": "pnpm@9.1.2",
 	"private": true,
 	"scripts": {
 		"rebuild": "pnpm run clean && pnpm run build",
@@ -29,7 +28,7 @@
 		"mocha": "pnpm --filter backend run mocha",
 		"test": "pnpm run test:ts && pnpm run test:rs",
 		"test:ts": "pnpm run mocha",
-		"test:rs": "cargo test",
+		"test:rs": "cargo test --doc && cargo nextest run",
 		"format": "pnpm run format:ts; pnpm run format:rs",
 		"format:ts": "pnpm -r --parallel run format",
 		"format:rs": "cargo fmt --all --",
@@ -49,7 +48,7 @@
 		"@biomejs/cli-linux-x64": "1.7.3",
 		"@types/node": "20.12.12",
 		"execa": "9.1.0",
-		"pnpm": "9.1.1",
+		"pnpm": "9.1.2",
 		"typescript": "5.4.5"
 	}
 }

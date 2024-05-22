@@ -38,11 +38,11 @@ export type FormItemUrl = BaseFormItem & {
 };
 export type FormItemDate = BaseFormItem & {
 	type: "date";
-	default?: Date | null;
+	default?: string | Date | null;
 };
 export type FormItemTime = BaseFormItem & {
 	type: "time";
-	default?: number | Date | null;
+	default?: string | Date | null;
 };
 export type FormItemSearch = BaseFormItem & {
 	type: "search";

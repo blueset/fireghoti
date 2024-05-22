@@ -33,49 +33,20 @@ pub fn export(
     .into()
 }
 
-/// Denotes that this function should only be used in TypeScript.
-///
-/// # Example
-/// ```
-/// # use macro_rs::ts_only_warn;
-/// # use std::fmt::{Display, Formatter, Result};
-/// # pub struct Thing {}
-/// # impl Display for Thing { fn fmt(&self, fmt: &mut Formatter) -> Result { Ok(()) } }  // dummy
-/// #[ts_only_warn("Use `thing.to_string()` instead.")]
-/// pub fn thing_to_string(thing: Thing) -> String {
-///     thing.to_string()
-/// }
-/// ```
-/// generates
-/// ```
-/// # use macro_rs::ts_only_warn;
-/// # use std::fmt::{Display, Formatter, Result};
-/// # pub struct Thing {}
-/// # impl Display for Thing { fn fmt(&self, fmt: &mut Formatter) -> Result { Ok(()) } }  // dummy
-/// #[cfg_attr(not(feature = "napi"), deprecated = "This function is only for TypeScript export. Use `thing.to_string()` instead.")]
-/// pub fn thing_to_string(thing: Thing) -> String {
-///     thing.to_string()
-/// }
-/// ```
+/// Export this function, struct, enum, const, etc. to TypeScript
+/// and make it unable to use in Rust
 #[proc_macro_attribute]
-pub fn ts_only_warn(
+pub fn ts_export(
     attr: proc_macro::TokenStream,
     item: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
+    let attr: TokenStream = attr.into();
     let item: TokenStream = item.into();
 
-    let attr_str = Into::<TokenStream>::into(attr).to_string();
-    let msg = {
-        let mut chars = attr_str.as_str().chars();
-        chars.next();
-        chars.next_back();
-        chars.as_str()
-    };
-    let prefixed_msg = format!("This function is only for TypeScript export. {}", msg);
-
     quote! {
-        #[cfg_attr(not(feature = "napi"), deprecated = #prefixed_msg)]
-        #item
+            #[cfg(feature = "napi")]
+            #[macro_rs::napi(#attr)]
+            #item
     }
     .into()
 }

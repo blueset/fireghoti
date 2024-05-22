@@ -1,5 +1,6 @@
 use crate::database::db_conn;
-use crate::misc::{convert_host::to_puny, emoji::is_unicode_emoji, meta::fetch_meta};
+use crate::misc::convert_host::to_puny;
+use crate::misc::meta::fetch_meta;
 use crate::model::entity::emoji;
 use once_cell::sync::Lazy;
 use regex::Regex;
@@ -58,9 +59,9 @@ pub fn count_reactions(reactions: &HashMap<String, u32>) -> HashMap<String, u32>
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Idna error: {0}")]
-    IdnaError(#[from] idna::Errors),
+    IdnaErr(#[from] idna::Errors),
     #[error("Database error: {0}")]
-    DbError(#[from] DbErr),
+    DbErr(#[from] DbErr),
 }
 
 #[crate::export]
@@ -72,7 +73,8 @@ pub async fn to_db_reaction(reaction: Option<&str>, host: Option<&str>) -> Resul
             return Ok("❤️".to_owned());
         }
 
-        if is_unicode_emoji(reaction) {
+        // check if the reaction is an Unicode emoji
+        if emojis::get(reaction).is_some() {
             return Ok(reaction.to_owned());
         }
 

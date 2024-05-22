@@ -243,7 +243,7 @@ pub async fn send_push_notification(
             serde_json::to_string(&compact_content(&kind, content.clone())?)?
         )
     };
-    tracing::trace!("payload: {:#?}", payload);
+    tracing::trace!("payload: {}", payload);
 
     let encoding = if kind == PushNotificationKind::Mastodon {
         ContentEncoding::AesGcm

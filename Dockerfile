@@ -77,6 +77,7 @@ COPY --from=build /firefish/built /firefish/built
 COPY --from=build /firefish/packages/backend/built /firefish/packages/backend/built
 COPY --from=build /firefish/packages/backend/assets/instance.css /firefish/packages/backend/assets/instance.css
 COPY --from=build /firefish/packages/backend-rs/built /firefish/packages/backend-rs/built
+COPY --from=build /firefish/packages/firefish-js/built /firefish/packages/firefish-js/built
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
 ENV NODE_ENV=production

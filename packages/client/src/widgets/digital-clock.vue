@@ -16,12 +16,12 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import type { Widget, WidgetComponentExpose } from "./widget";
-import {
-	WidgetComponentEmits,
+import type {
+	WidgetComponentExpose,
 	WidgetComponentProps,
-	useWidgetPropsManager,
+	WidgetComponentEmits,
 } from "./widget";
+import { useWidgetPropsManager } from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
 import { timezones } from "@/scripts/timezones";
 import MkDigitalClock from "@/components/MkDigitalClock.vue";
@@ -64,11 +64,8 @@ const widgetPropsDef = {
 
 type WidgetProps = GetFormResultType<typeof widgetPropsDef>;
 
-// 現時点ではvueの制限によりimportしたtypeをジェネリックに渡せない
-// const props = defineProps<WidgetComponentProps<WidgetProps>>();
-// const emit = defineEmits<WidgetComponentEmits<WidgetProps>>();
-const props = defineProps<{ widget?: Widget<WidgetProps> }>();
-const emit = defineEmits<{ (ev: "updateProps", props: WidgetProps) }>();
+const props = defineProps<WidgetComponentProps<WidgetProps>>();
+const emit = defineEmits<WidgetComponentEmits<WidgetProps>>();
 
 const { widgetProps, configure } = useWidgetPropsManager(
 	name,

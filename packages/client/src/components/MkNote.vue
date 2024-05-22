@@ -194,7 +194,8 @@
 						class="created-at"
 						:to="notePage(appearNote)"
 					>
-						<MkTime :time="appearNote.createdAt" mode="absolute" />
+						<MkTime v-if="appearNote.scheduledAt != null" :time="appearNote.scheduledAt"/>
+						<MkTime v-else :time="appearNote.createdAt" mode="absolute" />
 					</MkA>
 					<MkA
 						v-if="appearNote.channel && !inChannel"
@@ -220,6 +221,7 @@
 						v-tooltip.noDelay.bottom="i18n.ts.reply"
 						class="button _button"
 						@click.stop="reply()"
+						:disabled="note.scheduledAt != null"
 					>
 						<i :class="icon('ph-arrow-u-up-left')"></i>
 						<template
@@ -234,6 +236,7 @@
 						:note="appearNote"
 						:count="appearNote.renoteCount"
 						:detailed-view="detailedView"
+						:disabled="note.scheduledAt != null"
 					/>
 					<XStarButtonNoEmoji
 						v-if="!enableEmojiReactions"
@@ -241,6 +244,7 @@
 						:note="appearNote"
 						:count="reactionCount"
 						:reacted="appearNote.myReaction != null"
+						:disabled="note.scheduledAt != null"
 					/>
 					<XStarButton
 						v-if="
@@ -250,6 +254,7 @@
 						ref="starButton"
 						class="button"
 						:note="appearNote"
+						:disabled="note.scheduledAt != null"
 					/>
 					<button
 						v-if="
@@ -260,6 +265,7 @@
 						v-tooltip.noDelay.bottom="i18n.ts.reaction"
 						class="button _button"
 						@click.stop="react()"
+						:disabled="note.scheduledAt != null"
 					>
 						<i :class="icon('ph-smiley')"></i>
 						<p v-if="reactionCount > 0 && hideEmojiViewer" class="count">{{reactionCount}}</p>
@@ -273,11 +279,12 @@
 						v-tooltip.noDelay.bottom="i18n.ts.removeReaction"
 						class="button _button reacted"
 						@click.stop="undoReact(appearNote)"
+						:disabled="note.scheduledAt != null"
 					>
 						<i :class="icon('ph-minus')"></i>
 						<p v-if="reactionCount > 0 && hideEmojiViewer" class="count">{{reactionCount}}</p>
 					</button>
-					<XQuoteButton class="button" :note="appearNote" />
+					<XQuoteButton class="button" :note="appearNote" :disabled="note.scheduledAt != null"/>
 					<button
 						v-if="
 							isSignedIn(me) &&
@@ -412,6 +419,14 @@ const translation = ref<NoteTranslation | null>(null);
 const translating = ref(false);
 const isDeleted = ref(false);
 const renotes = ref(props.renotes?.filter((rn) => !_isDeleted(rn.id)));
+const muted = ref(
+	getWordSoftMute(
+		note.value,
+		me?.id,
+		defaultStore.reactiveState.mutedWords.value,
+		defaultStore.reactiveState.mutedLangs.value,
+	),
+);
 // #endregion
 
 // #region computed
@@ -424,14 +439,6 @@ const appearNote = computed(() =>
 );
 const isMyNote = computed(
 	() => isSignedIn(me) && me.id === note.value.userId && props.renotes == null,
-);
-const muted = computed(() =>
-	getWordSoftMute(
-		note.value,
-		me?.id,
-		defaultStore.reactiveState.mutedWords.value,
-		defaultStore.reactiveState.mutedLangs.value,
-	),
 );
 const isForeignLanguage = computed(
 	() =>

@@ -67,10 +67,10 @@ async fn init_conn_pool() -> Result<(), RedisError> {
         params.concat()
     };
 
-    tracing::info!("Initializing connection manager");
+    tracing::info!("initializing connection manager");
     let manager = RedisConnectionManager::new(redis_url)?;
 
-    tracing::info!("Creating connection pool");
+    tracing::info!("creating connection pool");
     let pool = Pool::builder().build(manager).await?;
 
     CONN_POOL.get_or_init(|| async { pool }).await;

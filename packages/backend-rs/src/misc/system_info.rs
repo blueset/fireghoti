@@ -1,4 +1,4 @@
-use crate::init::system_info::{system, SysinfoPoisonError};
+use crate::init::system_info::{system_info, SysinfoPoisonError};
 use sysinfo::{Disks, MemoryRefreshKind};
 
 // TODO: i64 -> u64 (we can't export u64 to Node.js)
@@ -30,7 +30,7 @@ pub struct Storage {
 
 #[crate::export]
 pub fn cpu_info() -> Result<Cpu, SysinfoPoisonError> {
-    let system_info = system()?;
+    let system_info = system_info().lock()?;
 
     Ok(Cpu {
         model: match system_info.cpus() {
@@ -46,7 +46,7 @@ pub fn cpu_info() -> Result<Cpu, SysinfoPoisonError> {
 
 #[crate::export]
 pub fn cpu_usage() -> Result<f32, SysinfoPoisonError> {
-    let mut system_info = system()?;
+    let mut system_info = system_info().lock()?;
     system_info.refresh_cpu_usage();
 
     let total_cpu_usage: f32 = system_info.cpus().iter().map(|cpu| cpu.cpu_usage()).sum();
@@ -57,7 +57,7 @@ pub fn cpu_usage() -> Result<f32, SysinfoPoisonError> {
 
 #[crate::export]
 pub fn memory_usage() -> Result<Memory, SysinfoPoisonError> {
-    let mut system_info = system()?;
+    let mut system_info = system_info().lock()?;
 
     system_info.refresh_memory_specifics(MemoryRefreshKind::new().with_ram());
 

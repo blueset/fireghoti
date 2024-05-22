@@ -96,15 +96,7 @@
 					/>
 					<i
 						v-else
-						:class="
-							icon(
-								reply
-									? 'ph-arrow-u-up-left'
-									: renote
-										? 'ph-quotes'
-										: 'ph-paper-plane-tilt',
-							)
-						"
+						:class="submitIcon"
 					></i>
 				</button>
 			</div>
@@ -142,14 +134,28 @@
 				</div>
 			</div>
 			<MkInfo
-				v-if="hasNotSpecifiedMentions"
+				v-if="hasNotSpecifiedMentions && visibility === 'specified'"
 				warn
-				class="hasNotSpecifiedMentions"
-				>{{ i18n.ts.notSpecifiedMentionWarning }} -
+				class="form-info"
+			>
+				{{ i18n.ts.notSpecifiedMentionWarning }} -
 				<button class="_textButton" @click="addMissingMention()">
 					{{ i18n.ts.add }}
-				</button></MkInfo
+				</button>
+			</MkInfo>
+			<MkInfo
+				v-if="scheduledAt"
+				class="form-info"
 			>
+				<I18n
+					:src="i18n.ts.scheduledPostAt"
+					tag="span"
+				>
+					<template #time>
+						<MkTime :time="scheduledAt"></MkTime>
+					</template>
+				</I18n>
+			</MkInfo>
 			<input
 				v-show="useCw"
 				ref="cwInputEl"
@@ -226,13 +232,13 @@
 				>
 					<i :class="icon('ph-eye-slash')"></i>
 				</button>
-				<button
+				<!-- <button
 					v-tooltip="i18n.ts.mention"
 					class="_button"
 					@click="insertMention"
 				>
 					<i :class="icon('ph-at')"></i>
-				</button>
+				</button> -->
 				<button
 					v-tooltip="i18n.ts.hashtags"
 					class="_button"
@@ -249,20 +255,11 @@
 					<i :class="icon('ph-smiley')"></i>
 				</button>
 				<button
-					v-if="postFormActions.length > 0"
-					v-tooltip="i18n.ts.plugin"
-					class="_button"
-					@click="showActions"
-				>
-					<i :class="icon('ph-plug')"></i>
-				</button>
-				<!--	v-if="showMfmCheatsheet" -->
-				<button
-					v-tooltip="i18n.ts._mfm.cheatSheet"
+					v-tooltip="i18n.ts.more"
 					class="_button right"
-					@click="openCheatSheet"
+					@click="showMoreMenu"
 				>
-					<i :class="icon('ph-question')"></i>
+					<i :class="icon('ph-dots-three-outline')"></i>
 				</button>
 				<div v-if="showBigPostButton">
 					<button
@@ -274,13 +271,7 @@
 					>
 						{{ submitText
 						}}<i
-							:class="
-								reply
-									? 'ph-arrow-u-up-left ph-bold ph-lg'
-									: renote
-										? 'ph-quotes ph-bold ph-lg'
-										: 'ph-paper-plane-tilt ph-bold ph-lg'
-							"
+							:class="submitIcon"
 						></i>
 					</button>
 				</div>
@@ -432,6 +423,7 @@ const recentHashtags = ref(
 	JSON.parse(localStorage.getItem("hashtags") || "[]"),
 );
 const imeText = ref("");
+const scheduledAt = ref<number | null>(null);
 
 const typing = throttle(3000, () => {
 	if (props.channel) {
@@ -486,6 +478,19 @@ const submitText = computed((): string => {
 				? i18n.ts.toReply
 				: i18n.ts.toPost;
 });
+const submitIcon = computed(() =>
+	icon(
+		props.editId
+			? "ph-pencil"
+			: scheduledAt.value
+				? "ph-clock"
+				: props.reply
+					? "ph-arrow-u-up-left"
+					: props.renote
+						? "ph-quotes"
+						: "ph-paper-plane-tilt",
+	),
+);
 
 const textLength = computed((): number => {
 	return length((preprocess(text.value) + imeText.value).trim());
@@ -543,7 +548,7 @@ if (
 		(props.reply.user.host != null && props.reply.user.host !== host))
 ) {
 	text.value = `@${props.reply.user.username}${
-		props.reply.user.host != null ? "@" + toASCII(props.reply.user.host) : ""
+		props.reply.user.host != null ? `@${toASCII(props.reply.user.host)}` : ""
 	} `;
 }
 
@@ -770,6 +775,40 @@ function setVisibility() {
 		},
 		"closed",
 	);
+}
+
+async function setSchedule() {
+	function getDateStr(type: "date" | "time", value: number) {
+		const tmp = document.createElement("input");
+		tmp.type = type;
+		tmp.valueAsNumber = value - new Date().getTimezoneOffset() * 60000;
+		return tmp.value;
+	}
+
+	const at = scheduledAt.value ?? Date.now();
+
+	const result = await os.form(i18n.ts.scheduledPost, {
+		at_date: {
+			type: "date",
+			label: i18n.ts.scheduledDate,
+			default: getDateStr("date", at),
+		},
+		at_time: {
+			type: "time",
+			label: i18n.ts._poll.deadlineTime,
+			default: getDateStr("time", at),
+		},
+	});
+
+	if (!result.canceled && result.result) {
+		scheduledAt.value = Number(
+			new Date(`${result.result.at_date}T${result.result.at_time}`),
+		);
+	}
+}
+
+function removeScheduledAt() {
+	scheduledAt.value = null;
 }
 
 const language = ref<string | null>(
@@ -1180,6 +1219,7 @@ async function post() {
 				: visibility.value === "specified"
 					? visibleUsers.value.map((u) => u.id)
 					: undefined,
+		scheduledAt: scheduledAt.value,
 	};
 
 	if (withHashtags.value && hashtags.value && hashtags.value.trim() !== "") {
@@ -1228,6 +1268,7 @@ async function post() {
 				}
 				posting.value = false;
 				postAccount.value = null;
+				scheduledAt.value = null;
 				nextTick(() => autosize.update(textareaEl.value!));
 			});
 		})
@@ -1276,29 +1317,56 @@ async function insertEmoji(ev: MouseEvent) {
 	);
 }
 
-async function openCheatSheet(ev: MouseEvent) {
+async function openCheatSheet(_ev: MouseEvent) {
 	os.popup(XCheatSheet, {}, {}, "closed");
 }
 
-function showActions(ev: MouseEvent) {
-	os.popupMenu(
-		postFormActions.map((action) => ({
-			text: action.title,
-			action: () => {
-				action.handler(
-					{
-						text: text.value,
-					},
-					(key, value) => {
-						if (key === "text") {
-							text.value = value;
-						}
-					},
-				);
-			},
-		})),
-		(ev.currentTarget ?? ev.target) as HTMLElement,
-	);
+function showMoreMenu(ev: MouseEvent) {
+	const pluginMenu: MenuItem[] = postFormActions.map((action) => ({
+		text: action.title,
+		icon: icon("ph-plug"),
+		action: () => {
+			action.handler(
+				{
+					text: text.value,
+				},
+				(key: string, value: string) => {
+					if (key === "text") {
+						text.value = value;
+					}
+				},
+			);
+		},
+	}));
+	const menu: MenuItem[] = [
+		{
+			text: i18n.ts.scheduledPost,
+			icon: icon("ph-clock"),
+			action: setSchedule,
+		},
+		scheduledAt.value != null
+			? {
+					text: i18n.ts.cancelScheduledPost,
+					icon: icon("ph-clock-countdown"),
+					danger: true,
+					action: removeScheduledAt,
+				}
+			: undefined,
+		null, // divider
+		{
+			text: i18n.ts.mention,
+			icon: icon("ph-at"),
+			action: insertMention,
+		},
+		{
+			text: i18n.ts._mfm.cheatSheet,
+			icon: icon("ph-question"),
+			action: openCheatSheet,
+		},
+		...(pluginMenu.length > 0 ? [null, ...pluginMenu] : []),
+	];
+
+	os.popupMenu(menu, (ev.currentTarget ?? ev.target) as HTMLElement);
 }
 
 const postAccount = ref<entities.UserDetailed | null>(null);
@@ -1569,7 +1637,7 @@ onMounted(() => {
 			}
 		}
 
-		> .hasNotSpecifiedMentions {
+		> .form-info {
 			margin: 0 20px 16px 20px;
 		}
 
@@ -1643,7 +1711,7 @@ onMounted(() => {
 		}
 	}
 
-	&.max-width_500px {
+	&.max-width_500px, &.widget {
 		> header {
 			height: 50px;
 
@@ -1680,13 +1748,7 @@ onMounted(() => {
 
 			> footer {
 				padding: 0 8px 8px 8px;
-			}
-		}
-	}
 
-	&.max-width_310px {
-		> .form {
-			> footer {
 				> button {
 					font-size: 14px;
 					width: 44px;

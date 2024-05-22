@@ -5,9 +5,9 @@ use serde::{Deserialize, Serialize};
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("Http client aquisition error: {0}")]
+    #[error("HTTP client aquisition error: {0}")]
     HttpClientErr(#[from] http_client::Error),
-    #[error("Http error: {0}")]
+    #[error("HTTP error: {0}")]
     HttpErr(#[from] isahc::Error),
     #[error("Bad status: {0}")]
     BadStatus(String),

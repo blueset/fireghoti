@@ -1,21 +1,23 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": ["config:recommended"],
 	"rangeStrategy": "bump",
-  "branchConcurrentLimit": 0,
+	"branchConcurrentLimit": 0,
 	"prHourlyLimit": 20,
-  "prConcurrentLimit": 20,
+	"prConcurrentLimit": 20,
 	"enabledManagers": ["npm", "cargo"],
 	"baseBranches": ["develop"],
-	"ignorePaths": [
-		"packages/megalodon/package.json",
-		"packages/backend-rs/npm"
-	],
+	"ignorePaths": ["packages/megalodon/package.json", "packages/backend-rs/npm"],
 	"lockFileMaintenance": {
 		"enabled": true,
 		"recreateWhen": "always",
-		"rebaseStalePrs": true,
+		"rebaseWhen": "behind-base-branch",
 		"branchTopic": "lock-file-maintenance",
 		"commitMessageAction": "Lock file maintenance"
-	}
+	},
+	"packageRules": [
+		{"matchUpdateTypes": "patch", "automerge": true},
+		{"groupName": "definitelyTyped", "matchPackagePrefixes": ["@types/"]},
+		{"groupName": "bull-board", "matchPackagePrefixes": ["@bull-board/"]}
+	]
 }

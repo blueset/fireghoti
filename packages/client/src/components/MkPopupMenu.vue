@@ -5,6 +5,7 @@
 		:z-priority="'high'"
 		:src="src"
 		:transparent-bg="true"
+		:anchor
 		tabindex="-1"
 		@click="modal?.close()"
 		@closed="emit('closed')"
@@ -36,6 +37,10 @@ defineProps<{
 	width?: number;
 	viaKeyboard?: boolean;
 	src?: HTMLElement | null;
+	anchor?: {
+		x: "left" | "center" | "right";
+		y: "top" | "center" | "bottom";
+	};
 	noReturnFocus?;
 }>();
 

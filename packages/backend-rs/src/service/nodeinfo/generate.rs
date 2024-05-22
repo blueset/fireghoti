@@ -1,6 +1,5 @@
 use crate::config::CONFIG;
-use crate::database::cache;
-use crate::database::db_conn;
+use crate::database::{cache, db_conn};
 use crate::misc::meta::fetch_meta;
 use crate::model::entity::{note, user};
 use crate::service::nodeinfo::schema::*;
@@ -21,9 +20,9 @@ pub enum Error {
 async fn statistics() -> Result<(u64, u64, u64, u64), DbErr> {
     let db = db_conn().await?;
 
-    let now = chrono::Local::now().naive_local();
-    const MONTH: chrono::TimeDelta = chrono::Duration::seconds(2592000000);
-    const HALF_YEAR: chrono::TimeDelta = chrono::Duration::seconds(15552000000);
+    let now = chrono::Utc::now();
+    const MONTH: chrono::TimeDelta = chrono::Duration::days(30);
+    const HALF_YEAR: chrono::TimeDelta = chrono::Duration::days(183);
 
     let local_users = user::Entity::find()
         .filter(user::Column::Host.is_null())
@@ -131,12 +130,12 @@ pub async fn nodeinfo_2_0() -> Result<Nodeinfo20, Error> {
     Ok(nodeinfo_2_1().await?.into())
 }
 
-#[crate::export(js_name = "nodeinfo_2_1")]
+#[crate::ts_export(js_name = "nodeinfo_2_1")]
 pub async fn nodeinfo_2_1_as_json() -> Result<serde_json::Value, Error> {
     Ok(serde_json::to_value(nodeinfo_2_1().await?)?)
 }
 
-#[crate::export(js_name = "nodeinfo_2_0")]
+#[crate::ts_export(js_name = "nodeinfo_2_0")]
 pub async fn nodeinfo_2_0_as_json() -> Result<serde_json::Value, Error> {
     Ok(serde_json::to_value(nodeinfo_2_0().await?)?)
 }

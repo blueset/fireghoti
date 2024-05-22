@@ -15,11 +15,11 @@ pub fn hash_password(password: &str) -> Result<String, password_hash::errors::Er
 #[derive(thiserror::Error, Debug)]
 pub enum VerifyError {
     #[error("An error occured while bcrypt verification: {0}")]
-    BcryptError(#[from] bcrypt::BcryptError),
+    BcryptErr(#[from] bcrypt::BcryptError),
     #[error("Invalid argon2 password hash: {0}")]
     InvalidArgon2Hash(#[from] password_hash::Error),
     #[error("An error occured while argon2 verification: {0}")]
-    Argon2Error(#[from] argon2::Error),
+    Argon2Err(#[from] argon2::Error),
 }
 
 #[crate::export]
