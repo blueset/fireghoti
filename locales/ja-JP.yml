@@ -2085,3 +2085,5 @@ _later:
   yearsAgo: '{n}年後'
 scheduledPost: 予約投稿
 scheduledDate: 予定日
+cancelScheduledPost: 予約を解除する
+scheduledPostAt: '{time}に投稿されます'
