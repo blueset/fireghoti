@@ -151,22 +151,6 @@ async fn encode_mastodon_payload(
         serde_json::to_value(token.token)?,
     );
 
-    // Note: Mastodon for Android (and forks) require notification_id to be convertible to a long int.
-    // and uses the ID to call API for notification details.
-    // Forks like Megalodon and Moshidon can workaround this by using Unified Push which totally ignores the payload.
-    // This creates an random i64 to at least allow them to parse the notification.
-    // TODO: Remove this when Megalodon (Android) and its forks adapt to change the notification payload parser.
-    // https://github.com/sk22/megalodon/issues/994; https://github.com/LucasGGamerM/moshidon/issues/411
-    if app_entity.name == "Mastodon for Android"
-        || app_entity.name == "Megalodon"
-        || app_entity.name == "Moshidon"
-    {
-        object.insert(
-            "notification_id".to_string(),
-            serde_json::to_value(rand::random::<i64>().to_string())?,
-        );
-    }
-
     Ok(serde_json::to_string(&content)?)
 }
 
