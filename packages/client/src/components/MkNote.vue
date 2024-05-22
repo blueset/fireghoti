@@ -48,36 +48,6 @@
 			<div v-if="pinned" class="info">
 				<i :class="icon('ph-push-pin')"></i>{{ i18n.ts.pinnedNote }}
 			</div>
-			<div v-if="isRenote" class="renote">
-				<i :class="icon('ph-rocket-launch')"></i>
-				<I18n :src="i18n.ts.renotedBy" tag="span">
-					<template #user>
-						<MkA
-							v-user-preview="note.userId"
-							class="name"
-							:to="userPage(note.user)"
-							@click.stop
-						>
-							<MkUserName :user="note.user" />
-						</MkA>
-					</template>
-				</I18n>
-				<div class="info">
-					<button
-						ref="renoteTime"
-						class="_button time"
-						@click.stop="showRenoteMenu()"
-					>
-						<i
-							v-if="isMyRenote"
-							:class="icon('ph-dots-three-outline dropdownIcon')"
-						></i>
-						<MkTime v-if="note.scheduledAt != null" :time="note.scheduledAt"/>
-						<MkTime v-else :time="note.createdAt" />
-					</button>
-					<MkVisibility :note="note" />
-				</div>
-			</div>
 			<div v-if="collapsedReply && appearNote.reply" class="info">
 				<MkAvatar class="avatar" :user="appearNote.reply.user" />
 				<MkUserName
