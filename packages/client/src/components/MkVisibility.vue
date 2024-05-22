@@ -13,7 +13,7 @@
 		<i
 			v-else-if="note.visibility === 'specified' && note.scheduledAt"
 			ref="specified"
-			v-tooltip="i18n.t('scheduledPostAt', { time: note.scheduledAt })"
+			v-tooltip="new Date(note.scheduledAt).toLocaleString()"
 			:class="icon('ph-clock')"
 		></i>
 		<i
