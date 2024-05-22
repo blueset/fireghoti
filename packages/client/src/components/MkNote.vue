@@ -449,6 +449,14 @@ const translation = ref<NoteTranslation | null>(null);
 const translating = ref(false);
 const isDeleted = ref(false);
 const renotes = ref(props.renotes?.filter((rn) => !_isDeleted(rn.id)));
+const muted = ref(
+	getWordSoftMute(
+		note.value,
+		me?.id,
+		defaultStore.reactiveState.mutedWords.value,
+		defaultStore.reactiveState.mutedLangs.value,
+	),
+);
 // #endregion
 
 // #region computed
@@ -461,14 +469,6 @@ const appearNote = computed(() =>
 );
 const isMyNote = computed(
 	() => isSignedIn(me) && me.id === note.value.userId && props.renotes == null,
-);
-const muted = computed(() =>
-	getWordSoftMute(
-		note.value,
-		me?.id,
-		defaultStore.reactiveState.mutedWords.value,
-		defaultStore.reactiveState.mutedLangs.value,
-	),
 );
 const isForeignLanguage = computed(
 	() =>
