@@ -2319,3 +2319,5 @@ _later:
   hoursAgo: en {n}h
 scheduledDate: Programat per
 scheduledPost: Programa aquesta publicació
+scheduledPostAt: Aquesta publicació s'enviarà {time}
+cancelScheduledPost: Elimina la planificació
