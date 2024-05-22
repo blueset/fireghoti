@@ -54,15 +54,6 @@
 						><i :class="icon('ph-eye-slash')"></i
 					></span>
 				</button>
-				<!-- <button
-					v-if="editId == null"
-					v-tooltip="i18n.ts.scheduledPost"
-					class="_button schedule"
-					:class="{ active: scheduledAt }"
-					@click="setScheduledAt"
-				>
-					<i :class="icon('ph-clock')"></i>
-				</button> -->
 				<button
 					ref="languageButton"
 					v-tooltip="i18n.ts.language"
@@ -263,28 +254,12 @@
 				>
 					<i :class="icon('ph-smiley')"></i>
 				</button>
-				<!-- <button
-					v-if="postFormActions.length > 0"
-					v-tooltip="i18n.ts.plugin"
-					class="_button"
-					@click="showActions"
-				>
-					<i :class="icon('ph-plug')"></i>
-				</button> -->
-				<!--	v-if="showMfmCheatsheet" -->
-				<!-- <button
-					v-tooltip="i18n.ts._mfm.cheatSheet"
-					class="_button right"
-					@click="openCheatSheet"
-				>
-					<i :class="icon('ph-question')"></i>
-				</button> -->
 				<button
-					v-tooltip="i18n.ts.other"
+					v-tooltip="i18n.ts.more"
 					class="_button right"
-					@click="openMoreActionsMenu"
+					@click="showMoreMenu"
 				>
-					<i :class="icon('ph-dots-three-circle')"></i>
+					<i :class="icon('ph-dots-three-outline')"></i>
 				</button>
 				<div v-if="showBigPostButton">
 					<button
@@ -573,7 +548,7 @@ if (
 		(props.reply.user.host != null && props.reply.user.host !== host))
 ) {
 	text.value = `@${props.reply.user.username}${
-		props.reply.user.host != null ? "@" + toASCII(props.reply.user.host) : ""
+		props.reply.user.host != null ? `@${toASCII(props.reply.user.host)}` : ""
 	} `;
 }
 
@@ -802,7 +777,7 @@ function setVisibility() {
 	);
 }
 
-async function setScheduledAt() {
+async function setSchedule() {
 	function getDateStr(type: "date" | "time", value: number) {
 		const tmp = document.createElement("input");
 		tmp.type = type;
@@ -1342,32 +1317,11 @@ async function insertEmoji(ev: MouseEvent) {
 	);
 }
 
-async function openCheatSheet(ev: MouseEvent) {
+async function openCheatSheet(_ev: MouseEvent) {
 	os.popup(XCheatSheet, {}, {}, "closed");
 }
 
-function showActions(ev: MouseEvent) {
-	os.popupMenu(
-		postFormActions.map((action) => ({
-			text: action.title,
-			action: () => {
-				action.handler(
-					{
-						text: text.value,
-					},
-					(key, value) => {
-						if (key === "text") {
-							text.value = value;
-						}
-					},
-				);
-			},
-		})),
-		(ev.currentTarget ?? ev.target) as HTMLElement,
-	);
-}
-
-function openMoreActionsMenu(ev: MouseEvent) {
+function showMoreMenu(ev: MouseEvent) {
 	const pluginMenu: MenuItem[] = postFormActions.map((action) => ({
 		text: action.title,
 		icon: icon("ph-plug"),
@@ -1388,7 +1342,7 @@ function openMoreActionsMenu(ev: MouseEvent) {
 		{
 			text: i18n.ts.scheduledPost,
 			icon: icon("ph-clock"),
-			action: setScheduledAt,
+			action: setSchedule,
 		},
 		scheduledAt.value != null
 			? {
@@ -1411,8 +1365,30 @@ function openMoreActionsMenu(ev: MouseEvent) {
 		},
 		...(pluginMenu.length > 0 ? [null, ...pluginMenu] : []),
 	];
+
 	os.popupMenu(menu, (ev.currentTarget ?? ev.target) as HTMLElement);
 }
+
+// function showActions(ev: MouseEvent) {
+// 	os.popupMenu(
+// 		postFormActions.map((action) => ({
+// 			text: action.title,
+// 			action: () => {
+// 				action.handler(
+// 					{
+// 						text: text.value,
+// 					},
+// 					(key, value) => {
+// 						if (key === "text") {
+// 							text.value = value;
+// 						}
+// 					},
+// 				);
+// 			},
+// 		})),
+// 		(ev.currentTarget ?? ev.target) as HTMLElement,
+// 	);
+// }
 
 const postAccount = ref<entities.UserDetailed | null>(null);
 
@@ -1550,14 +1526,6 @@ onMounted(() => {
 			right: 0;
 			display: flex;
 			align-items: center;
-
-			> .schedule {
-				width: 34px;
-				height: 34px;
-				&.active {
-					color: var(--accent);
-				}
-			}
 
 			> .text-count {
 				opacity: 0.7;
@@ -1764,7 +1732,7 @@ onMounted(() => {
 		}
 	}
 
-	&.max-width_500px {
+	&.max-width_500px, &.widget {
 		> header {
 			height: 50px;
 
@@ -1801,17 +1769,11 @@ onMounted(() => {
 
 			> footer {
 				padding: 0 8px 8px 8px;
-			}
-		}
-	}
 
-	&.max-width_310px {
-		> .form {
-			> footer {
 				> button {
 					font-size: 14px;
-					width: 44px;
-					height: 44px;
+					width: 42px;
+					height: 42px;
 				}
 			}
 		}

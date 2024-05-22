@@ -28,7 +28,7 @@ const parentStickyTop = inject<Ref<number>>(CURRENT_STICKY_TOP, ref(0));
 provide(CURRENT_STICKY_TOP, childStickyTop);
 
 const calc = () => {
-	childStickyTop.value = parentStickyTop.value + headerEl.value!.offsetHeight;
+	childStickyTop.value = parentStickyTop.value + (headerEl.value?.offsetHeight ?? 0);
 	headerHeight.value = headerEl.value!.offsetHeight.toString();
 };
 
