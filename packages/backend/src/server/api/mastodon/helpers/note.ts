@@ -6,6 +6,7 @@ import {
 	NoteFavorites,
 	NoteReactions,
 	Notes,
+	ScheduledNotes,
 	UserNotePinings,
 } from "@/models/index.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
@@ -42,6 +43,8 @@ import {
 } from "@/server/api/mastodon/index.js";
 import { fetchMeta } from "backend-rs";
 import { translate } from "@/misc/translate.js";
+import { createScheduledNoteJob } from "@/queue";
+import { ScheduledNote } from "@/models/entities/scheduled-note";
 
 export class NoteHelpers {
 	public static postIdempotencyCache = new Cache<{
@@ -387,8 +390,10 @@ export class NoteHelpers {
 		const renote = request.quote_id
 			? await getNote(request.quote_id, user)
 			: undefined;
-		const visibility =
-			request.visibility ?? UserHelpers.getDefaultNoteVisibility(ctx);
+
+		const delay = Math.max(0, (request.scheduled_at?.getTime() ?? Date.now()) - Date.now());
+
+		const visibility = request.visibility ?? UserHelpers.getDefaultNoteVisibility(ctx);
 
 		const data = {
 			createdAt: new Date(),
@@ -400,7 +405,7 @@ export class NoteHelpers {
 						expiresAt:
 							request.poll.expires_in && request.poll.expires_in > 0
 								? new Date(
-										new Date().getTime() + request.poll.expires_in * 1000,
+										(request.scheduled_at ?? new Date()).getTime() + request.poll.expires_in * 1000,
 									)
 								: null,
 					}
@@ -410,15 +415,37 @@ export class NoteHelpers {
 			renote: renote,
 			cw: request.spoiler_text,
 			lang: request.language,
-			visibility: visibility,
+			visibility: delay ? "specified" : visibility,
 			visibleUsers: Promise.resolve(visibility).then((p) =>
-				p === "specified"
+				delay ? [] : p === "specified"
 					? this.extractMentions(request.text ?? "", ctx)
 					: undefined,
 			),
 		};
 
-		return createNote(user, await awaitAll(data));
+		return createNote(user, await awaitAll(data), false, !delay ? undefined : async (note) => {
+			await ScheduledNotes.insert({
+				id: genId(),
+				noteId: note.id,
+				userId: user.id,
+				scheduledAt: request.scheduled_at
+			});
+
+			createScheduledNoteJob(
+				{
+					user: { id: user.id },
+					noteId: note.id,
+					option: {
+						poll: data.poll,
+						visibility: await visibility,
+						visibleUserIds: await Promise.resolve(visibility)
+							.then(v => v === "specified" ? data.visibleUsers : undefined)
+							.then(users => users?.map(u => u.id)),
+					}
+				},
+				delay
+			);
+		});
 	}
 
 	public static async editNote(
@@ -688,6 +715,48 @@ export class NoteHelpers {
 				: null,
 			detected_source_language: sourceLang,
 			provider,
+		});
+	}
+
+	public static async getScheduledNotes(
+		maxId: string | undefined,
+		sinceId: string | undefined,
+		minId: string | undefined,
+		limit = 20,
+		ctx: MastoContext,
+	): Promise<ScheduledNote[]> {
+		if (limit > 40) limit = 40;
+		const user = ctx.user as ILocalUser;
+
+		const query = PaginationHelpers.makePaginationQuery(
+			ScheduledNotes.createQueryBuilder("scheduledNote"),
+			sinceId,
+			maxId,
+			minId,
+		)
+			.leftJoinAndSelect("scheduledNote.note", "note")
+			.leftJoinAndSelect("scheduledNote.user", "user");
+
+		return PaginationHelpers.execQueryLinkPagination(
+			query,
+			limit,
+			minId !== undefined,
+			ctx,
+		);
+	}
+
+	public static async getScheduledNoteOr404(
+		id: string,
+		ctx: MastoContext,
+	): Promise<ScheduledNote> {
+		const user = ctx.user as ILocalUser | null;
+		const query = ScheduledNotes.createQueryBuilder("scheduledNote")
+			.where("scheduledNote.noteId = :id", { id })
+			.andWhere("scheduledNote.userId = :userId", { userId: user?.id })
+			.leftJoinAndSelect("scheduledNote.note", "note")
+			.leftJoinAndSelect("scheduledNote.user", "user");
+		return query.getOneOrFail().catch((_) => {
+			throw new MastoApiError(404);
 		});
 	}
 }

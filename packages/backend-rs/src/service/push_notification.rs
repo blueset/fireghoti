@@ -132,19 +132,6 @@ async fn encode_mastodon_payload(
         return Err(Error::InvalidContentErr("no app ID".to_string()));
     }
 
-    let app_id = token.app_id.unwrap();
-
-    let maybe_app_entity = app::Entity::find()
-        .filter(app::Column::Id.eq(app_id))
-        .one(db)
-        .await?;
-
-    if maybe_app_entity.is_none() {
-        return Err(Error::InvalidContentErr("app not found".to_string()));
-    }
-
-    let app_entity = maybe_app_entity.unwrap();
-
     let object = content.as_object_mut().unwrap();
     object.insert(
         "access_token".to_string(),

@@ -7,7 +7,7 @@ import {
 	RegistryItems,
 	UserListJoinings,
 } from "@/models/index.js";
-import { Brackets, In } from "typeorm";
+import { Brackets, type SelectQueryBuilder } from "typeorm";
 import { generateChannelQuery } from "@/server/api/common/generate-channel-query.js";
 import { generateRepliesQuery } from "@/server/api/common/generate-replies-query.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
@@ -57,6 +57,7 @@ export class TimelineHelpers {
 		generateMutedUserQuery(query, user);
 		generateBlockedUserQuery(query, user);
 		generateMutedUserRenotesQueryForNotes(query, user);
+		this.generateNoScheduleNotesQuery(query);
 
 		query.andWhere("note.visibility != 'hidden'");
 
@@ -110,6 +111,7 @@ export class TimelineHelpers {
 			.leftJoinAndSelect("note.renote", "renote");
 
 		generateRepliesQuery(query, true, user);
+		this.generateNoScheduleNotesQuery(query);
 		if (user) {
 			generateMutedUserQuery(query, user);
 			generateBlockedUserQuery(query, user);
@@ -155,6 +157,7 @@ export class TimelineHelpers {
 			.setParameters({ listId: list.id });
 
 		generateVisibilityQuery(query, user);
+		this.generateNoScheduleNotesQuery(query);
 
 		return PaginationHelpers.execQueryLinkPagination(
 			query,
@@ -214,6 +217,7 @@ export class TimelineHelpers {
 			.leftJoinAndSelect("note.renote", "renote");
 
 		generateRepliesQuery(query, true, user);
+		this.generateNoScheduleNotesQuery(query);
 		if (user) {
 			generateMutedUserQuery(query, user);
 			generateBlockedUserQuery(query, user);
@@ -263,6 +267,8 @@ export class TimelineHelpers {
 		)
 			.innerJoin(`(${sq.getQuery()})`, "sq", "note.id = sq.latest")
 			.setParameters({ userId: user.id });
+			
+		this.generateNoScheduleNotesQuery(query);
 
 		return query
 			.take(limit)
@@ -371,5 +377,15 @@ export class TimelineHelpers {
 			};
 		}
 		return result;
+	}
+
+	/** Exclude scheduled notes from Mastodon timeline (visibility === "specified" && visibleUserIds.length === 0) */
+	public static generateNoScheduleNotesQuery(q: SelectQueryBuilder<Note>) {
+		q.andWhere(
+			new Brackets((qb) => {
+				qb.where('note.visibility != "specified"')
+				.orWhere('array_length(note.visibleUserIds, 1) != 0')
+			})
+		);
 	}
 }

@@ -4,7 +4,24 @@ export type Promiseable<T> = {
 	[K in keyof T]: Promise<T[K]> | T[K];
 };
 
-export async function awaitAll<T>(obj: Promiseable<T>): Promise<T> {
+type RecursiveResolvePromise<U> =
+	U extends Date ? U :
+	U extends Array<infer V> ? 
+	Array<ResolvedPromise<V>> : 
+	U extends object ? 
+	{[key in keyof U]: ResolvedPromise<U[key]>} : 
+	U;
+
+type ResolvedPromise<T> = 
+	T extends Promise<infer U> ?
+	RecursiveResolvePromise<U> :
+	RecursiveResolvePromise<T>;
+
+export type OuterPromise<T> = Promise<{
+	[K in keyof T]: ResolvedPromise<T[K]>;
+}>;
+
+export async function awaitAll<T>(obj: Promiseable<T>): OuterPromise<T> {
 	const target = {} as T;
 	const keys = unsafeCast<(keyof T)[]>(Object.keys(obj));
 	const values = Object.values(obj) as any[];
@@ -21,5 +38,5 @@ export async function awaitAll<T>(obj: Promiseable<T>): Promise<T> {
 		target[keys[i]] = resolvedValues[i];
 	}
 
-	return target;
+	return target as OuterPromise<T>;
 }

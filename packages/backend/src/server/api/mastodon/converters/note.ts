@@ -43,6 +43,7 @@ import type { NoteReaction } from "@/models/entities/note-reaction.js";
 import { Cache } from "@/misc/cache.js";
 import { isFiltered } from "@/misc/is-filtered.js";
 import { unfurl } from "unfurl.js";
+import { ScheduledNote } from "@/models/entities/scheduled-note";
 
 export class NoteConverter {
 	private static noteContentHtmlCache = new Cache<string | null>(
@@ -581,5 +582,65 @@ export class NoteConverter {
 			}
 		}
 		return null;
+	}
+
+	public static async encodeScheduledNote(
+		scheduledNote: ScheduledNote,
+		ctx: MastoContext,
+	): Promise<MastodonEntity.ScheduledStatus> {
+		const { note, user } = scheduledNote;
+
+		const renote = note.renote ?? (note.renoteId ? getNote(note.renoteId, user) : null);
+		const quoteUri = Promise.resolve(renote).then((renote) => {
+			if (!renote || !isQuote(note)) return null;
+			return renote.url ?? renote.uri ?? `${config.url}/notes/${renote.id}`;
+		});
+		const text = quoteUri.then((quoteUri) =>
+			note.text !== null
+				? quoteUri !== null
+					? note.text
+							.replaceAll(`RE: ${quoteUri}`, "")
+							.replaceAll(quoteUri, "")
+							.trimEnd()
+					: note.text
+				: "",
+		);
+		
+		const files = DriveFiles.packMany(note.fileIds);
+
+		const a = await awaitAll({
+			id: scheduledNote.noteId,
+			scheduled_at: scheduledNote.scheduledAt.toISOString(),
+			params: {
+				text,
+				poll: note.hasPoll
+					? populatePoll(note, user?.id ?? null)
+						.then((p) => PollConverter.encodeScheduledPoll(p))
+					: null,
+				media_ids: note.fileIds,
+				sensitive: files.then((files) =>
+					files.length > 0 ? files.some((f) => f.isSensitive) : false,
+				),
+				spoiler_text: note.cw || "",
+				visibility: VisibilityConverter.encode(note.visibility),
+				in_reply_to_id: note.replyId,
+				language: note.lang,
+				application_id: 0,
+				idempotency: scheduledNote.id,
+				with_rate_limit: false,
+			},
+			media_attachments: files.then((files) =>
+				files.length > 0 ? files.map((f) => FileConverter.encode(f)) : [],
+			),
+		});
+		return a;
+	}
+	
+	public static async encodeManyScheduledNotes(
+		scheduledNotes: ScheduledNote[],
+		ctx: MastoContext,
+	): Promise<MastodonEntity.ScheduledStatus[]> {
+		const encoded = scheduledNotes.map((n) => this.encodeScheduledNote(n, ctx));
+		return Promise.all(encoded);
 	}
 }

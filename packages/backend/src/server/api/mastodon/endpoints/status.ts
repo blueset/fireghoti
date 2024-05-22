@@ -25,12 +25,16 @@ export function setupEndpointsStatus(router: Router): void {
 		}
 
 		const request = NoteHelpers.normalizeComposeOptions(ctx.request.body);
-		const status = await NoteHelpers.createNote(request, ctx).then((p) =>
-			NoteConverter.encode(p, ctx),
-		);
+		const status = await NoteHelpers.createNote(request, ctx).then(async (p) => {
+			if (!request.scheduled_at) return NoteConverter.encode(p, ctx);
+			const note = await NoteHelpers.getScheduledNoteOr404(p.id, ctx);
+			const result = await NoteConverter.encodeScheduledNote(note, ctx);
+			result.params.idempotency = key;
+			return result;
+		});
 		ctx.body = status;
 
-		if (key !== null)
+		if (key !== null && "text" in status)
 			NoteHelpers.postIdempotencyCache.set(key, { status });
 	});
 	router.put(
@@ -316,5 +320,49 @@ export function setupEndpointsStatus(router: Router): void {
 
 			ctx.body = await PollHelpers.voteInPoll(choices, note, ctx);
 		},
+	);
+
+	router.get(
+		"/v1/scheduled_statuses",
+		auth(true, ["read:statuses"]),
+		async (ctx) => {
+			const args = normalizeUrlQuery(limitToInt(ctx.query));
+			
+			const res = await NoteHelpers.getScheduledNotes(
+				args.max_id,
+				args.since_id,
+				args.min_id,
+				args.limit,
+				ctx,
+			);
+			ctx.body = await NoteConverter.encodeManyScheduledNotes(res, ctx);
+		}
+	);
+
+	router.get<{ Params: { id: string } }>(
+		"/v1/scheduled_statuses/:id",
+		auth(true, ["read:statuses"]),
+		async (ctx) => {
+			const note = await NoteHelpers.getScheduledNoteOr404(ctx.params.id, ctx);
+			ctx.body = await NoteConverter.encodeScheduledNote(note, ctx);
+		}
+	);
+
+	// Reeschedule a post to a new time
+	router.put<{ Params: { id: string } }>(
+		"/v1/scheduled_statuses/:id",
+		auth(true, ["write:statuses"]),
+		async (ctx) => {
+			const scheduledAt = new Date(Date.parse(ctx.request.body.scheduled_at));
+			throw new MastoApiError(501, "Not implemented");
+		}
+	);
+
+	router.delete<{ Params: { id: string } }>(
+		"/v1/scheduled_statuses/:id",
+		auth(true, ["write:statuses"]),
+		async (ctx) => {
+			throw new MastoApiError(501, "Not implemented");
+		}
 	);
 }

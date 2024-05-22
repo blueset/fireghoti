@@ -6,7 +6,15 @@ namespace MastodonEntity {
 		sensitive: boolean | null;
 		spoiler_text: string | null;
 		visibility: "public" | "unlisted" | "private" | "direct";
-		scheduled_at: string | null;
-		application_id: string;
+		application_id: number;
+		language: string | null;
+		idempotency: string | null;
+		with_rate_limit: boolean;
+		poll: {
+			options: string[];
+			expires_in: string;
+			multiple: boolean | null;
+			hide_totals: boolean | null;
+		} | null;
 	};
 }
