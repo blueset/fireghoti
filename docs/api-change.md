@@ -2,7 +2,7 @@
 
 Breaking changes are indicated by the :warning: icon.
 
-## Unreleased
+## v20240523
 
 - Added `scheduledAt` optional parameter to `notes/create` (!10789)
 
