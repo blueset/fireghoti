@@ -1,4 +1,4 @@
-import { Users, Notes, ScheduledNotes } from "@/models/index.js";
+import { Users, Notes, ScheduledNotes, DriveFiles } from "@/models/index.js";
 import type { DbUserScheduledNoteData } from "@/queue/types.js";
 import { queueLogger } from "../../logger.js";
 import type Bull from "bull";
@@ -25,6 +25,7 @@ export async function scheduledNote(
 		done();
 		return;
 	}
+	const files = await DriveFiles.findBy({ id: In(note.fileIds) });
 
 	if (user.isSuspended) {
 		deleteNote(user, note);
@@ -45,7 +46,7 @@ export async function scheduledNote(
 
 	await createNote(user, {
 		createdAt: new Date(),
-		files: note.files,
+		files,
 		poll: job.data.option.poll,
 		text: note.text || undefined,
 		lang: note.lang,
