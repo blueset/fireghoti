@@ -5,7 +5,7 @@ use std::collections::HashMap;
 // - #[serde(skip_serializing_if = "Option::is_none")] (https://github.com/3Hren/msgpack-rust/issues/86)
 // - #[serde(tag = "version", rename = "2.1")] (https://github.com/3Hren/msgpack-rust/issues/318)
 
-/// NodeInfo schema version 2.1. https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.1
+/// NodeInfo schema version 2.1. <https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.1>
 #[derive(Deserialize, Serialize, Debug, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct Nodeinfo21 {
@@ -25,7 +25,7 @@ pub struct Nodeinfo21 {
     pub metadata: HashMap<String, serde_json::Value>,
 }
 
-/// NodeInfo schema version 2.0. https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.0
+/// NodeInfo schema version 2.0. <https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.0>
 #[derive(Deserialize, Serialize, Debug, PartialEq)]
 #[serde(rename_all = "camelCase")]
 #[crate::export(object, js_name = "Nodeinfo")]

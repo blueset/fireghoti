@@ -66,7 +66,7 @@ pub fn get_timestamp(id: &str) -> Result<i64, InvalidIdError> {
 /// With the length of 16, namely 8 for cuid2, roughly 1427399 IDs are needed
 /// in the same millisecond to reach 50% chance of collision.
 ///
-/// Ref: https://github.com/paralleldrive/cuid2#parameterized-length
+/// Ref: <https://github.com/paralleldrive/cuid2#parameterized-length>
 #[crate::export]
 pub fn gen_id() -> String {
     create_id(&Utc::now().naive_utc())
