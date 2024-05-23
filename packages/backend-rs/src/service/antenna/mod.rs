@@ -1,2 +1,2 @@
-pub mod add_new_note;
 mod check_hit;
+pub mod process_new_note;
