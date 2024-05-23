@@ -58,6 +58,8 @@ default:
 test:build:
   stage: test
   rules:
+    - if: $TEST == 'true'
+      when: always
     - if: $TEST == 'false'
       when: never
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
@@ -84,6 +86,8 @@ test:build:
 test:build:backend_ts_only:
   stage: test
   rules:
+    - if: $TEST == 'true'
+      when: always
     - if: $TEST == 'false'
       when: never
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
@@ -126,6 +130,8 @@ test:build:backend_ts_only:
 test:build:client_only:
   stage: test
   rules:
+    - if: $TEST == 'true'
+      when: always
     - if: $TEST == 'false'
       when: never
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
@@ -164,6 +170,8 @@ build:container:
   image: docker.io/debian:trixie-slim
   services: []
   rules:
+    - if: $BUILD == 'true'
+      when: always
     - if: $BUILD == 'false'
       when: never
     - if: $CI_COMMIT_BRANCH == 'develop'
@@ -214,6 +222,8 @@ build:container:
 cargo:test:
   stage: test
   rules:
+    - if: $TEST == 'true'
+      when: always
     - if: $TEST == 'false'
       when: never
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
@@ -233,6 +243,8 @@ cargo:test:
 cargo:clippy:
   stage: test
   rules:
+    - if: $TEST == 'true'
+      when: always
     - if: $TEST == 'false'
       when: never
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
@@ -256,6 +268,8 @@ cargo:doc:
     - cargo:test
     - test:build
   rules:
+    - if: $DOC == 'true'
+      when: always
     - if: $DOC == 'false'
       when: never
     - if: $CI_COMMIT_BRANCH == 'develop'
@@ -283,6 +297,8 @@ pages:
   needs:
     - cargo:doc
   rules:
+    - if: $DOC == 'true'
+      when: always
     - if: $DOC == 'false'
       when: never
     - if: $CI_COMMIT_BRANCH == 'develop'
