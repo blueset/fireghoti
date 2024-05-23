@@ -43,7 +43,7 @@ const _time = computed(() =>
 );
 const invalid = computed(() => Number.isNaN(_time.value));
 const absolute = computed(() =>
-	!invalid.value ? dateTimeFormat.format(_time.value) : i18n.ts._ago.invalid,
+	!invalid.value ? dateTimeFormat.format(_time.value).replace("GMT", "UTC") : i18n.ts._ago.invalid,
 );
 
 const now = ref(props.origin?.getTime() ?? Date.now());
