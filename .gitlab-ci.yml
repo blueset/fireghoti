@@ -311,8 +311,8 @@ pages:
   services: []
   before_script: []
   script:
-    - rm --recursive --force public/backend-rs
-    - cp --recursive target/doc public
+    - rm -r -f public/backend-rs
+    - cp -r target/doc public
     - mv public/doc public/backend-rs
     - printf '<meta http-equiv="refresh" content="0; url=%s">' 'backend_rs' > public/backend-rs/index.html
   artifacts:
