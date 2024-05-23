@@ -30,7 +30,7 @@
 			<div class="body">
 				<XNoteHeader class="header" :note="note" :mini="true" />
 				<div class="body">
-					<MkSubNoteContent
+					<XNoteContent
 						class="text"
 						:note="note"
 						:parent-id="parentId"
@@ -38,112 +38,20 @@
 						:detailed-view="detailedView"
 						@focusfooter="footerEl!.focus()"
 					/>
-					<div v-if="translating || translation" class="translation">
-						<MkLoading v-if="translating || translation == null" mini />
-						<div v-else class="translated">
-							<b
-								>{{
-									i18n.t("translatedFrom", {
-										x: translation.sourceLang,
-									})
-								}}:
-							</b>
-							<Mfm
-								:text="translation.text"
-								:author="appearNote.user"
-								:i="me"
-								:lang="targetLang"
-								:custom-emojis="appearNote.emojis"
-							/>
-						</div>
-					</div>
+					<XNoteTranslation ref="noteTranslation" :note="note"/>
 				</div>
-				<footer ref="footerEl" class="footer" tabindex="-1">
-					<XReactionsViewer
-						v-if="enableEmojiReactions && !hideEmojiViewer"
-						ref="reactionsViewer"
-						:note="appearNote"
-					/>
-					<button
-						v-tooltip.noDelay.bottom="i18n.ts.reply"
-						class="button _button"
-						@click.stop="reply()"
-					>
-						<i :class="icon('ph-arrow-u-up-left')"></i>
-						<template v-if="appearNote.repliesCount > 0">
-							<p class="count">{{ appearNote.repliesCount }}</p>
-						</template>
-					</button>
-					<XRenoteButton
-						ref="renoteButton"
-						class="button"
-						:note="appearNote"
-						:count="appearNote.renoteCount"
-					/>
-					<XStarButtonNoEmoji
-						v-if="!enableEmojiReactions"
-						class="button"
-						:note="appearNote"
-						:count="reactionCount"
-						:reacted="appearNote.myReaction != null"
-					/>
-					<XStarButton
-						v-if="
-							enableEmojiReactions &&
-							appearNote.myReaction == null
-						"
-						ref="starButton"
-						class="button"
-						:note="appearNote"
-					/>
-					<button
-						v-if="
-							enableEmojiReactions &&
-							appearNote.myReaction == null
-						"
-						ref="reactButton"
-						v-tooltip.noDelay.bottom="i18n.ts.reaction"
-						class="button _button"
-						@click.stop="react()"
-					>
-						<i :class="icon('ph-smiley')"></i>
-						<p v-if="reactionCount > 0 && hideEmojiViewer" class="count">{{reactionCount}}</p>
-					</button>
-					<button
-						v-if="
-							enableEmojiReactions &&
-							appearNote.myReaction != null
-						"
-						ref="reactButton"
-						v-tooltip.noDelay.bottom="i18n.ts.removeReaction"
-						class="button _button reacted"
-						@click.stop="undoReact(appearNote)"
-					>
-						<i :class="icon('ph-minus')"></i>
-						<p v-if="reactionCount > 0 && hideEmojiViewer" class="count">{{reactionCount}}</p>
-					</button>
-					<XQuoteButton class="button" :note="appearNote" />
-					<button
-						v-if="
-							isSignedIn(me) &&
-							isForeignLanguage &&
-							translation == null
-						"
-						v-tooltip.noDelay.bottom="i18n.ts.translate"
-						class="button _button"
-						@click.stop="translate"
-					>
-						<i :class="icon('ph-translate')"></i>
-					</button>
-					<button
-						ref="menuButton"
-						v-tooltip.noDelay.bottom="i18n.ts.more"
-						class="button _button"
-						@click.stop="menu()"
-					>
-						<i :class="icon('ph-dots-three-outline')"></i>
-					</button>
-				</footer>
+				<XNoteFooter
+					class="footer"
+					ref="footerEl"
+					:note="appearNote"
+					:enableEmojiReactions
+					:hideEmojiViewer
+					:detailedView
+					:note-translation="noteTranslation!"
+					@deleted="isDeleted = true"
+					@event:focus="focus"
+					@event:blur="blur"
+				/>
 			</div>
 		</div>
 		<MkLoading v-if="conversationLoading" />
@@ -200,34 +108,24 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, ref, watch } from "vue";
-import type { Ref } from "vue";
+import { computed, ref, watch } from "vue";
 import type { entities } from "firefish-js";
-import XNoteHeader from "@/components/MkNoteHeader.vue";
-import MkSubNoteContent from "@/components/MkSubNoteContent.vue";
-import XReactionsViewer from "@/components/MkReactionsViewer.vue";
-import XStarButton from "@/components/MkStarButton.vue";
-import XStarButtonNoEmoji from "@/components/MkStarButtonNoEmoji.vue";
-import XRenoteButton from "@/components/MkRenoteButton.vue";
-import XQuoteButton from "@/components/MkQuoteButton.vue";
-import copyToClipboard from "@/scripts/copy-to-clipboard";
-import { detectLanguage } from "@/scripts/language-utils";
-import { url } from "@/config";
-import { pleaseLogin } from "@/scripts/please-login";
-import { getNoteMenu } from "@/scripts/get-note-menu";
+import XNoteHeader from "@/components/note/MkNoteHeader.vue";
+import XNoteContent from "@/components/note/MkNoteContent.vue";
 import { getWordSoftMute } from "@/scripts/check-word-mute";
 import { notePage } from "@/filters/note";
 import { useRouter } from "@/router";
 import { userPage } from "@/filters/user";
 import * as os from "@/os";
-import { reactionPicker } from "@/scripts/reaction-picker";
-import { isSignedIn, me } from "@/me";
+import { me } from "@/me";
 import { i18n } from "@/i18n";
 import { useNoteCapture } from "@/scripts/use-note-capture";
 import { defaultStore } from "@/store";
 import { deepClone } from "@/scripts/clone";
 import icon from "@/scripts/icon";
-import type { NoteTranslation } from "@/types/note";
+import XNoteFooter from "./note/MkNoteFooter.vue";
+import XNoteTranslation from "./note/MkNoteTranslation.vue";
+import { showNoteContextMenu } from "@/scripts/show-note-context-menu";
 
 const router = useRouter();
 
@@ -312,11 +210,8 @@ const isRenote =
 	note.value.poll == null;
 
 const el = ref<HTMLElement | null>(null);
-const footerEl = ref<HTMLElement | null>(null);
-const menuButton = ref<HTMLElement>();
-const starButton = ref<InstanceType<typeof XStarButton> | null>(null);
-const renoteButton = ref<InstanceType<typeof XRenoteButton> | null>(null);
-const reactButton = ref<HTMLElement | null>(null);
+const noteTranslation = ref<InstanceType<typeof XNoteTranslation> | null>(null);
+const footerEl = ref<InstanceType<typeof XNoteFooter> | null>(null);
 const appearNote = computed(() =>
 	isRenote ? (note.value.renote as entities.Note) : note.value,
 );
@@ -329,55 +224,8 @@ const muted = ref(
 		defaultStore.state.mutedLangs,
 	),
 );
-const translation = ref<NoteTranslation | null>(null);
-const translating = ref(false);
 const enableEmojiReactions = defaultStore.state.enableEmojiReactions;
 const expandOnNoteClick = defaultStore.state.expandOnNoteClick;
-const lang = localStorage.getItem("lang");
-const translateLang = localStorage.getItem("translateLang");
-const targetLang = (translateLang || lang || navigator.language)?.slice(0, 2);
-
-const reactionCount = computed(() =>
-	Object.values(appearNote.value.reactions).reduce(
-		(partialSum, val) => partialSum + val,
-		0,
-	),
-);
-
-const isForeignLanguage: boolean =
-	defaultStore.state.detectPostLanguage &&
-	appearNote.value.text != null &&
-	(() => {
-		const postLang = detectLanguage(appearNote.value.text);
-		return postLang !== "" && postLang !== targetLang;
-	})();
-
-async function translate_(noteId, targetLang: string) {
-	return await os.api("notes/translate", {
-		noteId,
-		targetLang,
-	});
-}
-
-async function translate() {
-	if (translation.value != null) return;
-	translating.value = true;
-	translation.value = await translate_(
-		appearNote.value.id,
-		translateLang || lang || navigator.language,
-	);
-
-	// use UI language as the second translation language
-	if (
-		translateLang != null &&
-		lang != null &&
-		translateLang !== lang &&
-		(!translation.value ||
-			translation.value.sourceLang.toLowerCase() === translateLang.slice(0, 2))
-	)
-		translation.value = await translate_(appearNote.value.id, lang);
-	translating.value = false;
-}
 
 useNoteCapture({
 	rootEl: el,
@@ -393,129 +241,12 @@ useNoteCapture({
 	},
 });
 
-function reply(_viaKeyboard = false): void {
-	pleaseLogin();
-	os.post({
-		reply: appearNote.value,
-		// animation: !viaKeyboard,
-	}).then(() => {
-		focus();
-	});
-}
-
-function react(_viaKeyboard = false): void {
-	pleaseLogin();
-	blur();
-	reactionPicker.show(
-		reactButton.value!,
-		(reaction) => {
-			os.api("notes/reactions/create", {
-				noteId: appearNote.value.id,
-				reaction,
-			});
-		},
-		() => {
-			focus();
-		},
-	);
-}
-
-function undoReact(note): void {
-	const oldReaction = note.myReaction;
-	if (!oldReaction) return;
-	os.api("notes/reactions/delete", {
-		noteId: note.id,
-	});
-}
-
-const currentClipPage = inject<Ref<entities.Clip> | null>(
-	"currentClipPage",
-	null,
-);
-
-function menu(viaKeyboard = false): void {
-	os.popupMenu(
-		getNoteMenu({
-			note: note.value,
-			translating,
-			translation,
-			menuButton,
-			isDeleted,
-			currentClipPage,
-		}),
-		menuButton.value,
-		{
-			viaKeyboard,
-		},
-	).then(focus);
-}
-
 function onContextmenu(ev: MouseEvent): void {
-	const isLink = (el: HTMLElement | null) => {
-		if (el == null) return;
-		if (el.tagName === "A") return true;
-		if (el.parentElement) {
-			return isLink(el.parentElement);
-		}
-	};
-	if (isLink(ev.target as HTMLElement | null)) return;
-	if (window.getSelection()?.toString() !== "") return;
-
-	if (defaultStore.state.useReactionPickerForContextMenu) {
-		ev.preventDefault();
-		react();
-	} else {
-		os.contextMenu(
-			[
-				{
-					type: "label",
-					text: notePage(appearNote.value),
-				},
-				{
-					icon: `${icon("ph-browser")}`,
-					text: i18n.ts.openInWindow,
-					action: () => {
-						os.pageWindow(notePage(appearNote.value));
-					},
-				},
-				notePage(appearNote.value) !== location.pathname
-					? {
-							icon: `${icon("ph-arrows-out-simple")}`,
-							text: i18n.ts.showInPage,
-							action: () => {
-								router.push(notePage(appearNote.value), "forcePage");
-							},
-						}
-					: undefined,
-				null,
-				{
-					type: "a",
-					icon: `${icon("ph-arrow-square-out")}`,
-					text: i18n.ts.openInNewTab,
-					href: notePage(appearNote.value),
-					target: "_blank",
-				},
-				{
-					icon: `${icon("ph-link-simple")}`,
-					text: i18n.ts.copyLink,
-					action: () => {
-						copyToClipboard(`${url}${notePage(appearNote.value)}`);
-						os.success();
-					},
-				},
-				note.value.user.host != null
-					? {
-							type: "a",
-							icon: `${icon("ph-arrow-square-up-right")}`,
-							text: i18n.ts.showOnRemote,
-							href: note.value.url ?? note.value.uri ?? "",
-							target: "_blank",
-						}
-					: undefined,
-			],
-			ev,
-		);
-	}
+	showNoteContextMenu({
+		ev,
+		note: appearNote.value,
+		react: footerEl.value!.react,
+	});
 }
 
 function focus() {
@@ -579,15 +310,6 @@ function noteClick(e: MouseEvent) {
 			> .header {
 				margin-bottom: 2px;
 				cursor: auto;
-			}
-
-			> .body {
-				> .translation {
-					border: solid 0.5px var(--divider);
-					border-radius: var(--radius);
-					padding: 12px;
-					margin-top: 8px;
-				}
 			}
 			> .footer {
 				position: relative;

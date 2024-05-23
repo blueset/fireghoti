@@ -13,7 +13,7 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import type { entities } from "firefish-js";
-import MkNoteMediaList from "@/components/MkNoteMediaList.vue";
+import MkNoteMediaList from "@/components/note/MkNoteMediaList.vue";
 import MkPagination from "@/components/MkPagination.vue";
 
 const props = defineProps<{
