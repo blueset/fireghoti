@@ -160,7 +160,7 @@ test:build:client_only:
 
 build:container:
   stage: build
-  image: docker.io/debian:bookworm-slim
+  image: docker.io/debian:trixie-slim
   services: []
   rules:
     - if: $BUILD == 'false'
@@ -188,9 +188,7 @@ build:container:
     STORAGE_DRIVER: overlay
   before_script:
     - apt-get update && apt-get -y upgrade
-    - apt-get install -y --no-install-recommends ca-certificates fuse-overlayfs
-    - echo 'deb https://deb.debian.org/debian trixie main' | tee /etc/apt/sources.list
-    - apt-get update && apt-get install -y --no-install-recommends --target-release trixie buildah
+    - apt-get install -y --no-install-recommends ca-certificates fuse-overlayfs buildah
     - echo "${CI_REGISTRY_PASSWORD}" | buildah login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
     - export IMAGE_TAG="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
     - export IMAGE_CACHE="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop/cache"
