@@ -264,9 +264,6 @@ cargo:clippy:
 
 cargo:doc:
   stage: doc
-  needs:
-    - cargo:test
-    - test:build
   rules:
     - if: $DOC == 'true'
       when: always
