@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'RemoveEnumTypenameSuffix1716462794927',
     'CreateScheduledNote1714728200194',
     'AddBackTimezone1715351290096',
     'UserprofileJsonbToArray1714270605574',
@@ -31,6 +32,19 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- remove-enum-typename-suffix
+ALTER TYPE "antenna_src" RENAME TO "antenna_src_enum";
+ALTER TYPE "drive_file_usage_hint" RENAME TO "drive_file_usage_hint_enum";
+ALTER TYPE "muted_note_reason" RENAME TO "muted_note_reason_enum";
+ALTER TYPE "note_visibility" RENAME TO "note_visibility_enum";
+ALTER TYPE "notification_type" RENAME TO "notification_type_enum";
+ALTER TYPE "page_visibility" RENAME TO "page_visibility_enum";
+ALTER TYPE "poll_note_visibility" RENAME TO "poll_notevisibility_enum";
+ALTER TYPE "relay_status" RENAME TO "relay_status_enum";
+ALTER TYPE "user_emoji_mod_perm" RENAME TO "user_emojimodperm_enum";
+ALTER TYPE "user_profile_ffvisibility" RENAME TO "user_profile_ffvisibility_enum";
+ALTER TYPE "user_profile_muting_notification_types" RENAME TO "user_profile_mutingnotificationtypes_enum";
 
 -- create-scheduled-note
 DROP TABLE "scheduled_note";

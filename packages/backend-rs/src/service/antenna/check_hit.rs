@@ -33,7 +33,7 @@ pub async fn check_hit_antenna(
     note_all_texts: &[String],
     note_author: &Acct,
 ) -> Result<bool, AntennaCheckError> {
-    if note.visibility == NoteVisibilityEnum::Specified {
+    if note.visibility == NoteVisibility::Specified {
         return Ok(false);
     }
 
@@ -45,7 +45,7 @@ pub async fn check_hit_antenna(
         return Ok(false);
     }
 
-    if antenna.src == AntennaSrcEnum::Users {
+    if antenna.src == AntennaSrc::Users {
         let is_from_one_of_specified_authors = antenna
             .users
             .iter()
@@ -55,7 +55,7 @@ pub async fn check_hit_antenna(
         if !is_from_one_of_specified_authors {
             return Ok(false);
         }
-    } else if antenna.src == AntennaSrcEnum::Instances {
+    } else if antenna.src == AntennaSrc::Instances {
         let is_from_one_of_specified_servers = antenna.instances.iter().any(|host| {
             host.to_ascii_lowercase()
                 == note_author
@@ -115,7 +115,7 @@ pub async fn check_hit_antenna(
         return Ok(false);
     }
 
-    if [NoteVisibilityEnum::Home, NoteVisibilityEnum::Followers].contains(&note.visibility) {
+    if [NoteVisibility::Home, NoteVisibility::Followers].contains(&note.visibility) {
         let following_user_ids: Vec<String> =
             if let Some(ids) = cache::get_one(cache::Category::Follow, &antenna.user_id).await? {
                 ids

@@ -369,7 +369,7 @@ export interface Antenna {
   createdAt: DateTimeWithTimeZone
   userId: string
   name: string
-  src: AntennaSrcEnum
+  src: AntennaSrc
   userListId: string | null
   withFile: boolean
   expression: string | null
@@ -475,7 +475,7 @@ export interface DriveFile {
   webpublicType: string | null
   requestHeaders: Json | null
   requestIp: string | null
-  usageHint: DriveFileUsageHintEnum | null
+  usageHint: DriveFileUsageHint | null
 }
 export interface DriveFolder {
   id: string
@@ -699,7 +699,7 @@ export interface MutedNote {
   id: string
   noteId: string
   userId: string
-  reason: MutedNoteReasonEnum
+  reason: MutedNoteReason
 }
 export interface Muting {
   id: string
@@ -721,7 +721,7 @@ export interface Note {
   renoteCount: number
   repliesCount: number
   reactions: Json
-  visibility: NoteVisibilityEnum
+  visibility: NoteVisibility
   uri: string | null
   score: number
   fileIds: Array<string>
@@ -802,7 +802,7 @@ export interface Notification {
   reaction: string | null
   choice: number | null
   followRequestId: string | null
-  type: NotificationTypeEnum
+  type: NotificationType
   userGroupInvitationId: string | null
   customBody: string | null
   customHeader: string | null
@@ -822,7 +822,7 @@ export interface Page {
   eyeCatchingImageId: string | null
   content: Json
   variables: Json
-  visibility: PageVisibilityEnum
+  visibility: PageVisibility
   visibleUserIds: Array<string>
   likedCount: number
   hideTitleWhenPinned: boolean
@@ -847,7 +847,7 @@ export interface Poll {
   multiple: boolean
   choices: Array<string>
   votes: Array<number>
-  noteVisibility: PollNotevisibilityEnum
+  noteVisibility: PollNoteVisibility
   userId: string
   userHost: string | null
 }
@@ -887,7 +887,7 @@ export interface RegistryItem {
 export interface Relay {
   id: string
   inbox: string
-  status: RelayStatusEnum
+  status: RelayStatus
 }
 export interface RenoteMuting {
   id: string
@@ -907,7 +907,7 @@ export interface ScheduledNote {
   userId: string
   scheduledAt: DateTimeWithTimeZone
 }
-export enum AntennaSrcEnum {
+export enum AntennaSrc {
   All = 'all',
   Group = 'group',
   Home = 'home',
@@ -915,24 +915,24 @@ export enum AntennaSrcEnum {
   List = 'list',
   Users = 'users'
 }
-export enum DriveFileUsageHintEnum {
+export enum DriveFileUsageHint {
   UserAvatar = 'userAvatar',
   UserBanner = 'userBanner'
 }
-export enum MutedNoteReasonEnum {
+export enum MutedNoteReason {
   Manual = 'manual',
   Other = 'other',
   Spam = 'spam',
   Word = 'word'
 }
-export enum NoteVisibilityEnum {
+export enum NoteVisibility {
   Followers = 'followers',
   Hidden = 'hidden',
   Home = 'home',
   Public = 'public',
   Specified = 'specified'
 }
-export enum NotificationTypeEnum {
+export enum NotificationType {
   App = 'app',
   Follow = 'follow',
   FollowRequestAccepted = 'followRequestAccepted',
@@ -946,34 +946,34 @@ export enum NotificationTypeEnum {
   Renote = 'renote',
   Reply = 'reply'
 }
-export enum PageVisibilityEnum {
+export enum PageVisibility {
   Followers = 'followers',
   Public = 'public',
   Specified = 'specified'
 }
-export enum PollNotevisibilityEnum {
+export enum PollNoteVisibility {
   Followers = 'followers',
   Home = 'home',
   Public = 'public',
   Specified = 'specified'
 }
-export enum RelayStatusEnum {
+export enum RelayStatus {
   Accepted = 'accepted',
   Rejected = 'rejected',
   Requesting = 'requesting'
 }
-export enum UserEmojimodpermEnum {
+export enum UserEmojiModPerm {
   Add = 'add',
   Full = 'full',
   Mod = 'mod',
   Unauthorized = 'unauthorized'
 }
-export enum UserProfileFfvisibilityEnum {
+export enum UserProfileFfvisibility {
   Followers = 'followers',
   Private = 'private',
   Public = 'public'
 }
-export enum UserProfileMutingnotificationtypesEnum {
+export enum UserProfileMutingNotificationTypes {
   App = 'app',
   Follow = 'follow',
   FollowRequestAccepted = 'followRequestAccepted',
@@ -1044,7 +1044,7 @@ export interface User {
   driveCapacityOverrideMb: number | null
   movedToUri: string | null
   speakAsCat: boolean
-  emojiModPerm: UserEmojimodpermEnum
+  emojiModPerm: UserEmojiModPerm
   isIndexable: boolean
   alsoKnownAs: Array<string> | null
 }
@@ -1133,12 +1133,12 @@ export interface UserProfile {
   pinnedPageId: string | null
   injectFeaturedNote: boolean
   enableWordMute: boolean
-  mutingNotificationTypes: Array<UserProfileMutingnotificationtypesEnum>
+  mutingNotificationTypes: Array<UserProfileMutingNotificationTypes>
   noCrawle: boolean
   receiveAnnouncementEmail: boolean
   emailNotificationTypes: Json
   publicReactions: boolean
-  ffVisibility: UserProfileFfvisibilityEnum
+  ffVisibility: UserProfileFfvisibility
   moderationNote: string
   preventAiLearning: boolean
   isIndexable: boolean
