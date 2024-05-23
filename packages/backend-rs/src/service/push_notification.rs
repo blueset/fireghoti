@@ -13,15 +13,15 @@ use web_push::{
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Database error: {0}")]
-    DbErr(#[from] DbErr),
+    Db(#[from] DbErr),
     #[error("Web Push error: {0}")]
-    WebPushErr(#[from] WebPushError),
+    WebPush(#[from] WebPushError),
     #[error("Failed to (de)serialize an object: {0}")]
-    SerializeErr(#[from] serde_json::Error),
+    Serialize(#[from] serde_json::Error),
     #[error("Invalid content: {0}")]
-    InvalidContentErr(String),
+    InvalidContent(String),
     #[error("HTTP client aquisition error: {0}")]
-    HttpClientErr(#[from] http_client::Error),
+    HttpClient(#[from] http_client::Error),
 }
 
 static CLIENT: OnceCell<IsahcWebPushClient> = OnceCell::new();
@@ -59,7 +59,7 @@ fn compact_content(
     }
 
     if !content.is_object() {
-        return Err(Error::InvalidContentErr("not a JSON object".to_string()));
+        return Err(Error::InvalidContent("not a JSON object".to_string()));
     }
 
     let object = content.as_object_mut().unwrap();
@@ -73,7 +73,7 @@ fn compact_content(
             .get("note")
             .unwrap()
             .get("renote")
-            .ok_or(Error::InvalidContentErr(
+            .ok_or(Error::InvalidContent(
                 "renote object is missing".to_string(),
             ))?
     } else {
@@ -82,7 +82,7 @@ fn compact_content(
     .clone();
 
     if !note.is_object() {
-        return Err(Error::InvalidContentErr(
+        return Err(Error::InvalidContent(
             "(re)note is not an object".to_string(),
         ));
     }

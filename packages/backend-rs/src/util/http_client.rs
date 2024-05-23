@@ -6,9 +6,9 @@ use std::time::Duration;
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Isahc error: {0}")]
-    IsahcErr(#[from] isahc::Error),
+    Isahc(#[from] isahc::Error),
     #[error("Url parse error: {0}")]
-    UrlParseErr(#[from] isahc::http::uri::InvalidUri),
+    UrlParse(#[from] isahc::http::uri::InvalidUri),
 }
 
 static CLIENT: OnceCell<HttpClient> = OnceCell::new();

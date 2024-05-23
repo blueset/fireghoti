@@ -9,23 +9,23 @@ use tokio::sync::Mutex;
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Redis cache error: {0}")]
-    CacheErr(#[from] cache::Error),
+    Cache(#[from] cache::Error),
     #[error("HTTP client aquisition error: {0}")]
-    HttpClientErr(#[from] http_client::Error),
+    HttpClient(#[from] http_client::Error),
     #[error("Isahc error: {0}")]
-    IsahcErr(#[from] isahc::Error),
+    Isahc(#[from] isahc::Error),
     #[error("HTTP error: {0}")]
-    HttpErr(String),
+    Http(String),
     #[error("Image decoding error: {0}")]
-    ImageErr(#[from] ImageError),
+    Image(#[from] ImageError),
     #[error("Image decoding error: {0}")]
-    IoErr(#[from] std::io::Error),
+    Io(#[from] std::io::Error),
     #[error("Exif extraction error: {0}")]
-    ExifErr(#[from] nom_exif::Error),
+    Exif(#[from] nom_exif::Error),
     #[error("Emoji meta attempt limit exceeded: {0}")]
     TooManyAttempts(String),
     #[error("Unsupported image type: {0}")]
-    UnsupportedImageErr(String),
+    UnsupportedImage(String),
 }
 
 const BROWSER_SAFE_IMAGE_TYPES: [ImageFormat; 8] = [
@@ -76,7 +76,7 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
     if !response.status().is_success() {
         tracing::info!("status: {}", response.status());
         tracing::debug!("response body: {:#?}", response.body());
-        return Err(Error::HttpErr(format!("Failed to get image from {}", url)));
+        return Err(Error::Http(format!("Failed to get image from {}", url)));
     }
 
     let image_bytes = response.bytes()?;
@@ -85,7 +85,7 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
 
     let format = reader.format();
     if format.is_none() || !BROWSER_SAFE_IMAGE_TYPES.contains(&format.unwrap()) {
-        return Err(Error::UnsupportedImageErr(format!("{:?}", format)));
+        return Err(Error::UnsupportedImage(format!("{:?}", format)));
     }
 
     let size = reader.into_dimensions()?;

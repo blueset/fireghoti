@@ -18,13 +18,13 @@ pub enum Category {
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Redis error: {0}")]
-    RedisErr(#[from] RedisError),
+    Redis(#[from] RedisError),
     #[error("Redis connection error: {0}")]
-    RedisConnErr(#[from] RedisConnError),
+    RedisConn(#[from] RedisConnError),
     #[error("Data serialization error: {0}")]
-    SerializeErr(#[from] rmp_serde::encode::Error),
+    Serialize(#[from] rmp_serde::encode::Error),
     #[error("Data deserialization error: {0}")]
-    DeserializeErr(#[from] rmp_serde::decode::Error),
+    Deserialize(#[from] rmp_serde::decode::Error),
 }
 
 #[inline]

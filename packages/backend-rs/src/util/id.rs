@@ -47,17 +47,17 @@ fn create_id(datetime: &NaiveDateTime) -> String {
 
 #[derive(thiserror::Error, Debug)]
 #[error("Invalid ID: {id}")]
-pub struct InvalidIdErr {
+pub struct InvalidIdError {
     id: String,
 }
 
 #[crate::export]
-pub fn get_timestamp(id: &str) -> Result<i64, InvalidIdErr> {
+pub fn get_timestamp(id: &str) -> Result<i64, InvalidIdError> {
     let n: Option<u64> = BASE36.decode_var_len(&id[0..8]);
     if let Some(n) = n {
         Ok(n as i64 + TIME_2000)
     } else {
-        Err(InvalidIdErr { id: id.to_string() })
+        Err(InvalidIdError { id: id.to_string() })
     }
 }
 

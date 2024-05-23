@@ -3,9 +3,9 @@ use crate::config::CONFIG;
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Idna error: {0}")]
-    IdnaErr(#[from] idna::Errors),
+    Idna(#[from] idna::Errors),
     #[error("Url parse error: {0}")]
-    UrlParseErr(#[from] url::ParseError),
+    UrlParse(#[from] url::ParseError),
     #[error("Hostname is missing")]
     NoHostname,
 }

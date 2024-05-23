@@ -6,15 +6,15 @@ use serde::{Deserialize, Serialize};
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("HTTP client aquisition error: {0}")]
-    HttpClientErr(#[from] http_client::Error),
+    HttpClient(#[from] http_client::Error),
     #[error("HTTP error: {0}")]
-    HttpErr(#[from] isahc::Error),
+    Http(#[from] isahc::Error),
     #[error("Bad status: {0}")]
     BadStatus(String),
     #[error("Failed to parse response body as text: {0}")]
-    ResponseErr(#[from] std::io::Error),
+    Response(#[from] std::io::Error),
     #[error("Failed to parse response body as json: {0}")]
-    JsonErr(#[from] serde_json::Error),
+    Json(#[from] serde_json::Error),
     #[error("No nodeinfo provided")]
     MissingNodeinfo,
 }

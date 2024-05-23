@@ -48,13 +48,13 @@ pub enum Stream {
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Redis error: {0}")]
-    RedisErr(#[from] RedisError),
+    Redis(#[from] RedisError),
     #[error("Redis connection error: {0}")]
-    RedisConnErr(#[from] RedisConnError),
+    RedisConn(#[from] RedisConnError),
     #[error("Json (de)serialization error: {0}")]
-    JsonErr(#[from] serde_json::Error),
+    Json(#[from] serde_json::Error),
     #[error("Value error: {0}")]
-    ValueErr(String),
+    Value(String),
 }
 
 pub async fn publish_to_stream(
@@ -69,7 +69,7 @@ pub async fn publish_to_stream(
             value.unwrap_or("null".to_string()),
         )
     } else {
-        value.ok_or(Error::ValueErr("Invalid streaming message".to_string()))?
+        value.ok_or(Error::Value("Invalid streaming message".to_string()))?
     };
 
     redis_conn()

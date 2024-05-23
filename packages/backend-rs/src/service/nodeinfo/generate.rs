@@ -10,11 +10,11 @@ use std::collections::HashMap;
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Database error: {0}")]
-    DbErr(#[from] DbErr),
+    Db(#[from] DbErr),
     #[error("Cache error: {0}")]
-    CacheErr(#[from] cache::Error),
+    Cache(#[from] cache::Error),
     #[error("Failed to serialize nodeinfo to JSON: {0}")]
-    JsonErr(#[from] serde_json::Error),
+    Json(#[from] serde_json::Error),
 }
 
 async fn statistics() -> Result<(u64, u64, u64, u64), DbErr> {
