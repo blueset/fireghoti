@@ -280,45 +280,16 @@ cargo:doc:
       when: always
   services: []
   before_script:
-    - apt-get update && apt-get -y upgrade
-    - apt-get install -y --no-install-recommends build-essential clang mold
+    - apt-get update
+    - apt-get install -y --no-install-recommends build-essential clang mold nodejs npm
     - cp ci/cargo/config.toml /usr/local/cargo/config.toml
+    - npm install --global netlify-cli
   script:
     - cargo doc --no-deps
-  artifacts:
-    paths:
-      - target/doc
-
-pages:
-  stage: doc
-  needs:
-    - cargo:doc
-  rules:
-    - if: $DOC == 'true'
-      when: always
-    - if: $DOC == 'false'
-      when: never
-    - if: $CI_COMMIT_BRANCH == 'develop'
-      changes:
-        paths:
-          - packages/backend-rs/**/*
-          - packages/macro-rs/**/*
-          - Cargo.toml
-          - Cargo.lock
-          - package.json
-      when: always
-  image: docker.io/alpine:latest
-  services: []
-  before_script: []
-  script:
     - mkdir -p public
-    - rm -rf public/backend-rs
     - cp -r target/doc public/doc
-    - mv public/doc public/backend-rs
-    - printf '<meta http-equiv="refresh" content="0; url=%s">' 'backend_rs' > public/backend-rs/index.html
-  artifacts:
-    paths:
-      - public
+    - printf '<meta http-equiv="refresh" content="0; url=%s">' 'backend_rs' > public/doc/index.html
+    - netlify deploy --dir=public
 
 renovate:
   stage: dependency
