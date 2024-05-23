@@ -66,7 +66,7 @@
 					tabindex: !showContent ? '-1' : undefined,
 				}"
 			>
-				<span v-if="note.deletedAt" style="opacity: 0.5"
+				<span v-if="deleted" style="opacity: 0.5"
 					>({{ i18n.ts.deleted }})</span
 				>
 				<template v-if="!note.cw">
@@ -195,6 +195,7 @@ import { extractMfmWithAnimation } from "@/scripts/extract-mfm";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
+import { isDeleted } from "@/scripts/note";
 
 const props = withDefaults(
 	defineProps<{
@@ -241,6 +242,8 @@ const mfms = computed(() =>
 	props.note.text ? extractMfmWithAnimation(mfm.parse(props.note.text)) : null,
 );
 const hasMfm = computed(() => mfms.value && mfms.value.length > 0);
+
+const deleted = computed(() => isDeleted(props.note.id));
 
 const disableMfm = ref(defaultStore.state.animatedMfm);
 const showContent = ref(false);

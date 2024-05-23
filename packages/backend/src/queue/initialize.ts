@@ -12,7 +12,7 @@ export function initialize<T>(name: string, limitPerSec = -1) {
 			db: config.redis.db || 0,
 			tls: config.redis.tls,
 		},
-		prefix: config.redis.prefix ? `${config.redis.prefix}:queue` : "queue",
+		prefix: `${config.redisKeyPrefix}:queue`,
 		limiter:
 			limitPerSec > 0
 				? {

@@ -59,9 +59,9 @@ pub fn count_reactions(reactions: &HashMap<String, u32>) -> HashMap<String, u32>
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Idna error: {0}")]
-    IdnaErr(#[from] idna::Errors),
+    Idna(#[from] idna::Errors),
     #[error("Database error: {0}")]
-    DbErr(#[from] DbErr),
+    Db(#[from] DbErr),
 }
 
 #[crate::export]

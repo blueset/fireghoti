@@ -10,9 +10,9 @@
 				<i :class="icon('ph-warning')"></i>
 				{{ i18n.ts.somethingHappened }}
 			</p>
-			<MkButton class="button" @click="() => $emit('retry')">{{
-				i18n.ts.retry
-			}}</MkButton>
+			<MkButton class="button" @click.stop="() => $emit('retry')">
+				{{ i18n.ts.retry }}
+			</MkButton>
 		</div>
 	</transition>
 </template>

@@ -4,26 +4,26 @@ use crate::misc::get_note_all_texts::{all_texts, NoteLike};
 use crate::model::entity::{antenna, note};
 use crate::service::antenna::check_hit::{check_hit_antenna, AntennaCheckError};
 use crate::service::stream;
-use crate::util::id::{get_timestamp, InvalidIdErr};
+use crate::util::id::{get_timestamp, InvalidIdError};
 use redis::{streams::StreamMaxlen, AsyncCommands, RedisError};
 use sea_orm::{DbErr, EntityTrait};
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Database error: {0}")]
-    DbErr(#[from] DbErr),
+    Db(#[from] DbErr),
     #[error("Cache error: {0}")]
-    CacheErr(#[from] cache::Error),
+    Cache(#[from] cache::Error),
     #[error("Redis error: {0}")]
-    RedisErr(#[from] RedisError),
+    Redis(#[from] RedisError),
     #[error("Redis connection error: {0}")]
-    RedisConnErr(#[from] RedisConnError),
+    RedisConn(#[from] RedisConnError),
     #[error("Invalid ID: {0}")]
-    InvalidIdErr(#[from] InvalidIdErr),
+    InvalidId(#[from] InvalidIdError),
     #[error("Stream error: {0}")]
-    StreamErr(#[from] stream::Error),
+    Stream(#[from] stream::Error),
     #[error("Failed to check if the note should be added to antenna: {0}")]
-    AntennaCheckErr(#[from] AntennaCheckError),
+    AntennaCheck(#[from] AntennaCheckError),
 }
 
 // for napi export

@@ -80,9 +80,9 @@ async fn init_conn_pool() -> Result<(), RedisError> {
 #[derive(thiserror::Error, Debug)]
 pub enum RedisConnError {
     #[error("Failed to initialize Redis connection pool: {0}")]
-    RedisErr(RedisError),
+    Redis(RedisError),
     #[error("Redis connection pool error: {0}")]
-    Bb8PoolErr(RunError<RedisError>),
+    Bb8Pool(RunError<RedisError>),
 }
 
 pub async fn redis_conn(
@@ -91,7 +91,7 @@ pub async fn redis_conn(
         let init_res = init_conn_pool().await;
 
         if let Err(err) = init_res {
-            return Err(RedisConnError::RedisErr(err));
+            return Err(RedisConnError::Redis(err));
         }
     }
 
@@ -100,7 +100,7 @@ pub async fn redis_conn(
         .unwrap()
         .get()
         .await
-        .map_err(RedisConnError::Bb8PoolErr)
+        .map_err(RedisConnError::Bb8Pool)
 }
 
 /// prefix redis key

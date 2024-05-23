@@ -47,17 +47,17 @@ fn create_id(datetime: &NaiveDateTime) -> String {
 
 #[derive(thiserror::Error, Debug)]
 #[error("Invalid ID: {id}")]
-pub struct InvalidIdErr {
+pub struct InvalidIdError {
     id: String,
 }
 
 #[crate::export]
-pub fn get_timestamp(id: &str) -> Result<i64, InvalidIdErr> {
+pub fn get_timestamp(id: &str) -> Result<i64, InvalidIdError> {
     let n: Option<u64> = BASE36.decode_var_len(&id[0..8]);
     if let Some(n) = n {
         Ok(n as i64 + TIME_2000)
     } else {
-        Err(InvalidIdErr { id: id.to_string() })
+        Err(InvalidIdError { id: id.to_string() })
     }
 }
 
@@ -66,7 +66,7 @@ pub fn get_timestamp(id: &str) -> Result<i64, InvalidIdErr> {
 /// With the length of 16, namely 8 for cuid2, roughly 1427399 IDs are needed
 /// in the same millisecond to reach 50% chance of collision.
 ///
-/// Ref: https://github.com/paralleldrive/cuid2#parameterized-length
+/// Ref: <https://github.com/paralleldrive/cuid2#parameterized-length>
 #[crate::export]
 pub fn gen_id() -> String {
     create_id(&Utc::now().naive_utc())

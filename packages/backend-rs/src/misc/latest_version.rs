@@ -6,17 +6,17 @@ use serde::{Deserialize, Serialize};
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Cache error: {0}")]
-    CacheErr(#[from] cache::Error),
+    Cache(#[from] cache::Error),
     #[error("Isahc error: {0}")]
-    IsahcErr(#[from] isahc::Error),
+    Isahc(#[from] isahc::Error),
     #[error("HTTP client aquisition error: {0}")]
-    HttpClientErr(#[from] http_client::Error),
+    HttpClient(#[from] http_client::Error),
     #[error("HTTP error: {0}")]
-    HttpErr(String),
+    Http(String),
     #[error("Response parsing error: {0}")]
-    IoErr(#[from] std::io::Error),
+    Io(#[from] std::io::Error),
     #[error("Failed to deserialize JSON: {0}")]
-    JsonErr(#[from] serde_json::Error),
+    Json(#[from] serde_json::Error),
 }
 
 const UPSTREAM_PACKAGE_JSON_URL: &str =
@@ -33,7 +33,7 @@ async fn get_latest_version() -> Result<String, Error> {
     if !response.status().is_success() {
         tracing::info!("status: {}", response.status());
         tracing::debug!("response body: {:#?}", response.body());
-        return Err(Error::HttpErr(
+        return Err(Error::Http(
             "Failed to fetch version from Firefish GitLab".to_string(),
         ));
     }

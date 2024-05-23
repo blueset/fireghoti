@@ -238,7 +238,7 @@ const repliesPagingComponent = ref<MkPaginationType<"notes/replies"> | null>(
 );
 
 const el = ref<HTMLElement | null>(null);
-const noteEl = ref();
+const noteEl = ref<InstanceType<typeof MkNote> | null>(null);
 const menuButton = ref<HTMLElement>();
 const renoteButton = ref<InstanceType<typeof XRenoteButton>>();
 const reactButton = ref<HTMLElement>();
@@ -361,11 +361,11 @@ function menu(viaKeyboard = false): void {
 }
 
 function focus() {
-	noteEl.value.focus();
+	noteEl.value?.focus();
 }
 
 function blur() {
-	noteEl.value.blur();
+	noteEl.value?.blur();
 }
 
 conversation.value = null;
@@ -418,12 +418,12 @@ document.addEventListener("wheel", () => {
 
 onMounted(() => {
 	isScrolling = false;
-	noteEl.value.scrollIntoView();
+	noteEl.value?.scrollIntoView();
 });
 
 onUpdated(() => {
 	if (!isScrolling) {
-		noteEl.value.scrollIntoView();
+		noteEl.value?.scrollIntoView();
 		if (location.hash) {
 			location.replace(location.hash); // Jump to highlighted reply
 		}

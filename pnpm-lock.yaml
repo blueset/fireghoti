@@ -43,14 +43,14 @@ importers:
   packages/backend:
     dependencies:
       '@bull-board/api':
-        specifier: 5.18.1
-        version: 5.18.1(@bull-board/ui@5.18.1)
+        specifier: 5.18.3
+        version: 5.18.3(@bull-board/ui@5.18.3)
       '@bull-board/koa':
-        specifier: 5.18.1
-        version: 5.18.1(@types/koa@2.15.0)(lodash@4.17.21)(pug@3.0.2)
+        specifier: 5.18.3
+        version: 5.18.3(@types/koa@2.15.0)(lodash@4.17.21)(pug@3.0.2)
       '@bull-board/ui':
-        specifier: 5.18.1
-        version: 5.18.1
+        specifier: 5.18.3
+        version: 5.18.3
       '@discordapp/twemoji':
         specifier: 15.0.3
         version: 15.0.3
@@ -91,8 +91,8 @@ importers:
         specifier: ^0.5.0
         version: 0.5.0
       aws-sdk:
-        specifier: 2.1625.0
-        version: 2.1625.0
+        specifier: 2.1626.0
+        version: 2.1626.0
       axios:
         specifier: 1.7.2
         version: 1.7.2
@@ -1209,16 +1209,16 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@bull-board/api@5.18.1':
-    resolution: {integrity: sha512-lAM8Q9dj8sGvocTnJjllps2l7x1wh+bRAWKPmYxpmQ/oQGAjTVeWmnAzn1TXcCDOQNTDi1DC26IYXeGGxA8s+w==}
+  '@bull-board/api@5.18.3':
+    resolution: {integrity: sha512-TuP/au5qWzW2RCBLFovpPWGJuC0wHDp5wvcTRSedseH7gLtUUBqYAFQbZR0l3Asbnrqnijoey87/1LAsGSAYAQ==}
     peerDependencies:
-      '@bull-board/ui': 5.18.1
+      '@bull-board/ui': 5.18.3
 
-  '@bull-board/koa@5.18.1':
-    resolution: {integrity: sha512-IhHFH3HTXgKg7ZEvei+tCMPIToxh4VqsbDKKIithUV2cHtDj4G/VLHvVMWTEra+ctigNQZX5avw89Eg3EnneNw==}
+  '@bull-board/koa@5.18.3':
+    resolution: {integrity: sha512-KKMf39YscJRbL/+9VPgKQ2jbd4Pl6IO1J/e+CAOZ/sVNZvG+MBJtCaYOchIcKQPBolGZ/8yk2qbQgjb9HzLAdA==}
 
-  '@bull-board/ui@5.18.1':
-    resolution: {integrity: sha512-e43qRxMy+PAeV1W4sudOHVJeTkprPWFsILdKi8SvYQ40vJnj0qfc/Jej4TTz09zsZ3BF4QcJI62DoUNP8+Fwlg==}
+  '@bull-board/ui@5.18.3':
+    resolution: {integrity: sha512-cy46YzbcHxDdR24462ZLI74R4N6WVRNSZKqk3T900kKt2uR2QbAiwlOpCCdxciGWFLe4Avk1J/Bf7ygB27a2kw==}
 
   '@cbor-extract/cbor-extract-darwin-arm64@2.2.0':
     resolution: {integrity: sha512-P7swiOAdF7aSi0H+tHtHtr6zrpF3aAq/W9FXx5HektRvLTM2O89xCyXF3pk7pLc7QpaY7AoaE8UowVf9QBdh3w==}
@@ -3051,8 +3051,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  aws-sdk@2.1625.0:
-    resolution: {integrity: sha512-Q96jKdo9PtBYPNOXoGTYvOt78TSRouLOeeFpcVfsN38O0Lc3LmuIMz3GHMofdLZGKRSa22RnpiDTCnpp6Xx1jw==}
+  aws-sdk@2.1626.0:
+    resolution: {integrity: sha512-auPVi0ZwmWioHcXK7A6RReNVk9y4GmvT5gPQvq5ictss/Cl/Yb9vjy/6DrZ2wUjSVAE16z5IVyE6G4Zsdhr+JQ==}
     engines: {node: '>= 10.0.0'}
 
   axios@0.24.0:
@@ -5017,6 +5017,7 @@ packages:
 
   inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
 
   inherits@2.0.3:
     resolution: {integrity: sha512-x00IRNXNy63jwGkJmzPigoySHbaqpNuzKbBOmzK+g2OdZpQ9w+sxCN+VSB3ja7IAge2OP2qpfxTjeNcyjmW1uw==}
@@ -8368,15 +8369,15 @@ snapshots:
   '@biomejs/cli-win32-x64@1.7.3':
     optional: true
 
-  '@bull-board/api@5.18.1(@bull-board/ui@5.18.1)':
+  '@bull-board/api@5.18.3(@bull-board/ui@5.18.3)':
     dependencies:
-      '@bull-board/ui': 5.18.1
+      '@bull-board/ui': 5.18.3
       redis-info: 3.1.0
 
-  '@bull-board/koa@5.18.1(@types/koa@2.15.0)(lodash@4.17.21)(pug@3.0.2)':
+  '@bull-board/koa@5.18.3(@types/koa@2.15.0)(lodash@4.17.21)(pug@3.0.2)':
     dependencies:
-      '@bull-board/api': 5.18.1(@bull-board/ui@5.18.1)
-      '@bull-board/ui': 5.18.1
+      '@bull-board/api': 5.18.3(@bull-board/ui@5.18.3)
+      '@bull-board/ui': 5.18.3
       ejs: 3.1.10
       koa: 2.15.3
       koa-mount: 4.0.0
@@ -8439,9 +8440,9 @@ snapshots:
       - walrus
       - whiskers
 
-  '@bull-board/ui@5.18.1':
+  '@bull-board/ui@5.18.3':
     dependencies:
-      '@bull-board/api': 5.18.1(@bull-board/ui@5.18.1)
+      '@bull-board/api': 5.18.3(@bull-board/ui@5.18.3)
 
   '@cbor-extract/cbor-extract-darwin-arm64@2.2.0':
     optional: true
@@ -10537,7 +10538,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.0.0
 
-  aws-sdk@2.1625.0:
+  aws-sdk@2.1626.0:
     dependencies:
       buffer: 4.9.2
       events: 1.1.1
@@ -10741,7 +10742,7 @@ snapshots:
   buffer@4.9.2:
     dependencies:
       base64-js: 1.5.1
-      ieee754: 1.1.13
+      ieee754: 1.2.1
       isarray: 1.0.0
 
   buffer@5.7.1:
@@ -16279,7 +16280,7 @@ snapshots:
 
   xml2js@0.6.2:
     dependencies:
-      sax: 1.2.1
+      sax: 1.3.0
       xmlbuilder: 11.0.1
 
   xmlbuilder@11.0.1: {}

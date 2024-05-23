@@ -3,7 +3,6 @@ import { defineAsyncComponent } from "vue";
 import type { entities } from "firefish-js";
 import { isModerator, isSignedIn, me } from "@/me";
 import { i18n } from "@/i18n";
-import { instance } from "@/instance";
 import * as os from "@/os";
 import copyToClipboard from "@/scripts/copy-to-clipboard";
 import { url } from "@/config";
@@ -13,18 +12,17 @@ import { getUserMenu } from "@/scripts/get-user-menu";
 import icon from "@/scripts/icon";
 import { useRouter } from "@/router";
 import { notePage } from "@/filters/note";
-import type { NoteTranslation } from "@/types/note";
 import type { MenuItem } from "@/types/menu";
 import type { NoteDraft } from "@/types/post-form";
+import type MkNoteTranslation from "@/components/note/MkNoteTranslation.vue";
 
 const router = useRouter();
 
 export function getNoteMenu(props: {
 	note: entities.Note;
 	menuButton: Ref<HTMLElement | undefined>;
-	translation: Ref<NoteTranslation | null>;
-	translating: Ref<boolean>;
 	isDeleted: Ref<boolean>;
+	translationEl: InstanceType<typeof MkNoteTranslation> | null;
 	currentClipPage?: Ref<entities.Clip> | null;
 }) {
 	const isRenote =
@@ -270,40 +268,9 @@ export function getNoteMenu(props: {
 	function share(): void {
 		navigator.share({
 			title: i18n.t("noteOf", { user: appearNote.user.name }),
-			text: appearNote.text,
+			text: appearNote.text ?? undefined,
 			url: `${url}/notes/${appearNote.id}`,
 		});
-	}
-
-	async function translate_(noteId: number, targetLang: string) {
-		return await os.api("notes/translate", {
-			noteId,
-			targetLang,
-		});
-	}
-
-	async function translate(): Promise<void> {
-		const translateLang = localStorage.getItem("translateLang");
-		const lang = localStorage.getItem("lang");
-
-		if (props.translation.value != null) return;
-		props.translating.value = true;
-		props.translation.value = await translate_(
-			appearNote.id,
-			translateLang || lang || navigator.language,
-		);
-
-		// use UI language as the second translation target
-		if (
-			translateLang != null &&
-			lang != null &&
-			translateLang !== lang &&
-			(!props.translation.value ||
-				props.translation.value.sourceLang.toLowerCase() ===
-					translateLang.slice(0, 2))
-		)
-			props.translation.value = await translate_(appearNote.id, lang);
-		props.translating.value = false;
 	}
 
 	let menu: MenuItem[];
@@ -394,11 +361,11 @@ export function getNoteMenu(props: {
 						action: () => showEditHistory(),
 					}
 				: undefined,
-			instance.translatorAvailable
+			props.translationEl.canTranslate
 				? {
 						icon: `${icon("ph-translate")}`,
 						text: i18n.ts.translate,
-						action: translate,
+						action: props.translationEl.translate,
 					}
 				: undefined,
 			appearNote.url || appearNote.uri

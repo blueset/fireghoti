@@ -16,7 +16,7 @@
 
 <script lang="ts" setup>
 import type { entities } from "firefish-js";
-import XNoteMedia from "@/components/MkNoteMedia.vue";
+import XNoteMedia from "@/components/note/MkNoteMedia.vue";
 
 defineProps<{
 	note: entities.Note;

@@ -9,7 +9,7 @@
 		<div class="main">
 			<XNoteHeader class="header" :note="note" :mini="true" />
 			<div class="body">
-				<MkSubNoteContent class="text" :note="note" />
+				<XNoteContent class="text" :note="note" />
 			</div>
 		</div>
 	</div>
@@ -18,8 +18,8 @@
 <script lang="ts" setup>
 import type { entities } from "firefish-js";
 import { computed, ref, watch } from "vue";
-import XNoteHeader from "@/components/MkNoteHeader.vue";
-import MkSubNoteContent from "@/components/MkSubNoteContent.vue";
+import XNoteHeader from "@/components/note/MkNoteHeader.vue";
+import XNoteContent from "@/components/note/MkNoteContent.vue";
 import { deepClone } from "@/scripts/clone";
 import { useNoteCapture } from "@/scripts/use-note-capture";
 import { isDeleted } from "@/scripts/note";

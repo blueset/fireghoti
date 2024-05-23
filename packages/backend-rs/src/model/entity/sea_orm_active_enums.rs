@@ -8,8 +8,8 @@ use sea_orm::entity::prelude::*;
 #[serde(rename_all = "camelCase")]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
 #[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
-#[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "antenna_src_enum")]
-pub enum AntennaSrcEnum {
+#[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "antenna_src")]
+pub enum AntennaSrc {
     #[sea_orm(string_value = "all")]
     All,
     #[sea_orm(string_value = "group")]
@@ -32,9 +32,9 @@ pub enum AntennaSrcEnum {
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
-    enum_name = "drive_file_usage_hint_enum"
+    enum_name = "drive_file_usage_hint"
 )]
-pub enum DriveFileUsageHintEnum {
+pub enum DriveFileUsageHint {
     #[sea_orm(string_value = "userAvatar")]
     UserAvatar,
     #[sea_orm(string_value = "userBanner")]
@@ -46,12 +46,8 @@ pub enum DriveFileUsageHintEnum {
 #[serde(rename_all = "camelCase")]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
 #[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
-#[sea_orm(
-    rs_type = "String",
-    db_type = "Enum",
-    enum_name = "muted_note_reason_enum"
-)]
-pub enum MutedNoteReasonEnum {
+#[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "muted_note_reason")]
+pub enum MutedNoteReason {
     #[sea_orm(string_value = "manual")]
     Manual,
     #[sea_orm(string_value = "other")]
@@ -67,12 +63,8 @@ pub enum MutedNoteReasonEnum {
 #[serde(rename_all = "camelCase")]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
 #[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
-#[sea_orm(
-    rs_type = "String",
-    db_type = "Enum",
-    enum_name = "note_visibility_enum"
-)]
-pub enum NoteVisibilityEnum {
+#[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "note_visibility")]
+pub enum NoteVisibility {
     #[sea_orm(string_value = "followers")]
     Followers,
     #[sea_orm(string_value = "hidden")]
@@ -90,12 +82,8 @@ pub enum NoteVisibilityEnum {
 #[serde(rename_all = "camelCase")]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
 #[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
-#[sea_orm(
-    rs_type = "String",
-    db_type = "Enum",
-    enum_name = "notification_type_enum"
-)]
-pub enum NotificationTypeEnum {
+#[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "notification_type")]
+pub enum NotificationType {
     #[sea_orm(string_value = "app")]
     App,
     #[sea_orm(string_value = "follow")]
@@ -127,12 +115,8 @@ pub enum NotificationTypeEnum {
 #[serde(rename_all = "camelCase")]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
 #[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
-#[sea_orm(
-    rs_type = "String",
-    db_type = "Enum",
-    enum_name = "page_visibility_enum"
-)]
-pub enum PageVisibilityEnum {
+#[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "page_visibility")]
+pub enum PageVisibility {
     #[sea_orm(string_value = "followers")]
     Followers,
     #[sea_orm(string_value = "public")]
@@ -149,9 +133,9 @@ pub enum PageVisibilityEnum {
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
-    enum_name = "poll_notevisibility_enum"
+    enum_name = "poll_note_visibility"
 )]
-pub enum PollNotevisibilityEnum {
+pub enum PollNoteVisibility {
     #[sea_orm(string_value = "followers")]
     Followers,
     #[sea_orm(string_value = "home")]
@@ -167,8 +151,8 @@ pub enum PollNotevisibilityEnum {
 #[serde(rename_all = "camelCase")]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
 #[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
-#[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "relay_status_enum")]
-pub enum RelayStatusEnum {
+#[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "relay_status")]
+pub enum RelayStatus {
     #[sea_orm(string_value = "accepted")]
     Accepted,
     #[sea_orm(string_value = "rejected")]
@@ -185,9 +169,9 @@ pub enum RelayStatusEnum {
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
-    enum_name = "user_emojimodperm_enum"
+    enum_name = "user_emoji_mod_perm"
 )]
-pub enum UserEmojimodpermEnum {
+pub enum UserEmojiModPerm {
     #[sea_orm(string_value = "add")]
     Add,
     #[sea_orm(string_value = "full")]
@@ -206,9 +190,9 @@ pub enum UserEmojimodpermEnum {
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
-    enum_name = "user_profile_ffvisibility_enum"
+    enum_name = "user_profile_ffvisibility"
 )]
-pub enum UserProfileFfvisibilityEnum {
+pub enum UserProfileFfvisibility {
     #[sea_orm(string_value = "followers")]
     Followers,
     #[sea_orm(string_value = "private")]
@@ -225,9 +209,9 @@ pub enum UserProfileFfvisibilityEnum {
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
-    enum_name = "user_profile_mutingnotificationtypes_enum"
+    enum_name = "user_profile_muting_notification_types"
 )]
-pub enum UserProfileMutingnotificationtypesEnum {
+pub enum UserProfileMutingNotificationTypes {
     #[sea_orm(string_value = "app")]
     App,
     #[sea_orm(string_value = "follow")]

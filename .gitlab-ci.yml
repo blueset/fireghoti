@@ -27,6 +27,7 @@ workflow:
 stages:
   - dependency
   - test
+  - doc
   - build
 
 variables:
@@ -57,6 +58,8 @@ default:
 test:build:
   stage: test
   rules:
+    - if: $TEST == 'true'
+      when: always
     - if: $TEST == 'false'
       when: never
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
@@ -83,6 +86,8 @@ test:build:
 test:build:backend_ts_only:
   stage: test
   rules:
+    - if: $TEST == 'true'
+      when: always
     - if: $TEST == 'false'
       when: never
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
@@ -125,6 +130,8 @@ test:build:backend_ts_only:
 test:build:client_only:
   stage: test
   rules:
+    - if: $TEST == 'true'
+      when: always
     - if: $TEST == 'false'
       when: never
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
@@ -160,9 +167,11 @@ test:build:client_only:
 
 build:container:
   stage: build
-  image: docker.io/debian:bookworm-slim
+  image: docker.io/debian:trixie-slim
   services: []
   rules:
+    - if: $BUILD == 'true'
+      when: always
     - if: $BUILD == 'false'
       when: never
     - if: $CI_COMMIT_BRANCH == 'develop'
@@ -188,9 +197,7 @@ build:container:
     STORAGE_DRIVER: overlay
   before_script:
     - apt-get update && apt-get -y upgrade
-    - apt-get install -y --no-install-recommends ca-certificates fuse-overlayfs
-    - echo 'deb https://deb.debian.org/debian trixie main' | tee /etc/apt/sources.list
-    - apt-get update && apt-get install -y --no-install-recommends --target-release trixie buildah
+    - apt-get install -y --no-install-recommends ca-certificates fuse-overlayfs buildah
     - echo "${CI_REGISTRY_PASSWORD}" | buildah login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
     - export IMAGE_TAG="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
     - export IMAGE_CACHE="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop/cache"
@@ -215,6 +222,8 @@ build:container:
 cargo:test:
   stage: test
   rules:
+    - if: $TEST == 'true'
+      when: always
     - if: $TEST == 'false'
       when: never
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
@@ -234,6 +243,8 @@ cargo:test:
 cargo:clippy:
   stage: test
   rules:
+    - if: $TEST == 'true'
+      when: always
     - if: $TEST == 'false'
       when: never
     - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
@@ -250,6 +261,65 @@ cargo:clippy:
     - rustup component add clippy
   script:
     - cargo clippy -- -D warnings
+
+cargo:doc:
+  stage: doc
+  needs:
+    - cargo:test
+    - test:build
+  rules:
+    - if: $DOC == 'true'
+      when: always
+    - if: $DOC == 'false'
+      when: never
+    - if: $CI_COMMIT_BRANCH == 'develop'
+      changes:
+        paths:
+          - packages/backend-rs/**/*
+          - packages/macro-rs/**/*
+          - Cargo.toml
+          - Cargo.lock
+          - package.json
+      when: always
+  services: []
+  before_script:
+    - apt-get update && apt-get -y upgrade
+    - apt-get install -y --no-install-recommends build-essential clang mold
+    - cp ci/cargo/config.toml /usr/local/cargo/config.toml
+  script:
+    - cargo doc --no-deps
+  artifacts:
+    paths:
+      - target/doc
+
+pages:
+  stage: doc
+  needs:
+    - cargo:doc
+  rules:
+    - if: $DOC == 'true'
+      when: always
+    - if: $DOC == 'false'
+      when: never
+    - if: $CI_COMMIT_BRANCH == 'develop'
+      changes:
+        paths:
+          - packages/backend-rs/**/*
+          - packages/macro-rs/**/*
+          - Cargo.toml
+          - Cargo.lock
+          - package.json
+      when: always
+  image: docker.io/alpine:latest
+  services: []
+  before_script: []
+  script:
+    - mkdir -p public/backend_rs
+    - cp --recursive target/doc public/backend-rs/doc
+    - printf '<meta http-equiv="refresh" content="0; url=%s">' 'backend_rs' > public/backend-rs/doc/index.html
+  artifacts:
+    paths:
+      - public
 
 renovate:
   stage: dependency

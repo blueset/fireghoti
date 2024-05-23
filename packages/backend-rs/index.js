@@ -310,7 +310,7 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { SECOND, MINUTE, HOUR, DAY, USER_ONLINE_THRESHOLD, USER_ACTIVE_THRESHOLD, FILE_TYPE_BROWSERSAFE, loadEnv, loadConfig, stringToAcct, acctToString, greet, initializeRustLogger, showServerInfo, isBlockedServer, isSilencedServer, isAllowedServer, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getImageSizeFromUrl, getNoteSummary, isQuote, isSafeUrl, latestVersion, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, removeOldAttestationChallenges, cpuInfo, cpuUsage, memoryUsage, storageUsage, AntennaSrcEnum, DriveFileUsageHintEnum, MutedNoteReasonEnum, NoteVisibilityEnum, NotificationTypeEnum, PageVisibilityEnum, PollNotevisibilityEnum, RelayStatusEnum, UserEmojimodpermEnum, UserProfileFfvisibilityEnum, UserProfileMutingnotificationtypesEnum, updateAntennasOnNewNote, fetchNodeinfo, nodeinfo_2_1, nodeinfo_2_0, Protocol, Inbound, Outbound, watchNote, unwatchNote, PushNotificationKind, sendPushNotification, publishToChannelStream, ChatEvent, publishToChatStream, ChatIndexEvent, publishToChatIndexStream, publishToBroadcastStream, publishToGroupChatStream, publishToModerationStream, getTimestamp, genId, genIdAt, generateSecureRandomString, generateUserToken } = nativeBinding
+const { SECOND, MINUTE, HOUR, DAY, USER_ONLINE_THRESHOLD, USER_ACTIVE_THRESHOLD, FILE_TYPE_BROWSERSAFE, loadEnv, loadConfig, stringToAcct, acctToString, greet, initializeRustLogger, showServerInfo, isBlockedServer, isSilencedServer, isAllowedServer, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getImageSizeFromUrl, getNoteSummary, isQuote, isSafeUrl, latestVersion, toMastodonId, fromMastodonId, fetchMeta, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, removeOldAttestationChallenges, cpuInfo, cpuUsage, memoryUsage, storageUsage, AntennaSrc, DriveFileUsageHint, MutedNoteReason, NoteVisibility, NotificationType, PageVisibility, PollNoteVisibility, RelayStatus, UserEmojiModPerm, UserProfileFfvisibility, UserProfileMutingNotificationTypes, updateAntennasOnNewNote, fetchNodeinfo, nodeinfo_2_1, nodeinfo_2_0, Protocol, Inbound, Outbound, watchNote, unwatchNote, PushNotificationKind, sendPushNotification, publishToChannelStream, ChatEvent, publishToChatStream, ChatIndexEvent, publishToChatIndexStream, publishToBroadcastStream, publishToGroupChatStream, publishToModerationStream, getTimestamp, genId, genIdAt, generateSecureRandomString, generateUserToken } = nativeBinding
 
 module.exports.SECOND = SECOND
 module.exports.MINUTE = MINUTE
@@ -360,17 +360,17 @@ module.exports.cpuInfo = cpuInfo
 module.exports.cpuUsage = cpuUsage
 module.exports.memoryUsage = memoryUsage
 module.exports.storageUsage = storageUsage
-module.exports.AntennaSrcEnum = AntennaSrcEnum
-module.exports.DriveFileUsageHintEnum = DriveFileUsageHintEnum
-module.exports.MutedNoteReasonEnum = MutedNoteReasonEnum
-module.exports.NoteVisibilityEnum = NoteVisibilityEnum
-module.exports.NotificationTypeEnum = NotificationTypeEnum
-module.exports.PageVisibilityEnum = PageVisibilityEnum
-module.exports.PollNotevisibilityEnum = PollNotevisibilityEnum
-module.exports.RelayStatusEnum = RelayStatusEnum
-module.exports.UserEmojimodpermEnum = UserEmojimodpermEnum
-module.exports.UserProfileFfvisibilityEnum = UserProfileFfvisibilityEnum
-module.exports.UserProfileMutingnotificationtypesEnum = UserProfileMutingnotificationtypesEnum
+module.exports.AntennaSrc = AntennaSrc
+module.exports.DriveFileUsageHint = DriveFileUsageHint
+module.exports.MutedNoteReason = MutedNoteReason
+module.exports.NoteVisibility = NoteVisibility
+module.exports.NotificationType = NotificationType
+module.exports.PageVisibility = PageVisibility
+module.exports.PollNoteVisibility = PollNoteVisibility
+module.exports.RelayStatus = RelayStatus
+module.exports.UserEmojiModPerm = UserEmojiModPerm
+module.exports.UserProfileFfvisibility = UserProfileFfvisibility
+module.exports.UserProfileMutingNotificationTypes = UserProfileMutingNotificationTypes
 module.exports.updateAntennasOnNewNote = updateAntennasOnNewNote
 module.exports.fetchNodeinfo = fetchNodeinfo
 module.exports.nodeinfo_2_1 = nodeinfo_2_1

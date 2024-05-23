@@ -1,7 +1,7 @@
 use crate::database::db_conn;
 use crate::misc::get_note_summary::{get_note_summary, NoteLike};
 use crate::misc::meta::fetch_meta;
-use crate::model::entity::{access_token, app, sw_subscription};
+use crate::model::entity::{access_token, sw_subscription};
 use crate::util::http_client;
 use once_cell::sync::OnceCell;
 use sea_orm::{prelude::*, DbErr};
@@ -13,15 +13,15 @@ use web_push::{
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Database error: {0}")]
-    DbErr(#[from] DbErr),
+    Db(#[from] DbErr),
     #[error("Web Push error: {0}")]
-    WebPushErr(#[from] WebPushError),
+    WebPush(#[from] WebPushError),
     #[error("Failed to (de)serialize an object: {0}")]
-    SerializeErr(#[from] serde_json::Error),
+    Serialize(#[from] serde_json::Error),
     #[error("Invalid content: {0}")]
-    InvalidContentErr(String),
+    InvalidContent(String),
     #[error("HTTP client aquisition error: {0}")]
-    HttpClientErr(#[from] http_client::Error),
+    HttpClient(#[from] http_client::Error),
 }
 
 static CLIENT: OnceCell<IsahcWebPushClient> = OnceCell::new();
@@ -59,7 +59,7 @@ fn compact_content(
     }
 
     if !content.is_object() {
-        return Err(Error::InvalidContentErr("not a JSON object".to_string()));
+        return Err(Error::InvalidContent("not a JSON object".to_string()));
     }
 
     let object = content.as_object_mut().unwrap();
@@ -73,7 +73,7 @@ fn compact_content(
             .get("note")
             .unwrap()
             .get("renote")
-            .ok_or(Error::InvalidContentErr(
+            .ok_or(Error::InvalidContent(
                 "renote object is missing".to_string(),
             ))?
     } else {
@@ -82,7 +82,7 @@ fn compact_content(
     .clone();
 
     if !note.is_object() {
-        return Err(Error::InvalidContentErr(
+        return Err(Error::InvalidContent(
             "(re)note is not an object".to_string(),
         ));
     }
@@ -107,11 +107,11 @@ async fn encode_mastodon_payload(
     subscription: &sw_subscription::Model,
 ) -> Result<String, Error> {
     if !content.is_object() {
-        return Err(Error::InvalidContentErr("not a JSON object".to_string()));
+        return Err(Error::InvalidContent("not a JSON object".to_string()));
     }
 
     if subscription.app_access_token_id.is_none() {
-        return Err(Error::InvalidContentErr("no access token".to_string()));
+        return Err(Error::InvalidContent("no access token".to_string()));
     }
 
     let token_id = subscription.app_access_token_id.as_ref().unwrap();
@@ -121,7 +121,7 @@ async fn encode_mastodon_payload(
         .await?;
 
     if maybe_token.is_none() {
-        return Err(Error::InvalidContentErr(
+        return Err(Error::InvalidContent(
             "access token not found".to_string(),
         ));
     }
@@ -129,7 +129,7 @@ async fn encode_mastodon_payload(
     let token = maybe_token.unwrap();
 
     if token.app_id.is_none() {
-        return Err(Error::InvalidContentErr("no app ID".to_string()));
+        return Err(Error::InvalidContent("no app ID".to_string()));
     }
 
     let object = content.as_object_mut().unwrap();
