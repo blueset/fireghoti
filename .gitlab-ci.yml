@@ -27,6 +27,7 @@ workflow:
 stages:
   - dependency
   - test
+  - doc
   - build
 
 variables:
@@ -248,6 +249,61 @@ cargo:clippy:
     - rustup component add clippy
   script:
     - cargo clippy -- -D warnings
+
+cargo:doc:
+  stage: doc
+  needs:
+    - cargo:test
+    - test:build
+  rules:
+    - if: $DOC == 'false'
+      when: never
+    - if: $CI_COMMIT_BRANCH == 'develop'
+      changes:
+        paths:
+          - packages/backend-rs/**/*
+          - packages/macro-rs/**/*
+          - Cargo.toml
+          - Cargo.lock
+          - package.json
+      when: always
+  services: []
+  before_script:
+    - apt-get update && apt-get -y upgrade
+    - apt-get install -y --no-install-recommends build-essential clang mold
+    - cp ci/cargo/config.toml /usr/local/cargo/config.toml
+  script:
+    - cargo doc --no-deps
+  artifacts:
+    paths:
+      - target/doc
+
+pages:
+  stage: doc
+  needs:
+    - cargo:doc
+  rules:
+    - if: $DOC == 'false'
+      when: never
+    - if: $CI_COMMIT_BRANCH == 'develop'
+      changes:
+        paths:
+          - packages/backend-rs/**/*
+          - packages/macro-rs/**/*
+          - Cargo.toml
+          - Cargo.lock
+          - package.json
+      when: always
+  image: docker.io/alpine:latest
+  services: []
+  before_script: []
+  script:
+    - mkdir -p public
+    - cp --recursive target/doc public
+    - printf '<meta http-equiv="refresh" content="0; url=%s">' 'backend_rs' > public/backend-rs/index.html
+  artifacts:
+    paths:
+      - public
 
 renovate:
   stage: dependency
