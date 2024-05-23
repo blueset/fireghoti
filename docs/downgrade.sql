@@ -33,7 +33,7 @@ DELETE FROM "migrations" WHERE name IN (
     'SwSubscriptionAccessToken1709395223611'
     'UserProfileMentions1711075007936',
     'ClientCredentials1713108561474',
-    'AddMastodonSubscriptionType1715181461692',
+    'AddMastodonSubscriptionType1715181461692'
 );
 
 -- remove-enum-typename-suffix
