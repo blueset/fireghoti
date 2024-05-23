@@ -1,6 +1,15 @@
+use once_cell::sync::Lazy;
+use regex::Regex;
+
 #[crate::export]
 pub fn sql_like_escape(src: &str) -> String {
     src.replace('%', r"\%").replace('_', r"\_")
+}
+
+#[crate::export]
+pub fn sql_regex_escape(src: &str) -> String {
+    static RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"[!$()*+.:<=>?\[\]\^{|}-]").unwrap());
+    RE.replace_all(src, r"\$1").to_string()
 }
 
 #[crate::export]

@@ -3,8 +3,7 @@ import {
 	type SelectQueryBuilder,
 	type WhereExpressionBuilder,
 } from "typeorm";
-import { sqlLikeEscape } from "backend-rs";
-import { sqlRegexEscape } from "@/misc/sql-regex-escape.js";
+import { sqlLikeEscape, sqlRegexEscape } from "backend-rs";
 import {
 	Followings,
 	NoteFavorites,

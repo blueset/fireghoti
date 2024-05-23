@@ -232,6 +232,7 @@ export function extractHost(uri: string): string
 export function toPuny(host: string): string
 export function isUnicodeEmoji(s: string): boolean
 export function sqlLikeEscape(src: string): string
+export function sqlRegexEscape(src: string): string
 export function safeForSql(src: string): boolean
 /** Convert milliseconds to a human readable string */
 export function formatMilliseconds(milliseconds: number): string
