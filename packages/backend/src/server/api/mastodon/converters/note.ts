@@ -327,6 +327,7 @@ export class NoteConverter {
 			),
 			bookmarked: isBookmarked,
 			quote: reblog.then((reblog) => (isQuote(note) ? reblog : null)),
+			quote_id: isQuote(note) ? note.renoteId : null,
 			edited_at: note.updatedAt?.toISOString() ?? null,
 			filtered: filtered,
 		});
@@ -438,9 +439,6 @@ export class NoteConverter {
 		ctx.pinAggregate = pinAggregate;
 
 		const users = notes.filter((p) => !!p.user).map((p) => p.user as User);
-		const renoteUserIds = notes
-			.filter((p) => p.renoteUserId !== null)
-			.map((p) => p.renoteUserId as string);
 		await UserConverter.aggregateData([...users], ctx);
 		await prefetchEmojis(aggregateNoteEmojis(notes));
 	}
