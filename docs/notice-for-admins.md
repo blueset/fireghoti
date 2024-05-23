@@ -8,12 +8,6 @@ You can skip intermediate versions when upgrading from an old version, but pleas
 
 Required Node.js version has been bumped from v18.17.0 to v18.19.0. Also, as written in the [v20240430 note](https://firefish.dev/firefish/firefish/-/blob/d3394b97f021dea323ec3ae36e39930680242482/docs/notice-for-admins.md#v20240430), it is highly recommended that you use an even newer version since v18.19.0 has known vulnerabilities.
 
-### For Mastodon API users
-
-The old Mastodon API has been replaced with a new implementation based on Iceshrimp’s. **Breaking changes:**
-- The new API uses a new format to manage Mastodon sessions in the database, whereas old implementation uses Misskey sessions. All previous client app and token registrations will not work with the new API. All clients need to be re-registered and all users need to re-authenticate.
-- All IDs (of statuses/notes, notifications, users, etc.) will be using the alphanumerical format, aligning with the Firefish/Misskey API. The old numerical IDs will not work when queried against the new API.
-
 ## v20240523
 
 ### For all users
