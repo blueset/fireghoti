@@ -36,6 +36,17 @@ DELETE FROM "migrations" WHERE name IN (
     'AddMastodonSubscriptionType1715181461692'
 );
 
+-- sw-subscription-per-access-token
+ALTER TABLE "sw_subscription" DROP CONSTRAINT "FK_98a1aa2db2a5253924f42f38767";
+ALTER TABLE "sw_subscription" DROP COLUMN "appAccessTokenId";
+ALTER TABLE "sw_subscription" DROP COLUMN "subscriptionTypes";
+
+-- user-profile-mentions
+ALTER TABLE "user_profile" DROP COLUMN "mentions";
+
+-- client-credential-support
+ALTER TABLE "access_token" ALTER COLUMN "userId" SET NOT NULL;
+
 -- remove-enum-typename-suffix
 ALTER TYPE "antenna_src" RENAME TO "antenna_src_enum";
 ALTER TYPE "drive_file_usage_hint" RENAME TO "drive_file_usage_hint_enum";
@@ -786,17 +797,5 @@ VALUES
     ('m20230904_013244_is_indexable', 1705876632),
     ('m20231002_143323_remove_integrations', 1705876632)
 ;
-
--- sw-subscription-per-access-token
-ALTER TABLE "sw_subscription" DROP CONSTRAINT "FK_98a1aa2db2a5253924f42f38767";
-ALTER TABLE "sw_subscription" DROP COLUMN "appAccessTokenId";
-ALTER TABLE "sw_subscription" DROP COLUMN "subscriptionTypes";
-
--- user-profile-mentions
-ALTER TABLE "user_profile" DROP COLUMN "mentions";
-
--- client-credential-support
-ALTER TABLE "access_token" ALTER COLUMN "userId" SET NOT NULL;
-
 
 COMMIT;
