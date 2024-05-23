@@ -178,7 +178,7 @@ definePageMetadata(
 					title: i18n.t("noteOf", {
 						user: appearNote.value.user.name || appearNote.value.user.username,
 					}),
-					subtitle: dateTimeFormat.format(appearNote.value.createdAt).replace("GMT", "UTC"),
+					subtitle: dateTimeFormat.format(new Date(appearNote.value.createdAt)).replace("GMT", "UTC"),
 					avatar: appearNote.value.user,
 					path: `/notes/${appearNote.value.id}`,
 					share: {
