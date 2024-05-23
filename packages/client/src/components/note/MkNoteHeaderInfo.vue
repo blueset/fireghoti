@@ -71,6 +71,7 @@ defineProps<{
 
 .reply-to {
 	color: var(--fgTransparentWeak);
+	text-overflow: ellipsis;
 
 	.avatar {
 		width: 1.2em;
@@ -89,6 +90,12 @@ defineProps<{
 			content: ": ";
 		}
 	}
+	.summary {
+		display: inline-block;
+		max-width: 60%;
+		position: absolute;
+	}
+
 	&:hover,
 	&:focus-within {
 		color: var(--fg);
