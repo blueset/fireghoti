@@ -2,7 +2,7 @@ version: "3"
 
 services:
   web:
-    image: docker.io/node:18.17.0-bookworm
+    image: docker.io/node:18.19.0-bookworm
     container_name: firefish_web
     restart: unless-stopped
     depends_on:
