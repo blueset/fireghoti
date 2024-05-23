@@ -74,11 +74,11 @@
 			v-if="
 				isSignedIn(me) &&
 				isForeignLanguage &&
-				noteTranslation.canTranslate
+				noteTranslation?.canTranslate
 			"
 			v-tooltip.noDelay.bottom="i18n.ts.translate"
 			class="button _button"
-			@click.stop="noteTranslation.translate"
+			@click.stop="noteTranslation?.translate"
 		>
 			<i :class="icon('ph-translate')"></i>
 		</button>
@@ -118,7 +118,7 @@ const props = defineProps<{
 	enableEmojiReactions?: boolean;
 	hideEmojiViewer?: boolean;
 	detailedView?: boolean;
-	noteTranslation: InstanceType<typeof MkNoteTranslation>;
+	noteTranslation: InstanceType<typeof MkNoteTranslation> | null;
 }>();
 
 const emit = defineEmits<{
@@ -151,7 +151,7 @@ const isForeignLanguage = computed(
 		props.note.text != null &&
 		(() => {
 			const postLang = detectLanguage(props.note.text);
-			return postLang !== "" && postLang !== props.noteTranslation.targetLang;
+			return postLang !== "" && postLang !== props.noteTranslation?.targetLang;
 		})(),
 );
 

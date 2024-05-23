@@ -22,7 +22,7 @@ export function getNoteMenu(props: {
 	note: entities.Note;
 	menuButton: Ref<HTMLElement | undefined>;
 	isDeleted: Ref<boolean>;
-	translationEl: InstanceType<typeof MkNoteTranslation>;
+	translationEl: InstanceType<typeof MkNoteTranslation> | null;
 	currentClipPage?: Ref<entities.Clip> | null;
 }) {
 	const isRenote =

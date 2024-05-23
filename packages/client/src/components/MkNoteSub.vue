@@ -47,7 +47,7 @@
 					:enableEmojiReactions
 					:hideEmojiViewer
 					:detailedView
-					:note-translation="noteTranslation!"
+					:note-translation="noteTranslation"
 					@deleted="isDeleted = true"
 					@event:focus="focus"
 					@event:blur="blur"
