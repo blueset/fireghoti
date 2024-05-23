@@ -383,7 +383,7 @@ export class TimelineHelpers {
 	public static generateNoScheduleNotesQuery(q: SelectQueryBuilder<Note>) {
 		q.andWhere(
 			new Brackets((qb) => {
-				qb.where('note.visibility != "specified"')
+				qb.where('note.visibility != \'specified\'')
 				.orWhere('array_length(note.visibleUserIds, 1) != 0')
 			})
 		);
