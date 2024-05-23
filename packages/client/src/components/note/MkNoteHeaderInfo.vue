@@ -16,7 +16,7 @@
 	<div v-if="pinned" class="info">
 		<i :class="icon('ph-push-pin')"></i>{{ i18n.ts.pinnedNote }}
 	</div>
-	<div v-if="collapsedReply && appearNote.reply" class="info">
+	<div v-if="collapsedReply && appearNote.reply" class="reply-to">
 		<MkAvatar class="avatar" :user="appearNote.reply.user" />
 		<MkUserName class="username" :user="appearNote.reply.user"></MkUserName>
 		<Mfm
@@ -66,6 +66,32 @@ defineProps<{
 	> .hide {
 		margin-left: auto;
 		color: inherit;
+	}
+}
+
+.reply-to {
+	color: var(--fgTransparentWeak);
+
+	.avatar {
+		width: 1.2em;
+		height: 1.2em;
+		border-radius: 2em;
+		overflow: hidden;
+		margin-right: 0.4em;
+		margin-bottom: 0.2em;
+		background: var(--panelHighlight);
+	}
+	.username {
+		font-weight: 700;
+		flex-shrink: 0;
+		max-width: 30%;
+		&::after {
+			content: ": ";
+		}
+	}
+	&:hover,
+	&:focus-within {
+		color: var(--fg);
 	}
 }
 </style>
