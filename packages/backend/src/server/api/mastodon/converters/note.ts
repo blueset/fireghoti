@@ -21,7 +21,7 @@ import {
 	NoteThreadMutings,
 	UserNotePinings,
 } from "@/models/index.js";
-import { decodeReaction } from "backend-rs";
+import { decodeReaction, isQuote } from "backend-rs";
 import { MentionConverter } from "@/server/api/mastodon/converters/mention.js";
 import { PollConverter } from "@/server/api/mastodon/converters/poll.js";
 import { populatePoll } from "@/models/repositories/note.js";
@@ -35,7 +35,6 @@ import {
 	type MastoContext,
 } from "@/server/api/mastodon/index.js";
 import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
-import isQuote from "@/misc/is-quote.js";
 import { unique } from "@/prelude/array.js";
 import type { NoteReaction } from "@/models/entities/note-reaction.js";
 import { Cache } from "@/misc/cache.js";

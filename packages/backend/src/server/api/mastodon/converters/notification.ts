@@ -11,11 +11,10 @@ import {
 	type MastoContext,
 } from "@/server/api/mastodon/index.js";
 import { Notifications } from "@/models/index.js";
-import isQuote from "@/misc/is-quote.js";
 import { unique } from "@/prelude/array.js";
 import type { Note } from "@/models/entities/note.js";
 import type { SwSubscription } from "@/models/entities/sw-subscription.js";
-import { fetchMeta } from "backend-rs";
+import { fetchMeta, isQuote } from "backend-rs";
 import { getNoteSummary } from "backend-rs";
 import type { Packed } from "@/misc/schema";
 import { I18n } from "@/misc/i18n.js";

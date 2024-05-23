@@ -6,7 +6,7 @@ import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import type { StreamMessages } from "@/server/api/stream/types.js";
 import { NotificationConverter } from "@/server/api/mastodon/converters/notification.js";
 import { AnnouncementConverter } from "@/server/api/mastodon/converters/announcement.js";
-import isQuote from "@/misc/is-quote.js";
+import { isQuote } from "backend-rs";
 
 export class MastodonStreamUser extends MastodonStream {
 	public static shouldShare = true;
