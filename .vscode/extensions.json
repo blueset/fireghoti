@@ -13,6 +13,9 @@
     "redhat.vscode-yaml",
     "yoavbls.pretty-ts-errors",
     "biomejs.biome",
-		"rust-lang.rust-analyzer"
+		"rust-lang.rust-analyzer",
+		"vadimcn.vscode-lldb",
+		"serayuzgur.crates",
+		"tamasfe.even-better-toml"
   ]
 }
