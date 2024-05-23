@@ -41,7 +41,7 @@ namespace MastodonEntity {
 		pinned: boolean | undefined;
 		reactions: Array<Reaction>;
 		quote: Status | null;
-        quote_id: string | null;
+		quote_id: string | null;
 		bookmarked: boolean;
 		edited_at: string | null;
 		filtered: Array<FilterResult> | null;
