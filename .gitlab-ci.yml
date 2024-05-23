@@ -314,9 +314,10 @@ pages:
   services: []
   before_script: []
   script:
-    - mkdir -p public/backend_rs
-    - cp --recursive target/doc public/backend-rs/doc
-    - printf '<meta http-equiv="refresh" content="0; url=%s">' 'backend_rs' > public/backend-rs/doc/index.html
+    - rm --recursive --force public/backend-rs
+    - cp --recursive target/doc public
+    - mv public/doc public/backend-rs
+    - printf '<meta http-equiv="refresh" content="0; url=%s">' 'backend_rs' > public/backend-rs/index.html
   artifacts:
     paths:
       - public
