@@ -40,7 +40,7 @@ import type { NoteReaction } from "@/models/entities/note-reaction.js";
 import { Cache } from "@/misc/cache.js";
 import { isFiltered } from "@/misc/is-filtered.js";
 import { unfurl } from "unfurl.js";
-import type { ScheduledNote } from "@/models/entities/scheduled-note";
+import type { ScheduledNote } from "@/models/entities/scheduled-note.js";
 
 export class NoteConverter {
 	private static noteContentHtmlCache = new Cache<string | null>(

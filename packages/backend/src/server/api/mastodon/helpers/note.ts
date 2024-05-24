@@ -43,8 +43,8 @@ import {
 } from "@/server/api/mastodon/index.js";
 import { fetchMeta } from "backend-rs";
 import { translate } from "@/misc/translate.js";
-import { createScheduledNoteJob } from "@/queue";
-import type { ScheduledNote } from "@/models/entities/scheduled-note";
+import { createScheduledNoteJob } from "@/queue/index.js";
+import type { ScheduledNote } from "@/models/entities/scheduled-note.js";
 
 export class NoteHelpers {
 	public static postIdempotencyCache = new Cache<{
