@@ -17,7 +17,8 @@ export class AuthHelpers {
 		const scopes = (typeof body.scopes === "string"
 			? body.scopes.split(" ")
 			: body.scopes) ?? ["read"];
-		const redirect_uris = body.redirect_uris?.split("\n") as
+		// Mastodon takes any whitespace chars or line breaks as separator
+		const redirect_uris = body.redirect_uris?.split(/[\s\n]/) as
 			| string[]
 			| undefined;
 		const client_name = body.client_name;
@@ -94,7 +95,9 @@ export class AuthHelpers {
 				400,
 				"Cannot request more scopes than application",
 			);
-		if (!app.callbackUrl?.startsWith(body.redirect_uri))
+
+		const callbackUrls = app.callbackUrl?.split("\n") ?? [];
+		if (!callbackUrls.some(url => url.startsWith(body.redirect_uri)))
 			throw new MastoApiError(400, "Redirect URI not in list");
 		const secret = generateSecureRandomString(32);
 		const token = await AccessTokens.insert({
