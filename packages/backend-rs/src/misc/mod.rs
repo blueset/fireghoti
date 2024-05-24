@@ -10,7 +10,6 @@ pub mod get_note_summary;
 pub mod is_quote;
 pub mod is_safe_url;
 pub mod latest_version;
-pub mod mastodon_id;
 pub mod meta;
 pub mod nyaify;
 pub mod password;

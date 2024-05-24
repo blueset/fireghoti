@@ -2,13 +2,12 @@ import type OAuth from "@/server/api/mastodon/entities/oauth/oauth.js";
 import { generateSecureRandomString } from "backend-rs";
 import { Apps, AccessTokens } from "@/models/index.js";
 import { genId } from "backend-rs";
-import { fetchMeta } from "backend-rs";
+import { fetchMeta, getTimestamp } from "backend-rs";
 import type { MastoContext } from "@/server/api/mastodon/index.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import { difference, toSingleLast, unique } from "@/prelude/array.js";
 import type { ILocalUser } from "@/models/entities/user.js";
 import type { App } from "@/models/entities/app";
-import { toMastodonId } from "backend-rs";
 
 export class AuthHelpers {
 	public static async registerApp(
@@ -61,7 +60,7 @@ export class AuthHelpers {
 			// Compatibility: ZonePane only accepts a small int as app ID
 			id:
 				app.name === "ZonePane"
-					? toMastodonId(app.id)?.substring(0, 6) ?? app.id
+					? getTimestamp(app.id)?.toString().substring(0, 6) ?? app.id
 					: app.id,
 			name: app.name,
 			website: app.description,
