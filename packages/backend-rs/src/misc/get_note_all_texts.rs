@@ -2,7 +2,7 @@ use crate::database::db_conn;
 use crate::model::entity::{drive_file, note};
 use sea_orm::{prelude::*, QuerySelect};
 
-/// TODO: handle name collisions better
+// TODO?: handle name collisions
 #[crate::export(object, js_name = "NoteLikeForAllTexts")]
 pub struct NoteLike {
     pub file_ids: Vec<String>,

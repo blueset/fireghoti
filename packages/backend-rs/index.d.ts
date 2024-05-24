@@ -241,7 +241,6 @@ export interface ImageSize {
   height: number
 }
 export function getImageSizeFromUrl(url: string): Promise<ImageSize>
-/** TODO: handle name collisions better */
 export interface NoteLikeForAllTexts {
   fileIds: Array<string>
   userId: string
@@ -257,7 +256,13 @@ export interface NoteLikeForGetNoteSummary {
   hasPoll: boolean
 }
 export function getNoteSummary(note: NoteLikeForGetNoteSummary): string
-export function isQuote(note: Note): boolean
+export interface NoteLikeForIsQuote {
+  renoteId: string | null
+  text: string | null
+  hasPoll: boolean
+  fileIds: Array<string>
+}
+export function isQuote(note: NoteLikeForIsQuote): boolean
 export function isSafeUrl(url: string): boolean
 export function latestVersion(): Promise<string>
 export function fetchMeta(useCache: boolean): Promise<Meta>

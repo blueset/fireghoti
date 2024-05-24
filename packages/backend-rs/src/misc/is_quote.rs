@@ -1,10 +1,13 @@
-use crate::model::entity::note;
-
-// for napi export
-// https://github.com/napi-rs/napi-rs/issues/2060
-type Note = note::Model;
+// TODO?: handle name collisions
+#[crate::export(object, js_name = "NoteLikeForIsQuote")]
+pub struct NoteLike {
+    pub renote_id: Option<String>,
+    pub text: Option<String>,
+    pub has_poll: bool,
+    pub file_ids: Vec<String>,
+}
 
 #[crate::export]
-pub fn is_quote(note: Note) -> bool {
+pub fn is_quote(note: &NoteLike) -> bool {
     note.renote_id.is_some() && (note.text.is_some() || note.has_poll || !note.file_ids.is_empty())
 }
