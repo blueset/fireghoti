@@ -38,6 +38,8 @@ export class NotificationHelpers {
 			requestedTypes = requestedTypes.filter((p) => !excludedTypes.includes(p));
 		}
 
+		if (!requestedTypes.length) return [];
+
 		const query = PaginationHelpers.makePaginationQuery(
 			Notifications.createQueryBuilder("notification"),
 			sinceId,
