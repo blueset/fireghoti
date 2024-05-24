@@ -11,20 +11,27 @@ pub const VERSION: &str = macro_rs::read_version_from_package_json!();
 struct ServerConfig {
     pub url: String,
     pub port: u16,
-    /// host to listen on
+    /// the host address to bind to
     pub bind: Option<String>,
     pub disable_hsts: Option<bool>,
 
+    /// PostgreSQL configurations
     pub db: DbConfig,
+    /// Redis configurations
     pub redis: RedisConfig,
+    /// secondary Redis server configurations
     pub cache_server: Option<RedisConfig>,
 
+    /// proxy host used for HTTP requests
     pub proxy: Option<String>,
+    /// proxy host used for SMTP requests
     pub proxy_smtp: Option<String>,
+    /// hosts to bypass the proxy
     pub proxy_bypass_hosts: Option<Vec<String>>,
 
     pub allowed_private_networks: Option<Vec<String>>,
     // TODO: i64 -> u64 (NapiValue is not implemented for u64)
+    /// maximum file size that can be uploaded to the drive (in bytes)
     pub max_file_size: Option<i64>,
     pub access_log: Option<String>,
     pub cluster_limits: Option<WorkerConfigInternal>,
@@ -38,9 +45,10 @@ struct ServerConfig {
     pub deliver_job_max_attempts: Option<u32>,
     pub inbox_job_max_attempts: Option<u32>,
 
-    /// deprecated
+    /// deprecated in favor of `max_log_level`
     pub log_level: Option<Vec<String>>,
 
+    /// verbosity of the server log. `error`, `warn`, `info`, `debug`, or `trace`
     pub max_log_level: Option<String>,
 
     pub syslog: Option<SysLogConfig>,
