@@ -13,9 +13,9 @@ export const USER_ACTIVE_THRESHOLD: number
  * List of file types allowed to be viewed directly in the browser
  * Anything not included here will be responded as application/octet-stream
  * SVG is not allowed because it generates XSS <- we need to fix this and later allow it to be viewed directly
- * https://github.com/sindresorhus/file-type/blob/main/supported.js
- * https://github.com/sindresorhus/file-type/blob/main/core.js
- * https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Containers
+ * * <https://github.com/sindresorhus/file-type/blob/main/supported.js>
+ * * <https://github.com/sindresorhus/file-type/blob/main/core.js>
+ * * <https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Containers>
  */
 export const FILE_TYPE_BROWSERSAFE: string[]
 export interface EnvConfig {
@@ -240,7 +240,6 @@ export interface ImageSize {
   height: number
 }
 export function getImageSizeFromUrl(url: string): Promise<ImageSize>
-/** TODO: handle name collisions better */
 export interface NoteLikeForAllTexts {
   fileIds: Array<string>
   userId: string
@@ -1175,7 +1174,7 @@ export function updateAntennasOnNewNote(note: Note, noteAuthor: Acct, noteMutedU
 export function fetchNodeinfo(host: string): Promise<Nodeinfo>
 export function nodeinfo_2_1(): Promise<any>
 export function nodeinfo_2_0(): Promise<any>
-/** NodeInfo schema version 2.0. https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.0 */
+/** NodeInfo schema version 2.0. <https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.0> */
 export interface Nodeinfo {
   /** The schema version, must be 2.0. */
   version: string
@@ -1324,7 +1323,7 @@ export function getTimestamp(id: string): number
  * With the length of 16, namely 8 for cuid2, roughly 1427399 IDs are needed
  * in the same millisecond to reach 50% chance of collision.
  *
- * Ref: https://github.com/paralleldrive/cuid2#parameterized-length
+ * Ref: <https://github.com/paralleldrive/cuid2#parameterized-length>
  */
 export function genId(): string
 /** Generate an ID using a specific datetime */
