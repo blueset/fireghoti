@@ -286,10 +286,9 @@ cargo:doc:
     - npm install --global netlify-cli
   script:
     - cargo doc --no-deps
-    - mkdir -p public
-    - cp -r target/doc public/doc
-    - printf '<meta http-equiv="refresh" content="0; url=%s">' 'backend_rs' > public/doc/index.html
-    - netlify deploy --dir=public
+    - printf '<meta http-equiv="refresh" content="0; url=%s">' 'backend_rs' > target/doc/index.html
+    - cd target/doc
+    - netlify deploy --prod --site="${CARGO_DOC_SITE_ID}" --dir=.
 
 renovate:
   stage: dependency
