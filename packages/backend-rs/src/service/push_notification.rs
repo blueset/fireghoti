@@ -58,11 +58,9 @@ fn compact_content(
         return Ok(content);
     }
 
-    if !content.is_object() {
-        return Err(Error::InvalidContent("not a JSON object".to_string()));
-    }
-
-    let object = content.as_object_mut().unwrap();
+    let object = content
+        .as_object_mut()
+        .ok_or(Error::InvalidContent("not a JSON object".to_string()))?;
 
     if !object.contains_key("note") {
         return Ok(content);
@@ -106,31 +104,24 @@ async fn encode_mastodon_payload(
     db: &DatabaseConnection,
     subscription: &sw_subscription::Model,
 ) -> Result<String, Error> {
-    if !content.is_object() {
-        return Err(Error::InvalidContent("not a JSON object".to_string()));
-    }
+    let object = content
+        .as_object_mut()
+        .ok_or(Error::InvalidContent("not a JSON object".to_string()))?;
 
-    if subscription.app_access_token_id.is_none() {
-        return Err(Error::InvalidContent("no access token".to_string()));
-    }
-
-    let token_id = subscription.app_access_token_id.as_ref().unwrap();
-    let maybe_token = access_token::Entity::find()
+    let token_id = subscription
+        .app_access_token_id
+        .as_ref()
+        .ok_or(Error::InvalidContent("no access token".to_string()))?;
+    let token = access_token::Entity::find()
         .filter(access_token::Column::Id.eq(token_id))
         .one(db)
-        .await?;
-
-    if maybe_token.is_none() {
-        return Err(Error::InvalidContent("access token not found".to_string()));
-    }
-
-    let token = maybe_token.unwrap();
+        .await?
+        .ok_or(Error::InvalidContent("access token not found".to_string()))?;
 
     if token.app_id.is_none() {
         return Err(Error::InvalidContent("no app ID".to_string()));
     }
 
-    let object = content.as_object_mut().unwrap();
     object.insert(
         "access_token".to_string(),
         serde_json::to_value(token.token)?,
