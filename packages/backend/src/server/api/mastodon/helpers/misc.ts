@@ -85,7 +85,7 @@ export class MiscHelpers {
 					image_size_limit: 10485760,
 					image_matrix_limit: 16777216,
 					video_size_limit: 41943040,
-					video_frame_limit: 60,
+					video_frame_rate_limit: 60,
 					video_matrix_limit: 2304000,
 				},
 				polls: {
