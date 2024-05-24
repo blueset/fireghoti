@@ -78,7 +78,7 @@ pub async fn update_antennas_on_new_note(
     Ok(())
 }
 
-pub async fn add_note_to_antenna(antenna_id: &str, note: &Note) -> Result<(), Error> {
+async fn add_note_to_antenna(antenna_id: &str, note: &Note) -> Result<(), Error> {
     // for timeline API
     redis_conn()
         .await?
