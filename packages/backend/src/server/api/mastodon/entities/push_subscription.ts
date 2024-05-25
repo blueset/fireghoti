@@ -9,7 +9,7 @@ namespace MastodonEntity {
 	};
 
 	export type PushSubscription = {
-		id: string;
+		id: string | number;
 		endpoint: string;
 		server_key: string;
 		alerts: Alerts;
