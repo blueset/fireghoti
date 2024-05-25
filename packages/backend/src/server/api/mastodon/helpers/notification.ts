@@ -26,7 +26,7 @@ function normalizeObjectArgs(q: Record<string, string>) {
 		if (k.endsWith("]")) {
 			const segments = k.split("[").map((p) => p.replace(/]$/g, ""));
 			let d = dict;
-			for (let i = 0; i < segments.length - 2; i++) {
+			for (let i = 0; i < segments.length - 1; i++) {
 				if (!(segments[i] in d)) d[segments[i]] = {};
 				d = d[segments[i]];
 			}
