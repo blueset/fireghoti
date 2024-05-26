@@ -8,7 +8,7 @@ use once_cell::sync::OnceCell;
 use sea_orm::{prelude::*, DbErr};
 use web_push::{
     ContentEncoding, IsahcWebPushClient, SubscriptionInfo, SubscriptionKeys, VapidSignatureBuilder,
-    WebPushClient, WebPushError, WebPushMessageBuilder,
+    WebPushClient, WebPushError, WebPushMessageBuilder, WebPushPayload,
 };
 
 #[derive(thiserror::Error, Debug)]
@@ -298,7 +298,28 @@ pub async fn send_push_notification(
             handle_web_push_failure(db, err, &subscription.id, "failed to build a payload").await?;
             continue;
         }
-        if let Err(err) = get_client()?.send(message.unwrap()).await {
+
+        // Ice Cubes cannot process ";rs=4096" at at the end of Encryption header
+        let mut message = message.unwrap();
+
+        if let Some(payload) = message.payload {
+            let crypto_headers: Vec<(&str, String)> = payload
+                .crypto_headers
+                .into_iter()
+                .map(|(key, val)| match key {
+                    "Encryption" => (key, val.replace(";rs=4096", "")),
+                    _ => (key, val),
+                })
+                .collect();
+
+            message.payload = Some(WebPushPayload {
+                content: payload.content,
+                content_encoding: payload.content_encoding,
+                crypto_headers,
+            });
+        }
+
+        if let Err(err) = get_client()?.send(message).await {
             handle_web_push_failure(db, err, &subscription.id, "failed to send").await?;
             continue;
         }
