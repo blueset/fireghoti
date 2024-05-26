@@ -1,7 +1,7 @@
 use crate::database::db_conn;
 use crate::misc::get_note_summary::{get_note_summary, NoteLike};
 use crate::misc::meta::fetch_meta;
-use crate::model::entity::{app, access_token, sw_subscription};
+use crate::model::entity::{access_token, app, sw_subscription};
 use crate::util::http_client;
 use crate::util::id::get_timestamp;
 use once_cell::sync::OnceCell;
@@ -118,21 +118,22 @@ async fn encode_mastodon_payload(
         .one(db)
         .await?
         .ok_or(Error::InvalidContent("access token not found".to_string()))?;
+
+    let app_id = token
+        .app_id
+        .ok_or(Error::InvalidContent("no app ID".to_string()))?;
+
     let client = app::Entity::find()
-        .filter(app::Column::Id.eq(token.app_id.as_ref().unwrap()))
+        .filter(app::Column::Id.eq(app_id))
         .one(db)
         .await?
         .ok_or(Error::InvalidContent("app not found".to_string()))?;
-
-    if token.app_id.is_none() {
-        return Err(Error::InvalidContent("no app ID".to_string()));
-    }
 
     object.insert(
         "access_token".to_string(),
         serde_json::to_value(token.token)?,
     );
-    
+
     // Ice Cubes and Mammoth expect notification_id to be an integer, but never use it.
     if client.name == "IceCubesApp" || client.name == "Mammoth" {
         let notification_id = object
@@ -151,8 +152,8 @@ async fn encode_mastodon_payload(
     // `esm` from adding null bytes payload which many Mastodon clients don’t support.
     // https://firefish.dev/firefish/firefish/-/merge_requests/10905#note_6733
     let padded_length = 126 + (res.len() + 1) / 128 * 128;
-    
-    Ok(format!("{:padded_length$}", res))    
+
+    Ok(format!("{:padded_length$}", res))
 }
 
 async fn handle_web_push_failure(
