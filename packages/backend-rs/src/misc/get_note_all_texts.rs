@@ -13,7 +13,7 @@ pub struct NoteLike {
     pub reply_id: Option<String>,
 }
 
-/// Returns [Vec<String>] containing the post text, content warning,
+/// Returns [`Vec<String>`] containing the post text, content warning,
 /// those of the "parent" (replied/quoted) posts, and alt texts of attached files.
 ///
 /// ## Arguments
