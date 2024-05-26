@@ -127,7 +127,14 @@ async fn encode_mastodon_payload(
         serde_json::to_value(token.token)?,
     );
 
-    Ok(serde_json::to_string(&content)?)
+    let res = serde_json::to_string(&content)?;
+
+    // Adding space paddings to the end of JSON payload to prevent
+    // `esm` from adding null bytes payload which many Mastodon clients don’t support.
+    // https://firefish.dev/firefish/firefish/-/merge_requests/10905#note_6733
+    let padded_length = 126 + (res.len() + 1) / 128 * 128;
+    
+    Ok(format!("{:padded_length$}", res))    
 }
 
 async fn handle_web_push_failure(
