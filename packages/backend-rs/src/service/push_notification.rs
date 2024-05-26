@@ -134,8 +134,8 @@ async fn encode_mastodon_payload(
         serde_json::to_value(token.token)?,
     );
 
-    // Ice Cubes, Mammoth, and feather expect notification_id to be an integer, but never use it.
-    if ["IceCubesApp", "Mammoth", "feather"].contains(&client.name.as_str()) {
+    // Some apps expect notification_id to be an integer, but never use it.
+    if ["IceCubesApp", "Mammoth", "feather", "MaserApp"].contains(&client.name.as_str()) {
         let timestamp = object
             .get("notification_id")
             .and_then(|id| id.as_str())
