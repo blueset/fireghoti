@@ -117,6 +117,11 @@ async fn encode_mastodon_payload(
         .one(db)
         .await?
         .ok_or(Error::InvalidContent("access token not found".to_string()))?;
+    let client = app::Entity::find()
+        .filter(app::Column::Id.eq(token.app_id.as_ref().unwrap()))
+        .one(db)
+        .await?
+        .ok_or(Error::InvalidContent("app not found".to_string()))?;
 
     if token.app_id.is_none() {
         return Err(Error::InvalidContent("no app ID".to_string()));
