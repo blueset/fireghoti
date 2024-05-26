@@ -106,4 +106,14 @@ mod unit_test {
         assert!(old_id < now_id);
         assert!(now_id < future_id);
     }
+
+    #[test]
+    fn fixture_id_timestamp_check() {
+        assert_eq!(get_timestamp("9e112pilk1").unwrap(), 1682499501741);
+        assert_eq!(get_timestamp("9e183znmxa").unwrap(), 1682511318850);
+        assert_eq!(get_timestamp("9e9srqr79p").unwrap(), 1683029748787);
+        assert_eq!(get_timestamp("9tr87i03euwphnsw").unwrap(), 1716735338211);
+        assert_eq!(get_timestamp("9s9wn2e9cio09do1").unwrap(), 1713511201761);
+        assert_eq!(get_timestamp("9tr7slj2tt2ml1wp").unwrap(), 1716734642942);
+    }
 }
