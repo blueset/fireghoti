@@ -1238,7 +1238,7 @@ _sfx:
   antenna: "Réception de l'antenne"
   channel: "Notifications de chaîne"
 _ago:
-  future: "Futur"
+  future: "futur"
   justNow: "à l'instant"
   secondsAgo: "Il y a {n}s"
   minutesAgo: "Il y a {n}min"
@@ -2338,3 +2338,17 @@ i18nServerSet: Utilisez {language} pour les nouveaux clients.
 mergeThreadInTimeline: Fusionner plusieurs publications dans le même fil dans les
   fils d'actualité
 mergeRenotesInTimeline: Regrouper plusieurs boosts du même publication
+_later:
+  future: futur
+  weeksAgo: il y a {n} semaine(s)
+  daysAgo: il y a {n} jour(s)
+  hoursAgo: il y a {n} heure(s)
+  minutesAgo: il y a {n} minute(s)
+  secondsAgo: il y a {n} seconde(s)
+  yearsAgo: il y a {n} an(s)
+  justNow: à l'instant
+  monthsAgo: il y a {n} mois
+scheduledPost: Programmez cette publication
+scheduledDate: Date programmée
+cancelScheduledPost: Annulez la publication programmée
+scheduledPostAt: Cette publication sera envoyée {time}
