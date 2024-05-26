@@ -126,6 +126,18 @@ async fn encode_mastodon_payload(
         "access_token".to_string(),
         serde_json::to_value(token.token)?,
     );
+    
+    // Ice Cubes and Mammoth expect notification_id to be an integer, but never use it.
+    if client.name == "IceCubesApp" || client.name == "Mammoth" {
+        let notification_id = object
+            .get("notification_id")
+            .and_then(|id| id.as_str())
+            .unwrap_or("0");
+
+        let timestamp = get_timestamp(notification_id).unwrap_or(0);
+
+        object.insert("notification_id".to_string(), timestamp.into());
+    }
 
     let res = serde_json::to_string(&content)?;
 
