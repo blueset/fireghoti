@@ -136,12 +136,11 @@ async fn encode_mastodon_payload(
 
     // Ice Cubes and Mammoth expect notification_id to be an integer, but never use it.
     if client.name == "IceCubesApp" || client.name == "Mammoth" {
-        let notification_id = object
+        let timestamp = object
             .get("notification_id")
             .and_then(|id| id.as_str())
-            .unwrap_or("0");
-
-        let timestamp = get_timestamp(notification_id).unwrap_or(0);
+            .map(|id| get_timestamp(id).unwrap_or_default())
+            .unwrap_or_default();
 
         object.insert("notification_id".to_string(), timestamp.into());
     }
