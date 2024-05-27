@@ -94,6 +94,12 @@ export const meta = {
 			code: "ACCOUNT_LOCKED",
 			id: "d390d7e1-8a5e-46ed-b625-06271cafd3d3",
 		},
+
+		scheduledTimeIsPast: {
+			message: "The scheduled time is past.",
+			code: "SCHEDULED_TIME_IS_PAST",
+			id: "277f91df-8d8e-4647-b4e3-5885fda8978a",
+		},
 	},
 } as const;
 
@@ -305,7 +311,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	if (ps.scheduledAt != null) {
 		delay = ps.scheduledAt - Date.now();
 		if (delay < 0) {
-			delay = null;
+			throw new ApiError(meta.errors.scheduledTimeIsPast);
 		}
 	}
 
