@@ -53,7 +53,6 @@ pub mod registry_item;
 pub mod relay;
 pub mod renote_muting;
 pub mod reply_muting;
-pub mod scheduled_note;
 pub mod sea_orm_active_enums;
 pub mod signin;
 pub mod sw_subscription;
