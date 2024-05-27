@@ -97,7 +97,7 @@ export class AuthHelpers {
 			);
 
 		const callbackUrls = app.callbackUrl?.split("\n") ?? [];
-		if (!callbackUrls.some(url => url.startsWith(body.redirect_uri)))
+		if (!callbackUrls.some((url) => url.startsWith(body.redirect_uri)))
 			throw new MastoApiError(400, "Redirect URI not in list");
 		const secret = generateSecureRandomString(32);
 		const token = await AccessTokens.insert({

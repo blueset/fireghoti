@@ -8,12 +8,12 @@ import type { SwSubscription } from "@/models/entities/sw-subscription.js";
 
 /**
  * Normalize object arguments from query string.
- * 
+ *
  * @example
  * ```ts
- * normalizeObjectArgs({ 
- *    "subscription[endpoint]": "https://example.com", 
- *    "subscription[keys][p256dh]": "key", 
+ * normalizeObjectArgs({
+ *    "subscription[endpoint]": "https://example.com",
+ *    "subscription[keys][p256dh]": "key",
  *    "subscription[keys][auth]": "auth"
  * });
  * // { subscription: { endpoint: "https://example.com", keys: { p256dh: "key", auth: "auth" } } }
