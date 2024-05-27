@@ -289,8 +289,7 @@ export class NoteConverter {
 					(!isQuote(note) ? reblog?.reblogs_count : note.renoteCount) ?? 0,
 			),
 			favourites_count: reactionCount,
-			reblogged:
-				isReblogged || reblog.then((reblog) => !!(reblog && !isQuote(note))),
+			reblogged: isReblogged,
 			favourited: isFavorited,
 			muted: isMuted,
 			sensitive: files.then((files) =>
