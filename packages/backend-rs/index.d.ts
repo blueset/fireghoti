@@ -31,16 +31,23 @@ export function loadEnv(): EnvConfig
 export interface ServerConfig {
   url: string
   port: number
-  /** host to listen on */
+  /** the host address to bind to */
   bind?: string
   disableHsts?: boolean
+  /** PostgreSQL configurations */
   db: DbConfig
+  /** Redis configurations */
   redis: RedisConfig
+  /** secondary Redis server configurations */
   cacheServer?: RedisConfig
+  /** proxy host used for HTTP requests */
   proxy?: string
+  /** proxy host used for SMTP requests */
   proxySmtp?: string
+  /** hosts to bypass the proxy */
   proxyBypassHosts?: Array<string>
   allowedPrivateNetworks?: Array<string>
+  /** maximum file size that can be uploaded to the drive (in bytes) */
   maxFileSize?: number
   accessLog?: string
   clusterLimits?: WorkerConfigInternal
@@ -52,8 +59,9 @@ export interface ServerConfig {
   inboxJobPerSec?: number
   deliverJobMaxAttempts?: number
   inboxJobMaxAttempts?: number
-  /** deprecated */
+  /** deprecated in favor of `max_log_level` */
   logLevel?: Array<string>
+  /** verbosity of the server log. `error`, `warn`, `info`, `debug`, or `trace` */
   maxLogLevel?: string
   syslog?: SysLogConfig
   proxyRemoteFiles?: boolean
