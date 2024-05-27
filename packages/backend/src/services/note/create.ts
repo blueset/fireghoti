@@ -133,15 +133,10 @@ class NotificationManager {
 	}
 }
 
-type MinimumUser = {
-	id: User["id"];
-	host: User["host"];
-	username: User["username"];
-	uri: User["uri"];
-};
-
-type Option = {
+type UserLike = Pick<User, "id" | "host" | "username" | "uri">;
+type NoteLike = {
 	createdAt?: Date | null;
+	scheduledAt?: Date | null;
 	name?: string | null;
 	text?: string | null;
 	lang?: string | null;
@@ -152,9 +147,9 @@ type Option = {
 	localOnly?: boolean | null;
 	cw?: string | null;
 	visibility?: string;
-	visibleUsers?: MinimumUser[] | null;
+	visibleUsers?: UserLike[] | null;
 	channel?: Channel | null;
-	apMentions?: MinimumUser[] | null;
+	apMentions?: UserLike[] | null;
 	apHashtags?: string[] | null;
 	apEmojis?: string[] | null;
 	uri?: string | null;
@@ -163,20 +158,15 @@ type Option = {
 };
 
 export default async (
-	user: {
-		id: User["id"];
-		username: User["username"];
-		host: User["host"];
-		isSilenced: User["isSilenced"];
-		createdAt: User["createdAt"];
-		isBot: User["isBot"];
-		inbox?: User["inbox"];
-	},
-	data: Option,
+	user: Pick<
+		User,
+		"id" | "username" | "host" | "isSilenced" | "createdAt" | "isBot"
+	> & { inbox?: User["inbox"] },
+	data: NoteLike,
 	silent = false,
 	waitToPublish?: (note: Note) => Promise<void>,
 ) =>
-	// biome-ignore lint/suspicious/noAsyncPromiseExecutor: FIXME
+	// biome-ignore lint/suspicious/noAsyncPromiseExecutor: <explanation>
 	new Promise<Note>(async (res, rej) => {
 		const dontFederateInitially =
 			data.visibility?.startsWith("hidden") === true;
@@ -208,6 +198,7 @@ export default async (
 			data.createdAt > now
 		)
 			data.createdAt = now;
+
 		if (data.visibility == null) data.visibility = "public";
 		if (data.localOnly == null) data.localOnly = false;
 		if (data.channel != null) data.visibility = "public";
@@ -277,11 +268,7 @@ export default async (
 			data.localOnly = true;
 		}
 
-		if (data.text) {
-			data.text = data.text.trim();
-		} else {
-			data.text = null;
-		}
+		data.text = data.text?.trim() ?? null;
 
 		if (data.lang) {
 			if (!Object.keys(langmap).includes(data.lang.toLowerCase()))
@@ -297,10 +284,10 @@ export default async (
 
 		// Parse MFM if needed
 		if (!(tags && emojis && mentionedUsers)) {
-			const tokens = data.text ? mfm.parse(data.text)! : [];
-			const cwTokens = data.cw ? mfm.parse(data.cw)! : [];
+			const tokens = data.text ? mfm.parse(data.text) : [];
+			const cwTokens = data.cw ? mfm.parse(data.cw) : [];
 			const choiceTokens = data.poll?.choices
-				? concat(data.poll.choices.map((choice) => mfm.parse(choice)!))
+				? concat(data.poll.choices.map((choice) => mfm.parse(choice)))
 				: [];
 
 			const combinedTokens = tokens.concat(cwTokens).concat(choiceTokens);
@@ -318,12 +305,12 @@ export default async (
 			.splice(0, 32);
 
 		if (
-			data.reply &&
+			data.reply != null &&
 			user.id !== data.reply.userId &&
-			!mentionedUsers.some((u) => u.id === data.reply!.userId)
+			!mentionedUsers.some((u) => u.id === data.reply?.userId)
 		) {
 			mentionedUsers.push(
-				await Users.findOneByOrFail({ id: data.reply!.userId }),
+				await Users.findOneByOrFail({ id: data.reply.userId }),
 			);
 		}
 
@@ -338,10 +325,10 @@ export default async (
 
 			if (
 				data.reply &&
-				!data.visibleUsers.some((x) => x.id === data.reply!.userId)
+				!data.visibleUsers.some((x) => x.id === data.reply?.userId)
 			) {
 				data.visibleUsers.push(
-					await Users.findOneByOrFail({ id: data.reply!.userId }),
+					await Users.findOneByOrFail({ id: data.reply?.userId }),
 				);
 			}
 		}
@@ -561,7 +548,7 @@ export default async (
 						publishMainStream(data.reply.userId, "reply", packedReply);
 
 						const webhooks = (await getActiveWebhooks()).filter(
-							(x) => x.userId === data.reply!.userId && x.on.includes("reply"),
+							(x) => x.userId === data.reply?.userId && x.on.includes("reply"),
 						);
 						for (const webhook of webhooks) {
 							webhookDeliver(webhook, "reply", {
@@ -672,7 +659,7 @@ export default async (
 		}
 	});
 
-async function renderNoteOrRenoteActivity(data: Option, note: Note) {
+async function renderNoteOrRenoteActivity(data: NoteLike, note: Note) {
 	if (data.localOnly) return null;
 
 	const content =
@@ -704,17 +691,17 @@ function incRenoteCount(renote: Note) {
 
 async function insertNote(
 	user: { id: User["id"]; host: User["host"] },
-	data: Option,
+	data: NoteLike,
 	tags: string[],
 	emojis: string[],
-	mentionedUsers: MinimumUser[],
+	mentionedUsers: UserLike[],
 ) {
-	if (data.createdAt === null || data.createdAt === undefined) {
-		data.createdAt = new Date();
-	}
-	const insert = new Note({
+	data.createdAt ??= new Date();
+
+	const note = new Note({
 		id: genIdAt(data.createdAt),
 		createdAt: data.createdAt,
+		scheduledAt: data.scheduledAt ?? null,
 		fileIds: data.files ? data.files.map((file) => file.id) : [],
 		replyId: data.reply ? data.reply.id : null,
 		renoteId: data.renote ? data.renote.id : null,
@@ -743,7 +730,7 @@ async function insertNote(
 
 		attachedFileTypes: data.files ? data.files.map((file) => file.type) : [],
 
-		// 以下非正規化データ
+		// denormalized fields
 		replyUserId: data.reply ? data.reply.userId : null,
 		replyUserHost: data.reply ? data.reply.userHost : null,
 		renoteUserId: data.renote ? data.renote.userId : null,
@@ -751,22 +738,22 @@ async function insertNote(
 		userHost: user.host,
 	});
 
-	if (data.uri != null) insert.uri = data.uri;
-	if (data.url != null) insert.url = data.url;
+	if (data.uri != null) note.uri = data.uri;
+	if (data.url != null) note.url = data.url;
 
 	// Append mentions data
 	if (mentionedUsers.length > 0) {
-		insert.mentions = mentionedUsers.map((u) => u.id);
-		const profiles = await UserProfiles.findBy({ userId: In(insert.mentions) });
-		insert.mentionedRemoteUsers = JSON.stringify(
+		note.mentions = mentionedUsers.map((u) => u.id);
+		const profiles = await UserProfiles.findBy({ userId: In(note.mentions) });
+		note.mentionedRemoteUsers = JSON.stringify(
 			mentionedUsers
 				.filter((u) => Users.isRemoteUser(u))
 				.map((u) => {
 					const profile = profiles.find((p) => p.userId === u.id);
-					const url = profile != null ? profile.url : null;
+					const url = profile?.url ?? null;
 					return {
 						uri: u.uri,
-						url: url == null ? undefined : url,
+						url: url ?? undefined,
 						username: u.username,
 						host: u.host,
 					} as IMentionedRemoteUsers[0];
@@ -776,12 +763,12 @@ async function insertNote(
 
 	// 投稿を作成
 	try {
-		if (insert.hasPoll) {
+		if (note.hasPoll) {
 			// Start transaction
 			await db.transaction(async (transactionalEntityManager) => {
 				if (!data.poll) throw new Error("Empty poll data");
 
-				await transactionalEntityManager.insert(Note, insert);
+				await transactionalEntityManager.insert(Note, note);
 
 				let expiresAt: Date | null;
 				if (
@@ -794,12 +781,12 @@ async function insertNote(
 				}
 
 				const poll = new Poll({
-					noteId: insert.id,
+					noteId: note.id,
 					choices: data.poll.choices,
 					expiresAt,
 					multiple: data.poll.multiple,
 					votes: new Array(data.poll.choices.length).fill(0),
-					noteVisibility: insert.visibility,
+					noteVisibility: note.visibility,
 					userId: user.id,
 					userHost: user.host,
 				});
@@ -807,10 +794,10 @@ async function insertNote(
 				await transactionalEntityManager.insert(Poll, poll);
 			});
 		} else {
-			await Notes.insert(insert);
+			await Notes.insert(note);
 		}
 
-		return insert;
+		return note;
 	} catch (e) {
 		// duplicate key error
 		if (isDuplicateKeyValueError(e)) {
@@ -857,7 +844,7 @@ async function notifyToWatchersOfReplyee(
 }
 
 async function createMentionedEvents(
-	mentionedUsers: MinimumUser[],
+	mentionedUsers: UserLike[],
 	note: Note,
 	nm: NotificationManager,
 ) {

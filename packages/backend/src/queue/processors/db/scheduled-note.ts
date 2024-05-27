@@ -1,4 +1,4 @@
-import { Users, Notes, ScheduledNotes, DriveFiles } from "@/models/index.js";
+import { Users, Notes, DriveFiles } from "@/models/index.js";
 import type { DbUserScheduledNoteData } from "@/queue/types.js";
 import { queueLogger } from "../../logger.js";
 import type Bull from "bull";
@@ -20,23 +20,20 @@ export async function scheduledNote(
 		return;
 	}
 
-	const note = await Notes.findOneBy({ id: job.data.noteId });
-	if (note == null) {
+	const draftNote = await Notes.findOneBy({ id: job.data.noteId });
+	if (draftNote == null) {
+		logger.warn(`Note ${job.data.noteId} does not exist`);
 		done();
 		return;
 	}
-	const files = await DriveFiles.findBy({ id: In(note.fileIds) });
+	const files = await DriveFiles.findBy({ id: In(draftNote.fileIds) });
 
 	if (user.isSuspended) {
-		deleteNote(user, note);
+		logger.info(`Cancelled due to user ${job.data.user.id} being suspended`);
+		deleteNote(user, draftNote);
 		done();
 		return;
 	}
-
-	await ScheduledNotes.delete({
-		noteId: note.id,
-		userId: user.id,
-	});
 
 	const visibleUsers = job.data.option.visibleUserIds
 		? await Users.findBy({
@@ -44,22 +41,25 @@ export async function scheduledNote(
 			})
 		: [];
 
+	// Create scheduled (actual) note
 	await createNote(user, {
 		createdAt: new Date(),
+		scheduledAt: null,
 		files,
 		poll: job.data.option.poll,
-		text: note.text || undefined,
-		lang: note.lang,
-		reply: note.reply,
-		renote: note.renote,
-		cw: note.cw,
-		localOnly: note.localOnly,
+		text: draftNote.text || undefined,
+		lang: draftNote.lang,
+		reply: draftNote.reply,
+		renote: draftNote.renote,
+		cw: draftNote.cw,
+		localOnly: draftNote.localOnly,
 		visibility: job.data.option.visibility,
 		visibleUsers,
-		channel: note.channel,
+		channel: draftNote.channel,
 	});
 
-	await deleteNote(user, note);
+	// Delete temporal (draft) note
+	await deleteNote(user, draftNote);
 
 	logger.info("Success");
 

@@ -59,10 +59,10 @@ export class RefactorScheduledPosts1716804636187 implements MigrationInterface {
 		await queryRunner.query("DROP EXTENSION pgcrypto");
 		await queryRunner.query(`DROP FUNCTION "generate_scheduled_note_id"`);
 		await queryRunner.query(
-			`CREATE INDEX "IDX_noteId_ScheduledNote" ON "scheduled_note" ("noteId")`
+			`CREATE INDEX "IDX_noteId_ScheduledNote" ON "scheduled_note" ("noteId")`,
 		);
 		await queryRunner.query(
-			`CREATE INDEX "IDX_userId_ScheduledNote" ON "scheduled_note" ("userId")`
+			`CREATE INDEX "IDX_userId_ScheduledNote" ON "scheduled_note" ("userId")`,
 		);
 		await queryRunner.query(`
 				ALTER TABLE "scheduled_note"
