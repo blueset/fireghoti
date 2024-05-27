@@ -285,12 +285,11 @@ cargo:doc:
     - apt-get update
     - apt-get install -y --no-install-recommends build-essential clang mold nodejs npm
     - cp ci/cargo/config.toml /usr/local/cargo/config.toml
-    - npm install --global netlify-cli
   script:
     - cargo doc --no-deps --document-private-items
     - printf '<meta http-equiv="refresh" content="0; url=%s">' 'backend_rs' > target/doc/index.html
     - cd target/doc
-    - netlify deploy --prod --site="${CARGO_DOC_SITE_ID}" --dir=.
+    - npx --yes netlify-cli deploy --prod --site="${CARGO_DOC_SITE_ID}" --dir=.
 
 renovate:
   stage: dependency
