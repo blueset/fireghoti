@@ -166,7 +166,7 @@ export default async (
 	silent = false,
 	waitToPublish?: (note: Note) => Promise<void>,
 ) =>
-	// biome-ignore lint/suspicious/noAsyncPromiseExecutor: <explanation>
+	// biome-ignore lint/suspicious/noAsyncPromiseExecutor: FIXME
 	new Promise<Note>(async (res, rej) => {
 		const dontFederateInitially =
 			data.visibility?.startsWith("hidden") === true;
