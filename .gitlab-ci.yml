@@ -285,7 +285,8 @@ cargo:doc:
     - apt-get install -y --no-install-recommends build-essential clang mold nodejs npm
     - cp ci/cargo/config.toml /usr/local/cargo/config.toml
   script:
-    - cargo doc --no-deps --document-private-items
+    - cargo doc --document-private-items
+    - printf "window.ALL_CRATES = ['backend_rs', 'macro_rs'];" > target/doc/crates.js
     - printf '<meta http-equiv="refresh" content="0; url=%s">' 'backend_rs' > target/doc/index.html
     - cd target/doc
     - npx --yes netlify-cli deploy --prod --site="${CARGO_DOC_SITE_ID}" --dir=.
