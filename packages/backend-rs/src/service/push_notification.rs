@@ -4,7 +4,7 @@ use crate::misc::meta::fetch_meta;
 use crate::model::entity::sw_subscription;
 use crate::util::http_client;
 use once_cell::sync::OnceCell;
-use sea_orm::{prelude::*, DbErr};
+use sea_orm::prelude::*;
 use web_push::{
     ContentEncoding, IsahcWebPushClient, SubscriptionInfo, SubscriptionKeys, VapidSignatureBuilder,
     WebPushClient, WebPushError, WebPushMessageBuilder,
@@ -102,7 +102,7 @@ fn compact_content(
 }
 
 async fn handle_web_push_failure(
-    db: &DatabaseConnection,
+    db: &DbConn,
     err: WebPushError,
     subscription_id: &str,
     error_message: &str,

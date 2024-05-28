@@ -1,8 +1,8 @@
 use crate::config::CONFIG;
 use crate::database::{cache, db_conn};
+use crate::federation::nodeinfo::schema::*;
 use crate::misc::meta::fetch_meta;
 use crate::model::entity::{note, user};
-use crate::service::nodeinfo::schema::*;
 use sea_orm::{ColumnTrait, DbErr, EntityTrait, PaginatorTrait, QueryFilter};
 use serde_json::json;
 use std::collections::HashMap;

@@ -1,5 +1,3 @@
-//! ID generation utility based on [cuid2]
-
 use crate::config::CONFIG;
 use basen::BASE36;
 use chrono::{DateTime, NaiveDateTime, Utc};
