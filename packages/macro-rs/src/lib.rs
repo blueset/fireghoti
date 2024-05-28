@@ -3,6 +3,14 @@ use proc_macro2::{TokenStream, TokenTree};
 use quote::{quote, ToTokens};
 
 /// Read the version field in the project root package.json at compile time
+///
+/// # Example
+/// You can get a compile-time constant version number using this macro:
+/// ```
+/// # use macro_rs::read_version_from_package_json;
+/// // VERSION == "YYYYMMDD" (or "YYYYMMDD-X")
+/// const VERSION: &str = read_version_from_package_json!();
+/// ```
 #[proc_macro]
 pub fn read_version_from_package_json(_item: proc_macro::TokenStream) -> proc_macro::TokenStream {
     #[derive(serde::Deserialize)]
@@ -18,6 +26,13 @@ pub fn read_version_from_package_json(_item: proc_macro::TokenStream) -> proc_ma
 }
 
 /// Export this function, struct, enum, const, etc. to TypeScript.
+///
+/// This is a wrapper of [macro@napi] that expands to
+/// ```no_run
+/// #[cfg_attr(feature = "napi", macro_rs::napi(attr))]
+/// # fn f() {} // to work around doc test compilation error
+/// ```
+/// where `attr` is given attribute(s). See [macro@napi] for more details.
 #[proc_macro_attribute]
 pub fn export(
     attr: proc_macro::TokenStream,
@@ -34,7 +49,15 @@ pub fn export(
 }
 
 /// Export this function, struct, enum, const, etc. to TypeScript
-/// and make it unable to use in Rust
+/// and make it unable to use in Rust.
+///
+/// This is a wrapper of [macro@napi] that expands to
+/// ```no_run
+/// #[cfg(feature = "napi")]
+/// #[macro_rs::napi(attr)]
+/// # fn f() {} // to work around doc test compilation error
+/// ```
+/// where `attr` is given attribute(s). See [macro@napi] for more details.
 #[proc_macro_attribute]
 pub fn ts_export(
     attr: proc_macro::TokenStream,
@@ -51,7 +74,7 @@ pub fn ts_export(
     .into()
 }
 
-/// Creates extra wrapper function for napi.
+/// Creates an extra wrapper function for [napi_derive](https://docs.rs/napi-derive/latest/napi_derive/).
 ///
 /// The macro is simply converted into `napi_derive::napi(...)`
 /// if it is not applied to a function.
