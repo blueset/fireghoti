@@ -18,4 +18,4 @@ syn = { workspace = true, features = ["full", "extra-traits"] }
 [dev-dependencies]
 thiserror = { workspace = true }
 napi = { workspace = true }
-#napi-derive = { workspace = true }
+napi-derive = { workspace = true, features = ["noop"] }

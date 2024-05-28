@@ -72,7 +72,6 @@ pub fn ts_export(
 /// # Examples
 /// ## Applying the macro to a struct
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// #[macro_rs::napi(object)]
 /// struct Person {
 ///   id: i32,
@@ -81,7 +80,6 @@ pub fn ts_export(
 /// ```
 /// simply becomes
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// #[napi_derive::napi(use_nullable = true, object)]
 /// struct Person {
 ///   id: i32,
@@ -91,7 +89,6 @@ pub fn ts_export(
 ///
 /// ## Function with explicitly specified `js_name`
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// #[macro_rs::napi(js_name = "add1")]
 /// pub fn add_one(x: i32) -> i32 {
 ///     x + 1
@@ -99,7 +96,6 @@ pub fn ts_export(
 /// ```
 /// generates
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// # pub fn add_one(x: i32) -> i32 {
 /// #     x + 1
 /// # }
@@ -111,7 +107,6 @@ pub fn ts_export(
 ///
 /// ## Function with `i32` argument
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// #[macro_rs::napi]
 /// pub fn add_one(x: i32) -> i32 {
 ///     x + 1
@@ -119,7 +114,6 @@ pub fn ts_export(
 /// ```
 /// generates
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// # pub fn add_one(x: i32) -> i32 {
 /// #     x + 1
 /// # }
@@ -131,7 +125,6 @@ pub fn ts_export(
 ///
 /// ## Function with `&str` argument
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// #[macro_rs::napi]
 /// pub fn concatenate_string(str1: &str, str2: &str) -> String {
 ///     str1.to_owned() + str2
@@ -139,7 +132,6 @@ pub fn ts_export(
 /// ```
 /// generates
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// # pub fn concatenate_string(str1: &str, str2: &str) -> String {
 /// #     str1.to_owned() + str2
 /// # }
@@ -151,7 +143,6 @@ pub fn ts_export(
 ///
 /// ## Function with `&[String]` argument
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// #[macro_rs::napi]
 /// pub fn string_array_length(array: &[String]) -> u32 {
 ///     array.len() as u32
@@ -159,7 +150,6 @@ pub fn ts_export(
 /// ```
 /// generates
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// # pub fn string_array_length(array: &[String]) -> u32 {
 /// #     array.len() as u32
 /// # }
@@ -171,7 +161,6 @@ pub fn ts_export(
 ///
 /// ## Function with `Result<T, E>` return type
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// #[derive(thiserror::Error, Debug)]
 /// pub enum IntegerDivisionError {
 ///     #[error("Divided by zero")]
@@ -193,7 +182,6 @@ pub fn ts_export(
 /// ```
 /// generates
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// # #[derive(thiserror::Error, Debug)]
 /// # pub enum IntegerDivisionError {
 /// #     #[error("Divided by zero")]
@@ -380,16 +368,6 @@ fn napi_impl(macro_attr: TokenStream, item: TokenStream) -> TokenStream {
         #(#function_call_modifiers)*
       }
     }
-}
-
-// FIXME
-/// For doctest only
-#[proc_macro_attribute]
-pub fn dummy_macro(
-    _attr: proc_macro::TokenStream,
-    item: proc_macro::TokenStream,
-) -> proc_macro::TokenStream {
-    item
 }
 
 #[cfg(test)]
