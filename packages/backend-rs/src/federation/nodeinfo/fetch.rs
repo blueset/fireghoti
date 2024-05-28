@@ -1,4 +1,4 @@
-use crate::service::nodeinfo::schema::*;
+use crate::federation::nodeinfo::schema::*;
 use crate::util::http_client;
 use isahc::AsyncReadResponseExt;
 use serde::{Deserialize, Serialize};

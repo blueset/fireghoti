@@ -5,7 +5,7 @@ use crate::model::entity::{access_token, app, sw_subscription};
 use crate::util::http_client;
 use crate::util::id::get_timestamp;
 use once_cell::sync::OnceCell;
-use sea_orm::{prelude::*, DbErr};
+use sea_orm::prelude::*;
 use web_push::{
     ContentEncoding, IsahcWebPushClient, SubscriptionInfo, SubscriptionKeys, VapidSignatureBuilder,
     WebPushClient, WebPushError, WebPushMessageBuilder, WebPushPayload,
@@ -156,7 +156,7 @@ async fn encode_mastodon_payload(
 }
 
 async fn handle_web_push_failure(
-    db: &DatabaseConnection,
+    db: &DbConn,
     err: WebPushError,
     subscription_id: &str,
     error_message: &str,
