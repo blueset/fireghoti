@@ -70,8 +70,8 @@ importers:
         specifier: 1.7.0
         version: 1.7.0
       '@redocly/openapi-core':
-        specifier: 1.12.2
-        version: 1.12.2
+        specifier: 1.13.0
+        version: 1.13.0
       '@sinonjs/fake-timers':
         specifier: 11.2.2
         version: 11.2.2
@@ -91,8 +91,8 @@ importers:
         specifier: ^0.5.0
         version: 0.5.0
       aws-sdk:
-        specifier: 2.1626.0
-        version: 2.1626.0
+        specifier: 2.1627.0
+        version: 2.1627.0
       axios:
         specifier: 1.7.2
         version: 1.7.2
@@ -103,8 +103,8 @@ importers:
         specifier: 2.0.5
         version: 2.0.5
       bull:
-        specifier: 4.12.8
-        version: 4.12.8
+        specifier: 4.12.9
+        version: 4.12.9
       cacheable-lookup:
         specifier: TheEssem/cacheable-lookup
         version: https://codeload.github.com/TheEssem/cacheable-lookup/tar.gz/dd2fb616366a3c68dcf321a57a67295967b204bf
@@ -1888,8 +1888,8 @@ packages:
   '@redocly/config@0.5.0':
     resolution: {integrity: sha512-oA1ezWPT2tSV9CLk0FtZlViaFKtp+id3iAVeKBme1DdP4xUCdxEdP8umB21iLKdc6leRd5uGa+T5Ox4nHBAXWg==}
 
-  '@redocly/openapi-core@1.12.2':
-    resolution: {integrity: sha512-dImBZaKws54a4/QdoAVsLDm4/gfVnzAVD68pSGFPMTLNM2AZINvevfUfOrbUNTXwHvG2UJkthUxDGQZLsp3Vaw==}
+  '@redocly/openapi-core@1.13.0':
+    resolution: {integrity: sha512-lPvVE4+QjWMXCEIui994pYBZGqvEsodaCJPCJLkx6RK3OL/6Ss8wN17YTDmF49tzw3xgA8t4+x7TqelUSRcZUQ==}
     engines: {node: '>=14.19.0', npm: '>=7.0.0'}
 
   '@rollup/plugin-alias@5.1.0':
@@ -2885,8 +2885,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  aws-sdk@2.1626.0:
-    resolution: {integrity: sha512-auPVi0ZwmWioHcXK7A6RReNVk9y4GmvT5gPQvq5ictss/Cl/Yb9vjy/6DrZ2wUjSVAE16z5IVyE6G4Zsdhr+JQ==}
+  aws-sdk@2.1627.0:
+    resolution: {integrity: sha512-jcgGkGc4zZ8VZymw8RzD9BrnxHjmV7Lb1fc7Kw9Hku67PKSSoEp/sMGagjOBjBU7saRcACRPBFR7dgUyIDHGNw==}
     engines: {node: '>= 10.0.0'}
 
   axios@0.24.0:
@@ -3043,8 +3043,8 @@ packages:
   builtins@5.1.0:
     resolution: {integrity: sha512-SW9lzGTLvWTP1AY8xeAMZimqDrIaSdLQUcVr9DMef51niJ022Ri87SwRRKYm4A6iHfkPaiVUu/Duw2Wc4J7kKg==}
 
-  bull@4.12.8:
-    resolution: {integrity: sha512-JgZVAR3ChuesMWSJfQjgTyXb6kdT6qos3ft9pt0AASRMiRZIjDxHMtxfcOs2Zf8O9uSv0Y5ycYwv5Te3liGJ3A==}
+  bull@4.12.9:
+    resolution: {integrity: sha512-rqka/O9ZBfrKgI4fanhN6XW0AJ9WYRakjHlCJPjoHyh79xIvEjyU8hvs/CCeRdrbU6zSw8UNfDOjCUaQO1MTuQ==}
     engines: {node: '>=12'}
 
   busboy@1.6.0:
@@ -8953,7 +8953,7 @@ snapshots:
 
   '@redocly/config@0.5.0': {}
 
-  '@redocly/openapi-core@1.12.2':
+  '@redocly/openapi-core@1.13.0':
     dependencies:
       '@redocly/ajv': 8.11.0
       '@redocly/config': 0.5.0
@@ -10052,7 +10052,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.0.0
 
-  aws-sdk@2.1626.0:
+  aws-sdk@2.1627.0:
     dependencies:
       buffer: 4.9.2
       events: 1.1.1
@@ -10267,7 +10267,7 @@ snapshots:
     dependencies:
       semver: 7.6.2
 
-  bull@4.12.8:
+  bull@4.12.9:
     dependencies:
       cron-parser: 4.9.0
       get-port: 5.1.1

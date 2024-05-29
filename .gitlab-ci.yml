@@ -83,7 +83,7 @@ test:build:
     - pnpm run migrate
     - psql --host postgres --user "${POSTGRES_USER}" --dbname "${POSTGRES_DB}" --command "$(cat docs/downgrade.sql)"
 
-test:build:backend_ts_only:
+test:build:backend_ts:
   stage: test
   rules:
     - if: $TEST == 'true'
@@ -111,12 +111,14 @@ test:build:backend_ts_only:
     - apt-get update && apt-get -y upgrade
     - apt-get -y --no-install-recommends install curl
     - curl -fsSL 'https://deb.nodesource.com/setup_18.x' | bash -
-    - apt-get install -y --no-install-recommends build-essential python3 nodejs postgresql-client
+    - apt-get install -y --no-install-recommends build-essential clang mold python3 perl nodejs postgresql-client
     - corepack enable
     - corepack prepare pnpm@latest --activate
     - mkdir -p packages/backend-rs/built
     - cp packages/backend-rs/index.js packages/backend-rs/built/index.js
     - cp packages/backend-rs/index.d.ts packages/backend-rs/built/index.d.ts
+    - cp ci/cargo/config.toml /usr/local/cargo/config.toml
+    - test -f packages/backend-rs/built/backend-rs.linux-x64-gnu.node || pnpm --filter 'backend-rs' run build:debug
     - cp .config/ci.yml .config/default.yml
     - export PGPASSWORD="${POSTGRES_PASSWORD}"
     - psql --host postgres --user "${POSTGRES_USER}" --dbname "${POSTGRES_DB}" --command 'CREATE EXTENSION pgroonga'
@@ -126,7 +128,7 @@ test:build:backend_ts_only:
     - pnpm run migrate
     - psql --host postgres --user "${POSTGRES_USER}" --dbname "${POSTGRES_DB}" --command "$(cat docs/downgrade.sql)"
 
-test:build:client_only:
+test:build:client:
   stage: test
   rules:
     - if: $TEST == 'true'
@@ -263,9 +265,6 @@ cargo:clippy:
 
 cargo:doc:
   stage: doc
-  needs:
-    - cargo:test
-    - test:build
   rules:
     - if: $DOC == 'true'
       when: always
@@ -282,43 +281,15 @@ cargo:doc:
       when: always
   services: []
   before_script:
-    - apt-get update && apt-get -y upgrade
-    - apt-get install -y --no-install-recommends build-essential clang mold
+    - apt-get update
+    - apt-get install -y --no-install-recommends build-essential clang mold nodejs npm
     - cp ci/cargo/config.toml /usr/local/cargo/config.toml
+    - npm install --global netlify-cli
   script:
     - cargo doc --no-deps
-  artifacts:
-    paths:
-      - target/doc
-
-pages:
-  stage: doc
-  needs:
-    - cargo:doc
-  rules:
-    - if: $DOC == 'true'
-      when: always
-    - if: $DOC == 'false'
-      when: never
-    - if: $CI_COMMIT_BRANCH == 'develop'
-      changes:
-        paths:
-          - packages/backend-rs/**/*
-          - packages/macro-rs/**/*
-          - Cargo.toml
-          - Cargo.lock
-          - package.json
-      when: always
-  image: docker.io/alpine:latest
-  services: []
-  before_script: []
-  script:
-    - mkdir -p public/backend_rs
-    - cp --recursive target/doc public/backend-rs/doc
-    - printf '<meta http-equiv="refresh" content="0; url=%s">' 'backend_rs' > public/backend-rs/doc/index.html
-  artifacts:
-    paths:
-      - public
+    - printf '<meta http-equiv="refresh" content="0; url=%s">' 'backend_rs' > target/doc/index.html
+    - cd target/doc
+    - netlify deploy --prod --site="${CARGO_DOC_SITE_ID}" --dir=.
 
 renovate:
   stage: dependency

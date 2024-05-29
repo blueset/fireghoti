@@ -13,9 +13,9 @@ export const USER_ACTIVE_THRESHOLD: number
  * List of file types allowed to be viewed directly in the browser
  * Anything not included here will be responded as application/octet-stream
  * SVG is not allowed because it generates XSS <- we need to fix this and later allow it to be viewed directly
- * <https://github.com/sindresorhus/file-type/blob/main/supported.js>
- * <https://github.com/sindresorhus/file-type/blob/main/core.js>
- * <https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Containers>
+ * * <https://github.com/sindresorhus/file-type/blob/main/supported.js>
+ * * <https://github.com/sindresorhus/file-type/blob/main/core.js>
+ * * <https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Containers>
  */
 export const FILE_TYPE_BROWSERSAFE: string[]
 export interface EnvConfig {
