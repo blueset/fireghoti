@@ -72,11 +72,11 @@ pub struct Model {
     pub muted_patterns: Vec<String>,
     #[sea_orm(column_type = "JsonBinary")]
     pub mentions: Json,
-    pub lang: Option<String>,
     #[sea_orm(column_name = "mutedInstances")]
     pub muted_instances: Vec<String>,
     #[sea_orm(column_name = "mutedWords")]
     pub muted_words: Vec<String>,
+    pub lang: Option<String>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
