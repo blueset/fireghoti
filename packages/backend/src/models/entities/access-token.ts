@@ -46,8 +46,11 @@ export class AccessToken {
 	public hash: string;
 
 	@Index()
-	@Column(id())
-	public userId: User["id"];
+	@Column({
+		...id(),
+		nullable: true,
+	})
+	public userId: User["id"] | null;
 
 	@Column({
 		...id(),

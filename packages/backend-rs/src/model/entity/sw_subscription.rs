@@ -21,10 +21,22 @@ pub struct Model {
     pub publickey: String,
     #[sea_orm(column_name = "sendReadMessage")]
     pub send_read_message: bool,
+    #[sea_orm(column_name = "appAccessTokenId")]
+    pub app_access_token_id: Option<String>,
+    #[sea_orm(column_name = "subscriptionTypes")]
+    pub subscription_types: Vec<String>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
+    #[sea_orm(
+        belongs_to = "super::access_token::Entity",
+        from = "Column::AppAccessTokenId",
+        to = "super::access_token::Column::Id",
+        on_update = "NoAction",
+        on_delete = "Cascade"
+    )]
+    AccessToken,
     #[sea_orm(
         belongs_to = "super::user::Entity",
         from = "Column::UserId",
@@ -33,6 +45,12 @@ pub enum Relation {
         on_delete = "Cascade"
     )]
     User,
+}
+
+impl Related<super::access_token::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::AccessToken.def()
+    }
 }
 
 impl Related<super::user::Entity> for Entity {

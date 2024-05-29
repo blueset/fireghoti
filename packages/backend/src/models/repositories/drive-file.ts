@@ -8,6 +8,7 @@ import { config } from "@/config.js";
 import { query, appendQuery } from "@/prelude/url.js";
 import { Users, DriveFolders } from "../index.js";
 import { deepClone } from "@/misc/clone.js";
+import { fetchMeta } from "backend-rs";
 
 type PackOptions = {
 	detail?: boolean;
@@ -220,5 +221,34 @@ export const DriveFileRepository = db.getRepository(DriveFile).extend({
 			files.map((f) => this.packNullable(f, options)),
 		);
 		return items.filter((x): x is Packed<"DriveFile"> => x != null);
+	},
+
+	async getFinalUrl(url: string): Promise<string> {
+		if (!config.proxyRemoteFiles) return url;
+		if (!url.startsWith("https://") && !url.startsWith("http://")) return url;
+		if (url.startsWith(`${config.url}/files`)) return url;
+		if (url.startsWith(`${config.url}/static-assets`)) return url;
+		if (url.startsWith(`${config.url}/identicon`)) return url;
+		if (url.startsWith(`${config.url}/avatar`)) return url;
+
+		const meta = await fetchMeta(true);
+		const baseUrl = meta
+			? meta.objectStorageBaseUrl ??
+				`${meta.objectStorageUseSsl ? "https" : "http"}://${
+					meta.objectStorageEndpoint
+				}${meta.objectStoragePort ? `:${meta.objectStoragePort}` : ""}/${
+					meta.objectStorageBucket
+				}`
+			: null;
+		if (baseUrl !== null && url.startsWith(baseUrl)) return url;
+
+		return `${config.url}/proxy/${encodeURIComponent(
+			new URL(url).pathname,
+		)}?${query({ url: url })}`;
+	},
+
+	async getFinalUrlMaybe(url?: string | null): Promise<string | null> {
+		if (url == null) return null;
+		return this.getFinalUrl(url);
 	},
 });

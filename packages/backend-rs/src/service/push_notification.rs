@@ -1,7 +1,7 @@
 use crate::database::db_conn;
 use crate::misc::get_note_summary::{get_note_summary, NoteLike};
 use crate::misc::meta::fetch_meta;
-use crate::model::entity::sw_subscription;
+use crate::model::entity::{access_token, sw_subscription};
 use crate::util::http_client;
 use once_cell::sync::OnceCell;
 use sea_orm::{prelude::*, DbErr};
@@ -101,6 +101,44 @@ fn compact_content(
     Ok(serde_json::from_value(Json::Object(object.clone()))?)
 }
 
+async fn encode_mastodon_payload(
+    mut content: serde_json::Value,
+    db: &DatabaseConnection,
+    subscription: &sw_subscription::Model,
+) -> Result<String, Error> {
+    if !content.is_object() {
+        return Err(Error::InvalidContent("not a JSON object".to_string()));
+    }
+
+    if subscription.app_access_token_id.is_none() {
+        return Err(Error::InvalidContent("no access token".to_string()));
+    }
+
+    let token_id = subscription.app_access_token_id.as_ref().unwrap();
+    let maybe_token = access_token::Entity::find()
+        .filter(access_token::Column::Id.eq(token_id))
+        .one(db)
+        .await?;
+
+    if maybe_token.is_none() {
+        return Err(Error::InvalidContent("access token not found".to_string()));
+    }
+
+    let token = maybe_token.unwrap();
+
+    if token.app_id.is_none() {
+        return Err(Error::InvalidContent("no app ID".to_string()));
+    }
+
+    let object = content.as_object_mut().unwrap();
+    object.insert(
+        "access_token".to_string(),
+        serde_json::to_value(token.token)?,
+    );
+
+    Ok(serde_json::to_string(&content)?)
+}
+
 async fn handle_web_push_failure(
     db: &DatabaseConnection,
     err: WebPushError,
@@ -160,9 +198,9 @@ pub async fn send_push_notification(
         .await?;
 
     // TODO: refactoring
-    let payload = if kind == PushNotificationKind::Mastodon {
-        // Leave the `content` as it is
-        serde_json::to_string(content)?
+    let mut payload = if kind == PushNotificationKind::Mastodon {
+        // Content generated per subscription
+        "".to_string()
     } else {
         // Format the `content` passed from the TypeScript backend
         // for Firefish push notifications
@@ -192,6 +230,15 @@ pub async fn send_push_notification(
             ]
             .contains(&kind)
         {
+            continue;
+        }
+
+        if kind == PushNotificationKind::Mastodon {
+            if subscription.app_access_token_id.is_none() {
+                continue;
+            }
+            payload = encode_mastodon_payload(content.clone(), db, subscription).await?;
+        } else if subscription.app_access_token_id.is_some() {
             continue;
         }
 

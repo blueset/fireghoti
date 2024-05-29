@@ -7,10 +7,7 @@ import Router from "@koa/router";
 import multer from "@koa/multer";
 import bodyParser from "koa-bodyparser";
 import cors from "@koa/cors";
-import {
-	apiMastodonCompatible,
-	getClient,
-} from "./mastodon/ApiMastodonCompatibleService.js";
+import { setupMastodonApi } from "./mastodon/index.js";
 import { AccessTokens, Users } from "@/models/index.js";
 import { config } from "@/config.js";
 import endpoints from "./endpoints.js";
@@ -20,10 +17,6 @@ import signup from "./private/signup.js";
 import signin from "./private/signin.js";
 import signupPending from "./private/signup-pending.js";
 import verifyEmail from "./private/verify-email.js";
-import { koaBody } from "koa-body";
-import { convertAttachment } from "./mastodon/converters.js";
-import { apiLogger } from "./logger.js";
-import { inspect } from "node:util";
 
 // Init app
 const app = new Koa();
@@ -66,64 +59,7 @@ router.use(
 	}),
 );
 
-mastoRouter.use(
-	koaBody({
-		multipart: true,
-		urlencoded: true,
-	}),
-);
-
-mastoFileRouter.post("/v1/media", upload.single("file"), async (ctx) => {
-	const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-	const accessTokens = ctx.headers.authorization;
-	const client = getClient(BASE_URL, accessTokens);
-	try {
-		const multipartData = await ctx.file;
-		if (!multipartData) {
-			ctx.body = { error: "No image" };
-			ctx.status = 401;
-			return;
-		}
-		const data = await client.uploadMedia(multipartData);
-		ctx.body = convertAttachment(data.data as Entity.Attachment);
-	} catch (e: any) {
-		apiLogger.error(inspect(e));
-		ctx.status = 401;
-		ctx.body = e.response.data;
-	}
-});
-mastoFileRouter.post("/v2/media", upload.single("file"), async (ctx) => {
-	const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-	const accessTokens = ctx.headers.authorization;
-	const client = getClient(BASE_URL, accessTokens);
-	try {
-		const multipartData = await ctx.file;
-		if (!multipartData) {
-			ctx.body = { error: "No image" };
-			ctx.status = 401;
-			return;
-		}
-		const data = await client.uploadMedia(multipartData, ctx.request.body);
-		ctx.body = convertAttachment(data.data as Entity.Attachment);
-	} catch (e: any) {
-		apiLogger.error(inspect(e));
-		ctx.status = 401;
-		ctx.body = e.response.data;
-	}
-});
-
-mastoRouter.use(async (ctx, next) => {
-	if (ctx.request.query) {
-		if (!ctx.request.body || Object.keys(ctx.request.body).length === 0) {
-			ctx.request.body = ctx.request.query;
-		} else {
-			ctx.request.body = { ...ctx.request.body, ...ctx.request.query };
-		}
-	}
-	await next();
-});
-
-apiMastodonCompatible(mastoRouter);
+setupMastodonApi(mastoRouter);
 
 /**
  * Register endpoint handlers

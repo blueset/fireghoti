@@ -7,7 +7,7 @@
 	"prConcurrentLimit": 20,
 	"enabledManagers": ["npm", "cargo"],
 	"baseBranches": ["develop"],
-	"ignorePaths": ["packages/megalodon/package.json", "packages/backend-rs/npm"],
+	"ignorePaths": ["packages/backend-rs/npm"],
 	"lockFileMaintenance": {
 		"enabled": true,
 		"recreateWhen": "always",

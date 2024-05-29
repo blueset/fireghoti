@@ -1,460 +1,378 @@
-import Router from "@koa/router";
-import { getClient } from "../ApiMastodonCompatibleService.js";
-import querystring from "node:querystring";
-import qs from "qs";
-import { convertTimelinesArgsId, limitToInt } from "./timeline.js";
-import { fetchMeta, fromMastodonId, isUnicodeEmoji } from "backend-rs";
+import type Router from "@koa/router";
+import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
+import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 import {
-	convertAccount,
-	convertAttachment,
-	convertPoll,
-	convertStatus,
-} from "../converters.js";
-import { apiLogger } from "@/server/api/logger.js";
-import { inspect } from "node:util";
+	limitToInt,
+	normalizeUrlQuery,
+} from "@/server/api/mastodon/endpoints/timeline.js";
+import { UserConverter } from "@/server/api/mastodon/converters/user.js";
+import { PollHelpers } from "@/server/api/mastodon/helpers/poll.js";
+import { toArray } from "@/prelude/array.js";
+import { auth } from "@/server/api/mastodon/middleware/auth.js";
+import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
+import { filterContext } from "@/server/api/mastodon/middleware/filter-context.js";
 
-function normalizeQuery(data: any) {
-	const str = querystring.stringify(data);
-	return qs.parse(str);
-}
+export function setupEndpointsStatus(router: Router): void {
+	router.post("/v1/statuses", auth(true, ["write:statuses"]), async (ctx) => {
+		const key = NoteHelpers.getIdempotencyKey(ctx);
+		if (key !== null) {
+			const result = await NoteHelpers.getFromIdempotencyCache(key);
 
-export function apiStatusMastodon(router: Router): void {
-	router.post("/v1/statuses", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			let body: any = ctx.request.body;
-			if (body.in_reply_to_id)
-				body.in_reply_to_id = fromMastodonId(body.in_reply_to_id);
-			if (body.quote_id) body.quote_id = fromMastodonId(body.quote_id);
-			if (
-				(!body.poll && body["poll[options][]"]) ||
-				(!body.media_ids && body["media_ids[]"])
-			) {
-				body = normalizeQuery(body);
+			if (result) {
+				ctx.body = result;
+				return;
 			}
-			const text = body.status;
-			const removed = text.replace(/@\S+/g, "").replace(/\s|​/g, "");
-			const isDefaultEmoji = isUnicodeEmoji(removed);
-			const isCustomEmoji = /^:[a-zA-Z0-9@_]+:$/.test(removed);
-			if ((body.in_reply_to_id && isDefaultEmoji) || isCustomEmoji) {
-				const a = await client.createEmojiReaction(
-					body.in_reply_to_id,
-					removed,
-				);
-				ctx.body = a.data;
-			}
-			if (body.in_reply_to_id && removed === "/unreact") {
-				try {
-					const id = body.in_reply_to_id;
-					const post = await client.getStatus(id);
-					const react = post.data.reactions.filter((e) => e.me)[0].name;
-					const data = await client.deleteEmojiReaction(id, react);
-					ctx.body = data.data;
-				} catch (e: any) {
-					apiLogger.error(inspect(e));
-					ctx.status = 401;
-					ctx.body = e.response.data;
-				}
-			}
-			if (!body.media_ids) body.media_ids = undefined;
-			if (body.media_ids && !body.media_ids.length) body.media_ids = undefined;
-			if (body.media_ids) {
-				body.media_ids = (body.media_ids as string[]).map((p) =>
-					fromMastodonId(p),
-				);
-			}
-			const { sensitive } = body;
-			body.sensitive =
-				typeof sensitive === "string" ? sensitive === "true" : sensitive;
-
-			if (body.poll) {
-				if (
-					body.poll.expires_in != null &&
-					typeof body.poll.expires_in === "string"
-				)
-					body.poll.expires_in = parseInt(body.poll.expires_in);
-				if (
-					body.poll.multiple != null &&
-					typeof body.poll.multiple === "string"
-				)
-					body.poll.multiple = body.poll.multiple == "true";
-				if (
-					body.poll.hide_totals != null &&
-					typeof body.poll.hide_totals === "string"
-				)
-					body.poll.hide_totals = body.poll.hide_totals == "true";
-			}
-
-			const data = await client.postStatus(text, body);
-			ctx.body = convertStatus(data.data);
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
 		}
+
+		const request = NoteHelpers.normalizeComposeOptions(ctx.request.body);
+		const status = await NoteHelpers.createNote(request, ctx).then(
+			async (p) => {
+				if (!request.scheduled_at) return NoteConverter.encode(p, ctx);
+				const note = await NoteHelpers.getScheduledNoteOr404(p.id, ctx);
+				const result = await NoteConverter.encodeScheduledNote(note, ctx);
+				result.params.idempotency = key ?? result.params.idempotency;
+				return result;
+			},
+		);
+		ctx.body = status;
+
+		if (key !== null && "text" in status)
+			NoteHelpers.postIdempotencyCache.set(key, { status });
 	});
-	router.get<{ Params: { id: string } }>("/v1/statuses/:id", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.getStatus(fromMastodonId(ctx.params.id));
-			ctx.body = convertStatus(data.data);
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = ctx.status == 404 ? 404 : 401;
-			ctx.body = e.response.data;
-		}
-	});
-	router.delete<{ Params: { id: string } }>("/v1/statuses/:id", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.deleteStatus(fromMastodonId(ctx.params.id));
-			ctx.body = data.data;
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
-	interface IReaction {
-		id: string;
-		createdAt: string;
-		user: MisskeyEntity.User;
-		type: string;
-	}
+
+	router.put(
+		"/v1/statuses/:id",
+		auth(true, ["write:statuses"]),
+		async (ctx) => {
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+			const request = NoteHelpers.normalizeEditOptions(ctx.request.body);
+			ctx.body = await NoteHelpers.editNote(request, note, ctx).then((p) =>
+				NoteConverter.encode(p, ctx),
+			);
+		},
+	);
+
+	router.get<{ Params: { id: string } }>(
+		"/v1/statuses/:id",
+		auth(false, ["read:statuses"]),
+		filterContext("thread"),
+		async (ctx) => {
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+
+			ctx.body = await NoteConverter.encode(note, ctx);
+		},
+	);
+
+	router.delete<{ Params: { id: string } }>(
+		"/v1/statuses/:id",
+		auth(true, ["write:statuses"]),
+		async (ctx) => {
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+			ctx.body = await NoteHelpers.deleteNote(note, ctx);
+		},
+	);
+
 	router.get<{ Params: { id: string } }>(
 		"/v1/statuses/:id/context",
+		auth(false, ["read:statuses"]),
+		filterContext("thread"),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const id = fromMastodonId(ctx.params.id);
-				const data = await client.getStatusContext(
-					id,
-					convertTimelinesArgsId(limitToInt(ctx.query as any)),
-				);
+			// FIXME: determine final limits within helper functions instead of here
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+			const ancestors = await NoteHelpers.getNoteAncestors(
+				note,
+				ctx.user ? 4096 : 60,
+				ctx,
+			).then((n) => NoteConverter.encodeMany(n, ctx));
+			const descendants = await NoteHelpers.getNoteDescendants(
+				note,
+				ctx.user ? 4096 : 40,
+				ctx.user ? 4096 : 20,
+				ctx,
+			).then((n) => NoteConverter.encodeMany(n, ctx));
 
-				data.data.ancestors = data.data.ancestors.map((status) =>
-					convertStatus(status),
-				);
-				data.data.descendants = data.data.descendants.map((status) =>
-					convertStatus(status),
-				);
-				ctx.body = data.data;
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			ctx.body = {
+				ancestors,
+				descendants,
+			};
 		},
 	);
 	router.get<{ Params: { id: string } }>(
 		"/v1/statuses/:id/history",
+		auth(false, ["read:statuses"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.getStatusHistory(
-					fromMastodonId(ctx.params.id),
-				);
-				ctx.body = data.data.map((account) => convertAccount(account));
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+			ctx.body = await NoteHelpers.getNoteEditHistory(note, ctx);
+		},
+	);
+	router.get<{ Params: { id: string } }>(
+		"/v1/statuses/:id/source",
+		auth(true, ["read:statuses"]),
+		async (ctx) => {
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+			ctx.body = NoteHelpers.getNoteSource(note);
 		},
 	);
 	router.get<{ Params: { id: string } }>(
 		"/v1/statuses/:id/reblogged_by",
+		auth(false, ["read:statuses"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.getStatusRebloggedBy(
-					fromMastodonId(ctx.params.id),
-				);
-				ctx.body = data.data.map((account) => convertAccount(account));
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+			const args = normalizeUrlQuery(limitToInt(ctx.query as any));
+			const res = await NoteHelpers.getNoteRebloggedBy(
+				note,
+				args.max_id,
+				args.since_id,
+				args.min_id,
+				args.limit,
+				ctx,
+			);
+			ctx.body = await UserConverter.encodeMany(res, ctx);
 		},
 	);
 	router.get<{ Params: { id: string } }>(
 		"/v1/statuses/:id/favourited_by",
+		auth(false, ["read:statuses"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.getStatusFavouritedBy(
-					fromMastodonId(ctx.params.id),
-				);
-				ctx.body = data.data.map((account) => convertAccount(account));
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+			const args = normalizeUrlQuery(limitToInt(ctx.query as any));
+			const res = await NoteHelpers.getNoteFavoritedBy(
+				note,
+				args.max_id,
+				args.since_id,
+				args.min_id,
+				args.limit,
+				ctx,
+			);
+			ctx.body = await UserConverter.encodeMany(res, ctx);
 		},
 	);
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/favourite",
+		auth(true, ["write:favourites"]),
 		async (ctx) => {
-			const meta = await fetchMeta(true);
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			const react = meta.defaultReaction;
-			try {
-				const a = (await client.createEmojiReaction(
-					fromMastodonId(ctx.params.id),
-					react,
-				)) as any;
-				//const data = await client.favouriteStatus(ctx.params.id) as any;
-				ctx.body = convertStatus(a.data);
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+			const reaction = await NoteHelpers.getDefaultReaction();
+
+			ctx.body = await NoteHelpers.reactToNote(note, reaction, ctx)
+				.then((p) => NoteConverter.encode(p, ctx))
+				.then((p) => {
+					p.favourited = true;
+					return p;
+				});
 		},
 	);
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/unfavourite",
+		auth(true, ["write:favourites"]),
 		async (ctx) => {
-			const meta = await fetchMeta(true);
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			const react = meta.defaultReaction;
-			try {
-				const data = await client.deleteEmojiReaction(
-					fromMastodonId(ctx.params.id),
-					react,
-				);
-				ctx.body = convertStatus(data.data);
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+
+			ctx.body = await NoteHelpers.removeReactFromNote(note, ctx)
+				.then((p) => NoteConverter.encode(p, ctx))
+				.then((p) => {
+					p.favourited = false;
+					return p;
+				});
 		},
 	);
 
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/reblog",
+		auth(true, ["write:statuses"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.reblogStatus(fromMastodonId(ctx.params.id));
-				ctx.body = convertStatus(data.data);
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+
+			ctx.body = await NoteHelpers.reblogNote(note, ctx)
+				.then((p) => NoteConverter.encode(p, ctx))
+				.then((p) => {
+					p.reblogged = true;
+					return p;
+				});
 		},
 	);
 
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/unreblog",
+		auth(true, ["write:statuses"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.unreblogStatus(fromMastodonId(ctx.params.id));
-				ctx.body = convertStatus(data.data);
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+
+			ctx.body = await NoteHelpers.unreblogNote(note, ctx)
+				.then((p) => NoteConverter.encode(p, ctx))
+				.then((p) => {
+					p.reblogged = false;
+					return p;
+				});
 		},
 	);
 
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/bookmark",
+		auth(true, ["write:bookmarks"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.bookmarkStatus(fromMastodonId(ctx.params.id));
-				ctx.body = convertStatus(data.data);
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+
+			ctx.body = await NoteHelpers.bookmarkNote(note, ctx)
+				.then((p) => NoteConverter.encode(p, ctx))
+				.then((p) => {
+					p.bookmarked = true;
+					return p;
+				});
 		},
 	);
 
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/unbookmark",
+		auth(true, ["write:bookmarks"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.unbookmarkStatus(
-					fromMastodonId(ctx.params.id),
-				);
-				ctx.body = convertStatus(data.data);
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+
+			ctx.body = await NoteHelpers.unbookmarkNote(note, ctx)
+				.then((p) => NoteConverter.encode(p, ctx))
+				.then((p) => {
+					p.bookmarked = false;
+					return p;
+				});
 		},
 	);
 
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/pin",
+		auth(true, ["write:accounts"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.pinStatus(fromMastodonId(ctx.params.id));
-				ctx.body = convertStatus(data.data);
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+
+			ctx.body = await NoteHelpers.pinNote(note, ctx)
+				.then((p) => NoteConverter.encode(p, ctx))
+				.then((p) => {
+					p.pinned = true;
+					return p;
+				});
 		},
 	);
 
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/unpin",
+		auth(true, ["write:accounts"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.unpinStatus(fromMastodonId(ctx.params.id));
-				ctx.body = convertStatus(data.data);
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+
+			ctx.body = await NoteHelpers.unpinNote(note, ctx)
+				.then((p) => NoteConverter.encode(p, ctx))
+				.then((p) => {
+					p.pinned = false;
+					return p;
+				});
 		},
 	);
 
 	router.post<{ Params: { id: string; name: string } }>(
 		"/v1/statuses/:id/react/:name",
+		auth(true, ["write:favourites"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.reactStatus(
-					fromMastodonId(ctx.params.id),
-					ctx.params.name,
-				);
-				ctx.body = convertStatus(data.data);
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+
+			ctx.body = await NoteHelpers.reactToNote(note, ctx.params.name, ctx).then(
+				(p) => NoteConverter.encode(p, ctx),
+			);
 		},
 	);
 
 	router.post<{ Params: { id: string; name: string } }>(
 		"/v1/statuses/:id/unreact/:name",
+		auth(true, ["write:favourites"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.unreactStatus(
-					fromMastodonId(ctx.params.id),
-					ctx.params.name,
-				);
-				ctx.body = convertStatus(data.data);
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+
+			ctx.body = await NoteHelpers.removeReactFromNote(note, ctx).then((p) =>
+				NoteConverter.encode(p, ctx),
+			);
 		},
 	);
 
-	router.get<{ Params: { id: string } }>("/v1/media/:id", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.getMedia(fromMastodonId(ctx.params.id));
-			ctx.body = convertAttachment(data.data);
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
-	router.put<{ Params: { id: string } }>("/v1/media/:id", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.updateMedia(
-				fromMastodonId(ctx.params.id),
-				ctx.request.body as any,
-			);
-			ctx.body = convertAttachment(data.data);
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
-	router.get<{ Params: { id: string } }>("/v1/polls/:id", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.getPoll(fromMastodonId(ctx.params.id));
-			ctx.body = convertPoll(data.data);
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
+	router.post<{ Params: { id: string } }>(
+		"/v1/statuses/:id/translate",
+		auth(true, ["read:statuses"]),
+		async (ctx) => {
+			const targetLang = ctx.request.body.lang;
+			if (typeof targetLang !== "string")
+				throw new MastoApiError(400, "Missing lang parameter");
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+			const encodedNote = await NoteConverter.encode(note, ctx);
+			ctx.body = await NoteHelpers.translateNote(encodedNote, targetLang, ctx);
+		},
+	);
+
+	router.get<{ Params: { id: string } }>(
+		"/v1/polls/:id",
+		auth(false, ["read:statuses"]),
+		async (ctx) => {
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+			ctx.body = await PollHelpers.getPoll(note, ctx);
+		},
+	);
+
 	router.post<{ Params: { id: string } }>(
 		"/v1/polls/:id/votes",
+		auth(true, ["write:statuses"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.votePoll(
-					fromMastodonId(ctx.params.id),
-					(ctx.request.body as any).choices,
-				);
-				ctx.body = convertPoll(data.data);
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+
+			const body: any = ctx.request.body;
+			const choices = toArray(body.choices ?? []).map((p) =>
+				Number.parseInt(p),
+			);
+			if (choices.length < 1)
+				throw new MastoApiError(400, "Must vote for at least one option");
+
+			ctx.body = await PollHelpers.voteInPoll(choices, note, ctx);
+		},
+	);
+
+	router.get(
+		"/v1/scheduled_statuses",
+		auth(true, ["read:statuses"]),
+		async (ctx) => {
+			const args = normalizeUrlQuery(limitToInt(ctx.query));
+
+			const res = await NoteHelpers.getScheduledNotes(
+				args.max_id,
+				args.since_id,
+				args.min_id,
+				args.limit,
+				ctx,
+			);
+			ctx.body = await NoteConverter.encodeManyScheduledNotes(res, ctx);
+		},
+	);
+
+	router.get<{ Params: { id: string } }>(
+		"/v1/scheduled_statuses/:id",
+		auth(true, ["read:statuses"]),
+		async (ctx) => {
+			const note = await NoteHelpers.getScheduledNoteOr404(ctx.params.id, ctx);
+			ctx.body = await NoteConverter.encodeScheduledNote(note, ctx);
+		},
+	);
+
+	// Reeschedule a post to a new time
+	router.put<{ Params: { id: string } }>(
+		"/v1/scheduled_statuses/:id",
+		auth(true, ["write:statuses"]),
+		async (ctx) => {
+			const scheduledAt = new Date(Date.parse(ctx.request.body.scheduled_at));
+			// FIXME: Implement, see https://firefish.dev/firefish/firefish/-/issues/10903
+			throw new MastoApiError(501, "Not implemented");
+		},
+	);
+
+	router.delete<{ Params: { id: string } }>(
+		"/v1/scheduled_statuses/:id",
+		auth(true, ["write:statuses"]),
+		async (ctx) => {
+			// FIXME: Implement, see https://firefish.dev/firefish/firefish/-/issues/10903
+			throw new MastoApiError(501, "Not implemented");
 		},
 	);
 }

@@ -30,7 +30,10 @@ DELETE FROM "migrations" WHERE name IN (
     'EmojiModerator1692825433698',
     'RemoveNsfwDetection1705848938166',
     'FirefishUrlMove1707850084123',
-    'RemoveNativeUtilsMigration1705877093218'
+    'SwSubscriptionAccessToken1709395223611'
+    'UserProfileMentions1711075007936',
+    'ClientCredentials1713108561474',
+    'AddMastodonSubscriptionType1715181461692',
 );
 
 -- remove-enum-typename-suffix
@@ -783,5 +786,17 @@ VALUES
     ('m20230904_013244_is_indexable', 1705876632),
     ('m20231002_143323_remove_integrations', 1705876632)
 ;
+
+-- sw-subscription-per-access-token
+ALTER TABLE "sw_subscription" DROP CONSTRAINT "FK_98a1aa2db2a5253924f42f38767";
+ALTER TABLE "sw_subscription" DROP COLUMN "appAccessTokenId";
+ALTER TABLE "sw_subscription" DROP COLUMN "subscriptionTypes";
+
+-- user-profile-mentions
+ALTER TABLE "user_profile" DROP COLUMN "mentions";
+
+-- client-credential-support
+ALTER TABLE "access_token" ALTER COLUMN "userId" SET NOT NULL;
+
 
 COMMIT;
