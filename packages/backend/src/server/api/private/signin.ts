@@ -94,6 +94,7 @@ export default async (ctx: Koa.Context) => {
 	// Compare passwords
 	const same = verifyPassword(password, profile.password!);
 
+	// Update the password hashing algorithm
 	if (same && isOldPasswordAlgorithm(profile.password!)) {
 		profile.password = hashPassword(password);
 		await UserProfiles.save(profile);

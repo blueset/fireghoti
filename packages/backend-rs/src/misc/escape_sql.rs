@@ -1,6 +1,7 @@
 use once_cell::sync::Lazy;
 use regex::Regex;
 
+/// Escapes `%` and `\` in the given string.
 #[crate::export]
 pub fn sql_like_escape(src: &str) -> String {
     src.replace('%', r"\%").replace('_', r"\_")
@@ -12,6 +13,7 @@ pub fn sql_regex_escape(src: &str) -> String {
     RE.replace_all(src, r"\$1").to_string()
 }
 
+/// Returns `true` if `src` does not contain suspicious characters like `%`.
 #[crate::export]
 pub fn safe_for_sql(src: &str) -> bool {
     !src.contains([

@@ -1,3 +1,5 @@
+//! PostgreSQL interface
+
 use crate::config::CONFIG;
 use once_cell::sync::OnceCell;
 use sea_orm::{ConnectOptions, Database, DbConn, DbErr};
@@ -5,7 +7,7 @@ use tracing::log::LevelFilter;
 
 static DB_CONN: OnceCell<DbConn> = OnceCell::new();
 
-async fn init_database() -> Result<&'static DbConn, DbErr> {
+async fn init_conn() -> Result<&'static DbConn, DbErr> {
     let database_uri = format!(
         "postgres://{}:{}@{}:{}/{}",
         CONFIG.db.user,
@@ -24,10 +26,11 @@ async fn init_database() -> Result<&'static DbConn, DbErr> {
     Ok(DB_CONN.get_or_init(move || conn))
 }
 
+/// Returns an async PostgreSQL connection that can be used with [sea_orm] utilities.
 pub async fn db_conn() -> Result<&'static DbConn, DbErr> {
     match DB_CONN.get() {
         Some(conn) => Ok(conn),
-        None => init_database().await,
+        None => init_conn().await,
     }
 }
 

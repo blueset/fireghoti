@@ -1,18 +1,20 @@
+//! Redis interface
+
 use crate::config::CONFIG;
 use async_trait::async_trait;
 use bb8::{ManageConnection, Pool, PooledConnection, RunError};
 use redis::{aio::MultiplexedConnection, Client, ErrorKind, IntoConnectionInfo, RedisError};
 use tokio::sync::OnceCell;
 
-/// A `bb8::ManageConnection` for `redis::Client::get_multiplexed_async_connection`.
+/// A [bb8::ManageConnection] for [redis::Client::get_multiplexed_async_connection].
 #[derive(Clone, Debug)]
 pub struct RedisConnectionManager {
     client: Client,
 }
 
 impl RedisConnectionManager {
-    /// Create a new `RedisConnectionManager`.
-    /// See `redis::Client::open` for a description of the parameter types.
+    /// Creates a new [RedisConnectionManager].
+    /// See [redis::Client::open] for a description of the parameter types.
     pub fn new<T: IntoConnectionInfo>(info: T) -> Result<Self, RedisError> {
         Ok(Self {
             client: Client::open(info.into_connection_info()?)?,
@@ -85,6 +87,7 @@ pub enum RedisConnError {
     Bb8Pool(RunError<RedisError>),
 }
 
+/// Returns an async [redis] connection managed by a [bb8] connection pool.
 pub async fn redis_conn(
 ) -> Result<PooledConnection<'static, RedisConnectionManager>, RedisConnError> {
     if !CONN_POOL.initialized() {
@@ -103,7 +106,7 @@ pub async fn redis_conn(
         .map_err(RedisConnError::Bb8Pool)
 }
 
-/// prefix redis key
+/// prefix Redis key
 #[inline]
 pub fn key(key: impl ToString) -> String {
     format!("{}:{}", CONFIG.redis_key_prefix, key.to_string())

@@ -5,7 +5,7 @@ use crate::model::entity::attestation_challenge;
 use chrono::{Duration, Utc};
 use sea_orm::{ColumnTrait, DbErr, EntityTrait, QueryFilter};
 
-/// Delete all entries in the "attestation_challenge" table created at more than 5 minutes ago
+/// Delete all entries in the [attestation_challenge] table created at more than 5 minutes ago
 #[crate::export]
 pub async fn remove_old_attestation_challenges() -> Result<(), DbErr> {
     let res = attestation_challenge::Entity::delete_many()

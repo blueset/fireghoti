@@ -1,3 +1,5 @@
+//! Shared [isahc] HTTP client
+
 use crate::config::CONFIG;
 use isahc::{config::*, HttpClient};
 use once_cell::sync::OnceCell;
