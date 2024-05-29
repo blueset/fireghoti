@@ -56,17 +56,20 @@ fn wildcard(category: Category) -> String {
 ///
 /// ```
 /// # use backend_rs::database::cache;
-/// # tokio_test::block_on(async {
+/// # async fn f() -> Result<(), Box<dyn std::error::Error>> {
 /// let key = "apple";
 /// let data = "I want to cache this string".to_string();
 ///
 /// // caches the data for 10 seconds
-/// cache::set(key, &data, 10).await;
+/// cache::set(key, &data, 10).await?;
 ///
 /// // get the cache
-/// let cached_data = cache::get::<String>(key).await.unwrap();
+/// let cached_data = cache::get::<String>(key).await?;
+///
+/// assert!(cached_data.is_some());
 /// assert_eq!(data, cached_data.unwrap());
-/// # })
+/// # Ok(())
+/// # }
 /// ```
 pub async fn set<V: for<'a> Deserialize<'a> + Serialize>(
     key: &str,
@@ -97,21 +100,23 @@ pub async fn set<V: for<'a> Deserialize<'a> + Serialize>(
 ///
 /// ```
 /// # use backend_rs::database::cache;
-/// # tokio_test::block_on(async {
+/// # async fn f() -> Result<(), Box<dyn std::error::Error>> {
 /// let key = "banana";
 /// let data = "I want to cache this string".to_string();
 ///
 /// // set cache
-/// cache::set(key, &data, 10).await.unwrap();
+/// cache::set(key, &data, 10).await?;
 ///
 /// // get cache
-/// let cached_data = cache::get::<String>(key).await.unwrap();
+/// let cached_data = cache::get::<String>(key).await?;
+/// assert!(cached_data.is_some());
 /// assert_eq!(data, cached_data.unwrap());
 ///
 /// // get nonexistent (or expired) cache
-/// let no_cache = cache::get::<String>("nonexistent").await.unwrap();
+/// let no_cache = cache::get::<String>("nonexistent").await?;
 /// assert!(no_cache.is_none());
-/// # })
+/// # Ok(())
+/// # }
 /// ```
 pub async fn get<V: for<'a> Deserialize<'a> + Serialize>(key: &str) -> Result<Option<V>, Error> {
     let serialized_value: Option<Vec<u8>> = redis_conn().await?.get(prefix_key(key)).await?;
@@ -134,21 +139,22 @@ pub async fn get<V: for<'a> Deserialize<'a> + Serialize>(key: &str) -> Result<Op
 ///
 /// ```
 /// # use backend_rs::database::cache;
-/// # tokio_test::block_on(async {
+/// # async fn f() -> Result<(), Box<dyn std::error::Error>> {
 /// let key = "chocolate";
 /// let value = "I want to cache this string".to_string();
 ///
 /// // set cache
-/// cache::set(key, &value, 10).await.unwrap();
+/// cache::set(key, &value, 10).await?;
 ///
 /// // delete the cache
-/// cache::delete("foo").await.unwrap();
-/// cache::delete("nonexistent").await.unwrap(); // this is okay
+/// cache::delete("foo").await?;
+/// cache::delete("nonexistent").await?; // this is okay
 ///
 /// // the cache is gone
-/// let cached_value = cache::get::<String>("foo").await.unwrap();
+/// let cached_value = cache::get::<String>("foo").await?;
 /// assert!(cached_value.is_none());
-/// # })
+/// # Ok(())
+/// # }
 /// ```
 pub async fn delete(key: &str) -> Result<(), Error> {
     Ok(redis_conn().await?.del(prefix_key(key)).await?)
