@@ -8,7 +8,7 @@ import {
 	Followings,
 } from "@/models/index.js";
 import {
-	genId,
+	genIdAt,
 	isSilencedServer,
 	sendPushNotification,
 	PushNotificationKind,
@@ -63,9 +63,10 @@ export async function createNotification(
 	}
 
 	// Create notification
+	const createdAt = new Date();
 	const notification = await Notifications.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(createdAt),
+		createdAt,
 		notifieeId: notifieeId,
 		type: type,
 		// 相手がこの通知をミュートしているようなら、既読を予めつけておく
