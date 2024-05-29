@@ -1,3 +1,5 @@
+//! NodeInfo generator
+
 use crate::config::CONFIG;
 use crate::database::{cache, db_conn};
 use crate::federation::nodeinfo::schema::*;
@@ -112,6 +114,7 @@ async fn generate_nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
     })
 }
 
+/// Returns NodeInfo (version 2.1) of the local server.
 pub async fn nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
     const NODEINFO_2_1_CACHE_KEY: &str = "nodeinfo_2_1";
 
@@ -126,6 +129,7 @@ pub async fn nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
     }
 }
 
+/// Returns NodeInfo (version 2.0) of the local server.
 pub async fn nodeinfo_2_0() -> Result<Nodeinfo20, Error> {
     Ok(nodeinfo_2_1().await?.into())
 }

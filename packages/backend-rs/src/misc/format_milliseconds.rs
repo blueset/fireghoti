@@ -1,4 +1,4 @@
-/// Convert milliseconds to a human readable string
+/// Converts milliseconds to a human readable string.
 #[crate::export]
 pub fn format_milliseconds(milliseconds: u32) -> String {
     let mut seconds = milliseconds / 1000;

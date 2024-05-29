@@ -1,8 +1,10 @@
+/// Escapes `%` and `\` in the given string.
 #[crate::export]
 pub fn sql_like_escape(src: &str) -> String {
     src.replace('%', r"\%").replace('_', r"\_")
 }
 
+/// Returns `true` if `src` does not contain suspicious characters like `%`.
 #[crate::export]
 pub fn safe_for_sql(src: &str) -> bool {
     !src.contains([

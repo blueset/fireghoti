@@ -1,3 +1,5 @@
+//! Utilities for using Redis cache
+
 use crate::database::{redis_conn, redis_key, RedisConnError};
 use redis::{AsyncCommands, RedisError};
 use serde::{Deserialize, Serialize};

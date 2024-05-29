@@ -1,9 +1,12 @@
+//! Utilities for password hash generation and verification
+
 use argon2::{
     password_hash,
     password_hash::{rand_core::OsRng, PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
     Argon2,
 };
 
+/// Hashes the given password using [Argon2] algorithm.
 #[crate::export]
 pub fn hash_password(password: &str) -> Result<String, password_hash::errors::Error> {
     let salt = SaltString::generate(&mut OsRng);
@@ -13,7 +16,7 @@ pub fn hash_password(password: &str) -> Result<String, password_hash::errors::Er
 }
 
 #[derive(thiserror::Error, Debug)]
-pub enum VerifyError {
+pub enum Error {
     #[error("An error occured while bcrypt verification: {0}")]
     Bcrypt(#[from] bcrypt::BcryptError),
     #[error("Invalid argon2 password hash: {0}")]
@@ -22,8 +25,9 @@ pub enum VerifyError {
     Argon2(#[from] argon2::Error),
 }
 
+/// Checks whether the given password and hash match.
 #[crate::export]
-pub fn verify_password(password: &str, hash: &str) -> Result<bool, VerifyError> {
+pub fn verify_password(password: &str, hash: &str) -> Result<bool, Error> {
     if is_old_password_algorithm(hash) {
         Ok(bcrypt::verify(password, hash)?)
     } else {
@@ -34,6 +38,7 @@ pub fn verify_password(password: &str, hash: &str) -> Result<bool, VerifyError> 
     }
 }
 
+/// Returns whether the [bcrypt] algorithm is used for the password hash.
 #[inline]
 #[crate::export]
 pub fn is_old_password_algorithm(hash: &str) -> bool {

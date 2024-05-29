@@ -1,3 +1,5 @@
+//! Utilities to check hardware information such as cpu, memory, storage usage
+
 use crate::init::system_info::{system_info, SysinfoPoisonError};
 use sysinfo::{Disks, MemoryRefreshKind};
 

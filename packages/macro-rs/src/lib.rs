@@ -97,16 +97,16 @@ pub fn ts_export(
 /// ```
 /// #[macro_rs::napi(object)]
 /// struct Person {
-///   id: i32,
-///   name: String,
+///     id: i32,
+///     name: String,
 /// }
 /// ```
 /// simply becomes
 /// ```
 /// #[napi_derive::napi(use_nullable = true, object)]
 /// struct Person {
-///   id: i32,
-///   name: String,
+///     id: i32,
+///     name: String,
 /// }
 /// ```
 ///

@@ -1,3 +1,5 @@
+//! NodeInfo fetcher
+
 use crate::federation::nodeinfo::schema::*;
 use crate::util::http_client;
 use isahc::AsyncReadResponseExt;
@@ -83,6 +85,7 @@ async fn fetch_nodeinfo_impl(nodeinfo_link: &str) -> Result<Nodeinfo20, Error> {
 // for napi export
 type Nodeinfo = Nodeinfo20;
 
+/// Fetches and returns the NodeInfo of a remote server.
 #[crate::export]
 pub async fn fetch_nodeinfo(host: &str) -> Result<Nodeinfo, Error> {
     tracing::info!("fetching from {}", host);

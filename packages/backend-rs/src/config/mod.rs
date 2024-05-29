@@ -1,3 +1,5 @@
+//! Server configurations and environment variables
+
 pub use server::CONFIG;
 
 pub mod constant;

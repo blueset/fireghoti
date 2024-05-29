@@ -11,6 +11,7 @@ const GREETING_MESSAGE: &str = "\
  If you like Firefish, please consider contributing to the repo. https://firefish.dev/firefish/firefish
 ";
 
+/// Prints the greeting message and the Firefish version to stdout.
 #[crate::export]
 pub fn greet() {
     println!("{}", GREETING_MESSAGE);

@@ -1,6 +1,25 @@
+//! Cat language converter
+
 use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
 
+/// Converts the given text into the cat language.
+///
+/// refs:
+/// * <https://misskey-hub.net/ns/#isCat>
+/// * <https://firefish.dev/ns#speakAsCat>
+///
+/// # Arguments
+///
+/// * `text` : original text
+/// * `lang` : language code (e.g., `Some("en")`, `Some("en-US")`, `Some("uk-UA")`, `None`)
+///
+/// # Example
+///
+/// ```
+/// # use backend_rs::misc::nyaify::nyaify;
+/// assert_eq!(nyaify("I'll take a nap.", Some("en")), "I'll take a nyap.");
+/// ```
 #[crate::export]
 pub fn nyaify(text: &str, lang: Option<&str>) -> String {
     let mut to_return = text.to_owned();

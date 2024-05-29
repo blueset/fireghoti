@@ -1,6 +1,8 @@
+//! Secure random string generator
+
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
 
-/// Generate random string based on [thread_rng] and [Alphanumeric].
+/// Generates a random string based on [thread_rng] and [Alphanumeric].
 #[crate::export]
 pub fn generate_secure_random_string(length: u16) -> String {
     thread_rng()

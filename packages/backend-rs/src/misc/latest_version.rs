@@ -1,3 +1,5 @@
+//! Fetch latest Firefish version from the Firefish repository
+
 use crate::database::cache;
 use crate::util::http_client;
 use isahc::ReadResponseExt;
@@ -43,6 +45,7 @@ async fn get_latest_version() -> Result<String, Error> {
     Ok(res_parsed.version)
 }
 
+/// Returns the latest Firefish version.
 #[crate::export]
 pub async fn latest_version() -> Result<String, Error> {
     let version: Option<String> =

@@ -5,10 +5,21 @@ pub type SysinfoPoisonError = PoisonError<MutexGuard<'static, System>>;
 
 static SYSTEM_INFO: OnceLock<Mutex<System>> = OnceLock::new();
 
-pub fn system_info() -> &'static std::sync::Mutex<sysinfo::System> {
+/// Gives an access to the shared static [System] object.
+///
+/// # Example
+///
+/// ```
+/// # use backend_rs::init::system_info::{system_info, SysinfoPoisonError};
+/// let system_info = system_info().lock()?;
+/// println!("The number of CPU threads is {}.", system_info.cpus().len());
+/// # Ok::<(), SysinfoPoisonError>(())
+/// ```
+pub fn system_info() -> &'static std::sync::Mutex<System> {
     SYSTEM_INFO.get_or_init(|| Mutex::new(System::new_all()))
 }
 
+/// Prints the server hardware information as the server info log.
 #[crate::export]
 pub fn show_server_info() -> Result<(), SysinfoPoisonError> {
     let system_info = system_info().lock()?;

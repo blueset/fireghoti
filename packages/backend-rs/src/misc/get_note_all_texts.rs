@@ -18,8 +18,8 @@ pub struct NoteLike {
 ///
 /// ## Arguments
 ///
-/// * `note` - [NoteLike] object
-/// * `include_parent` - whether to take the reply-to post and quoted post into account
+/// * `note` : [NoteLike] object
+/// * `include_parent` : whether to take the reply-to post and quoted post into account
 pub async fn all_texts(note: NoteLike, include_parent: bool) -> Result<Vec<String>, DbErr> {
     let db = db_conn().await?;
 
