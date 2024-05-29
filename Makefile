@@ -11,6 +11,7 @@ format:
 
 .PHONY: entities
 entities:
+	rm --recursive --force ./packages/backend/built
 	pnpm --filter=backend run build:debug
 	pnpm run migrate
 	$(MAKE) -C ./packages/backend-rs regenerate-entities
