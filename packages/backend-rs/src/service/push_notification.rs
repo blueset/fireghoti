@@ -104,7 +104,7 @@ fn compact_content(
 
 async fn encode_mastodon_payload(
     mut content: serde_json::Value,
-    db: &DatabaseConnection,
+    db: &DbConn,
     subscription: &sw_subscription::Model,
 ) -> Result<String, Error> {
     let object = content
