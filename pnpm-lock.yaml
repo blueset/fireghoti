@@ -43,14 +43,14 @@ importers:
   packages/backend:
     dependencies:
       '@bull-board/api':
-        specifier: 5.19.1
-        version: 5.19.1(@bull-board/ui@5.19.1)
+        specifier: 5.19.2
+        version: 5.19.2(@bull-board/ui@5.19.2)
       '@bull-board/koa':
-        specifier: 5.19.1
-        version: 5.19.1(@types/koa@2.15.0)(lodash@4.17.21)(pug@3.0.3)
+        specifier: 5.19.2
+        version: 5.19.2(@types/koa@2.15.0)(lodash@4.17.21)(pug@3.0.3)
       '@bull-board/ui':
-        specifier: 5.19.1
-        version: 5.19.1
+        specifier: 5.19.2
+        version: 5.19.2
       '@discordapp/twemoji':
         specifier: 15.0.3
         version: 15.0.3
@@ -1194,16 +1194,16 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@bull-board/api@5.19.1':
-    resolution: {integrity: sha512-2MZSXML6YnsODCwEvsEiLuOo33oi+2S0OmxDovBq6sLIqyfJw2rl7+z741/X1Xs8GaLpLsjKPwJKyqbADtNgRw==}
+  '@bull-board/api@5.19.2':
+    resolution: {integrity: sha512-vYXfRo7xTBeBgmC7FOKXLTHBZ/DG9ZsGIaEeE8GAkkEX1DaNKPBJOAn0Z1OmZIeLAe4esbHMFU8O1SDrmV4Hsg==}
     peerDependencies:
-      '@bull-board/ui': 5.19.1
+      '@bull-board/ui': 5.19.2
 
-  '@bull-board/koa@5.19.1':
-    resolution: {integrity: sha512-oHfOUCj1hKJoJrntQQWSFcPCYAVncyDp4XuvKL0qm61BpyqqAeFXqJJ4hOPjjFq6E3XRfjpb3vUQN+RpjzvJxg==}
+  '@bull-board/koa@5.19.2':
+    resolution: {integrity: sha512-UaCx6XwVc0SnZ56KV5NJAL28lYacpz8YbQuhkY1bxLeuoGM7jnXRI0xUYXuU7872O0Blh8KdymzJxcPV8Tif2Q==}
 
-  '@bull-board/ui@5.19.1':
-    resolution: {integrity: sha512-THg6CjHmt/2lH4d0FTeJjOLMKshEZ38Y7UmY8LDaHLgtwFdyT1IHbhQo3No8Y60R/hXeieD/+2S7az3HOLcPmA==}
+  '@bull-board/ui@5.19.2':
+    resolution: {integrity: sha512-SRNK2ozJplr/5WUB2zT883d0hTb8cs61+eyrBVCJYmTKtA3uP3M8EENu/Gkv9XTZvti420qWlsZKTjOSWmm6Bg==}
 
   '@cbor-extract/cbor-extract-darwin-arm64@2.2.0':
     resolution: {integrity: sha512-P7swiOAdF7aSi0H+tHtHtr6zrpF3aAq/W9FXx5HektRvLTM2O89xCyXF3pk7pLc7QpaY7AoaE8UowVf9QBdh3w==}
@@ -8356,15 +8356,15 @@ snapshots:
   '@biomejs/cli-win32-x64@1.7.3':
     optional: true
 
-  '@bull-board/api@5.19.1(@bull-board/ui@5.19.1)':
+  '@bull-board/api@5.19.2(@bull-board/ui@5.19.2)':
     dependencies:
-      '@bull-board/ui': 5.19.1
+      '@bull-board/ui': 5.19.2
       redis-info: 3.1.0
 
-  '@bull-board/koa@5.19.1(@types/koa@2.15.0)(lodash@4.17.21)(pug@3.0.3)':
+  '@bull-board/koa@5.19.2(@types/koa@2.15.0)(lodash@4.17.21)(pug@3.0.3)':
     dependencies:
-      '@bull-board/api': 5.19.1(@bull-board/ui@5.19.1)
-      '@bull-board/ui': 5.19.1
+      '@bull-board/api': 5.19.2(@bull-board/ui@5.19.2)
+      '@bull-board/ui': 5.19.2
       ejs: 3.1.10
       koa: 2.15.3
       koa-mount: 4.0.0
@@ -8427,9 +8427,9 @@ snapshots:
       - walrus
       - whiskers
 
-  '@bull-board/ui@5.19.1':
+  '@bull-board/ui@5.19.2':
     dependencies:
-      '@bull-board/api': 5.19.1(@bull-board/ui@5.19.1)
+      '@bull-board/api': 5.19.2(@bull-board/ui@5.19.2)
 
   '@cbor-extract/cbor-extract-darwin-arm64@2.2.0':
     optional: true
