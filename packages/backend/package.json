@@ -128,7 +128,7 @@
 		"@types/content-disposition": "0.5.8",
 		"@types/escape-regexp": "0.0.3",
 		"@types/fluent-ffmpeg": "2.1.24",
-		"@types/jsdom": "21.1.6",
+		"@types/jsdom": "21.1.7",
 		"@types/jsonld": "1.5.13",
 		"@types/jsrsasign": "10.5.14",
 		"@types/katex": "0.16.7",
