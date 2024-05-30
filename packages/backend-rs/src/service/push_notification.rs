@@ -3,7 +3,7 @@ use crate::misc::get_note_summary::{get_note_summary, NoteLike};
 use crate::misc::meta::fetch_meta;
 use crate::model::entity::{access_token, app, sw_subscription};
 use crate::util::http_client;
-use crate::util::id::get_timestamp;
+use crate::util::id::{get_timestamp, InvalidIdError};
 use once_cell::sync::OnceCell;
 use sea_orm::prelude::*;
 use web_push::{
@@ -21,6 +21,8 @@ pub enum Error {
     Serialize(#[from] serde_json::Error),
     #[error("Invalid content: {0}")]
     InvalidContent(String),
+    #[error("Invalid notification ID: {0}")]
+    InvalidId(#[from] InvalidIdError),
     #[error("HTTP client aquisition error: {0}")]
     HttpClient(#[from] http_client::Error),
 }
@@ -139,7 +141,8 @@ async fn encode_mastodon_payload(
         let timestamp = object
             .get("notification_id")
             .and_then(|id| id.as_str())
-            .map(|id| get_timestamp(id).unwrap_or_default())
+            .map(get_timestamp)
+            .transpose()?
             .unwrap_or_default();
 
         object.insert("notification_id".to_string(), timestamp.into());
