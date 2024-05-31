@@ -1,10 +1,9 @@
 use serde::Deserialize;
 
-// TODO?: handle name collisions
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, js_name = "NoteLikeForGetNoteSummary")]
-pub struct NoteLike {
+#[crate::export(object)]
+pub struct PartialNoteToSummarize {
     pub file_ids: Vec<String>,
     pub text: Option<String>,
     pub cw: Option<String>,
@@ -12,7 +11,7 @@ pub struct NoteLike {
 }
 
 #[crate::export]
-pub fn get_note_summary(note: NoteLike) -> String {
+pub fn get_note_summary(note: PartialNoteToSummarize) -> String {
     let mut buf: Vec<String> = vec![];
 
     if let Some(cw) = note.cw {
@@ -36,12 +35,12 @@ pub fn get_note_summary(note: NoteLike) -> String {
 
 #[cfg(test)]
 mod unit_test {
-    use super::{get_note_summary, NoteLike};
+    use super::{get_note_summary, PartialNoteToSummarize};
     use pretty_assertions::assert_eq;
 
     #[test]
     fn test_note_summary() {
-        let note = NoteLike {
+        let note = PartialNoteToSummarize {
             file_ids: vec![],
             text: Some("Hello world!".to_string()),
             cw: None,
@@ -49,7 +48,7 @@ mod unit_test {
         };
         assert_eq!(get_note_summary(note), "Hello world!");
 
-        let note_with_cw = NoteLike {
+        let note_with_cw = PartialNoteToSummarize {
             file_ids: vec![],
             text: Some("Hello world!".to_string()),
             cw: Some("Content warning".to_string()),
@@ -57,7 +56,7 @@ mod unit_test {
         };
         assert_eq!(get_note_summary(note_with_cw), "Content warning");
 
-        let note_with_file_and_cw = NoteLike {
+        let note_with_file_and_cw = PartialNoteToSummarize {
             file_ids: vec!["9s7fmcqogiq4igin".to_string()],
             text: None,
             cw: Some("Selfie, no ec".to_string()),
@@ -65,7 +64,7 @@ mod unit_test {
         };
         assert_eq!(get_note_summary(note_with_file_and_cw), "Selfie, no ec 📎");
 
-        let note_with_files_only = NoteLike {
+        let note_with_files_only = PartialNoteToSummarize {
             file_ids: vec![
                 "9s7fmcqogiq4igin".to_string(),
                 "9s7qrld5u14cey98".to_string(),
@@ -78,7 +77,7 @@ mod unit_test {
         };
         assert_eq!(get_note_summary(note_with_files_only), "📎 (4)");
 
-        let note_all = NoteLike {
+        let note_all = PartialNoteToSummarize {
             file_ids: vec![
                 "9s7fmcqogiq4igin".to_string(),
                 "9s7qrld5u14cey98".to_string(),
