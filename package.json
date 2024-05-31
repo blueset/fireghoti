@@ -46,7 +46,7 @@
 		"@biomejs/cli-darwin-x64": "1.7.3",
 		"@biomejs/cli-linux-arm64": "1.7.3",
 		"@biomejs/cli-linux-x64": "1.7.3",
-		"@types/node": "20.12.13",
+		"@types/node": "20.13.0",
 		"execa": "9.1.0",
 		"pnpm": "9.1.4",
 		"typescript": "5.4.5"
