@@ -37,7 +37,7 @@ fn check_word_mute_impl(
 ///
 /// # Arguments
 ///
-/// * `note` : [NoteLike] object
+/// * `note` : [PartialNoteToElaborate] object
 /// * `muted_words` : list of muted keyword lists (each array item is a space-separated keyword list that represents an AND condition)
 /// * `muted_patterns` : list of JavaScript-style (e.g., `/foo/i`) regular expressions
 #[crate::export]
