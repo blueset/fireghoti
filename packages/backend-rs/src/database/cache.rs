@@ -50,9 +50,9 @@ fn wildcard(category: Category) -> String {
 ///
 /// # Arguments
 ///
-/// - `key` : key (prefixed automatically)
-/// - `value` : (de)serializable value
-/// - `expire_seconds` : TTL
+/// * `key` : key (prefixed automatically)
+/// * `value` : (de)serializable value
+/// * `expire_seconds` : TTL
 ///
 /// # Example
 ///
@@ -96,7 +96,7 @@ pub async fn set<V: for<'a> Deserialize<'a> + Serialize>(
 ///
 /// # Argument
 ///
-/// - `key` : key (will be prefixed automatically)
+/// * `key` : key (will be prefixed automatically)
 ///
 /// # Example
 ///
@@ -135,9 +135,9 @@ pub async fn get<V: for<'a> Deserialize<'a> + Serialize>(key: &str) -> Result<Op
 ///
 /// # Argument
 ///
-/// - `key` : key (prefixed automatically)
+/// * `key` : key (prefixed automatically)
 ///
-/// ## Example
+/// # Example
 ///
 /// ```
 /// # use backend_rs::database::cache;
@@ -169,10 +169,10 @@ pub async fn delete(key: &str) -> Result<(), Error> {
 ///
 /// # Arguments
 ///
-/// - `category` : one of [Category]
-/// - `key` : key (prefixed automatically)
-/// - `value` : (de)serializable value
-/// - `expire_seconds` : TTL
+/// * `category` : one of [Category]
+/// * `key` : key (prefixed automatically)
+/// * `value` : (de)serializable value
+/// * `expire_seconds` : TTL
 pub async fn set_one<V: for<'a> Deserialize<'a> + Serialize>(
     category: Category,
     key: &str,
@@ -188,8 +188,8 @@ pub async fn set_one<V: for<'a> Deserialize<'a> + Serialize>(
 ///
 /// # Arguments
 ///
-/// - `category` : one of [Category]
-/// - `key` : key (prefixed automatically)
+/// * `category` : one of [Category]
+/// * `key` : key (prefixed automatically)
 pub async fn get_one<V: for<'a> Deserialize<'a> + Serialize>(
     category: Category,
     key: &str,
@@ -213,7 +213,7 @@ pub async fn delete_one(category: Category, key: &str) -> Result<(), Error> {
 ///
 /// # Argument
 ///
-/// - `category` : one of [Category]
+/// * `category` : one of [Category]
 pub async fn delete_all(category: Category) -> Result<(), Error> {
     let mut redis = redis_conn().await?;
     let keys: Vec<Vec<u8>> = redis.keys(wildcard(category)).await?;

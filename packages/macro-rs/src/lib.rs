@@ -25,7 +25,7 @@ pub fn read_version_from_package_json(_item: proc_macro::TokenStream) -> proc_ma
     quote! { #version }.into()
 }
 
-/// Export this function, struct, enum, const, etc. to TypeScript.
+/// Export a function, struct, enum, const, etc. to TypeScript.
 ///
 /// This is a wrapper of [macro@napi] that expands to
 /// ```no_run
@@ -48,7 +48,7 @@ pub fn export(
     .into()
 }
 
-/// Export this function, struct, enum, const, etc. to TypeScript
+/// Export a function, struct, enum, const, etc. to TypeScript
 /// and make it unable to use in Rust.
 ///
 /// This is a wrapper of [macro@napi] that expands to
@@ -84,13 +84,13 @@ pub fn ts_export(
 /// - `js_name` to the camelCase version of the original function name (for functions)
 ///
 /// The types of the function arguments is converted with following rules:
-/// - `&str` and `&mut str` are converted to `String`
-/// - `&[T]` and `&mut [T]` are converted to `Vec<T>`
+/// - `&str` and `&mut str` are converted to [`String`]
+/// - `&[T]` and `&mut [T]` are converted to [`Vec<T>`]
 /// - `&T` and `&mut T` are converted to `T`
 /// - Other `T` remains `T`
 ///
-/// In addition, return type `Result<T>` and `Result<T, E>` are converted to `napi::Result<T>`.
-/// Note that `E` must implement `std::string::ToString` trait.
+/// In addition, return type [`Result<T>`] and [`Result<T, E>`] are converted to [`napi::Result<T>`](https://docs.rs/napi/latest/napi/type.Result.html).
+/// Note that `E` must implement [`std::string::ToString`] trait.
 ///
 /// # Examples
 /// ## Applying the macro to a struct
