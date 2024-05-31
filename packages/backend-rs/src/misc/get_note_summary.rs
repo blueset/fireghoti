@@ -1,7 +1,7 @@
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 
 // TODO?: handle name collisions
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 #[crate::export(object, js_name = "NoteLikeForGetNoteSummary")]
 pub struct NoteLike {
