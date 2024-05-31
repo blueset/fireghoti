@@ -1,4 +1,4 @@
-use crate::misc::get_note_all_texts::{all_texts, NoteLike};
+use crate::misc::get_note_all_texts::{all_texts, PartialNoteToElaborate};
 use once_cell::sync::Lazy;
 use regex::Regex;
 use sea_orm::DbErr;
@@ -42,7 +42,7 @@ fn check_word_mute_impl(
 /// * `muted_patterns` : list of JavaScript-style (e.g., `/foo/i`) regular expressions
 #[crate::export]
 pub async fn check_word_mute(
-    note: NoteLike,
+    note: PartialNoteToElaborate,
     muted_words: &[String],
     muted_patterns: &[String],
 ) -> Result<bool, DbErr> {

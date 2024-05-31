@@ -1,5 +1,5 @@
 use crate::database::db_conn;
-use crate::misc::get_note_summary::{get_note_summary, NoteLike};
+use crate::misc::get_note_summary::{get_note_summary, PartialNoteToSummarize};
 use crate::misc::meta::fetch_meta;
 use crate::model::entity::{access_token, app, sw_subscription};
 use crate::util::http_client;
@@ -88,7 +88,7 @@ fn compact_content(
         ));
     }
 
-    let note_like: NoteLike = serde_json::from_value(note.clone())?;
+    let note_like: PartialNoteToSummarize = serde_json::from_value(note.clone())?;
     let text = get_note_summary(note_like);
 
     let note_object = note.as_object_mut().unwrap();

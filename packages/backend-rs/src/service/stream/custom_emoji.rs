@@ -1,8 +1,8 @@
 use crate::service::stream::{publish_to_stream, Error, Stream};
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
 // TODO: define schema type in other place
-#[derive(Deserialize, Serialize)]
+#[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 #[crate::export(object)]
 pub struct PackedEmoji {

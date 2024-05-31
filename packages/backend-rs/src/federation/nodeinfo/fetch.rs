@@ -3,7 +3,7 @@
 use crate::federation::nodeinfo::schema::*;
 use crate::util::http_client;
 use isahc::AsyncReadResponseExt;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
@@ -21,12 +21,12 @@ pub enum Error {
     MissingNodeinfo,
 }
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Debug)]
 pub struct NodeinfoLinks {
     links: Vec<NodeinfoLink>,
 }
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Debug)]
 pub struct NodeinfoLink {
     rel: String,
     href: String,

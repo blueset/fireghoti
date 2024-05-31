@@ -2,9 +2,8 @@ use crate::database::db_conn;
 use crate::model::entity::{drive_file, note};
 use sea_orm::{prelude::*, QuerySelect};
 
-// TODO?: handle name collisions
-#[crate::export(object, js_name = "NoteLikeForAllTexts")]
-pub struct NoteLike {
+#[crate::export(object)]
+pub struct PartialNoteToElaborate {
     pub file_ids: Vec<String>,
     pub user_id: String,
     pub text: Option<String>,
@@ -16,11 +15,14 @@ pub struct NoteLike {
 /// Returns [`Vec<String>`] containing the post text, content warning,
 /// those of the "parent" (replied/quoted) posts, and alt texts of attached files.
 ///
-/// ## Arguments
+/// # Arguments
 ///
-/// * `note` : [NoteLike] object
+/// * `note` : [PartialNoteToElaborate] object
 /// * `include_parent` : whether to take the reply-to post and quoted post into account
-pub async fn all_texts(note: NoteLike, include_parent: bool) -> Result<Vec<String>, DbErr> {
+pub async fn all_texts(
+    note: PartialNoteToElaborate,
+    include_parent: bool,
+) -> Result<Vec<String>, DbErr> {
     let db = db_conn().await?;
 
     let mut texts: Vec<String> = vec![];

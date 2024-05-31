@@ -3,7 +3,7 @@
 use crate::database::cache;
 use crate::util::http_client;
 use isahc::ReadResponseExt;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
@@ -25,7 +25,7 @@ const UPSTREAM_PACKAGE_JSON_URL: &str =
     "https://firefish.dev/firefish/firefish/-/raw/main/package.json";
 
 async fn get_latest_version() -> Result<String, Error> {
-    #[derive(Debug, Deserialize, Serialize)]
+    #[derive(Debug, Deserialize)]
     struct Response {
         version: String,
     }
