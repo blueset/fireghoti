@@ -100,7 +100,7 @@ importers:
         specifier: 4.12.9
         version: 4.12.9
       cacheable-lookup:
-        specifier: TheEssem/cacheable-lookup
+        specifier: git+https://github.com/TheEssem/cacheable-lookup.git#dd2fb616366a3c68dcf321a57a67295967b204bf
         version: https://codeload.github.com/TheEssem/cacheable-lookup/tar.gz/dd2fb616366a3c68dcf321a57a67295967b204bf
       cbor-x:
         specifier: 1.5.9
@@ -666,7 +666,7 @@ importers:
         specifier: 0.16.10
         version: 0.16.10
       libopenmpt-wasm:
-        specifier: github:TheEssem/libopenmpt-packaging#build
+        specifier: git+https://github.com/TheEssem/libopenmpt-packaging.git#d05d151a72b638c6312227af0417aca69521172c
         version: https://codeload.github.com/TheEssem/libopenmpt-packaging/tar.gz/d05d151a72b638c6312227af0417aca69521172c
       long:
         specifier: 5.2.3
@@ -1149,13 +1149,11 @@ packages:
   '@biomejs/cli-darwin-arm64@1.7.3':
     resolution: {integrity: sha512-eDvLQWmGRqrPIRY7AIrkPHkQ3visEItJKkPYSHCscSDdGvKzYjmBJwG1Gu8+QC5ed6R7eiU63LEC0APFBobmfQ==}
     engines: {node: '>=14.21.3'}
-    cpu: [arm64]
     os: [darwin]
 
   '@biomejs/cli-darwin-x64@1.7.3':
     resolution: {integrity: sha512-JXCaIseKRER7dIURsVlAJacnm8SG5I0RpxZ4ya3dudASYUc68WGl4+FEN03ABY3KMIq7hcK1tzsJiWlmXyosZg==}
     engines: {node: '>=14.21.3'}
-    cpu: [x64]
     os: [darwin]
 
   '@biomejs/cli-linux-arm64-musl@1.7.3':
@@ -1167,7 +1165,6 @@ packages:
   '@biomejs/cli-linux-arm64@1.7.3':
     resolution: {integrity: sha512-phNTBpo7joDFastnmZsFjYcDYobLTx4qR4oPvc9tJ486Bd1SfEVPHEvJdNJrMwUQK56T+TRClOQd/8X1nnjA9w==}
     engines: {node: '>=14.21.3'}
-    cpu: [arm64]
     os: [linux]
 
   '@biomejs/cli-linux-x64-musl@1.7.3':
@@ -1179,7 +1176,6 @@ packages:
   '@biomejs/cli-linux-x64@1.7.3':
     resolution: {integrity: sha512-vnedYcd5p4keT3iD48oSKjOIRPYcjSNNbd8MO1bKo9ajg3GwQXZLAH+0Cvlr+eMsO67/HddWmscSQwTFrC/uPA==}
     engines: {node: '>=14.21.3'}
-    cpu: [x64]
     os: [linux]
 
   '@biomejs/cli-win32-arm64@1.7.3':
