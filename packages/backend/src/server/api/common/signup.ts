@@ -82,15 +82,17 @@ export async function signup(opts: {
 
 	let account!: User;
 
+	const exists = await Users.existsBy({
+		usernameLower: username.toLowerCase(),
+		host: IsNull(),
+	});
+
+	if (exists) {
+		throw new Error("the username is already used");
+	}
+
 	// Start transaction
 	await db.transaction(async (transactionalEntityManager) => {
-		const exist = await transactionalEntityManager.findOneBy(User, {
-			usernameLower: username.toLowerCase(),
-			host: IsNull(),
-		});
-
-		if (exist) throw new Error(" the username is already used");
-
 		const now = new Date();
 
 		account = await transactionalEntityManager.save(

@@ -2,6 +2,7 @@ import { v4 as uuid } from "uuid";
 import { genRsaKeyPair } from "@/misc/gen-key-pair.js";
 import { User } from "@/models/entities/user.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
+import { Users } from "@/models/index.js";
 import { IsNull } from "typeorm";
 import { generateUserToken, genIdAt, hashPassword } from "backend-rs";
 import { UserKeypair } from "@/models/entities/user-keypair.js";
@@ -21,17 +22,19 @@ export async function createSystemUser(username: string) {
 
 	let account!: User;
 
+	const exists = await Users.existsBy({
+		usernameLower: username.toLowerCase(),
+		host: IsNull(),
+	});
+
+	if (exists) {
+		throw new Error("the user already exists");
+	}
+
 	const now = new Date();
 
 	// Start transaction
 	await db.transaction(async (transactionalEntityManager) => {
-		const exist = await transactionalEntityManager.findOneBy(User, {
-			usernameLower: username.toLowerCase(),
-			host: IsNull(),
-		});
-
-		if (exist) throw new Error("the user is already exists");
-
 		account = await transactionalEntityManager
 			.insert(User, {
 				id: genIdAt(now),
