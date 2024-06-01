@@ -1,4 +1,6 @@
 //! Schema definitions of NodeInfo version 2.0 and 2.1
+//!
+//! ref: <https://nodeinfo.diaspora.software/schema.html>
 
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;

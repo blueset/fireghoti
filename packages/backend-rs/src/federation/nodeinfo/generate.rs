@@ -9,6 +9,7 @@ use sea_orm::{ColumnTrait, DbErr, EntityTrait, PaginatorTrait, QueryFilter};
 use serde_json::json;
 use std::collections::HashMap;
 
+/// Errors that can occur while generating NodeInfo of the local server
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Database error: {0}")]
@@ -19,6 +20,14 @@ pub enum Error {
     Json(#[from] serde_json::Error),
 }
 
+/// Fetches the number of total/active local users and local posts.
+///
+/// # Return value
+/// A tuple containing the following information in this order:
+/// * the total number of local users
+/// * the total number of local users active in the last 6 months
+/// * the total number of local users active in the last month (MAU)
+/// * the total number of posts from local users
 async fn statistics() -> Result<(u64, u64, u64, u64), DbErr> {
     let db = db_conn().await?;
 
@@ -49,6 +58,8 @@ async fn statistics() -> Result<(u64, u64, u64, u64), DbErr> {
     )
 }
 
+/// Generates NodeInfo (version 2.1) of the local server.
+/// This function doesn't use caches and returns the latest information.
 async fn generate_nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
     let (local_users, local_active_halfyear, local_active_month, local_posts) =
         statistics().await?;
