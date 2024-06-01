@@ -1,6 +1,6 @@
 import define from "@/server/api/define.js";
 import { Ads } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 
 export const meta = {
 	tags: ["admin"],
@@ -32,9 +32,11 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps) => {
+	const now = new Date();
+
 	await Ads.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		expiresAt: new Date(ps.expiresAt),
 		url: ps.url,
 		imageUrl: ps.imageUrl,

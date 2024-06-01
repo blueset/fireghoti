@@ -1,5 +1,5 @@
 import { ModerationLogs } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import type { User } from "@/models/entities/user.js";
 
 export async function insertModerationLog(
@@ -7,9 +7,10 @@ export async function insertModerationLog(
 	type: string,
 	info?: Record<string, any>,
 ) {
+	const now = new Date();
 	await ModerationLogs.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		userId: moderator.id,
 		type: type,
 		info: info || {},

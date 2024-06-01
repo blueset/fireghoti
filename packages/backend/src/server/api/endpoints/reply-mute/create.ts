@@ -1,6 +1,6 @@
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import { ReplyMutings } from "@/models/index.js";
-import { ReplyMuting } from "@/models/entities/reply-muting.js";
+import type { ReplyMuting } from "@/models/entities/reply-muting.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { getUser } from "@/server/api/common/getters.js";
@@ -56,10 +56,12 @@ export default define(meta, paramDef, async (ps, user) => {
 		throw new ApiError(meta.errors.alreadyMuting);
 	}
 
+	const now = new Date();
+
 	// Create mute
 	await ReplyMutings.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		muterId: muter.id,
 		muteeId: mutee.id,
 	} as ReplyMuting);

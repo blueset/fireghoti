@@ -4,7 +4,7 @@ import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import { deliver } from "@/queue/index.js";
 import type { User } from "@/models/entities/user.js";
 import { Blockings, FollowRequests, Users } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 import { config } from "@/config.js";
 
@@ -42,9 +42,11 @@ export default async function (
 	if (blocking) throw new Error("blocking");
 	if (blocked) throw new Error("blocked");
 
+	const now = new Date();
+
 	const followRequest = await FollowRequests.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		followerId: follower.id,
 		followeeId: followee.id,
 		requestId,

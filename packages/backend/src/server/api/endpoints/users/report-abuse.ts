@@ -1,7 +1,7 @@
 import * as mfm from "mfm-js";
 import sanitizeHtml from "sanitize-html";
 import { AbuseUserReports, UserProfiles, Users } from "@/models/index.js";
-import { genId, publishToModerationStream } from "backend-rs";
+import { genIdAt, publishToModerationStream } from "backend-rs";
 import { sendEmail } from "@/services/send-email.js";
 import { getUser } from "@/server/api/common/getters.js";
 import { ApiError } from "@/server/api/error.js";
@@ -61,9 +61,11 @@ export default define(meta, paramDef, async (ps, me) => {
 		throw new ApiError(meta.errors.cannotReportAdmin);
 	}
 
+	const now = new Date();
+
 	const report = await AbuseUserReports.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		targetUserId: user.id,
 		targetUserHost: user.host,
 		reporterId: me.id,

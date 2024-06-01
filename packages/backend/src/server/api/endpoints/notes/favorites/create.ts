@@ -1,5 +1,5 @@
 import { NoteFavorites } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { getNote } from "@/server/api/common/getters.js";
@@ -54,10 +54,12 @@ export default define(meta, paramDef, async (ps, user) => {
 		throw new ApiError(meta.errors.alreadyFavorited);
 	}
 
+	const now = new Date();
+
 	// Create favorite
 	await NoteFavorites.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		noteId: note.id,
 		userId: user.id,
 	});

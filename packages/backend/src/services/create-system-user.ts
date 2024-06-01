@@ -3,7 +3,7 @@ import { genRsaKeyPair } from "@/misc/gen-key-pair.js";
 import { User } from "@/models/entities/user.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
 import { IsNull } from "typeorm";
-import { generateUserToken, genId, hashPassword } from "backend-rs";
+import { generateUserToken, genIdAt, hashPassword } from "backend-rs";
 import { UserKeypair } from "@/models/entities/user-keypair.js";
 import { UsedUsername } from "@/models/entities/used-username.js";
 import { db } from "@/db/postgre.js";
@@ -21,6 +21,8 @@ export async function createSystemUser(username: string) {
 
 	let account!: User;
 
+	const now = new Date();
+
 	// Start transaction
 	await db.transaction(async (transactionalEntityManager) => {
 		const exist = await transactionalEntityManager.findOneBy(User, {
@@ -32,8 +34,8 @@ export async function createSystemUser(username: string) {
 
 		account = await transactionalEntityManager
 			.insert(User, {
-				id: genId(),
-				createdAt: new Date(),
+				id: genIdAt(now),
+				createdAt: now,
 				username: username,
 				usernameLower: username.toLowerCase(),
 				host: null,
@@ -60,7 +62,7 @@ export async function createSystemUser(username: string) {
 		});
 
 		await transactionalEntityManager.insert(UsedUsername, {
-			createdAt: new Date(),
+			createdAt: now,
 			username: username.toLowerCase(),
 		});
 	});

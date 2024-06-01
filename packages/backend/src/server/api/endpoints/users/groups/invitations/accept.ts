@@ -1,5 +1,5 @@
 import { UserGroupJoinings, UserGroupInvitations } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import type { UserGroupJoining } from "@/models/entities/user-group-joining.js";
 import { ApiError } from "@/server/api/error.js";
 import define from "@/server/api/define.js";
@@ -44,10 +44,12 @@ export default define(meta, paramDef, async (ps, user) => {
 		throw new ApiError(meta.errors.noSuchInvitation);
 	}
 
+	const now = new Date();
+
 	// Push the user
 	await UserGroupJoinings.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		userId: user.id,
 		userGroupId: invitation.userGroupId,
 	} as UserGroupJoining);

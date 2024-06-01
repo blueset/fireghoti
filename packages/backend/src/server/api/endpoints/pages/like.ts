@@ -1,5 +1,5 @@
 import { Pages, PageLikes } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 
@@ -51,10 +51,12 @@ export default define(meta, paramDef, async (ps, user) => {
 		throw new ApiError(meta.errors.alreadyLiked);
 	}
 
+	const now = new Date();
+
 	// Create like
 	await PageLikes.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		pageId: page.id,
 		userId: user.id,
 	});

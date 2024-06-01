@@ -1,4 +1,4 @@
-import { fetchMeta, genId } from "backend-rs";
+import { fetchMeta, genIdAt } from "backend-rs";
 import { SwSubscriptions } from "@/models/index.js";
 import define from "@/server/api/define.js";
 
@@ -76,9 +76,11 @@ export default define(meta, paramDef, async (ps, me) => {
 		};
 	}
 
+	const now = new Date();
+
 	await SwSubscriptions.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		userId: me.id,
 		endpoint: ps.endpoint,
 		auth: ps.auth,

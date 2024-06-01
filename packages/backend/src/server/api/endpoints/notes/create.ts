@@ -16,7 +16,7 @@ import { config } from "@/config.js";
 import { noteVisibilities } from "@/types.js";
 import { ApiError } from "@/server/api/error.js";
 import define from "@/server/api/define.js";
-import { HOUR, genId } from "backend-rs";
+import { HOUR, genIdAt } from "backend-rs";
 import { getNote } from "@/server/api/common/getters.js";
 import { langmap } from "firefish-js";
 import { createScheduledNoteJob } from "@/queue/index.js";
@@ -310,11 +310,13 @@ export default define(meta, paramDef, async (ps, user) => {
 		}
 	}
 
+	const now = new Date();
+
 	// Create a post
 	const note = await create(
 		user,
 		{
-			createdAt: new Date(),
+			createdAt: now,
 			files: files,
 			poll: ps.poll
 				? {
@@ -347,7 +349,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		delay
 			? async (note) => {
 					await ScheduledNotes.insert({
-						id: genId(),
+						id: genIdAt(now),
 						noteId: note.id,
 						userId: user.id,
 						scheduledAt: new Date(ps.scheduledAt as number),

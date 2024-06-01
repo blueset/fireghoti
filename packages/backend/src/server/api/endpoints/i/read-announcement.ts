@@ -1,6 +1,6 @@
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import { AnnouncementReads, Announcements, Users } from "@/models/index.js";
 import { publishMainStream } from "@/services/stream.js";
 
@@ -50,10 +50,12 @@ export default define(meta, paramDef, async (ps, user) => {
 		return;
 	}
 
+	const now = new Date();
+
 	// Create read
 	await AnnouncementReads.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		announcementId: ps.announcementId,
 		userId: user.id,
 	});

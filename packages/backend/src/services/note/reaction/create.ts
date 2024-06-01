@@ -13,7 +13,7 @@ import {
 	Blockings,
 } from "@/models/index.js";
 import { IsNull, Not } from "typeorm";
-import { decodeReaction, genId, toDbReaction } from "backend-rs";
+import { decodeReaction, genIdAt, toDbReaction } from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 import deleteReaction from "./delete.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
@@ -47,9 +47,11 @@ export default async (
 	// TODO: cache
 	reaction = await toDbReaction(reaction, user.host);
 
+	const now = new Date();
+
 	const record: NoteReaction = {
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		noteId: note.id,
 		userId: user.id,
 		reaction,
