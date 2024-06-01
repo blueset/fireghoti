@@ -39,8 +39,9 @@ export async function createNotification(
 			(notifier.isSilenced ||
 				(Users.isRemoteUser(notifier) &&
 					(await isSilencedServer(notifier.host)))) &&
-			!(await Followings.exists({
-				where: { followerId: notifieeId, followeeId: data.notifierId },
+			!(await Followings.existsBy({
+				followerId: notifieeId,
+				followeeId: data.notifierId,
 			}))
 		)
 			return null;

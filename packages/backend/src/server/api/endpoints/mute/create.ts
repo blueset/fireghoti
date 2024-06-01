@@ -64,14 +64,12 @@ export default define(meta, paramDef, async (ps, user) => {
 	});
 
 	// Check if already muting
-	const exist = await Mutings.exist({
-		where: {
-			muterId: muter.id,
-			muteeId: mutee.id,
-		},
+	const exists = await Mutings.existsBy({
+		muterId: muter.id,
+		muteeId: mutee.id,
 	});
 
-	if (exist) {
+	if (exists) {
 		throw new ApiError(meta.errors.alreadyMuting);
 	}
 

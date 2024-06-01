@@ -30,20 +30,18 @@ export const paramDef = {
 
 export default define(meta, paramDef, async (ps, user) => {
 	// Check if announcement exists
-	const exist = await Announcements.exist({
-		where: { id: ps.announcementId },
+	const exists = await Announcements.existsBy({
+		id: ps.announcementId,
 	});
 
-	if (!exist) {
+	if (!exists) {
 		throw new ApiError(meta.errors.noSuchAnnouncement);
 	}
 
 	// Check if already read
-	const read = await AnnouncementReads.exist({
-		where: {
-			announcementId: ps.announcementId,
-			userId: user.id,
-		},
+	const read = await AnnouncementReads.existsBy({
+		announcementId: ps.announcementId,
+		userId: user.id,
 	});
 
 	if (read) {

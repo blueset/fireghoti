@@ -17,9 +17,9 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, user) => {
-	const exist = await AccessTokens.exist({ where: { id: ps.tokenId } });
+	const exists = await AccessTokens.existsBy({ id: ps.tokenId });
 
-	if (exist) {
+	if (exists) {
 		await AccessTokens.delete({
 			id: ps.tokenId,
 			userId: user.id,

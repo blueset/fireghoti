@@ -43,14 +43,12 @@ export default define(meta, paramDef, async (ps, user) => {
 	});
 
 	// if already favorited
-	const exist = await NoteFavorites.exist({
-		where: {
-			noteId: note.id,
-			userId: user.id,
-		},
+	const exists = await NoteFavorites.existsBy({
+		noteId: note.id,
+		userId: user.id,
 	});
 
-	if (exist) {
+	if (exists) {
 		throw new ApiError(meta.errors.alreadyFavorited);
 	}
 

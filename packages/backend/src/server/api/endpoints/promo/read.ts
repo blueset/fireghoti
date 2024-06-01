@@ -33,14 +33,12 @@ export default define(meta, paramDef, async (ps, user) => {
 		throw err;
 	});
 
-	const exist = await PromoReads.exist({
-		where: {
-			noteId: note.id,
-			userId: user.id,
-		},
+	const exists = await PromoReads.existsBy({
+		noteId: note.id,
+		userId: user.id,
 	});
 
-	if (exist) {
+	if (exists) {
 		return;
 	}
 

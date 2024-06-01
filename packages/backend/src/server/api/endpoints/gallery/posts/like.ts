@@ -40,14 +40,12 @@ export default define(meta, paramDef, async (ps, user) => {
 	}
 
 	// if already liked
-	const exist = await GalleryLikes.exist({
-		where: {
-			postId: post.id,
-			userId: user.id,
-		},
+	const exists = await GalleryLikes.existsBy({
+		postId: post.id,
+		userId: user.id,
 	});
 
-	if (exist) {
+	if (exists) {
 		throw new ApiError(meta.errors.alreadyLiked);
 	}
 
