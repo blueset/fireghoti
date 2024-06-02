@@ -199,6 +199,8 @@ build:container:
     STORAGE_DRIVER: overlay
   before_script:
     - apt-get update && apt-get -y upgrade
+    - |-
+      sed -i -r 's/"version": "([-0-9]+)",/"version": "\1-dev",/' package.json
     - apt-get install -y --no-install-recommends ca-certificates fuse-overlayfs buildah
     - echo "${CI_REGISTRY_PASSWORD}" | buildah login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
     - export IMAGE_TAG="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
