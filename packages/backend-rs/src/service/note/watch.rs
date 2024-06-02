@@ -1,7 +1,7 @@
 use crate::database::db_conn;
 use crate::model::entity::note_watching;
 use crate::util::id::gen_id;
-use sea_orm::{ActiveValue, ColumnTrait, DbErr, EntityTrait, ModelTrait, QueryFilter};
+use sea_orm::{prelude::*, ActiveValue};
 
 #[crate::export]
 pub async fn watch_note(
