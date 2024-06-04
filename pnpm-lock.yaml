@@ -244,8 +244,8 @@ importers:
         specifier: 7.1.2
         version: 7.1.2
       pg:
-        specifier: 8.11.5
-        version: 8.11.5
+        specifier: 8.12.0
+        version: 8.12.0
       private-ip:
         specifier: 3.0.2
         version: 3.0.2
@@ -320,7 +320,7 @@ importers:
         version: 0.2.3
       typeorm:
         specifier: 0.3.20
-        version: 0.3.20(ioredis@5.4.1)(pg@8.11.5)(ts-node@10.9.2(@swc/core@1.5.24)(@swc/wasm@1.2.130)(@types/node@20.14.1)(typescript@5.4.5))
+        version: 0.3.20(ioredis@5.4.1)(pg@8.12.0)(ts-node@10.9.2(@swc/core@1.5.24)(@swc/wasm@1.2.130)(@types/node@20.14.1)(typescript@5.4.5))
       ulid:
         specifier: 2.3.0
         version: 2.3.0
@@ -6349,8 +6349,8 @@ packages:
     resolution: {integrity: sha512-cRL3JpS3lKMGsKaWndugWQoLOCoP+Cic8oseVcbr0qhPzYD5DWXK+RZ9LY9wxRf7RQia4SCwQlXk0q6FCPrVng==}
     engines: {node: '>=10'}
 
-  pg@8.11.5:
-    resolution: {integrity: sha512-jqgNHSKL5cbDjFlHyYsCXmQDrfIX/3RsNwYqpd4N0Kt8niLuNoRNH+aazv6cOd43gPh9Y4DjQCtb+X0MH0Hvnw==}
+  pg@8.12.0:
+    resolution: {integrity: sha512-A+LHUSnwnxrnL/tZ+OLfqR1SxLN3c/pgDztZ47Rpbsd4jUytsTtwQo/TLPRzPJMp/1pbhYVhH9cuSZLAajNfjQ==}
     engines: {node: '>= 8.0.0'}
     peerDependencies:
       pg-native: '>=3.0.1'
@@ -14391,9 +14391,9 @@ snapshots:
 
   pg-numeric@1.0.2: {}
 
-  pg-pool@3.6.2(pg@8.11.5):
+  pg-pool@3.6.2(pg@8.12.0):
     dependencies:
-      pg: 8.11.5
+      pg: 8.12.0
 
   pg-protocol@1.6.1: {}
 
@@ -14415,10 +14415,10 @@ snapshots:
       postgres-interval: 3.0.0
       postgres-range: 1.1.4
 
-  pg@8.11.5:
+  pg@8.12.0:
     dependencies:
       pg-connection-string: 2.6.4
-      pg-pool: 3.6.2(pg@8.11.5)
+      pg-pool: 3.6.2(pg@8.12.0)
       pg-protocol: 1.6.1
       pg-types: 2.2.0
       pgpass: 1.0.5
@@ -15718,7 +15718,7 @@ snapshots:
       shiki: 0.14.7
       typescript: 4.9.4
 
-  typeorm@0.3.20(ioredis@5.4.1)(pg@8.11.5)(ts-node@10.9.2(@swc/core@1.5.24)(@swc/wasm@1.2.130)(@types/node@20.14.1)(typescript@5.4.5)):
+  typeorm@0.3.20(ioredis@5.4.1)(pg@8.12.0)(ts-node@10.9.2(@swc/core@1.5.24)(@swc/wasm@1.2.130)(@types/node@20.14.1)(typescript@5.4.5)):
     dependencies:
       '@sqltools/formatter': 1.2.5
       app-root-path: 3.1.0
@@ -15737,7 +15737,7 @@ snapshots:
       yargs: 17.7.2
     optionalDependencies:
       ioredis: 5.4.1
-      pg: 8.11.5
+      pg: 8.12.0
       ts-node: 10.9.2(@swc/core@1.5.24)(@swc/wasm@1.2.130)(@types/node@20.14.1)(typescript@5.4.5)
     transitivePeerDependencies:
       - supports-color
