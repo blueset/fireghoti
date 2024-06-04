@@ -1151,6 +1151,18 @@ export enum PollNoteVisibility {
   Public = 'public',
   Specified = 'specified'
 }
+export enum PushSubscriptionType {
+  AdminReport = 'adminReport',
+  AdminSignUp = 'adminSignUp',
+  Favourite = 'favourite',
+  Follow = 'follow',
+  FollowRequest = 'followRequest',
+  Mention = 'mention',
+  Poll = 'poll',
+  Reblog = 'reblog',
+  Status = 'status',
+  Update = 'update'
+}
 export enum RelayStatus {
   Accepted = 'accepted',
   Rejected = 'rejected',
@@ -1198,7 +1210,7 @@ export interface SwSubscription {
   publickey: string
   sendReadMessage: boolean
   appAccessTokenId: string | null
-  subscriptionTypes: Array<string>
+  subscriptionTypes: Array<PushSubscriptionType>
 }
 export interface UsedUsername {
   username: string

@@ -36,10 +36,13 @@ DELETE FROM "migrations" WHERE name IN (
     'AddMastodonSubscriptionType1715181461692'
 );
 
+-- addMastodonSubscriptionType
+ALTER TABLE "sw_subscription" DROP COLUMN "subscriptionTypes";
+DROP TYPE "push_subscription_type";
+
 -- sw-subscription-per-access-token
 ALTER TABLE "sw_subscription" DROP CONSTRAINT "FK_98a1aa2db2a5253924f42f38767";
 ALTER TABLE "sw_subscription" DROP COLUMN "appAccessTokenId";
-ALTER TABLE "sw_subscription" DROP COLUMN "subscriptionTypes";
 
 -- user-profile-mentions
 ALTER TABLE "user_profile" DROP COLUMN "mentions";
