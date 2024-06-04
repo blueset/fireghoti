@@ -101,7 +101,7 @@ export function genOpenapiSpec() {
 		}
 
 		const info = {
-			operationId: endpoint.name,
+			operationId: `POST-${endpoint.name}`,
 			summary: endpoint.name,
 			description: desc,
 			externalDocs: {
@@ -208,11 +208,11 @@ export function genOpenapiSpec() {
 			},
 		};
 
-		const path = {
+		const path: Record<string, typeof info> = {
 			post: info,
 		};
 		if (endpoint.meta.allowGet) {
-			path.get = { ...info };
+			path.get = { ...info, operationId: `GET-${endpoint.name}` };
 			// API Key authentication is not permitted for GET requests
 			path.get.security = path.get.security.filter(
 				(elem) => !Object.prototype.hasOwnProperty.call(elem, "ApiKeyAuth"),
