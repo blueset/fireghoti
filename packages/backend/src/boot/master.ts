@@ -6,7 +6,6 @@ import Logger from "@/services/logger.js";
 import {
 	fetchMeta,
 	greet,
-	initializeRustLogger,
 	removeOldAttestationChallenges,
 	showServerInfo,
 	type Config,
@@ -24,7 +23,6 @@ const bootLogger = logger.createSubLogger("boot", "magenta", false);
 export async function masterMain() {
 	// initialize app
 	try {
-		initializeRustLogger();
 		greet();
 		showEnvironment();
 		showServerInfo();
