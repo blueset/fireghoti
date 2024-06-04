@@ -25,10 +25,11 @@ workflow:
     - when: never
 
 stages:
-  - dependency
   - test
   - doc
   - build
+  - dependency
+  - clean
 
 variables:
   POSTGRES_DB: 'firefish_db'
@@ -305,3 +306,19 @@ renovate:
   before_script: []
   script:
     - renovate --platform gitlab --token "${API_TOKEN}" --endpoint "${CI_SERVER_URL}/api/v4" "${CI_PROJECT_PATH}"
+
+clean:
+  stage: clean
+  rules:
+    - if: $CLEAN && $CI_PIPELINE_SOURCE == 'schedule'
+  services: []
+  before_script:
+    - apt-get update && apt-get -y upgrade
+    - apt-get -y --no-install-recommends install curl
+    - curl -fsSL 'https://deb.nodesource.com/setup_18.x' | bash -
+    - apt-get install -y --no-install-recommends nodejs
+    - corepack enable
+    - corepack prepare pnpm@latest --activate
+    - pnpm install --frozen-lockfile
+  script:
+    - pnpm run clean-all
