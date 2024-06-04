@@ -23,10 +23,8 @@ pub enum Error {
     Redis(#[from] RedisError),
     #[error("Redis connection error: {0}")]
     RedisConn(#[from] RedisConnError),
-    #[error("Data serialization error: {0}")]
-    Serialize(#[from] rmp_serde::encode::Error),
-    #[error("Data deserialization error: {0}")]
-    Deserialize(#[from] rmp_serde::decode::Error),
+    #[error("Failed to encode the data: {0}")]
+    Encode(#[from] rmp_serde::encode::Error),
 }
 
 #[inline]
@@ -123,7 +121,7 @@ pub async fn set<V: for<'a> Deserialize<'a> + Serialize>(
 pub async fn get<V: for<'a> Deserialize<'a> + Serialize>(key: &str) -> Result<Option<V>, Error> {
     let serialized_value: Option<Vec<u8>> = redis_conn().await?.get(prefix_key(key)).await?;
     Ok(match serialized_value {
-        Some(v) => Some(rmp_serde::from_slice::<V>(v.as_ref())?),
+        Some(v) => rmp_serde::from_slice::<V>(v.as_ref()).ok(),
         None => None,
     })
 }
