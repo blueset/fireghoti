@@ -3,8 +3,8 @@
 use crate::config::CONFIG;
 use once_cell::sync::OnceCell;
 use sea_orm::{ConnectOptions, Database, DbConn, DbErr};
-use tracing::log::LevelFilter;
 use std::time::Duration;
+use tracing::log::LevelFilter;
 
 static DB_CONN: OnceCell<DbConn> = OnceCell::new();
 
