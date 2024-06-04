@@ -7,7 +7,7 @@ import type { User } from "@/models/entities/user.js";
 import type { Note } from "@/models/entities/note.js";
 import { Notes, UserNotePinings, Users } from "@/models/index.js";
 import type { UserNotePining } from "@/models/entities/user-note-pining.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import { deliverToFollowers } from "@/remote/activitypub/deliver-manager.js";
 import { deliverToRelays } from "@/services/relay.js";
 
@@ -49,9 +49,11 @@ export async function addPinned(
 		);
 	}
 
+	const now = new Date();
+
 	await UserNotePinings.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		userId: user.id,
 		noteId: note.id,
 	} as UserNotePining);

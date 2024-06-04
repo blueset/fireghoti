@@ -40,8 +40,9 @@ export async function createNotification(
 			(notifier.isSilenced ||
 				(Users.isRemoteUser(notifier) &&
 					(await isSilencedServer(notifier.host)))) &&
-			!(await Followings.exists({
-				where: { followerId: notifieeId, followeeId: data.notifierId },
+			!(await Followings.existsBy({
+				followerId: notifieeId,
+				followeeId: data.notifierId,
 			}))
 		)
 			return null;
@@ -62,11 +63,12 @@ export async function createNotification(
 		}
 	}
 
+	const now = new Date();
+
 	// Create notification
-	const createdAt = new Date();
 	const notification = await Notifications.insert({
-		id: genIdAt(createdAt),
-		createdAt,
+		id: genIdAt(now),
+		createdAt: now,
 		notifieeId: notifieeId,
 		type: type,
 		// 相手がこの通知をミュートしているようなら、既読を予めつけておく

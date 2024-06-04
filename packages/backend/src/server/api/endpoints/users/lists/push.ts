@@ -70,25 +70,21 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	// Check blocking
 	if (user.id !== me.id) {
-		const isBlocked = await Blockings.exist({
-			where: {
-				blockerId: user.id,
-				blockeeId: me.id,
-			},
+		const isBlocked = await Blockings.existsBy({
+			blockerId: user.id,
+			blockeeId: me.id,
 		});
 		if (isBlocked) {
 			throw new ApiError(meta.errors.youHaveBeenBlocked);
 		}
 	}
 
-	const exist = await UserListJoinings.exist({
-		where: {
-			userListId: ps.listId,
-			userId: user.id,
-		},
+	const exists = await UserListJoinings.existsBy({
+		userListId: ps.listId,
+		userId: user.id,
 	});
 
-	if (exist) {
+	if (exists) {
 		throw new ApiError(meta.errors.alreadyAdded);
 	}
 

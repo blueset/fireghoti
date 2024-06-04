@@ -26,12 +26,8 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, user) => {
-	const exist = await DriveFiles.exist({
-		where: {
-			md5: ps.md5,
-			userId: user.id,
-		},
+	return await DriveFiles.existsBy({
+		md5: ps.md5,
+		userId: user.id,
 	});
-
-	return exist;
 });

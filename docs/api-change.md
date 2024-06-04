@@ -8,6 +8,10 @@ Breaking changes are indicated by the :warning: icon.
   - The new API uses a new format to manage Mastodon sessions in the database, whereas old implementation uses Misskey sessions. All previous client app and token registrations will not work with the new API. All clients need to be re-registered and all users need to re-authenticate.
   - All IDs (of statuses/notes, notifications, users, etc.) will be using the alphanumerical format, aligning with the Firefish/Misskey API. The old numerical IDs will not work when queried against the new API.
 
+## v20240601
+
+- `GET` request is now allowed for the `latest-version` endpoint.
+
 ## v20240523
 
 - Added `scheduledAt` optional parameter to `notes/create` (!10789)

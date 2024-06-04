@@ -3,6 +3,7 @@
 use crate::config::CONFIG;
 use once_cell::sync::OnceCell;
 use sea_orm::{ConnectOptions, Database, DbConn, DbErr};
+use std::time::Duration;
 use tracing::log::LevelFilter;
 
 static DB_CONN: OnceCell<DbConn> = OnceCell::new();
@@ -18,6 +19,7 @@ async fn init_conn() -> Result<&'static DbConn, DbErr> {
     );
     let option: ConnectOptions = ConnectOptions::new(database_uri)
         .sqlx_logging_level(LevelFilter::Trace)
+        .sqlx_slow_statements_logging_settings(LevelFilter::Warn, Duration::from_secs(3))
         .to_owned();
 
     tracing::info!("initializing connection");

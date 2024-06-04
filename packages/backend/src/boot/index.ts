@@ -12,6 +12,8 @@ import { masterMain } from "./master.js";
 import { workerMain } from "./worker.js";
 import os from "node:os";
 
+import { initializeRustLogger } from "backend-rs";
+
 const logger = new Logger("core", "cyan");
 const clusterLogger = logger.createSubLogger("cluster", "orange", false);
 const ev = new Xev();
@@ -20,6 +22,8 @@ const ev = new Xev();
  * Init process
  */
 export default async function () {
+	initializeRustLogger();
+
 	const mode =
 		process.env.mode && ["web", "queue"].includes(process.env.mode)
 			? `(${process.env.mode})`

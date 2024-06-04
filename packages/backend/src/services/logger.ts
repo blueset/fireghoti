@@ -101,16 +101,16 @@ export default class Logger {
 		const l =
 			level === "error"
 				? important
-					? chalk.bgRed.white("ERR ")
-					: chalk.red("ERR ")
+					? chalk.bgRed.white("ERROR")
+					: chalk.red("ERROR")
 				: level === "warning"
-					? chalk.yellow("WARN")
+					? chalk.yellow(" WARN")
 					: level === "info"
-						? chalk.cyan("INFO")
+						? chalk.green(" INFO")
 						: level === "debug"
-							? chalk.green("DEBUG")
+							? chalk.blue("DEBUG")
 							: level === "trace"
-								? chalk.gray("TRACE")
+								? chalk.magenta("TRACE")
 								: null;
 		const domains = [this.domain]
 			.concat(subDomains)

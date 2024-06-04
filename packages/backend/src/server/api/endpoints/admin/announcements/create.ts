@@ -1,6 +1,6 @@
 import define from "@/server/api/define.js";
 import { Announcements } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 
 export const meta = {
 	tags: ["admin"],
@@ -74,9 +74,10 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps) => {
+	const now = new Date();
 	const announcement = await Announcements.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		updatedAt: null,
 		title: ps.title,
 		text: ps.text,

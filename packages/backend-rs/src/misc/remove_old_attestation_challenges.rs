@@ -3,7 +3,7 @@
 use crate::database::db_conn;
 use crate::model::entity::attestation_challenge;
 use chrono::{Duration, Utc};
-use sea_orm::{ColumnTrait, DbErr, EntityTrait, QueryFilter};
+use sea_orm::prelude::*;
 
 /// Delete all entries in the [attestation_challenge] table created at more than 5 minutes ago
 #[crate::export]

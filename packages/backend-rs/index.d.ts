@@ -208,7 +208,7 @@ export interface Acct {
 }
 export function stringToAcct(acct: string): Acct
 export function acctToString(acct: Acct): string
-/** Fetches and returns the NodeInfo of a remote server. */
+/** Fetches and returns the NodeInfo (version 2.0) of a remote server. */
 export function fetchNodeinfo(host: string): Promise<Nodeinfo>
 export function nodeinfo_2_1(): Promise<any>
 export function nodeinfo_2_0(): Promise<any>

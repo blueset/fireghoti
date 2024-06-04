@@ -18,6 +18,7 @@
 	"packageRules": [
 		{"matchUpdateTypes": "patch", "automerge": true},
 		{"groupName": "definitelyTyped", "matchPackagePrefixes": ["@types/"]},
-		{"groupName": "bull-board", "matchPackagePrefixes": ["@bull-board/"]}
+		{"groupName": "bull-board", "matchPackagePrefixes": ["@bull-board/"]},
+		{"groupName": "biome", "matchPackagePrefixes": ["@biomejs/"]}
 	]
 }

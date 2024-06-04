@@ -60,7 +60,7 @@
 		"json5": "2.2.3",
 		"katex": "0.16.10",
 		"long": "5.2.3",
-		"libopenmpt-wasm": "github:TheEssem/libopenmpt-packaging#build",
+		"libopenmpt-wasm": "git+https://github.com/TheEssem/libopenmpt-packaging.git#d05d151a72b638c6312227af0417aca69521172c",
 		"matter-js": "0.19.0",
 		"mfm-js": "0.24.0",
 		"multer": "1.4.5-lts.1",

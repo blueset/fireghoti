@@ -1,7 +1,7 @@
 use crate::database::db_conn;
 use crate::model::entity::note_watching;
-use crate::util::id::gen_id;
-use sea_orm::{ActiveValue, ColumnTrait, DbErr, EntityTrait, ModelTrait, QueryFilter};
+use crate::util::id::gen_id_at;
+use sea_orm::{prelude::*, ActiveValue};
 
 #[crate::export]
 pub async fn watch_note(
@@ -10,9 +10,11 @@ pub async fn watch_note(
     note_id: &str,
 ) -> Result<(), DbErr> {
     if watcher_id != note_author_id {
+        let now = chrono::Utc::now();
+
         note_watching::Entity::insert(note_watching::ActiveModel {
-            id: ActiveValue::set(gen_id()),
-            created_at: ActiveValue::set(chrono::Utc::now().into()),
+            id: ActiveValue::set(gen_id_at(now)),
+            created_at: ActiveValue::set(now.into()),
             user_id: ActiveValue::Set(watcher_id.to_string()),
             note_user_id: ActiveValue::Set(note_author_id.to_string()),
             note_id: ActiveValue::Set(note_id.to_string()),

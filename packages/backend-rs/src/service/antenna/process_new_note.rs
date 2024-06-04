@@ -6,7 +6,7 @@ use crate::service::antenna::check_hit::{check_hit_antenna, AntennaCheckError};
 use crate::service::stream;
 use crate::util::id::{get_timestamp, InvalidIdError};
 use redis::{streams::StreamMaxlen, AsyncCommands, RedisError};
-use sea_orm::{DbErr, EntityTrait};
+use sea_orm::prelude::*;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
