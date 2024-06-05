@@ -63,7 +63,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		publickey: ps.publickey,
 	});
 
-	const instance = await fetchMeta(false);
+	const instance = await fetchMeta();
 
 	// if already subscribed
 	if (subscription != null) {

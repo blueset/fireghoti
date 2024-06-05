@@ -197,7 +197,7 @@ pub async fn send_push_notification(
     kind: PushNotificationKind,
     content: &serde_json::Value,
 ) -> Result<(), Error> {
-    let meta = fetch_meta(true).await?;
+    let meta = fetch_meta().await?;
 
     if !meta.enable_service_worker || meta.sw_public_key.is_none() || meta.sw_private_key.is_none()
     {

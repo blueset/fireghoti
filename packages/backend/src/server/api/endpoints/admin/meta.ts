@@ -470,7 +470,7 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async () => {
-	const instance = await fetchMeta(false);
+	const instance = await fetchMeta();
 
 	return {
 		maintainerName: instance.maintainerName,

@@ -7,12 +7,22 @@ use std::sync::Mutex;
 type Meta = meta::Model;
 
 static CACHE: Mutex<Option<Meta>> = Mutex::new(None);
-fn update_cache(meta: &Meta) {
+fn set_cache(meta: &Meta) {
     let _ = CACHE.lock().map(|mut cache| *cache = Some(meta.clone()));
 }
 
 #[crate::export]
-pub async fn fetch_meta(use_cache: bool) -> Result<Meta, DbErr> {
+pub async fn fetch_meta() -> Result<Meta, DbErr> {
+    fetch_meta_impl(true).await
+}
+
+#[crate::export]
+pub async fn update_meta_cache() -> Result<(), DbErr> {
+    fetch_meta_impl(false).await?;
+    Ok(())
+}
+
+async fn fetch_meta_impl(use_cache: bool) -> Result<Meta, DbErr> {
     // try using cache
     if use_cache {
         if let Some(cache) = CACHE.lock().ok().and_then(|cache| cache.clone()) {
@@ -24,7 +34,7 @@ pub async fn fetch_meta(use_cache: bool) -> Result<Meta, DbErr> {
     let db = db_conn().await?;
     let meta = meta::Entity::find().one(db).await?;
     if let Some(meta) = meta {
-        update_cache(&meta);
+        set_cache(&meta);
         return Ok(meta);
     }
 
@@ -35,7 +45,7 @@ pub async fn fetch_meta(use_cache: bool) -> Result<Meta, DbErr> {
     })
     .exec_with_returning(db)
     .await?;
-    update_cache(&meta);
+    set_cache(&meta);
     Ok(meta)
 }
 

@@ -123,7 +123,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	let userList;
 	let userGroupJoining;
 
-	const instance = await fetchMeta(true);
+	const instance = await fetchMeta();
 
 	const antennas = await Antennas.findBy({
 		userId: user.id,

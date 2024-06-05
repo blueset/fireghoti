@@ -26,7 +26,7 @@ export async function translate(
 	from: PostLanguage | null,
 	to: PostLanguage,
 ) {
-	const instance = await fetchMeta(true);
+	const instance = await fetchMeta();
 
 	if (instance.deeplAuthKey == null && instance.libreTranslateApiUrl == null) {
 		throw Error("No translator is set up on this server.");

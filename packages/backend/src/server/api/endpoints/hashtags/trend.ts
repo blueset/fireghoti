@@ -66,7 +66,7 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async () => {
-	const instance = await fetchMeta(false);
+	const instance = await fetchMeta();
 	const hiddenTags = instance.hiddenTags.map((t) => normalizeForSearch(t));
 
 	const now = new Date(); // 5分単位で丸めた現在日時

@@ -118,7 +118,7 @@ pub async fn to_db_reaction(reaction: Option<&str>, host: Option<&str>) -> Resul
         };
     };
 
-    Ok(fetch_meta(true).await?.default_reaction)
+    Ok(fetch_meta().await?.default_reaction)
 }
 
 #[cfg(test)]

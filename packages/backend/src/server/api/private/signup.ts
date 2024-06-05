@@ -11,7 +11,7 @@ import { validateEmailForAccount } from "@/services/validate-email-for-account.j
 export default async (ctx: Koa.Context) => {
 	const body = ctx.request.body;
 
-	const instance = await fetchMeta(false);
+	const instance = await fetchMeta();
 
 	// Verify *Captcha
 	// ただしテスト時はこの機構は障害となるため無効にする

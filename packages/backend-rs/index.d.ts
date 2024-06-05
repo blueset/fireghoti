@@ -433,7 +433,8 @@ export function isQuote(note: NoteLikeForIsQuote): boolean
 export function isSafeUrl(url: string): boolean
 /** Returns the latest Firefish version. */
 export function latestVersion(): Promise<string>
-export function fetchMeta(useCache: boolean): Promise<Meta>
+export function fetchMeta(): Promise<Meta>
+export function updateMetaCache(): Promise<void>
 export interface PugArgs {
   img: string | null
   title: string

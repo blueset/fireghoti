@@ -63,7 +63,7 @@ async fn statistics() -> Result<(u64, u64, u64, u64), DbErr> {
 async fn generate_nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
     let (local_users, local_active_halfyear, local_active_month, local_posts) =
         statistics().await?;
-    let meta = fetch_meta(true).await?;
+    let meta = fetch_meta().await?;
     let metadata = HashMap::from([
         (
             "nodeName".to_string(),

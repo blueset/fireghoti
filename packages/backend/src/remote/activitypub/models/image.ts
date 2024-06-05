@@ -36,7 +36,7 @@ export async function createImage(
 
 	apLogger.info(`Creating an image: ${image.url}`);
 
-	const instance = await fetchMeta(true);
+	const instance = await fetchMeta();
 
 	let file = await uploadFromUrl({
 		url: image.url,

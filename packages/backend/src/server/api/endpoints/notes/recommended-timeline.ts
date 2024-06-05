@@ -74,7 +74,7 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, user) => {
-	const m = await fetchMeta(true);
+	const m = await fetchMeta();
 	if (m.disableRecommendedTimeline) {
 		if (user == null || !(user.isAdmin || user.isModerator)) {
 			throw new ApiError(meta.errors.rtlDisabled);

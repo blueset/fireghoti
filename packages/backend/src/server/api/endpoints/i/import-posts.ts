@@ -44,7 +44,7 @@ export const paramDef = {
 export default define(meta, paramDef, async (ps, user) => {
 	const file = await DriveFiles.findOneBy({ id: ps.fileId });
 
-	const instanceMeta = await fetchMeta(true);
+	const instanceMeta = await fetchMeta();
 	if (instanceMeta.experimentalFeatures?.postImports === false)
 		throw new ApiError(meta.errors.importsDisabled);
 

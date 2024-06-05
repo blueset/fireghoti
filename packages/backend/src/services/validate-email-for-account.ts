@@ -6,7 +6,7 @@ export async function validateEmailForAccount(emailAddress: string): Promise<{
 	available: boolean;
 	reason: null | "used" | "format" | "disposable" | "mx" | "smtp";
 }> {
-	const meta = await fetchMeta(true);
+	const meta = await fetchMeta();
 
 	const exist = await UserProfiles.countBy({
 		emailVerified: true,
