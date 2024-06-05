@@ -136,9 +136,18 @@ async fn encode_mastodon_payload(
         serde_json::to_value(token.token)?,
     );
 
-    // Some apps expect notification_id to be an integer, 
+    // Some apps expect notification_id to be an integer,
     // but doesn’t break when the ID doesn’t match the rest of API.
-    if ["IceCubesApp", "Mammoth", "feather", "MaserApp", "Metatext", "Feditext"].contains(&client.name.as_str()) {
+    if [
+        "IceCubesApp",
+        "Mammoth",
+        "feather",
+        "MaserApp",
+        "Metatext",
+        "Feditext",
+    ]
+    .contains(&client.name.as_str())
+    {
         let timestamp = object
             .get("notification_id")
             .and_then(|id| id.as_str())
@@ -154,11 +163,14 @@ async fn encode_mastodon_payload(
     // Adding space paddings to the end of JSON payload to prevent
     // `esm` from adding null bytes payload which many Mastodon clients don’t support.
     // https://firefish.dev/firefish/firefish/-/merge_requests/10905#note_6733
-    // not using {:padding_length$} directly on `res`` because we want the padding to be
+    // not using the padding parameter directly on `res` because we want the padding to be
     // calculated based on the UTF-8 byte size of `res` instead of number of characters.
-    let padded_length = 126 + (res.len() + 1) / 128 * 128 - res.len();
+    let pad_length = match res.len() % 128 {
+        127 => 127,
+        n => 126 - n,
+    };
 
-    Ok(format!("{}{:padded_length$}", res, ""))
+    Ok(format!("{}{:pad_length$}", res, ""))
 }
 
 async fn handle_web_push_failure(
