@@ -132,10 +132,14 @@ async fn get_mastodon_subscription_info(
     let client = app::Entity::find()
         .filter(app::Column::Id.eq(app_id))
         .one(db)
-        .await?
-        .ok_or(Error::InvalidSubscription("app not found".to_string()))?;
+        .await?;
 
-    Ok((token.token, client.name))
+    if client.is_none() {
+        unsubscribe(db, subscription_id).await?;
+        return Err(Error::InvalidSubscription("app not found".to_string()));
+    }
+
+    Ok((token.token, client.unwrap().name))
 }
 
 async fn encode_mastodon_payload(
