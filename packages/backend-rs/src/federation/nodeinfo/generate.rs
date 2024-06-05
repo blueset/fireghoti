@@ -1,9 +1,8 @@
 //! NodeInfo generator
 
-use crate::config::CONFIG;
+use crate::config::{local_server_info, CONFIG};
 use crate::database::{cache, db_conn};
 use crate::federation::nodeinfo::schema::*;
-use crate::misc::meta::fetch_meta;
 use crate::model::entity::{note, user};
 use sea_orm::{ColumnTrait, DbErr, EntityTrait, PaginatorTrait, QueryFilter};
 use serde_json::json;
@@ -63,7 +62,7 @@ async fn statistics() -> Result<(u64, u64, u64, u64), DbErr> {
 async fn generate_nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
     let (local_users, local_active_halfyear, local_active_month, local_posts) =
         statistics().await?;
-    let meta = fetch_meta().await?;
+    let meta = local_server_info().await?;
     let metadata = HashMap::from([
         (
             "nodeName".to_string(),

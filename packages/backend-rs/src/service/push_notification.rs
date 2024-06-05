@@ -1,6 +1,6 @@
+use crate::config::local_server_info;
 use crate::database::db_conn;
 use crate::misc::get_note_summary::{get_note_summary, PartialNoteToSummarize};
-use crate::misc::meta::fetch_meta;
 use crate::model::entity::sw_subscription;
 use crate::util::http_client;
 use once_cell::sync::OnceCell;
@@ -140,7 +140,7 @@ pub async fn send_push_notification(
     kind: PushNotificationKind,
     content: &serde_json::Value,
 ) -> Result<(), Error> {
-    let meta = fetch_meta().await?;
+    let meta = local_server_info().await?;
 
     if !meta.enable_service_worker || meta.sw_public_key.is_none() || meta.sw_private_key.is_none()
     {

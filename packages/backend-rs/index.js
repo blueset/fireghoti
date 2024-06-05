@@ -310,7 +310,7 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { SECOND, MINUTE, HOUR, DAY, USER_ONLINE_THRESHOLD, USER_ACTIVE_THRESHOLD, FILE_TYPE_BROWSERSAFE, loadEnv, loadConfig, stringToAcct, acctToString, fetchNodeinfo, nodeinfo_2_1, nodeinfo_2_0, Protocol, Inbound, Outbound, greet, initializeRustLogger, showServerInfo, isBlockedServer, isSilencedServer, isAllowedServer, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getImageSizeFromUrl, getNoteSummary, isQuote, isSafeUrl, latestVersion, toMastodonId, fromMastodonId, fetchMeta, updateMetaCache, metaToPugArgs, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, removeOldAttestationChallenges, cpuInfo, cpuUsage, memoryUsage, storageUsage, AntennaSrc, DriveFileUsageHint, MutedNoteReason, NoteVisibility, NotificationType, PageVisibility, PollNoteVisibility, RelayStatus, UserEmojiModPerm, UserProfileFfvisibility, UserProfileMutingNotificationTypes, updateAntennasOnNewNote, watchNote, unwatchNote, PushNotificationKind, sendPushNotification, publishToChannelStream, ChatEvent, publishToChatStream, ChatIndexEvent, publishToChatIndexStream, publishToBroadcastStream, publishToGroupChatStream, publishToModerationStream, getTimestamp, genId, genIdAt, generateSecureRandomString, generateUserToken } = nativeBinding
+const { SECOND, MINUTE, HOUR, DAY, USER_ONLINE_THRESHOLD, USER_ACTIVE_THRESHOLD, FILE_TYPE_BROWSERSAFE, loadEnv, fetchMeta, updateMetaCache, metaToPugArgs, loadConfig, stringToAcct, acctToString, fetchNodeinfo, nodeinfo_2_1, nodeinfo_2_0, Protocol, Inbound, Outbound, greet, initializeRustLogger, showServerInfo, isBlockedServer, isSilencedServer, isAllowedServer, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, safeForSql, formatMilliseconds, getImageSizeFromUrl, getNoteSummary, isQuote, isSafeUrl, latestVersion, toMastodonId, fromMastodonId, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, removeOldAttestationChallenges, cpuInfo, cpuUsage, memoryUsage, storageUsage, AntennaSrc, DriveFileUsageHint, MutedNoteReason, NoteVisibility, NotificationType, PageVisibility, PollNoteVisibility, RelayStatus, UserEmojiModPerm, UserProfileFfvisibility, UserProfileMutingNotificationTypes, updateAntennasOnNewNote, watchNote, unwatchNote, PushNotificationKind, sendPushNotification, publishToChannelStream, ChatEvent, publishToChatStream, ChatIndexEvent, publishToChatIndexStream, publishToBroadcastStream, publishToGroupChatStream, publishToModerationStream, getTimestamp, genId, genIdAt, generateSecureRandomString, generateUserToken } = nativeBinding
 
 module.exports.SECOND = SECOND
 module.exports.MINUTE = MINUTE
@@ -320,6 +320,9 @@ module.exports.USER_ONLINE_THRESHOLD = USER_ONLINE_THRESHOLD
 module.exports.USER_ACTIVE_THRESHOLD = USER_ACTIVE_THRESHOLD
 module.exports.FILE_TYPE_BROWSERSAFE = FILE_TYPE_BROWSERSAFE
 module.exports.loadEnv = loadEnv
+module.exports.fetchMeta = fetchMeta
+module.exports.updateMetaCache = updateMetaCache
+module.exports.metaToPugArgs = metaToPugArgs
 module.exports.loadConfig = loadConfig
 module.exports.stringToAcct = stringToAcct
 module.exports.acctToString = acctToString
@@ -352,9 +355,6 @@ module.exports.isSafeUrl = isSafeUrl
 module.exports.latestVersion = latestVersion
 module.exports.toMastodonId = toMastodonId
 module.exports.fromMastodonId = fromMastodonId
-module.exports.fetchMeta = fetchMeta
-module.exports.updateMetaCache = updateMetaCache
-module.exports.metaToPugArgs = metaToPugArgs
 module.exports.nyaify = nyaify
 module.exports.hashPassword = hashPassword
 module.exports.verifyPassword = verifyPassword

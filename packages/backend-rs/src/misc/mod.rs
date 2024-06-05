@@ -13,7 +13,6 @@ pub mod is_quote;
 pub mod is_safe_url;
 pub mod latest_version;
 pub mod mastodon_id;
-pub mod meta;
 pub mod nyaify;
 pub mod password;
 pub mod reaction;

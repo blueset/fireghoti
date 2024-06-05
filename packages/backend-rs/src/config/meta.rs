@@ -1,6 +1,7 @@
+//! Server information
+
 use crate::database::db_conn;
 use crate::model::entity::meta;
-use rand::prelude::*;
 use sea_orm::{prelude::*, ActiveValue};
 use std::sync::Mutex;
 
@@ -11,18 +12,18 @@ fn set_cache(meta: &Meta) {
     let _ = CACHE.lock().map(|mut cache| *cache = Some(meta.clone()));
 }
 
-#[crate::export]
-pub async fn fetch_meta() -> Result<Meta, DbErr> {
-    fetch_meta_impl(true).await
+#[crate::export(js_name = "fetchMeta")]
+pub async fn local_server_info() -> Result<Meta, DbErr> {
+    local_server_info_impl(true).await
 }
 
-#[crate::export]
-pub async fn update_meta_cache() -> Result<(), DbErr> {
-    fetch_meta_impl(false).await?;
+#[crate::export(js_name = "updateMetaCache")]
+pub async fn update() -> Result<(), DbErr> {
+    local_server_info_impl(false).await?;
     Ok(())
 }
 
-async fn fetch_meta_impl(use_cache: bool) -> Result<Meta, DbErr> {
+async fn local_server_info_impl(use_cache: bool) -> Result<Meta, DbErr> {
     // try using cache
     if use_cache {
         if let Some(cache) = CACHE.lock().ok().and_then(|cache| cache.clone()) {
@@ -62,8 +63,9 @@ pub struct PugArgs {
     pub private_mode: Option<bool>,
 }
 
-#[crate::export]
+#[crate::ts_export]
 pub fn meta_to_pug_args(meta: Meta) -> PugArgs {
+    use rand::prelude::*;
     let mut rng = rand::thread_rng();
 
     let splash_icon = meta
