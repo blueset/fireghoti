@@ -29,6 +29,20 @@ export interface EnvConfig {
   slow: boolean
 }
 export function loadEnv(): EnvConfig
+export function fetchMeta(): Promise<Meta>
+export function updateMetaCache(): Promise<void>
+export interface PugArgs {
+  img: string | null
+  title: string
+  instanceName: string
+  desc: string | null
+  icon: string | null
+  splashIcon: string | null
+  themeColor: string | null
+  randomMotd: string
+  privateMode: boolean | null
+}
+export function metaToPugArgs(meta: Meta): PugArgs
 export interface ServerConfig {
   url: string
   port: number
@@ -433,20 +447,6 @@ export function isQuote(note: NoteLikeForIsQuote): boolean
 export function isSafeUrl(url: string): boolean
 /** Returns the latest Firefish version. */
 export function latestVersion(): Promise<string>
-export function fetchMeta(): Promise<Meta>
-export function updateMetaCache(): Promise<void>
-export interface PugArgs {
-  img: string | null
-  title: string
-  instanceName: string
-  desc: string | null
-  icon: string | null
-  splashIcon: string | null
-  themeColor: string | null
-  randomMotd: string
-  privateMode: boolean | null
-}
-export function metaToPugArgs(meta: Meta): PugArgs
 /**
  * Converts the given text into the cat language.
  *

@@ -1,3 +1,5 @@
+//! This module is used in the TypeScript backend only.
+
 #[crate::ts_export]
 pub const SECOND: i32 = 1000;
 #[crate::ts_export]

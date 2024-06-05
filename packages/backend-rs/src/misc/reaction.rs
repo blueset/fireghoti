@@ -1,5 +1,5 @@
+use crate::config::local_server_info;
 use crate::database::db_conn;
-use crate::misc::meta::fetch_meta;
 use crate::model::entity::emoji;
 use once_cell::sync::Lazy;
 use regex::Regex;
@@ -118,7 +118,7 @@ pub async fn to_db_reaction(reaction: Option<&str>, host: Option<&str>) -> Resul
         };
     };
 
-    Ok(fetch_meta().await?.default_reaction)
+    Ok(local_server_info().await?.default_reaction)
 }
 
 #[cfg(test)]

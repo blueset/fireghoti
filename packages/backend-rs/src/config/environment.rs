@@ -1,3 +1,5 @@
+//! Environment options
+
 // FIXME: Are these options used?
 #[crate::export(object)]
 pub struct EnvConfig {
