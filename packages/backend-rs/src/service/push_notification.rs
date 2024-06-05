@@ -21,6 +21,8 @@ pub enum Error {
     Serialize(#[from] serde_json::Error),
     #[error("Invalid content: {0}")]
     InvalidContent(String),
+    #[error("Invalid subscription: {0}")]
+    InvalidSubscription(String),
     #[error("Invalid notification ID: {0}")]
     InvalidId(#[from] InvalidIdError),
     #[error("HTTP client aquisition error: {0}")]
@@ -102,6 +104,40 @@ fn compact_content(
     Ok(serde_json::from_value(Json::Object(object.clone()))?)
 }
 
+/// Returns a tuple containing the token and client name
+async fn get_mastodon_subscription_info(
+    db: &DbConn,
+    subscription_id: &str,
+    token_id: &str,
+) -> Result<(String, String), Error> {
+    let token = access_token::Entity::find()
+        .filter(access_token::Column::Id.eq(token_id))
+        .one(db)
+        .await?;
+
+    if token.is_none() {
+        unsubscribe(db, subscription_id).await?;
+        return Err(Error::InvalidSubscription(
+            "access token not found".to_string(),
+        ));
+    }
+    let token = token.unwrap();
+
+    if token.app_id.is_none() {
+        unsubscribe(db, subscription_id).await?;
+        return Err(Error::InvalidSubscription("no app ID".to_string()));
+    }
+    let app_id = token.app_id.unwrap();
+
+    let client = app::Entity::find()
+        .filter(app::Column::Id.eq(app_id))
+        .one(db)
+        .await?
+        .ok_or(Error::InvalidSubscription("app not found".to_string()))?;
+
+    Ok((token.token, client.name))
+}
+
 async fn encode_mastodon_payload(
     mut content: serde_json::Value,
     db: &DbConn,
@@ -111,30 +147,19 @@ async fn encode_mastodon_payload(
         .as_object_mut()
         .ok_or(Error::InvalidContent("not a JSON object".to_string()))?;
 
-    let token_id = subscription
-        .app_access_token_id
-        .as_ref()
-        .ok_or(Error::InvalidContent("no access token".to_string()))?;
-    let token = access_token::Entity::find()
-        .filter(access_token::Column::Id.eq(token_id))
-        .one(db)
-        .await?
-        .ok_or(Error::InvalidContent("access token not found".to_string()))?;
+    if subscription.app_access_token_id.is_none() {
+        unsubscribe(db, &subscription.id).await?;
+        return Err(Error::InvalidSubscription("no access token".to_string()));
+    }
 
-    let app_id = token
-        .app_id
-        .ok_or(Error::InvalidContent("no app ID".to_string()))?;
+    let (token, client_name) = get_mastodon_subscription_info(
+        db,
+        &subscription.id,
+        subscription.app_access_token_id.as_ref().unwrap(),
+    )
+    .await?;
 
-    let client = app::Entity::find()
-        .filter(app::Column::Id.eq(app_id))
-        .one(db)
-        .await?
-        .ok_or(Error::InvalidContent("app not found".to_string()))?;
-
-    object.insert(
-        "access_token".to_string(),
-        serde_json::to_value(token.token)?,
-    );
+    object.insert("access_token".to_string(), serde_json::to_value(token)?);
 
     // Some apps expect notification_id to be an integer,
     // but doesn’t break when the ID doesn’t match the rest of API.
@@ -146,7 +171,7 @@ async fn encode_mastodon_payload(
         "Metatext",
         "Feditext",
     ]
-    .contains(&client.name.as_str())
+    .contains(&client_name.as_str())
     {
         let timestamp = object
             .get("notification_id")
@@ -173,6 +198,13 @@ async fn encode_mastodon_payload(
     Ok(format!("{}{:pad_length$}", res, ""))
 }
 
+async fn unsubscribe(db: &DbConn, subscription_id: &str) -> Result<(), DbErr> {
+    sw_subscription::Entity::delete_by_id(subscription_id)
+        .exec(db)
+        .await?;
+    Ok(())
+}
+
 async fn handle_web_push_failure(
     db: &DbConn,
     err: WebPushError,
@@ -191,9 +223,7 @@ async fn handle_web_push_failure(
         | WebPushError::MissingCryptoKeys
         | WebPushError::InvalidCryptoKeys
         | WebPushError::InvalidResponse => {
-            sw_subscription::Entity::delete_by_id(subscription_id)
-                .exec(db)
-                .await?;
+            unsubscribe(db, subscription_id).await?;
             tracing::info!("{}; {} was unsubscribed", error_message, subscription_id);
             tracing::debug!("reason: {:#?}", err);
         }
