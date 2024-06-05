@@ -428,7 +428,8 @@ export function isSafeUrl(url: string): boolean
 export function latestVersion(): Promise<string>
 export function toMastodonId(firefishId: string): string | null
 export function fromMastodonId(mastodonId: string): string | null
-export function fetchMeta(useCache: boolean): Promise<Meta>
+export function fetchMeta(): Promise<Meta>
+export function updateMetaCache(): Promise<void>
 export interface PugArgs {
   img: string | null
   title: string

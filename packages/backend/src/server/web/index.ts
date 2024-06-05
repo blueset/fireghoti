@@ -334,7 +334,7 @@ const getFeed = async (
 	noRenotes: string,
 	noReplies: string,
 ) => {
-	const meta = await fetchMeta(true);
+	const meta = await fetchMeta();
 	if (meta.privateMode) {
 		return;
 	}
@@ -482,7 +482,7 @@ const userPage: Router.Middleware = async (ctx, next) => {
 	}
 
 	const profile = await UserProfiles.findOneByOrFail({ userId: user.id });
-	const meta = await fetchMeta(true);
+	const meta = await fetchMeta();
 	const me = profile.fields
 		? profile.fields
 				.filter((filed) => filed.value?.match(/^https?:/))
@@ -531,7 +531,7 @@ router.get("/notes/:note", async (ctx, next) => {
 			const profile = await UserProfiles.findOneByOrFail({
 				userId: note.userId,
 			});
-			const meta = await fetchMeta(true);
+			const meta = await fetchMeta();
 			await ctx.render("note", {
 				...metaToPugArgs(meta),
 				note: packedNote,
@@ -565,7 +565,7 @@ router.get("/posts/:note", async (ctx, next) => {
 	if (note) {
 		const _note = await Notes.pack(note);
 		const profile = await UserProfiles.findOneByOrFail({ userId: note.userId });
-		const meta = await fetchMeta(true);
+		const meta = await fetchMeta();
 		await ctx.render("note", {
 			...metaToPugArgs(meta),
 			note: _note,
@@ -603,7 +603,7 @@ router.get("/@:user/pages/:page", async (ctx, next) => {
 	if (page) {
 		const _page = await Pages.pack(page);
 		const profile = await UserProfiles.findOneByOrFail({ userId: page.userId });
-		const meta = await fetchMeta(true);
+		const meta = await fetchMeta();
 		await ctx.render("page", {
 			...metaToPugArgs(meta),
 			page: _page,
@@ -635,7 +635,7 @@ router.get("/clips/:clip", async (ctx, next) => {
 	if (clip) {
 		const _clip = await Clips.pack(clip);
 		const profile = await UserProfiles.findOneByOrFail({ userId: clip.userId });
-		const meta = await fetchMeta(true);
+		const meta = await fetchMeta();
 		await ctx.render("clip", {
 			...metaToPugArgs(meta),
 			clip: _clip,
@@ -660,7 +660,7 @@ router.get("/gallery/:post", async (ctx, next) => {
 	if (post) {
 		const _post = await GalleryPosts.pack(post);
 		const profile = await UserProfiles.findOneByOrFail({ userId: post.userId });
-		const meta = await fetchMeta(true);
+		const meta = await fetchMeta();
 		await ctx.render("gallery-post", {
 			...metaToPugArgs(meta),
 			post: _post,
@@ -686,7 +686,7 @@ router.get("/channels/:channel", async (ctx, next) => {
 
 	if (channel) {
 		const _channel = await Channels.pack(channel);
-		const meta = await fetchMeta(true);
+		const meta = await fetchMeta();
 		await ctx.render("channel", {
 			...metaToPugArgs(meta),
 			channel: _channel,
@@ -739,7 +739,7 @@ router.get("/api/v1/streaming", async (ctx) => {
 
 // Render base html for all requests
 router.get("(.*)", async (ctx) => {
-	const meta = await fetchMeta(true);
+	const meta = await fetchMeta();
 
 	await ctx.render("base", {
 		...metaToPugArgs(meta),

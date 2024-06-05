@@ -9,7 +9,7 @@ export async function getInstance(
 	contact: Entity.Account,
 ) {
 	const [meta, totalUsers, totalStatuses] = await Promise.all([
-		fetchMeta(true),
+		fetchMeta(),
 		Users.count({ where: { host: IsNull() } }),
 		Notes.count({ where: { userHost: IsNull() } }),
 	]);

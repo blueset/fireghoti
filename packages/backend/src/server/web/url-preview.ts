@@ -22,7 +22,7 @@ export const urlPreviewHandler = async (ctx: Koa.Context) => {
 		return;
 	}
 
-	const meta = await fetchMeta(true);
+	const meta = await fetchMeta();
 
 	logger.info(
 		meta.summalyProxy

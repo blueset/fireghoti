@@ -27,7 +27,7 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async () => {
-	const meta = await fetchMeta(true);
+	const meta = await fetchMeta();
 	const motd = await Promise.all(meta.customMotd.map((x) => x));
 	return motd;
 });
