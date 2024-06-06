@@ -124,7 +124,7 @@ router.get("/avatar/@:acct", async (ctx) => {
 });
 
 router.get("/identicon/:x", async (ctx) => {
-	const meta = await fetchMeta(true);
+	const meta = await fetchMeta();
 	if (meta.enableIdenticonGeneration) {
 		const [temp, cleanup] = await createTemp();
 		await genIdenticon(ctx.params.x, fs.createWriteStream(temp));

@@ -5,6 +5,16 @@ Critical security updates are indicated by the :warning: icon.
 - Server administrators should check [notice-for-admins.md](./notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](./api-change.md) as well.
 
+## Unreleased
+
+- Add the ability to share posts via QR code
+- Update the API document page (`/api-doc`)
+- Fix bugs
+
+## [v20240601](https://firefish.dev/firefish/firefish/-/merge_requests/10943/commits)
+
+- Fix bugs
+
 ## [v20240523](https://firefish.dev/firefish/firefish/-/merge_requests/10898/commits)
 
 - Add scheduled posts

@@ -1,12 +1,12 @@
 use crate::database::{cache, db_conn, redis_conn, redis_key, RedisConnError};
 use crate::federation::acct::Acct;
-use crate::misc::get_note_all_texts::{all_texts, NoteLike};
+use crate::misc::get_note_all_texts::{all_texts, PartialNoteToElaborate};
 use crate::model::entity::{antenna, note};
 use crate::service::antenna::check_hit::{check_hit_antenna, AntennaCheckError};
 use crate::service::stream;
 use crate::util::id::{get_timestamp, InvalidIdError};
 use redis::{streams::StreamMaxlen, AsyncCommands, RedisError};
-use sea_orm::{DbErr, EntityTrait};
+use sea_orm::prelude::*;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
@@ -53,7 +53,7 @@ pub async fn update_antennas_on_new_note(
 ) -> Result<(), Error> {
     let note_cloned = note.clone();
     let note_all_texts = all_texts(
-        NoteLike {
+        PartialNoteToElaborate {
             file_ids: note.file_ids,
             user_id: note.user_id,
             text: note.text,

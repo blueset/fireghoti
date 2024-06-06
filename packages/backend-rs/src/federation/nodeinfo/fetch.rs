@@ -1,8 +1,13 @@
-use crate::service::nodeinfo::schema::*;
+//! NodeInfo fetcher
+//!
+//! ref: <https://nodeinfo.diaspora.software/protocol.html>
+
+use crate::federation::nodeinfo::schema::*;
 use crate::util::http_client;
 use isahc::AsyncReadResponseExt;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 
+/// Errors that can occur while fetching NodeInfo from a remote server
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("HTTP client aquisition error: {0}")]
@@ -19,25 +24,23 @@ pub enum Error {
     MissingNodeinfo,
 }
 
-#[derive(Deserialize, Serialize, Debug)]
+/// Represents the schema of `/.well-known/nodeinfo`.
+#[derive(Deserialize, Debug)]
 pub struct NodeinfoLinks {
     links: Vec<NodeinfoLink>,
 }
 
-#[derive(Deserialize, Serialize, Debug)]
+/// Represents one entry of `/.well-known/nodeinfo`.
+#[derive(Deserialize, Debug)]
 pub struct NodeinfoLink {
     rel: String,
     href: String,
 }
 
-#[inline]
-fn wellknown_nodeinfo_url(host: &str) -> String {
-    format!("https://{}/.well-known/nodeinfo", host)
-}
-
+/// Fetches `/.well-known/nodeinfo` and parses the result.
 async fn fetch_nodeinfo_links(host: &str) -> Result<NodeinfoLinks, Error> {
     let client = http_client::client()?;
-    let wellknown_url = wellknown_nodeinfo_url(host);
+    let wellknown_url = format!("https://{}/.well-known/nodeinfo", host);
     let mut wellknown_response = client.get_async(&wellknown_url).await?;
 
     if !wellknown_response.status().is_success() {
@@ -52,6 +55,9 @@ async fn fetch_nodeinfo_links(host: &str) -> Result<NodeinfoLinks, Error> {
     Ok(serde_json::from_str(&wellknown_response.text().await?)?)
 }
 
+/// Check if any of the following relations is present in the given [NodeinfoLinks].
+/// * <http://nodeinfo.diaspora.software/ns/schema/2.0>
+/// * <http://nodeinfo.diaspora.software/ns/schema/2.1>
 fn check_nodeinfo_link(links: NodeinfoLinks) -> Result<String, Error> {
     for link in links.links {
         if link.rel == "http://nodeinfo.diaspora.software/ns/schema/2.1"
@@ -64,6 +70,7 @@ fn check_nodeinfo_link(links: NodeinfoLinks) -> Result<String, Error> {
     Err(Error::MissingNodeinfo)
 }
 
+/// Fetches the nodeinfo from the given URL and parses the result.
 async fn fetch_nodeinfo_impl(nodeinfo_link: &str) -> Result<Nodeinfo20, Error> {
     let client = http_client::client()?;
     let mut response = client.get_async(nodeinfo_link).await?;
@@ -83,6 +90,7 @@ async fn fetch_nodeinfo_impl(nodeinfo_link: &str) -> Result<Nodeinfo20, Error> {
 // for napi export
 type Nodeinfo = Nodeinfo20;
 
+/// Fetches and returns the NodeInfo (version 2.0) of a remote server.
 #[crate::export]
 pub async fn fetch_nodeinfo(host: &str) -> Result<Nodeinfo, Error> {
     tracing::info!("fetching from {}", host);

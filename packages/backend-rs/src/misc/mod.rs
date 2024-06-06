@@ -1,3 +1,5 @@
+//! Miscellaneous utilities
+
 pub mod check_server_block;
 pub mod check_word_mute;
 pub mod convert_host;
@@ -11,7 +13,6 @@ pub mod is_quote;
 pub mod is_safe_url;
 pub mod latest_version;
 pub mod mastodon_id;
-pub mod meta;
 pub mod nyaify;
 pub mod password;
 pub mod reaction;

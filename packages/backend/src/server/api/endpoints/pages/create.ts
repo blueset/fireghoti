@@ -1,5 +1,5 @@
 import { Pages, DriveFiles } from "@/models/index.js";
-import { genId, HOUR } from "backend-rs";
+import { genIdAt, HOUR } from "backend-rs";
 import { Page } from "@/models/entities/page.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
@@ -97,11 +97,13 @@ export default define(meta, paramDef, async (ps, user) => {
 		}
 	});
 
+	const now = new Date();
+
 	const page = await Pages.insert(
 		new Page({
-			id: genId(),
-			createdAt: new Date(),
-			updatedAt: new Date(),
+			id: genIdAt(now),
+			createdAt: now,
+			updatedAt: now,
 			title: ps.title,
 			name: ps.name,
 			summary: ps.summary,

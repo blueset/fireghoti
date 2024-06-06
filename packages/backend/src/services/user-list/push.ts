@@ -3,14 +3,16 @@ import type { User } from "@/models/entities/user.js";
 import type { UserList } from "@/models/entities/user-list.js";
 import { UserListJoinings, Users } from "@/models/index.js";
 import type { UserListJoining } from "@/models/entities/user-list-joining.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import { fetchProxyAccount } from "@/misc/fetch-proxy-account.js";
 import createFollowing from "@/services/following/create.js";
 
 export async function pushUserToUserList(target: User, list: UserList) {
+	const now = new Date();
+
 	await UserListJoinings.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		userId: target.id,
 		userListId: list.id,
 	} as UserListJoining);

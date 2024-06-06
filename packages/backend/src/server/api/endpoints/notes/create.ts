@@ -238,11 +238,9 @@ export default define(meta, paramDef, async (ps, user) => {
 
 		// Check blocking
 		if (renote.userId !== user.id) {
-			const isBlocked = await Blockings.exists({
-				where: {
-					blockerId: renote.userId,
-					blockeeId: user.id,
-				},
+			const isBlocked = await Blockings.existsBy({
+				blockerId: renote.userId,
+				blockeeId: user.id,
 			});
 			if (isBlocked) {
 				throw new ApiError(meta.errors.youHaveBeenBlocked);
@@ -265,11 +263,9 @@ export default define(meta, paramDef, async (ps, user) => {
 
 		// Check blocking
 		if (reply.userId !== user.id) {
-			const isBlocked = await Blockings.exists({
-				where: {
-					blockerId: reply.userId,
-					blockeeId: user.id,
-				},
+			const isBlocked = await Blockings.existsBy({
+				blockerId: reply.userId,
+				blockeeId: user.id,
 			});
 			if (isBlocked) {
 				throw new ApiError(meta.errors.youHaveBeenBlocked);

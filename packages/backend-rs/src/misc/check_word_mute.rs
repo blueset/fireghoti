@@ -1,4 +1,4 @@
-use crate::misc::get_note_all_texts::{all_texts, NoteLike};
+use crate::misc::get_note_all_texts::{all_texts, PartialNoteToElaborate};
 use once_cell::sync::Lazy;
 use regex::Regex;
 use sea_orm::DbErr;
@@ -26,9 +26,23 @@ fn check_word_mute_impl(
     })
 }
 
+/// Returns whether `note` should be hard-muted.
+///
+/// More specifically, this function returns `Ok(true)`
+/// if and only if one or more of these conditions are met:
+///
+/// * the note (text or CW) contains any of the words/patterns
+/// * the "parent" note(s) (reply, quote) contain any of the words/patterns
+/// * the alt text of the attached files contains any of the words/patterns
+///
+/// # Arguments
+///
+/// * `note` : [PartialNoteToElaborate] object
+/// * `muted_words` : list of muted keyword lists (each array item is a space-separated keyword list that represents an AND condition)
+/// * `muted_patterns` : list of JavaScript-style (e.g., `/foo/i`) regular expressions
 #[crate::export]
 pub async fn check_word_mute(
-    note: NoteLike,
+    note: PartialNoteToElaborate,
     muted_words: &[String],
     muted_patterns: &[String],
 ) -> Result<bool, DbErr> {

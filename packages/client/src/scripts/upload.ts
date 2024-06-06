@@ -18,6 +18,7 @@ export const uploads = ref<Uploading[]>([]);
 
 const compressTypeMap = {
 	"image/jpeg": { quality: 0.85, mimeType: "image/jpeg" },
+	"image/png": { quality: 0.85, mimeType: "image/jpeg" },
 	"image/webp": { quality: 0.85, mimeType: "image/png" },
 	"image/svg+xml": { quality: 1, mimeType: "image/png" },
 } as const;
@@ -52,7 +53,7 @@ export function uploadFile(
 
 			uploads.value.push(ctx);
 
-			let resizedImage: any;
+			let resizedImage: Blob | undefined;
 			if (!keepOriginal && file.type in compressTypeMap) {
 				const imgConfig = compressTypeMap[file.type];
 
@@ -65,12 +66,17 @@ export function uploadFile(
 
 				try {
 					resizedImage = await readAndCompressImage(file, config);
-					ctx.name =
-						file.type !== imgConfig.mimeType
-							? `${ctx.name}.${
-									mimeTypeMap[compressTypeMap[file.type].mimeType]
-								}`
-							: ctx.name;
+					if (resizedImage.size > file.size) {
+						// if compression made the picture larger, give up compression
+						resizedImage = undefined;
+					} else {
+						ctx.name =
+							file.type !== imgConfig.mimeType
+								? `${ctx.name}.${
+										mimeTypeMap[compressTypeMap[file.type].mimeType]
+									}`
+								: ctx.name;
+					}
 				} catch (err) {
 					console.error("Failed to resize image", err);
 				}

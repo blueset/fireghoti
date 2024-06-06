@@ -6,6 +6,7 @@ export const meta = {
 
 	requireCredential: false,
 	requireCredentialPrivateMode: true,
+	allowGet: true,
 } as const;
 
 export const paramDef = {

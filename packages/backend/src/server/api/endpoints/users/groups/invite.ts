@@ -3,7 +3,7 @@ import {
 	UserGroupJoinings,
 	UserGroupInvitations,
 } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import type { UserGroupInvitation } from "@/models/entities/user-group-invitation.js";
 import { createNotification } from "@/services/create-notification.js";
 import { getUser } from "@/server/api/common/getters.js";
@@ -91,9 +91,11 @@ export default define(meta, paramDef, async (ps, me) => {
 		throw new ApiError(meta.errors.alreadyInvited);
 	}
 
+	const now = new Date();
+
 	const invitation = await UserGroupInvitations.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		userId: user.id,
 		userGroupId: userGroup.id,
 	} as UserGroupInvitation).then((x) =>

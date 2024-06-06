@@ -1,3 +1,5 @@
+//! Utilities for using Redis cache
+
 use crate::database::{redis_conn, redis_key, RedisConnError};
 use redis::{AsyncCommands, RedisError};
 use serde::{Deserialize, Serialize};
@@ -21,10 +23,8 @@ pub enum Error {
     Redis(#[from] RedisError),
     #[error("Redis connection error: {0}")]
     RedisConn(#[from] RedisConnError),
-    #[error("Data serialization error: {0}")]
-    Serialize(#[from] rmp_serde::encode::Error),
-    #[error("Data deserialization error: {0}")]
-    Deserialize(#[from] rmp_serde::decode::Error),
+    #[error("Failed to encode the data: {0}")]
+    Encode(#[from] rmp_serde::encode::Error),
 }
 
 #[inline]
@@ -46,27 +46,30 @@ fn wildcard(category: Category) -> String {
 ///
 /// This overwrites the exsisting cache with the same key.
 ///
-/// ## Arguments
+/// # Arguments
 ///
-/// * `key` - key (will be prefixed automatically)
-/// * `value` - (de)serializable value
-/// * `expire_seconds` - TTL
+/// * `key` : key (prefixed automatically)
+/// * `value` : (de)serializable value
+/// * `expire_seconds` : TTL
 ///
-/// ## Example
+/// # Example
 ///
 /// ```
 /// # use backend_rs::database::cache;
-/// # tokio_test::block_on(async {
+/// # async fn f() -> Result<(), Box<dyn std::error::Error>> {
 /// let key = "apple";
 /// let data = "I want to cache this string".to_string();
 ///
 /// // caches the data for 10 seconds
-/// cache::set(key, &data, 10).await;
+/// cache::set(key, &data, 10).await?;
 ///
 /// // get the cache
-/// let cached_data = cache::get::<String>(key).await.unwrap();
+/// let cached_data = cache::get::<String>(key).await?;
+///
+/// assert!(cached_data.is_some());
 /// assert_eq!(data, cached_data.unwrap());
-/// # })
+/// # Ok(())
+/// # }
 /// ```
 pub async fn set<V: for<'a> Deserialize<'a> + Serialize>(
     key: &str,
@@ -89,34 +92,36 @@ pub async fn set<V: for<'a> Deserialize<'a> + Serialize>(
 /// If the Redis connection is fine, this returns `Ok(data)` where `data`
 /// is the cached value. Returns `Ok(None)` if there is no value corresponding to `key`.
 ///
-/// ## Arguments
+/// # Argument
 ///
-/// * `key` - key (will be prefixed automatically)
+/// * `key` : key (will be prefixed automatically)
 ///
-/// ## Example
+/// # Example
 ///
 /// ```
 /// # use backend_rs::database::cache;
-/// # tokio_test::block_on(async {
+/// # async fn f() -> Result<(), Box<dyn std::error::Error>> {
 /// let key = "banana";
 /// let data = "I want to cache this string".to_string();
 ///
 /// // set cache
-/// cache::set(key, &data, 10).await.unwrap();
+/// cache::set(key, &data, 10).await?;
 ///
 /// // get cache
-/// let cached_data = cache::get::<String>(key).await.unwrap();
+/// let cached_data = cache::get::<String>(key).await?;
+/// assert!(cached_data.is_some());
 /// assert_eq!(data, cached_data.unwrap());
 ///
 /// // get nonexistent (or expired) cache
-/// let no_cache = cache::get::<String>("nonexistent").await.unwrap();
+/// let no_cache = cache::get::<String>("nonexistent").await?;
 /// assert!(no_cache.is_none());
-/// # })
+/// # Ok(())
+/// # }
 /// ```
 pub async fn get<V: for<'a> Deserialize<'a> + Serialize>(key: &str) -> Result<Option<V>, Error> {
     let serialized_value: Option<Vec<u8>> = redis_conn().await?.get(prefix_key(key)).await?;
     Ok(match serialized_value {
-        Some(v) => Some(rmp_serde::from_slice::<V>(v.as_ref())?),
+        Some(v) => rmp_serde::from_slice::<V>(v.as_ref()).ok(),
         None => None,
     })
 }
@@ -126,29 +131,30 @@ pub async fn get<V: for<'a> Deserialize<'a> + Serialize>(key: &str) -> Result<Op
 /// If the Redis connection is fine, this returns `Ok(())`
 /// regardless of whether the cache exists.
 ///
-/// ## Arguments
+/// # Argument
 ///
-/// * `key` - key (will be prefixed automatically)
+/// * `key` : key (prefixed automatically)
 ///
-/// ## Example
+/// # Example
 ///
 /// ```
 /// # use backend_rs::database::cache;
-/// # tokio_test::block_on(async {
+/// # async fn f() -> Result<(), Box<dyn std::error::Error>> {
 /// let key = "chocolate";
 /// let value = "I want to cache this string".to_string();
 ///
 /// // set cache
-/// cache::set(key, &value, 10).await.unwrap();
+/// cache::set(key, &value, 10).await?;
 ///
 /// // delete the cache
-/// cache::delete("foo").await.unwrap();
-/// cache::delete("nonexistent").await.unwrap(); // this is okay
+/// cache::delete("foo").await?;
+/// cache::delete("nonexistent").await?; // this is okay
 ///
 /// // the cache is gone
-/// let cached_value = cache::get::<String>("foo").await.unwrap();
+/// let cached_value = cache::get::<String>("foo").await?;
 /// assert!(cached_value.is_none());
-/// # })
+/// # Ok(())
+/// # }
 /// ```
 pub async fn delete(key: &str) -> Result<(), Error> {
     Ok(redis_conn().await?.del(prefix_key(key)).await?)
@@ -159,12 +165,12 @@ pub async fn delete(key: &str) -> Result<(), Error> {
 /// The usage is the same as [set], except that you need to
 /// use [get_one] and [delete_one] to get/delete the cache.
 ///
-/// ## Arguments
+/// # Arguments
 ///
-/// * `category` - one of [Category]
-/// * `key` - key (will be prefixed automatically)
-/// * `value` - (de)serializable value
-/// * `expire_seconds` - TTL
+/// * `category` : one of [Category]
+/// * `key` : key (prefixed automatically)
+/// * `value` : (de)serializable value
+/// * `expire_seconds` : TTL
 pub async fn set_one<V: for<'a> Deserialize<'a> + Serialize>(
     category: Category,
     key: &str,
@@ -178,10 +184,10 @@ pub async fn set_one<V: for<'a> Deserialize<'a> + Serialize>(
 ///
 /// The usage is basically the same as [get].
 ///
-/// ## Arguments
+/// # Arguments
 ///
-/// * `category` - one of [Category]
-/// * `key` - key (will be prefixed automatically)
+/// * `category` : one of [Category]
+/// * `key` : key (prefixed automatically)
 pub async fn get_one<V: for<'a> Deserialize<'a> + Serialize>(
     category: Category,
     key: &str,
@@ -193,19 +199,19 @@ pub async fn get_one<V: for<'a> Deserialize<'a> + Serialize>(
 ///
 /// The usage is basically the same as [delete].
 ///
-/// ## Arguments
+/// # Arguments
 ///
-/// * `category` - one of [Category]
-/// * `key` - key (will be prefixed automatically)
+/// - `category` : one of [Category]
+/// - `key` : key (prefixed automatically)
 pub async fn delete_one(category: Category, key: &str) -> Result<(), Error> {
     delete(&categorize(category, key)).await
 }
 
 /// Deletes all Redis caches under a `category`.
 ///
-/// ## Arguments
+/// # Argument
 ///
-/// * `category` - one of [Category]
+/// * `category` : one of [Category]
 pub async fn delete_all(category: Category) -> Result<(), Error> {
     let mut redis = redis_conn().await?;
     let keys: Vec<Vec<u8>> = redis.keys(wildcard(category)).await?;

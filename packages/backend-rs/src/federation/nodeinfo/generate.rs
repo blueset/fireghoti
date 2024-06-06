@@ -1,12 +1,14 @@
-use crate::config::CONFIG;
+//! NodeInfo generator
+
+use crate::config::{local_server_info, CONFIG};
 use crate::database::{cache, db_conn};
-use crate::misc::meta::fetch_meta;
+use crate::federation::nodeinfo::schema::*;
 use crate::model::entity::{note, user};
-use crate::service::nodeinfo::schema::*;
 use sea_orm::{ColumnTrait, DbErr, EntityTrait, PaginatorTrait, QueryFilter};
 use serde_json::json;
 use std::collections::HashMap;
 
+/// Errors that can occur while generating NodeInfo of the local server
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Database error: {0}")]
@@ -17,6 +19,14 @@ pub enum Error {
     Json(#[from] serde_json::Error),
 }
 
+/// Fetches the number of total/active local users and local posts.
+///
+/// # Return value
+/// A tuple containing the following information in this order:
+/// * the total number of local users
+/// * the total number of local users active in the last 6 months
+/// * the total number of local users active in the last month (MAU)
+/// * the total number of posts from local users
 async fn statistics() -> Result<(u64, u64, u64, u64), DbErr> {
     let db = db_conn().await?;
 
@@ -47,10 +57,12 @@ async fn statistics() -> Result<(u64, u64, u64, u64), DbErr> {
     )
 }
 
+/// Generates NodeInfo (version 2.1) of the local server.
+/// This function doesn't use caches and returns the latest information.
 async fn generate_nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
     let (local_users, local_active_halfyear, local_active_month, local_posts) =
         statistics().await?;
-    let meta = fetch_meta(true).await?;
+    let meta = local_server_info().await?;
     let metadata = HashMap::from([
         (
             "nodeName".to_string(),
@@ -112,6 +124,7 @@ async fn generate_nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
     })
 }
 
+/// Returns NodeInfo (version 2.1) of the local server.
 pub async fn nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
     const NODEINFO_2_1_CACHE_KEY: &str = "nodeinfo_2_1";
 
@@ -126,6 +139,7 @@ pub async fn nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
     }
 }
 
+/// Returns NodeInfo (version 2.0) of the local server.
 pub async fn nodeinfo_2_0() -> Result<Nodeinfo20, Error> {
     Ok(nodeinfo_2_1().await?.into())
 }

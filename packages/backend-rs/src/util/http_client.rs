@@ -1,3 +1,5 @@
+//! Shared [isahc] HTTP client
+
 use crate::config::CONFIG;
 use isahc::{config::*, HttpClient};
 use once_cell::sync::OnceCell;
@@ -13,6 +15,22 @@ pub enum Error {
 
 static CLIENT: OnceCell<HttpClient> = OnceCell::new();
 
+/// Returns an [HttpClient] that takes the proxy configuration into account.
+///
+/// # Example
+/// ```no_run
+/// # use backend_rs::util::http_client::client;
+/// use isahc::ReadResponseExt;
+///
+/// # fn f() -> Result<(), Box<dyn std::error::Error>> {
+/// let mut response = client()?.get("https://example.com/")?;
+///
+/// if response.status().is_success() {
+///     println!("{}", response.text()?);
+/// }
+/// # Ok(())
+/// # }
+/// ```
 pub fn client() -> Result<HttpClient, Error> {
     CLIENT
         .get_or_try_init(|| {

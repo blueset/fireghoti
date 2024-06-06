@@ -68,12 +68,10 @@ export async function readUserMessagingMessage(
 		await sendPushNotification(userId, PushNotificationKind.ReadAllChats, {});
 	} else {
 		// そのユーザーとのメッセージで未読がなければイベント発行
-		const hasUnread = await MessagingMessages.exists({
-			where: {
-				userId: otherpartyId,
-				recipientId: userId,
-				isRead: false,
-			},
+		const hasUnread = await MessagingMessages.existsBy({
+			userId: otherpartyId,
+			recipientId: userId,
+			isRead: false,
 		});
 
 		if (!hasUnread) {

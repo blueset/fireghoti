@@ -1,9 +1,13 @@
+//! Schema definitions of NodeInfo version 2.0 and 2.1
+//!
+//! ref: <https://nodeinfo.diaspora.software/schema.html>
+
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 // TODO: I want to use these macros but they don't work with rmp_serde
-// - #[serde(skip_serializing_if = "Option::is_none")] (https://github.com/3Hren/msgpack-rust/issues/86)
-// - #[serde(tag = "version", rename = "2.1")] (https://github.com/3Hren/msgpack-rust/issues/318)
+// * #[serde(skip_serializing_if = "Option::is_none")] (https://github.com/3Hren/msgpack-rust/issues/86)
+// * #[serde(tag = "version", rename = "2.1")] (https://github.com/3Hren/msgpack-rust/issues/318)
 
 /// NodeInfo schema version 2.1. <https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.1>
 #[derive(Deserialize, Serialize, Debug, PartialEq)]

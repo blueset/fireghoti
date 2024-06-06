@@ -1,6 +1,5 @@
+use crate::config::local_server_info;
 use crate::database::db_conn;
-use crate::misc::convert_host::to_puny;
-use crate::misc::meta::fetch_meta;
 use crate::model::entity::emoji;
 use once_cell::sync::Lazy;
 use regex::Regex;
@@ -87,7 +86,7 @@ pub async fn to_db_reaction(reaction: Option<&str>, host: Option<&str>) -> Resul
 
             if let Some(host) = host {
                 // remote emoji
-                let ascii_host = to_puny(host)?;
+                let ascii_host = idna::domain_to_ascii(host)?;
 
                 // TODO: Does SeaORM have the `exists` method?
                 if emoji::Entity::find()
@@ -119,7 +118,7 @@ pub async fn to_db_reaction(reaction: Option<&str>, host: Option<&str>) -> Resul
         };
     };
 
-    Ok(fetch_meta(true).await?.default_reaction)
+    Ok(local_server_info().await?.default_reaction)
 }
 
 #[cfg(test)]

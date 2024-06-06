@@ -1,5 +1,5 @@
 import { UserGroups, UserGroupJoinings } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import type { UserGroup } from "@/models/entities/user-group.js";
 import type { UserGroupJoining } from "@/models/entities/user-group-joining.js";
 import define from "@/server/api/define.js";
@@ -30,17 +30,19 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, user) => {
+	const now = new Date();
+
 	const userGroup = await UserGroups.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		userId: user.id,
 		name: ps.name,
 	} as UserGroup).then((x) => UserGroups.findOneByOrFail(x.identifiers[0]));
 
 	// Push the owner
 	await UserGroupJoinings.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		userId: user.id,
 		userGroupId: userGroup.id,
 	} as UserGroupJoining);

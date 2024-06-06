@@ -4,11 +4,10 @@ import semver from "semver";
 
 import Logger from "@/services/logger.js";
 import {
-	fetchMeta,
 	greet,
-	initializeRustLogger,
 	removeOldAttestationChallenges,
 	showServerInfo,
+	updateMetaCache,
 	type Config,
 } from "backend-rs";
 import { config, envOption } from "@/config.js";
@@ -24,7 +23,6 @@ const bootLogger = logger.createSubLogger("boot", "magenta", false);
 export async function masterMain() {
 	// initialize app
 	try {
-		initializeRustLogger();
 		greet();
 		showEnvironment();
 		showServerInfo();
@@ -55,7 +53,7 @@ export async function masterMain() {
 		import("../daemons/server-stats.js").then((x) => x.default());
 		import("../daemons/queue-stats.js").then((x) => x.default());
 		// Update meta cache every 5 minitues
-		setInterval(() => fetchMeta(false), 1000 * 60 * 5);
+		setInterval(() => updateMetaCache(), 1000 * 60 * 5);
 		// Remove old attestation challenges
 		setInterval(() => removeOldAttestationChallenges(), 1000 * 60 * 30);
 	}

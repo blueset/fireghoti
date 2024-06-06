@@ -77,7 +77,7 @@ const manifest = {
 };
 
 export const manifestHandler = async (ctx: Koa.Context) => {
-	const instance = await fetchMeta(true);
+	const instance = await fetchMeta();
 
 	manifest.short_name = instance.name || "Firefish";
 	manifest.name = instance.name || "Firefish";

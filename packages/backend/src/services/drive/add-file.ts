@@ -78,7 +78,7 @@ async function save(
 	// thunbnail, webpublic を必要なら生成
 	const alts = await generateAlts(path, type, !file.uri);
 
-	const meta = await fetchMeta(true);
+	const meta = await fetchMeta();
 
 	if (meta.useObjectStorage) {
 		//#region ObjectStorage params
@@ -363,7 +363,7 @@ async function upload(
 	if (type === "image/apng") type = "image/png";
 	if (!FILE_TYPE_BROWSERSAFE.includes(type)) type = "application/octet-stream";
 
-	const meta = await fetchMeta(true);
+	const meta = await fetchMeta();
 
 	const params = {
 		Bucket: meta.objectStorageBucket,
@@ -505,7 +505,7 @@ export async function addFile({
 		const usage = await DriveFiles.calcDriveUsageOf(user);
 		const u = await Users.findOneBy({ id: user.id });
 
-		const instance = await fetchMeta(true);
+		const instance = await fetchMeta();
 		let driveCapacity =
 			1024 *
 			1024 *
@@ -577,7 +577,7 @@ export async function addFile({
 		: null;
 
 	const folder = await fetchFolder();
-	const instance = await fetchMeta(true);
+	const instance = await fetchMeta();
 
 	let file = new DriveFile();
 	file.id = genId();

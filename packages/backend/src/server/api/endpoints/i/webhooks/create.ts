@@ -1,5 +1,5 @@
 import define from "@/server/api/define.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import { Webhooks } from "@/models/index.js";
 import { publishInternalEvent } from "@/services/stream.js";
 import { webhookEventTypes } from "@/models/entities/webhook.js";
@@ -30,9 +30,10 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, user) => {
+	const now = new Date();
 	const webhook = await Webhooks.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		userId: user.id,
 		name: ps.name,
 		url: ps.url,

@@ -1,5 +1,5 @@
 import { PromoReads } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { getNote } from "@/server/api/common/getters.js";
@@ -33,20 +33,20 @@ export default define(meta, paramDef, async (ps, user) => {
 		throw err;
 	});
 
-	const exist = await PromoReads.exist({
-		where: {
-			noteId: note.id,
-			userId: user.id,
-		},
+	const exists = await PromoReads.existsBy({
+		noteId: note.id,
+		userId: user.id,
 	});
 
-	if (exist) {
+	if (exists) {
 		return;
 	}
 
+	const now = new Date();
+
 	await PromoReads.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		noteId: note.id,
 		userId: user.id,
 	});

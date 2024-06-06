@@ -3,7 +3,7 @@ import { IsNull } from "typeorm";
 import { config } from "@/config.js";
 import { Users, UserProfiles, PasswordResetRequests } from "@/models/index.js";
 import { sendEmail } from "@/services/send-email.js";
-import { HOUR, genId } from "backend-rs";
+import { HOUR, genIdAt } from "backend-rs";
 import define from "@/server/api/define.js";
 
 export const meta = {
@@ -54,10 +54,11 @@ export default define(meta, paramDef, async (ps) => {
 	}
 
 	const token = rndstr("a-z0-9", 64);
+	const now = new Date();
 
 	await PasswordResetRequests.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		userId: profile.userId,
 		token,
 	});

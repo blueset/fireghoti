@@ -2,7 +2,7 @@ import define from "@/server/api/define.js";
 import { UserProfiles, AttestationChallenges } from "@/models/index.js";
 import { promisify } from "node:util";
 import * as crypto from "node:crypto";
-import { genId, verifyPassword } from "backend-rs";
+import { genIdAt, verifyPassword } from "backend-rs";
 import { hash } from "@/server/api/2fa.js";
 
 const randomBytes = promisify(crypto.randomBytes);
@@ -39,13 +39,14 @@ export default define(meta, paramDef, async (ps, user) => {
 		.replace(/\+/g, "-")
 		.replace(/\//g, "_");
 
-	const challengeId = genId();
+	const now = new Date();
+	const challengeId = genIdAt(now);
 
 	await AttestationChallenges.insert({
 		userId: user.id,
 		id: challengeId,
 		challenge: hash(Buffer.from(challenge, "utf-8")).toString("hex"),
-		createdAt: new Date(),
+		createdAt: now,
 		registrationChallenge: true,
 	});
 

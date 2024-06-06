@@ -1,23 +1,19 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<title>Firefish API</title>
-		<!-- needed for adaptive design -->
-		<meta charset="utf-8"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-
-		<!--
-		ReDoc doesn't change outer page styles
-		-->
-		<style>
-			body {
-				margin: 0;
-				padding: 0;
-			}
-		</style>
+		<!-- Embed elements Elements via Web Component -->
+		<script src="https://unpkg.com/@stoplight/elements/web-components.min.js" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://unpkg.com/@stoplight/elements/styles.min.css">
 	</head>
 	<body>
-		<redoc spec-url="/api.json" expand-responses="200" expand-single-schema-field="true"></redoc>
-		<script src="https://cdn.jsdelivr.net/npm/redoc@2.0.0-rc.50/bundles/redoc.standalone.js" integrity="sha256-WJbngBWN9vp6vkEuzeoSj5tE5saW9Hfj6/SinkzhL2s=" crossorigin="anonymous"></script>
+		<elements-api
+			id="element-main"
+			apiDescriptionUrl='/api.json'
+			router="hash"
+			layout="responsive"
+		/>
 	</body>
 </html>

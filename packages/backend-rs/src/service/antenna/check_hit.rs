@@ -2,7 +2,7 @@ use crate::config::CONFIG;
 use crate::database::{cache, db_conn};
 use crate::federation::acct::Acct;
 use crate::model::entity::{antenna, blocking, following, note, sea_orm_active_enums::*};
-use sea_orm::{ColumnTrait, DbErr, EntityTrait, QueryFilter, QuerySelect};
+use sea_orm::{prelude::*, QuerySelect};
 
 #[derive(thiserror::Error, Debug)]
 pub enum AntennaCheckError {

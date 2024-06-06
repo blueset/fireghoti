@@ -1,5 +1,5 @@
 import define from "@/server/api/define.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import { Clips } from "@/models/index.js";
 
 export const meta = {
@@ -33,9 +33,10 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, user) => {
+	const now = new Date();
 	const clip = await Clips.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		userId: user.id,
 		name: ps.name,
 		isPublic: ps.isPublic,

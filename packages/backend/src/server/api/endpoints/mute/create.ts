@@ -1,7 +1,7 @@
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { getUser } from "@/server/api/common/getters.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import { Mutings, NoteWatchings } from "@/models/index.js";
 import type { Muting } from "@/models/entities/muting.js";
 import { publishUserEvent } from "@/services/stream.js";
@@ -64,14 +64,12 @@ export default define(meta, paramDef, async (ps, user) => {
 	});
 
 	// Check if already muting
-	const exist = await Mutings.exist({
-		where: {
-			muterId: muter.id,
-			muteeId: mutee.id,
-		},
+	const exists = await Mutings.existsBy({
+		muterId: muter.id,
+		muteeId: mutee.id,
 	});
 
-	if (exist) {
+	if (exists) {
 		throw new ApiError(meta.errors.alreadyMuting);
 	}
 
@@ -79,10 +77,12 @@ export default define(meta, paramDef, async (ps, user) => {
 		return;
 	}
 
+	const now = new Date();
+
 	// Create mute
 	await Mutings.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		expiresAt: ps.expiresAt ? new Date(ps.expiresAt) : null,
 		muterId: muter.id,
 		muteeId: mutee.id,

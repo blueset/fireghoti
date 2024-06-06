@@ -3,6 +3,14 @@ use proc_macro2::{TokenStream, TokenTree};
 use quote::{quote, ToTokens};
 
 /// Read the version field in the project root package.json at compile time
+///
+/// # Example
+/// You can get a compile-time constant version number using this macro:
+/// ```
+/// # use macro_rs::read_version_from_package_json;
+/// // VERSION == "YYYYMMDD" (or "YYYYMMDD-X")
+/// const VERSION: &str = read_version_from_package_json!();
+/// ```
 #[proc_macro]
 pub fn read_version_from_package_json(_item: proc_macro::TokenStream) -> proc_macro::TokenStream {
     #[derive(serde::Deserialize)]
@@ -17,7 +25,14 @@ pub fn read_version_from_package_json(_item: proc_macro::TokenStream) -> proc_ma
     quote! { #version }.into()
 }
 
-/// Export this function, struct, enum, const, etc. to TypeScript.
+/// Export a function, struct, enum, const, etc. to TypeScript.
+///
+/// This is a wrapper of [macro@napi] that expands to
+/// ```no_run
+/// #[cfg_attr(feature = "napi", macro_rs::napi(attr))]
+/// # fn f() {} // to work around doc test compilation error
+/// ```
+/// where `attr` is given attribute(s). See [macro@napi] for more details.
 #[proc_macro_attribute]
 pub fn export(
     attr: proc_macro::TokenStream,
@@ -33,8 +48,16 @@ pub fn export(
     .into()
 }
 
-/// Export this function, struct, enum, const, etc. to TypeScript
-/// and make it unable to use in Rust
+/// Export a function, struct, enum, const, etc. to TypeScript
+/// and make it unable to use in Rust.
+///
+/// This is a wrapper of [macro@napi] that expands to
+/// ```no_run
+/// #[cfg(feature = "napi")]
+/// #[macro_rs::napi(attr)]
+/// # fn f() {} // to work around doc test compilation error
+/// ```
+/// where `attr` is given attribute(s). See [macro@napi] for more details.
 #[proc_macro_attribute]
 pub fn ts_export(
     attr: proc_macro::TokenStream,
@@ -51,7 +74,7 @@ pub fn ts_export(
     .into()
 }
 
-/// Creates extra wrapper function for napi.
+/// Creates an extra wrapper function for [napi_derive](https://docs.rs/napi-derive/latest/napi_derive/).
 ///
 /// The macro is simply converted into `napi_derive::napi(...)`
 /// if it is not applied to a function.
@@ -61,37 +84,34 @@ pub fn ts_export(
 /// - `js_name` to the camelCase version of the original function name (for functions)
 ///
 /// The types of the function arguments is converted with following rules:
-/// - `&str` and `&mut str` are converted to `String`
-/// - `&[T]` and `&mut [T]` are converted to `Vec<T>`
+/// - `&str` and `&mut str` are converted to [`String`]
+/// - `&[T]` and `&mut [T]` are converted to [`Vec<T>`]
 /// - `&T` and `&mut T` are converted to `T`
 /// - Other `T` remains `T`
 ///
-/// In addition, return type `Result<T>` and `Result<T, E>` are converted to `napi::Result<T>`.
-/// Note that `E` must implement `std::string::ToString` trait.
+/// In addition, return type [`Result<T>`] and [`Result<T, E>`] are converted to [`napi::Result<T>`](https://docs.rs/napi/latest/napi/type.Result.html).
+/// Note that `E` must implement [`std::string::ToString`] trait.
 ///
 /// # Examples
 /// ## Applying the macro to a struct
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// #[macro_rs::napi(object)]
 /// struct Person {
-///   id: i32,
-///   name: String,
+///     id: i32,
+///     name: String,
 /// }
 /// ```
 /// simply becomes
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// #[napi_derive::napi(use_nullable = true, object)]
 /// struct Person {
-///   id: i32,
-///   name: String,
+///     id: i32,
+///     name: String,
 /// }
 /// ```
 ///
 /// ## Function with explicitly specified `js_name`
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// #[macro_rs::napi(js_name = "add1")]
 /// pub fn add_one(x: i32) -> i32 {
 ///     x + 1
@@ -99,7 +119,6 @@ pub fn ts_export(
 /// ```
 /// generates
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// # pub fn add_one(x: i32) -> i32 {
 /// #     x + 1
 /// # }
@@ -111,7 +130,6 @@ pub fn ts_export(
 ///
 /// ## Function with `i32` argument
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// #[macro_rs::napi]
 /// pub fn add_one(x: i32) -> i32 {
 ///     x + 1
@@ -119,7 +137,6 @@ pub fn ts_export(
 /// ```
 /// generates
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// # pub fn add_one(x: i32) -> i32 {
 /// #     x + 1
 /// # }
@@ -131,7 +148,6 @@ pub fn ts_export(
 ///
 /// ## Function with `&str` argument
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// #[macro_rs::napi]
 /// pub fn concatenate_string(str1: &str, str2: &str) -> String {
 ///     str1.to_owned() + str2
@@ -139,7 +155,6 @@ pub fn ts_export(
 /// ```
 /// generates
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// # pub fn concatenate_string(str1: &str, str2: &str) -> String {
 /// #     str1.to_owned() + str2
 /// # }
@@ -151,7 +166,6 @@ pub fn ts_export(
 ///
 /// ## Function with `&[String]` argument
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// #[macro_rs::napi]
 /// pub fn string_array_length(array: &[String]) -> u32 {
 ///     array.len() as u32
@@ -159,7 +173,6 @@ pub fn ts_export(
 /// ```
 /// generates
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// # pub fn string_array_length(array: &[String]) -> u32 {
 /// #     array.len() as u32
 /// # }
@@ -171,7 +184,6 @@ pub fn ts_export(
 ///
 /// ## Function with `Result<T, E>` return type
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// #[derive(thiserror::Error, Debug)]
 /// pub enum IntegerDivisionError {
 ///     #[error("Divided by zero")]
@@ -193,7 +205,6 @@ pub fn ts_export(
 /// ```
 /// generates
 /// ```
-/// # mod napi_derive { pub use macro_rs::dummy_macro as napi; } // FIXME
 /// # #[derive(thiserror::Error, Debug)]
 /// # pub enum IntegerDivisionError {
 /// #     #[error("Divided by zero")]
@@ -380,16 +391,6 @@ fn napi_impl(macro_attr: TokenStream, item: TokenStream) -> TokenStream {
         #(#function_call_modifiers)*
       }
     }
-}
-
-// FIXME
-/// For doctest only
-#[proc_macro_attribute]
-pub fn dummy_macro(
-    _attr: proc_macro::TokenStream,
-    item: proc_macro::TokenStream,
-) -> proc_macro::TokenStream {
-    item
 }
 
 #[cfg(test)]

@@ -4,9 +4,9 @@ Firefish depends on the following software.
 
 ## Runtime dependencies
 
-- At least [NodeJS](https://nodejs.org/en/) v18.19.0 (v20/v21 recommended)
+- At least [NodeJS](https://nodejs.org/en/) v18.19.0 (v20/v22 recommended)
 - At least [PostgreSQL](https://www.postgresql.org/) v12 (v16 recommended) with [PGroonga](https://pgroonga.github.io/) extension
-- At least [Redis](https://redis.io/) v7
+- At least [Redis](https://redis.io/) v7 or [Valkey](https://valkey.io/) v7
 - Web Proxy (one of the following)
   - Caddy (recommended)
   - Nginx (recommended)
@@ -15,7 +15,7 @@ Firefish depends on the following software.
 - Caching server (**optional**, one of the following)
   - [DragonflyDB](https://www.dragonflydb.io/)
   - [KeyDB](https://keydb.dev/)
-  - Another [Redis](https://redis.io/) server
+  - Another [Redis](https://redis.io/) / [Valkey](https://valkey.io/) server
 
 ## Build dependencies
 
@@ -29,8 +29,6 @@ Firefish depends on the following software.
 This document shows an example procedure for installing these dependencies and Firefish on Debian 12. Note that there is much room for customizing the server setup; this document merely demonstrates a simple installation.
 
 If you want to use the pre-built container image, please refer to [`install-container.md`](./install-container.md).
-
-If you do not prepare your environment as document, be sure to meet the minimum dependencies given at the bottom of the page.
 
 Make sure that you can use the `sudo` command before proceeding.
 

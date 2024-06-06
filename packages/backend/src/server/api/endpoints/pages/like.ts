@@ -1,5 +1,5 @@
 import { Pages, PageLikes } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 
@@ -40,21 +40,21 @@ export default define(meta, paramDef, async (ps, user) => {
 	}
 
 	// if already liked
-	const exist = await PageLikes.exist({
-		where: {
-			pageId: page.id,
-			userId: user.id,
-		},
+	const exists = await PageLikes.existsBy({
+		pageId: page.id,
+		userId: user.id,
 	});
 
-	if (exist) {
+	if (exists) {
 		throw new ApiError(meta.errors.alreadyLiked);
 	}
 
+	const now = new Date();
+
 	// Create like
 	await PageLikes.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		pageId: page.id,
 		userId: user.id,
 	});

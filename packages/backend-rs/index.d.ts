@@ -11,8 +11,9 @@ export const USER_ONLINE_THRESHOLD: number
 export const USER_ACTIVE_THRESHOLD: number
 /**
  * List of file types allowed to be viewed directly in the browser
+ *
  * Anything not included here will be responded as application/octet-stream
- * SVG is not allowed because it generates XSS <- we need to fix this and later allow it to be viewed directly
+ * SVG is not allowed because it generates XSS (TODO: fix this and later allow it to be viewed directly)
  * * <https://github.com/sindresorhus/file-type/blob/main/supported.js>
  * * <https://github.com/sindresorhus/file-type/blob/main/core.js>
  * * <https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Containers>
@@ -28,6 +29,20 @@ export interface EnvConfig {
   slow: boolean
 }
 export function loadEnv(): EnvConfig
+export function fetchMeta(): Promise<Meta>
+export function updateMetaCache(): Promise<void>
+export interface PugArgs {
+  img: string | null
+  title: string
+  instanceName: string
+  desc: string | null
+  icon: string | null
+  splashIcon: string | null
+  themeColor: string | null
+  randomMotd: string
+  privateMode: boolean | null
+}
+export function metaToPugArgs(meta: Meta): PugArgs
 export interface ServerConfig {
   url: string
   port: number
@@ -207,48 +222,206 @@ export interface Acct {
 }
 export function stringToAcct(acct: string): Acct
 export function acctToString(acct: Acct): string
+/** Fetches and returns the NodeInfo (version 2.0) of a remote server. */
+export function fetchNodeinfo(host: string): Promise<Nodeinfo>
+export function nodeinfo_2_1(): Promise<any>
+export function nodeinfo_2_0(): Promise<any>
+/** NodeInfo schema version 2.0. <https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.0> */
+export interface Nodeinfo {
+  /** The schema version, must be 2.0. */
+  version: string
+  /** Metadata about server software in use. */
+  software: Software20
+  /** The protocols supported on this server. */
+  protocols: Array<Protocol>
+  /** The third party sites this server can connect to via their application API. */
+  services: Services
+  /** Whether this server allows open self-registration. */
+  openRegistrations: boolean
+  /** Usage statistics for this server. */
+  usage: Usage
+  /** Free form key value pairs for software specific values. Clients should not rely on any specific key present. */
+  metadata: Record<string, any>
+}
+/** Metadata about server software in use (version 2.0). */
+export interface Software20 {
+  /** The canonical name of this server software. */
+  name: string
+  /** The version of this server software. */
+  version: string
+}
+export enum Protocol {
+  Activitypub = 'activitypub',
+  Buddycloud = 'buddycloud',
+  Dfrn = 'dfrn',
+  Diaspora = 'diaspora',
+  Libertree = 'libertree',
+  Ostatus = 'ostatus',
+  Pumpio = 'pumpio',
+  Tent = 'tent',
+  Xmpp = 'xmpp',
+  Zot = 'zot'
+}
+/** The third party sites this server can connect to via their application API. */
+export interface Services {
+  /** The third party sites this server can retrieve messages from for combined display with regular traffic. */
+  inbound: Array<Inbound>
+  /** The third party sites this server can publish messages to on the behalf of a user. */
+  outbound: Array<Outbound>
+}
+/** The third party sites this server can retrieve messages from for combined display with regular traffic. */
+export enum Inbound {
+  Atom1 = 'atom1',
+  Gnusocial = 'gnusocial',
+  Imap = 'imap',
+  Pnut = 'pnut',
+  Pop3 = 'pop3',
+  Pumpio = 'pumpio',
+  Rss2 = 'rss2',
+  Twitter = 'twitter'
+}
+/** The third party sites this server can publish messages to on the behalf of a user. */
+export enum Outbound {
+  Atom1 = 'atom1',
+  Blogger = 'blogger',
+  Buddycloud = 'buddycloud',
+  Diaspora = 'diaspora',
+  Dreamwidth = 'dreamwidth',
+  Drupal = 'drupal',
+  Facebook = 'facebook',
+  Friendica = 'friendica',
+  Gnusocial = 'gnusocial',
+  Google = 'google',
+  Insanejournal = 'insanejournal',
+  Libertree = 'libertree',
+  Linkedin = 'linkedin',
+  Livejournal = 'livejournal',
+  Mediagoblin = 'mediagoblin',
+  Myspace = 'myspace',
+  Pinterest = 'pinterest',
+  Pnut = 'pnut',
+  Posterous = 'posterous',
+  Pumpio = 'pumpio',
+  Redmatrix = 'redmatrix',
+  Rss2 = 'rss2',
+  Smtp = 'smtp',
+  Tent = 'tent',
+  Tumblr = 'tumblr',
+  Twitter = 'twitter',
+  Wordpress = 'wordpress',
+  Xmpp = 'xmpp'
+}
+/** Usage statistics for this server. */
+export interface Usage {
+  users: Users
+  localPosts: number | null
+  localComments: number | null
+}
+/** statistics about the users of this server. */
+export interface Users {
+  total: number | null
+  activeHalfyear: number | null
+  activeMonth: number | null
+}
+/** Prints the greeting message and the Firefish version to stdout. */
 export function greet(): void
+/** Initializes the [tracing] logger. */
 export function initializeRustLogger(): void
+/** Prints the server hardware information as the server info log. */
 export function showServerInfo(): void
 /**
  * Checks if a server is blocked.
  *
- * ## Argument
+ * # Argument
  * `host` - punycoded instance host
+ *
+ * # Example
+ * ```no_run
+ * # use backend_rs::misc::check_server_block::is_blocked_server;
+ * # async fn f() -> Result<(), Box<dyn std::error::Error>> {
+ * assert_eq!(true, is_blocked_server("blocked.com").await?);
+ * assert_eq!(false, is_blocked_server("not-blocked.com").await?);
+ * assert_eq!(true, is_blocked_server("subdomain.of.blocked.com").await?);
+ * assert_eq!(true, is_blocked_server("xn--l8jegik.blocked.com").await?);
+ * # Ok(())
+ * # }
+ * ```
  */
 export function isBlockedServer(host: string): Promise<boolean>
 /**
  * Checks if a server is silenced.
  *
- * ## Argument
+ * # Argument
  * `host` - punycoded instance host
+ *
+ * # Example
+ * ```no_run
+ * # use backend_rs::misc::check_server_block::is_silenced_server;
+ * # async fn f() -> Result<(), Box<dyn std::error::Error>> {
+ * assert_eq!(true, is_silenced_server("silenced.com").await?);
+ * assert_eq!(false, is_silenced_server("not-silenced.com").await?);
+ * assert_eq!(true, is_silenced_server("subdomain.of.silenced.com").await?);
+ * assert_eq!(true, is_silenced_server("xn--l8jegik.silenced.com").await?);
+ * # Ok(())
+ * # }
+ * ```
  */
 export function isSilencedServer(host: string): Promise<boolean>
 /**
  * Checks if a server is allowlisted.
  * Returns `Ok(true)` if private mode is disabled.
  *
- * ## Argument
+ * # Argument
  * `host` - punycoded instance host
+ *
+ * # Example
+ * ```no_run
+ * # use backend_rs::misc::check_server_block::is_allowed_server;
+ * # async fn f() -> Result<(), Box<dyn std::error::Error>> {
+ * assert_eq!(true, is_allowed_server("allowed.com").await?);
+ * assert_eq!(false, is_allowed_server("not-allowed.com").await?);
+ * assert_eq!(false, is_allowed_server("subdomain.of.allowed.com").await?);
+ * assert_eq!(false, is_allowed_server("xn--l8jegik.allowed.com").await?);
+ * # Ok(())
+ * # }
+ * ```
  */
 export function isAllowedServer(host: string): Promise<boolean>
-export function checkWordMute(note: NoteLike, mutedWords: Array<string>, mutedPatterns: Array<string>): Promise<boolean>
+/**
+ * Returns whether `note` should be hard-muted.
+ *
+ * More specifically, this function returns `Ok(true)`
+ * if and only if one or more of these conditions are met:
+ *
+ * * the note (text or CW) contains any of the words/patterns
+ * * the "parent" note(s) (reply, quote) contain any of the words/patterns
+ * * the alt text of the attached files contains any of the words/patterns
+ *
+ * # Arguments
+ *
+ * * `note` : [PartialNoteToElaborate] object
+ * * `muted_words` : list of muted keyword lists (each array item is a space-separated keyword list that represents an AND condition)
+ * * `muted_patterns` : list of JavaScript-style (e.g., `/foo/i`) regular expressions
+ */
+export function checkWordMute(note: PartialNoteToElaborate, mutedWords: Array<string>, mutedPatterns: Array<string>): Promise<boolean>
 export function getFullApAccount(username: string, host?: string | undefined | null): string
 export function isSelfHost(host?: string | undefined | null): boolean
 export function isSameOrigin(uri: string): boolean
 export function extractHost(uri: string): string
 export function toPuny(host: string): string
 export function isUnicodeEmoji(s: string): boolean
+/** Escapes `%` and `\` in the given string. */
 export function sqlLikeEscape(src: string): string
+/** Returns `true` if `src` does not contain suspicious characters like `%`. */
 export function safeForSql(src: string): boolean
-/** Convert milliseconds to a human readable string */
+/** Converts milliseconds to a human readable string. */
 export function formatMilliseconds(milliseconds: number): string
 export interface ImageSize {
   width: number
   height: number
 }
 export function getImageSizeFromUrl(url: string): Promise<ImageSize>
-export interface NoteLikeForAllTexts {
+export interface PartialNoteToElaborate {
   fileIds: Array<string>
   userId: string
   text: string | null
@@ -256,34 +429,44 @@ export interface NoteLikeForAllTexts {
   renoteId: string | null
   replyId: string | null
 }
-export interface NoteLikeForGetNoteSummary {
+export interface PartialNoteToSummarize {
   fileIds: Array<string>
   text: string | null
   cw: string | null
   hasPoll: boolean
 }
-export function getNoteSummary(note: NoteLikeForGetNoteSummary): string
+export function getNoteSummary(note: PartialNoteToSummarize): string
 export function isQuote(note: Note): boolean
 export function isSafeUrl(url: string): boolean
+/** Returns the latest Firefish version. */
 export function latestVersion(): Promise<string>
 export function toMastodonId(firefishId: string): string | null
 export function fromMastodonId(mastodonId: string): string | null
-export function fetchMeta(useCache: boolean): Promise<Meta>
-export interface PugArgs {
-  img: string | null
-  title: string
-  instanceName: string
-  desc: string | null
-  icon: string | null
-  splashIcon: string | null
-  themeColor: string | null
-  randomMotd: string
-  privateMode: boolean | null
-}
-export function metaToPugArgs(meta: Meta): PugArgs
+/**
+ * Converts the given text into the cat language.
+ *
+ * refs:
+ * * <https://misskey-hub.net/ns/#isCat>
+ * * <https://firefish.dev/ns#speakAsCat>
+ *
+ * # Arguments
+ *
+ * * `text` : original text
+ * * `lang` : language code (e.g., `Some("en")`, `Some("en-US")`, `Some("uk-UA")`, `None`)
+ *
+ * # Example
+ *
+ * ```
+ * # use backend_rs::misc::nyaify::nyaify;
+ * assert_eq!(nyaify("I'll take a nap.", Some("en")), "I'll take a nyap.");
+ * ```
+ */
 export function nyaify(text: string, lang?: string | undefined | null): string
+/** Hashes the given password using [Argon2] algorithm. */
 export function hashPassword(password: string): string
+/** Checks whether the given password and hash match. */
 export function verifyPassword(password: string, hash: string): boolean
+/** Returns whether the [bcrypt] algorithm is used for the password hash. */
 export function isOldPasswordAlgorithm(hash: string): boolean
 export interface DecodedReaction {
   reaction: string
@@ -293,7 +476,7 @@ export interface DecodedReaction {
 export function decodeReaction(reaction: string): DecodedReaction
 export function countReactions(reactions: Record<string, number>): Record<string, number>
 export function toDbReaction(reaction?: string | undefined | null, host?: string | undefined | null): Promise<string>
-/** Delete all entries in the "attestation_challenge" table created at more than 5 minutes ago */
+/** Delete all entries in the [attestation_challenge] table created at more than 5 minutes ago */
 export function removeOldAttestationChallenges(): Promise<void>
 export interface Cpu {
   model: string
@@ -1174,106 +1357,6 @@ export interface Webhook {
   latestStatus: number | null
 }
 export function updateAntennasOnNewNote(note: Note, noteAuthor: Acct, noteMutedUsers: Array<string>): Promise<void>
-export function fetchNodeinfo(host: string): Promise<Nodeinfo>
-export function nodeinfo_2_1(): Promise<any>
-export function nodeinfo_2_0(): Promise<any>
-/** NodeInfo schema version 2.0. <https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.0> */
-export interface Nodeinfo {
-  /** The schema version, must be 2.0. */
-  version: string
-  /** Metadata about server software in use. */
-  software: Software20
-  /** The protocols supported on this server. */
-  protocols: Array<Protocol>
-  /** The third party sites this server can connect to via their application API. */
-  services: Services
-  /** Whether this server allows open self-registration. */
-  openRegistrations: boolean
-  /** Usage statistics for this server. */
-  usage: Usage
-  /** Free form key value pairs for software specific values. Clients should not rely on any specific key present. */
-  metadata: Record<string, any>
-}
-/** Metadata about server software in use (version 2.0). */
-export interface Software20 {
-  /** The canonical name of this server software. */
-  name: string
-  /** The version of this server software. */
-  version: string
-}
-export enum Protocol {
-  Activitypub = 'activitypub',
-  Buddycloud = 'buddycloud',
-  Dfrn = 'dfrn',
-  Diaspora = 'diaspora',
-  Libertree = 'libertree',
-  Ostatus = 'ostatus',
-  Pumpio = 'pumpio',
-  Tent = 'tent',
-  Xmpp = 'xmpp',
-  Zot = 'zot'
-}
-/** The third party sites this server can connect to via their application API. */
-export interface Services {
-  /** The third party sites this server can retrieve messages from for combined display with regular traffic. */
-  inbound: Array<Inbound>
-  /** The third party sites this server can publish messages to on the behalf of a user. */
-  outbound: Array<Outbound>
-}
-/** The third party sites this server can retrieve messages from for combined display with regular traffic. */
-export enum Inbound {
-  Atom1 = 'atom1',
-  Gnusocial = 'gnusocial',
-  Imap = 'imap',
-  Pnut = 'pnut',
-  Pop3 = 'pop3',
-  Pumpio = 'pumpio',
-  Rss2 = 'rss2',
-  Twitter = 'twitter'
-}
-/** The third party sites this server can publish messages to on the behalf of a user. */
-export enum Outbound {
-  Atom1 = 'atom1',
-  Blogger = 'blogger',
-  Buddycloud = 'buddycloud',
-  Diaspora = 'diaspora',
-  Dreamwidth = 'dreamwidth',
-  Drupal = 'drupal',
-  Facebook = 'facebook',
-  Friendica = 'friendica',
-  Gnusocial = 'gnusocial',
-  Google = 'google',
-  Insanejournal = 'insanejournal',
-  Libertree = 'libertree',
-  Linkedin = 'linkedin',
-  Livejournal = 'livejournal',
-  Mediagoblin = 'mediagoblin',
-  Myspace = 'myspace',
-  Pinterest = 'pinterest',
-  Pnut = 'pnut',
-  Posterous = 'posterous',
-  Pumpio = 'pumpio',
-  Redmatrix = 'redmatrix',
-  Rss2 = 'rss2',
-  Smtp = 'smtp',
-  Tent = 'tent',
-  Tumblr = 'tumblr',
-  Twitter = 'twitter',
-  Wordpress = 'wordpress',
-  Xmpp = 'xmpp'
-}
-/** Usage statistics for this server. */
-export interface Usage {
-  users: Users
-  localPosts: number | null
-  localComments: number | null
-}
-/** statistics about the users of this server. */
-export interface Users {
-  total: number | null
-  activeHalfyear: number | null
-  activeMonth: number | null
-}
 export function watchNote(watcherId: string, noteAuthorId: string, noteId: string): Promise<void>
 export function unwatchNote(watcherId: string, noteId: string): Promise<void>
 export enum PushNotificationKind {
@@ -1331,6 +1414,6 @@ export function getTimestamp(id: string): number
 export function genId(): string
 /** Generate an ID using a specific datetime */
 export function genIdAt(date: Date): string
-/** Generate random string based on [thread_rng] and [Alphanumeric]. */
+/** Generates a random string based on [thread_rng] and [Alphanumeric]. */
 export function generateSecureRandomString(length: number): string
 export function generateUserToken(): string

@@ -1,7 +1,7 @@
 import rndstr from "rndstr";
 import define from "@/server/api/define.js";
 import { RegistrationTickets } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 
 export const meta = {
 	tags: ["admin"],
@@ -38,9 +38,11 @@ export default define(meta, paramDef, async () => {
 		chars: "2-9A-HJ-NP-Z", // [0-9A-Z] w/o [01IO] (32 patterns)
 	});
 
+	const now = new Date();
+
 	await RegistrationTickets.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		code,
 	});
 

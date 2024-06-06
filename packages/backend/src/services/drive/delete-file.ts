@@ -82,7 +82,7 @@ async function postProcess(file: DriveFile, isExpired = false) {
 }
 
 export async function deleteObjectStorageFile(key: string) {
-	const meta = await fetchMeta(true);
+	const meta = await fetchMeta();
 
 	const s3 = getS3(meta);
 

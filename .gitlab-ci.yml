@@ -25,10 +25,11 @@ workflow:
     - when: never
 
 stages:
-  - dependency
   - test
   - doc
   - build
+  - dependency
+  - clean
 
 variables:
   POSTGRES_DB: 'firefish_db'
@@ -199,6 +200,8 @@ build:container:
     STORAGE_DRIVER: overlay
   before_script:
     - apt-get update && apt-get -y upgrade
+    - |-
+      sed -i -r 's/"version": "([-0-9]+)",/"version": "\1-dev",/' package.json
     - apt-get install -y --no-install-recommends ca-certificates fuse-overlayfs buildah
     - echo "${CI_REGISTRY_PASSWORD}" | buildah login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
     - export IMAGE_TAG="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
@@ -285,12 +288,12 @@ cargo:doc:
     - apt-get update
     - apt-get install -y --no-install-recommends build-essential clang mold nodejs npm
     - cp ci/cargo/config.toml /usr/local/cargo/config.toml
-    - npm install --global netlify-cli
   script:
-    - cargo doc --no-deps --document-private-items
+    - cargo doc --document-private-items
+    - printf "window.ALL_CRATES = ['backend_rs', 'macro_rs'];" > target/doc/crates.js
     - printf '<meta http-equiv="refresh" content="0; url=%s">' 'backend_rs' > target/doc/index.html
     - cd target/doc
-    - netlify deploy --prod --site="${CARGO_DOC_SITE_ID}" --dir=.
+    - npx --yes netlify-cli deploy --prod --site="${CARGO_DOC_SITE_ID}" --dir=.
 
 renovate:
   stage: dependency
@@ -303,3 +306,19 @@ renovate:
   before_script: []
   script:
     - renovate --platform gitlab --token "${API_TOKEN}" --endpoint "${CI_SERVER_URL}/api/v4" "${CI_PROJECT_PATH}"
+
+clean:
+  stage: clean
+  rules:
+    - if: $CLEAN && $CI_PIPELINE_SOURCE == 'schedule'
+  services: []
+  before_script:
+    - apt-get update && apt-get -y upgrade
+    - apt-get -y --no-install-recommends install curl
+    - curl -fsSL 'https://deb.nodesource.com/setup_18.x' | bash -
+    - apt-get install -y --no-install-recommends nodejs
+    - corepack enable
+    - corepack prepare pnpm@latest --activate
+    - pnpm install --frozen-lockfile
+  script:
+    - pnpm run clean-all

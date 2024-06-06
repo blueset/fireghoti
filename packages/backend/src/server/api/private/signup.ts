@@ -5,13 +5,13 @@ import { Users, RegistrationTickets, UserPendings } from "@/models/index.js";
 import { signup } from "@/server/api/common/signup.js";
 import { config } from "@/config.js";
 import { sendEmail } from "@/services/send-email.js";
-import { fetchMeta, genId, hashPassword } from "backend-rs";
+import { fetchMeta, genIdAt, hashPassword } from "backend-rs";
 import { validateEmailForAccount } from "@/services/validate-email-for-account.js";
 
 export default async (ctx: Koa.Context) => {
 	const body = ctx.request.body;
 
-	const instance = await fetchMeta(false);
+	const instance = await fetchMeta();
 
 	// Verify *Captcha
 	// ただしテスト時はこの機構は障害となるため無効にする
@@ -84,9 +84,11 @@ export default async (ctx: Koa.Context) => {
 		// Generate hash of password
 		const hash = hashPassword(password);
 
+		const now = new Date();
+
 		await UserPendings.insert({
-			id: genId(),
-			createdAt: new Date(),
+			id: genIdAt(now),
+			createdAt: now,
 			code,
 			email: emailAddress,
 			username: username,

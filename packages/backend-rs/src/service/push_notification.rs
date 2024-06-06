@@ -1,10 +1,10 @@
+use crate::config::local_server_info;
 use crate::database::db_conn;
-use crate::misc::get_note_summary::{get_note_summary, NoteLike};
-use crate::misc::meta::fetch_meta;
+use crate::misc::get_note_summary::{get_note_summary, PartialNoteToSummarize};
 use crate::model::entity::sw_subscription;
 use crate::util::http_client;
 use once_cell::sync::OnceCell;
-use sea_orm::{prelude::*, DbErr};
+use sea_orm::prelude::*;
 use web_push::{
     ContentEncoding, IsahcWebPushClient, SubscriptionInfo, SubscriptionKeys, VapidSignatureBuilder,
     WebPushClient, WebPushError, WebPushMessageBuilder,
@@ -87,7 +87,7 @@ fn compact_content(
         ));
     }
 
-    let note_like: NoteLike = serde_json::from_value(note.clone())?;
+    let note_like: PartialNoteToSummarize = serde_json::from_value(note.clone())?;
     let text = get_note_summary(note_like);
 
     let note_object = note.as_object_mut().unwrap();
@@ -102,7 +102,7 @@ fn compact_content(
 }
 
 async fn handle_web_push_failure(
-    db: &DatabaseConnection,
+    db: &DbConn,
     err: WebPushError,
     subscription_id: &str,
     error_message: &str,
@@ -140,7 +140,7 @@ pub async fn send_push_notification(
     kind: PushNotificationKind,
     content: &serde_json::Value,
 ) -> Result<(), Error> {
-    let meta = fetch_meta(true).await?;
+    let meta = local_server_info().await?;
 
     if !meta.enable_service_worker || meta.sw_public_key.is_none() || meta.sw_private_key.is_none()
     {
