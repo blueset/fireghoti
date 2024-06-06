@@ -43,14 +43,14 @@ importers:
   packages/backend:
     dependencies:
       '@bull-board/api':
-        specifier: 5.20.0
-        version: 5.20.0(@bull-board/ui@5.20.0)
+        specifier: 5.20.1
+        version: 5.20.1(@bull-board/ui@5.20.1)
       '@bull-board/koa':
-        specifier: 5.20.0
-        version: 5.20.0(@types/koa@2.15.0)(lodash@4.17.21)(pug@3.0.3)
+        specifier: 5.20.1
+        version: 5.20.1(@types/koa@2.15.0)(lodash@4.17.21)(pug@3.0.3)
       '@bull-board/ui':
-        specifier: 5.20.0
-        version: 5.20.0
+        specifier: 5.20.1
+        version: 5.20.1
       '@discordapp/twemoji':
         specifier: 15.0.3
         version: 15.0.3
@@ -1146,11 +1146,13 @@ packages:
   '@biomejs/cli-darwin-arm64@1.8.0':
     resolution: {integrity: sha512-dBAYzfIJ1JmWigKlWourT3sJ3I60LZPjqNwwlsyFjiv5AV7vPeWlHVVIImV2BpINwNjZQhpXnwDfVnGS4vr7AA==}
     engines: {node: '>=14.21.3'}
+    cpu: [arm64]
     os: [darwin]
 
   '@biomejs/cli-darwin-x64@1.8.0':
     resolution: {integrity: sha512-ZTTSD0bP0nn9UpRDGQrQNTILcYSj+IkxTYr3CAV64DWBDtQBomlk2oVKWzDaA1LOhpAsTh0giLCbPJaVk2jfMQ==}
     engines: {node: '>=14.21.3'}
+    cpu: [x64]
     os: [darwin]
 
   '@biomejs/cli-linux-arm64-musl@1.8.0':
@@ -1162,6 +1164,7 @@ packages:
   '@biomejs/cli-linux-arm64@1.8.0':
     resolution: {integrity: sha512-cx725jTlJS6dskvJJwwCQaaMRBKE2Qss7ukzmx27Rn/DXRxz6tnnBix4FUGPf1uZfwrERkiJlbWM05JWzpvvXg==}
     engines: {node: '>=14.21.3'}
+    cpu: [arm64]
     os: [linux]
 
   '@biomejs/cli-linux-x64-musl@1.8.0':
@@ -1173,6 +1176,7 @@ packages:
   '@biomejs/cli-linux-x64@1.8.0':
     resolution: {integrity: sha512-cmgmhlD4QUxMhL1VdaNqnB81xBHb3R7huVNyYnPYzP+AykZ7XqJbPd1KcWAszNjUk2AHdx0aLKEBwCOWemxb2g==}
     engines: {node: '>=14.21.3'}
+    cpu: [x64]
     os: [linux]
 
   '@biomejs/cli-win32-arm64@1.8.0':
@@ -1187,16 +1191,16 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@bull-board/api@5.20.0':
-    resolution: {integrity: sha512-WUSuHdunODSWX8rkZmTnXpJsrUHqLS6+H3IGN0MNh6ylM/plZxGJJ3jW4nTXePWASeLNoDC0gjRcziDjlodPnQ==}
+  '@bull-board/api@5.20.1':
+    resolution: {integrity: sha512-45aDhnOzWRrtUUAKHxdClSnLIus5f8BK3ATzb2IwI/BRgOi1lWTe1YG266hVqDdWXsUDxKzf75DAANKfAoEsRA==}
     peerDependencies:
-      '@bull-board/ui': 5.20.0
+      '@bull-board/ui': 5.20.1
 
-  '@bull-board/koa@5.20.0':
-    resolution: {integrity: sha512-jto1WNIBZscCSJMkGm4G4qrb5KhblyJT/Q/59k5hHg9fdogzW9PfR+UQj7OOjLTMNX3phtPNvL0jG7/3HfmtIA==}
+  '@bull-board/koa@5.20.1':
+    resolution: {integrity: sha512-xUEEpMsdzZWHZQMnfk4a9kFhCz4PQkMBnb/t/C2xYwG15nCLapHWqMd5xO59OxnWOZ5XIiLsJwtCuf0l5G+L8A==}
 
-  '@bull-board/ui@5.20.0':
-    resolution: {integrity: sha512-EuijEHzQ9EAaA8WD4B+iXpTWTvCpTU2pskVUOs8CFkp0AYBqIhQDOi1W3f+e3FMqwS81l2/WkVHKkd6QRzbRzA==}
+  '@bull-board/ui@5.20.1':
+    resolution: {integrity: sha512-RzNinC4FKHNuxzkIRsCL+n9iO5RxmF5YM7byCuuv1/UeFjtCtsLHFi6TI9ZgJsXETA2Uxq9Mg7ppncojUjrINw==}
 
   '@cbor-extract/cbor-extract-darwin-arm64@2.2.0':
     resolution: {integrity: sha512-P7swiOAdF7aSi0H+tHtHtr6zrpF3aAq/W9FXx5HektRvLTM2O89xCyXF3pk7pLc7QpaY7AoaE8UowVf9QBdh3w==}
@@ -8306,15 +8310,15 @@ snapshots:
   '@biomejs/cli-win32-x64@1.8.0':
     optional: true
 
-  '@bull-board/api@5.20.0(@bull-board/ui@5.20.0)':
+  '@bull-board/api@5.20.1(@bull-board/ui@5.20.1)':
     dependencies:
-      '@bull-board/ui': 5.20.0
+      '@bull-board/ui': 5.20.1
       redis-info: 3.1.0
 
-  '@bull-board/koa@5.20.0(@types/koa@2.15.0)(lodash@4.17.21)(pug@3.0.3)':
+  '@bull-board/koa@5.20.1(@types/koa@2.15.0)(lodash@4.17.21)(pug@3.0.3)':
     dependencies:
-      '@bull-board/api': 5.20.0(@bull-board/ui@5.20.0)
-      '@bull-board/ui': 5.20.0
+      '@bull-board/api': 5.20.1(@bull-board/ui@5.20.1)
+      '@bull-board/ui': 5.20.1
       ejs: 3.1.10
       koa: 2.15.3
       koa-mount: 4.0.0
@@ -8377,9 +8381,9 @@ snapshots:
       - walrus
       - whiskers
 
-  '@bull-board/ui@5.20.0':
+  '@bull-board/ui@5.20.1':
     dependencies:
-      '@bull-board/api': 5.20.0(@bull-board/ui@5.20.0)
+      '@bull-board/api': 5.20.1(@bull-board/ui@5.20.1)
 
   '@cbor-extract/cbor-extract-darwin-arm64@2.2.0':
     optional: true
