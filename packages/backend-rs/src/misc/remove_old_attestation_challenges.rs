@@ -1,4 +1,4 @@
-// TODO: We want to get rid of this
+// TODO: Migrate to Redis
 
 use crate::{database::db_conn, model::entity::attestation_challenge};
 use chrono::{Duration, Utc};
