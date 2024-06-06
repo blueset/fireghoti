@@ -202,7 +202,13 @@ export const NoteRepository = db.getRepository(Note).extend({
 		const packed: Packed<"Note"> = await awaitAll({
 			id: note.id,
 			createdAt: note.createdAt.toISOString(),
-			scheduledAt: note.scheduledAt,
+			// FIXME: note.scheduledAt should be a `Date`
+			scheduledAt:
+				note.scheduledAt == null
+					? undefined
+					: typeof note.scheduledAt === "string"
+						? note.scheduledAt
+						: note.scheduledAt?.toISOString(),
 			userId: note.userId,
 			user: Users.pack(note.user ?? note.userId, me, {
 				detail: false,
