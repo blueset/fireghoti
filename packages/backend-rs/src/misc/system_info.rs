@@ -72,21 +72,17 @@ pub fn memory_usage() -> Result<Memory, SysinfoPoisonError> {
 
 #[crate::export]
 pub fn storage_usage() -> Option<Storage> {
-    // Get the first disk that is actualy used.
+    // Get the first disk that is actualy used (has available space & has at least 1 GB total space).
     let disks = Disks::new_with_refreshed_list();
     let disk = disks
         .iter()
-        .find(|disk| disk.available_space() > 0 && disk.total_space() > disk.available_space());
+        .find(|disk| disk.available_space() > 0 && disk.total_space() > 1024 * 1024 * 1024)?;
 
-    if let Some(disk) = disk {
-        let total = disk.total_space() as i64;
-        let available = disk.available_space() as i64;
-        return Some(Storage {
-            total,
-            used: total - available,
-        });
-    }
+    let total = disk.total_space() as i64;
+    let available = disk.available_space() as i64;
 
-    tracing::debug!("failed to get stats");
-    None
+    Some(Storage {
+        total,
+        used: total - available,
+    })
 }
