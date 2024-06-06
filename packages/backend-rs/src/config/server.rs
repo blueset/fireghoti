@@ -278,7 +278,10 @@ pub fn load_config() -> Config {
         None => hostname.clone(),
     };
     let scheme = url.scheme().to_owned();
-    let ws_scheme = scheme.replace("http", "ws");
+    let ws_scheme = match scheme.as_str() {
+        "http" => "ws",
+        _ => "wss",
+    };
 
     let cluster_limits = match server_config.cluster_limits {
         Some(cl) => WorkerConfig {
@@ -344,7 +347,7 @@ pub fn load_config() -> Config {
         hostname,
         redis_key_prefix,
         scheme,
-        ws_scheme,
+        ws_scheme: ws_scheme.to_string(),
     }
 }
 
