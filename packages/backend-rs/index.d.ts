@@ -452,7 +452,7 @@ export function fromMastodonId(mastodonId: string): string | null
  * ```
  */
 export function nyaify(text: string, lang?: string | undefined | null): string
-/** Hashes the given password using [Argon2] algorithm. */
+/** Hashes the given password using [argon2] algorithm. */
 export function hashPassword(password: string): string
 /** Checks whether the given password and hash match. */
 export function verifyPassword(password: string, hash: string): boolean
