@@ -1,8 +1,9 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
-    'SwSubscriptionAccessToken1709395223611',
     'AddMastodonSubscriptionType1715181461692',
+    'SwSubscriptionAccessToken1709395223611',
+    'UserProfileMentions1711075007936',
     'ClientCredentials1713108561474',
     'RefactorScheduledPosts1716804636187',
     'RemoveEnumTypenameSuffix1716462794927',
@@ -34,7 +35,7 @@ DELETE FROM "migrations" WHERE name IN (
     'EmojiModerator1692825433698',
     'RemoveNsfwDetection1705848938166',
     'FirefishUrlMove1707850084123',
-    'UserProfileMentions1711075007936'
+    'RemoveNativeUtilsMigration1705877093218'
 );
 
 -- addMastodonSubscriptionType
