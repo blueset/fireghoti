@@ -66,7 +66,7 @@ pub async fn publish_to_stream(
         format!(
             "{{\"type\":\"{}\",\"body\":{}}}",
             kind,
-            value.unwrap_or("null".to_string()),
+            value.unwrap_or_else(|| "null".to_string()),
         )
     } else {
         value.ok_or(Error::Value("Invalid streaming message".to_string()))?

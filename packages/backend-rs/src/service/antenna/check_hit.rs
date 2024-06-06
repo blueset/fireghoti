@@ -61,7 +61,7 @@ pub async fn check_hit_antenna(
                 == note_author
                     .host
                     .clone()
-                    .unwrap_or(CONFIG.host.clone())
+                    .unwrap_or_else(|| CONFIG.host.clone())
                     .to_ascii_lowercase()
         });
 

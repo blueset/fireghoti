@@ -293,7 +293,7 @@ pub fn load_config() -> Config {
     } else {
         server_config.redis.prefix.clone()
     }
-    .unwrap_or(hostname.clone());
+    .unwrap_or_else(|| hostname.clone());
 
     Config {
         url: server_config.url,
