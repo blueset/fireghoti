@@ -6,7 +6,7 @@ rust-version = "1.74"
 
 [features]
 default = []
-napi = ["dep:napi", "dep:napi-derive"]
+napi = ["dep:napi", "dep:napi-derive", "dep:napi-build"]
 
 [lib]
 crate-type = ["cdylib", "lib"]
@@ -39,7 +39,6 @@ sea-orm = { workspace = true, features = ["macros", "runtime-tokio-rustls", "sql
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 serde_yaml = { workspace = true }
-strum = { workspace = true, features = ["derive"] }
 sysinfo = { workspace = true }
 thiserror = { workspace = true }
 tokio = { workspace = true, features = ["fs", "io-std", "io-util", "macros", "process", "rt-multi-thread", "signal", "sync", "time"] }
@@ -54,4 +53,4 @@ pretty_assertions = { workspace = true, features = ["std"] }
 tokio-test = { workspace = true }
 
 [build-dependencies]
-napi-build = { workspace = true }
+napi-build = { workspace = true, optional = true }

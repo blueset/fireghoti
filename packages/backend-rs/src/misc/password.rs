@@ -6,7 +6,7 @@ use argon2::{
     Argon2,
 };
 
-/// Hashes the given password using [Argon2] algorithm.
+/// Hashes the given password using [argon2] algorithm.
 #[crate::export]
 pub fn hash_password(password: &str) -> Result<String, password_hash::errors::Error> {
     let salt = SaltString::generate(&mut OsRng);

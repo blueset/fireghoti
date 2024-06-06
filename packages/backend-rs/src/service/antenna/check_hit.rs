@@ -1,7 +1,9 @@
-use crate::config::CONFIG;
-use crate::database::{cache, db_conn};
-use crate::federation::acct::Acct;
-use crate::model::entity::{antenna, blocking, following, note, sea_orm_active_enums::*};
+use crate::{
+    config::CONFIG,
+    database::{cache, db_conn},
+    federation::acct::Acct,
+    model::entity::{antenna, blocking, following, note, sea_orm_active_enums::*},
+};
 use sea_orm::{prelude::*, QuerySelect};
 
 #[derive(thiserror::Error, Debug)]
@@ -61,7 +63,7 @@ pub async fn check_hit_antenna(
                 == note_author
                     .host
                     .clone()
-                    .unwrap_or(CONFIG.host.clone())
+                    .unwrap_or_else(|| CONFIG.host.clone())
                     .to_ascii_lowercase()
         });
 

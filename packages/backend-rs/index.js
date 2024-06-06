@@ -310,7 +310,7 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { SECOND, MINUTE, HOUR, DAY, USER_ONLINE_THRESHOLD, USER_ACTIVE_THRESHOLD, FILE_TYPE_BROWSERSAFE, loadEnv, fetchMeta, updateMetaCache, metaToPugArgs, loadConfig, stringToAcct, acctToString, fetchNodeinfo, nodeinfo_2_1, nodeinfo_2_0, Protocol, Inbound, Outbound, greet, initializeRustLogger, showServerInfo, isBlockedServer, isSilencedServer, isAllowedServer, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, sqlRegexEscape, safeForSql, formatMilliseconds, getImageSizeFromUrl, getNoteSummary, isQuote, isSafeUrl, latestVersion, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, removeOldAttestationChallenges, cpuInfo, cpuUsage, memoryUsage, storageUsage, AntennaSrc, DriveFileUsageHint, MutedNoteReason, NoteVisibility, NotificationType, PageVisibility, PollNoteVisibility, PushSubscriptionType, RelayStatus, UserEmojiModPerm, UserProfileFfvisibility, UserProfileMutingNotificationTypes, updateAntennasOnNewNote, watchNote, unwatchNote, PushNotificationKind, sendPushNotification, publishToChannelStream, ChatEvent, publishToChatStream, ChatIndexEvent, publishToChatIndexStream, publishToBroadcastStream, publishToGroupChatStream, publishToModerationStream, getTimestamp, genId, genIdAt, generateSecureRandomString, generateUserToken } = nativeBinding
+const { SECOND, MINUTE, HOUR, DAY, USER_ONLINE_THRESHOLD, USER_ACTIVE_THRESHOLD, FILE_TYPE_BROWSERSAFE, fetchMeta, updateMetaCache, metaToPugArgs, loadConfig, stringToAcct, acctToString, fetchNodeinfo, nodeinfo_2_1, nodeinfo_2_0, Protocol, Inbound, Outbound, greet, initializeRustLogger, showServerInfo, isBlockedServer, isSilencedServer, isAllowedServer, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, sqlRegexEscape, safeForSql, formatMilliseconds, getImageSizeFromUrl, getNoteSummary, isQuote, isSafeUrl, latestVersion, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, removeOldAttestationChallenges, cpuInfo, cpuUsage, memoryUsage, storageUsage, AntennaSrc, DriveFileUsageHint, MutedNoteReason, NoteVisibility, NotificationType, PageVisibility, PollNoteVisibility, PushSubscriptionType, RelayStatus, UserEmojiModPerm, UserProfileFfvisibility, UserProfileMutingNotificationTypes, updateAntennasOnNewNote, updateAntennaCache, watchNote, unwatchNote, PushNotificationKind, sendPushNotification, publishToChannelStream, publishToChatStream, ChatIndexEvent, publishToChatIndexStream, publishToBroadcastStream, publishToGroupChatStream, publishToModerationStream, ChatEvent, getTimestamp, genId, genIdAt, generateSecureRandomString, generateUserToken } = nativeBinding
 
 module.exports.SECOND = SECOND
 module.exports.MINUTE = MINUTE
@@ -319,7 +319,6 @@ module.exports.DAY = DAY
 module.exports.USER_ONLINE_THRESHOLD = USER_ONLINE_THRESHOLD
 module.exports.USER_ACTIVE_THRESHOLD = USER_ACTIVE_THRESHOLD
 module.exports.FILE_TYPE_BROWSERSAFE = FILE_TYPE_BROWSERSAFE
-module.exports.loadEnv = loadEnv
 module.exports.fetchMeta = fetchMeta
 module.exports.updateMetaCache = updateMetaCache
 module.exports.metaToPugArgs = metaToPugArgs
@@ -379,18 +378,19 @@ module.exports.UserEmojiModPerm = UserEmojiModPerm
 module.exports.UserProfileFfvisibility = UserProfileFfvisibility
 module.exports.UserProfileMutingNotificationTypes = UserProfileMutingNotificationTypes
 module.exports.updateAntennasOnNewNote = updateAntennasOnNewNote
+module.exports.updateAntennaCache = updateAntennaCache
 module.exports.watchNote = watchNote
 module.exports.unwatchNote = unwatchNote
 module.exports.PushNotificationKind = PushNotificationKind
 module.exports.sendPushNotification = sendPushNotification
 module.exports.publishToChannelStream = publishToChannelStream
-module.exports.ChatEvent = ChatEvent
 module.exports.publishToChatStream = publishToChatStream
 module.exports.ChatIndexEvent = ChatIndexEvent
 module.exports.publishToChatIndexStream = publishToChatIndexStream
 module.exports.publishToBroadcastStream = publishToBroadcastStream
 module.exports.publishToGroupChatStream = publishToGroupChatStream
 module.exports.publishToModerationStream = publishToModerationStream
+module.exports.ChatEvent = ChatEvent
 module.exports.getTimestamp = getTimestamp
 module.exports.genId = genId
 module.exports.genIdAt = genIdAt

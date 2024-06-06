@@ -7,6 +7,10 @@ Critical security updates are indicated by the :warning: icon.
 
 ## Unreleased
 
+- Add the ability to share posts via QR code
+- Update the API document page (`/api-doc`)
+- Fix bugs
+
 - Ported Mastodon API support from Iceshrimp, with added Firefish extensions including push notifications, post languages, schedule post support, and more.
   - The old Mastodon API has been replaced with a new implementation based on Iceshrimp’s.
 

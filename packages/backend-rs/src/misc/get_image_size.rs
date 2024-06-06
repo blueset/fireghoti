@@ -1,7 +1,6 @@
-use crate::database::cache;
-use crate::util::http_client;
+use crate::{database::cache, util::http_client};
 use image::{io::Reader, ImageError, ImageFormat};
-use isahc::ReadResponseExt;
+use isahc::AsyncReadResponseExt;
 use nom_exif::{parse_jpeg_exif, EntryValue, ExifTag};
 use std::io::Cursor;
 use tokio::sync::Mutex;
@@ -41,7 +40,7 @@ const BROWSER_SAFE_IMAGE_TYPES: [ImageFormat; 8] = [
 
 static MTX_GUARD: Mutex<()> = Mutex::const_new(());
 
-#[derive(Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
 #[crate::export(object)]
 pub struct ImageSize {
     pub width: u32,
@@ -71,7 +70,7 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
 
     tracing::info!("retrieving image from {}", url);
 
-    let mut response = http_client::client()?.get(url)?;
+    let mut response = http_client::client()?.get_async(url).await?;
 
     if !response.status().is_success() {
         tracing::info!("status: {}", response.status());
@@ -79,7 +78,7 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
         return Err(Error::Http(format!("Failed to get image from {}", url)));
     }
 
-    let image_bytes = response.bytes()?;
+    let image_bytes = response.bytes().await?;
 
     let reader = Reader::new(Cursor::new(&image_bytes)).with_guessed_format()?;
 

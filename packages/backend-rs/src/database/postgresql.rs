@@ -29,7 +29,7 @@ async fn init_conn() -> Result<&'static DbConn, DbErr> {
 }
 
 /// Returns an async PostgreSQL connection that can be used with [sea_orm] utilities.
-pub async fn db_conn() -> Result<&'static DbConn, DbErr> {
+pub async fn get_conn() -> Result<&'static DbConn, DbErr> {
     match DB_CONN.get() {
         Some(conn) => Ok(conn),
         None => init_conn().await,
@@ -38,11 +38,11 @@ pub async fn db_conn() -> Result<&'static DbConn, DbErr> {
 
 #[cfg(test)]
 mod unit_test {
-    use super::db_conn;
+    use super::get_conn;
 
     #[tokio::test]
     async fn connect() {
-        assert!(db_conn().await.is_ok());
-        assert!(db_conn().await.is_ok());
+        assert!(get_conn().await.is_ok());
+        assert!(get_conn().await.is_ok());
     }
 }

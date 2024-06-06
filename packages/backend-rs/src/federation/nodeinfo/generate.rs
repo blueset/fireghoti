@@ -1,10 +1,12 @@
 //! NodeInfo generator
 
-use crate::config::{local_server_info, CONFIG};
-use crate::database::{cache, db_conn};
-use crate::federation::nodeinfo::schema::*;
-use crate::model::entity::{note, user};
-use sea_orm::{ColumnTrait, DbErr, EntityTrait, PaginatorTrait, QueryFilter};
+use crate::{
+    config::{local_server_info, CONFIG},
+    database::{cache, db_conn},
+    federation::nodeinfo::schema::*,
+    model::entity::{note, user},
+};
+use sea_orm::prelude::*;
 use serde_json::json;
 use std::collections::HashMap;
 
@@ -66,7 +68,7 @@ async fn generate_nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
     let metadata = HashMap::from([
         (
             "nodeName".to_string(),
-            json!(meta.name.unwrap_or(CONFIG.host.clone())),
+            json!(meta.name.unwrap_or_else(|| CONFIG.host.clone())),
         ),
         ("nodeDescription".to_string(), json!(meta.description)),
         ("repositoryUrl".to_string(), json!(meta.repository_url)),
@@ -93,7 +95,7 @@ async fn generate_nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
         ("proxyAccountName".to_string(), json!(meta.proxy_account_id)),
         (
             "themeColor".to_string(),
-            json!(meta.theme_color.unwrap_or("#31748f".to_string())),
+            json!(meta.theme_color.unwrap_or_else(|| "#31748f".to_string())),
         ),
     ]);
 

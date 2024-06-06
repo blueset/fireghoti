@@ -10,10 +10,9 @@ import Router from "@koa/router";
 import cors from "@koa/cors";
 import mount from "koa-mount";
 import koaLogger from "koa-logger";
-import * as slow from "koa-slow";
 
 import { IsNull } from "typeorm";
-import { config, envOption } from "@/config.js";
+import { config } from "@/config.js";
 import Logger from "@/services/logger.js";
 import { Users } from "@/models/index.js";
 import { fetchMeta, stringToAcct } from "backend-rs";
@@ -53,15 +52,6 @@ if (!["production", "test"].includes(process.env.NODE_ENV || "")) {
 			serverLogger.debug(str);
 		}),
 	);
-
-	// Delay
-	if (envOption.slow) {
-		app.use(
-			slow({
-				delay: 3000,
-			}),
-		);
-	}
 }
 
 // HSTS

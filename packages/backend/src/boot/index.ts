@@ -3,7 +3,6 @@ import chalk from "chalk";
 import Xev from "xev";
 
 import Logger from "@/services/logger.js";
-import { envOption } from "@/config.js";
 import { inspect } from "node:util";
 
 // for typeorm
@@ -31,14 +30,14 @@ export default async function () {
 	const type = cluster.isPrimary ? "(master)" : "(worker)";
 	process.title = `Firefish ${mode} ${type}`;
 
-	if (cluster.isPrimary || envOption.disableClustering) {
+	if (cluster.isPrimary) {
 		await masterMain();
 		if (cluster.isPrimary) {
 			ev.mount();
 		}
 	}
 
-	if (cluster.isWorker || envOption.disableClustering) {
+	if (cluster.isWorker) {
 		await workerMain();
 	}
 

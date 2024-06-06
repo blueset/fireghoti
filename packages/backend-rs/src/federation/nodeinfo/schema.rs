@@ -10,7 +10,8 @@ use std::collections::HashMap;
 // * #[serde(tag = "version", rename = "2.1")] (https://github.com/3Hren/msgpack-rust/issues/318)
 
 /// NodeInfo schema version 2.1. <https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.1>
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Nodeinfo21 {
     /// The schema version, must be 2.1.
@@ -30,7 +31,8 @@ pub struct Nodeinfo21 {
 }
 
 /// NodeInfo schema version 2.0. <https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.0>
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 #[crate::export(object, js_name = "Nodeinfo")]
 pub struct Nodeinfo20 {
@@ -51,7 +53,8 @@ pub struct Nodeinfo20 {
 }
 
 /// Metadata about server software in use (version 2.1).
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Software21 {
     /// The canonical name of this server software.
@@ -65,7 +68,8 @@ pub struct Software21 {
 }
 
 /// Metadata about server software in use (version 2.0).
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 #[crate::export(object)]
 pub struct Software20 {
@@ -75,7 +79,8 @@ pub struct Software20 {
     pub version: String,
 }
 
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
 #[crate::export(string_enum = "lowercase")]
 pub enum Protocol {
@@ -92,7 +97,8 @@ pub enum Protocol {
 }
 
 /// The third party sites this server can connect to via their application API.
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 #[crate::export(object)]
 pub struct Services {
@@ -103,7 +109,8 @@ pub struct Services {
 }
 
 /// The third party sites this server can retrieve messages from for combined display with regular traffic.
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
 #[crate::export(string_enum = "lowercase")]
 pub enum Inbound {
@@ -121,7 +128,8 @@ pub enum Inbound {
 }
 
 /// The third party sites this server can publish messages to on the behalf of a user.
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
 #[crate::export(string_enum = "lowercase")]
 pub enum Outbound {
@@ -158,7 +166,8 @@ pub enum Outbound {
 }
 
 /// Usage statistics for this server.
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 #[crate::export(object)]
 pub struct Usage {
@@ -168,7 +177,8 @@ pub struct Usage {
 }
 
 /// statistics about the users of this server.
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 #[crate::export(object)]
 pub struct Users {

@@ -1,8 +1,7 @@
 //! Fetch latest Firefish version from the Firefish repository
 
-use crate::database::cache;
-use crate::util::http_client;
-use isahc::ReadResponseExt;
+use crate::{database::cache, util::http_client};
+use isahc::AsyncReadResponseExt;
 use serde::Deserialize;
 
 #[derive(thiserror::Error, Debug)]
@@ -30,7 +29,9 @@ async fn get_latest_version() -> Result<String, Error> {
         version: String,
     }
 
-    let mut response = http_client::client()?.get(UPSTREAM_PACKAGE_JSON_URL)?;
+    let mut response = http_client::client()?
+        .get_async(UPSTREAM_PACKAGE_JSON_URL)
+        .await?;
 
     if !response.status().is_success() {
         tracing::info!("status: {}", response.status());
@@ -40,7 +41,7 @@ async fn get_latest_version() -> Result<String, Error> {
         ));
     }
 
-    let res_parsed: Response = serde_json::from_str(&response.text()?)?;
+    let res_parsed: Response = serde_json::from_str(&response.text().await?)?;
 
     Ok(res_parsed.version)
 }

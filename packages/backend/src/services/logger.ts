@@ -2,7 +2,7 @@ import cluster from "node:cluster";
 import chalk from "chalk";
 import { default as convertColor } from "color-convert";
 import { format as dateFormat } from "date-fns";
-import { config, envOption } from "@/config.js";
+import { config } from "@/config.js";
 
 import * as SyslogPro from "syslog-pro";
 
@@ -133,7 +133,6 @@ export default class Logger {
 								: null;
 
 		let log = `${l} ${worker}\t[${domains.join(" ")}]\t${m}`;
-		if (envOption.withLogTime) log = `${chalk.gray(time)} ${log}`;
 
 		console.log(important ? chalk.bold(log) : log);
 
@@ -212,8 +211,7 @@ export default class Logger {
 		// Fixed if statement is ignored when logLevel includes debug
 		if (
 			config.logLevel?.includes("debug") ||
-			process.env.NODE_ENV !== "production" ||
-			envOption.verbose
+			process.env.NODE_ENV !== "production"
 		) {
 			this.log("debug", message, data, important);
 		}

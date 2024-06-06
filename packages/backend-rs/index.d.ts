@@ -19,16 +19,6 @@ export const USER_ACTIVE_THRESHOLD: number
  * * <https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Containers>
  */
 export const FILE_TYPE_BROWSERSAFE: string[]
-export interface EnvConfig {
-  onlyQueue: boolean
-  onlyServer: boolean
-  noDaemons: boolean
-  disableClustering: boolean
-  verbose: boolean
-  withLogTime: boolean
-  slow: boolean
-}
-export function loadEnv(): EnvConfig
 export function fetchMeta(): Promise<Meta>
 export function updateMetaCache(): Promise<void>
 export interface PugArgs {
@@ -467,7 +457,7 @@ export function latestVersion(): Promise<string>
  * ```
  */
 export function nyaify(text: string, lang?: string | undefined | null): string
-/** Hashes the given password using [Argon2] algorithm. */
+/** Hashes the given password using [argon2] algorithm. */
 export function hashPassword(password: string): string
 /** Checks whether the given password and hash match. */
 export function verifyPassword(password: string, hash: string): boolean
@@ -1382,29 +1372,24 @@ export interface Webhook {
   latestStatus: number | null
 }
 export function updateAntennasOnNewNote(note: Note, noteAuthor: Acct, noteMutedUsers: Array<string>): Promise<void>
+export function updateAntennaCache(): Promise<void>
 export function watchNote(watcherId: string, noteAuthorId: string, noteId: string): Promise<void>
 export function unwatchNote(watcherId: string, noteId: string): Promise<void>
 export enum PushNotificationKind {
-  Generic = 'generic',
-  Chat = 'chat',
-  ReadAllChats = 'readAllChats',
-  ReadAllChatsInTheRoom = 'readAllChatsInTheRoom',
-  ReadNotifications = 'readNotifications',
-  ReadAllNotifications = 'readAllNotifications',
-  Mastodon = 'mastodon'
+  Generic = 0,
+  Chat = 1,
+  ReadAllChats = 2,
+  ReadAllChatsInTheRoom = 3,
+  ReadNotifications = 4,
+  ReadAllNotifications = 5,
+  Mastodon = 6
 }
 export function sendPushNotification(receiverUserId: string, kind: PushNotificationKind, content: any): Promise<void>
 export function publishToChannelStream(channelId: string, userId: string): Promise<void>
-export enum ChatEvent {
-  Message = 'message',
-  Read = 'read',
-  Deleted = 'deleted',
-  Typing = 'typing'
-}
 export function publishToChatStream(senderUserId: string, receiverUserId: string, kind: ChatEvent, object: any): Promise<void>
 export enum ChatIndexEvent {
-  Message = 'message',
-  Read = 'read'
+  Message = 0,
+  Read = 1
 }
 export function publishToChatIndexStream(userId: string, kind: ChatIndexEvent, object: any): Promise<void>
 export interface PackedEmoji {
@@ -1427,6 +1412,12 @@ export interface AbuseUserReportLike {
   comment: string
 }
 export function publishToModerationStream(moderatorId: string, report: AbuseUserReportLike): Promise<void>
+export enum ChatEvent {
+  Message = 0,
+  Read = 1,
+  Deleted = 2,
+  Typing = 3
+}
 export function getTimestamp(id: string): number
 /**
  * The generated ID results in the form of `[8 chars timestamp] + [cuid2]`.

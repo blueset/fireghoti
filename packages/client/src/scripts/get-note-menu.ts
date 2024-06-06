@@ -399,6 +399,13 @@ export function getNoteMenu(props: {
 								action: copyOriginal,
 							}
 						: undefined,
+					{
+						icon: `${icon("ph-qr-code")}`,
+						text: i18n.ts.getQrCode,
+						action: () => {
+							os.displayQrCode(`${url}/notes/${appearNote.id}`);
+						},
+					},
 					shareAvailable()
 						? {
 								icon: `${icon("ph-share-network")}`,
@@ -516,6 +523,13 @@ export function getNoteMenu(props: {
 						action: copyOriginal,
 					}
 				: undefined,
+			{
+				icon: `${icon("ph-qr-code")}`,
+				text: i18n.ts.getQrCode,
+				action: () => {
+					os.displayQrCode(`${url}/notes/${appearNote.id}`);
+				},
+			},
 			shareAvailable()
 				? {
 						icon: `${icon("ph-share-network")}`,

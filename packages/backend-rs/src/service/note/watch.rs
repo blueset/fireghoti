@@ -1,6 +1,4 @@
-use crate::database::db_conn;
-use crate::model::entity::note_watching;
-use crate::util::id::gen_id_at;
+use crate::{database::db_conn, model::entity::note_watching, util::id::gen_id_at};
 use sea_orm::{prelude::*, ActiveValue};
 
 #[crate::export]

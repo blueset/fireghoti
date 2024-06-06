@@ -1,7 +1,6 @@
 //! Server information
 
-use crate::database::db_conn;
-use crate::model::entity::meta;
+use crate::{database::db_conn, model::entity::meta};
 use sea_orm::{prelude::*, ActiveValue};
 use std::sync::Mutex;
 

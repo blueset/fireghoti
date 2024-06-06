@@ -15,7 +15,7 @@ pub struct AbuseUserReportLike {
 pub async fn publish(moderator_id: String, report: &AbuseUserReportLike) -> Result<(), Error> {
     publish_to_stream(
         &Stream::Moderation { moderator_id },
-        Some("newAbuseUserReport".to_string()),
+        Some("newAbuseUserReport"),
         Some(serde_json::to_string(report)?),
     )
     .await
