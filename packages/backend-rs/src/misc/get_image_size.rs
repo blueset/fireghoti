@@ -1,6 +1,6 @@
 use crate::{database::cache, util::http_client};
 use image::{io::Reader, ImageError, ImageFormat};
-use isahc::ReadResponseExt;
+use isahc::AsyncReadResponseExt;
 use nom_exif::{parse_jpeg_exif, EntryValue, ExifTag};
 use std::io::Cursor;
 use tokio::sync::Mutex;
@@ -70,7 +70,7 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
 
     tracing::info!("retrieving image from {}", url);
 
-    let mut response = http_client::client()?.get(url)?;
+    let mut response = http_client::client()?.get_async(url).await?;
 
     if !response.status().is_success() {
         tracing::info!("status: {}", response.status());
@@ -78,7 +78,7 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
         return Err(Error::Http(format!("Failed to get image from {}", url)));
     }
 
-    let image_bytes = response.bytes()?;
+    let image_bytes = response.bytes().await?;
 
     let reader = Reader::new(Cursor::new(&image_bytes)).with_guessed_format()?;
 
