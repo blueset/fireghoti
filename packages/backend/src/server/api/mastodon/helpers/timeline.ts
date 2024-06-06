@@ -1,7 +1,6 @@
 import type { Note } from "@/models/entities/note.js";
 import type { ILocalUser, User } from "@/models/entities/user.js";
 import {
-	Followings,
 	Notes,
 	Notifications,
 	RegistryItems,
@@ -14,7 +13,7 @@ import { generateVisibilityQuery } from "@/server/api/common/generate-visibility
 import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
 import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
 import { generateMutedUserRenotesQueryForNotes } from "@/server/api/common/generated-muted-renote-query.js";
-import { fetchMeta } from "backend-rs";
+import { fetchMeta, genId } from "backend-rs";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import type { UserList } from "@/models/entities/user-list.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
@@ -27,7 +26,6 @@ import { generatePaginationData } from "@/server/api/mastodon/middleware/paginat
 import type { MastoContext } from "@/server/api/mastodon/index.js";
 import { generateListQuery } from "@/server/api/common/generate-list-query.js";
 import { generateFollowingQuery } from "@/server/api/common/generate-following-query.js";
-import { genId } from "backend-rs";
 
 export class TimelineHelpers {
 	public static async getHomeTimeline(
@@ -379,14 +377,8 @@ export class TimelineHelpers {
 		return result;
 	}
 
-	/** Exclude scheduled notes from Mastodon timeline (visibility === "specified" && visibleUserIds.length === 0) */
+	/** Exclude scheduled notes from Mastodon timeline */
 	public static generateNoScheduleNotesQuery(q: SelectQueryBuilder<Note>) {
-		q.andWhere(
-			new Brackets((qb) => {
-				qb.where("note.visibility != 'specified'").orWhere(
-					"array_length(note.visibleUserIds, 1) != 0",
-				);
-			}),
-		);
+		q.andWhere("note.scheduledAt IS NULL");
 	}
 }

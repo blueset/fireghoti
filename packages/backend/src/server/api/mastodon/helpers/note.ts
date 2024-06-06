@@ -6,7 +6,6 @@ import {
 	NoteFavorites,
 	NoteReactions,
 	Notes,
-	ScheduledNotes,
 	UserNotePinings,
 } from "@/models/index.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
@@ -20,7 +19,7 @@ import deleteReaction from "@/services/note/reaction/delete.js";
 import createNote, { extractMentionedUsers } from "@/services/note/create.js";
 import editNote from "@/services/note/edit.js";
 import deleteNote from "@/services/note/delete.js";
-import { genId } from "backend-rs";
+import { fetchMeta, genIdAt } from "backend-rs";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
@@ -36,15 +35,13 @@ import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js"
 import { Cache } from "@/misc/cache.js";
 import AsyncLock from "async-lock";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
-import { IsNull } from "typeorm";
+import { In, IsNull } from "typeorm";
 import {
 	getStubMastoContext,
 	type MastoContext,
 } from "@/server/api/mastodon/index.js";
-import { fetchMeta } from "backend-rs";
 import { translate } from "@/misc/translate.js";
 import { createScheduledNoteJob } from "@/queue/index.js";
-import type { ScheduledNote } from "@/models/entities/scheduled-note.js";
 
 export class NoteHelpers {
 	public static postIdempotencyCache = new Cache<{
@@ -134,9 +131,11 @@ export class NoteHelpers {
 		});
 
 		if (!bookmarked) {
+			const now = new Date();
+
 			await NoteFavorites.insert({
-				id: genId(),
-				createdAt: new Date(),
+				id: genIdAt(now),
+				createdAt: now,
 				noteId: note.id,
 				userId: user.id,
 			});
@@ -385,7 +384,7 @@ export class NoteHelpers {
 		const user = ctx.user as ILocalUser;
 		const files =
 			request.media_ids && request.media_ids.length > 0
-				? DriveFiles.findByIds(request.media_ids)
+				? DriveFiles.findBy({ id: In(request.media_ids) })
 				: [];
 
 		const reply = request.in_reply_to_id
@@ -403,8 +402,10 @@ export class NoteHelpers {
 		const visibility =
 			request.visibility ?? UserHelpers.getDefaultNoteVisibility(ctx);
 
-		const data = {
-			createdAt: new Date(),
+		const now = new Date();
+
+		const data = await awaitAll({
+			createdAt: now,
 			files: files,
 			poll: request.poll
 				? {
@@ -432,39 +433,71 @@ export class NoteHelpers {
 						? this.extractMentions(request.text ?? "", ctx)
 						: undefined,
 			),
-		};
+		});
 
 		return createNote(
 			user,
-			await awaitAll(data),
+			{
+				createdAt: now,
+				scheduledAt: delay != null ? new Date(data.scheduledAt!) : null,
+				files: data.files,
+				poll:
+					data.poll != null
+						? {
+								choices: data.poll.choices,
+								multiple: data.poll.multiple,
+								expiresAt:
+									data.poll.expiresAt != null
+										? new Date(data.poll.expiresAt)
+										: null,
+							}
+						: undefined,
+				text: data.text || undefined,
+				lang: data.lang,
+				reply,
+				renote,
+				cw: data.cw,
+				...(delay != null
+					? {
+							visibility: "specified",
+							visibleUsers: [],
+						}
+					: {
+							visibility: data.visibility,
+							visibleUsers: data.visibleUsers,
+						}),
+			},
 			false,
-			!delay
-				? undefined
-				: async (note) => {
-						await ScheduledNotes.insert({
-							id: genId(),
-							noteId: note.id,
-							userId: user.id,
-							scheduledAt: request.scheduled_at,
-						});
-
+			delay
+				? async (note) => {
 						createScheduledNoteJob(
 							{
 								user: { id: user.id },
 								noteId: note.id,
 								option: {
-									poll: data.poll,
-									visibility: await visibility,
+									poll: data.poll
+										? {
+												choices: data.poll.choices,
+												multiple: data.poll.multiple,
+												expiresAt: data.poll.expiresAt
+													? new Date(data.poll.expiresAt)
+													: null,
+											}
+										: undefined,
+									visibility: data.visibility,
 									visibleUserIds: await Promise.resolve(visibility)
 										.then((v) =>
 											v === "specified" ? data.visibleUsers : undefined,
 										)
 										.then((users) => users?.map((u) => u.id)),
+									replyId: data.reply?.id ?? undefined,
+									renoteId: data.renote?.id ?? undefined,
 								},
 							},
 							delay,
 						);
-					},
+					}
+				: undefined,
 		);
 	}
 
@@ -476,7 +509,7 @@ export class NoteHelpers {
 		const user = ctx.user as ILocalUser;
 		const files =
 			request.media_ids && request.media_ids.length > 0
-				? await DriveFiles.findByIds(request.media_ids)
+				? await DriveFiles.findBy({ id: In(request.media_ids) })
 				: [];
 
 		if (request.media_attributes && request.media_attributes.length > 0) {
@@ -750,17 +783,17 @@ export class NoteHelpers {
 		minId: string | undefined,
 		limit = 20,
 		ctx: MastoContext,
-	): Promise<ScheduledNote[]> {
+	): Promise<Note[]> {
 		if (limit > 40) limit = 40;
 
 		const query = PaginationHelpers.makePaginationQuery(
-			ScheduledNotes.createQueryBuilder("scheduledNote"),
+			Notes.createQueryBuilder("note"),
 			sinceId,
 			maxId,
 			minId,
 		)
-			.leftJoinAndSelect("scheduledNote.note", "note")
-			.leftJoinAndSelect("scheduledNote.user", "user");
+			.andWhere("note.scheduledAt IS NOT NULL")
+			.leftJoinAndSelect("note.user", "user");
 
 		return PaginationHelpers.execQueryLinkPagination(
 			query,
@@ -773,13 +806,13 @@ export class NoteHelpers {
 	public static async getScheduledNoteOr404(
 		id: string,
 		ctx: MastoContext,
-	): Promise<ScheduledNote> {
+	): Promise<Note> {
 		const user = ctx.user as ILocalUser | null;
-		const query = ScheduledNotes.createQueryBuilder("scheduledNote")
-			.where("scheduledNote.noteId = :id", { id })
-			.andWhere("scheduledNote.userId = :userId", { userId: user?.id })
-			.leftJoinAndSelect("scheduledNote.note", "note")
-			.leftJoinAndSelect("scheduledNote.user", "user");
+		const query = Notes.createQueryBuilder("note")
+			.where("note.id = :id", { id })
+			.andWhere("note.userId = :userId", { userId: user?.id })
+			.andWhere("note.scheduledAt IS NOT NULL")
+			.leftJoinAndSelect("note.user", "user");
 		return query.getOneOrFail().catch((_) => {
 			throw new MastoApiError(404);
 		});

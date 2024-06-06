@@ -40,7 +40,6 @@ import type { NoteReaction } from "@/models/entities/note-reaction.js";
 import { Cache } from "@/misc/cache.js";
 import { isFiltered } from "@/misc/is-filtered.js";
 import { unfurl } from "unfurl.js";
-import type { ScheduledNote } from "@/models/entities/scheduled-note.js";
 
 export class NoteConverter {
 	private static noteContentHtmlCache = new Cache<string | null>(
@@ -162,9 +161,7 @@ export class NoteConverter {
 			return renote.url ?? renote.uri ?? `${config.url}/notes/${renote.id}`;
 		});
 
-		const identifier = `${note.id}:${(
-			note.updatedAt ?? note.createdAt
-		).getTime()}`;
+		const identifier = `${note.id}:${(note.updatedAt ?? note.createdAt).getTime()}`;
 
 		const text = quoteUri.then((quoteUri) =>
 			note.text !== null
@@ -579,13 +576,12 @@ export class NoteConverter {
 
 	/** Encode a schduled note. */
 	public static async encodeScheduledNote(
-		scheduledNote: ScheduledNote,
-		ctx: MastoContext,
+		note: Note,
+		_: MastoContext,
 	): Promise<MastodonEntity.ScheduledStatus> {
-		const { note, user } = scheduledNote;
-
 		const renote =
-			note.renote ?? (note.renoteId ? getNote(note.renoteId, user) : null);
+			note.renote ??
+			(note.renoteId ? getNote(note.renoteId, { id: note.userId }) : null);
 		const quoteUri = Promise.resolve(renote).then((renote) => {
 			if (!renote || !isQuote(note)) return null;
 			return renote.url ?? renote.uri ?? `${config.url}/notes/${renote.id}`;
@@ -604,12 +600,12 @@ export class NoteConverter {
 		const files = DriveFiles.packMany(note.fileIds);
 
 		const a = await awaitAll({
-			id: scheduledNote.noteId,
-			scheduled_at: scheduledNote.scheduledAt.toISOString(),
+			id: note.id,
+			scheduled_at: note.scheduledAt!.toISOString(),
 			params: {
 				text,
 				poll: note.hasPoll
-					? populatePoll(note, user?.id ?? null).then((p) =>
+					? populatePoll(note, note.userId ?? null).then((p) =>
 							PollConverter.encodeScheduledPoll(p),
 						)
 					: null,
@@ -622,7 +618,7 @@ export class NoteConverter {
 				in_reply_to_id: note.replyId,
 				language: note.lang,
 				application_id: 0,
-				idempotency: scheduledNote.id,
+				idempotency: note.id,
 				with_rate_limit: false,
 			},
 			media_attachments: files.then((files) =>
@@ -634,7 +630,7 @@ export class NoteConverter {
 
 	/** Encode an array of schduled notes. */
 	public static async encodeManyScheduledNotes(
-		scheduledNotes: ScheduledNote[],
+		scheduledNotes: Note[],
 		ctx: MastoContext,
 	): Promise<MastodonEntity.ScheduledStatus[]> {
 		const encoded = scheduledNotes.map((n) => this.encodeScheduledNote(n, ctx));

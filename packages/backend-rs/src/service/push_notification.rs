@@ -3,7 +3,10 @@ use crate::{
     database::db_conn,
     misc::get_note_summary::{get_note_summary, PartialNoteToSummarize},
     model::entity::{access_token, app, sw_subscription},
-    util::{http_client, id::{get_timestamp, InvalidIdError}},
+    util::{
+        http_client,
+        id::{get_timestamp, InvalidIdError},
+    },
 };
 use once_cell::sync::OnceCell;
 use sea_orm::prelude::*;
@@ -255,8 +258,8 @@ pub async fn send_push_notification(
 
     // TODO: refactoring
     let mut payload = if use_mastodon_api {
-            // Content generated per subscription
-            "".to_string()
+        // Content generated per subscription
+        "".to_string()
     } else {
         // Format the `content` passed from the TypeScript backend
         // for Firefish push notifications
