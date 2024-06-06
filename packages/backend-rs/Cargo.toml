@@ -6,7 +6,7 @@ rust-version = "1.74"
 
 [features]
 default = []
-napi = ["dep:napi", "dep:napi-derive"]
+napi = ["dep:napi", "dep:napi-derive", "dep:napi-build"]
 
 [lib]
 crate-type = ["cdylib", "lib"]
@@ -53,4 +53,4 @@ pretty_assertions = { workspace = true, features = ["std"] }
 tokio-test = { workspace = true }
 
 [build-dependencies]
-napi-build = { workspace = true }
+napi-build = { workspace = true, optional = true }
