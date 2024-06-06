@@ -1,10 +1,15 @@
-use crate::database::{cache, db_conn, redis_conn, redis_key, RedisConnError};
-use crate::federation::acct::Acct;
-use crate::misc::get_note_all_texts::{all_texts, PartialNoteToElaborate};
-use crate::model::entity::{antenna, note};
-use crate::service::antenna::check_hit::{check_hit_antenna, AntennaCheckError};
-use crate::service::stream;
-use crate::util::id::{get_timestamp, InvalidIdError};
+use crate::{
+    database::{cache, redis_conn, redis_key, RedisConnError},
+    federation::acct::Acct,
+    misc::get_note_all_texts::{all_texts, PartialNoteToElaborate},
+    model::entity::note,
+    service::{
+        antenna,
+        antenna::check_hit::{check_hit_antenna, AntennaCheckError},
+        stream,
+    },
+    util::id::{get_timestamp, InvalidIdError},
+};
 use redis::{streams::StreamMaxlen, AsyncCommands, RedisError};
 use sea_orm::prelude::*;
 
@@ -28,22 +33,7 @@ pub enum Error {
 
 // for napi export
 // https://github.com/napi-rs/napi-rs/issues/2060
-type Antenna = antenna::Model;
 type Note = note::Model;
-
-// TODO?: it might be better to store this directly in memory
-// (like fetch_meta) instead of Redis as it's used so much
-async fn antennas() -> Result<Vec<Antenna>, Error> {
-    const CACHE_KEY: &str = "antennas";
-
-    if let Some(antennas) = cache::get::<Vec<Antenna>>(CACHE_KEY).await? {
-        Ok(antennas)
-    } else {
-        let antennas = antenna::Entity::find().all(db_conn().await?).await?;
-        cache::set(CACHE_KEY, &antennas, 5 * 60).await?;
-        Ok(antennas)
-    }
-}
 
 #[crate::export]
 pub async fn update_antennas_on_new_note(
@@ -66,7 +56,7 @@ pub async fn update_antennas_on_new_note(
     .await?;
 
     // TODO: do this in parallel
-    for antenna in antennas().await?.iter() {
+    for antenna in antenna::cache::get().await?.iter() {
         if note_muted_users.contains(&antenna.user_id) {
             continue;
         }

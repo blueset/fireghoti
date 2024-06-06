@@ -88,8 +88,8 @@ pub enum RedisConnError {
 }
 
 /// Returns an async [redis] connection managed by a [bb8] connection pool.
-pub async fn redis_conn(
-) -> Result<PooledConnection<'static, RedisConnectionManager>, RedisConnError> {
+pub async fn get_conn() -> Result<PooledConnection<'static, RedisConnectionManager>, RedisConnError>
+{
     if !CONN_POOL.initialized() {
         let init_res = init_conn_pool().await;
 
@@ -114,19 +114,19 @@ pub fn key(key: impl ToString) -> String {
 
 #[cfg(test)]
 mod unit_test {
-    use super::redis_conn;
+    use super::get_conn;
     use pretty_assertions::assert_eq;
     use redis::AsyncCommands;
 
     #[tokio::test]
     async fn connect() {
-        assert!(redis_conn().await.is_ok());
-        assert!(redis_conn().await.is_ok());
+        assert!(get_conn().await.is_ok());
+        assert!(get_conn().await.is_ok());
     }
 
     #[tokio::test]
     async fn access() {
-        let mut redis = redis_conn().await.unwrap();
+        let mut redis = get_conn().await.unwrap();
 
         let key = "CARGO_UNIT_TEST_KEY";
         let value = "CARGO_UNIT_TEST_VALUE";

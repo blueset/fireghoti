@@ -20,13 +20,13 @@ static CLIENT: OnceCell<HttpClient> = OnceCell::new();
 /// # Example
 /// ```no_run
 /// # use backend_rs::util::http_client::client;
-/// use isahc::ReadResponseExt;
+/// use isahc::AsyncReadResponseExt;
 ///
-/// # fn f() -> Result<(), Box<dyn std::error::Error>> {
-/// let mut response = client()?.get("https://example.com/")?;
+/// # async fn f() -> Result<(), Box<dyn std::error::Error>> {
+/// let mut response = client()?.get_async("https://example.com/").await?;
 ///
 /// if response.status().is_success() {
-///     println!("{}", response.text()?);
+///     println!("{}", response.text().await?);
 /// }
 /// # Ok(())
 /// # }

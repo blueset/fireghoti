@@ -2,8 +2,7 @@
 //!
 //! ref: <https://nodeinfo.diaspora.software/protocol.html>
 
-use crate::federation::nodeinfo::schema::*;
-use crate::util::http_client;
+use crate::{federation::nodeinfo::schema::*, util::http_client};
 use isahc::AsyncReadResponseExt;
 use serde::Deserialize;
 
@@ -25,13 +24,13 @@ pub enum Error {
 }
 
 /// Represents the schema of `/.well-known/nodeinfo`.
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize)]
 pub struct NodeinfoLinks {
     links: Vec<NodeinfoLink>,
 }
 
 /// Represents one entry of `/.well-known/nodeinfo`.
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize)]
 pub struct NodeinfoLink {
     rel: String,
     href: String,

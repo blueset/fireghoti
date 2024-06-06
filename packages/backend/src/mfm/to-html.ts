@@ -61,7 +61,7 @@ export function toHtml(
 		},
 
 		fn(node) {
-			const el = doc.createElement("i");
+			const el = doc.createElement("span");
 			appendChildren(node.children, el);
 			return el;
 		},

@@ -2,6 +2,17 @@
 
 You can skip intermediate versions when upgrading from an old version, but please read the notices and follow the instructions for each intermediate version before [upgrading](./upgrade.md).
 
+## Unreleased
+
+The following environment variables are deprecated and no longer have any effect:
+- `MK_ONLY_QUEUE`
+- `MK_ONLY_SERVER`
+- `MK_NO_DAEMONS`
+- `MK_DISABLE_CLUSTERING`
+- `MK_VERBOSE`
+- `MK_WITH_LOG_TIME`
+- `MK_SLOW`
+
 ## v20240601
 
 ### For systemd/pm2 users

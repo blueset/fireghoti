@@ -2,6 +2,7 @@ import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { Antennas, UserLists, UserGroupJoinings } from "@/models/index.js";
 import { publishInternalEvent } from "@/services/stream.js";
+import { updateAntennaCache } from "backend-rs";
 
 export const meta = {
 	tags: ["antennas"],
@@ -166,6 +167,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		"antennaUpdated",
 		await Antennas.findOneByOrFail({ id: antenna.id }),
 	);
+	await updateAntennaCache();
 
 	return await Antennas.pack(antenna.id);
 });

@@ -2,6 +2,7 @@ import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { Antennas } from "@/models/index.js";
 import { publishInternalEvent } from "@/services/stream.js";
+import { updateAntennaCache } from "backend-rs";
 
 export const meta = {
 	tags: ["antennas"],
@@ -40,4 +41,5 @@ export default define(meta, paramDef, async (ps, user) => {
 	await Antennas.delete(antenna.id);
 
 	publishInternalEvent("antennaDeleted", antenna);
+	await updateAntennaCache();
 });

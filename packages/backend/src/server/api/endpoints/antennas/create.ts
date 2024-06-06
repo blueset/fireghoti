@@ -1,5 +1,5 @@
 import define from "@/server/api/define.js";
-import { fetchMeta, genIdAt } from "backend-rs";
+import { fetchMeta, genIdAt, updateAntennaCache } from "backend-rs";
 import { Antennas, UserLists, UserGroupJoinings } from "@/models/index.js";
 import { ApiError } from "@/server/api/error.js";
 import { publishInternalEvent } from "@/services/stream.js";
@@ -173,6 +173,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	}).then((x) => Antennas.findOneByOrFail(x.identifiers[0]));
 
 	publishInternalEvent("antennaCreated", antenna);
+	await updateAntennaCache();
 
 	return await Antennas.pack(antenna);
 });
