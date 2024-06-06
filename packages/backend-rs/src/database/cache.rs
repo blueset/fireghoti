@@ -4,16 +4,12 @@ use crate::database::{redis_conn, redis_key, RedisConnError};
 use redis::{AsyncCommands, RedisError};
 use serde::{Deserialize, Serialize};
 
-#[derive(strum::Display, Debug)]
+#[cfg_attr(test, derive(Debug))]
 pub enum Category {
-    #[strum(serialize = "fetchUrl")]
     FetchUrl,
-    #[strum(serialize = "blocking")]
     Block,
-    #[strum(serialize = "following")]
     Follow,
     #[cfg(test)]
-    #[strum(serialize = "usedOnlyForTesting")]
     Test,
 }
 
@@ -32,9 +28,15 @@ fn prefix_key(key: &str) -> String {
     redis_key(format!("cache:{}", key))
 }
 
-#[inline]
 fn categorize(category: Category, key: &str) -> String {
-    format!("{}:{}", category, key)
+    let prefix = match category {
+        Category::FetchUrl => "fetchUrl",
+        Category::Block => "blocking",
+        Category::Follow => "following",
+        #[cfg(test)]
+        Category::Test => "usedOnlyForTesting",
+    };
+    format!("{}:{}", prefix, key)
 }
 
 #[inline]

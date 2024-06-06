@@ -9,9 +9,16 @@ pub async fn publish(
     kind: ChatEvent,
     object: &serde_json::Value,
 ) -> Result<(), Error> {
+    let kind = match kind {
+        ChatEvent::Message => "message",
+        ChatEvent::Read => "read",
+        ChatEvent::Deleted => "deleted",
+        ChatEvent::Typing => "typing",
+    };
+
     publish_to_stream(
         &Stream::GroupChat { group_id },
-        Some(kind.to_string()),
+        Some(kind),
         Some(serde_json::to_string(object)?),
     )
     .await

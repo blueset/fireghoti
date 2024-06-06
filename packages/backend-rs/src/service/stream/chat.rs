@@ -1,15 +1,10 @@
 use crate::service::stream::{publish_to_stream, Error, Stream};
 
-#[derive(strum::Display)]
 #[crate::export(string_enum = "camelCase")]
 pub enum ChatEvent {
-    #[strum(serialize = "message")]
     Message,
-    #[strum(serialize = "read")]
     Read,
-    #[strum(serialize = "deleted")]
     Deleted,
-    #[strum(serialize = "typing")]
     Typing,
 }
 
@@ -23,12 +18,19 @@ pub async fn publish(
     kind: ChatEvent,
     object: &serde_json::Value,
 ) -> Result<(), Error> {
+    let kind = match kind {
+        ChatEvent::Message => "message",
+        ChatEvent::Read => "read",
+        ChatEvent::Deleted => "deleted",
+        ChatEvent::Typing => "typing",
+    };
+
     publish_to_stream(
         &Stream::Chat {
             sender_user_id,
             receiver_user_id,
         },
-        Some(kind.to_string()),
+        Some(kind),
         Some(serde_json::to_string(object)?),
     )
     .await

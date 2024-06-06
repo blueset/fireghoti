@@ -1365,13 +1365,13 @@ export function updateAntennasOnNewNote(note: Note, noteAuthor: Acct, noteMutedU
 export function watchNote(watcherId: string, noteAuthorId: string, noteId: string): Promise<void>
 export function unwatchNote(watcherId: string, noteId: string): Promise<void>
 export enum PushNotificationKind {
-  Generic = 'generic',
-  Chat = 'chat',
-  ReadAllChats = 'readAllChats',
-  ReadAllChatsInTheRoom = 'readAllChatsInTheRoom',
-  ReadNotifications = 'readNotifications',
-  ReadAllNotifications = 'readAllNotifications',
-  Mastodon = 'mastodon'
+  Generic = 0,
+  Chat = 1,
+  ReadAllChats = 2,
+  ReadAllChatsInTheRoom = 3,
+  ReadNotifications = 4,
+  ReadAllNotifications = 5,
+  Mastodon = 6
 }
 export function sendPushNotification(receiverUserId: string, kind: PushNotificationKind, content: any): Promise<void>
 export function publishToChannelStream(channelId: string, userId: string): Promise<void>

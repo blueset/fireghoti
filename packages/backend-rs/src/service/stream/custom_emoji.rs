@@ -21,7 +21,7 @@ pub struct PackedEmoji {
 pub async fn publish(emoji: &PackedEmoji) -> Result<(), Error> {
     publish_to_stream(
         &Stream::CustomEmoji,
-        Some("emojiAdded".to_string()),
+        Some("emojiAdded"),
         Some(format!("{{\"emoji\":{}}}", serde_json::to_string(emoji)?)),
     )
     .await

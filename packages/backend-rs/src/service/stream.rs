@@ -10,39 +10,44 @@ use crate::config::CONFIG;
 use crate::database::{redis_conn, RedisConnError};
 use redis::{AsyncCommands, RedisError};
 
-#[derive(strum::Display)]
 pub enum Stream {
-    #[strum(serialize = "internal")]
     Internal,
-    #[strum(serialize = "broadcast")]
     CustomEmoji,
-    #[strum(to_string = "adminStream:{moderator_id}")]
-    Moderation { moderator_id: String },
-    #[strum(to_string = "user:{user_id}")]
-    User { user_id: String },
-    #[strum(to_string = "channelStream:{channel_id}")]
-    Channel { channel_id: String },
-    #[strum(to_string = "noteStream:{note_id}")]
-    Note { note_id: String },
-    #[strum(serialize = "notesStream")]
+    Moderation {
+        moderator_id: String,
+    },
+    User {
+        user_id: String,
+    },
+    Channel {
+        channel_id: String,
+    },
+    Note {
+        note_id: String,
+    },
     Notes,
-    #[strum(to_string = "userListStream:{list_id}")]
-    UserList { list_id: String },
-    #[strum(to_string = "mainStream:{user_id}")]
-    Main { user_id: String },
-    #[strum(to_string = "driveStream:{user_id}")]
-    Drive { user_id: String },
-    #[strum(to_string = "antennaStream:{antenna_id}")]
-    Antenna { antenna_id: String },
-    #[strum(to_string = "messagingStream:{sender_user_id}-{receiver_user_id}")]
+    UserList {
+        list_id: String,
+    },
+    Main {
+        user_id: String,
+    },
+    Drive {
+        user_id: String,
+    },
+    Antenna {
+        antenna_id: String,
+    },
     Chat {
         sender_user_id: String,
         receiver_user_id: String,
     },
-    #[strum(to_string = "messagingStream:{group_id}")]
-    GroupChat { group_id: String },
-    #[strum(to_string = "messagingIndexStream:{user_id}")]
-    ChatIndex { user_id: String },
+    GroupChat {
+        group_id: String,
+    },
+    ChatIndex {
+        user_id: String,
+    },
 }
 
 #[derive(thiserror::Error, Debug)]
@@ -59,9 +64,29 @@ pub enum Error {
 
 pub async fn publish_to_stream(
     stream: &Stream,
-    kind: Option<String>,
+    kind: Option<&str>,
     value: Option<String>,
 ) -> Result<(), Error> {
+    let channel = match stream {
+        Stream::Internal => "internal".to_string(),
+        Stream::CustomEmoji => "broadcast".to_string(),
+        Stream::Moderation { moderator_id } => format!("adminStream:{moderator_id}"),
+        Stream::User { user_id } => format!("user:{user_id}"),
+        Stream::Channel { channel_id } => format!("channelStream:{channel_id}"),
+        Stream::Note { note_id } => format!("noteStream:{note_id}"),
+        Stream::Notes => "notesStream".to_string(),
+        Stream::UserList { list_id } => format!("userListStream:{list_id}"),
+        Stream::Main { user_id } => format!("mainStream:{user_id}"),
+        Stream::Drive { user_id } => format!("driveStream:{user_id}"),
+        Stream::Antenna { antenna_id } => format!("antennaStream:{antenna_id}"),
+        Stream::Chat {
+            sender_user_id,
+            receiver_user_id,
+        } => format!("messagingStream:{sender_user_id}-{receiver_user_id}"),
+        Stream::GroupChat { group_id } => format!("messagingStream:{group_id}"),
+        Stream::ChatIndex { user_id } => format!("messagingIndexStream:{user_id}"),
+    };
+
     let message = if let Some(kind) = kind {
         format!(
             "{{\"type\":\"{}\",\"body\":{}}}",
@@ -76,28 +101,9 @@ pub async fn publish_to_stream(
         .await?
         .publish(
             &CONFIG.host,
-            format!("{{\"channel\":\"{}\",\"message\":{}}}", stream, message),
+            format!("{{\"channel\":\"{}\",\"message\":{}}}", channel, message),
         )
         .await?;
 
     Ok(())
-}
-
-#[cfg(test)]
-mod unit_test {
-    use super::Stream;
-    use pretty_assertions::assert_eq;
-
-    #[test]
-    fn channel_to_string() {
-        assert_eq!(Stream::Internal.to_string(), "internal");
-        assert_eq!(Stream::CustomEmoji.to_string(), "broadcast");
-        assert_eq!(
-            Stream::Moderation {
-                moderator_id: "9tb42br63g5apjcq".to_string()
-            }
-            .to_string(),
-            "adminStream:9tb42br63g5apjcq"
-        );
-    }
 }
