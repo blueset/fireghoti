@@ -68,6 +68,8 @@ pub struct Model {
     #[sea_orm(column_name = "updatedAt")]
     pub updated_at: Option<DateTimeWithTimeZone>,
     pub lang: Option<String>,
+    #[sea_orm(column_name = "scheduledAt")]
+    pub scheduled_at: Option<DateTimeWithTimeZone>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
@@ -124,8 +126,6 @@ pub enum Relation {
     PromoNote,
     #[sea_orm(has_many = "super::promo_read::Entity")]
     PromoRead,
-    #[sea_orm(has_many = "super::scheduled_note::Entity")]
-    ScheduledNote,
     #[sea_orm(
         belongs_to = "super::user::Entity",
         from = "Column::UserId",
@@ -225,12 +225,6 @@ impl Related<super::promo_note::Entity> for Entity {
 impl Related<super::promo_read::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::PromoRead.def()
-    }
-}
-
-impl Related<super::scheduled_note::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::ScheduledNote.def()
     }
 }
 

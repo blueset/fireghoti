@@ -67,7 +67,6 @@ import { UserIp } from "./entities/user-ip.js";
 import { NoteFileRepository } from "./repositories/note-file.js";
 import { NoteEditRepository } from "./repositories/note-edit.js";
 import { UserProfileRepository } from "./repositories/user-profile.js";
-import { ScheduledNote } from "./entities/scheduled-note.js";
 
 export const Announcements = db.getRepository(Announcement);
 export const AnnouncementReads = db.getRepository(AnnouncementRead);
@@ -136,4 +135,3 @@ export const RegistryItems = db.getRepository(RegistryItem);
 export const Webhooks = db.getRepository(Webhook);
 export const Ads = db.getRepository(Ad);
 export const PasswordResetRequests = db.getRepository(PasswordResetRequest);
-export const ScheduledNotes = db.getRepository(ScheduledNote);

@@ -31,8 +31,8 @@ importers:
         specifier: 20.14.2
         version: 20.14.2
       execa:
-        specifier: 9.1.0
-        version: 9.1.0
+        specifier: 9.2.0
+        version: 9.2.0
       pnpm:
         specifier: 9.2.0
         version: 9.2.0
@@ -43,14 +43,14 @@ importers:
   packages/backend:
     dependencies:
       '@bull-board/api':
-        specifier: 5.20.0
-        version: 5.20.0(@bull-board/ui@5.20.0)
+        specifier: 5.20.1
+        version: 5.20.1(@bull-board/ui@5.20.1)
       '@bull-board/koa':
-        specifier: 5.20.0
-        version: 5.20.0(@types/koa@2.15.0)(lodash@4.17.21)(pug@3.0.3)
+        specifier: 5.20.1
+        version: 5.20.1(@types/koa@2.15.0)(lodash@4.17.21)(pug@3.0.3)
       '@bull-board/ui':
-        specifier: 5.20.0
-        version: 5.20.0
+        specifier: 5.20.1
+        version: 5.20.1
       '@discordapp/twemoji':
         specifier: 15.0.3
         version: 15.0.3
@@ -91,8 +91,8 @@ importers:
         specifier: 0.5.0
         version: 0.5.0
       aws-sdk:
-        specifier: 2.1635.0
-        version: 2.1635.0
+        specifier: 2.1636.0
+        version: 2.1636.0
       axios:
         specifier: 1.7.2
         version: 1.7.2
@@ -154,8 +154,8 @@ importers:
         specifier: 4.0.0
         version: 4.0.0
       got:
-        specifier: 14.4.0
-        version: 14.4.0
+        specifier: 14.4.1
+        version: 14.4.1
       gunzip-maybe:
         specifier: 1.4.2
         version: 1.4.2
@@ -1043,11 +1043,13 @@ packages:
   '@biomejs/cli-darwin-arm64@1.8.0':
     resolution: {integrity: sha512-dBAYzfIJ1JmWigKlWourT3sJ3I60LZPjqNwwlsyFjiv5AV7vPeWlHVVIImV2BpINwNjZQhpXnwDfVnGS4vr7AA==}
     engines: {node: '>=14.21.3'}
+    cpu: [arm64]
     os: [darwin]
 
   '@biomejs/cli-darwin-x64@1.8.0':
     resolution: {integrity: sha512-ZTTSD0bP0nn9UpRDGQrQNTILcYSj+IkxTYr3CAV64DWBDtQBomlk2oVKWzDaA1LOhpAsTh0giLCbPJaVk2jfMQ==}
     engines: {node: '>=14.21.3'}
+    cpu: [x64]
     os: [darwin]
 
   '@biomejs/cli-linux-arm64-musl@1.8.0':
@@ -1059,6 +1061,7 @@ packages:
   '@biomejs/cli-linux-arm64@1.8.0':
     resolution: {integrity: sha512-cx725jTlJS6dskvJJwwCQaaMRBKE2Qss7ukzmx27Rn/DXRxz6tnnBix4FUGPf1uZfwrERkiJlbWM05JWzpvvXg==}
     engines: {node: '>=14.21.3'}
+    cpu: [arm64]
     os: [linux]
 
   '@biomejs/cli-linux-x64-musl@1.8.0':
@@ -1070,6 +1073,7 @@ packages:
   '@biomejs/cli-linux-x64@1.8.0':
     resolution: {integrity: sha512-cmgmhlD4QUxMhL1VdaNqnB81xBHb3R7huVNyYnPYzP+AykZ7XqJbPd1KcWAszNjUk2AHdx0aLKEBwCOWemxb2g==}
     engines: {node: '>=14.21.3'}
+    cpu: [x64]
     os: [linux]
 
   '@biomejs/cli-win32-arm64@1.8.0':
@@ -1084,16 +1088,16 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@bull-board/api@5.20.0':
-    resolution: {integrity: sha512-WUSuHdunODSWX8rkZmTnXpJsrUHqLS6+H3IGN0MNh6ylM/plZxGJJ3jW4nTXePWASeLNoDC0gjRcziDjlodPnQ==}
+  '@bull-board/api@5.20.1':
+    resolution: {integrity: sha512-45aDhnOzWRrtUUAKHxdClSnLIus5f8BK3ATzb2IwI/BRgOi1lWTe1YG266hVqDdWXsUDxKzf75DAANKfAoEsRA==}
     peerDependencies:
-      '@bull-board/ui': 5.20.0
+      '@bull-board/ui': 5.20.1
 
-  '@bull-board/koa@5.20.0':
-    resolution: {integrity: sha512-jto1WNIBZscCSJMkGm4G4qrb5KhblyJT/Q/59k5hHg9fdogzW9PfR+UQj7OOjLTMNX3phtPNvL0jG7/3HfmtIA==}
+  '@bull-board/koa@5.20.1':
+    resolution: {integrity: sha512-xUEEpMsdzZWHZQMnfk4a9kFhCz4PQkMBnb/t/C2xYwG15nCLapHWqMd5xO59OxnWOZ5XIiLsJwtCuf0l5G+L8A==}
 
-  '@bull-board/ui@5.20.0':
-    resolution: {integrity: sha512-EuijEHzQ9EAaA8WD4B+iXpTWTvCpTU2pskVUOs8CFkp0AYBqIhQDOi1W3f+e3FMqwS81l2/WkVHKkd6QRzbRzA==}
+  '@bull-board/ui@5.20.1':
+    resolution: {integrity: sha512-RzNinC4FKHNuxzkIRsCL+n9iO5RxmF5YM7byCuuv1/UeFjtCtsLHFi6TI9ZgJsXETA2Uxq9Mg7ppncojUjrINw==}
 
   '@cbor-extract/cbor-extract-darwin-arm64@2.2.0':
     resolution: {integrity: sha512-P7swiOAdF7aSi0H+tHtHtr6zrpF3aAq/W9FXx5HektRvLTM2O89xCyXF3pk7pLc7QpaY7AoaE8UowVf9QBdh3w==}
@@ -2887,8 +2891,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  aws-sdk@2.1635.0:
-    resolution: {integrity: sha512-zab4y8ftjgcctYao33c1fr8Yx1wMuRlEbZT7hwEXcK8Ta3+LAEXJs1wKjPpium+KUwl6zw7wxhaIdEibiz6InA==}
+  aws-sdk@2.1636.0:
+    resolution: {integrity: sha512-0w/jOCYnwewLYjH4UCh3GTBjR/NMdvEKNrd1pnM4FvfJSmjfzCinDvmf5Qc6xeIrqPfrdYOoQh7NJhYeJScCIQ==}
     engines: {node: '>= 10.0.0'}
 
   axios@0.24.0:
@@ -4264,9 +4268,9 @@ packages:
     resolution: {integrity: sha512-8uSpZZocAZRBAPIEINJj3Lo9HyGitllczc27Eh5YYojjMFMn8yHMDMaUHE2Jqfq05D/wucwI4JGURyXt1vchyg==}
     engines: {node: '>=10'}
 
-  execa@9.1.0:
-    resolution: {integrity: sha512-lSgHc4Elo2m6bUDhc3Hl/VxvUDJdQWI40RZ4KMY9bKRc+hgMOT7II/JjbNDhI8VnMtrCb7U/fhpJIkLORZozWw==}
-    engines: {node: '>=18'}
+  execa@9.2.0:
+    resolution: {integrity: sha512-vpOyYg7UAVKLAWWtRS2gAdgkT7oJbCn0me3gmUmxZih4kd3MF/oo8kNTBTIbkO3yuuF5uB4ZCZfn8BOolITYhg==}
+    engines: {node: ^18.19.0 || >=20.5.0}
 
   executable@4.1.1:
     resolution: {integrity: sha512-8iA79xD3uAch729dUG8xaaBBFGaEa0wdD2VkYLFHwlqosEj/jT66AzcreRDSgV7ehnNLBW2WR5jIXwGKjVdTLg==}
@@ -4606,8 +4610,8 @@ packages:
     resolution: {integrity: sha512-6tfZ91bOr7bOXnK7PRDCGBLa1H4U080YHNaAQ2KsMGlLEzRbk44nsZF2E1IeRc3vtJHPVbKCYgdFbaGO2ljd8g==}
     engines: {node: '>=10.19.0'}
 
-  got@14.4.0:
-    resolution: {integrity: sha512-baa2HMfREJ9UQSXOPwWe0DNK+FT8Okcxe9kmTJvaetv2q/MUxq0qFzEnfSbxo+wj45/QioGcH5ZhuT9VBIPJ5Q==}
+  got@14.4.1:
+    resolution: {integrity: sha512-IvDJbJBUeexX74xNQuMIVgCRRuNOm5wuK+OC3Dc2pnSoh1AOmgc7JVj7WC+cJ4u0aPcO9KZ2frTXcqK4W/5qTQ==}
     engines: {node: '>=20'}
 
   graceful-fs@4.2.11:
@@ -8041,15 +8045,15 @@ snapshots:
   '@biomejs/cli-win32-x64@1.8.0':
     optional: true
 
-  '@bull-board/api@5.20.0(@bull-board/ui@5.20.0)':
+  '@bull-board/api@5.20.1(@bull-board/ui@5.20.1)':
     dependencies:
-      '@bull-board/ui': 5.20.0
+      '@bull-board/ui': 5.20.1
       redis-info: 3.1.0
 
-  '@bull-board/koa@5.20.0(@types/koa@2.15.0)(lodash@4.17.21)(pug@3.0.3)':
+  '@bull-board/koa@5.20.1(@types/koa@2.15.0)(lodash@4.17.21)(pug@3.0.3)':
     dependencies:
-      '@bull-board/api': 5.20.0(@bull-board/ui@5.20.0)
-      '@bull-board/ui': 5.20.0
+      '@bull-board/api': 5.20.1(@bull-board/ui@5.20.1)
+      '@bull-board/ui': 5.20.1
       ejs: 3.1.10
       koa: 2.15.3
       koa-mount: 4.0.0
@@ -8112,9 +8116,9 @@ snapshots:
       - walrus
       - whiskers
 
-  '@bull-board/ui@5.20.0':
+  '@bull-board/ui@5.20.1':
     dependencies:
-      '@bull-board/api': 5.20.0(@bull-board/ui@5.20.0)
+      '@bull-board/api': 5.20.1(@bull-board/ui@5.20.1)
 
   '@cbor-extract/cbor-extract-darwin-arm64@2.2.0':
     optional: true
@@ -10043,7 +10047,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.0.0
 
-  aws-sdk@2.1635.0:
+  aws-sdk@2.1636.0:
     dependencies:
       buffer: 4.9.2
       events: 1.1.1
@@ -11585,7 +11589,7 @@ snapshots:
       signal-exit: 3.0.7
       strip-final-newline: 2.0.0
 
-  execa@9.1.0:
+  execa@9.2.0:
     dependencies:
       '@sindresorhus/merge-streams': 4.0.0
       cross-spawn: 7.0.3
@@ -11976,7 +11980,7 @@ snapshots:
       p-cancelable: 2.1.1
       responselike: 2.0.1
 
-  got@14.4.0:
+  got@14.4.1:
     dependencies:
       '@sindresorhus/is': 6.3.1
       '@szmarczak/http-timer': 5.0.1
@@ -11989,6 +11993,7 @@ snapshots:
       lowercase-keys: 3.0.0
       p-cancelable: 4.0.1
       responselike: 3.0.0
+      type-fest: 4.19.0
 
   graceful-fs@4.2.11: {}
 
