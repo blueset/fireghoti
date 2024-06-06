@@ -2,8 +2,7 @@
 //!
 //! ref: <https://nodeinfo.diaspora.software/protocol.html>
 
-use crate::federation::nodeinfo::schema::*;
-use crate::util::http_client;
+use crate::{federation::nodeinfo::schema::*, util::http_client};
 use isahc::AsyncReadResponseExt;
 use serde::Deserialize;
 

@@ -6,8 +6,10 @@ pub mod custom_emoji;
 pub mod group_chat;
 pub mod moderation;
 
-use crate::config::CONFIG;
-use crate::database::{redis_conn, RedisConnError};
+use crate::{
+    config::CONFIG,
+    database::{redis_conn, RedisConnError},
+};
 use redis::{AsyncCommands, RedisError};
 
 pub enum Stream {
@@ -48,6 +50,14 @@ pub enum Stream {
     ChatIndex {
         user_id: String,
     },
+}
+
+#[crate::export]
+pub enum ChatEvent {
+    Message,
+    Read,
+    Deleted,
+    Typing,
 }
 
 #[derive(thiserror::Error, Debug)]

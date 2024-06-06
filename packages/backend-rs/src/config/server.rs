@@ -2,8 +2,7 @@
 
 use once_cell::sync::Lazy;
 use serde::Deserialize;
-use std::env;
-use std::fs;
+use std::{env, fs};
 
 pub const VERSION: &str = macro_rs::read_version_from_package_json!();
 

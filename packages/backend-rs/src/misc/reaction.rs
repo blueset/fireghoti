@@ -1,6 +1,4 @@
-use crate::config::local_server_info;
-use crate::database::db_conn;
-use crate::model::entity::emoji;
+use crate::{config::local_server_info, database::db_conn, model::entity::emoji};
 use once_cell::sync::Lazy;
 use regex::Regex;
 use sea_orm::prelude::*;

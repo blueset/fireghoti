@@ -1,5 +1,4 @@
-use crate::database::cache;
-use crate::util::http_client;
+use crate::{database::cache, util::http_client};
 use image::{io::Reader, ImageError, ImageFormat};
 use isahc::ReadResponseExt;
 use nom_exif::{parse_jpeg_exif, EntryValue, ExifTag};

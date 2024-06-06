@@ -1,10 +1,12 @@
 //! NodeInfo generator
 
-use crate::config::{local_server_info, CONFIG};
-use crate::database::{cache, db_conn};
-use crate::federation::nodeinfo::schema::*;
-use crate::model::entity::{note, user};
-use sea_orm::{ColumnTrait, DbErr, EntityTrait, PaginatorTrait, QueryFilter};
+use crate::{
+    config::{local_server_info, CONFIG},
+    database::{cache, db_conn},
+    federation::nodeinfo::schema::*,
+    model::entity::{note, user},
+};
+use sea_orm::prelude::*;
 use serde_json::json;
 use std::collections::HashMap;
 

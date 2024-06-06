@@ -1,7 +1,6 @@
 //! Fetch latest Firefish version from the Firefish repository
 
-use crate::database::cache;
-use crate::util::http_client;
+use crate::{database::cache, util::http_client};
 use isahc::ReadResponseExt;
 use serde::Deserialize;
 

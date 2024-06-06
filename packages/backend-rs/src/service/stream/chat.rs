@@ -1,12 +1,4 @@
-use crate::service::stream::{publish_to_stream, Error, Stream};
-
-#[crate::export(string_enum = "camelCase")]
-pub enum ChatEvent {
-    Message,
-    Read,
-    Deleted,
-    Typing,
-}
+use crate::service::stream::{publish_to_stream, ChatEvent, Error, Stream};
 
 // We want to merge `kind` and `object` into a single enum
 // https://github.com/napi-rs/napi-rs/issues/2036

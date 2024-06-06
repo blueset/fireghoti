@@ -1,6 +1,6 @@
 use crate::service::stream::{publish_to_stream, Error, Stream};
 
-#[crate::export(string_enum = "camelCase")]
+#[crate::export]
 pub enum ChatIndexEvent {
     Message,
     Read,

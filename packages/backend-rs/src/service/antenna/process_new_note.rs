@@ -1,10 +1,12 @@
-use crate::database::{cache, db_conn, redis_conn, redis_key, RedisConnError};
-use crate::federation::acct::Acct;
-use crate::misc::get_note_all_texts::{all_texts, PartialNoteToElaborate};
-use crate::model::entity::{antenna, note};
-use crate::service::antenna::check_hit::{check_hit_antenna, AntennaCheckError};
-use crate::service::stream;
-use crate::util::id::{get_timestamp, InvalidIdError};
+use crate::{
+    database::{cache, db_conn, redis_conn, redis_key, RedisConnError},
+    federation::acct::Acct,
+    misc::get_note_all_texts::{all_texts, PartialNoteToElaborate},
+    model::entity::{antenna, note},
+    service::antenna::check_hit::{check_hit_antenna, AntennaCheckError},
+    service::stream,
+    util::id::{get_timestamp, InvalidIdError},
+};
 use redis::{streams::StreamMaxlen, AsyncCommands, RedisError};
 use sea_orm::prelude::*;
 

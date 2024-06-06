@@ -1375,16 +1375,10 @@ export enum PushNotificationKind {
 }
 export function sendPushNotification(receiverUserId: string, kind: PushNotificationKind, content: any): Promise<void>
 export function publishToChannelStream(channelId: string, userId: string): Promise<void>
-export enum ChatEvent {
-  Message = 'message',
-  Read = 'read',
-  Deleted = 'deleted',
-  Typing = 'typing'
-}
 export function publishToChatStream(senderUserId: string, receiverUserId: string, kind: ChatEvent, object: any): Promise<void>
 export enum ChatIndexEvent {
-  Message = 'message',
-  Read = 'read'
+  Message = 0,
+  Read = 1
 }
 export function publishToChatIndexStream(userId: string, kind: ChatIndexEvent, object: any): Promise<void>
 export interface PackedEmoji {
@@ -1407,6 +1401,12 @@ export interface AbuseUserReportLike {
   comment: string
 }
 export function publishToModerationStream(moderatorId: string, report: AbuseUserReportLike): Promise<void>
+export enum ChatEvent {
+  Message = 0,
+  Read = 1,
+  Deleted = 2,
+  Typing = 3
+}
 export function getTimestamp(id: string): number
 /**
  * The generated ID results in the form of `[8 chars timestamp] + [cuid2]`.

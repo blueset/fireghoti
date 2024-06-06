@@ -1,5 +1,7 @@
-use crate::database::db_conn;
-use crate::model::entity::{drive_file, note};
+use crate::{
+    database::db_conn,
+    model::entity::{drive_file, note},
+};
 use sea_orm::{prelude::*, QuerySelect};
 
 #[crate::export(object)]

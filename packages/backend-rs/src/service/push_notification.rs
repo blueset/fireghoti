@@ -1,14 +1,13 @@
-use crate::config::local_server_info;
-use crate::database::db_conn;
-use crate::misc::get_note_summary::{get_note_summary, PartialNoteToSummarize};
-use crate::model::entity::sw_subscription;
-use crate::util::http_client;
+use crate::{
+    config::local_server_info,
+    database::db_conn,
+    misc::get_note_summary::{get_note_summary, PartialNoteToSummarize},
+    model::entity::sw_subscription,
+    util::http_client,
+};
 use once_cell::sync::OnceCell;
 use sea_orm::prelude::*;
-use web_push::{
-    ContentEncoding, IsahcWebPushClient, SubscriptionInfo, SubscriptionKeys, VapidSignatureBuilder,
-    WebPushClient, WebPushError, WebPushMessageBuilder,
-};
+use web_push::*;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {

@@ -1,7 +1,6 @@
 // TODO: We want to get rid of this
 
-use crate::database::db_conn;
-use crate::model::entity::attestation_challenge;
+use crate::{database::db_conn, model::entity::attestation_challenge};
 use chrono::{Duration, Utc};
 use sea_orm::prelude::*;
 
