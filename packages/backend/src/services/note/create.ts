@@ -469,46 +469,6 @@ export default async (
 					}
 				}
 
-				if (!dontFederateInitially) {
-					let publishKey: string;
-					let noteToPublish: Note;
-					const relays = await getCachedRelays();
-
-					// Some relays (e.g., aode-relay) deliver posts by boosting them as
-					// Announce activities. In that case, user is the relay's actor.
-					const boostedByRelay =
-						!!user.inbox &&
-						relays.map((relay) => relay.inbox).includes(user.inbox);
-
-					if (boostedByRelay && data.renote && data.renote.userHost) {
-						publishKey = `publishedNote:${data.renote.id}`;
-						noteToPublish = data.renote;
-					} else {
-						publishKey = `publishedNote:${note.id}`;
-						noteToPublish = note;
-					}
-
-					const lock = new Mutex(redisClient, "publishedNote");
-					await lock.acquire();
-					try {
-						const published = (await redisClient.get(publishKey)) != null;
-						if (!published) {
-							await redisClient.set(publishKey, "done", "EX", 30);
-							if (noteToPublish.renoteId) {
-								// Prevents other threads from publishing the boosting post
-								await redisClient.set(
-									`publishedNote:${noteToPublish.renoteId}`,
-									"done",
-									"EX",
-									30,
-								);
-							}
-							publishNotesStream(noteToPublish);
-						}
-					} finally {
-						await lock.release();
-					}
-				}
 				if (note.replyId != null) {
 					// Only provide the reply note id here as the recipient may not be authorized to see the note.
 					publishNoteStream(note.replyId, "replied", {
@@ -665,6 +625,46 @@ export default async (
 						Channels.increment({ id: data.channel.id }, "usersCount", 1);
 					}
 				});
+			}
+		}
+
+		if (!dontFederateInitially) {
+			let publishKey: string;
+			let noteToPublish: Note;
+			const relays = await getCachedRelays();
+
+			// Some relays (e.g., aode-relay) deliver posts by boosting them as
+			// Announce activities. In that case, user is the relay's actor.
+			const boostedByRelay =
+				!!user.inbox && relays.map((relay) => relay.inbox).includes(user.inbox);
+
+			if (boostedByRelay && data.renote && data.renote.userHost) {
+				publishKey = `publishedNote:${data.renote.id}`;
+				noteToPublish = data.renote;
+			} else {
+				publishKey = `publishedNote:${note.id}`;
+				noteToPublish = note;
+			}
+
+			const lock = new Mutex(redisClient, "publishedNote");
+			await lock.acquire();
+			try {
+				const published = (await redisClient.get(publishKey)) != null;
+				if (!published) {
+					await redisClient.set(publishKey, "done", "EX", 30);
+					if (noteToPublish.renoteId) {
+						// Prevents other threads from publishing the boosting post
+						await redisClient.set(
+							`publishedNote:${noteToPublish.renoteId}`,
+							"done",
+							"EX",
+							30,
+						);
+					}
+					publishNotesStream(noteToPublish);
+				}
+			} finally {
+				await lock.release();
 			}
 		}
 	});

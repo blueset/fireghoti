@@ -71,7 +71,7 @@ export default async function (
 	const instanceNotesCountDecreasement: Record<string, number> = {};
 
 	// Only broadcast "deleted" to local if the note is deleted from db
-	if (!isDraft && deleteFromDb) {
+	if (deleteFromDb) {
 		publishNoteStream(note.id, "deleted", {
 			deletedAt: deletedAt,
 		});
