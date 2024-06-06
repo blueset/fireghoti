@@ -44,8 +44,11 @@ export async function scheduledNote(
 			})
 		: [];
 
-	const reply = await Notes.findOneBy({ id: job.data.option.replyId });
-	if (reply == null) {
+	const reply =
+		job.data.option.replyId != null
+			? await Notes.findOneBy({ id: job.data.option.replyId })
+			: undefined;
+	if (job.data.option.replyId != null && reply == null) {
 		logger.warn(
 			`Note ${job.data.option.replyId} (reply) does not exist, aborting`,
 		);
@@ -53,10 +56,13 @@ export async function scheduledNote(
 		return;
 	}
 
-	const renote = await Notes.findOneBy({ id: job.data.option.renoteId });
-	if (renote == null) {
+	const renote =
+		job.data.option.renoteId != null
+			? await Notes.findOneBy({ id: job.data.option.renoteId })
+			: undefined;
+	if (job.data.option.renoteId != null && renote == null) {
 		logger.warn(
-			`Note ${job.data.option.replyId} (renote) does not exist, aborting`,
+			`Note ${job.data.option.renoteId} (renote) does not exist, aborting`,
 		);
 		done();
 		return;
