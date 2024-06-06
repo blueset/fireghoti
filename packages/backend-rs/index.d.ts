@@ -922,6 +922,7 @@ export interface Note {
   threadId: string | null
   updatedAt: DateTimeWithTimeZone | null
   lang: string | null
+  scheduledAt: DateTimeWithTimeZone | null
 }
 export interface NoteEdit {
   id: string
@@ -1080,12 +1081,6 @@ export interface ReplyMuting {
   createdAt: DateTimeWithTimeZone
   muteeId: string
   muterId: string
-}
-export interface ScheduledNote {
-  id: string
-  noteId: string
-  userId: string
-  scheduledAt: DateTimeWithTimeZone
 }
 export enum AntennaSrc {
   All = 'all',

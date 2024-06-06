@@ -7,7 +7,6 @@ import {
 	Notes,
 	Channels,
 	Blockings,
-	ScheduledNotes,
 } from "@/models/index.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { Note } from "@/models/entities/note.js";
@@ -16,7 +15,7 @@ import { config } from "@/config.js";
 import { noteVisibilities } from "@/types.js";
 import { ApiError } from "@/server/api/error.js";
 import define from "@/server/api/define.js";
-import { HOUR, genIdAt } from "backend-rs";
+import { HOUR } from "backend-rs";
 import { getNote } from "@/server/api/common/getters.js";
 import { langmap } from "firefish-js";
 import { createScheduledNoteJob } from "@/queue/index.js";
@@ -94,6 +93,12 @@ export const meta = {
 			message: "You migrated. Your account is now locked.",
 			code: "ACCOUNT_LOCKED",
 			id: "d390d7e1-8a5e-46ed-b625-06271cafd3d3",
+		},
+
+		scheduledTimeIsPast: {
+			message: "The scheduled time is past.",
+			code: "SCHEDULED_TIME_IS_PAST",
+			id: "277f91df-8d8e-4647-b4e3-5885fda8978a",
 		},
 	},
 } as const;
@@ -299,26 +304,26 @@ export default define(meta, paramDef, async (ps, user) => {
 	}
 
 	let delay: number | null = null;
-	if (ps.scheduledAt) {
+	if (ps.scheduledAt != null) {
 		delay = ps.scheduledAt - Date.now();
 		if (delay < 0) {
-			delay = null;
+			throw new ApiError(meta.errors.scheduledTimeIsPast);
 		}
 	}
-
-	const now = new Date();
 
 	// Create a post
 	const note = await create(
 		user,
 		{
-			createdAt: now,
+			createdAt: new Date(),
+			scheduledAt: delay != null ? new Date(ps.scheduledAt!) : null,
 			files: files,
 			poll: ps.poll
 				? {
 						choices: ps.poll.choices,
 						multiple: ps.poll.multiple,
-						expiresAt: ps.poll.expiresAt ? new Date(ps.poll.expiresAt) : null,
+						expiresAt:
+							ps.poll.expiresAt != null ? new Date(ps.poll.expiresAt) : null,
 					}
 				: undefined,
 			text: ps.text || undefined,
@@ -344,13 +349,6 @@ export default define(meta, paramDef, async (ps, user) => {
 		false,
 		delay
 			? async (note) => {
-					await ScheduledNotes.insert({
-						id: genIdAt(now),
-						noteId: note.id,
-						userId: user.id,
-						scheduledAt: new Date(ps.scheduledAt as number),
-					});
-
 					createScheduledNoteJob(
 						{
 							user: { id: user.id },
@@ -367,6 +365,8 @@ export default define(meta, paramDef, async (ps, user) => {
 									: undefined,
 								visibility: ps.visibility,
 								visibleUserIds: ps.visibleUserIds,
+								replyId: ps.replyId ?? undefined,
+								renoteId: ps.renoteId ?? undefined,
 							},
 						},
 						delay,
