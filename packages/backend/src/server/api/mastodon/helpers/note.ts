@@ -720,7 +720,7 @@ export class NoteHelpers {
 		ctx: MastoContext,
 	): Promise<MastodonEntity.StatusTranslation> {
 		const user = ctx.user as ILocalUser;
-		const instance = await fetchMeta(true);
+		const instance = await fetchMeta();
 		const provider = instance.libreTranslateApiUrl
 			? "LibreTranslate"
 			: instance.deeplAuthKey

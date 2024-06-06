@@ -69,7 +69,7 @@ export class AuthHelpers {
 			client_id: app.id,
 			client_secret: app.secret,
 			vapid_key:
-				(await fetchMeta(true).then((meta) => meta.swPublicKey)) ?? undefined,
+				(await fetchMeta().then((meta) => meta.swPublicKey)) ?? undefined,
 		};
 	}
 
@@ -228,7 +228,7 @@ export class AuthHelpers {
 		return {
 			name: app.name,
 			website: app.description,
-			vapid_key: await fetchMeta(true).then(
+			vapid_key: await fetchMeta().then(
 				(meta) => meta.swPublicKey ?? undefined,
 			),
 		};

@@ -85,7 +85,7 @@ export class TimelineHelpers {
 		}
 
 		if (!local) {
-			const m = await fetchMeta(true);
+			const m = await fetchMeta();
 			if (m.disableGlobalTimeline) {
 				if (user == null || !(user.isAdmin || user.isModerator)) {
 					throw new Error("global timeline is disabled");

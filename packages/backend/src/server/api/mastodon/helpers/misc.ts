@@ -43,7 +43,7 @@ export class MiscHelpers {
 			},
 			order: { id: "ASC" },
 		}).then((p) => (p ? UserConverter.encode(p, ctx) : null));
-		const meta = await fetchMeta(true);
+		const meta = await fetchMeta();
 
 		const res = {
 			uri: config.host,
@@ -119,7 +119,7 @@ export class MiscHelpers {
 			},
 			order: { id: "ASC" },
 		}).then((p) => (p ? UserConverter.encode(p, ctx) : null));
-		const meta = await fetchMeta(true);
+		const meta = await fetchMeta();
 
 		const res = {
 			domain: config.host,
@@ -261,7 +261,7 @@ export class MiscHelpers {
 		const user = ctx.user as ILocalUser;
 		const results: Promise<MastodonEntity.SuggestedAccount[]>[] = [];
 
-		const pinned = fetchMeta(true).then((meta) =>
+		const pinned = fetchMeta().then((meta) =>
 			Promise.all(
 				meta.pinnedUsers
 					.map((acct) => stringToAcct(acct))
