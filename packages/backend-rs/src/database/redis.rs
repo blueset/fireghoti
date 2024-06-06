@@ -88,8 +88,8 @@ pub enum RedisConnError {
 }
 
 /// Returns an async [redis] connection managed by a [bb8] connection pool.
-pub async fn get_conn(
-) -> Result<PooledConnection<'static, RedisConnectionManager>, RedisConnError> {
+pub async fn get_conn() -> Result<PooledConnection<'static, RedisConnectionManager>, RedisConnError>
+{
     if !CONN_POOL.initialized() {
         let init_res = init_conn_pool().await;
 
