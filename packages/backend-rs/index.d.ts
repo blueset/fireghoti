@@ -1352,6 +1352,7 @@ export interface Webhook {
   latestStatus: number | null
 }
 export function updateAntennasOnNewNote(note: Note, noteAuthor: Acct, noteMutedUsers: Array<string>): Promise<void>
+export function updateAntennaCache(): Promise<void>
 export function watchNote(watcherId: string, noteAuthorId: string, noteId: string): Promise<void>
 export function unwatchNote(watcherId: string, noteId: string): Promise<void>
 export enum PushNotificationKind {
