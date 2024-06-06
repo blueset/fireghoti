@@ -41,7 +41,7 @@ const BROWSER_SAFE_IMAGE_TYPES: [ImageFormat; 8] = [
 
 static MTX_GUARD: Mutex<()> = Mutex::const_new(());
 
-#[derive(Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
 #[crate::export(object)]
 pub struct ImageSize {
     pub width: u32,

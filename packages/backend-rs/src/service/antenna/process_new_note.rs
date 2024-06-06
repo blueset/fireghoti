@@ -28,15 +28,14 @@ pub enum Error {
 
 // for napi export
 // https://github.com/napi-rs/napi-rs/issues/2060
-type Antenna = antenna::Model;
 type Note = note::Model;
 
 // TODO?: it might be better to store this directly in memory
 // (like fetch_meta) instead of Redis as it's used so much
-async fn antennas() -> Result<Vec<Antenna>, Error> {
+async fn antennas() -> Result<Vec<antenna::Model>, Error> {
     const CACHE_KEY: &str = "antennas";
 
-    if let Some(antennas) = cache::get::<Vec<Antenna>>(CACHE_KEY).await? {
+    if let Some(antennas) = cache::get::<Vec<antenna::Model>>(CACHE_KEY).await? {
         Ok(antennas)
     } else {
         let antennas = antenna::Entity::find().all(db_conn().await?).await?;

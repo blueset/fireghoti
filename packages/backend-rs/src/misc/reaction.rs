@@ -6,7 +6,7 @@ use regex::Regex;
 use sea_orm::prelude::*;
 use std::collections::HashMap;
 
-#[derive(PartialEq, Debug)]
+#[cfg_attr(test, derive(PartialEq, Debug))]
 #[crate::export(object)]
 pub struct DecodedReaction {
     pub reaction: String,
