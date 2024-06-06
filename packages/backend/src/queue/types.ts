@@ -62,6 +62,8 @@ export type DbUserScheduledNoteData = {
 	option: {
 		visibility: string;
 		visibleUserIds?: string[] | null;
+		replyId?: string;
+		renoteId?: string;
 		poll?: IPoll;
 	};
 	noteId: Note["id"];

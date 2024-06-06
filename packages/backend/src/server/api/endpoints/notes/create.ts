@@ -365,6 +365,8 @@ export default define(meta, paramDef, async (ps, user) => {
 									: undefined,
 								visibility: ps.visibility,
 								visibleUserIds: ps.visibleUserIds,
+								replyId: ps.replyId ?? undefined,
+								renoteId: ps.renoteId ?? undefined,
 							},
 						},
 						delay,

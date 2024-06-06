@@ -16,20 +16,23 @@ export async function scheduledNote(
 
 	const user = await Users.findOneBy({ id: job.data.user.id });
 	if (user == null) {
+		logger.warn(`User ${job.data.user.id} does not exist, aborting`);
 		done();
 		return;
 	}
 
 	const draftNote = await Notes.findOneBy({ id: job.data.noteId });
 	if (draftNote == null) {
-		logger.warn(`Note ${job.data.noteId} does not exist`);
+		logger.warn(`Note ${job.data.noteId} does not exist, aborting`);
 		done();
 		return;
 	}
 	const files = await DriveFiles.findBy({ id: In(draftNote.fileIds) });
 
 	if (user.isSuspended) {
-		logger.info(`Cancelled due to user ${job.data.user.id} being suspended`);
+		logger.info(
+			`Cancelled due to user ${job.data.user.id} being suspended, aborting`,
+		);
 		deleteNote(user, draftNote);
 		done();
 		return;
@@ -41,6 +44,24 @@ export async function scheduledNote(
 			})
 		: [];
 
+	const reply = await Notes.findOneBy({ id: job.data.option.replyId });
+	if (reply == null) {
+		logger.warn(
+			`Note ${job.data.option.replyId} (reply) does not exist, aborting`,
+		);
+		done();
+		return;
+	}
+
+	const renote = await Notes.findOneBy({ id: job.data.option.renoteId });
+	if (renote == null) {
+		logger.warn(
+			`Note ${job.data.option.replyId} (renote) does not exist, aborting`,
+		);
+		done();
+		return;
+	}
+
 	// Create scheduled (actual) note
 	await createNote(user, {
 		createdAt: new Date(),
@@ -49,8 +70,8 @@ export async function scheduledNote(
 		poll: job.data.option.poll,
 		text: draftNote.text || undefined,
 		lang: draftNote.lang,
-		reply: draftNote.reply,
-		renote: draftNote.renote,
+		reply,
+		renote,
 		cw: draftNote.cw,
 		localOnly: draftNote.localOnly,
 		visibility: job.data.option.visibility,
