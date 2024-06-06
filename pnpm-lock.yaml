@@ -207,9 +207,6 @@ importers:
       koa-send:
         specifier: 5.0.1
         version: 5.0.1
-      koa-slow:
-        specifier: 2.1.0
-        version: 2.1.0
       megalodon:
         specifier: workspace:*
         version: link:../megalodon
@@ -1149,13 +1146,11 @@ packages:
   '@biomejs/cli-darwin-arm64@1.8.0':
     resolution: {integrity: sha512-dBAYzfIJ1JmWigKlWourT3sJ3I60LZPjqNwwlsyFjiv5AV7vPeWlHVVIImV2BpINwNjZQhpXnwDfVnGS4vr7AA==}
     engines: {node: '>=14.21.3'}
-    cpu: [arm64]
     os: [darwin]
 
   '@biomejs/cli-darwin-x64@1.8.0':
     resolution: {integrity: sha512-ZTTSD0bP0nn9UpRDGQrQNTILcYSj+IkxTYr3CAV64DWBDtQBomlk2oVKWzDaA1LOhpAsTh0giLCbPJaVk2jfMQ==}
     engines: {node: '>=14.21.3'}
-    cpu: [x64]
     os: [darwin]
 
   '@biomejs/cli-linux-arm64-musl@1.8.0':
@@ -1167,7 +1162,6 @@ packages:
   '@biomejs/cli-linux-arm64@1.8.0':
     resolution: {integrity: sha512-cx725jTlJS6dskvJJwwCQaaMRBKE2Qss7ukzmx27Rn/DXRxz6tnnBix4FUGPf1uZfwrERkiJlbWM05JWzpvvXg==}
     engines: {node: '>=14.21.3'}
-    cpu: [arm64]
     os: [linux]
 
   '@biomejs/cli-linux-x64-musl@1.8.0':
@@ -1179,7 +1173,6 @@ packages:
   '@biomejs/cli-linux-x64@1.8.0':
     resolution: {integrity: sha512-cmgmhlD4QUxMhL1VdaNqnB81xBHb3R7huVNyYnPYzP+AykZ7XqJbPd1KcWAszNjUk2AHdx0aLKEBwCOWemxb2g==}
     engines: {node: '>=14.21.3'}
-    cpu: [x64]
     os: [linux]
 
   '@biomejs/cli-win32-arm64@1.8.0':
@@ -5620,10 +5613,6 @@ packages:
     resolution: {integrity: sha512-tmcyQ/wXXuxpDxyNXv5yNNkdAMdFRqwtegBXUaowiQzUKqJehttS0x2j0eOZDQAyloAth5w6wwBImnFzkUz3pQ==}
     engines: {node: '>= 8'}
 
-  koa-slow@2.1.0:
-    resolution: {integrity: sha512-ii6s1zuZ51p+SY7WIrwjRi1tmPrNpeHEaw5UYi4h1QzAPmIcNk16e9zwKd9+eNNzI9n+Q2LXHAvt1MCfs7j/8w==}
-    engines: {iojs: '>= 1.0.0', node: '>= 0.12.0'}
-
   koa-static@5.0.0:
     resolution: {integrity: sha512-UqyYyH5YEXaJrf9S8E23GoJFQZXkBVJ9zYYMPGz919MSX1KuvAcycIuS0ci150HCoPf4XQVhQ84Qf8xRPWxFaQ==}
     engines: {node: '>= 7.6.0'}
@@ -5720,9 +5709,6 @@ packages:
 
   lodash.isequal@4.5.0:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
-
-  lodash.isregexp@3.0.5:
-    resolution: {integrity: sha512-VlV0abdYZs5asSYW1JW5W1f6gxf2SGQt90rzQp7UNTQ8KwcB3CprZe5crN1LIlCA/fB5R9xecrZijGSELJL8Yg==}
 
   lodash.map@4.6.0:
     resolution: {integrity: sha512-worNHGKLDetmcEYDvh2stPCrrQRkP20E4l0iIS7F8EvzMqBBi7ltvFN5m1HvTf1P7Jk1txKhvFcmYsCr8O2F1Q==}
@@ -6620,10 +6606,6 @@ packages:
   pureimage@0.4.13:
     resolution: {integrity: sha512-P8aonTNAnXWJn2pBIqyeWw0I/D4YDOfEavCVvbDG+wx3dCujQX0ENZiW5OcHfbd8HKLfVhCf4F/3Xivf1yWDiA==}
     engines: {node: '>=14.19.0'}
-
-  q@1.4.1:
-    resolution: {integrity: sha512-/CdEdaw49VZVmyIDGUQKDDT53c7qBkO6g5CefWz91Ae+l4+cRtcDYwMTXh6me4O8TMldeGHG3N2Bl84V78Ywbg==}
-    engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
 
   qrcode-generator@1.4.4:
     resolution: {integrity: sha512-HM7yY8O2ilqhmULxGMpcHSF1EhJJ9yBj8gvDEuZ6M+KGJ0YY2hKpnXvRD+hZPLrDVck3ExIGhmPtSdcjC+guuw==}
@@ -13609,11 +13591,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  koa-slow@2.1.0:
-    dependencies:
-      lodash.isregexp: 3.0.5
-      q: 1.4.1
-
   koa-static@5.0.0:
     dependencies:
       debug: 3.2.7
@@ -13801,8 +13778,6 @@ snapshots:
   lodash.isarguments@3.1.0: {}
 
   lodash.isequal@4.5.0: {}
-
-  lodash.isregexp@3.0.5: {}
 
   lodash.map@4.6.0: {}
 
@@ -14698,8 +14673,6 @@ snapshots:
       jpeg-js: 0.4.4
       opentype.js: 0.4.11
       pngjs: 7.0.0
-
-  q@1.4.1: {}
 
   qrcode-generator@1.4.4: {}
 

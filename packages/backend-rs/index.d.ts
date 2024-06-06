@@ -19,16 +19,6 @@ export const USER_ACTIVE_THRESHOLD: number
  * * <https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Containers>
  */
 export const FILE_TYPE_BROWSERSAFE: string[]
-export interface EnvConfig {
-  onlyQueue: boolean
-  onlyServer: boolean
-  noDaemons: boolean
-  disableClustering: boolean
-  verbose: boolean
-  withLogTime: boolean
-  slow: boolean
-}
-export function loadEnv(): EnvConfig
 export function fetchMeta(): Promise<Meta>
 export function updateMetaCache(): Promise<void>
 export interface PugArgs {
