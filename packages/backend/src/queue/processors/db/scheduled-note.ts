@@ -14,40 +14,47 @@ export async function scheduledNote(
 ): Promise<void> {
 	logger.info(`Creating: ${job.data.noteId}`);
 
-	const user = await Users.findOneBy({ id: job.data.user.id });
+	const [user, draftNote] = await Promise.all([
+		Users.findOneBy({ id: job.data.user.id }),
+		Notes.findOneBy({ id: job.data.noteId }),
+	]);
+
 	if (user == null) {
 		logger.warn(`User ${job.data.user.id} does not exist, aborting`);
 		done();
 		return;
 	}
 
-	const draftNote = await Notes.findOneBy({ id: job.data.noteId });
 	if (draftNote == null) {
 		logger.warn(`Note ${job.data.noteId} does not exist, aborting`);
 		done();
 		return;
 	}
-	const files = await DriveFiles.findBy({ id: In(draftNote.fileIds) });
 
 	if (user.isSuspended) {
 		logger.info(
 			`Cancelled due to user ${job.data.user.id} being suspended, aborting`,
 		);
-		deleteNote(user, draftNote);
+		await deleteNote(user, draftNote);
 		done();
 		return;
 	}
 
-	const visibleUsers = job.data.option.visibleUserIds
-		? await Users.findBy({
-				id: In(job.data.option.visibleUserIds),
-			})
-		: [];
-
-	const reply =
+	const [visibleUsers, reply, renote, files] = await Promise.all([
+		job.data.option.visibleUserIds
+			? Users.findBy({
+					id: In(job.data.option.visibleUserIds),
+				})
+			: [],
 		job.data.option.replyId != null
-			? await Notes.findOneBy({ id: job.data.option.replyId })
-			: undefined;
+			? Notes.findOneBy({ id: job.data.option.replyId })
+			: undefined,
+		job.data.option.renoteId != null
+			? Notes.findOneBy({ id: job.data.option.renoteId })
+			: undefined,
+		DriveFiles.findBy({ id: In(draftNote.fileIds) }),
+	]);
+
 	if (job.data.option.replyId != null && reply == null) {
 		logger.warn(
 			`Note ${job.data.option.replyId} (reply) does not exist, aborting`,
@@ -56,10 +63,6 @@ export async function scheduledNote(
 		return;
 	}
 
-	const renote =
-		job.data.option.renoteId != null
-			? await Notes.findOneBy({ id: job.data.option.renoteId })
-			: undefined;
 	if (job.data.option.renoteId != null && renote == null) {
 		logger.warn(
 			`Note ${job.data.option.renoteId} (renote) does not exist, aborting`,
