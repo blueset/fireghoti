@@ -315,7 +315,7 @@ export function getNoteMenu(props: {
 			},
 			!isAppearAuthor
 				? statePromise.then((state) =>
-						state.isWatching
+						state?.isWatching
 							? {
 									icon: `${icon("ph-eye-slash")}`,
 									text: i18n.ts.unwatch,
@@ -329,7 +329,7 @@ export function getNoteMenu(props: {
 					)
 				: undefined,
 			statePromise.then((state) =>
-				state.isMutedThread
+				state?.isMutedThread
 					? {
 							icon: `${icon("ph-speaker-x")}`,
 							text: i18n.ts.unmuteThread,
@@ -361,7 +361,7 @@ export function getNoteMenu(props: {
 						action: () => showEditHistory(),
 					}
 				: undefined,
-			props.translationEl.canTranslate
+			props.translationEl?.canTranslate
 				? {
 						icon: `${icon("ph-translate")}`,
 						text: i18n.ts.translate,
@@ -392,20 +392,30 @@ export function getNoteMenu(props: {
 						text: i18n.ts.copyLink,
 						action: copyLink,
 					},
-					appearNote.url || appearNote.uri
+					(appearNote.url ?? appearNote.uri) != null
 						? {
 								icon: `${icon("ph-link-simple")}`,
 								text: `${i18n.ts.copyLink} (${i18n.ts.origin})`,
 								action: copyOriginal,
 							}
 						: undefined,
-					{
-						icon: `${icon("ph-qr-code")}`,
-						text: i18n.ts.getQrCode,
-						action: () => {
-							os.displayQrCode(`${url}/notes/${appearNote.id}`);
-						},
-					},
+					appearNote.user.host == null ||
+					(appearNote.url ?? appearNote.uri) != null
+						? {
+								icon: `${icon("ph-qr-code")}`,
+								text:
+									appearNote.user.host == null
+										? i18n.ts.getQrCode
+										: `${i18n.ts.getQrCode} (${i18n.ts.origin})`,
+								action: () => {
+									os.displayQrCode(
+										appearNote.user.host == null
+											? `${url}/notes/${appearNote.id}`
+											: appearNote.url ?? appearNote.uri,
+									);
+								},
+							}
+						: undefined,
 					shareAvailable()
 						? {
 								icon: `${icon("ph-share-network")}`,
@@ -460,7 +470,7 @@ export function getNoteMenu(props: {
 			isAppearAuthor &&
 			!(
 				appearNote.visibility === "specified" &&
-				appearNote.visibleUserIds.length === 0
+				appearNote.visibleUserIds?.length === 0
 			)
 				? {
 						icon: `${icon("ph-eye-slash")}`,
@@ -497,12 +507,12 @@ export function getNoteMenu(props: {
 		].filter((x) => x !== undefined);
 	} else {
 		menu = [
-			appearNote.url || appearNote.uri
+			(appearNote.url ?? appearNote.uri) != null
 				? {
 						icon: `${icon("ph-arrow-square-out")}`,
 						text: i18n.ts.showOnRemote,
 						action: () => {
-							window.open(appearNote.url || appearNote.uri, "_blank");
+							window.open(appearNote.url ?? appearNote.uri, "_blank");
 						},
 					}
 				: undefined,
@@ -516,20 +526,29 @@ export function getNoteMenu(props: {
 				text: i18n.ts.copyLink,
 				action: copyLink,
 			},
-			appearNote.url || appearNote.uri
+			(appearNote.url ?? appearNote.uri) != null
 				? {
 						icon: `${icon("ph-link-simple")}`,
 						text: `${i18n.ts.copyLink} (${i18n.ts.origin})`,
 						action: copyOriginal,
 					}
 				: undefined,
-			{
-				icon: `${icon("ph-qr-code")}`,
-				text: i18n.ts.getQrCode,
-				action: () => {
-					os.displayQrCode(`${url}/notes/${appearNote.id}`);
-				},
-			},
+			appearNote.user.host == null || (appearNote.url ?? appearNote.uri) != null
+				? {
+						icon: `${icon("ph-qr-code")}`,
+						text:
+							appearNote.user.host == null
+								? i18n.ts.getQrCode
+								: `${i18n.ts.getQrCode} (${i18n.ts.origin})`,
+						action: () => {
+							os.displayQrCode(
+								appearNote.user.host == null
+									? `${url}/notes/${appearNote.id}`
+									: appearNote.url ?? appearNote.uri,
+							);
+						},
+					}
+				: undefined,
 			shareAvailable()
 				? {
 						icon: `${icon("ph-share-network")}`,
