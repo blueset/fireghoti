@@ -81,5 +81,7 @@ async fn add_note_to_antenna(antenna_id: &str, note: &Note) -> Result<(), Error>
         .await?;
 
     // for streaming API
-    Ok(stream::antenna::publish(antenna_id.to_string(), note).await?)
+    stream::antenna::publish(antenna_id.to_string(), note).await?;
+
+    Ok(())
 }
