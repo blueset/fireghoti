@@ -2,23 +2,20 @@
 
 use crate::{
     config::{local_server_info, CONFIG},
-    database::{cache, db_conn},
+    database::db_conn,
     federation::nodeinfo::schema::*,
     model::entity::{note, user},
 };
 use sea_orm::prelude::*;
 use serde_json::json;
-use std::collections::HashMap;
+use std::{collections::HashMap, sync::Mutex};
 
-/// Errors that can occur while generating NodeInfo of the local server
-#[derive(thiserror::Error, Debug)]
-pub enum Error {
-    #[error("Database error: {0}")]
-    Db(#[from] DbErr),
-    #[error("Cache error: {0}")]
-    Cache(#[from] cache::Error),
-    #[error("Failed to serialize nodeinfo to JSON: {0}")]
-    Json(#[from] serde_json::Error),
+static CACHE: Mutex<Option<Nodeinfo21>> = Mutex::new(None);
+
+fn set_cache(nodeinfo: &Nodeinfo21) {
+    let _ = CACHE
+        .lock()
+        .map(|mut cache| *cache = Some(nodeinfo.to_owned()));
 }
 
 /// Fetches the number of total/active local users and local posts.
@@ -61,11 +58,13 @@ async fn statistics() -> Result<(u64, u64, u64, u64), DbErr> {
 
 /// Generates NodeInfo (version 2.1) of the local server.
 /// This function doesn't use caches and returns the latest information.
-async fn generate_nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
+async fn generate_nodeinfo_2_1() -> Result<Nodeinfo21, DbErr> {
+    tracing::info!("generating NodeInfo");
+
     let (local_users, local_active_halfyear, local_active_month, local_posts) =
         statistics().await?;
     let meta = local_server_info().await?;
-    let metadata = HashMap::from([
+    let mut metadata = HashMap::from([
         (
             "nodeName".to_string(),
             json!(meta.name.unwrap_or_else(|| CONFIG.host.clone())),
@@ -98,6 +97,7 @@ async fn generate_nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
             json!(meta.theme_color.unwrap_or_else(|| "#31748f".to_string())),
         ),
     ]);
+    metadata.shrink_to_fit();
 
     Ok(Nodeinfo21 {
         version: "2.1".to_string(),
@@ -126,24 +126,38 @@ async fn generate_nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
     })
 }
 
-/// Returns NodeInfo (version 2.1) of the local server.
-pub async fn nodeinfo_2_1() -> Result<Nodeinfo21, Error> {
-    const NODEINFO_2_1_CACHE_KEY: &str = "nodeinfo_2_1";
-
-    let cached = cache::get::<Nodeinfo21>(NODEINFO_2_1_CACHE_KEY).await?;
-
-    if let Some(nodeinfo) = cached {
-        Ok(nodeinfo)
-    } else {
-        let nodeinfo = generate_nodeinfo_2_1().await?;
-        cache::set(NODEINFO_2_1_CACHE_KEY, &nodeinfo, 60 * 60).await?;
-        Ok(nodeinfo)
+async fn nodeinfo_2_1_impl(use_cache: bool) -> Result<Nodeinfo21, DbErr> {
+    if use_cache {
+        if let Some(nodeinfo) = CACHE.lock().ok().and_then(|cache| cache.to_owned()) {
+            return Ok(nodeinfo);
+        }
     }
+
+    let nodeinfo = generate_nodeinfo_2_1().await?;
+
+    tracing::info!("updating cache");
+    set_cache(&nodeinfo);
+
+    Ok(nodeinfo)
+}
+
+/// Returns NodeInfo (version 2.1) of the local server.
+pub async fn nodeinfo_2_1() -> Result<Nodeinfo21, DbErr> {
+    nodeinfo_2_1_impl(true).await
 }
 
 /// Returns NodeInfo (version 2.0) of the local server.
-pub async fn nodeinfo_2_0() -> Result<Nodeinfo20, Error> {
+pub async fn nodeinfo_2_0() -> Result<Nodeinfo20, DbErr> {
     Ok(nodeinfo_2_1().await?.into())
+}
+
+#[cfg(feature = "napi")]
+#[derive(thiserror::Error, Debug)]
+pub enum Error {
+    #[error("Database error: {0}")]
+    Db(#[from] DbErr),
+    #[error("Failed to serialize nodeinfo into JSON: {0}")]
+    Json(#[from] serde_json::Error),
 }
 
 #[crate::ts_export(js_name = "nodeinfo_2_1")]
@@ -154,4 +168,10 @@ pub async fn nodeinfo_2_1_as_json() -> Result<serde_json::Value, Error> {
 #[crate::ts_export(js_name = "nodeinfo_2_0")]
 pub async fn nodeinfo_2_0_as_json() -> Result<serde_json::Value, Error> {
     Ok(serde_json::to_value(nodeinfo_2_0().await?)?)
+}
+
+#[crate::ts_export(js_name = "updateNodeinfoCache")]
+pub async fn update_cache() -> Result<(), DbErr> {
+    nodeinfo_2_1_impl(false).await?;
+    Ok(())
 }

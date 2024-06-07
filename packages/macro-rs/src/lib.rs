@@ -25,6 +25,35 @@ pub fn read_version_from_package_json(_item: proc_macro::TokenStream) -> proc_ma
     quote! { #version }.into()
 }
 
+/// Export an enum to TypeScript, and derive [Clone].
+///
+/// You need this macro because [`napi_derive::napi`](https://docs.rs/napi-derive/latest/napi_derive/attr.napi.html)
+/// automatically derives the [Clone] trait for enums and causes conflicts.
+///
+/// This is a wrapper of [`napi_derive::napi`](https://docs.rs/napi-derive/latest/napi_derive/attr.napi.html)
+/// that expands to
+/// ```no_run
+/// #[cfg_attr(not(feature = "napi"), derive(Clone))]
+/// #[cfg_attr(feature = "napi", napi_derive::napi(attr))]
+/// # enum E {} // to work around doc test compilation error
+/// ```
+/// where `attr` is given attribute(s).
+#[proc_macro_attribute]
+pub fn derive_clone_and_export(
+    attr: proc_macro::TokenStream,
+    item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+    let attr: TokenStream = attr.into();
+    let item: TokenStream = item.into();
+
+    quote! {
+        #[cfg_attr(not(feature = "napi"), derive(Clone))]
+        #[cfg_attr(feature = "napi", napi_derive::napi(#attr))]
+        #item
+    }
+    .into()
+}
+
 /// Export a function, struct, enum, const, etc. to TypeScript.
 ///
 /// This is a wrapper of [macro@napi] that expands to
