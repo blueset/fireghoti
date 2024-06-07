@@ -7,10 +7,6 @@ Critical security updates are indicated by the :warning: icon.
 
 ## Unreleased
 
-- Add the ability to share posts via QR code
-- Update the API document page (`/api-doc`)
-- Fix bugs
-
 - Ported Mastodon API support from Iceshrimp, with added Firefish extensions including push notifications, post languages, schedule post support, and more.
   - The old Mastodon API has been replaced with a new implementation based on Iceshrimp’s.
 
@@ -18,6 +14,12 @@ Critical security updates are indicated by the :warning: icon.
 
 - The new Mastodon API uses a new format to manage Mastodon sessions in the database, whereas old implementation uses Misskey sessions. All previous client app and token registrations will not work with the new API. All clients need to be re-registered and all users need to re-authenticate.
 - All IDs (of statuses/notes, notifications, users, etc.) will be using the alphanumerical format, aligning with the Firefish/Misskey API. The old numerical IDs will not work when queried against the new API.
+
+## [v20240607](https://firefish.dev/firefish/firefish/-/merge_requests/10978/commits)
+
+- Add the ability to share posts via QR code
+- Update the API document page (`/api-doc`)
+- Fix bugs
 
 ## [v20240601](https://firefish.dev/firefish/firefish/-/merge_requests/10943/commits)
 

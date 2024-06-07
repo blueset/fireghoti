@@ -441,7 +441,7 @@ export function latestVersion(): Promise<string>
  * Converts the given text into the cat language.
  *
  * refs:
- * * <https://misskey-hub.net/ns/#isCat>
+ * * <https://misskey-hub.net/ns#isCat>
  * * <https://firefish.dev/ns#speakAsCat>
  *
  * # Arguments

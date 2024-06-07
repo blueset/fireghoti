@@ -10,6 +10,7 @@
 	"ignorePaths": ["packages/backend-rs/npm"],
 	"lockFileMaintenance": {
 		"enabled": true,
+		"automerge": true,
 		"recreateWhen": "always",
 		"rebaseWhen": "behind-base-branch",
 		"branchTopic": "lock-file-maintenance",
