@@ -2233,7 +2233,7 @@ enablePullToRefresh: Activa "Baixa per actualitzar"
 pullDownToReload: Baixa per actualitzar
 pullToRefreshThreshold: Distancia de baixada per actualitzar
 searchWords: Paraules / ID o adreça URL que vols cercar
-noSentFollowRequests: No tens cap sol·licitud de seguiment enviada
+noSentFollowRequests: No has enviat cap sol·licitud de seguiment
 sentFollowRequests: Enviar sol·licituds de seguiment
 replyMute: Silencia les respostes a les línies de temps
 replyUnmute: Treu el silencia de les respostes a les línies de temps
@@ -2311,7 +2311,7 @@ _later:
   future: futur
   justNow: ara mateix
   secondsAgo: en {n}s
-  minutesAgo: en {n}m
+  minutesAgo: en {n}min
   daysAgo: en {n}d
   weeksAgo: en {n}s
   monthsAgo: en {n}me
