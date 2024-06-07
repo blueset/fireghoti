@@ -2,7 +2,7 @@
 
 Breaking changes are indicated by the :warning: icon.
 
-## Unreleased
+## v20240607
 
 - `GET` request is now allowed for the `latest-version` endpoint.
 

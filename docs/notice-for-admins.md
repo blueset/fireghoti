@@ -2,7 +2,7 @@
 
 You can skip intermediate versions when upgrading from an old version, but please read the notices and follow the instructions for each intermediate version before [upgrading](./upgrade.md).
 
-## Unreleased
+## v20240607
 
 The following environment variables are deprecated and no longer have any effect:
 - `MK_ONLY_QUEUE`
