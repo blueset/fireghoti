@@ -216,6 +216,7 @@ export function acctToString(acct: Acct): string
 export function fetchNodeinfo(host: string): Promise<Nodeinfo>
 export function nodeinfo_2_1(): Promise<any>
 export function nodeinfo_2_0(): Promise<any>
+export function updateNodeinfoCache(): Promise<void>
 /** NodeInfo schema version 2.0. <https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.0> */
 export interface Nodeinfo {
   /** The schema version, must be 2.0. */
@@ -241,16 +242,16 @@ export interface Software20 {
   version: string
 }
 export enum Protocol {
-  Activitypub = 'activitypub',
-  Buddycloud = 'buddycloud',
-  Dfrn = 'dfrn',
-  Diaspora = 'diaspora',
-  Libertree = 'libertree',
-  Ostatus = 'ostatus',
-  Pumpio = 'pumpio',
-  Tent = 'tent',
-  Xmpp = 'xmpp',
-  Zot = 'zot'
+  Activitypub = 0,
+  Buddycloud = 1,
+  Dfrn = 2,
+  Diaspora = 3,
+  Libertree = 4,
+  Ostatus = 5,
+  Pumpio = 6,
+  Tent = 7,
+  Xmpp = 8,
+  Zot = 9
 }
 /** The third party sites this server can connect to via their application API. */
 export interface Services {
@@ -261,45 +262,45 @@ export interface Services {
 }
 /** The third party sites this server can retrieve messages from for combined display with regular traffic. */
 export enum Inbound {
-  Atom1 = 'atom1',
-  Gnusocial = 'gnusocial',
-  Imap = 'imap',
-  Pnut = 'pnut',
-  Pop3 = 'pop3',
-  Pumpio = 'pumpio',
-  Rss2 = 'rss2',
-  Twitter = 'twitter'
+  Atom1 = 0,
+  Gnusocial = 1,
+  Imap = 2,
+  Pnut = 3,
+  Pop3 = 4,
+  Pumpio = 5,
+  Rss2 = 6,
+  Twitter = 7
 }
 /** The third party sites this server can publish messages to on the behalf of a user. */
 export enum Outbound {
-  Atom1 = 'atom1',
-  Blogger = 'blogger',
-  Buddycloud = 'buddycloud',
-  Diaspora = 'diaspora',
-  Dreamwidth = 'dreamwidth',
-  Drupal = 'drupal',
-  Facebook = 'facebook',
-  Friendica = 'friendica',
-  Gnusocial = 'gnusocial',
-  Google = 'google',
-  Insanejournal = 'insanejournal',
-  Libertree = 'libertree',
-  Linkedin = 'linkedin',
-  Livejournal = 'livejournal',
-  Mediagoblin = 'mediagoblin',
-  Myspace = 'myspace',
-  Pinterest = 'pinterest',
-  Pnut = 'pnut',
-  Posterous = 'posterous',
-  Pumpio = 'pumpio',
-  Redmatrix = 'redmatrix',
-  Rss2 = 'rss2',
-  Smtp = 'smtp',
-  Tent = 'tent',
-  Tumblr = 'tumblr',
-  Twitter = 'twitter',
-  Wordpress = 'wordpress',
-  Xmpp = 'xmpp'
+  Atom1 = 0,
+  Blogger = 1,
+  Buddycloud = 2,
+  Diaspora = 3,
+  Dreamwidth = 4,
+  Drupal = 5,
+  Facebook = 6,
+  Friendica = 7,
+  Gnusocial = 8,
+  Google = 9,
+  Insanejournal = 10,
+  Libertree = 11,
+  Linkedin = 12,
+  Livejournal = 13,
+  Mediagoblin = 14,
+  Myspace = 15,
+  Pinterest = 16,
+  Pnut = 17,
+  Posterous = 18,
+  Pumpio = 19,
+  Redmatrix = 20,
+  Rss2 = 21,
+  Smtp = 22,
+  Tent = 23,
+  Tumblr = 24,
+  Twitter = 25,
+  Wordpress = 26,
+  Xmpp = 27
 }
 /** Usage statistics for this server. */
 export interface Usage {

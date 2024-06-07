@@ -10,8 +10,8 @@ use std::collections::HashMap;
 // * #[serde(tag = "version", rename = "2.1")] (https://github.com/3Hren/msgpack-rust/issues/318)
 
 /// NodeInfo schema version 2.1. <https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.1>
-#[cfg_attr(test, derive(Debug, PartialEq))]
-#[derive(Deserialize, Serialize)]
+#[cfg_attr(test, derive(Debug, PartialEq, Deserialize))]
+#[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Nodeinfo21 {
     /// The schema version, must be 2.1.
@@ -53,8 +53,8 @@ pub struct Nodeinfo20 {
 }
 
 /// Metadata about server software in use (version 2.1).
-#[cfg_attr(test, derive(Debug, PartialEq))]
-#[derive(Deserialize, Serialize)]
+#[cfg_attr(test, derive(Debug, PartialEq, Deserialize))]
+#[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Software21 {
     /// The canonical name of this server software.
@@ -82,7 +82,7 @@ pub struct Software20 {
 #[cfg_attr(test, derive(Debug, PartialEq))]
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
-#[crate::export(string_enum = "lowercase")]
+#[crate::derive_clone_and_export]
 pub enum Protocol {
     Activitypub,
     Buddycloud,
@@ -98,7 +98,7 @@ pub enum Protocol {
 
 /// The third party sites this server can connect to via their application API.
 #[cfg_attr(test, derive(Debug, PartialEq))]
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 #[crate::export(object)]
 pub struct Services {
@@ -112,7 +112,7 @@ pub struct Services {
 #[cfg_attr(test, derive(Debug, PartialEq))]
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
-#[crate::export(string_enum = "lowercase")]
+#[crate::derive_clone_and_export]
 pub enum Inbound {
     #[serde(rename = "atom1.0")]
     Atom1,
@@ -131,7 +131,7 @@ pub enum Inbound {
 #[cfg_attr(test, derive(Debug, PartialEq))]
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
-#[crate::export(string_enum = "lowercase")]
+#[crate::derive_clone_and_export]
 pub enum Outbound {
     #[serde(rename = "atom1.0")]
     Atom1,
@@ -167,7 +167,7 @@ pub enum Outbound {
 
 /// Usage statistics for this server.
 #[cfg_attr(test, derive(Debug, PartialEq))]
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 #[crate::export(object)]
 pub struct Usage {
@@ -178,7 +178,7 @@ pub struct Usage {
 
 /// statistics about the users of this server.
 #[cfg_attr(test, derive(Debug, PartialEq))]
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 #[crate::export(object)]
 pub struct Users {
