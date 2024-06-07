@@ -35,7 +35,7 @@ pub fn read_version_from_package_json(_item: proc_macro::TokenStream) -> proc_ma
 /// ```no_run
 /// #[cfg_attr(not(feature = "napi"), derive(Clone))]
 /// #[cfg_attr(feature = "napi", napi_derive::napi(attr))]
-/// # fn f() {} // to work around doc test compilation error
+/// # enum E {} // to work around doc test compilation error
 /// ```
 /// where `attr` is given attribute(s).
 #[proc_macro_attribute]
