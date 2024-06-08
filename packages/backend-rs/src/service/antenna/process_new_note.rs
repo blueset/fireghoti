@@ -1,7 +1,7 @@
 use crate::{
     database::{cache, redis_conn, redis_key, RedisConnError},
     federation::acct::Acct,
-    misc::get_note_all_texts::{all_texts, PartialNoteToElaborate},
+    misc::get_note_all_texts::all_texts,
     model::entity::note,
     service::{
         antenna,
@@ -42,14 +42,11 @@ pub async fn update_antennas_on_new_note(
     note_muted_users: &[String],
 ) -> Result<(), Error> {
     let note_all_texts = all_texts(
-        PartialNoteToElaborate {
-            file_ids: note.file_ids.to_owned(),
-            user_id: note.user_id.to_owned(),
-            text: note.text.to_owned(),
-            cw: note.cw.to_owned(),
-            renote_id: note.renote_id.to_owned(),
-            reply_id: note.reply_id.to_owned(),
-        },
+        note.file_ids.to_owned(),
+        note.text.to_owned(),
+        note.cw.to_owned(),
+        note.renote_id.to_owned(),
+        note.reply_id.to_owned(),
         false,
     )
     .await?;

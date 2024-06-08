@@ -1,7 +1,16 @@
-use crate::misc::get_note_all_texts::{all_texts, PartialNoteToElaborate};
+use crate::misc::get_note_all_texts::all_texts;
 use once_cell::sync::Lazy;
 use regex::Regex;
 use sea_orm::DbErr;
+
+#[crate::export(object)]
+pub struct PartialNoteToCheckWordMute {
+    pub file_ids: Vec<String>,
+    pub text: Option<String>,
+    pub cw: Option<String>,
+    pub renote_id: Option<String>,
+    pub reply_id: Option<String>,
+}
 
 fn convert_regex(js_regex: &str) -> String {
     static RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"^/(.+)/(.*)$").unwrap());
@@ -37,12 +46,12 @@ fn check_word_mute_impl(
 ///
 /// # Arguments
 ///
-/// * `note` : [PartialNoteToElaborate] object
+/// * `note` : [PartialNoteToCheckWordMute] object
 /// * `muted_words` : list of muted keyword lists (each array item is a space-separated keyword list that represents an AND condition)
 /// * `muted_patterns` : list of JavaScript-style (e.g., `/foo/i`) regular expressions
 #[crate::export]
 pub async fn check_word_mute(
-    note: PartialNoteToElaborate,
+    note: PartialNoteToCheckWordMute,
     muted_words: &[String],
     muted_patterns: &[String],
 ) -> Result<bool, DbErr> {
@@ -50,7 +59,15 @@ pub async fn check_word_mute(
         Ok(false)
     } else {
         Ok(check_word_mute_impl(
-            &all_texts(note, true).await?,
+            &all_texts(
+                note.file_ids,
+                note.text,
+                note.cw,
+                note.renote_id,
+                note.reply_id,
+                true,
+            )
+            .await?,
             muted_words,
             muted_patterns,
         ))

@@ -4,48 +4,35 @@ use crate::{
 };
 use sea_orm::{prelude::*, QuerySelect};
 
-#[crate::export(object)]
-pub struct PartialNoteToElaborate {
-    pub file_ids: Vec<String>,
-    pub user_id: String,
-    pub text: Option<String>,
-    pub cw: Option<String>,
-    pub renote_id: Option<String>,
-    pub reply_id: Option<String>,
-}
-
 /// Returns [`Vec<String>`] containing the post text, content warning,
 /// those of the "parent" (replied/quoted) posts, and alt texts of attached files.
 ///
 /// # Arguments
 ///
-/// * `note` : [PartialNoteToElaborate] object
+/// * `file_ids` : IDs of attached files ([`drive_file::Model`])
+/// * `text`, `cw`, `renote_id`, `reply_id` : note ([`note::Model`]) fields
 /// * `include_parent` : whether to take the reply-to post and quoted post into account
 pub async fn all_texts(
-    note: PartialNoteToElaborate,
+    file_ids: Vec<String>,
+    text: Option<String>,
+    cw: Option<String>,
+    renote_id: Option<String>,
+    reply_id: Option<String>,
     include_parent: bool,
 ) -> Result<Vec<String>, DbErr> {
     let db = db_conn().await?;
 
     let mut texts: Vec<String> = vec![];
-    let is_renote: bool;
+    let is_renote = text.is_none();
 
-    if let Some(text) = note.text {
-        is_renote = false;
-        texts.push(text);
-    } else {
-        is_renote = true;
-    }
-
-    if let Some(cw) = note.cw {
-        texts.push(cw);
-    }
+    text.map(|text| texts.push(text));
+    cw.map(|cw| texts.push(cw));
 
     texts.extend(
         drive_file::Entity::find()
             .select_only()
             .column(drive_file::Column::Comment)
-            .filter(drive_file::Column::Id.is_in(note.file_ids))
+            .filter(drive_file::Column::Id.is_in(file_ids))
             .into_tuple::<Option<String>>()
             .all(db)
             .await?
@@ -53,8 +40,8 @@ pub async fn all_texts(
             .flatten(),
     );
 
-    if note.renote_id.is_some() && (include_parent || is_renote) {
-        let renote_id = note.renote_id.unwrap();
+    if renote_id.is_some() && (include_parent || is_renote) {
+        let renote_id = renote_id.unwrap();
 
         if let Some((text, cw)) = note::Entity::find_by_id(&renote_id)
             .select_only()
@@ -74,8 +61,8 @@ pub async fn all_texts(
         }
     }
 
-    if include_parent && note.reply_id.is_some() {
-        if let Some((text, cw)) = note::Entity::find_by_id(note.reply_id.as_ref().unwrap())
+    if include_parent && reply_id.is_some() {
+        if let Some((text, cw)) = note::Entity::find_by_id(reply_id.as_ref().unwrap())
             .select_only()
             .columns([note::Column::Text, note::Column::Cw])
             .into_tuple::<(Option<String>, Option<String>)>()
@@ -89,7 +76,7 @@ pub async fn all_texts(
                 texts.push(c);
             }
         } else {
-            tracing::warn!("nonexistent reply id: {}", note.reply_id.unwrap());
+            tracing::warn!("nonexistent reply id: {}", reply_id.unwrap());
         }
     }
 
