@@ -6,6 +6,16 @@ You can skip intermediate versions when upgrading from an old version, but pleas
 
 Please take a look at #10947.
 
+## Unreleased
+
+### For systemd/pm2 users
+
+You can remove `packages/megalodon` directory.
+
+```sh
+rm --recursive --force packages/megalodon
+```
+
 ## v20240607
 
 The following environment variables are deprecated and no longer have any effect:
