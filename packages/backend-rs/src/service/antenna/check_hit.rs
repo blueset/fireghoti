@@ -12,8 +12,6 @@ pub enum AntennaCheckError {
     Db(#[from] DbErr),
     #[error("Cache error: {0}")]
     Cache(#[from] cache::Error),
-    #[error("User profile not found: {0}")]
-    UserProfileNotFound(String),
 }
 
 fn match_all(space_separated_words: &str, text: &str, case_sensitive: bool) -> bool {
@@ -29,7 +27,7 @@ fn match_all(space_separated_words: &str, text: &str, case_sensitive: bool) -> b
     }
 }
 
-pub async fn check_hit_antenna(
+pub(super) async fn check_hit_antenna(
     antenna: &antenna::Model,
     note: &note::Model,
     note_all_texts: &[String],

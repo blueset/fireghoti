@@ -37,19 +37,18 @@ type Note = note::Model;
 
 #[crate::export]
 pub async fn update_antennas_on_new_note(
-    note: Note,
+    note: &Note,
     note_author: &Acct,
     note_muted_users: &[String],
 ) -> Result<(), Error> {
-    let note_cloned = note.clone();
     let note_all_texts = all_texts(
         PartialNoteToElaborate {
-            file_ids: note.file_ids,
-            user_id: note.user_id,
-            text: note.text,
-            cw: note.cw,
-            renote_id: note.renote_id,
-            reply_id: note.reply_id,
+            file_ids: note.file_ids.to_owned(),
+            user_id: note.user_id.to_owned(),
+            text: note.text.to_owned(),
+            cw: note.cw.to_owned(),
+            renote_id: note.renote_id.to_owned(),
+            reply_id: note.reply_id.to_owned(),
         },
         false,
     )
@@ -60,8 +59,8 @@ pub async fn update_antennas_on_new_note(
         if note_muted_users.contains(&antenna.user_id) {
             continue;
         }
-        if check_hit_antenna(antenna, &note_cloned, &note_all_texts, note_author).await? {
-            add_note_to_antenna(&antenna.id, &note_cloned).await?;
+        if check_hit_antenna(antenna, note, &note_all_texts, note_author).await? {
+            add_note_to_antenna(&antenna.id, note).await?;
         }
     }
 
