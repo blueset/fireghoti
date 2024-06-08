@@ -2,6 +2,10 @@
 
 You can skip intermediate versions when upgrading from an old version, but please read the notices and follow the instructions for each intermediate version before [upgrading](./upgrade.md).
 
+## Upcoming breaking change (unreleased)
+
+Please take a look at #10947.
+
 ## v20240607
 
 The following environment variables are deprecated and no longer have any effect:
