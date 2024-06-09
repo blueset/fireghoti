@@ -10,7 +10,7 @@ Please take a look at #10947.
 
 ### For systemd/pm2 users
 
-You can remove `packages/megalodon` directory.
+You can remove the `packages/megalodon` directory after pulling the latest source code (`git pull --ff origin main`).
 
 ```sh
 rm --recursive --force packages/megalodon
