@@ -31,7 +31,7 @@ pub fn summarize_impl(
 ///
 /// # Arguments
 ///
-/// * `note_like` : a note ([`crate::model::entity::note::Model`])-like instance containing
+/// * `note_like` : a note ([`note::Model`](crate::model::entity::note::Model))-like instance containing
 ///   `file_ids`, `text`, `cw`, `has_poll` fields
 ///
 /// # Caveats
