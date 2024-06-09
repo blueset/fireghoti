@@ -419,19 +419,13 @@ export interface ImageSize {
   height: number
 }
 export function getImageSizeFromUrl(url: string): Promise<ImageSize>
-export interface PartialNoteToSummarize {
-  fileIds: Array<string>
-  text: string | null
-  cw: string | null
-  hasPoll: boolean
-}
-export function getNoteSummary(note: PartialNoteToSummarize): string
 export function isQuote(note: Note): boolean
 export function isSafeUrl(url: string): boolean
 /** Returns the latest Firefish version. */
 export function latestVersion(): Promise<string>
 export function toMastodonId(firefishId: string): string | null
 export function fromMastodonId(mastodonId: string): string | null
+export function getNoteSummary(fileIds: Array<string>, text: string | undefined | null, cw: string | undefined | null, hasPoll: boolean): string
 /**
  * Converts the given text into the cat language.
  *

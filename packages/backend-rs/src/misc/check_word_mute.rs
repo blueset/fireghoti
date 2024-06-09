@@ -1,4 +1,4 @@
-use crate::misc::get_note_all_texts::all_texts;
+use crate::misc::note::elaborate;
 use once_cell::sync::Lazy;
 use regex::Regex;
 use sea_orm::DbErr;
@@ -59,7 +59,7 @@ pub async fn check_word_mute(
         Ok(false)
     } else {
         Ok(check_word_mute_impl(
-            &all_texts!(note, true).await?,
+            &elaborate!(note, true).await?,
             muted_words,
             muted_patterns,
         ))
