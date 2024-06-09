@@ -378,6 +378,13 @@ export function isSilencedServer(host: string): Promise<boolean>
  * ```
  */
 export function isAllowedServer(host: string): Promise<boolean>
+export interface PartialNoteToCheckWordMute {
+  fileIds: Array<string>
+  text: string | null
+  cw: string | null
+  renoteId: string | null
+  replyId: string | null
+}
 /**
  * Returns whether `note` should be hard-muted.
  *
@@ -390,11 +397,11 @@ export function isAllowedServer(host: string): Promise<boolean>
  *
  * # Arguments
  *
- * * `note` : [PartialNoteToElaborate] object
+ * * `note` : [PartialNoteToCheckWordMute] object
  * * `muted_words` : list of muted keyword lists (each array item is a space-separated keyword list that represents an AND condition)
  * * `muted_patterns` : list of JavaScript-style (e.g., `/foo/i`) regular expressions
  */
-export function checkWordMute(note: PartialNoteToElaborate, mutedWords: Array<string>, mutedPatterns: Array<string>): Promise<boolean>
+export function checkWordMute(note: PartialNoteToCheckWordMute, mutedWords: Array<string>, mutedPatterns: Array<string>): Promise<boolean>
 export function getFullApAccount(username: string, host?: string | undefined | null): string
 export function isSelfHost(host?: string | undefined | null): boolean
 export function isSameOrigin(uri: string): boolean
@@ -413,14 +420,6 @@ export interface ImageSize {
   height: number
 }
 export function getImageSizeFromUrl(url: string): Promise<ImageSize>
-export interface PartialNoteToElaborate {
-  fileIds: Array<string>
-  userId: string
-  text: string | null
-  cw: string | null
-  renoteId: string | null
-  replyId: string | null
-}
 export interface PartialNoteToSummarize {
   fileIds: Array<string>
   text: string | null

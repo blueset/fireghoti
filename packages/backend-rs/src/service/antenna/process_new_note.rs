@@ -1,7 +1,7 @@
 use crate::{
     database::{cache, redis_conn, redis_key, RedisConnError},
     federation::acct::Acct,
-    misc::get_note_all_texts::{all_texts, PartialNoteToElaborate},
+    misc::get_note_all_texts::all_texts,
     model::entity::note,
     service::{
         antenna,
@@ -37,31 +37,19 @@ type Note = note::Model;
 
 #[crate::export]
 pub async fn update_antennas_on_new_note(
-    note: Note,
+    note: &Note,
     note_author: &Acct,
     note_muted_users: &[String],
 ) -> Result<(), Error> {
-    let note_cloned = note.clone();
-    let note_all_texts = all_texts(
-        PartialNoteToElaborate {
-            file_ids: note.file_ids,
-            user_id: note.user_id,
-            text: note.text,
-            cw: note.cw,
-            renote_id: note.renote_id,
-            reply_id: note.reply_id,
-        },
-        false,
-    )
-    .await?;
+    let note_all_texts = all_texts!(note, false).await?;
 
     // TODO: do this in parallel
     for antenna in antenna::cache::get().await?.iter() {
         if note_muted_users.contains(&antenna.user_id) {
             continue;
         }
-        if check_hit_antenna(antenna, &note_cloned, &note_all_texts, note_author).await? {
-            add_note_to_antenna(&antenna.id, &note_cloned).await?;
+        if check_hit_antenna(antenna, note, &note_all_texts, note_author).await? {
+            add_note_to_antenna(&antenna.id, note).await?;
         }
     }
 
