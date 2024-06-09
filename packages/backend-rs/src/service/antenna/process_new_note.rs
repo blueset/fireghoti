@@ -41,15 +41,7 @@ pub async fn update_antennas_on_new_note(
     note_author: &Acct,
     note_muted_users: &[String],
 ) -> Result<(), Error> {
-    let note_all_texts = all_texts(
-        note.file_ids.to_owned(),
-        note.text.to_owned(),
-        note.cw.to_owned(),
-        note.renote_id.to_owned(),
-        note.reply_id.to_owned(),
-        false,
-    )
-    .await?;
+    let note_all_texts = all_texts!(note, false).await?;
 
     // TODO: do this in parallel
     for antenna in antenna::cache::get().await?.iter() {

@@ -59,15 +59,7 @@ pub async fn check_word_mute(
         Ok(false)
     } else {
         Ok(check_word_mute_impl(
-            &all_texts(
-                note.file_ids,
-                note.text,
-                note.cw,
-                note.renote_id,
-                note.reply_id,
-                true,
-            )
-            .await?,
+            &all_texts!(note, true).await?,
             muted_words,
             muted_patterns,
         ))
