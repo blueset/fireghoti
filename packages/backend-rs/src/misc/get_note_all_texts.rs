@@ -25,8 +25,12 @@ pub async fn all_texts(
     let mut texts: Vec<String> = vec![];
     let is_renote = text.is_none();
 
-    text.map(|text| texts.push(text));
-    cw.map(|cw| texts.push(cw));
+    if let Some(text) = text {
+        texts.push(text)
+    }
+    if let Some(cw) = cw {
+        texts.push(cw)
+    }
 
     texts.extend(
         drive_file::Entity::find()
