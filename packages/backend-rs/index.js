@@ -310,7 +310,7 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { SECOND, MINUTE, HOUR, DAY, USER_ONLINE_THRESHOLD, USER_ACTIVE_THRESHOLD, FILE_TYPE_BROWSERSAFE, fetchMeta, updateMetaCache, metaToPugArgs, loadConfig, stringToAcct, acctToString, fetchNodeinfo, nodeinfo_2_1, nodeinfo_2_0, updateNodeinfoCache, Protocol, Inbound, Outbound, greet, initializeRustLogger, showServerInfo, isBlockedServer, isSilencedServer, isAllowedServer, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, sqlRegexEscape, safeForSql, formatMilliseconds, getImageSizeFromUrl, getNoteSummary, isQuote, isSafeUrl, latestVersion, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, removeOldAttestationChallenges, cpuInfo, cpuUsage, memoryUsage, storageUsage, AntennaSrc, DriveFileUsageHint, MutedNoteReason, NoteVisibility, NotificationType, PageVisibility, PollNoteVisibility, PushSubscriptionType, RelayStatus, UserEmojiModPerm, UserProfileFfvisibility, UserProfileMutingNotificationTypes, updateAntennasOnNewNote, updateAntennaCache, watchNote, unwatchNote, PushNotificationKind, sendPushNotification, publishToChannelStream, publishToChatStream, ChatIndexEvent, publishToChatIndexStream, publishToBroadcastStream, publishToGroupChatStream, publishToModerationStream, ChatEvent, getTimestamp, genId, genIdAt, generateSecureRandomString, generateUserToken } = nativeBinding
+const { SECOND, MINUTE, HOUR, DAY, USER_ONLINE_THRESHOLD, USER_ACTIVE_THRESHOLD, FILE_TYPE_BROWSERSAFE, fetchMeta, updateMetaCache, metaToPugArgs, loadConfig, stringToAcct, acctToString, fetchNodeinfo, nodeinfo_2_1, nodeinfo_2_0, updateNodeinfoCache, Protocol, Inbound, Outbound, greet, initializeRustLogger, showServerInfo, isBlockedServer, isSilencedServer, isAllowedServer, checkWordMute, getFullApAccount, isSelfHost, isSameOrigin, extractHost, toPuny, isUnicodeEmoji, sqlLikeEscape, sqlRegexEscape, safeForSql, formatMilliseconds, getImageSizeFromUrl, isQuote, isSafeUrl, latestVersion, getNoteSummary, nyaify, hashPassword, verifyPassword, isOldPasswordAlgorithm, decodeReaction, countReactions, toDbReaction, removeOldAttestationChallenges, cpuInfo, cpuUsage, memoryUsage, storageUsage, AntennaSrc, DriveFileUsageHint, MutedNoteReason, NoteVisibility, NotificationType, PageVisibility, PollNoteVisibility, PushSubscriptionType, RelayStatus, UserEmojiModPerm, UserProfileFfvisibility, UserProfileMutingNotificationTypes, updateAntennasOnNewNote, updateAntennaCache, watchNote, unwatchNote, PushNotificationKind, sendPushNotification, publishToChannelStream, publishToChatStream, ChatIndexEvent, publishToChatIndexStream, publishToBroadcastStream, publishToGroupChatStream, publishToModerationStream, ChatEvent, getTimestamp, genId, genIdAt, generateSecureRandomString, generateUserToken } = nativeBinding
 
 module.exports.SECOND = SECOND
 module.exports.MINUTE = MINUTE
@@ -350,10 +350,10 @@ module.exports.sqlRegexEscape = sqlRegexEscape
 module.exports.safeForSql = safeForSql
 module.exports.formatMilliseconds = formatMilliseconds
 module.exports.getImageSizeFromUrl = getImageSizeFromUrl
-module.exports.getNoteSummary = getNoteSummary
 module.exports.isQuote = isQuote
 module.exports.isSafeUrl = isSafeUrl
 module.exports.latestVersion = latestVersion
+module.exports.getNoteSummary = getNoteSummary
 module.exports.nyaify = nyaify
 module.exports.hashPassword = hashPassword
 module.exports.verifyPassword = verifyPassword

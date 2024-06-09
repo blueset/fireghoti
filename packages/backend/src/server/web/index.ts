@@ -540,7 +540,7 @@ router.get("/notes/:note", async (ctx, next) => {
 					await Users.findOneByOrFail({ id: note.userId }),
 				),
 				// TODO: Let locale changeable by instance setting
-				summary: getNoteSummary(note),
+				summary: getNoteSummary(note.fileIds, note.text, note.cw, note.hasPoll),
 			});
 
 			ctx.set("Cache-Control", "public, max-age=15");
@@ -562,19 +562,19 @@ router.get("/posts/:note", async (ctx, next) => {
 		visibility: In(["public", "home"]),
 	});
 
-	if (note) {
-		const _note = await Notes.pack(note);
+	if (note != null) {
+		const packedNote = await Notes.pack(note);
 		const profile = await UserProfiles.findOneByOrFail({ userId: note.userId });
 		const meta = await fetchMeta();
 		await ctx.render("note", {
 			...metaToPugArgs(meta),
-			note: _note,
+			note: packedNote,
 			profile,
 			avatarUrl: await Users.getAvatarUrl(
 				await Users.findOneByOrFail({ id: note.userId }),
 			),
 			// TODO: Let locale changeable by instance setting
-			summary: getNoteSummary(_note),
+			summary: getNoteSummary(note.fileIds, note.text, note.cw, note.hasPoll),
 		});
 
 		ctx.set("Cache-Control", "public, max-age=15");

@@ -267,7 +267,13 @@ export class NotificationConverter {
 				title = `${i18n.t("notificationType")} ${notificationBody.type}`;
 		}
 		description =
-			(effectiveNote && getNoteSummary(effectiveNote)) ||
+			(effectiveNote &&
+				getNoteSummary(
+					effectiveNote.fileIds,
+					effectiveNote.text,
+					effectiveNote.cw,
+					effectiveNote.hasPoll,
+				)) ||
 			notificationBody.body ||
 			username ||
 			"";

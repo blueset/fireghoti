@@ -1,7 +1,7 @@
 use crate::{
     config::local_server_info,
     database::db_conn,
-    misc::get_note_summary::{get_note_summary, PartialNoteToSummarize},
+    misc::note::summarize,
     model::entity::{access_token, app, sw_subscription},
     util::{
         http_client,
@@ -10,6 +10,7 @@ use crate::{
 };
 use once_cell::sync::OnceCell;
 use sea_orm::prelude::*;
+use serde::Deserialize;
 use web_push::*;
 
 #[derive(thiserror::Error, Debug)]
@@ -79,8 +80,18 @@ fn compact_content(mut content: serde_json::Value) -> Result<serde_json::Value, 
         ));
     }
 
-    let note_like: PartialNoteToSummarize = serde_json::from_value(note.clone())?;
-    let text = get_note_summary(note_like);
+    // TODO: get rid of this struct
+    #[derive(Deserialize)]
+    #[serde(rename_all = "camelCase")]
+    struct PartialNote {
+        file_ids: Vec<String>,
+        text: Option<String>,
+        cw: Option<String>,
+        has_poll: bool,
+    }
+
+    let note_like: PartialNote = serde_json::from_value(note.clone())?;
+    let text = summarize!(note_like);
 
     let note_object = note.as_object_mut().unwrap();
 

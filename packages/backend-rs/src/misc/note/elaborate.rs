@@ -6,7 +6,7 @@ use sea_orm::{prelude::*, QuerySelect};
 
 /// Returns [`Vec<String>`] containing the post text, content warning,
 /// those of the "parent" (replied/quoted) posts, and alt texts of attached files.
-/// Consider using [`all_texts`] macro instead
+/// Consider using [`elaborate`] macro instead
 /// when dealing with a note ([`note::Model`])-like instance.
 ///
 /// # Arguments
@@ -14,7 +14,7 @@ use sea_orm::{prelude::*, QuerySelect};
 /// * `file_ids` : IDs of attached files ([`drive_file::Model`])
 /// * `text`, `cw`, `renote_id`, `reply_id` : note ([`note::Model`]) fields
 /// * `include_parent` : whether to take the reply-to post and quoted post into account
-pub async fn all_texts_impl(
+pub async fn elaborate_impl(
     file_ids: &[String],
     text: Option<String>,
     cw: Option<String>,
@@ -87,15 +87,15 @@ pub async fn all_texts_impl(
 /// # Caveats
 ///
 /// The `note_like` argument should not contain function calls
-/// (e.g., `all_texts!(note.clone(), false)`)
+/// (e.g., `elaborate!(note.clone(), false)`)
 /// since the function will be called multiple times after macro expansion.
 ///
 /// # Examples
 ///
 /// ```
-/// # use backend_rs::misc::get_note_all_texts::all_texts;
+/// # use backend_rs::misc::note::elaborate;
 /// // note-like struct
-/// struct SomeNoteLikeStruct {
+/// struct NoteLike {
 ///     // required fields
 ///     file_ids: Vec<String>,
 ///     text: Option<String>,
@@ -107,18 +107,19 @@ pub async fn all_texts_impl(
 ///     extra_field_2: Vec<String>,
 /// }
 ///
-/// async fn all_texts_from_some_note_like_struct(
-///     note_like: &SomeNoteLikeStruct,
-///     include_parent: bool,
-/// ) -> Result<Vec<String>, sea_orm::DbErr> {
-///     all_texts!(note_like, include_parent).await
+/// async fn print_all_related_texts(
+///     note: &NoteLike
+/// ) -> Result<(), sea_orm::DbErr> {
+///     let all_texts = elaborate!(note, true).await?;
+///     all_texts.iter().map(|text| println!("{}", text));
+///     Ok(())
 /// }
 /// ```
 #[doc(hidden)] // hide the macro in the top doc page
 #[macro_export]
-macro_rules! all_texts {
+macro_rules! elaborate {
     ($note_like:expr, $include_parent:expr) => {
-        $crate::misc::get_note_all_texts::all_texts_impl(
+        $crate::misc::note::elaborate::elaborate_impl(
             &$note_like.file_ids,
             $note_like.text.clone(),
             $note_like.cw.clone(),
@@ -128,5 +129,6 @@ macro_rules! all_texts {
         )
     };
 }
+
 #[doc(inline)] // show the macro in the module doc page
-pub use all_texts;
+pub use elaborate;
