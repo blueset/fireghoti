@@ -19,13 +19,12 @@ pub fn generate_user_token() -> String {
 
 #[cfg(test)]
 mod unit_test {
+    use super::generate_secure_random_string;
     use pretty_assertions::{assert_eq, assert_ne};
     use std::thread;
 
-    use super::generate_secure_random_string;
-
     #[test]
-    fn can_generate_unique_strings() {
+    fn generate_unique_strings() {
         assert_eq!(generate_secure_random_string(16).len(), 16);
         assert_ne!(
             generate_secure_random_string(16),

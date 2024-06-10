@@ -100,11 +100,11 @@ pub async fn fetch_nodeinfo(host: &str) -> Result<Nodeinfo, Error> {
 
 #[cfg(test)]
 mod unit_test {
-    use super::{check_nodeinfo_link, fetch_nodeinfo, NodeinfoLink, NodeinfoLinks};
+    use super::{NodeinfoLink, NodeinfoLinks};
     use pretty_assertions::assert_eq;
 
     #[test]
-    fn test_check_nodeinfo_link() {
+    fn check_nodeinfo_link() {
         let links_1 = NodeinfoLinks {
             links: vec![
                 NodeinfoLink {
@@ -118,7 +118,7 @@ mod unit_test {
             ],
         };
         assert_eq!(
-            check_nodeinfo_link(links_1).unwrap(),
+            super::check_nodeinfo_link(links_1).unwrap(),
             "https://example.com/real"
         );
 
@@ -135,7 +135,7 @@ mod unit_test {
             ],
         };
         assert_eq!(
-            check_nodeinfo_link(links_2).unwrap(),
+            super::check_nodeinfo_link(links_2).unwrap(),
             "https://example.com/real"
         );
 
@@ -151,13 +151,13 @@ mod unit_test {
                 },
             ],
         };
-        check_nodeinfo_link(links_3).expect_err("No nodeinfo");
+        super::check_nodeinfo_link(links_3).expect_err("No nodeinfo");
     }
 
     #[tokio::test]
-    async fn test_fetch_nodeinfo() {
+    async fn fetch_nodeinfo() {
         assert_eq!(
-            fetch_nodeinfo("info.firefish.dev")
+            super::fetch_nodeinfo("info.firefish.dev")
                 .await
                 .unwrap()
                 .software

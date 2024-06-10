@@ -12,24 +12,23 @@ pub fn from_mastodon_id(mastodon_id: &str) -> Option<String> {
 
 #[cfg(test)]
 mod unit_test {
-    use super::{from_mastodon_id, to_mastodon_id};
     use pretty_assertions::assert_eq;
 
     #[test]
-    fn to_mastodon_id_test() {
+    fn to_mastodon_id() {
         assert_eq!(
-            to_mastodon_id("9pdqi3rjl4lxirq3").unwrap(),
+            super::to_mastodon_id("9pdqi3rjl4lxirq3").unwrap(),
             "2145531976185871567229403"
         );
-        assert_eq!(to_mastodon_id("9pdqi3r*irq3"), None);
+        assert_eq!(super::to_mastodon_id("9pdqi3r*irq3"), None);
     }
 
     #[test]
-    fn from_mastodon_id_test() {
+    fn from_mastodon_id() {
         assert_eq!(
-            from_mastodon_id("2145531976185871567229403").unwrap(),
+            super::from_mastodon_id("2145531976185871567229403").unwrap(),
             "9pdqi3rjl4lxirq3"
         );
-        assert_eq!(from_mastodon_id("9pdqi3rjl4lxirq3"), None);
+        assert_eq!(super::from_mastodon_id("9pdqi3rjl4lxirq3"), None);
     }
 }

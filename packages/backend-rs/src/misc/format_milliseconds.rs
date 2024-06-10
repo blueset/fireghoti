@@ -30,16 +30,21 @@ pub fn format_milliseconds(milliseconds: u32) -> String {
 
 #[cfg(test)]
 mod unit_test {
-    use super::format_milliseconds;
     use pretty_assertions::assert_eq;
 
     #[test]
-    fn format_milliseconds_test() {
-        assert_eq!(format_milliseconds(1000), "1 second(s)");
-        assert_eq!(format_milliseconds(1387938), "23 minute(s), 7 second(s)");
-        assert_eq!(format_milliseconds(34200457), "9 hour(s), 30 minute(s)");
+    fn format_milliseconds() {
+        assert_eq!(super::format_milliseconds(1000), "1 second(s)");
         assert_eq!(
-            format_milliseconds(998244353),
+            super::format_milliseconds(1387938),
+            "23 minute(s), 7 second(s)"
+        );
+        assert_eq!(
+            super::format_milliseconds(34200457),
+            "9 hour(s), 30 minute(s)"
+        );
+        assert_eq!(
+            super::format_milliseconds(998244353),
             "11 day(s), 13 hour(s), 17 minute(s), 24 second(s)"
         );
     }

@@ -129,13 +129,7 @@ mod unit_test {
 
     #[tokio::test]
     async fn connect_concurrent() {
-        let [c1, c2, c3, c4, c5] = [
-            get_conn(),
-            get_conn(),
-            get_conn(),
-            get_conn(),
-            get_conn(),
-        ];
+        let [c1, c2, c3, c4, c5] = [get_conn(), get_conn(), get_conn(), get_conn(), get_conn()];
         let _ = tokio::try_join!(c1, c2, c3, c4, c5).unwrap();
     }
 

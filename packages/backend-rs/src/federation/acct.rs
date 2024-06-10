@@ -64,7 +64,7 @@ mod unit_test {
     use std::str::FromStr;
 
     #[test]
-    fn test_acct_to_string() {
+    fn acct_to_string() {
         let remote_acct = Acct {
             username: "firefish".to_string(),
             host: Some("example.com".to_string()),
@@ -81,7 +81,7 @@ mod unit_test {
     }
 
     #[test]
-    fn test_string_to_acct() {
+    fn string_to_acct() {
         let remote_acct = Acct {
             username: "firefish".to_string(),
             host: Some("example.com".to_string()),

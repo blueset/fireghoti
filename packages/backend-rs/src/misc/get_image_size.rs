@@ -122,12 +122,12 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
 
 #[cfg(test)]
 mod unit_test {
-    use super::{get_image_size_from_url, ImageSize};
+    use super::ImageSize;
     use crate::database::cache;
     use pretty_assertions::assert_eq;
 
     #[tokio::test]
-    async fn test_get_image_size() {
+    async fn get_image_size_from_url() {
         let png_url_1 = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/splash.png";
         let png_url_2 = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/notification-badges/at.png";
         let png_url_3 = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/api-doc.png";
@@ -176,31 +176,39 @@ mod unit_test {
 
         assert_eq!(
             png_size_1,
-            get_image_size_from_url(png_url_1).await.unwrap()
+            super::get_image_size_from_url(png_url_1).await.unwrap()
         );
         assert_eq!(
             png_size_2,
-            get_image_size_from_url(png_url_2).await.unwrap()
+            super::get_image_size_from_url(png_url_2).await.unwrap()
         );
         assert_eq!(
             png_size_3,
-            get_image_size_from_url(png_url_3).await.unwrap()
+            super::get_image_size_from_url(png_url_3).await.unwrap()
         );
         assert_eq!(
             rotated_jpeg_size,
-            get_image_size_from_url(rotated_jpeg_url).await.unwrap()
+            super::get_image_size_from_url(rotated_jpeg_url)
+                .await
+                .unwrap()
         );
         assert_eq!(
             webp_size_1,
-            get_image_size_from_url(webp_url_1).await.unwrap()
+            super::get_image_size_from_url(webp_url_1).await.unwrap()
         );
         assert_eq!(
             webp_size_2,
-            get_image_size_from_url(webp_url_2).await.unwrap()
+            super::get_image_size_from_url(webp_url_2).await.unwrap()
         );
-        assert_eq!(ico_size, get_image_size_from_url(ico_url).await.unwrap());
-        assert_eq!(gif_size, get_image_size_from_url(gif_url).await.unwrap());
-        assert!(get_image_size_from_url(mp3_url).await.is_err());
+        assert_eq!(
+            ico_size,
+            super::get_image_size_from_url(ico_url).await.unwrap()
+        );
+        assert_eq!(
+            gif_size,
+            super::get_image_size_from_url(gif_url).await.unwrap()
+        );
+        assert!(super::get_image_size_from_url(mp3_url).await.is_err());
     }
 
     #[tokio::test]
@@ -212,7 +220,7 @@ mod unit_test {
             .await
             .unwrap();
 
-        assert!(get_image_size_from_url(url).await.is_ok());
-        assert!(get_image_size_from_url(url).await.is_err());
+        assert!(super::get_image_size_from_url(url).await.is_ok());
+        assert!(super::get_image_size_from_url(url).await.is_err());
     }
 }

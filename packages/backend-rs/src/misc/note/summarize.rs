@@ -91,7 +91,7 @@ mod unit_test {
     }
 
     #[test]
-    fn summarize() {
+    fn summarize_note() {
         let note = NoteLike {
             file_ids: vec![],
             text: Some("Hello world!".to_string()),

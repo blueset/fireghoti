@@ -71,7 +71,7 @@ mod unit_test {
     use super::check_word_mute_impl;
 
     #[test]
-    fn test_word_mute_match() {
+    fn word_mute_match() {
         let texts = vec![
             "The quick brown fox jumps over the lazy dog.".to_string(),
             "色は匂へど 散りぬるを 我が世誰ぞ 常ならむ".to_string(),

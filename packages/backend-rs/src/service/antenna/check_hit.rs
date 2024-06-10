@@ -153,7 +153,7 @@ mod unit_test {
     use pretty_assertions::assert_eq;
 
     #[test]
-    fn test_match_all() {
+    fn check_match_string() {
         assert_eq!(match_all("Apple", "apple and banana", false), true);
         assert_eq!(match_all("Apple", "apple and banana", true), false);
         assert_eq!(match_all("Apple Banana", "apple and banana", false), true);
