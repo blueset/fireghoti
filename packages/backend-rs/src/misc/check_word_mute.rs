@@ -72,7 +72,7 @@ mod unit_test {
 
     #[test]
     fn word_mute_match() {
-        let texts = vec![
+        let texts = [
             "The quick brown fox jumps over the lazy dog.".to_string(),
             "色は匂へど 散りぬるを 我が世誰ぞ 常ならむ".to_string(),
             "😇".to_string(),
