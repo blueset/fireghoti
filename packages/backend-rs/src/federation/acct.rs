@@ -7,10 +7,13 @@ pub struct Acct {
     pub host: Option<String>,
 }
 
-impl FromStr for Acct {
-    type Err = ();
+#[derive(thiserror::Error, Debug)]
+#[error("failed to convert string '{0}' into acct")]
+pub struct InvalidAcctString(String);
 
-    /// This never throw errors. Feel free to `.unwrap()` the result.
+impl FromStr for Acct {
+    type Err = InvalidAcctString;
+
     fn from_str(value: &str) -> Result<Self, Self::Err> {
         let split: Vec<&str> = if let Some(stripped) = value.strip_prefix('@') {
             stripped
@@ -64,7 +67,7 @@ mod unit_test {
     use std::str::FromStr;
 
     #[test]
-    fn test_acct_to_string() {
+    fn acct_to_string() {
         let remote_acct = Acct {
             username: "firefish".to_string(),
             host: Some("example.com".to_string()),
@@ -81,7 +84,7 @@ mod unit_test {
     }
 
     #[test]
-    fn test_string_to_acct() {
+    fn string_to_acct() {
         let remote_acct = Acct {
             username: "firefish".to_string(),
             host: Some("example.com".to_string()),

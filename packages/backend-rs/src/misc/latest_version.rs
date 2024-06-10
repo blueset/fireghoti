@@ -100,7 +100,7 @@ mod unit_test {
     }
 
     #[tokio::test]
-    async fn check_version() {
+    async fn get_latest_version() {
         // delete caches in case you run this test multiple times
         cache::delete_one(cache::Category::FetchUrl, UPSTREAM_PACKAGE_JSON_URL)
             .await

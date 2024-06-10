@@ -39,10 +39,47 @@ pub async fn get_conn() -> Result<&'static DbConn, DbErr> {
 #[cfg(test)]
 mod unit_test {
     use super::get_conn;
+    use sea_orm::{prelude::*, DbBackend, Statement};
 
     #[tokio::test]
-    async fn connect() {
-        assert!(get_conn().await.is_ok());
-        assert!(get_conn().await.is_ok());
+    async fn connect_sequential() {
+        get_conn().await.unwrap();
+        get_conn().await.unwrap();
+        get_conn().await.unwrap();
+        get_conn().await.unwrap();
+        get_conn().await.unwrap();
+    }
+
+    #[tokio::test]
+    async fn connect_concurrent() {
+        let [c1, c2, c3, c4, c5] = [get_conn(), get_conn(), get_conn(), get_conn(), get_conn()];
+        let _ = tokio::try_join!(c1, c2, c3, c4, c5).unwrap();
+    }
+
+    #[tokio::test]
+    async fn connect_spawn() {
+        let mut tasks = Vec::new();
+
+        for _ in 0..5 {
+            tasks.push(tokio::spawn(get_conn()));
+        }
+        for task in tasks {
+            task.await.unwrap().unwrap();
+        }
+    }
+
+    #[tokio::test]
+    async fn access() {
+        // DO NOT write any raw SQL query in the actual program
+        // (with the exception of PGroonga features)
+        get_conn()
+            .await
+            .unwrap()
+            .execute(Statement::from_string(
+                DbBackend::Postgres,
+                "SELECT version()",
+            ))
+            .await
+            .unwrap();
     }
 }

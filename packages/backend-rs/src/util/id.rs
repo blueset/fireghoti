@@ -86,7 +86,7 @@ mod unit_test {
     use std::thread;
 
     #[test]
-    fn can_create_and_decode_id() {
+    fn create_and_decode_id() {
         let now = Utc::now();
         assert_eq!(gen_id().len(), 16);
         assert_ne!(gen_id_at(now), gen_id_at(now));
@@ -108,7 +108,7 @@ mod unit_test {
     }
 
     #[test]
-    fn fixture_id_timestamp_check() {
+    fn get_timestamp_from_id() {
         assert_eq!(get_timestamp("9e112pilk1").unwrap(), 1682499501741);
         assert_eq!(get_timestamp("9e183znmxa").unwrap(), 1682511318850);
         assert_eq!(get_timestamp("9e9srqr79p").unwrap(), 1683029748787);

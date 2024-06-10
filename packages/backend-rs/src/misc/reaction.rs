@@ -121,11 +121,11 @@ pub async fn to_db_reaction(reaction: Option<&str>, host: Option<&str>) -> Resul
 
 #[cfg(test)]
 mod unit_test {
-    use super::{decode_reaction, DecodedReaction};
+    use super::DecodedReaction;
     use pretty_assertions::{assert_eq, assert_ne};
 
     #[test]
-    fn test_decode_reaction() {
+    fn decode_reaction() {
         let unicode_emoji_1 = DecodedReaction {
             reaction: "⭐".to_string(),
             name: None,
@@ -137,25 +137,25 @@ mod unit_test {
             host: None,
         };
 
-        assert_eq!(decode_reaction("⭐"), unicode_emoji_1);
-        assert_eq!(decode_reaction("🩷"), unicode_emoji_2);
+        assert_eq!(super::decode_reaction("⭐"), unicode_emoji_1);
+        assert_eq!(super::decode_reaction("🩷"), unicode_emoji_2);
 
-        assert_ne!(decode_reaction("⭐"), unicode_emoji_2);
-        assert_ne!(decode_reaction("🩷"), unicode_emoji_1);
+        assert_ne!(super::decode_reaction("⭐"), unicode_emoji_2);
+        assert_ne!(super::decode_reaction("🩷"), unicode_emoji_1);
 
         let unicode_emoji_3 = DecodedReaction {
             reaction: "🖖🏿".to_string(),
             name: None,
             host: None,
         };
-        assert_eq!(decode_reaction("🖖🏿"), unicode_emoji_3);
+        assert_eq!(super::decode_reaction("🖖🏿"), unicode_emoji_3);
 
         let local_emoji = DecodedReaction {
             reaction: ":meow_melt_tears@.:".to_string(),
             name: Some("meow_melt_tears".to_string()),
             host: None,
         };
-        assert_eq!(decode_reaction(":meow_melt_tears:"), local_emoji);
+        assert_eq!(super::decode_reaction(":meow_melt_tears:"), local_emoji);
 
         let remote_emoji_1 = DecodedReaction {
             reaction: ":meow_uwu@some-domain.example.org:".to_string(),
@@ -163,7 +163,7 @@ mod unit_test {
             host: Some("some-domain.example.org".to_string()),
         };
         assert_eq!(
-            decode_reaction(":meow_uwu@some-domain.example.org:"),
+            super::decode_reaction(":meow_uwu@some-domain.example.org:"),
             remote_emoji_1
         );
 
@@ -173,7 +173,7 @@ mod unit_test {
             host: Some("xn--eckwd4c7c.example.org".to_string()),
         };
         assert_eq!(
-            decode_reaction(":C++23@xn--eckwd4c7c.example.org:"),
+            super::decode_reaction(":C++23@xn--eckwd4c7c.example.org:"),
             remote_emoji_2
         );
 
@@ -182,13 +182,16 @@ mod unit_test {
             name: None,
             host: None,
         };
-        assert_eq!(decode_reaction(":foo"), invalid_reaction_1);
+        assert_eq!(super::decode_reaction(":foo"), invalid_reaction_1);
 
         let invalid_reaction_2 = DecodedReaction {
             reaction: ":foo&@example.com:".to_string(),
             name: None,
             host: None,
         };
-        assert_eq!(decode_reaction(":foo&@example.com:"), invalid_reaction_2);
+        assert_eq!(
+            super::decode_reaction(":foo&@example.com:"),
+            invalid_reaction_2
+        );
     }
 }

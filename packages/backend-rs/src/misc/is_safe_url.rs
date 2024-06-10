@@ -15,20 +15,28 @@ pub fn is_safe_url(url: &str) -> bool {
 
 #[cfg(test)]
 mod unit_test {
-    use super::is_safe_url;
-
     #[test]
-    fn safe_url() {
-        assert!(is_safe_url("http://firefish.dev/firefish/firefish"));
-        assert!(is_safe_url("https://firefish.dev/firefish/firefish"));
-        assert!(is_safe_url("http://firefish.dev:80/firefish/firefish"));
-        assert!(is_safe_url("https://firefish.dev:80/firefish/firefish"));
-        assert!(is_safe_url("http://firefish.dev:443/firefish/firefish"));
-        assert!(is_safe_url("https://firefish.dev:443/firefish/firefish"));
-        assert!(!is_safe_url("https://unix/firefish/firefish"));
-        assert!(!is_safe_url("https://firefish.dev:35/firefish/firefish"));
-        assert!(!is_safe_url("ftp://firefish.dev/firefish/firefish"));
-        assert!(!is_safe_url("nyaa"));
-        assert!(!is_safe_url(""));
+    fn is_safe_url() {
+        assert!(super::is_safe_url("http://firefish.dev/firefish/firefish"));
+        assert!(super::is_safe_url("https://firefish.dev/firefish/firefish"));
+        assert!(super::is_safe_url(
+            "http://firefish.dev:80/firefish/firefish"
+        ));
+        assert!(super::is_safe_url(
+            "https://firefish.dev:80/firefish/firefish"
+        ));
+        assert!(super::is_safe_url(
+            "http://firefish.dev:443/firefish/firefish"
+        ));
+        assert!(super::is_safe_url(
+            "https://firefish.dev:443/firefish/firefish"
+        ));
+        assert!(!super::is_safe_url("https://unix/firefish/firefish"));
+        assert!(!super::is_safe_url(
+            "https://firefish.dev:35/firefish/firefish"
+        ));
+        assert!(!super::is_safe_url("ftp://firefish.dev/firefish/firefish"));
+        assert!(!super::is_safe_url("nyaa"));
+        assert!(!super::is_safe_url(""));
     }
 }
