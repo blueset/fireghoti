@@ -39,6 +39,7 @@ pub async fn get_conn() -> Result<&'static DbConn, DbErr> {
 #[cfg(test)]
 mod unit_test {
     use super::get_conn;
+    use sea_orm::{prelude::*, DbBackend, Statement};
 
     #[tokio::test]
     async fn connect_sequential() {
@@ -65,5 +66,20 @@ mod unit_test {
         for task in tasks {
             task.await.unwrap().unwrap();
         }
+    }
+
+    #[tokio::test]
+    async fn access() {
+        // DO NOT write any raw SQL query in the actual program
+        // (with the exception of PGroonga features)
+        get_conn()
+            .await
+            .unwrap()
+            .execute(Statement::from_string(
+                DbBackend::Postgres,
+                "SELECT version()",
+            ))
+            .await
+            .unwrap();
     }
 }
