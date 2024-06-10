@@ -41,8 +41,35 @@ mod unit_test {
     use super::get_conn;
 
     #[tokio::test]
-    async fn connect() {
-        assert!(get_conn().await.is_ok());
-        assert!(get_conn().await.is_ok());
+    async fn connect_sequential() {
+        get_conn().await.unwrap();
+        get_conn().await.unwrap();
+        get_conn().await.unwrap();
+        get_conn().await.unwrap();
+        get_conn().await.unwrap();
+    }
+
+    #[tokio::test]
+    async fn connect_concurrent() {
+        let [c1, c2, c3, c4, c5] = [
+            get_conn(),
+            get_conn(),
+            get_conn(),
+            get_conn(),
+            get_conn(),
+        ];
+        let _ = tokio::try_join!(c1, c2, c3, c4, c5).unwrap();
+    }
+
+    #[tokio::test]
+    async fn connect_spawn() {
+        let mut tasks = Vec::new();
+
+        for _ in 0..5 {
+            tasks.push(tokio::spawn(get_conn()));
+        }
+        for task in tasks {
+            task.await.unwrap().unwrap();
+        }
     }
 }
