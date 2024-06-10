@@ -7,10 +7,13 @@ pub struct Acct {
     pub host: Option<String>,
 }
 
-impl FromStr for Acct {
-    type Err = ();
+#[derive(thiserror::Error, Debug)]
+#[error("failed to convert string '{0}' into acct")]
+pub struct InvalidAcctString(String);
 
-    /// This never throw errors. Feel free to `.unwrap()` the result.
+impl FromStr for Acct {
+    type Err = InvalidAcctString;
+
     fn from_str(value: &str) -> Result<Self, Self::Err> {
         let split: Vec<&str> = if let Some(stripped) = value.strip_prefix('@') {
             stripped
