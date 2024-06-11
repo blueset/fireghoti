@@ -212,7 +212,7 @@ pub fn ts_export(
 /// ```
 ///
 /// ## Function with `Result<T, E>` return type
-/// ```
+/// ```ignore
 /// #[derive(thiserror::Error, Debug)]
 /// pub enum IntegerDivisionError {
 ///     #[error("Divided by zero")]
@@ -233,7 +233,7 @@ pub fn ts_export(
 /// }
 /// ```
 /// generates
-/// ```
+/// ```ignore
 /// # #[derive(thiserror::Error, Debug)]
 /// # pub enum IntegerDivisionError {
 /// #     #[error("Divided by zero")]
@@ -252,7 +252,7 @@ pub fn ts_export(
 /// # }
 /// #[napi_derive::napi(js_name = "integerDivide",)]
 /// pub fn integer_divide_napi(dividend: i64, divisor: i64) -> napi::Result<i64> {
-///     integer_divide(dividend, divisor).map_err(|err| napi::Error::from_reason(err.to_string()))
+///     integer_divide(dividend, divisor).map_err(|err| napi::Error::from_reason(crate::util::error_chain::format_error(&err)))
 /// }
 /// ```
 #[proc_macro_attribute]
@@ -329,7 +329,7 @@ fn napi_impl(macro_attr: TokenStream, item: TokenStream) -> TokenStream {
             };
             // add modifier to function call result
             function_call_modifiers.push(quote! {
-                .map_err(|err| napi::Error::from_reason(err.to_string()))
+                .map_err(|err| napi::Error::from_reason(crate::util::error_chain::format_error(&err)))
             });
         }
     };
@@ -539,7 +539,7 @@ mod tests {
                     divisor: i64,
                 ) -> napi::Result<i64> {
                     integer_divide(dividend, divisor)
-                        .map_err(|err| napi::Error::from_reason(err.to_string()))
+                        .map_err(|err| napi::Error::from_reason(crate::util::error_chain::format_error(&err)))
                 }
             }
         );
