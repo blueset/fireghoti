@@ -1,13 +1,13 @@
 use crate::service::stream::{publish_to_stream, Error, Stream};
 
-#[crate::export]
+#[macros::export]
 pub enum DriveFileEvent {
     Create,
     Update,
     Delete,
 }
 
-#[crate::export]
+#[macros::export]
 pub enum DriveFolderEvent {
     Create,
     Update,
@@ -17,7 +17,7 @@ pub enum DriveFolderEvent {
 // We want to merge `kind` and `object` into a single enum and merge the 2 functions
 // https://github.com/napi-rs/napi-rs/issues/2036
 
-#[crate::export(js_name = "publishToDriveFileStream")]
+#[macros::export(js_name = "publishToDriveFileStream")]
 pub async fn publish_file(
     user_id: String,
     kind: DriveFileEvent,
@@ -37,7 +37,7 @@ pub async fn publish_file(
     .await
 }
 
-#[crate::export(js_name = "publishToDriveFolderStream")]
+#[macros::export(js_name = "publishToDriveFolderStream")]
 pub async fn publish_folder(
     user_id: String,
     kind: DriveFolderEvent,

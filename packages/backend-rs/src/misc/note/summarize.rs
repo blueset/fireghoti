@@ -1,4 +1,4 @@
-#[crate::export(js_name = "getNoteSummary")]
+#[macros::export(js_name = "getNoteSummary")]
 pub fn summarize_impl(
     file_ids: &[String],
     text: Option<String>,

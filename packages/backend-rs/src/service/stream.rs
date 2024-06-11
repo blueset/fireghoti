@@ -54,7 +54,7 @@ pub enum Stream {
     },
 }
 
-#[crate::export]
+#[macros::export]
 pub enum ChatEvent {
     Message,
     Read,

@@ -8,7 +8,7 @@ pub const VERSION: &str = macros::read_version_from_package_json!();
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 struct ServerConfig {
     pub url: String,
     pub port: u16,
@@ -73,7 +73,7 @@ struct ServerConfig {
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct DbConfig {
     pub host: String,
     pub port: u16,
@@ -86,7 +86,7 @@ pub struct DbConfig {
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct RedisConfig {
     pub host: String,
     pub port: u16,
@@ -101,13 +101,13 @@ pub struct RedisConfig {
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct TlsConfig {
     pub host: String,
     pub reject_unauthorized: bool,
 }
 
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct WorkerConfig {
     pub web: u32,
     pub queue: u32,
@@ -115,7 +115,7 @@ pub struct WorkerConfig {
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct WorkerConfigInternal {
     pub web: Option<u32>,
     pub queue: Option<u32>,
@@ -123,7 +123,7 @@ pub struct WorkerConfigInternal {
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct IdConfig {
     pub length: Option<u8>,
     pub fingerprint: Option<String>,
@@ -131,7 +131,7 @@ pub struct IdConfig {
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct SysLogConfig {
     pub host: String,
     pub port: u16,
@@ -139,7 +139,7 @@ pub struct SysLogConfig {
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct DeepLConfig {
     pub managed: Option<bool>,
     pub auth_key: Option<String>,
@@ -148,7 +148,7 @@ pub struct DeepLConfig {
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct LibreTranslateConfig {
     pub managed: Option<bool>,
     pub api_url: Option<String>,
@@ -157,7 +157,7 @@ pub struct LibreTranslateConfig {
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct EmailConfig {
     pub managed: Option<bool>,
     pub address: Option<String>,
@@ -170,7 +170,7 @@ pub struct EmailConfig {
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct ObjectStorageConfig {
     pub managed: Option<bool>,
     pub base_url: Option<String>,
@@ -186,7 +186,7 @@ pub struct ObjectStorageConfig {
     pub s3_force_path_style: Option<bool>,
 }
 
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct Config {
     // ServerConfig (from default.yml)
     pub url: String,
@@ -263,7 +263,7 @@ fn read_config_file() -> ServerConfig {
     data
 }
 
-#[crate::export]
+#[macros::export]
 pub fn load_config() -> Config {
     let server_config = read_config_file();
     let version = VERSION.to_owned();

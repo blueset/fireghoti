@@ -7,7 +7,7 @@ use argon2::{
 };
 
 /// Hashes the given password using [argon2] algorithm.
-#[crate::export]
+#[macros::export]
 pub fn hash_password(password: &str) -> Result<String, password_hash::errors::Error> {
     let salt = SaltString::generate(&mut OsRng);
     Ok(Argon2::default()
@@ -26,7 +26,7 @@ pub enum Error {
 }
 
 /// Checks whether the given password and hash match.
-#[crate::export]
+#[macros::export]
 pub fn verify_password(password: &str, hash: &str) -> Result<bool, Error> {
     if is_old_password_algorithm(hash) {
         Ok(bcrypt::verify(password, hash)?)
@@ -40,7 +40,7 @@ pub fn verify_password(password: &str, hash: &str) -> Result<bool, Error> {
 
 /// Returns whether the [bcrypt] algorithm is used for the password hash.
 #[inline]
-#[crate::export]
+#[macros::export]
 pub fn is_old_password_algorithm(hash: &str) -> bool {
     // bcrypt hashes start with $2[ab]$
     hash.starts_with("$2")

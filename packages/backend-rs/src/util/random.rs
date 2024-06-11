@@ -3,7 +3,7 @@
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
 
 /// Generates a random string based on [thread_rng] and [Alphanumeric].
-#[crate::export]
+#[macros::export]
 pub fn generate_secure_random_string(length: u16) -> String {
     thread_rng()
         .sample_iter(Alphanumeric)
@@ -12,7 +12,7 @@ pub fn generate_secure_random_string(length: u16) -> String {
         .collect()
 }
 
-#[crate::export]
+#[macros::export]
 pub fn generate_user_token() -> String {
     generate_secure_random_string(16)
 }

@@ -1,5 +1,5 @@
 /// Converts milliseconds to a human readable string.
-#[crate::export]
+#[macros::export]
 pub fn format_milliseconds(milliseconds: u32) -> String {
     let mut seconds = milliseconds / 1000;
     let mut minutes = seconds / 60;

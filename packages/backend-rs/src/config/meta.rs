@@ -11,12 +11,12 @@ fn set_cache(meta: &Meta) {
     let _ = CACHE.lock().map(|mut cache| *cache = Some(meta.clone()));
 }
 
-#[crate::export(js_name = "fetchMeta")]
+#[macros::export(js_name = "fetchMeta")]
 pub async fn local_server_info() -> Result<Meta, DbErr> {
     local_server_info_impl(true).await
 }
 
-#[crate::export(js_name = "updateMetaCache")]
+#[macros::export(js_name = "updateMetaCache")]
 pub async fn update() -> Result<(), DbErr> {
     local_server_info_impl(false).await?;
     Ok(())
@@ -49,7 +49,7 @@ async fn local_server_info_impl(use_cache: bool) -> Result<Meta, DbErr> {
     Ok(meta)
 }
 
-#[crate::export(object)]
+#[macros::export(object)]
 pub struct PugArgs {
     pub img: Option<String>,
     pub title: String,
@@ -62,7 +62,7 @@ pub struct PugArgs {
     pub private_mode: Option<bool>,
 }
 
-#[crate::ts_export]
+#[macros::ts_export]
 pub fn meta_to_pug_args(meta: Meta) -> PugArgs {
     use rand::prelude::*;
     let mut rng = rand::thread_rng();

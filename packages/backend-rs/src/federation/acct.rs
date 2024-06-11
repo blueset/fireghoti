@@ -1,7 +1,7 @@
 use std::{fmt, str::FromStr};
 
 #[cfg_attr(test, derive(Debug, PartialEq))]
-#[crate::export(object)]
+#[macros::export(object)]
 pub struct Acct {
     pub username: String,
     pub host: Option<String>,
@@ -51,12 +51,12 @@ impl From<Acct> for String {
     }
 }
 
-#[crate::ts_export]
+#[macros::ts_export]
 pub fn string_to_acct(acct: &str) -> Acct {
     Acct::from_str(acct).unwrap()
 }
 
-#[crate::ts_export]
+#[macros::ts_export]
 pub fn acct_to_string(acct: &Acct) -> String {
     acct.to_string()
 }

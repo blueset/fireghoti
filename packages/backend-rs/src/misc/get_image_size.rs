@@ -44,13 +44,13 @@ const BROWSER_SAFE_IMAGE_TYPES: [ImageFormat; 8] = [
 static MTX_GUARD: Mutex<()> = Mutex::const_new(());
 
 #[cfg_attr(test, derive(Debug, PartialEq))]
-#[crate::export(object)]
+#[macros::export(object)]
 pub struct ImageSize {
     pub width: u32,
     pub height: u32,
 }
 
-#[crate::export]
+#[macros::export]
 pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
     let attempted: bool;
 

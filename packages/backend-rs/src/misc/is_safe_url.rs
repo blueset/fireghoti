@@ -1,4 +1,4 @@
-#[crate::export]
+#[macros::export]
 pub fn is_safe_url(url: &str) -> bool {
     if let Ok(url) = url.parse::<url::Url>() {
         if url.host_str().unwrap_or_default() == "unix"

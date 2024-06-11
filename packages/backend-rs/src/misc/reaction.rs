@@ -5,14 +5,14 @@ use sea_orm::prelude::*;
 use std::collections::HashMap;
 
 #[cfg_attr(test, derive(PartialEq, Debug))]
-#[crate::export(object)]
+#[macros::export(object)]
 pub struct DecodedReaction {
     pub reaction: String,
     pub name: Option<String>,
     pub host: Option<String>,
 }
 
-#[crate::export]
+#[macros::export]
 pub fn decode_reaction(reaction: &str) -> DecodedReaction {
     // Misskey allows you to include "+" and "-" in emoji shortcodes
     // MFM spec: https://github.com/misskey-dev/mfm.js/blob/6aaf68089023c6adebe44123eebbc4dcd75955e0/docs/syntax.md?plain=1#L583
@@ -38,7 +38,7 @@ pub fn decode_reaction(reaction: &str) -> DecodedReaction {
     }
 }
 
-#[crate::export]
+#[macros::export]
 pub fn count_reactions(reactions: &HashMap<String, u32>) -> HashMap<String, u32> {
     let mut res = HashMap::<String, u32>::new();
 
@@ -62,7 +62,7 @@ pub enum Error {
     Db(#[from] DbErr),
 }
 
-#[crate::export]
+#[macros::export]
 pub async fn to_db_reaction(reaction: Option<&str>, host: Option<&str>) -> Result<String, Error> {
     if let Some(reaction) = reaction {
         // FIXME: Is it okay to do this only here?

@@ -34,7 +34,7 @@ pub struct Nodeinfo21 {
 #[cfg_attr(test, derive(Debug, PartialEq))]
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, js_name = "Nodeinfo")]
+#[macros::export(object, js_name = "Nodeinfo")]
 pub struct Nodeinfo20 {
     /// The schema version, must be 2.0.
     pub version: String,
@@ -71,7 +71,7 @@ pub struct Software21 {
 #[cfg_attr(test, derive(Debug, PartialEq))]
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object)]
+#[macros::export(object)]
 pub struct Software20 {
     /// The canonical name of this server software.
     pub name: String,
@@ -82,7 +82,7 @@ pub struct Software20 {
 #[cfg_attr(test, derive(Debug, PartialEq))]
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
-#[crate::derive_clone_and_export]
+#[macros::derive_clone_and_export]
 pub enum Protocol {
     Activitypub,
     Buddycloud,
@@ -100,7 +100,7 @@ pub enum Protocol {
 #[cfg_attr(test, derive(Debug, PartialEq))]
 #[derive(Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object)]
+#[macros::export(object)]
 pub struct Services {
     /// The third party sites this server can retrieve messages from for combined display with regular traffic.
     pub inbound: Vec<Inbound>,
@@ -112,7 +112,7 @@ pub struct Services {
 #[cfg_attr(test, derive(Debug, PartialEq))]
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
-#[crate::derive_clone_and_export]
+#[macros::derive_clone_and_export]
 pub enum Inbound {
     #[serde(rename = "atom1.0")]
     Atom1,
@@ -131,7 +131,7 @@ pub enum Inbound {
 #[cfg_attr(test, derive(Debug, PartialEq))]
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
-#[crate::derive_clone_and_export]
+#[macros::derive_clone_and_export]
 pub enum Outbound {
     #[serde(rename = "atom1.0")]
     Atom1,
@@ -169,7 +169,7 @@ pub enum Outbound {
 #[cfg_attr(test, derive(Debug, PartialEq))]
 #[derive(Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object)]
+#[macros::export(object)]
 pub struct Usage {
     pub users: Users,
     pub local_posts: Option<u32>,
@@ -180,7 +180,7 @@ pub struct Usage {
 #[cfg_attr(test, derive(Debug, PartialEq))]
 #[derive(Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object)]
+#[macros::export(object)]
 pub struct Users {
     pub total: Option<u32>,
     pub active_halfyear: Option<u32>,

@@ -161,17 +161,17 @@ pub enum Error {
     Json(#[from] serde_json::Error),
 }
 
-#[crate::ts_export(js_name = "nodeinfo_2_1")]
+#[macros::ts_export(js_name = "nodeinfo_2_1")]
 pub async fn nodeinfo_2_1_as_json() -> Result<serde_json::Value, Error> {
     Ok(serde_json::to_value(nodeinfo_2_1().await?)?)
 }
 
-#[crate::ts_export(js_name = "nodeinfo_2_0")]
+#[macros::ts_export(js_name = "nodeinfo_2_0")]
 pub async fn nodeinfo_2_0_as_json() -> Result<serde_json::Value, Error> {
     Ok(serde_json::to_value(nodeinfo_2_0().await?)?)
 }
 
-#[crate::ts_export(js_name = "updateNodeinfoCache")]
+#[macros::ts_export(js_name = "updateNodeinfoCache")]
 pub async fn update_cache() -> Result<(), DbErr> {
     nodeinfo_2_1_impl(false).await?;
     Ok(())

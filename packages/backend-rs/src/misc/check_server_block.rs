@@ -18,7 +18,7 @@
 /// # Ok(())
 /// # }
 /// ```
-#[crate::ts_export]
+#[macros::ts_export]
 pub async fn is_blocked_server(host: &str) -> Result<bool, sea_orm::DbErr> {
     Ok(crate::config::local_server_info()
         .await?
@@ -45,7 +45,7 @@ pub async fn is_blocked_server(host: &str) -> Result<bool, sea_orm::DbErr> {
 /// # Ok(())
 /// # }
 /// ```
-#[crate::ts_export]
+#[macros::ts_export]
 pub async fn is_silenced_server(host: &str) -> Result<bool, sea_orm::DbErr> {
     Ok(crate::config::local_server_info()
         .await?
@@ -73,7 +73,7 @@ pub async fn is_silenced_server(host: &str) -> Result<bool, sea_orm::DbErr> {
 /// # Ok(())
 /// # }
 /// ```
-#[crate::ts_export]
+#[macros::ts_export]
 pub async fn is_allowed_server(host: &str) -> Result<bool, sea_orm::DbErr> {
     let meta = crate::config::local_server_info().await?;
 

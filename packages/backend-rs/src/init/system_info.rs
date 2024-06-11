@@ -20,7 +20,7 @@ pub fn system_info() -> &'static std::sync::Mutex<System> {
 }
 
 /// Prints the server hardware information as the server info log.
-#[crate::export]
+#[macros::export]
 pub fn show_server_info() -> Result<(), SysinfoPoisonError> {
     let system_info = system_info().lock()?;
 

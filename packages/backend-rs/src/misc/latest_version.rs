@@ -46,7 +46,7 @@ async fn get_latest_version() -> Result<String, Error> {
 }
 
 /// Returns the latest Firefish version.
-#[crate::export]
+#[macros::export]
 pub async fn latest_version() -> Result<String, Error> {
     let version: Option<String> =
         cache::get_one(cache::Category::FetchUrl, UPSTREAM_PACKAGE_JSON_URL).await?;
