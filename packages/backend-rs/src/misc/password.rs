@@ -17,12 +17,12 @@ pub fn hash_password(password: &str) -> Result<String, password_hash::errors::Er
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("An error occured while bcrypt verification: {0}")]
+    #[error("failed to verify password against bcrypt hash")]
     Bcrypt(#[from] bcrypt::BcryptError),
-    #[error("Invalid argon2 password hash: {0}")]
-    InvalidArgon2Hash(#[from] password_hash::Error),
-    #[error("An error occured while argon2 verification: {0}")]
+    #[error("failed to verify password against argon2 hash")]
     Argon2(#[from] argon2::Error),
+    #[error("invalid argon2 password hash")]
+    InvalidArgon2Hash(#[from] password_hash::Error),
 }
 
 /// Checks whether the given password and hash match.

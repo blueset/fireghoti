@@ -7,23 +7,26 @@ use tokio::sync::Mutex;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("Redis cache error: {0}")]
+    #[error("Redis cache operation has failed")]
     Cache(#[from] cache::Error),
-    #[error("HTTP client aquisition error: {0}")]
+    #[error("failed to acquire an HTTP client")]
     HttpClient(#[from] http_client::Error),
-    #[error("Isahc error: {0}")]
+    #[error("HTTP request failed")]
     Isahc(#[from] isahc::Error),
-    #[error("HTTP error: {0}")]
-    Http(String),
-    #[error("Image decoding error: {0}")]
+    #[doc = "bad HTTP status"]
+    #[error("bad HTTP status ({0})")]
+    BadStatus(String),
+    #[error("failed to decode an image")]
     Image(#[from] ImageError),
-    #[error("Image decoding error: {0}")]
+    #[error("failed to decode an image")]
     Io(#[from] std::io::Error),
-    #[error("Exif extraction error: {0}")]
+    #[error("failed to extract the exif data")]
     Exif(#[from] nom_exif::Error),
-    #[error("Emoji meta attempt limit exceeded: {0}")]
+    #[doc = "too many fetch attempts"]
+    #[error("too many fetch attempts for {0}")]
     TooManyAttempts(String),
-    #[error("Unsupported image type: {0}")]
+    #[doc = "unsupported image type"]
+    #[error("unsupported image type ({0})")]
     UnsupportedImage(String),
 }
 
@@ -75,7 +78,11 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
     if !response.status().is_success() {
         tracing::info!("status: {}", response.status());
         tracing::debug!("response body: {:#?}", response.body());
-        return Err(Error::Http(format!("Failed to get image from {}", url)));
+        return Err(Error::BadStatus(format!(
+            "{} returned {}",
+            url,
+            response.status()
+        )));
     }
 
     let image_bytes = response.bytes().await?;

@@ -8,9 +8,10 @@ use sea_orm::{prelude::*, QuerySelect};
 
 #[derive(thiserror::Error, Debug)]
 pub enum AntennaCheckError {
-    #[error("Database error: {0}")]
+    #[doc = "database error"]
+    #[error(transparent)]
     Db(#[from] DbErr),
-    #[error("Cache error: {0}")]
+    #[error("Redis cache operation has failed")]
     Cache(#[from] cache::Error),
 }
 

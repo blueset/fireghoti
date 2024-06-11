@@ -15,11 +15,11 @@ pub enum Category {
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("Redis error: {0}")]
+    #[error("failed to execute Redis command")]
     Redis(#[from] RedisError),
-    #[error("Redis connection error: {0}")]
+    #[error("bad Redis connection")]
     RedisConn(#[from] RedisConnError),
-    #[error("Failed to encode the data: {0}")]
+    #[error("failed to encode data for Redis")]
     Encode(#[from] rmp_serde::encode::Error),
 }
 

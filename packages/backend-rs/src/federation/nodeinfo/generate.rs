@@ -154,9 +154,10 @@ pub async fn nodeinfo_2_0() -> Result<Nodeinfo20, DbErr> {
 #[cfg(feature = "napi")]
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("Database error: {0}")]
+    #[doc = "database error"]
+    #[error(transparent)]
     Db(#[from] DbErr),
-    #[error("Failed to serialize nodeinfo into JSON: {0}")]
+    #[error("failed to serialize nodeinfo into JSON")]
     Json(#[from] serde_json::Error),
 }
 

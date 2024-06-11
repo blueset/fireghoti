@@ -18,7 +18,7 @@ chrono = { version = "0.4.38", default-features = false }
 convert_case = { version = "0.6.0", default-features = false }
 cuid2 = { version = "0.1.2", default-features = false }
 emojis = { version = "0.6.2", default-features = false }
-idna = { version = "0.5.0", default-features = false }
+idna = { version = "1.0.0", default-features = false }
 image = { version = "0.25.1", default-features = false }
 isahc = { version = "1.7.2", default-features = false }
 nom-exif = { version = "1.2.0", default-features = false }
@@ -42,7 +42,7 @@ tokio = { version = "1.38.0", default-features = false }
 tokio-test = { version = "0.4.4", default-features = false }
 tracing = { version = "0.1.40", default-features = false }
 tracing-subscriber = { version = "0.3.18", default-features = false }
-url = { version = "2.5.0", default-features = false }
+url = { version = "2.5.1", default-features = false }
 urlencoding = { version = "2.1.3", default-features = false }
 web-push = { git = "https://github.com/pimeys/rust-web-push.git", rev = "40febe4085e3cef9cdfd539c315e3e945aba0656", default-features = false }
 

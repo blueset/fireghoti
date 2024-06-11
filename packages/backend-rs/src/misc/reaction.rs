@@ -55,9 +55,10 @@ pub fn count_reactions(reactions: &HashMap<String, u32>) -> HashMap<String, u32>
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("Idna error: {0}")]
+    #[doc = "UTS #46 process has failed"]
+    #[error(transparent)]
     Idna(#[from] idna::Errors),
-    #[error("Database error: {0}")]
+    #[error(transparent)]
     Db(#[from] DbErr),
 }
 

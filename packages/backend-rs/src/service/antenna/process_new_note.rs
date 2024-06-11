@@ -15,19 +15,21 @@ use sea_orm::prelude::*;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("Database error: {0}")]
+    #[doc = "database error"]
+    #[error(transparent)]
     Db(#[from] DbErr),
-    #[error("Cache error: {0}")]
+    #[error("Redis cache operation has failed")]
     Cache(#[from] cache::Error),
-    #[error("Redis error: {0}")]
+    #[error("failed to execute a Redis command")]
     Redis(#[from] RedisError),
-    #[error("Redis connection error: {0}")]
+    #[error("bad Redis connection")]
     RedisConn(#[from] RedisConnError),
-    #[error("Invalid ID: {0}")]
+    #[doc = "provided string is not a valid Firefish ID"]
+    #[error(transparent)]
     InvalidId(#[from] InvalidIdError),
-    #[error("Stream error: {0}")]
+    #[error("Redis stream operation has failed")]
     Stream(#[from] stream::Error),
-    #[error("Failed to check if the note should be added to antenna: {0}")]
+    #[error("failed to check if the note should be added to antenna")]
     AntennaCheck(#[from] AntennaCheckError),
 }
 
