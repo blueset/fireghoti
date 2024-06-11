@@ -77,7 +77,8 @@ macro_rules! macro_doctest {
 ///     }
 /// }
 /// ```
-#[macro_export] macro_rules! macro_unit_tests {
+#[macro_export]
+macro_rules! macro_unit_tests {
     (@test $macro_name:ident($attr:ident, $item:ident) becomes $expanded:ident) => {
         assert_eq!(
             ::std::format!("{}", $macro_name($attr, $item)),
