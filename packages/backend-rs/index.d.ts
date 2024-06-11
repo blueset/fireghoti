@@ -1381,6 +1381,7 @@ export interface AbuseUserReportLike {
   comment: string
 }
 export function publishToModerationStream(moderatorId: string, report: AbuseUserReportLike): Promise<void>
+export function publishToNotesStream(note: Note): Promise<void>
 export enum ChatEvent {
   Message = 0,
   Read = 1,

@@ -5,6 +5,7 @@ pub mod chat_index;
 pub mod custom_emoji;
 pub mod group_chat;
 pub mod moderation;
+pub mod notes;
 
 use crate::{
     config::CONFIG,
