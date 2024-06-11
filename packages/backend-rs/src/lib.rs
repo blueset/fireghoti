@@ -1,4 +1,4 @@
-use macro_rs::{derive_clone_and_export, export, ts_export};
+use macros::{derive_clone_and_export, export, ts_export};
 
 pub mod config;
 pub mod database;

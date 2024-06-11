@@ -4,7 +4,7 @@ use once_cell::sync::Lazy;
 use serde::Deserialize;
 use std::{env, fs};
 
-pub const VERSION: &str = macro_rs::read_version_from_package_json!();
+pub const VERSION: &str = macros::read_version_from_package_json!();
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]

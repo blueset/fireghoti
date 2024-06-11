@@ -1,9 +1,10 @@
 [workspace]
-members = ["packages/backend-rs", "packages/macro-rs"]
+members = ["packages/backend-rs", "packages/macro-rs/macros", "packages/macro-rs/macros-impl"]
 resolver = "2"
 
 [workspace.dependencies]
-macro-rs = { path = "packages/macro-rs" }
+macros = { path = "packages/macro-rs/macros" }
+macros-impl = { path = "packages/macro-rs/macros-impl" }
 
 napi = { git = "https://github.com/napi-rs/napi-rs.git", rev = "ca2cd5c35a0c39ec4a94e93c6c5695b681046df2" }
 napi-derive = "2.16.5"
