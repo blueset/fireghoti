@@ -3,6 +3,7 @@ pub mod channel;
 pub mod chat;
 pub mod chat_index;
 pub mod custom_emoji;
+pub mod drive;
 pub mod group_chat;
 pub mod moderation;
 pub mod notes;
