@@ -134,6 +134,7 @@ mod unit_test {
     use pretty_assertions::assert_eq;
 
     #[tokio::test]
+    #[cfg_attr(miri, ignore)] // can't call foreign function `getaddrinfo` on OS `linux`
     async fn get_image_size_from_url() {
         let png_url_1 = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/splash.png";
         let png_url_2 = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/notification-badges/at.png";
@@ -219,6 +220,7 @@ mod unit_test {
     }
 
     #[tokio::test]
+    #[cfg_attr(miri, ignore)] // can't call foreign function `getaddrinfo` on OS `linux`
     async fn too_many_attempts() {
         let url = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/splash.png";
 

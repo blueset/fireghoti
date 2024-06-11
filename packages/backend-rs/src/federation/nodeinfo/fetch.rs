@@ -156,6 +156,7 @@ mod unit_test {
     }
 
     #[tokio::test]
+    #[cfg_attr(miri, ignore)] // can't call foreign function `curl_global_init` on OS `linux`
     async fn fetch_nodeinfo() {
         assert_eq!(
             super::fetch_nodeinfo("info.firefish.dev")

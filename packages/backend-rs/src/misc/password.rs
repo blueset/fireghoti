@@ -51,6 +51,7 @@ mod unit_test {
     use super::{hash_password, is_old_password_algorithm};
 
     #[test]
+    #[cfg_attr(miri, ignore)] // too slow
     fn verify_password() {
         let password = "omWc*%sD^fn7o2cXmc9e2QasBdrbRuhNB*gx!J5";
 

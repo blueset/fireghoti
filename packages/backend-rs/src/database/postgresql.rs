@@ -42,6 +42,7 @@ mod unit_test {
     use sea_orm::{prelude::*, DbBackend, Statement};
 
     #[tokio::test]
+    #[cfg_attr(miri, ignore)] // can't call foreign function `geteuid` on OS `linux`
     async fn connect_sequential() {
         get_conn().await.unwrap();
         get_conn().await.unwrap();
@@ -51,12 +52,14 @@ mod unit_test {
     }
 
     #[tokio::test]
+    #[cfg_attr(miri, ignore)] // can't call foreign function `geteuid` on OS `linux`
     async fn connect_concurrent() {
         let [c1, c2, c3, c4, c5] = [get_conn(), get_conn(), get_conn(), get_conn(), get_conn()];
         let _ = tokio::try_join!(c1, c2, c3, c4, c5).unwrap();
     }
 
     #[tokio::test]
+    #[cfg_attr(miri, ignore)] // can't call foreign function `geteuid` on OS `linux`
     async fn connect_spawn() {
         let mut tasks = Vec::new();
 
@@ -69,6 +72,7 @@ mod unit_test {
     }
 
     #[tokio::test]
+    #[cfg_attr(miri, ignore)] // can't call foreign function `geteuid` on OS `linux`
     async fn access() {
         // DO NOT write any raw SQL query in the actual program
         // (with the exception of PGroonga features)
