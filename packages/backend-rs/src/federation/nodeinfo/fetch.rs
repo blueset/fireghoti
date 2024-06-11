@@ -9,17 +9,18 @@ use serde::Deserialize;
 /// Errors that can occur while fetching NodeInfo from a remote server
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("HTTP client aquisition error: {0}")]
+    #[error("failed to acquire an HTTP client")]
     HttpClient(#[from] http_client::Error),
-    #[error("HTTP error: {0}")]
+    #[error("HTTP request failed")]
     Http(#[from] isahc::Error),
-    #[error("Bad status: {0}")]
+    #[doc = "bad HTTP status"]
+    #[error("bad HTTP status ({0})")]
     BadStatus(String),
-    #[error("Failed to parse response body as text: {0}")]
+    #[error("failed to parse HTTP response body as text")]
     Response(#[from] std::io::Error),
-    #[error("Failed to parse response body as json: {0}")]
+    #[error("failed to parse HTTP response body as json")]
     Json(#[from] serde_json::Error),
-    #[error("No nodeinfo provided")]
+    #[error("nodeinfo is missing")]
     MissingNodeinfo,
 }
 

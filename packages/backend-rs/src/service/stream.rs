@@ -62,14 +62,14 @@ pub enum ChatEvent {
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("Redis error: {0}")]
+    #[error("failed to execute a Redis command")]
     Redis(#[from] RedisError),
-    #[error("Redis connection error: {0}")]
+    #[error("bad Redis connection")]
     RedisConn(#[from] RedisConnError),
-    #[error("Json (de)serialization error: {0}")]
+    #[error("failed to (de)serialize object")]
     Json(#[from] serde_json::Error),
-    #[error("Value error: {0}")]
-    Value(String),
+    #[error("invalid content")]
+    InvalidContent,
 }
 
 pub async fn publish_to_stream(
@@ -104,7 +104,7 @@ pub async fn publish_to_stream(
             value.unwrap_or_else(|| "null".to_string()),
         )
     } else {
-        value.ok_or(Error::Value("Invalid streaming message".to_string()))?
+        value.ok_or(Error::InvalidContent)?
     };
 
     redis_conn()

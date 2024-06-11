@@ -4,11 +4,12 @@
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("Idna error: {0}")]
+    #[doc = "UTS #46 process has failed"]
+    #[error(transparent)]
     Idna(#[from] idna::Errors),
-    #[error("Url parse error: {0}")]
+    #[error("failed to parse a URL")]
     UrlParse(#[from] url::ParseError),
-    #[error("Hostname is missing")]
+    #[error("hostname is missing")]
     NoHostname,
 }
 

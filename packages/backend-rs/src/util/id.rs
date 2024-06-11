@@ -46,7 +46,8 @@ fn create_id(datetime: &NaiveDateTime) -> String {
 }
 
 #[derive(thiserror::Error, Debug)]
-#[error("Invalid ID: {id}")]
+#[doc = "Error type to indicate invalid Firefish ID"]
+#[error("'{id}' is not a valid Firefish ID")]
 pub struct InvalidIdError {
     id: String,
 }

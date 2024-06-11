@@ -6,17 +6,18 @@ use serde::Deserialize;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("Cache error: {0}")]
+    #[error("Redis cache operation has failed")]
     Cache(#[from] cache::Error),
-    #[error("Isahc error: {0}")]
+    #[error("HTTP request failed")]
     Isahc(#[from] isahc::Error),
-    #[error("HTTP client aquisition error: {0}")]
+    #[error("failed to acquire an HTTP client")]
     HttpClient(#[from] http_client::Error),
-    #[error("HTTP error: {0}")]
-    Http(String),
-    #[error("Response parsing error: {0}")]
+    #[doc = "firefish.dev returned bad HTTP status"]
+    #[error("firefish.dev returned bad HTTP status ({0})")]
+    BadStatus(String),
+    #[error("failed to parse the HTTP response")]
     Io(#[from] std::io::Error),
-    #[error("Failed to deserialize JSON: {0}")]
+    #[error("failed to parse the HTTP response as JSON")]
     Json(#[from] serde_json::Error),
 }
 
@@ -36,9 +37,7 @@ async fn get_latest_version() -> Result<String, Error> {
     if !response.status().is_success() {
         tracing::info!("status: {}", response.status());
         tracing::debug!("response body: {:#?}", response.body());
-        return Err(Error::Http(
-            "Failed to fetch version from Firefish GitLab".to_string(),
-        ));
+        return Err(Error::BadStatus(response.status().to_string()));
     }
 
     let res_parsed: Response = serde_json::from_str(&response.text().await?)?;

@@ -9,15 +9,17 @@ use web_push::*;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("Database error: {0}")]
+    #[doc = "database error"]
+    #[error(transparent)]
     Db(#[from] DbErr),
-    #[error("Web Push error: {0}")]
+    #[error("web push has failed")]
     WebPush(#[from] WebPushError),
-    #[error("Failed to (de)serialize an object: {0}")]
+    #[error("failed to (de)serialize an object")]
     Serialize(#[from] serde_json::Error),
-    #[error("Invalid content: {0}")]
+    #[doc = "provided content is invalid"]
+    #[error("invalid content ({0})")]
     InvalidContent(String),
-    #[error("HTTP client aquisition error: {0}")]
+    #[error("failed to acquire an HTTP client")]
     HttpClient(#[from] http_client::Error),
 }
 

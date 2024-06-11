@@ -81,9 +81,9 @@ async fn init_conn_pool() -> Result<(), RedisError> {
 
 #[derive(thiserror::Error, Debug)]
 pub enum RedisConnError {
-    #[error("Failed to initialize Redis connection pool: {0}")]
+    #[error("failed to initialize Redis connection pool")]
     Redis(RedisError),
-    #[error("Redis connection pool error: {0}")]
+    #[error("bad Redis connection pool")]
     Bb8Pool(RunError<RedisError>),
 }
 
