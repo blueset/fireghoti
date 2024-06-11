@@ -25,7 +25,7 @@ bcrypt = { workspace = true, features = ["std"] }
 chrono = { workspace = true }
 cuid2 = { workspace = true }
 emojis = { workspace = true }
-idna = { workspace = true }
+idna = { workspace = true, features = ["std", "compiled_data"] }
 image = { workspace = true, features = ["avif", "bmp", "gif", "ico", "jpeg", "png", "tiff", "webp"] }
 isahc = { workspace = true, features = ["http2", "text-decoding"] }
 nom-exif = { workspace = true }
