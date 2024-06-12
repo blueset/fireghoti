@@ -177,7 +177,9 @@ use quote::{quote, ToTokens};
 /// #[napi_derive::napi(js_name = "integerDivide",)]
 /// pub fn integer_divide_napi(dividend: i64, divisor: i64) -> napi::Result<i64> {
 ///     integer_divide(dividend, divisor)
-///         .map_err(|err| napi::Error::from_reason(crate::util::error_chain::format_error(&err)))
+///         .map_err(|err| napi::Error::from_reason(
+///             format!("\n{}\n", crate::util::error_chain::format_error(&err))
+///         ))
 /// }
 /// # });
 /// ```
@@ -248,7 +250,9 @@ pub fn napi(macro_attr: TokenStream, item: TokenStream) -> TokenStream {
             };
             // add modifier to function call result
             function_call_modifiers.push(quote! {
-                .map_err(|err| napi::Error::from_reason(crate::util::error_chain::format_error(&err)))
+                .map_err(|err| napi::Error::from_reason(
+                    format!("\n{}\n", crate::util::error_chain::format_error(&err))
+                ))
             });
         }
     };
@@ -382,7 +386,9 @@ crate::macro_unit_tests! {
             divisor: i64,
         ) -> napi::Result<i64> {
             integer_divide(dividend, divisor)
-                .map_err(|err| napi::Error::from_reason(crate::util::error_chain::format_error(&err)))
+                .map_err(|err| napi::Error::from_reason(
+                    format!("\n{}\n", crate::util::error_chain::format_error(&err))
+                ))
         }
     }
 
