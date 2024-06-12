@@ -3,8 +3,10 @@ pub mod channel;
 pub mod chat;
 pub mod chat_index;
 pub mod custom_emoji;
+pub mod drive;
 pub mod group_chat;
 pub mod moderation;
+pub mod notes;
 
 use crate::{
     config::CONFIG,
@@ -52,7 +54,7 @@ pub enum Stream {
     },
 }
 
-#[crate::export]
+#[macros::export]
 pub enum ChatEvent {
     Message,
     Read,

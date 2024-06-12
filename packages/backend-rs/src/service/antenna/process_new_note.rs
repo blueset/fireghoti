@@ -37,7 +37,7 @@ pub enum Error {
 // https://github.com/napi-rs/napi-rs/issues/2060
 type Note = note::Model;
 
-#[crate::export]
+#[macros::export]
 pub async fn update_antennas_on_new_note(
     note: &Note,
     note_author: &Acct,

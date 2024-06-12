@@ -1393,6 +1393,18 @@ export interface PackedEmoji {
   height: number | null
 }
 export function publishToBroadcastStream(emoji: PackedEmoji): Promise<void>
+export enum DriveFileEvent {
+  Create = 0,
+  Update = 1,
+  Delete = 2
+}
+export enum DriveFolderEvent {
+  Create = 0,
+  Update = 1,
+  Delete = 2
+}
+export function publishToDriveFileStream(userId: string, kind: DriveFileEvent, object: any): Promise<void>
+export function publishToDriveFolderStream(userId: string, kind: DriveFolderEvent, object: any): Promise<void>
 export function publishToGroupChatStream(groupId: string, kind: ChatEvent, object: any): Promise<void>
 export interface AbuseUserReportLike {
   id: string
@@ -1401,6 +1413,7 @@ export interface AbuseUserReportLike {
   comment: string
 }
 export function publishToModerationStream(moderatorId: string, report: AbuseUserReportLike): Promise<void>
+export function publishToNotesStream(note: Note): Promise<void>
 export enum ChatEvent {
   Message = 0,
   Read = 1,

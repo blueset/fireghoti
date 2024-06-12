@@ -1,7 +1,7 @@
 use crate::{database::db_conn, model::entity::note_watching, util::id::gen_id_at};
 use sea_orm::{prelude::*, ActiveValue};
 
-#[crate::export]
+#[macros::export]
 pub async fn watch_note(
     watcher_id: &str,
     note_author_id: &str,
@@ -24,7 +24,7 @@ pub async fn watch_note(
     Ok(())
 }
 
-#[crate::export]
+#[macros::export]
 pub async fn unwatch_note(watcher_id: &str, note_id: &str) -> Result<(), DbErr> {
     let db = db_conn().await?;
 

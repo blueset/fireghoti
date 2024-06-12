@@ -13,7 +13,7 @@ pub enum Error {
     NoHostname,
 }
 
-#[crate::ts_export]
+#[macros::ts_export]
 pub fn get_full_ap_account(username: &str, host: Option<&str>) -> Result<String, Error> {
     Ok(match host {
         Some(host) => format!("{}@{}", username, to_puny(host)?),
@@ -21,7 +21,7 @@ pub fn get_full_ap_account(username: &str, host: Option<&str>) -> Result<String,
     })
 }
 
-#[crate::ts_export]
+#[macros::ts_export]
 pub fn is_self_host(host: Option<&str>) -> Result<bool, Error> {
     Ok(match host {
         Some(host) => extract_host(&crate::config::CONFIG.url)? == to_puny(host)?,
@@ -29,12 +29,12 @@ pub fn is_self_host(host: Option<&str>) -> Result<bool, Error> {
     })
 }
 
-#[crate::ts_export]
+#[macros::ts_export]
 pub fn is_same_origin(uri: &str) -> Result<bool, Error> {
     Ok(url::Url::parse(uri)?.origin().ascii_serialization() == crate::config::CONFIG.url)
 }
 
-#[crate::ts_export]
+#[macros::ts_export]
 pub fn extract_host(uri: &str) -> Result<String, Error> {
     url::Url::parse(uri)?
         .host_str()
@@ -42,7 +42,7 @@ pub fn extract_host(uri: &str) -> Result<String, Error> {
         .and_then(|v| Ok(to_puny(v)?))
 }
 
-#[crate::ts_export]
+#[macros::ts_export]
 pub fn to_puny(host: &str) -> Result<String, idna::Errors> {
     idna::domain_to_ascii(host)
 }

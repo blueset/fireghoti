@@ -46,7 +46,7 @@ async fn get_latest_version() -> Result<String, Error> {
 }
 
 /// Returns the latest Firefish version.
-#[crate::export]
+#[macros::export]
 pub async fn latest_version() -> Result<String, Error> {
     let version: Option<String> =
         cache::get_one(cache::Category::FetchUrl, UPSTREAM_PACKAGE_JSON_URL).await?;
@@ -99,6 +99,7 @@ mod unit_test {
     }
 
     #[tokio::test]
+    #[cfg_attr(miri, ignore)] // can't call foreign function `getaddrinfo` on OS `linux`
     async fn get_latest_version() {
         // delete caches in case you run this test multiple times
         cache::delete_one(cache::Category::FetchUrl, UPSTREAM_PACKAGE_JSON_URL)

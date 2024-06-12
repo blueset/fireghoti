@@ -1,8 +1,9 @@
-import { publishDriveStream } from "@/services/stream.js";
+import { publishToDriveFolderStream, DriveFolderEvent } from "backend-rs";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { DriveFolders } from "@/models/index.js";
 import { genIdAt } from "backend-rs";
+import { toRustObject } from "@/prelude/undefined-to-null.js";
 
 export const meta = {
 	tags: ["drive"],
@@ -64,7 +65,11 @@ export default define(meta, paramDef, async (ps, user) => {
 	const folderObj = await DriveFolders.pack(folder);
 
 	// Publish folderCreated event
-	publishDriveStream(user.id, "folderCreated", folderObj);
+	publishToDriveFolderStream(
+		user.id,
+		DriveFolderEvent.Create,
+		toRustObject(folder),
+	);
 
 	return folderObj;
 });

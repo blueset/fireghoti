@@ -52,7 +52,7 @@ pub struct InvalidIdError {
     id: String,
 }
 
-#[crate::export]
+#[macros::export]
 pub fn get_timestamp(id: &str) -> Result<i64, InvalidIdError> {
     let n: Option<u64> = BASE36.decode_var_len(&id[0..8]);
     if let Some(n) = n {
@@ -68,13 +68,13 @@ pub fn get_timestamp(id: &str) -> Result<i64, InvalidIdError> {
 /// in the same millisecond to reach 50% chance of collision.
 ///
 /// Ref: <https://github.com/paralleldrive/cuid2#parameterized-length>
-#[crate::export]
+#[macros::export]
 pub fn gen_id() -> String {
     create_id(&Utc::now().naive_utc())
 }
 
 /// Generate an ID using a specific datetime
-#[crate::export]
+#[macros::export]
 pub fn gen_id_at(date: DateTime<Utc>) -> String {
     create_id(&date.naive_utc())
 }

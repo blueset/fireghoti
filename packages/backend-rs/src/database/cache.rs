@@ -234,6 +234,7 @@ mod unit_test {
     use pretty_assertions::assert_eq;
 
     #[tokio::test]
+    #[cfg_attr(miri, ignore)] // can't call foreign function `getaddrinfo` on OS `linux`
     async fn set_get_expire() {
         #[derive(serde::Deserialize, serde::Serialize, PartialEq, Debug)]
         struct Data {
@@ -278,6 +279,7 @@ mod unit_test {
     }
 
     #[tokio::test]
+    #[cfg_attr(miri, ignore)] // can't call foreign function `getaddrinfo` on OS `linux`
     async fn use_category() {
         let key_1 = "fire";
         let key_2 = "fish";

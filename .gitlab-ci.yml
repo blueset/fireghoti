@@ -289,7 +289,7 @@ cargo:doc:
     - cp ci/cargo/config.toml /usr/local/cargo/config.toml
   script:
     - cargo doc --document-private-items
-    - printf "window.ALL_CRATES = ['backend_rs', 'macro_rs'];" > target/doc/crates.js
+    - printf 'window.ALL_CRATES = ["backend_rs", "macros", "macros_impl"];' > target/doc/crates.js
     - printf '<meta http-equiv="refresh" content="0; url=%s">' 'backend_rs' > target/doc/index.html
     - cd target/doc
     - npx --yes netlify-cli deploy --prod --site="${CARGO_DOC_SITE_ID}" --dir=.

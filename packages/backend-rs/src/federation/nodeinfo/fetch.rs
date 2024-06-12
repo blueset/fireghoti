@@ -91,7 +91,7 @@ async fn fetch_nodeinfo_impl(nodeinfo_link: &str) -> Result<Nodeinfo20, Error> {
 type Nodeinfo = Nodeinfo20;
 
 /// Fetches and returns the NodeInfo (version 2.0) of a remote server.
-#[crate::export]
+#[macros::export]
 pub async fn fetch_nodeinfo(host: &str) -> Result<Nodeinfo, Error> {
     tracing::info!("fetching from {}", host);
     let links = fetch_nodeinfo_links(host).await?;
@@ -156,6 +156,7 @@ mod unit_test {
     }
 
     #[tokio::test]
+    #[cfg_attr(miri, ignore)] // can't call foreign function `curl_global_init` on OS `linux`
     async fn fetch_nodeinfo() {
         assert_eq!(
             super::fetch_nodeinfo("info.firefish.dev")

@@ -1,6 +1,6 @@
 use crate::service::stream::{publish_to_stream, Error, Stream};
 
-#[crate::export]
+#[macros::export]
 pub enum ChatIndexEvent {
     Message,
     Read,
@@ -9,7 +9,7 @@ pub enum ChatIndexEvent {
 // We want to merge `kind` and `object` into a single enum
 // https://github.com/napi-rs/napi-rs/issues/2036
 
-#[crate::export(js_name = "publishToChatIndexStream")]
+#[macros::export(js_name = "publishToChatIndexStream")]
 pub async fn publish(
     user_id: String,
     kind: ChatIndexEvent,

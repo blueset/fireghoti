@@ -5,14 +5,14 @@ use sysinfo::{Disks, MemoryRefreshKind};
 
 // TODO: i64 -> u64 (we can't export u64 to Node.js)
 
-#[crate::export(object)]
+#[macros::export(object)]
 pub struct Cpu {
     pub model: String,
     // TODO: u16 -> usize (we can't export usize to Node.js)
     pub cores: u16,
 }
 
-#[crate::export(object)]
+#[macros::export(object)]
 pub struct Memory {
     /// Total memory amount in bytes
     pub total: i64,
@@ -22,7 +22,7 @@ pub struct Memory {
     pub available: i64,
 }
 
-#[crate::export(object)]
+#[macros::export(object)]
 pub struct Storage {
     /// Total storage space in bytes
     pub total: i64,
@@ -30,7 +30,7 @@ pub struct Storage {
     pub used: i64,
 }
 
-#[crate::export]
+#[macros::export]
 pub fn cpu_info() -> Result<Cpu, SysinfoPoisonError> {
     let system_info = system_info().lock()?;
 
@@ -46,7 +46,7 @@ pub fn cpu_info() -> Result<Cpu, SysinfoPoisonError> {
     })
 }
 
-#[crate::export]
+#[macros::export]
 pub fn cpu_usage() -> Result<f32, SysinfoPoisonError> {
     let mut system_info = system_info().lock()?;
     system_info.refresh_cpu_usage();
@@ -57,7 +57,7 @@ pub fn cpu_usage() -> Result<f32, SysinfoPoisonError> {
     Ok(total_cpu_usage / (cpu_threads as f32))
 }
 
-#[crate::export]
+#[macros::export]
 pub fn memory_usage() -> Result<Memory, SysinfoPoisonError> {
     let mut system_info = system_info().lock()?;
 
@@ -70,7 +70,7 @@ pub fn memory_usage() -> Result<Memory, SysinfoPoisonError> {
     })
 }
 
-#[crate::export]
+#[macros::export]
 pub fn storage_usage() -> Option<Storage> {
     // Get the first disk that is actualy used (has available space & has at least 1 GB total space).
     let disks = Disks::new_with_refreshed_list();

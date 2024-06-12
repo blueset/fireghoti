@@ -5,8 +5,14 @@ import { v4 as uuid } from "uuid";
 import type S3 from "aws-sdk/clients/s3.js"; // TODO: migrate to SDK v3
 import sharp from "sharp";
 import { IsNull } from "typeorm";
-import { publishMainStream, publishDriveStream } from "@/services/stream.js";
-import { FILE_TYPE_BROWSERSAFE, fetchMeta, genId } from "backend-rs";
+import { publishMainStream } from "@/services/stream.js";
+import {
+	DriveFileEvent,
+	FILE_TYPE_BROWSERSAFE,
+	fetchMeta,
+	genId,
+	publishToDriveFileStream,
+} from "backend-rs";
 import { contentDisposition } from "@/misc/content-disposition.js";
 import { getFileInfo } from "@/misc/get-file-info.js";
 import {
@@ -28,6 +34,7 @@ import { driveLogger } from "./logger.js";
 import { GenerateVideoThumbnail } from "./generate-video-thumbnail.js";
 import { deleteFile } from "./delete-file.js";
 import { inspect } from "node:util";
+import { toRustObject } from "@/prelude/undefined-to-null.js";
 
 const logger = driveLogger.createSubLogger("register", "yellow");
 
@@ -658,11 +665,15 @@ export async function addFile({
 
 	logger.info(`drive file has been created ${file.id}`);
 
-	if (user) {
+	if (user != null) {
 		DriveFiles.pack(file, { self: true }).then((packedFile) => {
 			// Publish driveFileCreated event
 			publishMainStream(user.id, "driveFileCreated", packedFile);
-			publishDriveStream(user.id, "fileCreated", packedFile);
+			publishToDriveFileStream(
+				user.id,
+				DriveFileEvent.Create,
+				toRustObject(file),
+			);
 		});
 	}
 

@@ -42,7 +42,7 @@ fn get_client() -> Result<IsahcWebPushClient, Error> {
         .cloned()?)
 }
 
-#[crate::export]
+#[macros::export]
 pub enum PushNotificationKind {
     Generic,
     Chat,
@@ -243,7 +243,7 @@ async fn handle_web_push_failure(
     Ok(())
 }
 
-#[crate::export]
+#[macros::export]
 pub async fn send_push_notification(
     receiver_user_id: &str,
     kind: PushNotificationKind,

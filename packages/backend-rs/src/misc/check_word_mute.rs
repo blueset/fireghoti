@@ -3,7 +3,7 @@ use once_cell::sync::Lazy;
 use regex::Regex;
 use sea_orm::DbErr;
 
-#[crate::export(object)]
+#[macros::export(object)]
 pub struct PartialNoteToCheckWordMute {
     pub file_ids: Vec<String>,
     pub text: Option<String>,
@@ -49,7 +49,7 @@ fn check_word_mute_impl(
 /// * `note` : [PartialNoteToCheckWordMute] object
 /// * `muted_words` : list of muted keyword lists (each array item is a space-separated keyword list that represents an AND condition)
 /// * `muted_patterns` : list of JavaScript-style (e.g., `/foo/i`) regular expressions
-#[crate::export]
+#[macros::export]
 pub async fn check_word_mute(
     note: PartialNoteToCheckWordMute,
     muted_words: &[String],

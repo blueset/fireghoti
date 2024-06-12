@@ -3,7 +3,7 @@ use tracing::Level;
 use tracing_subscriber::FmtSubscriber;
 
 /// Initializes the [tracing] logger.
-#[crate::export(js_name = "initializeRustLogger")]
+#[macros::export(js_name = "initializeRustLogger")]
 pub fn initialize_logger() {
     let mut builder = FmtSubscriber::builder();
 

@@ -1,5 +1,5 @@
 import { deleteFile } from "@/services/drive/delete-file.js";
-import { publishDriveStream } from "@/services/stream.js";
+import { publishToDriveFileStream, DriveFileEvent } from "backend-rs";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { DriveFiles } from "@/models/index.js";
@@ -51,5 +51,5 @@ export default define(meta, paramDef, async (ps, user) => {
 	await deleteFile(file);
 
 	// Publish fileDeleted event
-	publishDriveStream(user.id, "fileDeleted", file.id);
+	publishToDriveFileStream(user.id, DriveFileEvent.Delete, file.id);
 });

@@ -20,7 +20,7 @@ use regex::{Captures, Regex};
 /// # use backend_rs::misc::nyaify::nyaify;
 /// assert_eq!(nyaify("I'll take a nap.", Some("en")), "I'll take a nyap.");
 /// ```
-#[crate::export]
+#[macros::export]
 pub fn nyaify(text: &str, lang: Option<&str>) -> String {
     let mut to_return = text.to_owned();
 
