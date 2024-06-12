@@ -70,21 +70,13 @@ mod unit_test {
         let expected_message_1 = "
       raw: Error1(InnerError1)
   message: error 1 occured
-caused by: inner error 1
-";
+caused by: inner error 1";
         let expected_message_2 = r#"
       raw: Error2(InnerError2("foo"))
   message: error 2 occured
-caused by: unexpected string 'foo'
-"#;
+caused by: unexpected string 'foo'"#;
 
-        assert_eq!(
-            error_message_1,
-            expected_message_1[1..expected_message_1.len() - 1]
-        );
-        assert_eq!(
-            error_message_2,
-            expected_message_2[1..expected_message_2.len() - 1]
-        );
+        assert_eq!(error_message_1, expected_message_1[1..]);
+        assert_eq!(error_message_2, expected_message_2[1..]);
     }
 }
