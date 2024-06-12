@@ -177,7 +177,7 @@
 		"tsconfig-paths": "4.2.0",
 		"type-fest": "4.20.0",
 		"typescript": "5.4.5",
-		"webpack": "5.91.0",
+		"webpack": "5.92.0",
 		"ws": "8.17.0"
 	}
 }
