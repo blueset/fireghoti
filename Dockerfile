@@ -2,22 +2,23 @@
 FROM docker.io/node:20-alpine as build
 WORKDIR /firefish
 
+# Copy only backend-rs pnpm-related files first, to cache efficiently
+COPY package.json pnpm-workspace.yaml ./
+COPY packages/backend-rs/package.json packages/backend-rs/package.json
+COPY packages/backend-rs/npm/linux-x64-musl/package.json packages/backend-rs/npm/linux-x64-musl/package.json
+COPY packages/backend-rs/npm/linux-arm64-musl/package.json packages/backend-rs/npm/linux-arm64-musl/package.json
+
 # Install compilation dependencies
 RUN apk update && apk add --no-cache build-base linux-headers curl ca-certificates python3 perl
 RUN curl --proto '=https' --tlsv1.2 --silent --show-error --fail https://sh.rustup.rs | sh -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Copy only backend-rs dependency-related files first, to cache efficiently
-COPY package.json pnpm-workspace.yaml ./
-COPY packages/backend-rs/package.json packages/backend-rs/package.json
-COPY packages/backend-rs/npm/linux-x64-musl/package.json packages/backend-rs/npm/linux-x64-musl/package.json
-COPY packages/backend-rs/npm/linux-arm64-musl/package.json packages/backend-rs/npm/linux-arm64-musl/package.json
-
+COPY packages/macro-rs packages/macro-rs/
+COPY packages/backend-rs/src/lib.rs packages/backend-rs/src/
+COPY packages/backend-rs/Cargo.toml packages/backend-rs/Cargo.toml
 COPY Cargo.toml Cargo.toml
 COPY Cargo.lock Cargo.lock
-COPY packages/backend-rs/Cargo.toml packages/backend-rs/Cargo.toml
-COPY packages/backend-rs/src/lib.rs packages/backend-rs/src/
-COPY packages/macro-rs packages/macro-rs/
 
 # Configure pnpm, and install backend-rs dependencies
 RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm --filter backend-rs install
