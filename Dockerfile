@@ -17,8 +17,7 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 COPY packages/macro-rs packages/macro-rs/
 COPY packages/backend-rs/src/lib.rs packages/backend-rs/src/
 COPY packages/backend-rs/Cargo.toml packages/backend-rs/Cargo.toml
-COPY Cargo.toml Cargo.toml
-COPY Cargo.lock Cargo.lock
+COPY Cargo.toml Cargo.lock ./
 
 # Configure pnpm, and install backend-rs dependencies
 RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm --filter backend-rs install
