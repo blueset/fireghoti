@@ -27,11 +27,11 @@ fn init_id_generator(length: u8, fingerprint: &str) {
 /// It automatically calls [init_id_generator], if the generator has not been initialized.
 fn create_id(datetime: &NaiveDateTime) -> String {
     if GENERATOR.get().is_none() {
-        let length = match &CONFIG.cuid {
-            Some(cuid) => cmp::min(cmp::max(cuid.length.unwrap_or(16), 16), 24),
+        let length = match CONFIG.cuid.as_ref() {
+            Some(cuid) => cuid.length.unwrap_or(16).clamp(16, 24),
             None => 16,
         };
-        let fingerprint = match &CONFIG.cuid {
+        let fingerprint = match CONFIG.cuid.as_ref() {
             Some(cuid) => cuid.fingerprint.as_deref().unwrap_or_default(),
             None => "",
         };
