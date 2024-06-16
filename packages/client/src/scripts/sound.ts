@@ -1,14 +1,23 @@
 import { ColdDeviceStorage } from "@/store";
 
-const ctx = new AudioContext();
-const cache = new Map<string, HTMLAudioElement>();
+let ctx: AudioContext | null;
+try {
+	ctx = new AudioContext();
+} catch {
+	ctx = null;
+}
+
+const cache = new Map<string, AudioBuffer>();
 
 export async function getAudio(
 	file: string,
 	useCache = true,
-): HTMLAudioElement {
+): Promise<AudioBuffer | null> {
 	if (useCache && cache.has(file)) {
-		return cache.get(file);
+		return cache.get(file) ?? null;
+	}
+	if (ctx == null) {
+		return null;
 	}
 
 	const response = await fetch(`/static-assets/sounds/${file}.mp3`);
@@ -39,7 +48,7 @@ export function play(type: string) {
 
 export async function playFile(file: string, volume: number) {
 	const masterVolume = ColdDeviceStorage.get("sound_masterVolume");
-	if (masterVolume === 0 || volume === 0) {
+	if (ctx == null || masterVolume === 0 || volume === 0) {
 		return;
 	}
 
