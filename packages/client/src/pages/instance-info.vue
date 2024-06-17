@@ -31,7 +31,7 @@
 				<swiper-slide>
 					<div class="_formRoot">
 						<div class="fnfelxur">
-							<img :src="faviconUrl" alt="" class="icon" />
+							<img :src="iconUrl" alt="" class="icon" />
 							<span class="name">{{
 								instance.name || `(${i18n.ts.unknown})`
 							}}</span>
@@ -310,7 +310,7 @@ const instance = ref<AugmentedInstance | null>(null);
 const suspended = ref(false);
 const isBlocked = ref(false);
 const isSilenced = ref(false);
-const faviconUrl = ref<string | null>(null);
+const iconUrl = ref<string | null>(null);
 
 const usersPagination = {
 	endpoint: isAdmin ? ("admin/show-users" as const) : ("users" as const),
@@ -332,9 +332,9 @@ async function fetch() {
 	suspended.value = instance.value.isSuspended;
 	isBlocked.value = instance.value.isBlocked;
 	isSilenced.value = instance.value.isSilenced;
-	faviconUrl.value =
-		getProxiedImageUrlNullable(instance.value.faviconUrl, "preview") ??
-		getProxiedImageUrlNullable(instance.value.iconUrl, "preview");
+	iconUrl.value =
+		getProxiedImageUrlNullable(instance.value.iconUrl, "preview") ??
+		getProxiedImageUrlNullable(instance.value.faviconUrl, "preview");
 }
 
 async function toggleBlock() {

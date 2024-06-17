@@ -57,14 +57,15 @@ pub(super) async fn check_hit_antenna(
             return Ok(false);
         }
     } else if antenna.src == AntennaSrc::Instances {
-        let is_from_one_of_specified_servers = antenna.instances.iter().any(|host| {
-            host.to_ascii_lowercase()
-                == note_author
-                    .host
-                    .clone()
-                    .unwrap_or_else(|| CONFIG.host.clone())
-                    .to_ascii_lowercase()
-        });
+        let note_author_host = note_author
+            .host
+            .clone()
+            .unwrap_or_else(|| CONFIG.host.clone())
+            .to_ascii_lowercase();
+        let is_from_one_of_specified_servers = antenna
+            .instances
+            .iter()
+            .any(|host| host.to_ascii_lowercase() == note_author_host);
 
         if !is_from_one_of_specified_servers {
             return Ok(false);
@@ -116,7 +117,10 @@ pub(super) async fn check_hit_antenna(
         return Ok(false);
     }
 
-    if [NoteVisibility::Home, NoteVisibility::Followers].contains(&note.visibility) {
+    if matches!(
+        note.visibility,
+        NoteVisibility::Home | NoteVisibility::Followers
+    ) {
         let following_user_ids: Vec<String> =
             if let Some(ids) = cache::get_one(cache::Category::Follow, &antenna.user_id).await? {
                 ids

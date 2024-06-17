@@ -18,8 +18,8 @@ pub async fn elaborate_impl(
     file_ids: &[String],
     text: Option<String>,
     cw: Option<String>,
-    renote_id: &Option<String>,
-    reply_id: &Option<String>,
+    renote_id: Option<&String>,
+    reply_id: Option<&String>,
     include_parent: bool,
 ) -> Result<Vec<String>, DbErr> {
     let db = db_conn().await?;
@@ -123,8 +123,8 @@ macro_rules! elaborate {
             &$note_like.file_ids,
             $note_like.text.clone(),
             $note_like.cw.clone(),
-            &$note_like.renote_id,
-            &$note_like.reply_id,
+            $note_like.renote_id.as_ref(),
+            $note_like.reply_id.as_ref(),
             $include_parent,
         )
     };

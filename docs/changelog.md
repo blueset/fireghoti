@@ -15,6 +15,10 @@ Critical security updates are indicated by the :warning: icon.
 - The new Mastodon API uses a new format to manage Mastodon sessions in the database, whereas old implementation uses Misskey sessions. All previous client app and token registrations will not work with the new API. All clients need to be re-registered and all users need to re-authenticate.
 - All IDs (of statuses/notes, notifications, users, etc.) will be using the alphanumerical format, aligning with the Firefish/Misskey API. The old numerical IDs will not work when queried against the new API.
 
+## [v20240613](https://firefish.dev/firefish/firefish/-/merge_requests/11003/commits)
+
+This update contains code refactoring and dependency updates, with no major user-facing changes.
+
 ## [v20240607](https://firefish.dev/firefish/firefish/-/merge_requests/10978/commits)
 
 - Add the ability to share posts via QR code
