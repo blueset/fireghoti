@@ -1,8 +1,9 @@
 use crate::database::db_conn;
 use crate::misc::get_note_summary::{get_note_summary, NoteLike};
 use crate::misc::meta::fetch_meta;
-use crate::model::entity::{access_token, sw_subscription};
+use crate::model::entity::{access_token, app, sw_subscription};
 use crate::util::http_client;
+use crate::util::id::get_timestamp;
 use once_cell::sync::OnceCell;
 use sea_orm::{prelude::*, DbErr};
 use web_push::{
@@ -132,13 +133,58 @@ async fn encode_mastodon_payload(
         return Err(Error::InvalidContent("no app ID".to_string()));
     }
 
+    let client = app::Entity::find()
+        .filter(app::Column::Id.eq(token.app_id))
+        .one(db)
+        .await?;
+
+    if client.is_none() {
+        return Err(Error::InvalidContent("app not found".to_string()));
+    }
+
+    let client = client.unwrap().name;
+
     let object = content.as_object_mut().unwrap();
     object.insert(
         "access_token".to_string(),
         serde_json::to_value(token.token)?,
     );
 
-    Ok(serde_json::to_string(&content)?)
+    // Some apps expect notification_id to be an integer,
+    // but doesn’t break when the ID doesn’t match the rest of API.
+    if [
+        "IceCubesApp",
+        "Mammoth",
+        "feather",
+        "MaserApp",
+        "Metatext",
+        "Feditext",
+    ]
+    .contains(&client.as_str())
+    {
+        let timestamp = object
+            .get("notification_id")
+            .and_then(|id| id.as_str())
+            .map(get_timestamp)
+            .transpose()
+            .unwrap_or_default();
+
+        object.insert("notification_id".to_string(), timestamp.into());
+    }
+
+    let res = serde_json::to_string(&content)?;
+
+    // Adding space paddings to the end of JSON payload to prevent
+    // `esm` from adding null bytes payload which many Mastodon clients don’t support.
+    // https://firefish.dev/firefish/firefish/-/merge_requests/10905#note_6733
+    // not using the padding parameter directly on `res` because we want the padding to be
+    // calculated based on the UTF-8 byte size of `res` instead of number of characters.
+    let pad_length = match res.len() % 128 {
+        127 => 127,
+        n => 126 - n,
+    };
+
+    Ok(format!("{}{:pad_length$}", res, ""))
 }
 
 async fn handle_web_push_failure(
