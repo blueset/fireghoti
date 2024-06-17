@@ -73,51 +73,35 @@ export function setupEndpointsNotifications(router: Router): void {
 		},
 	);
 
-	router.get(
-		"/v1/push/subscription",
-		auth(true, ["read:notifications"]),
-		async (ctx) => {
-			const subscription =
-				await NotificationHelpers.getPushSubscriptionOr404(ctx);
-			ctx.body = await NotificationConverter.encodeSubscription(
-				subscription,
-				ctx,
-			);
-		},
-	);
+	router.get("/v1/push/subscription", auth(true, ["push"]), async (ctx) => {
+		const subscription =
+			await NotificationHelpers.getPushSubscriptionOr404(ctx);
+		ctx.body = await NotificationConverter.encodeSubscription(
+			subscription,
+			ctx,
+		);
+	});
 
-	router.post(
-		"/v1/push/subscription",
-		auth(true, ["write:notifications"]),
-		async (ctx) => {
-			const subscription = await NotificationHelpers.setPushSubscription(ctx);
-			ctx.body = await NotificationConverter.encodeSubscription(
-				subscription,
-				ctx,
-			);
-		},
-	);
+	router.post("/v1/push/subscription", auth(true, ["push"]), async (ctx) => {
+		const subscription = await NotificationHelpers.setPushSubscription(ctx);
+		ctx.body = await NotificationConverter.encodeSubscription(
+			subscription,
+			ctx,
+		);
+	});
 
-	router.delete(
-		"/v1/push/subscription",
-		auth(true, ["write:notifications"]),
-		async (ctx) => {
-			await NotificationHelpers.deletePushSubscription(ctx);
-			ctx.body = {};
-		},
-	);
+	router.delete("/v1/push/subscription", auth(true, ["push"]), async (ctx) => {
+		await NotificationHelpers.deletePushSubscription(ctx);
+		ctx.body = {};
+	});
 
-	router.put(
-		"/v1/push/subscription",
-		auth(true, ["write:notifications"]),
-		async (ctx) => {
-			const subscription =
-				await NotificationHelpers.getPushSubscriptionOr404(ctx);
-			await NotificationHelpers.putPushSubscription(subscription, ctx);
-			ctx.body = await NotificationConverter.encodeSubscription(
-				subscription,
-				ctx,
-			);
-		},
-	);
+	router.put("/v1/push/subscription", auth(true, ["push"]), async (ctx) => {
+		const subscription =
+			await NotificationHelpers.getPushSubscriptionOr404(ctx);
+		await NotificationHelpers.putPushSubscription(subscription, ctx);
+		ctx.body = await NotificationConverter.encodeSubscription(
+			subscription,
+			ctx,
+		);
+	});
 }

@@ -10,17 +10,15 @@ import {
 	getStubMastoContext,
 	type MastoContext,
 } from "@/server/api/mastodon/index.js";
-import { Apps, Notifications } from "@/models/index.js";
-import isQuote from "@/misc/is-quote.js";
+import { Notifications } from "@/models/index.js";
 import { unique } from "@/prelude/array.js";
 import type { Note } from "@/models/entities/note.js";
 import type { SwSubscription } from "@/models/entities/sw-subscription.js";
-import { fetchMeta } from "backend-rs";
-import { getNoteSummary } from "backend-rs";
+import { fetchMeta, isQuote } from "backend-rs";
+import { getNoteSummary, getTimestamp } from "backend-rs";
+import type { Packed } from "@/misc/schema";
 import { I18n } from "@/misc/i18n.js";
-
 import locales from "../../../../../../../locales/index.mjs";
-import { Packed } from "@/misc/schema";
 
 type NotificationType = (typeof notificationTypes)[number];
 
@@ -53,11 +51,12 @@ export class NotificationConverter {
 				: null);
 
 		if (note) {
-			const encodedNote = (note.renoteId !== null && !isQuote(note))
-				? getNote(note.renoteId, localUser).then((note) =>
-						NoteConverter.encode(note, ctx),
-					)
-				: NoteConverter.encode(note, ctx);
+			const encodedNote =
+				note.renoteId !== null && !isQuote(note)
+					? getNote(note.renoteId, localUser).then((note) =>
+							NoteConverter.encode(note, ctx),
+						)
+					: NoteConverter.encode(note, ctx);
 			result = Object.assign(result, {
 				status: encodedNote,
 			});
@@ -67,7 +66,7 @@ export class NotificationConverter {
 				});
 			}
 			if (notification.reaction) {
-				//FIXME: Implement reactions;
+				// FIXME: Implement reactions;
 			}
 		}
 		return awaitAll(result);
@@ -109,8 +108,8 @@ export class NotificationConverter {
 	private static encodeNotificationType(
 		t: NotificationType,
 	): MastodonEntity.NotificationType {
-		//FIXME: Implement custom notification for followRequestAccepted
-		//FIXME: Implement mastodon notification type 'update' on misskey side
+		// FIXME: Implement custom notification for followRequestAccepted
+		// FIXME: Implement mastodon notification type 'update' on misskey side
 		switch (t) {
 			case "follow":
 				return "follow";
@@ -159,8 +158,8 @@ export class NotificationConverter {
 		subscription: SwSubscription,
 		ctx: MastoContext,
 	): Promise<MastodonEntity.PushSubscription> {
-		const instance = await fetchMeta(true);
-		return {
+		const instance = await fetchMeta();
+		const result: MastodonEntity.PushSubscription = {
 			id: subscription.id,
 			endpoint: subscription.endpoint,
 			server_key: instance.swPublicKey ?? "",
@@ -173,6 +172,13 @@ export class NotificationConverter {
 				status: subscription.subscriptionTypes.includes("status"),
 			},
 		};
+
+		// IceCubes wants an int for ID despite the docs says string.
+		if (ctx.tokenApp?.name === "IceCubesApp") {
+			result.id = getTimestamp(subscription.id);
+		}
+
+		return result;
 	}
 
 	public static async encodePushNotificationPayloadForRust(
@@ -217,6 +223,7 @@ export class NotificationConverter {
 				`@${notificationBody.user?.username}`) ||
 			"";
 
+		// FIXME: all notification title i18n strings should take `name` as a parameter
 		switch (notificationBody.type) {
 			case "mention":
 				title = i18n.t("_notification.youGotMention", { name: displayName });
@@ -224,10 +231,10 @@ export class NotificationConverter {
 			case "reply":
 				title = i18n.t("_notification.youGotReply", { name: displayName });
 				break;
-				case "renote":
+			case "renote":
 				title = i18n.t("_notification.youRenoted", { name: displayName });
 				break;
-				case "quote":
+			case "quote":
 				title = i18n.t("_notification.youGotQuote", { name: displayName });
 				break;
 			case "reaction":
@@ -243,7 +250,9 @@ export class NotificationConverter {
 				title = i18n.t("_notification.yourFollowRequestAccepted");
 				break;
 			case "groupInvited":
-				title = i18n.t("_notification.youWereInvitedToGroup", { userName: displayName });
+				title = i18n.t("_notification.youWereInvitedToGroup", {
+					userName: displayName,
+				});
 				break;
 			case "follow":
 				title = `${displayName} ${i18n.t("_notification.youWereFollowed")}`;
@@ -258,7 +267,13 @@ export class NotificationConverter {
 				title = `${i18n.t("notificationType")} ${notificationBody.type}`;
 		}
 		description =
-			(effectiveNote && getNoteSummary(effectiveNote)) ||
+			(effectiveNote &&
+				getNoteSummary(
+					effectiveNote.fileIds,
+					effectiveNote.text,
+					effectiveNote.cw,
+					effectiveNote.hasPoll,
+				)) ||
 			notificationBody.body ||
 			username ||
 			"";

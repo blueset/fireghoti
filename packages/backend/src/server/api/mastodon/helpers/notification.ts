@@ -4,7 +4,40 @@ import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import type { Notification } from "@/models/entities/notification.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import type { MastoContext } from "@/server/api/mastodon/index.js";
-import type { SwSubscription } from "@/models/entities/sw-subscription";
+import type { SwSubscription } from "@/models/entities/sw-subscription.js";
+
+/**
+ * Normalize object arguments from query string.
+ *
+ * @example
+ * ```ts
+ * normalizeObjectArgs({
+ *    "subscription[endpoint]": "https://example.com",
+ *    "subscription[keys][p256dh]": "key",
+ *    "subscription[keys][auth]": "auth"
+ * });
+ * // { subscription: { endpoint: "https://example.com", keys: { p256dh: "key", auth: "auth" } } }
+ * ```
+ */
+function normalizeObjectArgs(q: Record<string, string>) {
+	const dict: Record<string, any> = {};
+
+	for (const k in q) {
+		if (k.endsWith("]")) {
+			const segments = k.split("[").map((p) => p.replace(/]$/g, ""));
+			let d = dict;
+			for (let i = 0; i < segments.length - 1; i++) {
+				if (!(segments[i] in d)) d[segments[i]] = {};
+				d = d[segments[i]];
+			}
+			d[segments[segments.length - 1]] = q[k];
+		} else {
+			dict[k] = q[k];
+		}
+	}
+
+	return dict;
+}
 
 export class NotificationHelpers {
 	public static async getNotifications(
@@ -37,6 +70,8 @@ export class NotificationHelpers {
 			const excludedTypes = this.decodeTypes(excludeTypes);
 			requestedTypes = requestedTypes.filter((p) => !excludedTypes.includes(p));
 		}
+
+		if (!requestedTypes.length) return [];
 
 		const query = PaginationHelpers.makePaginationQuery(
 			Notifications.createQueryBuilder("notification"),
@@ -146,19 +181,27 @@ export class NotificationHelpers {
 	): Promise<SwSubscription> {
 		const user = ctx.user as ILocalUser;
 		const tokenId = ctx.tokenId as string;
-		const body = ctx.request.body as any;
+		let body = ctx.request.body as any;
+		if ("subscription[endpoint]" in body) {
+			body = normalizeObjectArgs(body);
+		}
 		const subscription = body.subscription as {
 			endpoint: string;
 			keys: { p256dh: string; auth: string };
 		};
-		const alerts = body.data.alerts as Record<MastodonEntity.NotificationType, boolean>;
+		const alerts = body.data.alerts as Record<
+			MastodonEntity.NotificationType,
+			boolean
+		>;
 
 		const existing = await SwSubscriptions.findOneBy({
 			userId: user.id,
 			appAccessTokenId: tokenId,
 		});
 
-		const types = (Object.keys(alerts) as MastodonEntity.NotificationType[]).filter((k) => alerts[k]);
+		const types = (
+			Object.keys(alerts) as MastodonEntity.NotificationType[]
+		).filter((k) => alerts[k]);
 
 		if (existing) {
 			await SwSubscriptions.update(
@@ -191,11 +234,22 @@ export class NotificationHelpers {
 		});
 	}
 
-	public static async putPushSubscription(subscription: SwSubscription, ctx: MastoContext) {
-		const body = ctx.request.body as any;
-		const alerts = body.data.alerts as Record<MastodonEntity.NotificationType, boolean>;
+	public static async putPushSubscription(
+		subscription: SwSubscription,
+		ctx: MastoContext,
+	) {
+		let body = ctx.request.body as any;
+		if ("data[alerts][follow]" in body) {
+			body = normalizeObjectArgs(body);
+		}
+		const alerts = body.data.alerts as Record<
+			MastodonEntity.NotificationType,
+			boolean
+		>;
 		const types = subscription.subscriptionTypes;
-		for (const type of Object.keys(alerts) as MastodonEntity.NotificationType[]) {
+		for (const type of Object.keys(
+			alerts,
+		) as MastodonEntity.NotificationType[]) {
 			if (alerts[type]) {
 				if (!types.includes(type)) {
 					types.push(type);
@@ -208,7 +262,10 @@ export class NotificationHelpers {
 			}
 		}
 		await SwSubscriptions.update(
-			{ userId: subscription.userId, appAccessTokenId: subscription.appAccessTokenId ?? undefined },
+			{
+				userId: subscription.userId,
+				appAccessTokenId: subscription.appAccessTokenId ?? undefined,
+			},
 			{
 				subscriptionTypes: types,
 			},
