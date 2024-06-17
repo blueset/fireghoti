@@ -34,8 +34,8 @@ importers:
         specifier: 9.2.0
         version: 9.2.0
       pnpm:
-        specifier: 9.3.0
-        version: 9.3.0
+        specifier: 9.4.0
+        version: 9.4.0
       typescript:
         specifier: 5.4.5
         version: 5.4.5
@@ -6440,8 +6440,8 @@ packages:
     resolution: {integrity: sha512-LKWqWJRhstyYo9pGvgor/ivk2w94eSjE3RGVuzLGlr3NmD8bf7RcYGze1mNdEHRP6TRP6rMuDHk5t44hnTRyow==}
     engines: {node: '>=14.19.0'}
 
-  pnpm@9.3.0:
-    resolution: {integrity: sha512-7nuT4MK9EUCcZCT5K4ZvMdPqG+9fvkfTx1AM3DyWaIM9LlVoGtZt9bZAxh+p3CXVRu+lTXbX+L9UsTYUrCk2MQ==}
+  pnpm@9.4.0:
+    resolution: {integrity: sha512-9Um4pSydK4U2di+ZwHIiBe/Fr5E+d4NdvMw7CwssqefcgCK3gGLBcpHEjoh0nHDOiOtadPH6jEv14Yu0bIvYOg==}
     engines: {node: '>=18.12'}
     hasBin: true
 
@@ -14622,7 +14622,7 @@ snapshots:
 
   pngjs@7.0.0: {}
 
-  pnpm@9.3.0: {}
+  pnpm@9.4.0: {}
 
   possible-typed-array-names@1.0.0: {}
 
