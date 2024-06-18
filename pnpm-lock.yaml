@@ -70,8 +70,8 @@ importers:
         specifier: 1.7.0
         version: 1.7.0
       '@redocly/openapi-core':
-        specifier: 1.15.0
-        version: 1.15.0
+        specifier: 1.16.0
+        version: 1.16.0
       '@sinonjs/fake-timers':
         specifier: 11.2.2
         version: 11.2.2
@@ -2372,8 +2372,8 @@ packages:
   '@redocly/config@0.6.0':
     resolution: {integrity: sha512-hNVN3eTxFj2nHYX0gGzZxxXwdE0DXWeWou1TIK3HYf0S9VKVxTxjO9EZbMB7iVUqaHkeqy4PSjlBQcEgD0Ftjg==}
 
-  '@redocly/openapi-core@1.15.0':
-    resolution: {integrity: sha512-ac+3nn9y/dE+cgIVgIdq7eIisjZlBEJptLsCbOVLIsR2jb+O1SznXeyqy2MkTHMSs6zM/KHP4bMQy0DGmi7K0Q==}
+  '@redocly/openapi-core@1.16.0':
+    resolution: {integrity: sha512-z06h+svyqbUcdAaePq8LPSwTPlm6Ig7j2VlL8skPBYnJvyaQ2IN7x/JkOvRL4ta+wcOCBdAex5JWnZbKaNktJg==}
     engines: {node: '>=14.19.0', npm: '>=7.0.0'}
 
   '@rollup/plugin-alias@5.1.0':
@@ -10037,11 +10037,12 @@ snapshots:
 
   '@redocly/config@0.6.0': {}
 
-  '@redocly/openapi-core@1.15.0':
+  '@redocly/openapi-core@1.16.0':
     dependencies:
       '@redocly/ajv': 8.11.0
       '@redocly/config': 0.6.0
       colorette: 1.4.0
+      https-proxy-agent: 7.0.4
       js-levenshtein: 1.1.6
       js-yaml: 4.1.0
       lodash.isequal: 4.5.0
@@ -10051,6 +10052,7 @@ snapshots:
       yaml-ast-parser: 0.0.43
     transitivePeerDependencies:
       - encoding
+      - supports-color
 
   '@rollup/plugin-alias@5.1.0(rollup@4.17.2)':
     dependencies:
