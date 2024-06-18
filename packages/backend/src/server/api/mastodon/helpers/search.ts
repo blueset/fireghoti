@@ -259,7 +259,7 @@ export class SearchHelpers {
 		query.leftJoinAndSelect("note.renote", "renote");
 
 		generateFtsQuery(query, q);
-		generateVisibilityQuery(query, user);
+		// generateVisibilityQuery(query, user);
 
 		if (!accountId) {
 			generateMutedUserQuery(query, user);
