@@ -95,11 +95,11 @@ export default define(meta, paramDef, async (ps, me) => {
 
 		// "from: me": search all (public, home, followers, specified) my posts
 		//  otherwise: search public indexable posts only
-		if (ps.userId == null || ps.userId !== me?.id) {
-			query
-				.andWhere("note.visibility = 'public'")
-				.andWhere("user.isIndexable = TRUE");
-		}
+		// if (ps.userId == null || ps.userId !== me?.id) {
+		// 	query
+		// 		.andWhere("note.visibility = 'public'")
+		// 		.andWhere("user.isIndexable = TRUE");
+		// }
 
 		if (ps.userId != null) {
 			query.andWhere("note.userId = :userId", { userId: ps.userId });
