@@ -395,7 +395,7 @@ _profile:
   metadataLabel: Etiqueta
   metadataContent: Contingut
   changeAvatar: Canvia l'avatar
-  changeBanner: Canvia el banner
+  changeBanner: Canvia el bàner
   locationDescription: Si primer introduïu la vostra ciutat, es mostrarà l'hora local
     a altres usuaris.
   name: Nom
@@ -1114,7 +1114,7 @@ createAccount: Crea un compte
 fontSize: Mida del text
 noFollowRequests: No tens cap sol·licitud de seguiment per aprovar
 openImageInNewTab: Obre les imatges a una pestanya nova
-dashboard: Tauler
+dashboard: Taulell
 local: Local
 remote: Remot
 total: Total
@@ -1551,7 +1551,7 @@ itsOn: Activat
 itsOff: Desactivat
 emailRequiredForSignup: Requereix una adreça de correu electrònic per registrar-te
 unread: Sense llegir
-controlPanel: Tauler de control
+controlPanel: Taulell de control
 manageAccounts: Gestionar comptes
 makeReactionsPublic: Estableix l'historial de reaccions com a públic
 classic: Centrat
