@@ -85,8 +85,8 @@ importers:
         specifier: 7.0.1
         version: 7.0.1
       aws-sdk:
-        specifier: 2.1643.0
-        version: 2.1643.0
+        specifier: 2.1644.0
+        version: 2.1644.0
       axios:
         specifier: 1.7.2
         version: 1.7.2
@@ -3398,8 +3398,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  aws-sdk@2.1643.0:
-    resolution: {integrity: sha512-1k8W0cU7K9rPwPBzv84Z2IE5aT3jhv3Jswn8XerZliiLl1MTj6F4wjxCeY5BpmAv+Zyy4zM0w98M8vVqKeHEeA==}
+  aws-sdk@2.1644.0:
+    resolution: {integrity: sha512-9DkVmQWrL766uxeag6wLbXNahwodrIvxZlh1JZ6bzMoNXLCx38GhQfdtLhCoqK7+k0c5QIzHhjPqyqwPM4ohJw==}
     engines: {node: '>= 10.0.0'}
 
   axios@0.24.0:
@@ -11241,7 +11241,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.0.0
 
-  aws-sdk@2.1643.0:
+  aws-sdk@2.1644.0:
     dependencies:
       buffer: 4.9.2
       events: 1.1.1
@@ -11443,7 +11443,7 @@ snapshots:
   buffer@4.9.2:
     dependencies:
       base64-js: 1.5.1
-      ieee754: 1.1.13
+      ieee754: 1.2.1
       isarray: 1.0.0
 
   buffer@5.7.1:
@@ -16986,7 +16986,7 @@ snapshots:
 
   xml2js@0.6.2:
     dependencies:
-      sax: 1.2.1
+      sax: 1.4.1
       xmlbuilder: 11.0.1
 
   xmlbuilder@11.0.1: {}
