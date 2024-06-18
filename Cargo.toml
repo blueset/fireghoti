@@ -7,7 +7,7 @@ macros = { path = "packages/macro-rs/macros" }
 macros-impl = { path = "packages/macro-rs/macros-impl" }
 
 napi = { git = "https://github.com/napi-rs/napi-rs.git", rev = "ca2cd5c35a0c39ec4a94e93c6c5695b681046df2" }
-napi-derive = "2.16.5"
+napi-derive = "3.0.0-alpha.1"
 napi-build = "2.1.3"
 
 argon2 = { version = "0.5.3", default-features = false }

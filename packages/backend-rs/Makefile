@@ -32,4 +32,3 @@ index.js index.d.ts: $(SRC)
 	rm --force index.js index.d.ts
 	cp built/index.js index.js
 	cp built/index.d.ts index.d.ts
-	sed -i 's/^ \*r"/ */g' index.d.ts

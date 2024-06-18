@@ -4,30 +4,29 @@
 	"main": "built/index.js",
 	"types": "built/index.d.ts",
 	"napi": {
-		"name": "backend-rs",
-		"triples": {
-			"additional": [
-				"aarch64-apple-darwin",
-				"aarch64-linux-android",
-				"aarch64-unknown-linux-gnu",
-				"aarch64-unknown-linux-musl",
-				"aarch64-pc-windows-msvc",
-				"armv7-unknown-linux-gnueabihf",
-				"x86_64-unknown-linux-musl",
-				"x86_64-unknown-freebsd",
-				"i686-pc-windows-msvc",
-				"armv7-linux-androideabi",
-				"universal-apple-darwin"
-			]
-		}
+		"binaryName": "backend-rs",
+		"targets": [
+			"aarch64-apple-darwin",
+			"aarch64-linux-android",
+			"aarch64-unknown-linux-gnu",
+			"aarch64-unknown-linux-musl",
+			"aarch64-pc-windows-msvc",
+			"armv7-unknown-linux-gnueabihf",
+			"x86_64-unknown-linux-gnu",
+			"x86_64-unknown-linux-musl",
+			"x86_64-unknown-freebsd",
+			"i686-pc-windows-msvc",
+			"armv7-linux-androideabi",
+			"universal-apple-darwin"
+		]
 	},
 	"devDependencies": {
-		"@napi-rs/cli": "2.18.3"
+		"@napi-rs/cli": "3.0.0-alpha.55"
 	},
 	"scripts": {
 		"artifacts": "napi artifacts",
-		"build": "RUSTFLAGS='-C target-cpu=native' napi build --features napi --no-const-enum --platform --release ./built/",
-		"build:debug": "napi build --features napi --no-const-enum --platform ./built/",
+		"build": "RUSTFLAGS='-C target-cpu=native' napi build --features napi --no-const-enum --platform --release --output-dir ./built/",
+		"build:debug": "napi build --features napi --no-const-enum --platform --output-dir ./built/",
 		"prepublishOnly": "napi prepublish -t npm",
 		"universal": "napi universal",
 		"version": "napi version"
