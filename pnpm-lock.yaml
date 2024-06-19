@@ -490,10 +490,10 @@ importers:
         version: 2.0.0
       swc-loader:
         specifier: 0.2.6
-        version: 0.2.6(@swc/core@1.6.3)(webpack@5.92.0(@swc/core@1.6.3))
+        version: 0.2.6(@swc/core@1.6.3)(webpack@5.92.1(@swc/core@1.6.3))
       ts-loader:
         specifier: 9.5.1
-        version: 9.5.1(typescript@5.4.5)(webpack@5.92.0(@swc/core@1.6.3))
+        version: 9.5.1(typescript@5.4.5)(webpack@5.92.1(@swc/core@1.6.3))
       ts-node:
         specifier: 10.9.2
         version: 10.9.2(@swc/core@1.6.3)(@swc/wasm@1.2.130)(@types/node@20.14.5)(typescript@5.4.5)
@@ -507,8 +507,8 @@ importers:
         specifier: 5.4.5
         version: 5.4.5
       webpack:
-        specifier: 5.92.0
-        version: 5.92.0(@swc/core@1.6.3)
+        specifier: 5.92.1
+        version: 5.92.1(@swc/core@1.6.3)
       ws:
         specifier: 8.17.1
         version: 8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
@@ -8262,8 +8262,8 @@ packages:
     resolution: {integrity: sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==}
     engines: {node: '>=10.13.0'}
 
-  webpack@5.92.0:
-    resolution: {integrity: sha512-Bsw2X39MYIgxouNATyVpCNVWBCuUwDgWtN78g6lSdPJRLaQ/PUVm/oXcaRAyY/sMFoKFQrsPeqvTizWtq7QPCA==}
+  webpack@5.92.1:
+    resolution: {integrity: sha512-JECQ7IwJb+7fgUFBlrJzbyu3GEuNBcdqr1LD7IbSzwkSmIevTm8PF+wej3Oxuz/JFBUZ6O1o43zsPkwm1C4TmA==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     peerDependencies:
@@ -16247,11 +16247,11 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  swc-loader@0.2.6(@swc/core@1.6.3)(webpack@5.92.0(@swc/core@1.6.3)):
+  swc-loader@0.2.6(@swc/core@1.6.3)(webpack@5.92.1(@swc/core@1.6.3)):
     dependencies:
       '@swc/core': 1.6.3
       '@swc/counter': 0.1.3
-      webpack: 5.92.0(@swc/core@1.6.3)
+      webpack: 5.92.1(@swc/core@1.6.3)
 
   swiper@11.1.4: {}
 
@@ -16292,14 +16292,14 @@ snapshots:
       fast-fifo: 1.3.2
       streamx: 2.18.0
 
-  terser-webpack-plugin@5.3.10(@swc/core@1.6.3)(webpack@5.92.0(@swc/core@1.6.3)):
+  terser-webpack-plugin@5.3.10(@swc/core@1.6.3)(webpack@5.92.1(@swc/core@1.6.3)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
       schema-utils: 3.3.0
       serialize-javascript: 6.0.2
       terser: 5.31.1
-      webpack: 5.92.0(@swc/core@1.6.3)
+      webpack: 5.92.1(@swc/core@1.6.3)
     optionalDependencies:
       '@swc/core': 1.6.3
 
@@ -16450,7 +16450,7 @@ snapshots:
       '@jest/types': 29.6.3
       babel-jest: 29.7.0(@babel/core@7.24.7)
 
-  ts-loader@9.5.1(typescript@5.4.5)(webpack@5.92.0(@swc/core@1.6.3)):
+  ts-loader@9.5.1(typescript@5.4.5)(webpack@5.92.1(@swc/core@1.6.3)):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.17.0
@@ -16458,7 +16458,7 @@ snapshots:
       semver: 7.6.2
       source-map: 0.7.4
       typescript: 5.4.5
-      webpack: 5.92.0(@swc/core@1.6.3)
+      webpack: 5.92.1(@swc/core@1.6.3)
 
   ts-node@10.9.2(@swc/core@1.6.3)(@swc/wasm@1.2.130)(@types/node@20.14.5)(typescript@5.4.5):
     dependencies:
@@ -16839,7 +16839,7 @@ snapshots:
 
   webpack-sources@3.2.3: {}
 
-  webpack@5.92.0(@swc/core@1.6.3):
+  webpack@5.92.1(@swc/core@1.6.3):
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.5
@@ -16862,7 +16862,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(@swc/core@1.6.3)(webpack@5.92.0(@swc/core@1.6.3))
+      terser-webpack-plugin: 5.3.10(@swc/core@1.6.3)(webpack@5.92.1(@swc/core@1.6.3))
       watchpack: 2.4.1
       webpack-sources: 3.2.3
     transitivePeerDependencies:
