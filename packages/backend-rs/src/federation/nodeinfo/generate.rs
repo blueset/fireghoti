@@ -100,7 +100,6 @@ async fn generate_nodeinfo_2_1() -> Result<Nodeinfo21, DbErr> {
     metadata.shrink_to_fit();
 
     Ok(Nodeinfo21 {
-        version: "2.1".to_string(),
         software: Software21 {
             name: "firefish".to_string(),
             version: CONFIG.version.clone(),

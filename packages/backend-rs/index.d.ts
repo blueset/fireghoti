@@ -788,8 +788,6 @@ export interface Muting {
 
 /** NodeInfo schema version 2.0. <https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.0> */
 export interface Nodeinfo {
-  /** The schema version, must be 2.0. */
-  version: string
   /** Metadata about server software in use. */
   software: Software20
   /** The protocols supported on this server. */
