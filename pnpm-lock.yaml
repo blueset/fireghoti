@@ -464,9 +464,6 @@ importers:
       '@types/uuid':
         specifier: 10.0.0
         version: 10.0.0
-      '@types/web-push':
-        specifier: 3.6.3
-        version: 3.6.3
       '@types/websocket':
         specifier: 1.0.10
         version: 1.0.10
@@ -1146,13 +1143,11 @@ packages:
   '@biomejs/cli-darwin-arm64@1.8.2':
     resolution: {integrity: sha512-l9msLsTcSIAPqMsPIhodQmb50sEfaXPLQ0YW4cdj6INmd8iaOh/V9NceQb2366vACTJgcWDQ2RzlvURek1T68g==}
     engines: {node: '>=14.21.3'}
-    cpu: [arm64]
     os: [darwin]
 
   '@biomejs/cli-darwin-x64@1.8.2':
     resolution: {integrity: sha512-Fc4y/FuIxRSiB3TJ+y27vFDE/HJt4QgBuymktsIKEcBZvnKfsRjxvzVDunccRn4xbKgepnp+fn6BoS+ZIg/I3Q==}
     engines: {node: '>=14.21.3'}
-    cpu: [x64]
     os: [darwin]
 
   '@biomejs/cli-linux-arm64-musl@1.8.2':
@@ -1164,7 +1159,6 @@ packages:
   '@biomejs/cli-linux-arm64@1.8.2':
     resolution: {integrity: sha512-Q99qwP0qibkZxm2kfnt37OxeIlliDYf5ogi3zX9ij2DULzc+KtPA9Uj0wCljcJofOBsBYaHc7597Q+Bf/251ww==}
     engines: {node: '>=14.21.3'}
-    cpu: [arm64]
     os: [linux]
 
   '@biomejs/cli-linux-x64-musl@1.8.2':
@@ -1176,7 +1170,6 @@ packages:
   '@biomejs/cli-linux-x64@1.8.2':
     resolution: {integrity: sha512-bjhhUVFchFid2gOjrvBe4fg8BShcpyFQTHuB/QQnfGxs1ddrGP30yq3fHfc6S6MoCcz9Tjd3Zzq1EfWfyy5iHA==}
     engines: {node: '>=14.21.3'}
-    cpu: [x64]
     os: [linux]
 
   '@biomejs/cli-win32-arm64@1.8.2':
@@ -2950,9 +2943,6 @@ packages:
 
   '@types/uuid@9.0.8':
     resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
-
-  '@types/web-push@3.6.3':
-    resolution: {integrity: sha512-v3oT4mMJsHeJ/rraliZ+7TbZtr5bQQuxcgD7C3/1q/zkAj29c8RE0F9lVZVu3hiQe5Z9fYcBreV7TLnfKR+4mg==}
 
   '@types/websocket@1.0.10':
     resolution: {integrity: sha512-svjGZvPB7EzuYS94cI7a+qhwgGU1y89wUgjT6E2wVUfmAGIvRfT7obBvRtnhXCSsoMdlG4gBFGE7MfkIXZLoww==}
@@ -10602,10 +10592,6 @@ snapshots:
   '@types/uuid@10.0.0': {}
 
   '@types/uuid@9.0.8': {}
-
-  '@types/web-push@3.6.3':
-    dependencies:
-      '@types/node': 20.14.8
 
   '@types/websocket@1.0.10':
     dependencies:
