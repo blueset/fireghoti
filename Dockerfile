@@ -5,8 +5,6 @@ WORKDIR /firefish
 # Copy only backend-rs pnpm-related files first, to cache efficiently
 COPY package.json pnpm-workspace.yaml ./
 COPY packages/backend-rs/package.json packages/backend-rs/package.json
-COPY packages/backend-rs/npm/linux-x64-musl/package.json packages/backend-rs/npm/linux-x64-musl/package.json
-COPY packages/backend-rs/npm/linux-arm64-musl/package.json packages/backend-rs/npm/linux-arm64-musl/package.json
 
 # Install compilation dependencies
 RUN apk update && apk add --no-cache build-base linux-headers curl ca-certificates python3 perl
