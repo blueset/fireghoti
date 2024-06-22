@@ -120,8 +120,8 @@
 		"xev": "3.0.2"
 	},
 	"devDependencies": {
-		"@swc/cli": "0.3.12",
-		"@swc/core": "1.6.3",
+		"@swc/cli": "0.3.14",
+		"@swc/core": "1.6.5",
 		"@types/adm-zip": "0.5.5",
 		"@types/color-convert": "2.0.3",
 		"@types/content-disposition": "0.5.8",
