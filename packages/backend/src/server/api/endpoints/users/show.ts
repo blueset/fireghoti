@@ -87,14 +87,20 @@ export const paramDef = {
 export default define(meta, paramDef, async (ps, me) => {
 	let user;
 
-	const isAdminOrModerator = me && (me.isAdmin || me.isModerator);
+	const isAdminOrModerator = me != null && (me.isAdmin || me.isModerator);
 
 	if (ps.userIds) {
 		if (ps.userIds.length === 0) {
 			return [];
 		}
 
-		const isUrl = ps.userIds[0].startsWith("http");
+		let isUrl = false;
+
+		try {
+			const url = new URL(ps.userIds[0]);
+			isUrl = ["http", "https"].includes(url.protocol);
+		} catch (_) {}
+
 		let users: User[];
 		if (isUrl) {
 			users = await Users.findBy(
