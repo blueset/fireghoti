@@ -26,6 +26,7 @@
 	"scripts": {
 		"artifacts": "napi artifacts",
 		"build": "RUSTFLAGS='-C target-cpu=native' napi build --features napi --no-const-enum --platform --release --output-dir ./built/",
+		"build:container": "napi build --features napi --no-const-enum --platform --release --output-dir ./built/",
 		"build:debug": "napi build --features napi --no-const-enum --platform --output-dir ./built/",
 		"prepublishOnly": "napi prepublish -t npm",
 		"universal": "napi universal",
