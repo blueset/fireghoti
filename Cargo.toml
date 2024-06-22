@@ -7,7 +7,7 @@ macros = { path = "packages/macro-rs/macros" }
 macros-impl = { path = "packages/macro-rs/macros-impl" }
 
 napi = { git = "https://github.com/napi-rs/napi-rs.git", rev = "ca2cd5c35a0c39ec4a94e93c6c5695b681046df2" }
-napi-derive = "2.16.5"
+napi-derive = "3.0.0-alpha.1"
 napi-build = "2.1.3"
 
 argon2 = { version = "0.5.3", default-features = false }
@@ -19,14 +19,13 @@ chrono = { version = "0.4.38", default-features = false }
 convert_case = { version = "0.6.0", default-features = false }
 cuid2 = { version = "0.1.2", default-features = false }
 emojis = { version = "0.6.2", default-features = false }
-idna = { version = "1.0.0", default-features = false }
+idna = { version = "1.0.1", default-features = false }
 image = { version = "0.25.1", default-features = false }
 isahc = { version = "1.7.2", default-features = false }
 nom-exif = { version = "1.2.0", default-features = false }
 once_cell = { version = "1.19.0", default-features = false }
-openssl = "0.10.64"
 pretty_assertions = { version = "1.4.0", default-features = false }
-proc-macro2 = { version = "1.0.85", default-features = false }
+proc-macro2 = { version = "1.0.86", default-features = false }
 quote = { version = "1.0.36", default-features = false }
 rand = { version = "0.8.5", default-features = false }
 redis = { version = "0.25.4", default-features = false }
@@ -36,16 +35,23 @@ sea-orm = { version = "0.12.15", default-features = false }
 serde = { version = "1.0.203", default-features = false }
 serde_json = { version = "1.0.117", default-features = false }
 serde_yaml = { version = "0.9.34", default-features = false }
-syn = { version = "2.0.66", default-features = false }
+syn = { version = "2.0.67", default-features = false }
 sysinfo = { version = "0.30.12", default-features = false }
 thiserror = { version = "1.0.61", default-features = false }
 tokio = { version = "1.38.0", default-features = false }
 tokio-test = { version = "0.4.4", default-features = false }
 tracing = { version = "0.1.40", default-features = false }
 tracing-subscriber = { version = "0.3.18", default-features = false }
-url = { version = "2.5.1", default-features = false }
+url = { version = "2.5.2", default-features = false }
 urlencoding = { version = "2.1.3", default-features = false }
 web-push = { git = "https://github.com/pimeys/rust-web-push.git", rev = "40febe4085e3cef9cdfd539c315e3e945aba0656", default-features = false }
+
+# subdependencies
+## explicitly list OpenSSL to use the vendored version
+openssl = "0.10.64"
+## pin ravif and bitstream-io version because the latest one requires Rust 1.79
+ravif = "=0.11.5"
+bitstream-io = "=2.3.0"
 
 [profile.release]
 lto = true

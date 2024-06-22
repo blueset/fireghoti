@@ -5,17 +5,12 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-// TODO: I want to use these macros but they don't work with rmp_serde
-// * #[serde(skip_serializing_if = "Option::is_none")] (https://github.com/3Hren/msgpack-rust/issues/86)
-// * #[serde(tag = "version", rename = "2.1")] (https://github.com/3Hren/msgpack-rust/issues/318)
-
 /// NodeInfo schema version 2.1. <https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.1>
 #[cfg_attr(test, derive(Debug, PartialEq, Deserialize))]
 #[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
+#[serde(tag = "version", rename = "2.1")]
 pub struct Nodeinfo21 {
-    /// The schema version, must be 2.1.
-    pub version: String,
     /// Metadata about server software in use.
     pub software: Software21,
     /// The protocols supported on this server.
@@ -35,9 +30,8 @@ pub struct Nodeinfo21 {
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 #[macros::export(object, js_name = "Nodeinfo")]
+#[serde(tag = "version", rename = "2.0")]
 pub struct Nodeinfo20 {
-    /// The schema version, must be 2.0.
-    pub version: String,
     /// Metadata about server software in use.
     pub software: Software20,
     /// The protocols supported on this server.
@@ -62,8 +56,10 @@ pub struct Software21 {
     /// The version of this server software.
     pub version: String,
     /// The url of the source code repository of this server software.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub repository: Option<String>,
     /// The url of the homepage of this server software.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub homepage: Option<String>,
 }
 
@@ -172,7 +168,9 @@ pub enum Outbound {
 #[macros::export(object)]
 pub struct Usage {
     pub users: Users,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub local_posts: Option<u32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub local_comments: Option<u32>,
 }
 
@@ -182,8 +180,11 @@ pub struct Usage {
 #[serde(rename_all = "camelCase")]
 #[macros::export(object)]
 pub struct Users {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub total: Option<u32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub active_halfyear: Option<u32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub active_month: Option<u32>,
 }
 
@@ -199,7 +200,6 @@ impl From<Software21> for Software20 {
 impl From<Nodeinfo21> for Nodeinfo20 {
     fn from(nodeinfo: Nodeinfo21) -> Self {
         Self {
-            version: "2.0".to_string(),
             software: nodeinfo.software.into(),
             protocols: nodeinfo.protocols,
             services: nodeinfo.services,

@@ -223,6 +223,31 @@ build:container:
     - buildah inspect "${IMAGE_TAG}"
     - buildah push "${IMAGE_TAG}"
 
+cargo:check:msrv:
+  stage: test
+  image: docker.io/rust:1.74-slim-bookworm
+  rules:
+    - if: $TEST == 'true'
+      when: always
+    - if: $TEST == 'false'
+      when: never
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
+      changes:
+        paths:
+          - packages/backend-rs/**/*
+          - packages/macro-rs/**/*
+          - Cargo.toml
+          - Cargo.lock
+      when: always
+  services: []
+  before_script:
+    - apt-get update && apt-get -y upgrade
+    - apt-get install -y --no-install-recommends build-essential clang mold python3 perl nodejs postgresql-client
+    - cp ci/cargo/config.toml /usr/local/cargo/config.toml
+  script:
+    - cargo fetch --locked --manifest-path Cargo.toml
+    - cargo check --locked --frozen --all-features
+
 cargo:test:
   stage: test
   rules:
@@ -237,7 +262,6 @@ cargo:test:
           - packages/macro-rs/**/*
           - Cargo.toml
           - Cargo.lock
-          - package.json
       when: always
   script:
     - curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C /usr/local/cargo/bin
