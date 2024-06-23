@@ -25,6 +25,7 @@ RUN cargo fetch --locked --manifest-path Cargo.toml
 COPY packages/backend-rs packages/backend-rs/
 
 # Compile backend-rs
+RUN ln -s $(which gcc) /usr/bin/aarch64-linux-musl-gcc
 RUN NODE_ENV='production' pnpm run --filter backend-rs build:container
 
 # Copy/Overwrite index.js to mitigate the bug in napi-rs codegen
