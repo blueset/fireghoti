@@ -666,8 +666,8 @@ importers:
         specifier: 5.2.3
         version: 5.2.3
       matter-js:
-        specifier: 0.19.0
-        version: 0.19.0
+        specifier: 0.20.0
+        version: 0.20.0
       mfm-js:
         specifier: 0.24.0
         version: 0.24.0
@@ -6225,8 +6225,8 @@ packages:
     engines: {node: '>= 12'}
     hasBin: true
 
-  matter-js@0.19.0:
-    resolution: {integrity: sha512-v2huwvQGOHTGOkMqtHd2hercCG3f6QAObTisPPHg8TZqq2lz7eIY/5i/5YUV8Ibf3mEioFEmwibcPUF2/fnKKQ==}
+  matter-js@0.20.0:
+    resolution: {integrity: sha512-iC9fYR7zVT3HppNnsFsp9XOoQdQN2tUyfaKg4CHLH8bN+j6GT4Gw7IH2rP0tflAebrHFw730RR3DkVSZRX8hwA==}
 
   mdast-util-from-markdown@0.8.5:
     resolution: {integrity: sha512-2hkTXtYYnr+NubD/g6KGBS/0mFmBcifAsI0yIWRiRo0PjVs6SSOSOdtzbp6kSGnShDN6G5aWZpKQ2lWRy27mWQ==}
@@ -14757,7 +14757,7 @@ snapshots:
 
   marked@4.3.0: {}
 
-  matter-js@0.19.0: {}
+  matter-js@0.20.0: {}
 
   mdast-util-from-markdown@0.8.5:
     dependencies:
