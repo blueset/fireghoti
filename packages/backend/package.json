@@ -167,7 +167,7 @@
 		"@types/ws": "8.5.10",
 		"cross-env": "7.0.3",
 		"eslint": "9.5.0",
-		"mocha": "10.5.0",
+		"mocha": "10.5.1",
 		"pug": "3.0.3",
 		"strict-event-emitter-types": "2.0.0",
 		"swc-loader": "0.2.6",
