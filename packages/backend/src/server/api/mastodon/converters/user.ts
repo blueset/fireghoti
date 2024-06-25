@@ -16,9 +16,6 @@ import type { IMentionedRemoteUsers, Note } from "@/models/entities/note.js";
 import type { UserProfile } from "@/models/entities/user-profile.js";
 import { In } from "typeorm";
 import { unique } from "@/prelude/array.js";
-import { Cache } from "@/misc/cache.js";
-import { getUser } from "../../common/getters.js";
-import AsyncLock from "async-lock";
 
 type Field = {
 	name: string;
@@ -37,9 +34,6 @@ export class UserConverter {
 			const cacheHit = cache.accounts.find((p) => p.id == u.id);
 			if (cacheHit) return cacheHit;
 
-			const identifier = `${u.id}:${(
-				u.lastFetchedAt ?? u.createdAt
-			).getTime()}`;
 			const fqn = `${u.username}@${u.host ?? config.host}`;
 			let acct = u.username;
 			let acctUrl = `https://${u.host || config.host}/@${u.username}`;
@@ -72,26 +66,24 @@ export class UserConverter {
 				.then((p) => p ?? "<p></p>");
 
 			const avatar = u.avatarId
-				? DriveFiles.getFinalUrlMaybe(u.avatarUrl).then(url => url ??
-					DriveFiles.findOneBy({ id: u.avatarId })
+				? DriveFiles.findOneBy({ id: u.avatarId })
 						.then((p) => p?.url ?? Users.getIdenticonUrl(u.id))
-						.then((p) => DriveFiles.getFinalUrl(p)))
+						.then((p) => DriveFiles.getFinalUrl(p))
 				: Users.getIdenticonUrl(u.id);
 
 			const banner = u.bannerId
-				? DriveFiles.getFinalUrlMaybe(u.bannerUrl).then(url => url ??
-					DriveFiles.findOneBy({ id: u.bannerId })
+				? DriveFiles.findOneBy({ id: u.bannerId })
 						.then(
 							(p) => p?.url ?? `${config.url}/static-assets/transparent.png`,
 						)
-						.then((p) => DriveFiles.getFinalUrl(p)))
+						.then((p) => DriveFiles.getFinalUrl(p))
 				: `${config.url}/static-assets/transparent.png`;
 
 			const isFollowedOrSelf =
 				(ctx.followedOrSelfAggregate as Map<string, boolean>)?.get(u.id) ??
 				(!!localUser &&
 					(localUser.id === u.id ||
-						Followings.exist({
+						Followings.exists({
 							where: {
 								followeeId: u.id,
 								followerId: localUser.id,
@@ -159,7 +151,6 @@ export class UserConverter {
 				bot: u.isBot,
 				discoverable: u.isExplorable,
 			}).then((p) => {
-				// noinspection ES6MissingAwait
 				UserHelpers.updateUserInBackground(u);
 				cache.accounts.push(p);
 				return p;
@@ -176,22 +167,6 @@ export class UserConverter {
 
 		const followedOrSelfAggregate = new Map<User["id"], boolean>();
 		const userProfileAggregate = new Map<User["id"], UserProfile | null>();
-		const htmlUserCacheAggregate =
-			ctx.htmlUserCacheAggregate ??
-			new Map<Note["id"], HtmlUserCacheEntry | null>();
-
-		if (config.htmlCache?.dbFallback) {
-			const htmlUserCacheEntries = await HtmlUserCacheEntries.findBy({
-				userId: In(targets),
-			});
-
-			for (const target of targets) {
-				htmlUserCacheAggregate.set(
-					target,
-					htmlUserCacheEntries.find((n) => n.userId === target) ?? null,
-				);
-			}
-		}
 
 		if (user) {
 			const targetsWithoutSelf = targets.filter((u) => u !== user.id);
@@ -228,32 +203,6 @@ export class UserConverter {
 		}
 
 		ctx.followedOrSelfAggregate = followedOrSelfAggregate;
-		ctx.htmlUserCacheAggregate = htmlUserCacheAggregate;
-	}
-
-	public static async aggregateDataByIds(
-		userIds: User["id"][],
-		ctx: MastoContext,
-	): Promise<void> {
-		const targets = unique(userIds);
-		const htmlUserCacheAggregate =
-			ctx.htmlUserCacheAggregate ??
-			new Map<Note["id"], HtmlUserCacheEntry | null>();
-
-		if (config.htmlCache?.dbFallback) {
-			const htmlUserCacheEntries = await HtmlUserCacheEntries.findBy({
-				userId: In(targets),
-			});
-
-			for (const target of targets) {
-				htmlUserCacheAggregate.set(
-					target,
-					htmlUserCacheEntries.find((n) => n.userId === target) ?? null,
-				);
-			}
-		}
-
-		ctx.htmlUserCacheAggregate = htmlUserCacheAggregate;
 	}
 
 	public static async encodeMany(
@@ -274,8 +223,14 @@ export class UserConverter {
 		return {
 			name: f.name,
 			value:
-				(await MfmHelpers.toHtml(mfm.parse(f.value), mentions, host, true, null,ctx)) ??
-				escapeMFM(f.value),
+				(await MfmHelpers.toHtml(
+					mfm.parse(f.value),
+					mentions,
+					host,
+					true,
+					null,
+					ctx,
+				)) ?? escapeMFM(f.value),
 			verified_at: f.verified ? new Date().toISOString() : null,
 		};
 	}

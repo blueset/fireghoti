@@ -12,7 +12,7 @@ export async function sendEmail(
 	html: string,
 	text: string,
 ) {
-	const meta = await fetchMeta(false);
+	const meta = await fetchMeta();
 
 	const iconUrl = `${config.url}/static-assets/mi-white.png`;
 	const emailSettingUrl = `${config.url}/settings/email`;

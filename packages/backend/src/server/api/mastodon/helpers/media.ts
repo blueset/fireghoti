@@ -40,7 +40,7 @@ export class MediaHelpers {
 					? file.originalFilename
 					: undefined,
 			comment: description ?? undefined,
-			sensitive: false, //FIXME: this needs to be updated on from composing a post with the media attached
+			sensitive: false, // FIXME: this needs to be updated on from composing a post with the media attached
 		}).then((p) => DriveFiles.pack(p));
 	}
 

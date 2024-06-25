@@ -1,7 +1,7 @@
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { Channels, ChannelFollowings } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import { publishUserEvent } from "@/services/stream.js";
 
 export const meta = {
@@ -37,9 +37,11 @@ export default define(meta, paramDef, async (ps, user) => {
 		throw new ApiError(meta.errors.noSuchChannel);
 	}
 
+	const now = new Date();
+
 	await ChannelFollowings.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		followerId: user.id,
 		followeeId: channel.id,
 	});

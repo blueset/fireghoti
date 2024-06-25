@@ -118,7 +118,7 @@ export default async (
 	}
 
 	// private mode
-	const meta = await fetchMeta(true);
+	const meta = await fetchMeta();
 	if (
 		meta.privateMode &&
 		ep.meta.requireCredentialPrivateMode &&

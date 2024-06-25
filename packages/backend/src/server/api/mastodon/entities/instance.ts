@@ -27,7 +27,7 @@ namespace MastodonEntity {
 				image_size_limit: number;
 				image_matrix_limit: number;
 				video_size_limit: number;
-				video_frame_limit: number;
+				video_frame_rate_limit: number;
 				video_matrix_limit: number;
 			};
 			polls: {

@@ -1,9 +1,9 @@
 use crate::service::stream::{publish_to_stream, Error, Stream};
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
-#[derive(Deserialize, Serialize)]
+#[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object)]
+#[macros::export(object)]
 pub struct AbuseUserReportLike {
     pub id: String,
     pub target_user_id: String,
@@ -11,11 +11,11 @@ pub struct AbuseUserReportLike {
     pub comment: String,
 }
 
-#[crate::export(js_name = "publishToModerationStream")]
+#[macros::export(js_name = "publishToModerationStream")]
 pub async fn publish(moderator_id: String, report: &AbuseUserReportLike) -> Result<(), Error> {
     publish_to_stream(
         &Stream::Moderation { moderator_id },
-        Some("newAbuseUserReport".to_string()),
+        Some("newAbuseUserReport"),
         Some(serde_json::to_string(report)?),
     )
     .await

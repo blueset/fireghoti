@@ -5,29 +5,40 @@ pub type SysinfoPoisonError = PoisonError<MutexGuard<'static, System>>;
 
 static SYSTEM_INFO: OnceLock<Mutex<System>> = OnceLock::new();
 
-pub fn system_info() -> &'static std::sync::Mutex<sysinfo::System> {
+/// Gives an access to the shared static [System] object.
+///
+/// # Example
+///
+/// ```
+/// # use backend_rs::init::system_info::{system_info, SysinfoPoisonError};
+/// let system_info = system_info().lock()?;
+/// println!("The number of CPU threads is {}.", system_info.cpus().len());
+/// # Ok::<(), SysinfoPoisonError>(())
+/// ```
+pub fn system_info() -> &'static std::sync::Mutex<System> {
     SYSTEM_INFO.get_or_init(|| Mutex::new(System::new_all()))
 }
 
-#[crate::export]
+/// Prints the server hardware information as the server info log.
+#[macros::export]
 pub fn show_server_info() -> Result<(), SysinfoPoisonError> {
     let system_info = system_info().lock()?;
 
     tracing::info!(
         "Hostname: {}",
-        System::host_name().unwrap_or("unknown".to_string())
+        System::host_name().unwrap_or_else(|| "unknown".to_string())
     );
     tracing::info!(
         "OS: {}",
-        System::long_os_version().unwrap_or("unknown".to_string())
+        System::long_os_version().unwrap_or_else(|| "unknown".to_string())
     );
     tracing::info!(
         "Kernel: {}",
-        System::kernel_version().unwrap_or("unknown".to_string())
+        System::kernel_version().unwrap_or_else(|| "unknown".to_string())
     );
     tracing::info!(
         "CPU architecture: {}",
-        System::cpu_arch().unwrap_or("unknown".to_string())
+        System::cpu_arch().unwrap_or_else(|| "unknown".to_string())
     );
     tracing::info!("CPU threads: {}", system_info.cpus().len());
     tracing::info!("Total memory: {} MiB", system_info.total_memory() / 1048576);

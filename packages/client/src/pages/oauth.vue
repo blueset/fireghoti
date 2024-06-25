@@ -59,7 +59,7 @@
 							:user="me"
 							:class="[$style.icon]"
 							disableLink
-						/><!-- <MkAcct class="text" :user="me"/> -->
+						/>
 					</button>
 					<div :class="[$style.left]">
 						<div>{{ i18n.ts.you }}</div>
@@ -157,7 +157,9 @@ if (me) {
 		});
 }
 
-const redirectUri = new URLSearchParams(window.location.search).get("redirect_uri");
+const redirectUri = new URLSearchParams(window.location.search).get(
+	"redirect_uri",
+);
 if (redirectUri !== props.redirect_uri)
 	console.warn(
 		`Mismatching redirect_uris between props (${props.redirect_uri}) and getUrlParams (${redirectUri})`,

@@ -25,13 +25,15 @@ export function setupEndpointsStatus(router: Router): void {
 		}
 
 		const request = NoteHelpers.normalizeComposeOptions(ctx.request.body);
-		const status = await NoteHelpers.createNote(request, ctx).then(async (p) => {
-			if (!request.scheduled_at) return NoteConverter.encode(p, ctx);
-			const note = await NoteHelpers.getScheduledNoteOr404(p.id, ctx);
-			const result = await NoteConverter.encodeScheduledNote(note, ctx);
-			result.params.idempotency = key;
-			return result;
-		});
+		const status = await NoteHelpers.createNote(request, ctx).then(
+			async (p) => {
+				if (!request.scheduled_at) return NoteConverter.encode(p, ctx);
+				const note = await NoteHelpers.getScheduledNoteOr404(p.id, ctx);
+				const result = await NoteConverter.encodeScheduledNote(note, ctx);
+				result.params.idempotency = key ?? result.params.idempotency;
+				return result;
+			},
+		);
 		ctx.body = status;
 
 		if (key !== null && "text" in status)
@@ -72,7 +74,7 @@ export function setupEndpointsStatus(router: Router): void {
 		auth(false, ["read:statuses"]),
 		filterContext("thread"),
 		async (ctx) => {
-			//FIXME: determine final limits within helper functions instead of here
+			// FIXME: determine final limits within helper functions instead of here
 			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
 			const ancestors = await NoteHelpers.getNoteAncestors(
 				note,
@@ -149,12 +151,12 @@ export function setupEndpointsStatus(router: Router): void {
 			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
 			const reaction = await NoteHelpers.getDefaultReaction();
 
-			ctx.body = await NoteHelpers.reactToNote(note, reaction, ctx).then((p) =>
-				NoteConverter.encode(p, ctx),
-			).then((p) => {
-				p.favourited = true;
-				return p;
-			});
+			ctx.body = await NoteHelpers.reactToNote(note, reaction, ctx)
+				.then((p) => NoteConverter.encode(p, ctx))
+				.then((p) => {
+					p.favourited = true;
+					return p;
+				});
 		},
 	);
 	router.post<{ Params: { id: string } }>(
@@ -163,12 +165,12 @@ export function setupEndpointsStatus(router: Router): void {
 		async (ctx) => {
 			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
 
-			ctx.body = await NoteHelpers.removeReactFromNote(note, ctx).then((p) =>
-				NoteConverter.encode(p, ctx),
-			).then((p) => {
-				p.favourited = false;
-				return p;
-			});
+			ctx.body = await NoteHelpers.removeReactFromNote(note, ctx)
+				.then((p) => NoteConverter.encode(p, ctx))
+				.then((p) => {
+					p.favourited = false;
+					return p;
+				});
 		},
 	);
 
@@ -178,12 +180,12 @@ export function setupEndpointsStatus(router: Router): void {
 		async (ctx) => {
 			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
 
-			ctx.body = await NoteHelpers.reblogNote(note, ctx).then((p) =>
-				NoteConverter.encode(p, ctx),
-			).then((p) => {
-				p.reblogged = true;
-				return p;
-			});
+			ctx.body = await NoteHelpers.reblogNote(note, ctx)
+				.then((p) => NoteConverter.encode(p, ctx))
+				.then((p) => {
+					p.reblogged = true;
+					return p;
+				});
 		},
 	);
 
@@ -193,12 +195,12 @@ export function setupEndpointsStatus(router: Router): void {
 		async (ctx) => {
 			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
 
-			ctx.body = await NoteHelpers.unreblogNote(note, ctx).then((p) =>
-				NoteConverter.encode(p, ctx),
-			).then((p) => {
-				p.reblogged = false;
-				return p;
-			});
+			ctx.body = await NoteHelpers.unreblogNote(note, ctx)
+				.then((p) => NoteConverter.encode(p, ctx))
+				.then((p) => {
+					p.reblogged = false;
+					return p;
+				});
 		},
 	);
 
@@ -208,12 +210,12 @@ export function setupEndpointsStatus(router: Router): void {
 		async (ctx) => {
 			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
 
-			ctx.body = await NoteHelpers.bookmarkNote(note, ctx).then((p) =>
-				NoteConverter.encode(p, ctx),
-			).then((p) => {
-				p.bookmarked = true;
-				return p;
-			});
+			ctx.body = await NoteHelpers.bookmarkNote(note, ctx)
+				.then((p) => NoteConverter.encode(p, ctx))
+				.then((p) => {
+					p.bookmarked = true;
+					return p;
+				});
 		},
 	);
 
@@ -223,12 +225,12 @@ export function setupEndpointsStatus(router: Router): void {
 		async (ctx) => {
 			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
 
-			ctx.body = await NoteHelpers.unbookmarkNote(note, ctx).then((p) =>
-				NoteConverter.encode(p, ctx),
-			).then((p) => {
-				p.bookmarked = false;
-				return p;
-			});
+			ctx.body = await NoteHelpers.unbookmarkNote(note, ctx)
+				.then((p) => NoteConverter.encode(p, ctx))
+				.then((p) => {
+					p.bookmarked = false;
+					return p;
+				});
 		},
 	);
 
@@ -238,12 +240,12 @@ export function setupEndpointsStatus(router: Router): void {
 		async (ctx) => {
 			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
 
-			ctx.body = await NoteHelpers.pinNote(note, ctx).then((p) =>
-				NoteConverter.encode(p, ctx),
-			).then((p) => {
-				p.pinned = true;
-				return p;
-			});
+			ctx.body = await NoteHelpers.pinNote(note, ctx)
+				.then((p) => NoteConverter.encode(p, ctx))
+				.then((p) => {
+					p.pinned = true;
+					return p;
+				});
 		},
 	);
 
@@ -253,12 +255,12 @@ export function setupEndpointsStatus(router: Router): void {
 		async (ctx) => {
 			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
 
-			ctx.body = await NoteHelpers.unpinNote(note, ctx).then((p) =>
-				NoteConverter.encode(p, ctx),
-			).then((p) => {
-				p.pinned = false;
-				return p;
-			});
+			ctx.body = await NoteHelpers.unpinNote(note, ctx)
+				.then((p) => NoteConverter.encode(p, ctx))
+				.then((p) => {
+					p.pinned = false;
+					return p;
+				});
 		},
 	);
 
@@ -296,6 +298,78 @@ export function setupEndpointsStatus(router: Router): void {
 			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
 			const encodedNote = await NoteConverter.encode(note, ctx);
 			ctx.body = await NoteHelpers.translateNote(encodedNote, targetLang, ctx);
+		},
+	);
+
+	router.get<{ Params: { id: string } }>(
+		"/v1/polls/:id",
+		auth(false, ["read:statuses"]),
+		async (ctx) => {
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+			ctx.body = await PollHelpers.getPoll(note, ctx);
+		},
+	);
+
+	router.post<{ Params: { id: string } }>(
+		"/v1/polls/:id/votes",
+		auth(true, ["write:statuses"]),
+		async (ctx) => {
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+
+			const body: any = ctx.request.body;
+			const choices = toArray(body.choices ?? []).map((p) =>
+				Number.parseInt(p),
+			);
+			if (choices.length < 1)
+				throw new MastoApiError(400, "Must vote for at least one option");
+
+			ctx.body = await PollHelpers.voteInPoll(choices, note, ctx);
+		},
+	);
+
+	router.get(
+		"/v1/scheduled_statuses",
+		auth(true, ["read:statuses"]),
+		async (ctx) => {
+			const args = normalizeUrlQuery(limitToInt(ctx.query));
+
+			const res = await NoteHelpers.getScheduledNotes(
+				args.max_id,
+				args.since_id,
+				args.min_id,
+				args.limit,
+				ctx,
+			);
+			ctx.body = await NoteConverter.encodeManyScheduledNotes(res, ctx);
+		},
+	);
+
+	router.get<{ Params: { id: string } }>(
+		"/v1/scheduled_statuses/:id",
+		auth(true, ["read:statuses"]),
+		async (ctx) => {
+			const note = await NoteHelpers.getScheduledNoteOr404(ctx.params.id, ctx);
+			ctx.body = await NoteConverter.encodeScheduledNote(note, ctx);
+		},
+	);
+
+	// Reeschedule a post to a new time
+	router.put<{ Params: { id: string } }>(
+		"/v1/scheduled_statuses/:id",
+		auth(true, ["write:statuses"]),
+		async (ctx) => {
+			const scheduledAt = new Date(Date.parse(ctx.request.body.scheduled_at));
+			// FIXME: Implement, see https://firefish.dev/firefish/firefish/-/issues/10903
+			throw new MastoApiError(501, "Not implemented");
+		},
+	);
+
+	router.delete<{ Params: { id: string } }>(
+		"/v1/scheduled_statuses/:id",
+		auth(true, ["write:statuses"]),
+		async (ctx) => {
+			// FIXME: Implement, see https://firefish.dev/firefish/firefish/-/issues/10903
+			throw new MastoApiError(501, "Not implemented");
 		},
 	);
 

@@ -381,7 +381,7 @@ _visibility:
   localOnly: Només Local
   specified: Directe
   home: Sense llistar
-  homeDescription: Publica només a la línea de temps local
+  homeDescription: Publica només a la línia de temps local
   followersDescription: Fes visible només per als teus seguidors i usuaris mencionats
   specifiedDescription: Fer visible només per a usuaris determinats
   public: Públic
@@ -395,7 +395,7 @@ _profile:
   metadataLabel: Etiqueta
   metadataContent: Contingut
   changeAvatar: Canvia l'avatar
-  changeBanner: Canvia el banner
+  changeBanner: Canvia el bàner
   locationDescription: Si primer introduïu la vostra ciutat, es mostrarà l'hora local
     a altres usuaris.
   name: Nom
@@ -1022,7 +1022,7 @@ yearsOld: '{age} anys'
 copyUrl: Copia l'adreça URL
 rename: Renombra
 unwatch: Deixa de veure
-accept: Accepta
+accept: Acceptar
 reject: Rebutja
 yearX: '{year}'
 pages: Pàgines
@@ -1114,7 +1114,7 @@ createAccount: Crea un compte
 fontSize: Mida del text
 noFollowRequests: No tens cap sol·licitud de seguiment per aprovar
 openImageInNewTab: Obre les imatges a una pestanya nova
-dashboard: Tauler
+dashboard: Taulell
 local: Local
 remote: Remot
 total: Total
@@ -1551,7 +1551,7 @@ itsOn: Activat
 itsOff: Desactivat
 emailRequiredForSignup: Requereix una adreça de correu electrònic per registrar-te
 unread: Sense llegir
-controlPanel: Tauler de control
+controlPanel: Taulell de control
 manageAccounts: Gestionar comptes
 makeReactionsPublic: Estableix l'historial de reaccions com a públic
 classic: Centrat
@@ -1869,10 +1869,10 @@ _time:
   hour: Hora(s)
   day: Dia(s)
 _tutorial:
-  step5_4: La línea de temps Local {icon} és on pots veure les publicacions de tots
+  step5_4: La línia de temps Local {icon} és on pots veure les publicacions de tots
     els altres usuaris d'aquest servidor.
   step5_2: El teu servidor té activades {timelines} diferents.
-  step5_3: La línea de temps d'inici {icon} es on pots veure les publicacions dels
+  step5_3: La línia de temps d'inici {icon} es on pots veure les publicacions dels
     comptes que segueixes.
   step5_6: La línia de temps de Recomanats {icon} és on pots veure les publicacions
     dels servidors que recomanen els administradors.
@@ -1885,7 +1885,7 @@ _tutorial:
   step1_1: Benvingut!
   step2_1: En primer lloc, empleneu el vostre perfil.
   step4_1: Anem a treure't allà fora.
-  step5_5: La línea de temps Social {icon} és una combinació de les línies de temps
+  step5_5: La línia de temps Social {icon} és una combinació de les línies de temps
     d'Inici i Local.
   step6_3: Cada servidor funciona de diferents maneres, i no tots els servidors executen
     Firefish. Aquest sí que sí! És una mica complicat, però ho aconseguiràs en poc
@@ -1893,7 +1893,7 @@ _tutorial:
   step2_2: Proporcionar informació sobre qui sou facilitarà que altres puguin saber
     si volen veure les vostres publicacions o seguir-vos.
   step3_1: Ara toca seguir a algunes persones!
-  step3_2: "Les teves líneas de temps d'inici i social es basen en qui seguiu, així
+  step3_2: "Les teves línies de temps d'inici i social es basen en qui seguiu, així
     que proveu de seguir un parell de comptes per començar.\nFeu clic al cercle més
     situat a la part superior dreta d'un perfil per seguir-los."
   step4_2: A algunes persones els agrada fer una publicació de {introduction} o un
@@ -1948,7 +1948,7 @@ _poll:
   infinite: Mai
   at: Acaba el...
   deadlineDate: Data de finalització
-  deadlineTime: Temps
+  deadlineTime: Hora
   remainingHours: Queden {h} hora(s) {m} minut(s)
   remainingDays: Queden {d} dia(s) {h} hores
   remainingMinutes: Queden {m} minut(s) {s} segons
@@ -2233,7 +2233,7 @@ enablePullToRefresh: Activa "Baixa per actualitzar"
 pullDownToReload: Baixa per actualitzar
 pullToRefreshThreshold: Distancia de baixada per actualitzar
 searchWords: Paraules / ID o adreça URL que vols cercar
-noSentFollowRequests: No tens cap sol·licitud de seguiment enviada
+noSentFollowRequests: No has enviat cap sol·licitud de seguiment
 sentFollowRequests: Enviar sol·licituds de seguiment
 replyMute: Silencia les respostes a les línies de temps
 replyUnmute: Treu el silencia de les respostes a les línies de temps
@@ -2311,13 +2311,13 @@ _later:
   future: futur
   justNow: ara mateix
   secondsAgo: en {n}s
-  minutesAgo: en {n}m
+  minutesAgo: en {n}min
   daysAgo: en {n}d
   weeksAgo: en {n}s
   monthsAgo: en {n}me
   yearsAgo: en {n}a
   hoursAgo: en {n}h
-scheduledDate: Programat per
+scheduledDate: Publica el
 scheduledPost: Programa aquesta publicació
 scheduledPostAt: Aquesta publicació s'enviarà {time}
 cancelScheduledPost: Elimina la planificació

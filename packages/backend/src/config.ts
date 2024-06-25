@@ -1,4 +1,3 @@
-import { loadConfig, loadEnv } from "backend-rs";
+import { loadConfig } from "backend-rs";
 
 export const config = loadConfig();
-export const envOption = loadEnv();

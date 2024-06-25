@@ -2,13 +2,12 @@ import type OAuth from "@/server/api/mastodon/entities/oauth/oauth.js";
 import { generateSecureRandomString } from "backend-rs";
 import { Apps, AccessTokens } from "@/models/index.js";
 import { genId } from "backend-rs";
-import { fetchMeta } from "backend-rs";
+import { fetchMeta, getTimestamp } from "backend-rs";
 import type { MastoContext } from "@/server/api/mastodon/index.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import { difference, toSingleLast, unique } from "@/prelude/array.js";
 import type { ILocalUser } from "@/models/entities/user.js";
 import type { App } from "@/models/entities/app";
-import { toMastodonId } from "backend-rs";
 
 export class AuthHelpers {
 	public static async registerApp(
@@ -18,12 +17,12 @@ export class AuthHelpers {
 		const scopes = (typeof body.scopes === "string"
 			? body.scopes.split(" ")
 			: body.scopes) ?? ["read"];
-		const redirect_uris = body.redirect_uris?.split("\n") as
+		// Mastodon takes any whitespace chars or line breaks as separator
+		const redirect_uris = body.redirect_uris?.split(/[\s\n]/) as
 			| string[]
 			| undefined;
 		const client_name = body.client_name;
 		const website = body.website || "";
-		
 		if (client_name == null)
 			throw new MastoApiError(400, "Missing client_name param");
 		if (redirect_uris == null || redirect_uris.length < 1)
@@ -58,18 +57,18 @@ export class AuthHelpers {
 		}
 
 		return {
+			// Compatibility: ZonePane only accepts a small int as app ID
 			id:
 				app.name === "ZonePane"
-					? toMastodonId(app.id).substring(0, 6)
-					: // ZonePane only accepts a small int as app ID
-						app.id,
+					? getTimestamp(app.id)?.toString().substring(0, 6) ?? app.id
+					: app.id,
 			name: app.name,
 			website: app.description,
 			redirect_uri: app.callbackUrl ?? "",
 			client_id: app.id,
 			client_secret: app.secret,
 			vapid_key:
-				(await fetchMeta(true).then((meta) => meta.swPublicKey)) ?? undefined,
+				(await fetchMeta().then((meta) => meta.swPublicKey)) ?? undefined,
 		};
 	}
 
@@ -89,18 +88,20 @@ export class AuthHelpers {
 		)
 			clientId = "9qlbc397v13thdtp";
 
-		if (clientId == null) throw new MastoApiError(400, "Invalid client_id (1)");
-
+		if (clientId == null)
+			throw new MastoApiError(400, "No client_id provided for auth code");
 		const app = await Apps.findOneBy({ id: clientId });
 
 		this.validateRedirectUri(body.redirect_uri);
-		if (!app) throw new MastoApiError(400, "Invalid client_id (2)");
+		if (!app) throw new MastoApiError(400, "client_id not found for auth code");
 		if (!scopes.every((p) => app.permission.includes(p)))
 			throw new MastoApiError(
 				400,
 				"Cannot request more scopes than application",
 			);
-		if (!app.callbackUrl?.startsWith(body.redirect_uri))
+
+		const callbackUrls = app.callbackUrl?.split("\n") ?? [];
+		if (!callbackUrls.some((url) => url.startsWith(body.redirect_uri)))
 			throw new MastoApiError(400, "Redirect URI not in list");
 		const secret = generateSecureRandomString(32);
 		const token = await AccessTokens.insert({
@@ -120,6 +121,7 @@ export class AuthHelpers {
 	public static async getAppInfo(ctx: MastoContext) {
 		const body = ctx.request.body as any;
 		let clientId = toSingleLast(body.client_id);
+
 		// s.1a23 - Elk specific fix
 		if (
 			clientId ===
@@ -127,11 +129,12 @@ export class AuthHelpers {
 		)
 			clientId = "9qlbc397v13thdtp";
 
-		if (clientId == null) throw new MastoApiError(400, "Invalid client_id (3)");
+		if (clientId == null)
+			throw new MastoApiError(400, "No client_id provided for app info");
 
 		const app = await Apps.findOneBy({ id: clientId });
 
-		if (!app) throw new MastoApiError(400, "Invalid client_id (4)");
+		if (!app) throw new MastoApiError(400, "client_id not found for app info");
 
 		return { name: app.name };
 	}
@@ -162,9 +165,9 @@ export class AuthHelpers {
 		);
 
 		if (clientId == null) throw invalidClientError;
-		
+
 		const app = await Apps.findOneBy({ id: clientId });
-		
+
 		this.validateRedirectUri(body.redirect_uri);
 		if (body.grant_type === "authorization_code") {
 			if (code == null) throw new MastoApiError(401, "Invalid code");
@@ -172,12 +175,13 @@ export class AuthHelpers {
 			if (!app || body.client_secret !== app.secret) throw invalidClientError;
 			if (!token || app.id !== token.appId)
 				throw new MastoApiError(401, "Invalid code");
-			if (difference(scopes, app.permission).length > 0) throw invalidScopeError;
+			if (difference(scopes, app.permission).length > 0)
+				throw invalidScopeError;
 			if (!app.callbackUrl?.split("\n").includes(body.redirect_uri))
 				throw new MastoApiError(400, "Redirect URI not in list");
-	
+
 			await AccessTokens.update(token.id, { fetched: true });
-	
+
 			return {
 				access_token: token.token,
 				token_type: "Bearer",
@@ -186,8 +190,9 @@ export class AuthHelpers {
 			};
 		} else if (body.grant_type === "client_credentials") {
 			if (!app || body.client_secret !== app.secret) throw invalidClientError;
-			if (difference(scopes, app.permission).length > 0) throw invalidScopeError;
-	
+			if (difference(scopes, app.permission).length > 0)
+				throw invalidScopeError;
+
 			const secret = generateSecureRandomString(32);
 			const token = await AccessTokens.insert({
 				id: genId(),
@@ -199,7 +204,6 @@ export class AuthHelpers {
 				createdAt: new Date(),
 				fetched: false,
 			}).then((x) => AccessTokens.findOneByOrFail(x.identifiers[0]));
-	
 			return {
 				access_token: token.token,
 				token_type: "Bearer",
@@ -241,13 +245,12 @@ export class AuthHelpers {
 	}
 
 	public static async verifyAppCredentials(ctx: MastoContext) {
-		console.log(ctx.appId);
 		if (!ctx.appId) throw new MastoApiError(401, "The access token is invalid");
 		const app = await Apps.findOneByOrFail({ id: ctx.appId });
 		return {
 			name: app.name,
 			website: app.description,
-			vapid_key: await fetchMeta(true).then(
+			vapid_key: await fetchMeta().then(
 				(meta) => meta.swPublicKey ?? undefined,
 			),
 		};
@@ -306,6 +309,24 @@ export class AuthHelpers {
 		"write:blocks",
 		"write:mutes",
 	];
+	private static adminReadScopes = [
+		"admin:read:accounts",
+		"admin:read:reports",
+		"admin:read:domain_allows",
+		"admin:read:domain_blocks",
+		"admin:read:ip_blocks",
+		"admin:read:email_domain_blocks",
+		"admin:read:canonical_email_blocks",
+	];
+	private static adminWriteScopes = [
+		"admin:write:accounts",
+		"admin:write:reports",
+		"admin:write:domain_allows",
+		"admin:write:domain_blocks",
+		"admin:write:ip_blocks",
+		"admin:write:email_domain_blocks",
+		"admin:write:canonical_email_blocks",
+	];
 
 	public static expandScopes(scopes: string[]): string[] {
 		const res: string[] = [];
@@ -314,6 +335,8 @@ export class AuthHelpers {
 			if (scope === "read") res.push(...this.readScopes);
 			else if (scope === "write") res.push(...this.writeScopes);
 			else if (scope === "follow") res.push(...this.followScopes);
+			else if (scope === "admin:read") res.push(...this.adminReadScopes);
+			else if (scope === "admin:write") res.push(...this.adminWriteScopes);
 
 			res.push(scope);
 		}

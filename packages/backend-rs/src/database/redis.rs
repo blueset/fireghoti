@@ -1,18 +1,20 @@
+//! Redis interface
+
 use crate::config::CONFIG;
 use async_trait::async_trait;
 use bb8::{ManageConnection, Pool, PooledConnection, RunError};
 use redis::{aio::MultiplexedConnection, Client, ErrorKind, IntoConnectionInfo, RedisError};
 use tokio::sync::OnceCell;
 
-/// A `bb8::ManageConnection` for `redis::Client::get_multiplexed_async_connection`.
+/// A [bb8::ManageConnection] for [redis::Client::get_multiplexed_async_connection].
 #[derive(Clone, Debug)]
 pub struct RedisConnectionManager {
     client: Client,
 }
 
 impl RedisConnectionManager {
-    /// Create a new `RedisConnectionManager`.
-    /// See `redis::Client::open` for a description of the parameter types.
+    /// Creates a new [RedisConnectionManager].
+    /// See [redis::Client::open] for a description of the parameter types.
     pub fn new<T: IntoConnectionInfo>(info: T) -> Result<Self, RedisError> {
         Ok(Self {
             client: Client::open(info.into_connection_info()?)?,
@@ -79,14 +81,15 @@ async fn init_conn_pool() -> Result<(), RedisError> {
 
 #[derive(thiserror::Error, Debug)]
 pub enum RedisConnError {
-    #[error("Failed to initialize Redis connection pool: {0}")]
+    #[error("failed to initialize Redis connection pool")]
     Redis(RedisError),
-    #[error("Redis connection pool error: {0}")]
+    #[error("bad Redis connection pool")]
     Bb8Pool(RunError<RedisError>),
 }
 
-pub async fn redis_conn(
-) -> Result<PooledConnection<'static, RedisConnectionManager>, RedisConnError> {
+/// Returns an async [redis] connection managed by a [bb8] connection pool.
+pub async fn get_conn() -> Result<PooledConnection<'static, RedisConnectionManager>, RedisConnError>
+{
     if !CONN_POOL.initialized() {
         let init_res = init_conn_pool().await;
 
@@ -103,7 +106,7 @@ pub async fn redis_conn(
         .map_err(RedisConnError::Bb8Pool)
 }
 
-/// prefix redis key
+/// prefix Redis key
 #[inline]
 pub fn key(key: impl ToString) -> String {
     format!("{}:{}", CONFIG.redis_key_prefix, key.to_string())
@@ -111,19 +114,44 @@ pub fn key(key: impl ToString) -> String {
 
 #[cfg(test)]
 mod unit_test {
-    use super::redis_conn;
+    use super::get_conn;
     use pretty_assertions::assert_eq;
     use redis::AsyncCommands;
 
     #[tokio::test]
-    async fn connect() {
-        assert!(redis_conn().await.is_ok());
-        assert!(redis_conn().await.is_ok());
+    #[cfg_attr(miri, ignore)] // can't call foreign function `getaddrinfo` on OS `linux`
+    async fn connect_sequential() {
+        get_conn().await.unwrap();
+        get_conn().await.unwrap();
+        get_conn().await.unwrap();
+        get_conn().await.unwrap();
+        get_conn().await.unwrap();
     }
 
     #[tokio::test]
+    #[cfg_attr(miri, ignore)] // can't call foreign function `getaddrinfo` on OS `linux`
+    async fn connect_concurrent() {
+        let [c1, c2, c3, c4, c5] = [get_conn(), get_conn(), get_conn(), get_conn(), get_conn()];
+        let _ = tokio::try_join!(c1, c2, c3, c4, c5).unwrap();
+    }
+
+    #[tokio::test]
+    #[cfg_attr(miri, ignore)] // can't call foreign function `getaddrinfo` on OS `linux`
+    async fn connect_spawn() {
+        let mut tasks = Vec::new();
+
+        for _ in 0..5 {
+            tasks.push(tokio::spawn(get_conn()));
+        }
+        for task in tasks {
+            task.await.unwrap().unwrap();
+        }
+    }
+
+    #[tokio::test]
+    #[cfg_attr(miri, ignore)] // can't call foreign function `getaddrinfo` on OS `linux`
     async fn access() {
-        let mut redis = redis_conn().await.unwrap();
+        let mut redis = get_conn().await.unwrap();
 
         let key = "CARGO_UNIT_TEST_KEY";
         let value = "CARGO_UNIT_TEST_VALUE";

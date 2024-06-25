@@ -9,7 +9,7 @@ import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
 import { extractHashtags } from "@/misc/extract-hashtags.js";
 import type { IMentionedRemoteUsers } from "@/models/entities/note.js";
-import { Note } from "@/models/entities/note.js";
+import type { Note } from "@/models/entities/note.js";
 import {
 	Users,
 	Notes,
@@ -27,7 +27,6 @@ import { deliverToRelays } from "../relay.js";
 import renderUpdate from "@/remote/activitypub/renderer/update.js";
 import { extractMentionedUsers } from "@/services/note/create.js";
 import { normalizeForSearch } from "@/misc/normalize-for-search.js";
-import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 
 type Option = {
 	text?: string | null;
@@ -199,7 +198,7 @@ export default async function (
 
 		(async () => {
 			const noteActivity = await renderNote(note, false);
-			noteActivity.updated = note.updatedAt.toISOString();
+			noteActivity.updated = note.updatedAt?.toISOString();
 			const updateActivity = renderUpdate(noteActivity, user);
 			updateActivity.to = noteActivity.to;
 			updateActivity.cc = noteActivity.cc;

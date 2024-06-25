@@ -6,7 +6,7 @@ import { downloadTextFile } from "@/misc/download-text-file.js";
 import { Users, DriveFiles, Mutings } from "@/models/index.js";
 import type { DbUserImportJobData } from "@/queue/types.js";
 import type { User } from "@/models/entities/user.js";
-import { genId, isSelfHost, stringToAcct, toPuny } from "backend-rs";
+import { genIdAt, isSelfHost, stringToAcct, toPuny } from "backend-rs";
 import { IsNull } from "typeorm";
 import { inspect } from "node:util";
 
@@ -80,9 +80,11 @@ export async function importMuting(
 }
 
 async function mute(user: User, target: User) {
+	const now = new Date();
+
 	await Mutings.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		muterId: user.id,
 		muteeId: target.id,
 	});

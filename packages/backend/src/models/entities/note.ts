@@ -31,6 +31,11 @@ export class Note {
 	})
 	public createdAt: Date;
 
+	@Column("timestamp with time zone", {
+		nullable: true,
+	})
+	public scheduledAt: Date | null;
+
 	@Index()
 	@Column({
 		...id(),

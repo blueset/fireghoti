@@ -1,6 +1,6 @@
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import { RenoteMutings } from "@/models/index.js";
-import { RenoteMuting } from "@/models/entities/renote-muting.js";
+import type { RenoteMuting } from "@/models/entities/renote-muting.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { getUser } from "@/server/api/common/getters.js";
@@ -47,21 +47,21 @@ export default define(meta, paramDef, async (ps, user) => {
 	});
 
 	// Check if already muting
-	const exist = await RenoteMutings.exist({
-		where: {
-			muterId: muter.id,
-			muteeId: mutee.id,
-		},
+	const exists = await RenoteMutings.existsBy({
+		muterId: muter.id,
+		muteeId: mutee.id,
 	});
 
-	if (exist) {
+	if (exists) {
 		throw new ApiError(meta.errors.alreadyMuting);
 	}
 
+	const now = new Date();
+
 	// Create mute
 	await RenoteMutings.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		muterId: muter.id,
 		muteeId: mutee.id,
 	} as RenoteMuting);

@@ -137,7 +137,7 @@ export class SearchHelpers {
 					}
 				}
 			} catch (e: any) {
-				console.log(
+				logger.error(
 					`[mastodon-client] resolve user '${q}' failed: ${e.message}`,
 				);
 				return [];
@@ -266,7 +266,7 @@ export class SearchHelpers {
 			generateBlockedUserQuery(query, user);
 		}
 
-		query.setParameter("meId", user);
+		query.setParameter("meId", user.id);
 
 		return query
 			.skip(offset ?? 0)

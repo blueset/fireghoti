@@ -41,12 +41,15 @@ export class PollConverter {
 	}
 
 	public static encodeScheduledPoll(
-		p: Poll
+		p: Poll,
 	): MastodonEntity.StatusParams["poll"] {
 		const now = new Date();
 		const count = p.choices.reduce((sum, choice) => sum + choice.votes, 0);
 		return {
-			expires_in: (((p.expiresAt?.getTime() ?? Date.now()) - Date.now()) / 1000).toString(),
+			expires_in: (
+				((p.expiresAt?.getTime() ?? Date.now()) - Date.now()) /
+				1000
+			).toString(),
 			multiple: p.multiple,
 			hide_totals: false,
 			options: p.choices.map((c) => c.text),

@@ -1,7 +1,12 @@
 import type { Packed } from "./schema.js";
 
+type NoteWithUserHost = { user: { host: string | null } | null };
+
 export function isInstanceMuted(
-	note: Packed<"Note">,
+	note: NoteWithUserHost & {
+		reply: NoteWithUserHost | null;
+		renote: NoteWithUserHost | null;
+	},
 	mutedInstances: Set<string>,
 ): boolean {
 	if (mutedInstances.has(note?.user?.host ?? "")) return true;

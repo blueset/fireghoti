@@ -2,7 +2,7 @@ import fetch from "node-fetch";
 import { Converter } from "opencc-js";
 import { getAgentByUrl } from "@/misc/fetch.js";
 import { fetchMeta } from "backend-rs";
-import type { PostLanguage } from "@/misc/langmap";
+import type { PostLanguage } from "firefish-js";
 import * as deepl from "deepl-node";
 
 // DeepL translate and LibreTranslate don't provide
@@ -26,7 +26,7 @@ export async function translate(
 	from: PostLanguage | null,
 	to: PostLanguage,
 ) {
-	const instance = await fetchMeta(true);
+	const instance = await fetchMeta();
 
 	if (instance.deeplAuthKey == null && instance.libreTranslateApiUrl == null) {
 		throw Error("No translator is set up on this server.");

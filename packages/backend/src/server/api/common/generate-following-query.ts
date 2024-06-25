@@ -1,5 +1,5 @@
-import { Brackets, SelectQueryBuilder } from "typeorm";
-import { User } from "@/models/entities/user.js";
+import { Brackets, type SelectQueryBuilder } from "typeorm";
+import type { User } from "@/models/entities/user.js";
 import { Followings, Notes } from "@/models/index.js";
 import { Cache } from "@/misc/cache.js";
 import { apiLogger } from "@/server/api/logger.js";
@@ -17,16 +17,16 @@ export async function generateFollowingQuery(
 		.where("following.followerId = :meId");
 
 	const heuristic = await cache.fetch(me.id, async () => {
-		let curr = new Date();
-		let prev = new Date();
+		const curr = new Date();
+		const prev = new Date();
 		prev.setDate(prev.getDate() - 7);
 		return Notes.createQueryBuilder("note")
-			.where(`note.createdAt > :prev`, { prev })
-			.andWhere(`note.createdAt < :curr`, { curr })
+			.where("note.createdAt > :prev", { prev })
+			.andWhere("note.createdAt < :curr", { curr })
 			.andWhere(
 				new Brackets((qb) => {
 					qb.where(`note.userId IN (${followingQuery.getQuery()})`);
-					qb.orWhere(`note.userId = :meId`, { meId: me.id });
+					qb.orWhere("note.userId = :meId", { meId: me.id });
 				}),
 			)
 			.getCount()
@@ -49,7 +49,7 @@ export async function generateFollowingQuery(
 					`note.userId = ANY(array(${followingQuery.getQuery()} UNION ALL VALUES (:meId)))`,
 				);
 			} else {
-				qb.where(`note.userId = :meId`);
+				qb.where("note.userId = :meId");
 				qb.orWhere(`note.userId IN (${followingQuery.getQuery()})`);
 			}
 		}),

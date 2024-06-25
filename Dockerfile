@@ -2,23 +2,22 @@
 FROM docker.io/node:20-alpine as build
 WORKDIR /firefish
 
+# Copy only backend-rs pnpm-related files first, to cache efficiently
+COPY package.json pnpm-workspace.yaml ./
+COPY packages/backend-rs/package.json packages/backend-rs/package.json
+COPY packages/backend-rs/npm/linux-x64-musl/package.json packages/backend-rs/npm/linux-x64-musl/package.json
+COPY packages/backend-rs/npm/linux-arm64-musl/package.json packages/backend-rs/npm/linux-arm64-musl/package.json
+
 # Install compilation dependencies
 RUN apk update && apk add --no-cache build-base linux-headers curl ca-certificates python3 perl
 RUN curl --proto '=https' --tlsv1.2 --silent --show-error --fail https://sh.rustup.rs | sh -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Copy only backend-rs dependency-related files first, to cache efficiently
-COPY package.json pnpm-workspace.yaml ./
-COPY packages/backend-rs/package.json packages/backend-rs/package.json
-COPY packages/backend-rs/npm/linux-x64-musl/package.json packages/backend-rs/npm/linux-x64-musl/package.json
-COPY packages/backend-rs/npm/linux-arm64-musl/package.json packages/backend-rs/npm/linux-arm64-musl/package.json
-
-COPY Cargo.toml Cargo.toml
-COPY Cargo.lock Cargo.lock
-COPY packages/backend-rs/Cargo.toml packages/backend-rs/Cargo.toml
+COPY packages/macro-rs packages/macro-rs/
 COPY packages/backend-rs/src/lib.rs packages/backend-rs/src/
-COPY packages/macro-rs/Cargo.toml packages/macro-rs/Cargo.toml
-COPY packages/macro-rs/src/lib.rs packages/macro-rs/src/
+COPY packages/backend-rs/Cargo.toml packages/backend-rs/Cargo.toml
+COPY Cargo.toml Cargo.lock ./
 
 # Configure pnpm, and install backend-rs dependencies
 RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm --filter backend-rs install
@@ -26,7 +25,6 @@ RUN cargo fetch --locked --manifest-path Cargo.toml
 
 # Copy in the rest of the rust files
 COPY packages/backend-rs packages/backend-rs/
-# COPY packages/macro-rs packages/macro-rs/
 
 # Compile backend-rs
 RUN NODE_ENV='production' pnpm run --filter backend-rs build
@@ -39,7 +37,6 @@ COPY packages/backend/package.json packages/backend/package.json
 COPY packages/client/package.json packages/client/package.json
 COPY packages/sw/package.json packages/sw/package.json
 COPY packages/firefish-js/package.json packages/firefish-js/package.json
-COPY packages/megalodon/package.json packages/megalodon/package.json
 COPY pnpm-lock.yaml ./
 
 # Install dev mode dependencies for compilation
@@ -62,8 +59,6 @@ WORKDIR /firefish
 RUN apk update && apk add --no-cache zip unzip tini ffmpeg curl
 
 COPY . ./
-
-COPY --from=build /firefish/packages/megalodon /firefish/packages/megalodon
 
 # Copy node modules
 COPY --from=build /firefish/node_modules /firefish/node_modules

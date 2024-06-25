@@ -11,6 +11,22 @@ import { User } from "./user.js";
 import { id } from "../id.js";
 import { AccessToken } from "./access-token.js";
 
+// for Mastodon push notifications
+const pushSubscriptionTypes = [
+	"mention",
+	"status",
+	"reblog",
+	"follow",
+	"follow_request",
+	"favourite",
+	"poll",
+	"update",
+	"admin.sign_up",
+	"admin.report",
+] as const;
+
+type pushSubscriptionType = (typeof pushSubscriptionTypes)[number];
+
 @Entity()
 export class SwSubscription {
 	@PrimaryColumn(id())
@@ -43,26 +59,20 @@ export class SwSubscription {
 	})
 	public sendReadMessage: boolean;
 
-	//#region Relations
-	@ManyToOne(() => User, {
-		onDelete: "CASCADE",
-	})
-	@JoinColumn()
-	public user: Relation<User>;
-
 	/**
 	 * Type of subscription, used for Mastodon API notifications.
 	 * Empty for Misskey notifications.
 	 */
-	@Column("varchar", {
-		length: 64,
+	@Column({
+		type: "enum",
+		enum: pushSubscriptionTypes,
 		array: true,
 		default: "{}",
 	})
-	public subscriptionTypes: string[];
-	
+	public subscriptionTypes: pushSubscriptionType[];
+
 	/**
-	 * App notification app (token for), used for Mastodon API notifications
+	 * App notification app, used for Mastodon API notifications
 	 */
 	@Index()
 	@Column({
@@ -71,10 +81,18 @@ export class SwSubscription {
 	})
 	public appAccessTokenId: AccessToken["id"] | null;
 
-	@ManyToOne((type) => AccessToken, {
+	//#region Relations
+	@ManyToOne(() => User, {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	public appAccessToken: AccessToken | null;
+	public user: Relation<User>;
+
+	@ManyToOne(() => AccessToken, {
+		onDelete: "CASCADE",
+		nullable: true,
+	})
+	@JoinColumn()
+	public appAccessToken: Relation<AccessToken | null>;
 	//#endregion
 }

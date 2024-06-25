@@ -1,17 +1,20 @@
-use std::fmt;
-use std::str::FromStr;
+use std::{fmt, str::FromStr};
 
-#[derive(Debug, PartialEq)]
-#[crate::export(object)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[macros::export(object)]
 pub struct Acct {
     pub username: String,
     pub host: Option<String>,
 }
 
-impl FromStr for Acct {
-    type Err = ();
+#[derive(thiserror::Error, Debug)]
+#[doc = "Error type to indicate a string-to-[`Acct`] conversion failure"]
+#[error("failed to convert string '{0}' into acct")]
+pub struct InvalidAcctString(String);
 
-    /// This never throw errors. Feel free to `.unwrap()` the result.
+impl FromStr for Acct {
+    type Err = InvalidAcctString;
+
     fn from_str(value: &str) -> Result<Self, Self::Err> {
         let split: Vec<&str> = if let Some(stripped) = value.strip_prefix('@') {
             stripped
@@ -48,12 +51,12 @@ impl From<Acct> for String {
     }
 }
 
-#[crate::ts_export]
+#[macros::ts_export]
 pub fn string_to_acct(acct: &str) -> Acct {
     Acct::from_str(acct).unwrap()
 }
 
-#[crate::ts_export]
+#[macros::ts_export]
 pub fn acct_to_string(acct: &Acct) -> String {
     acct.to_string()
 }
@@ -65,7 +68,7 @@ mod unit_test {
     use std::str::FromStr;
 
     #[test]
-    fn test_acct_to_string() {
+    fn acct_to_string() {
         let remote_acct = Acct {
             username: "firefish".to_string(),
             host: Some("example.com".to_string()),
@@ -82,7 +85,7 @@ mod unit_test {
     }
 
     #[test]
-    fn test_string_to_acct() {
+    fn string_to_acct() {
         let remote_acct = Acct {
             username: "firefish".to_string(),
             host: Some("example.com".to_string()),

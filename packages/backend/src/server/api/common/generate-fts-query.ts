@@ -1,6 +1,9 @@
-import { Brackets, type SelectQueryBuilder, type WhereExpressionBuilder } from "typeorm";
-import { sqlLikeEscape } from "backend-rs";
-import { sqlRegexEscape } from "@/misc/sql-regex-escape.js";
+import {
+	Brackets,
+	type SelectQueryBuilder,
+	type WhereExpressionBuilder,
+} from "typeorm";
+import { sqlLikeEscape, sqlRegexEscape } from "backend-rs";
 import {
 	Followings,
 	NoteFavorites,

@@ -1,6 +1,11 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'AddMastodonSubscriptionType1715181461692',
+    'SwSubscriptionAccessToken1709395223611',
+    'UserProfileMentions1711075007936',
+    'ClientCredentials1713108561474',
+    'RefactorScheduledPosts1716804636187',
     'RemoveEnumTypenameSuffix1716462794927',
     'CreateScheduledNote1714728200194',
     'AddBackTimezone1715351290096',
@@ -33,6 +38,52 @@ DELETE FROM "migrations" WHERE name IN (
     'RemoveNativeUtilsMigration1705877093218',
     'SwSubscriptionAccessToken1709395223611'
 );
+
+-- addMastodonSubscriptionType
+ALTER TABLE "sw_subscription" DROP COLUMN "subscriptionTypes";
+DROP TYPE "push_subscription_type";
+
+-- sw-subscription-per-access-token
+ALTER TABLE "sw_subscription" DROP CONSTRAINT "FK_98a1aa2db2a5253924f42f38767";
+ALTER TABLE "sw_subscription" DROP COLUMN "appAccessTokenId";
+
+-- user-profile-mentions
+ALTER TABLE "user_profile" DROP COLUMN "mentions";
+
+-- client-credential-support
+ALTER TABLE "access_token" ALTER COLUMN "userId" SET NOT NULL;
+
+-- refactor-scheduled-post
+CREATE TABLE "scheduled_note" (
+	"id" character varying(32) NOT NULL PRIMARY KEY,
+	"noteId" character varying(32) NOT NULL,
+	"userId" character varying(32) NOT NULL,
+	"scheduledAt" TIMESTAMP WITH TIME ZONE NOT NULL
+);
+COMMENT ON COLUMN "scheduled_note"."noteId" IS 'The ID of the temporarily created note that corresponds to the schedule.';
+CREATE EXTENSION pgcrypto;
+CREATE FUNCTION generate_scheduled_note_id(size int) RETURNS text AS $$	DECLARE
+	characters text := 'abcdefghijklmnopqrstuvwxyz0123456789';
+	bytes bytea := gen_random_bytes(size);
+	l int := length(characters);
+	i int := 0;
+	output text := '';
+	BEGIN
+		WHILE i < size LOOP
+			output := output || substr(characters, get_byte(bytes, i) % l + 1, 1);
+			i := i + 1;
+		END LOOP;
+		RETURN output;
+	END;
+$$ LANGUAGE plpgsql VOLATILE;
+INSERT INTO "scheduled_note" ("id", "noteId", "userId", "scheduledAt") (SELECT generate_scheduled_note_id(16), "id", "userId", "scheduledAt" FROM "note" WHERE "note"."scheduledAt" IS NOT NULL);
+DROP EXTENSION pgcrypto;
+DROP FUNCTION "generate_scheduled_note_id";
+CREATE INDEX "IDX_noteId_ScheduledNote" ON "scheduled_note" ("noteId");
+CREATE INDEX "IDX_userId_ScheduledNote" ON "scheduled_note" ("userId");
+ALTER TABLE "scheduled_note" ADD FOREIGN KEY ("noteId") REFERENCES "note"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "scheduled_note" ADD FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "note" DROP COLUMN "scheduledAt";
 
 -- remove-enum-typename-suffix
 ALTER TYPE "antenna_src" RENAME TO "antenna_src_enum";

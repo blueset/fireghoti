@@ -6,9 +6,14 @@
           :value="qrCode"
         />
 			</div>
-			<MkButton :class="$style.gotIt" primary full @click="gotIt()">{{
-				i18n.ts.gotIt
-			}}</MkButton>
+			<div class="_flexList" style="gap: 0.6rem">
+				<MkButton :class="$style.gotIt" primary full @click="gotIt()">{{
+					i18n.ts.gotIt
+				}}</MkButton>
+				<MkButton :class="$style.copyLink" full @click="copyLink()">{{
+					i18n.ts.copyLink
+				}}</MkButton>
+			</div>
 		</div>
 	</MkModal>
 </template>
@@ -19,8 +24,10 @@ import QRCodeVue3 from "qrcode-vue3";
 import MkModal from "@/components/MkModal.vue";
 import MkButton from "@/components/MkButton.vue";
 import { i18n } from "@/i18n";
+import * as os from "@/os";
+import copyToClipboard from "@/scripts/copy-to-clipboard";
 
-defineProps<{
+const props = defineProps<{
 	qrCode: string;
 }>();
 
@@ -28,6 +35,11 @@ const modal = shallowRef<InstanceType<typeof MkModal>>();
 
 const gotIt = () => {
 	modal.value.close();
+};
+
+const copyLink = () => {
+	copyToClipboard(props.qrCode);
+	os.success();
 };
 </script>
 

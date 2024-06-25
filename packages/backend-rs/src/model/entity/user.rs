@@ -153,8 +153,6 @@ pub enum Relation {
     PromoRead,
     #[sea_orm(has_many = "super::registry_item::Entity")]
     RegistryItem,
-    #[sea_orm(has_many = "super::scheduled_note::Entity")]
-    ScheduledNote,
     #[sea_orm(has_many = "super::signin::Entity")]
     Signin,
     #[sea_orm(has_many = "super::sw_subscription::Entity")]
@@ -344,12 +342,6 @@ impl Related<super::promo_read::Entity> for Entity {
 impl Related<super::registry_item::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::RegistryItem.def()
-    }
-}
-
-impl Related<super::scheduled_note::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::ScheduledNote.def()
     }
 }
 

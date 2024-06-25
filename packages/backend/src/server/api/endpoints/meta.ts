@@ -402,7 +402,7 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, me) => {
-	const instance = await fetchMeta(false);
+	const instance = await fetchMeta();
 
 	const emojis = await Emojis.find({
 		where: {

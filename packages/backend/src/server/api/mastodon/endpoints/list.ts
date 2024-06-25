@@ -84,10 +84,10 @@ export function setupEndpointsList(router: Router): void {
 			if (!list) throw new MastoApiError(404);
 
 			const body = ctx.request.body as any;
-			if (!body["account_ids"])
+			if (!body.account_ids)
 				throw new MastoApiError(400, "Missing account_ids[] field");
 
-			const ids = toArray(body["account_ids"]);
+			const ids = toArray(body.account_ids);
 			const targets = await Promise.all(ids.map((p) => getUser(p)));
 			await ListHelpers.addToList(list, targets, ctx);
 			ctx.body = {};
@@ -104,10 +104,10 @@ export function setupEndpointsList(router: Router): void {
 			if (!list) throw new MastoApiError(404);
 
 			const body = ctx.request.body as any;
-			if (!body["account_ids"])
+			if (!body.account_ids)
 				throw new MastoApiError(400, "Missing account_ids[] field");
 
-			const ids = toArray(body["account_ids"]);
+			const ids = toArray(body.account_ids);
 			const targets = await Promise.all(ids.map((p) => getUser(p)));
 			await ListHelpers.removeFromList(list, targets, ctx);
 			ctx.body = {};

@@ -1,4 +1,4 @@
-import { publishUserEvent, publishUserListStream } from "@/services/stream.js";
+import { publishUserListStream } from "@/services/stream.js";
 import type { User } from "@/models/entities/user.js";
 import type { UserList } from "@/models/entities/user-list.js";
 import { UserListJoinings, Users } from "@/models/index.js";

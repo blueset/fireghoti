@@ -7,15 +7,18 @@ import { auth } from "@/server/api/mastodon/middleware/auth.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import { filterContext } from "@/server/api/mastodon/middleware/filter-context.js";
 
-//TODO: Move helper functions to a helper class
+// TODO: Move helper functions to a helper class
 export function limitToInt(q: ParsedUrlQuery, additional: string[] = []) {
 	const object: any = q;
 	if (q.limit)
-		if (typeof q.limit === "string") object.limit = Number.parseInt(q.limit, 10);
+		if (typeof q.limit === "string")
+			object.limit = Number.parseInt(q.limit, 10);
 	if (q.offset)
-		if (typeof q.offset === "string") object.offset = Number.parseInt(q.offset, 10);
+		if (typeof q.offset === "string")
+			object.offset = Number.parseInt(q.offset, 10);
 	for (const key of additional)
-		if (typeof q[key] === "string") object[key] = Number.parseInt(<string>q[key], 10);
+		if (typeof q[key] === "string")
+			object[key] = Number.parseInt(<string>q[key], 10);
 	return object;
 }
 

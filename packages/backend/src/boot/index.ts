@@ -3,7 +3,6 @@ import chalk from "chalk";
 import Xev from "xev";
 
 import Logger from "@/services/logger.js";
-import { envOption } from "@/config.js";
 import { inspect } from "node:util";
 
 // for typeorm
@@ -11,6 +10,8 @@ import "reflect-metadata";
 import { masterMain } from "./master.js";
 import { workerMain } from "./worker.js";
 import os from "node:os";
+
+import { initializeRustLogger } from "backend-rs";
 
 const logger = new Logger("core", "cyan");
 const clusterLogger = logger.createSubLogger("cluster", "orange", false);
@@ -20,6 +21,8 @@ const ev = new Xev();
  * Init process
  */
 export default async function () {
+	initializeRustLogger();
+
 	const mode =
 		process.env.mode && ["web", "queue"].includes(process.env.mode)
 			? `(${process.env.mode})`
@@ -27,14 +30,14 @@ export default async function () {
 	const type = cluster.isPrimary ? "(master)" : "(worker)";
 	process.title = `Firefish ${mode} ${type}`;
 
-	if (cluster.isPrimary || envOption.disableClustering) {
+	if (cluster.isPrimary) {
 		await masterMain();
 		if (cluster.isPrimary) {
 			ev.mount();
 		}
 	}
 
-	if (cluster.isWorker || envOption.disableClustering) {
+	if (cluster.isWorker) {
 		await workerMain();
 	}
 

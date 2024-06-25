@@ -1,27 +1,36 @@
-use crate::database::db_conn;
-use crate::misc::get_note_summary::{get_note_summary, NoteLike};
-use crate::misc::meta::fetch_meta;
-use crate::model::entity::{access_token, app, sw_subscription};
-use crate::util::http_client;
-use crate::util::id::get_timestamp;
-use once_cell::sync::OnceCell;
-use sea_orm::{prelude::*, DbErr};
-use web_push::{
-    ContentEncoding, IsahcWebPushClient, SubscriptionInfo, SubscriptionKeys, VapidSignatureBuilder,
-    WebPushClient, WebPushError, WebPushMessageBuilder,
+use crate::{
+    config::local_server_info,
+    database::db_conn,
+    misc::note::summarize,
+    model::entity::{access_token, app, sw_subscription},
+    util::{
+        http_client,
+        id::{get_timestamp, InvalidIdError},
+    },
 };
+use once_cell::sync::OnceCell;
+use sea_orm::prelude::*;
+use serde::Deserialize;
+use web_push::*;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("Database error: {0}")]
+    #[doc = "database error"]
+    #[error(transparent)]
     Db(#[from] DbErr),
-    #[error("Web Push error: {0}")]
+    #[error("web push has failed")]
     WebPush(#[from] WebPushError),
-    #[error("Failed to (de)serialize an object: {0}")]
+    #[error("failed to (de)serialize an object")]
     Serialize(#[from] serde_json::Error),
-    #[error("Invalid content: {0}")]
+    #[doc = "provided content is invalid"]
+    #[error("invalid content ({0})")]
     InvalidContent(String),
-    #[error("HTTP client aquisition error: {0}")]
+    #[doc = "found Mastodon subscription is invalid"]
+    #[error("invalid subscription ({0})")]
+    InvalidSubscription(String),
+    #[error("invalid notification ID")]
+    InvalidId(#[from] InvalidIdError),
+    #[error("failed to acquire an HTTP client")]
     HttpClient(#[from] http_client::Error),
 }
 
@@ -33,32 +42,18 @@ fn get_client() -> Result<IsahcWebPushClient, Error> {
         .cloned()?)
 }
 
-#[derive(strum::Display, PartialEq)]
-#[crate::export(string_enum = "camelCase")]
+#[macros::export]
 pub enum PushNotificationKind {
-    #[strum(serialize = "notification")]
     Generic,
-    #[strum(serialize = "unreadMessagingMessage")]
     Chat,
-    #[strum(serialize = "readAllMessagingMessages")]
     ReadAllChats,
-    #[strum(serialize = "readAllMessagingMessagesOfARoom")]
     ReadAllChatsInTheRoom,
-    #[strum(serialize = "readNotifications")]
     ReadNotifications,
-    #[strum(serialize = "readAllNotifications")]
     ReadAllNotifications,
     Mastodon,
 }
 
-fn compact_content(
-    kind: &PushNotificationKind,
-    mut content: serde_json::Value,
-) -> Result<serde_json::Value, Error> {
-    if kind != &PushNotificationKind::Generic {
-        return Ok(content);
-    }
-
+fn compact_content(mut content: serde_json::Value) -> Result<serde_json::Value, Error> {
     if !content.is_object() {
         return Err(Error::InvalidContent("not a JSON object".to_string()));
     }
@@ -88,8 +83,18 @@ fn compact_content(
         ));
     }
 
-    let note_like: NoteLike = serde_json::from_value(note.clone())?;
-    let text = get_note_summary(note_like);
+    // TODO: get rid of this struct
+    #[derive(Deserialize)]
+    #[serde(rename_all = "camelCase")]
+    struct PartialNote {
+        file_ids: Vec<String>,
+        text: Option<String>,
+        cw: Option<String>,
+        has_poll: bool,
+    }
+
+    let note_like: PartialNote = serde_json::from_value(note.clone())?;
+    let text = summarize!(note_like);
 
     let note_object = note.as_object_mut().unwrap();
 
@@ -102,53 +107,66 @@ fn compact_content(
     Ok(serde_json::from_value(Json::Object(object.clone()))?)
 }
 
-async fn encode_mastodon_payload(
-    mut content: serde_json::Value,
-    db: &DatabaseConnection,
-    subscription: &sw_subscription::Model,
-) -> Result<String, Error> {
-    if !content.is_object() {
-        return Err(Error::InvalidContent("not a JSON object".to_string()));
-    }
-
-    if subscription.app_access_token_id.is_none() {
-        return Err(Error::InvalidContent("no access token".to_string()));
-    }
-
-    let token_id = subscription.app_access_token_id.as_ref().unwrap();
-    let maybe_token = access_token::Entity::find()
+/// Returns a tuple containing the token and client name
+async fn get_mastodon_subscription_info(
+    db: &DbConn,
+    subscription_id: &str,
+    token_id: &str,
+) -> Result<(String, String), Error> {
+    let token = access_token::Entity::find()
         .filter(access_token::Column::Id.eq(token_id))
         .one(db)
         .await?;
 
-    if maybe_token.is_none() {
-        return Err(Error::InvalidContent(
+    if token.is_none() {
+        unsubscribe(db, subscription_id).await?;
+        return Err(Error::InvalidSubscription(
             "access token not found".to_string(),
         ));
     }
-
-    let token = maybe_token.unwrap();
+    let token = token.unwrap();
 
     if token.app_id.is_none() {
-        return Err(Error::InvalidContent("no app ID".to_string()));
+        unsubscribe(db, subscription_id).await?;
+        return Err(Error::InvalidSubscription("no app ID".to_string()));
     }
+    let app_id = token.app_id.unwrap();
 
     let client = app::Entity::find()
-        .filter(app::Column::Id.eq(token.app_id))
+        .filter(app::Column::Id.eq(app_id))
         .one(db)
         .await?;
 
     if client.is_none() {
-        return Err(Error::InvalidContent("app not found".to_string()));
+        unsubscribe(db, subscription_id).await?;
+        return Err(Error::InvalidSubscription("app not found".to_string()));
     }
 
-    let client = client.unwrap().name;
+    Ok((token.token, client.unwrap().name))
+}
 
-    let object = content.as_object_mut().unwrap();
-    object.insert(
-        "access_token".to_string(),
-        serde_json::to_value(token.token)?,
-    );
+async fn encode_mastodon_payload(
+    mut content: serde_json::Value,
+    db: &DbConn,
+    subscription: &sw_subscription::Model,
+) -> Result<String, Error> {
+    let object = content
+        .as_object_mut()
+        .ok_or(Error::InvalidContent("not a JSON object".to_string()))?;
+
+    if subscription.app_access_token_id.is_none() {
+        unsubscribe(db, &subscription.id).await?;
+        return Err(Error::InvalidSubscription("no access token".to_string()));
+    }
+
+    let (token, client_name) = get_mastodon_subscription_info(
+        db,
+        &subscription.id,
+        subscription.app_access_token_id.as_ref().unwrap(),
+    )
+    .await?;
+
+    object.insert("access_token".to_string(), serde_json::to_value(token)?);
 
     // Some apps expect notification_id to be an integer,
     // but doesn’t break when the ID doesn’t match the rest of API.
@@ -160,13 +178,13 @@ async fn encode_mastodon_payload(
         "Metatext",
         "Feditext",
     ]
-    .contains(&client.as_str())
+    .contains(&client_name.as_str())
     {
         let timestamp = object
             .get("notification_id")
             .and_then(|id| id.as_str())
             .map(get_timestamp)
-            .transpose()
+            .transpose()?
             .unwrap_or_default();
 
         object.insert("notification_id".to_string(), timestamp.into());
@@ -187,8 +205,15 @@ async fn encode_mastodon_payload(
     Ok(format!("{}{:pad_length$}", res, ""))
 }
 
+async fn unsubscribe(db: &DbConn, subscription_id: &str) -> Result<(), DbErr> {
+    sw_subscription::Entity::delete_by_id(subscription_id)
+        .exec(db)
+        .await?;
+    Ok(())
+}
+
 async fn handle_web_push_failure(
-    db: &DatabaseConnection,
+    db: &DbConn,
     err: WebPushError,
     subscription_id: &str,
     error_message: &str,
@@ -205,9 +230,7 @@ async fn handle_web_push_failure(
         | WebPushError::MissingCryptoKeys
         | WebPushError::InvalidCryptoKeys
         | WebPushError::InvalidResponse => {
-            sw_subscription::Entity::delete_by_id(subscription_id)
-                .exec(db)
-                .await?;
+            unsubscribe(db, subscription_id).await?;
             tracing::info!("{}; {} was unsubscribed", error_message, subscription_id);
             tracing::debug!("reason: {:#?}", err);
         }
@@ -220,13 +243,13 @@ async fn handle_web_push_failure(
     Ok(())
 }
 
-#[crate::export]
+#[macros::export]
 pub async fn send_push_notification(
     receiver_user_id: &str,
     kind: PushNotificationKind,
     content: &serde_json::Value,
 ) -> Result<(), Error> {
-    let meta = fetch_meta(true).await?;
+    let meta = local_server_info().await?;
 
     if !meta.enable_service_worker || meta.sw_public_key.is_none() || meta.sw_private_key.is_none()
     {
@@ -245,24 +268,40 @@ pub async fn send_push_notification(
         .all(db)
         .await?;
 
+    let use_mastodon_api = matches!(kind, PushNotificationKind::Mastodon);
+
     // TODO: refactoring
-    let mut payload = if kind == PushNotificationKind::Mastodon {
+    let mut payload = if use_mastodon_api {
         // Content generated per subscription
         "".to_string()
     } else {
         // Format the `content` passed from the TypeScript backend
         // for Firefish push notifications
+        let label = match kind {
+            PushNotificationKind::Generic => "notification",
+            PushNotificationKind::Chat => "unreadMessagingMessage",
+            PushNotificationKind::ReadAllChats => "readAllMessagingMessages",
+            PushNotificationKind::ReadAllChatsInTheRoom => "readAllMessagingMessagesOfARoom",
+            PushNotificationKind::ReadNotifications => "readNotifications",
+            PushNotificationKind::ReadAllNotifications => "readAllNotifications",
+            // unreachable
+            _ => "unknown",
+        };
         format!(
             "{{\"type\":\"{}\",\"userId\":\"{}\",\"dateTime\":{},\"body\":{}}}",
-            kind,
+            label,
             receiver_user_id,
             chrono::Utc::now().timestamp_millis(),
-            serde_json::to_string(&compact_content(&kind, content.clone())?)?
+            match kind {
+                PushNotificationKind::Generic =>
+                    serde_json::to_string(&compact_content(content.to_owned())?)?,
+                _ => serde_json::to_string(&content)?,
+            }
         )
     };
     tracing::trace!("payload: {}", payload);
 
-    let encoding = if kind == PushNotificationKind::Mastodon {
+    let encoding = if use_mastodon_api {
         ContentEncoding::AesGcm
     } else {
         ContentEncoding::Aes128Gcm
@@ -270,18 +309,18 @@ pub async fn send_push_notification(
 
     for subscription in subscriptions.iter() {
         if !subscription.send_read_message
-            && [
-                PushNotificationKind::ReadAllChats,
-                PushNotificationKind::ReadAllChatsInTheRoom,
-                PushNotificationKind::ReadAllNotifications,
-                PushNotificationKind::ReadNotifications,
-            ]
-            .contains(&kind)
+            && matches!(
+                kind,
+                PushNotificationKind::ReadAllChats
+                    | PushNotificationKind::ReadAllChatsInTheRoom
+                    | PushNotificationKind::ReadAllNotifications
+                    | PushNotificationKind::ReadNotifications
+            )
         {
             continue;
         }
 
-        if kind == PushNotificationKind::Mastodon {
+        if use_mastodon_api {
             if subscription.app_access_token_id.is_none() {
                 continue;
             }
@@ -330,7 +369,28 @@ pub async fn send_push_notification(
             handle_web_push_failure(db, err, &subscription.id, "failed to build a payload").await?;
             continue;
         }
-        if let Err(err) = get_client()?.send(message.unwrap()).await {
+
+        // Ice Cubes cannot process ";rs=4096" at at the end of Encryption header
+        let mut message = message.unwrap();
+
+        if let Some(payload) = message.payload {
+            let crypto_headers: Vec<(&str, String)> = payload
+                .crypto_headers
+                .into_iter()
+                .map(|(key, val)| match key {
+                    "Encryption" => (key, val.replace(";rs=4096", "")),
+                    _ => (key, val),
+                })
+                .collect();
+
+            message.payload = Some(WebPushPayload {
+                content: payload.content,
+                content_encoding: payload.content_encoding,
+                crypto_headers,
+            });
+        }
+
+        if let Err(err) = get_client()?.send(message).await {
             handle_web_push_failure(db, err, &subscription.id, "failed to send").await?;
             continue;
         }

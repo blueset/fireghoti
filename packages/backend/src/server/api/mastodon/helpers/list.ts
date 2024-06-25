@@ -26,6 +26,7 @@ export class ListHelpers {
 				return {
 					id: list.id,
 					title: list.name,
+					exclusive: false,
 				};
 			}),
 		);
@@ -42,6 +43,7 @@ export class ListHelpers {
 				return {
 					id: list.id,
 					title: list.name,
+					exclusive: false,
 				};
 			},
 		);
@@ -89,7 +91,7 @@ export class ListHelpers {
 
 	public static async deleteList(list: UserList, ctx: MastoContext) {
 		const user = ctx.user as ILocalUser;
-		if (user.id != list.userId) throw new Error("List is not owned by user");
+		if (user.id !== list.userId) throw new Error("List is not owned by user");
 		await UserLists.delete(list.id);
 	}
 
@@ -99,29 +101,29 @@ export class ListHelpers {
 		ctx: MastoContext,
 	) {
 		const localUser = ctx.user as ILocalUser;
-		if (localUser.id != list.userId)
+		if (localUser.id !== list.userId)
 			throw new Error("List is not owned by user");
 		for (const user of usersToAdd) {
 			if (user.id !== localUser.id) {
-				const isBlocked = await Blockings.exist({
+				const isBlocked = await Blockings.exists({
 					where: {
 						blockerId: user.id,
 						blockeeId: localUser.id,
 					},
 				});
-				const isFollowed = await Followings.exist({
+				const isFollowed = await Followings.exists({
 					where: {
 						followeeId: user.id,
 						followerId: localUser.id,
 					},
 				});
 				if (isBlocked)
-					throw Error("Can't add users you've been blocked by to list");
+					throw Error("Can’t add users you’ve been blocked by to list");
 				if (!isFollowed)
-					throw Error("Can't add users you're not following to list");
+					throw Error("Can’t add users you’re not following to list");
 			}
 
-			const exist = await UserListJoinings.exist({
+			const exist = await UserListJoinings.exists({
 				where: {
 					userListId: list.id,
 					userId: user.id,
@@ -139,10 +141,10 @@ export class ListHelpers {
 		ctx: MastoContext,
 	) {
 		const localUser = ctx.user as ILocalUser;
-		if (localUser.id != list.userId)
+		if (localUser.id !== list.userId)
 			throw new Error("List is not owned by user");
 		for (const user of usersToRemove) {
-			const exist = await UserListJoinings.exist({
+			const exist = await UserListJoinings.exists({
 				where: {
 					userListId: list.id,
 					userId: user.id,
@@ -172,6 +174,7 @@ export class ListHelpers {
 		return {
 			id: list.id,
 			title: list.name,
+			exclusive: false,
 		};
 	}
 
@@ -185,7 +188,7 @@ export class ListHelpers {
 			throw new MastoApiError(400, "Either title or exclusive must be set");
 
 		const user = ctx.user as ILocalUser;
-		if (user.id != list.userId) throw new Error("List is not owned by user");
+		if (user.id !== list.userId) throw new Error("List is not owned by user");
 
 		const name = title.length > 0 ? title : undefined;
 		const partial = { name: name };
@@ -193,6 +196,8 @@ export class ListHelpers {
 			async (_) => await UserLists.findOneByOrFail({ id: list.id }),
 		);
 
+		/*
+		// FIXME: Firefish doesn’t support exclusive lists
 		if (exclusive !== undefined) {
 			UserListJoinings.findBy({ userListId: list.id }).then((members) => {
 				for (const member of members) {
@@ -204,10 +209,12 @@ export class ListHelpers {
 				}
 			});
 		}
+		*/
 
 		return {
 			id: result.id,
 			title: result.name,
+			exclusive: false,
 		};
 	}
 
@@ -229,6 +236,7 @@ export class ListHelpers {
 				return {
 					id: result.id,
 					title: result.name,
+					exclusive: false,
 				};
 			}),
 		);

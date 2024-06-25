@@ -1,8 +1,9 @@
-import { publishDriveStream } from "@/services/stream.js";
+import { publishToDriveFileStream, DriveFileEvent } from "backend-rs";
 import { DriveFiles, DriveFolders } from "@/models/index.js";
 import { config } from "@/config.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
+import { toRustObject } from "@/prelude/undefined-to-null.js";
 
 export const meta = {
 	tags: ["drive"],
@@ -110,7 +111,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	const fileObj = await DriveFiles.pack(file, { self: true });
 
 	// Publish fileUpdated event
-	publishDriveStream(user.id, "fileUpdated", fileObj);
+	publishToDriveFileStream(user.id, DriveFileEvent.Update, toRustObject(file));
 
 	return fileObj;
 });

@@ -85,9 +85,9 @@ export function setupEndpointsAccount(router: Router): void {
 				args.since_id,
 				args.min_id,
 				args.limit,
-				args["only_media"],
-				args["exclude_replies"],
-				args["exclude_reblogs"],
+				args.only_media,
+				args.exclude_replies,
+				args.exclude_reblogs,
 				args.pinned,
 				args.tagged,
 				ctx,
@@ -148,7 +148,7 @@ export function setupEndpointsAccount(router: Router): void {
 		auth(true, ["write:follows"]),
 		async (ctx) => {
 			const target = await UserHelpers.getUserCachedOr404(ctx.params.id, ctx);
-			//FIXME: Parse form data
+			// FIXME: Parse form data
 			ctx.body = await UserHelpers.followUser(target, true, false, ctx);
 		},
 	);
@@ -180,7 +180,7 @@ export function setupEndpointsAccount(router: Router): void {
 		"/v1/accounts/:id/mute",
 		auth(true, ["write:mutes"]),
 		async (ctx) => {
-			//FIXME: parse form data
+			// FIXME: parse form data
 			const args = normalizeUrlQuery(
 				argsToBools(limitToInt(ctx.query, ["duration"]), ["notifications"]),
 			);

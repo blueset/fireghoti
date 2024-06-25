@@ -38,9 +38,6 @@ export class PaginationHelpers {
 	}
 
 	/**
-	 *
-	 * @param query
-	 * @param limit
 	 * @param reverse whether the result needs to be .reverse()'d. Set this to true when the parameter minId is not undefined in the original request.
 	 */
 	public static async execQuery<T extends ObjectLiteral>(

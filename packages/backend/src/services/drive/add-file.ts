@@ -5,8 +5,14 @@ import { v4 as uuid } from "uuid";
 import type S3 from "aws-sdk/clients/s3.js"; // TODO: migrate to SDK v3
 import sharp from "sharp";
 import { IsNull } from "typeorm";
-import { publishMainStream, publishDriveStream } from "@/services/stream.js";
-import { FILE_TYPE_BROWSERSAFE, fetchMeta, genId } from "backend-rs";
+import { publishMainStream } from "@/services/stream.js";
+import {
+	DriveFileEvent,
+	FILE_TYPE_BROWSERSAFE,
+	fetchMeta,
+	genId,
+	publishToDriveFileStream,
+} from "backend-rs";
 import { contentDisposition } from "@/misc/content-disposition.js";
 import { getFileInfo } from "@/misc/get-file-info.js";
 import {
@@ -28,6 +34,7 @@ import { driveLogger } from "./logger.js";
 import { GenerateVideoThumbnail } from "./generate-video-thumbnail.js";
 import { deleteFile } from "./delete-file.js";
 import { inspect } from "node:util";
+import { toRustObject } from "@/prelude/undefined-to-null.js";
 
 const logger = driveLogger.createSubLogger("register", "yellow");
 
@@ -78,7 +85,7 @@ async function save(
 	// thunbnail, webpublic を必要なら生成
 	const alts = await generateAlts(path, type, !file.uri);
 
-	const meta = await fetchMeta(true);
+	const meta = await fetchMeta();
 
 	if (meta.useObjectStorage) {
 		//#region ObjectStorage params
@@ -363,7 +370,7 @@ async function upload(
 	if (type === "image/apng") type = "image/png";
 	if (!FILE_TYPE_BROWSERSAFE.includes(type)) type = "application/octet-stream";
 
-	const meta = await fetchMeta(true);
+	const meta = await fetchMeta();
 
 	const params = {
 		Bucket: meta.objectStorageBucket,
@@ -507,7 +514,7 @@ export async function addFile({
 		const usage = await DriveFiles.calcDriveUsageOf(user);
 		const u = await Users.findOneBy({ id: user.id });
 
-		const instance = await fetchMeta(true);
+		const instance = await fetchMeta();
 		let driveCapacity =
 			1024 *
 			1024 *
@@ -579,7 +586,7 @@ export async function addFile({
 		: null;
 
 	const folder = await fetchFolder();
-	const instance = await fetchMeta(true);
+	const instance = await fetchMeta();
 
 	let file = new DriveFile();
 	file.id = genId();
@@ -658,11 +665,15 @@ export async function addFile({
 
 	logger.info(`drive file has been created ${file.id}`);
 
-	if (user) {
+	if (user != null) {
 		DriveFiles.pack(file, { self: true }).then((packedFile) => {
 			// Publish driveFileCreated event
 			publishMainStream(user.id, "driveFileCreated", packedFile);
-			publishDriveStream(user.id, "fileCreated", packedFile);
+			publishToDriveFileStream(
+				user.id,
+				DriveFileEvent.Create,
+				toRustObject(file),
+			);
 		});
 	}
 

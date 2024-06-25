@@ -1,7 +1,7 @@
 import { publishMainStream } from "@/services/stream.js";
 import define from "@/server/api/define.js";
 import { RegistryItems } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 
 export const meta = {
 	requireCredential: true,
@@ -41,10 +41,11 @@ export default define(meta, paramDef, async (ps, user) => {
 			value: ps.value,
 		});
 	} else {
+		const now = new Date();
 		await RegistryItems.insert({
-			id: genId(),
-			createdAt: new Date(),
-			updatedAt: new Date(),
+			id: genIdAt(now),
+			createdAt: now,
+			updatedAt: now,
 			userId: user.id,
 			domain: null,
 			scope: ps.scope,

@@ -1,7 +1,7 @@
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { GalleryPosts, GalleryLikes } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 
 export const meta = {
 	tags: ["gallery"],
@@ -40,21 +40,21 @@ export default define(meta, paramDef, async (ps, user) => {
 	}
 
 	// if already liked
-	const exist = await GalleryLikes.exist({
-		where: {
-			postId: post.id,
-			userId: user.id,
-		},
+	const exists = await GalleryLikes.existsBy({
+		postId: post.id,
+		userId: user.id,
 	});
 
-	if (exist) {
+	if (exists) {
 		throw new ApiError(meta.errors.alreadyLiked);
 	}
 
+	const now = new Date();
+
 	// Create like
 	await GalleryLikes.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		postId: post.id,
 		userId: user.id,
 	});

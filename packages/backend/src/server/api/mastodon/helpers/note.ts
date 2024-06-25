@@ -6,7 +6,6 @@ import {
 	NoteFavorites,
 	NoteReactions,
 	Notes,
-	ScheduledNotes,
 	UserNotePinings,
 } from "@/models/index.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
@@ -20,7 +19,7 @@ import deleteReaction from "@/services/note/reaction/delete.js";
 import createNote, { extractMentionedUsers } from "@/services/note/create.js";
 import editNote from "@/services/note/edit.js";
 import deleteNote from "@/services/note/delete.js";
-import { genId } from "backend-rs";
+import { fetchMeta, genIdAt } from "backend-rs";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
@@ -36,15 +35,13 @@ import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js"
 import { Cache } from "@/misc/cache.js";
 import AsyncLock from "async-lock";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
-import { IsNull } from "typeorm";
+import { In, IsNull } from "typeorm";
 import {
 	getStubMastoContext,
 	type MastoContext,
 } from "@/server/api/mastodon/index.js";
-import { fetchMeta } from "backend-rs";
 import { translate } from "@/misc/translate.js";
-import { createScheduledNoteJob } from "@/queue";
-import { ScheduledNote } from "@/models/entities/scheduled-note";
+import { createScheduledNoteJob } from "@/queue/index.js";
 
 export class NoteHelpers {
 	public static postIdempotencyCache = new Cache<{
@@ -72,9 +69,11 @@ export class NoteHelpers {
 		await createReaction(user, note, reaction).catch((e) => {
 			if (
 				e instanceof IdentifiableError &&
-				e.id == "51c42bb4-931a-456b-bff7-e5a8a70dd298"
-			)
+				e.id === "51c42bb4-931a-456b-bff7-e5a8a70dd298"
+			) {
+				// The same reaction already exists
 				return;
+			}
 			throw e;
 		});
 		return getNote(note.id, user);
@@ -124,7 +123,7 @@ export class NoteHelpers {
 		ctx: MastoContext,
 	): Promise<Note> {
 		const user = ctx.user as ILocalUser;
-		const bookmarked = await NoteFavorites.exist({
+		const bookmarked = await NoteFavorites.exists({
 			where: {
 				noteId: note.id,
 				userId: user.id,
@@ -132,9 +131,11 @@ export class NoteHelpers {
 		});
 
 		if (!bookmarked) {
+			const now = new Date();
+
 			await NoteFavorites.insert({
-				id: genId(),
-				createdAt: new Date(),
+				id: genIdAt(now),
+				createdAt: now,
 				noteId: note.id,
 				userId: user.id,
 			});
@@ -158,7 +159,7 @@ export class NoteHelpers {
 
 	public static async pinNote(note: Note, ctx: MastoContext): Promise<Note> {
 		const user = ctx.user as ILocalUser;
-		const pinned = await UserNotePinings.exist({
+		const pinned = await UserNotePinings.exists({
 			where: {
 				userId: user.id,
 				noteId: note.id,
@@ -174,7 +175,7 @@ export class NoteHelpers {
 
 	public static async unpinNote(note: Note, ctx: MastoContext): Promise<Note> {
 		const user = ctx.user as ILocalUser;
-		const pinned = await UserNotePinings.exist({
+		const pinned = await UserNotePinings.exists({
 			where: {
 				userId: user.id,
 				noteId: note.id,
@@ -250,6 +251,7 @@ export class NoteHelpers {
 			cw: note.cw,
 			fileIds: note.fileIds,
 			updatedAt: note.updatedAt ?? note.createdAt,
+			emojis: note.emojis,
 		};
 
 		edits.push(curr);
@@ -363,6 +365,7 @@ export class NoteHelpers {
 			const currentNote = notes.at(-1) ?? rootNote;
 			if (!currentNote.replyId) break;
 			const nextNote = await getNote(currentNote.replyId, user).catch((e) => {
+				// Note does not exist.
 				if (e.id === "9725d0ce-ba28-4dde-95a7-2cbb2c15de24") return null;
 				throw e;
 			});
@@ -381,7 +384,7 @@ export class NoteHelpers {
 		const user = ctx.user as ILocalUser;
 		const files =
 			request.media_ids && request.media_ids.length > 0
-				? DriveFiles.findByIds(request.media_ids)
+				? DriveFiles.findBy({ id: In(request.media_ids) })
 				: [];
 
 		const reply = request.in_reply_to_id
@@ -391,12 +394,18 @@ export class NoteHelpers {
 			? await getNote(request.quote_id, user)
 			: undefined;
 
-		const delay = Math.max(0, (request.scheduled_at?.getTime() ?? Date.now()) - Date.now());
+		const delay = Math.max(
+			0,
+			(request.scheduled_at?.getTime() ?? Date.now()) - Date.now(),
+		);
 
-		const visibility = request.visibility ?? UserHelpers.getDefaultNoteVisibility(ctx);
+		const visibility =
+			request.visibility ?? UserHelpers.getDefaultNoteVisibility(ctx);
 
-		const data = {
-			createdAt: new Date(),
+		const now = new Date();
+
+		const data = await awaitAll({
+			createdAt: now,
 			files: files,
 			poll: request.poll
 				? {
@@ -405,7 +414,8 @@ export class NoteHelpers {
 						expiresAt:
 							request.poll.expires_in && request.poll.expires_in > 0
 								? new Date(
-										(request.scheduled_at ?? new Date()).getTime() + request.poll.expires_in * 1000,
+										(request.scheduled_at ?? new Date()).getTime() +
+											request.poll.expires_in * 1000,
 									)
 								: null,
 					}
@@ -417,35 +427,78 @@ export class NoteHelpers {
 			lang: request.language,
 			visibility: delay ? "specified" : visibility,
 			visibleUsers: Promise.resolve(visibility).then((p) =>
-				delay ? [] : p === "specified"
-					? this.extractMentions(request.text ?? "", ctx)
-					: undefined,
-			),
-		};
-
-		return createNote(user, await awaitAll(data), false, !delay ? undefined : async (note) => {
-			await ScheduledNotes.insert({
-				id: genId(),
-				noteId: note.id,
-				userId: user.id,
-				scheduledAt: request.scheduled_at
-			});
-
-			createScheduledNoteJob(
-				{
-					user: { id: user.id },
-					noteId: note.id,
-					option: {
-						poll: data.poll,
-						visibility: await visibility,
-						visibleUserIds: await Promise.resolve(visibility)
-							.then(v => v === "specified" ? data.visibleUsers : undefined)
-							.then(users => users?.map(u => u.id)),
-					}
-				},
 				delay
-			);
+					? []
+					: p === "specified"
+						? this.extractMentions(request.text ?? "", ctx)
+						: undefined,
+			),
 		});
+
+		return createNote(
+			user,
+			{
+				createdAt: now,
+				scheduledAt: delay != null ? new Date(data.scheduledAt!) : null,
+				files: data.files,
+				poll:
+					data.poll != null
+						? {
+								choices: data.poll.choices,
+								multiple: data.poll.multiple,
+								expiresAt:
+									data.poll.expiresAt != null
+										? new Date(data.poll.expiresAt)
+										: null,
+							}
+						: undefined,
+				text: data.text || undefined,
+				lang: data.lang,
+				reply,
+				renote,
+				cw: data.cw,
+				...(delay != null
+					? {
+							visibility: "specified",
+							visibleUsers: [],
+						}
+					: {
+							visibility: data.visibility,
+							visibleUsers: data.visibleUsers,
+						}),
+			},
+			false,
+			delay
+				? async (note) => {
+						createScheduledNoteJob(
+							{
+								user: { id: user.id },
+								noteId: note.id,
+								option: {
+									poll: data.poll
+										? {
+												choices: data.poll.choices,
+												multiple: data.poll.multiple,
+												expiresAt: data.poll.expiresAt
+													? new Date(data.poll.expiresAt)
+													: null,
+											}
+										: undefined,
+									visibility: data.visibility,
+									visibleUserIds: await Promise.resolve(visibility)
+										.then((v) =>
+											v === "specified" ? data.visibleUsers : undefined,
+										)
+										.then((users) => users?.map((u) => u.id)),
+									replyId: data.reply?.id ?? undefined,
+									renoteId: data.renote?.id ?? undefined,
+								},
+							},
+							delay,
+						);
+					}
+				: undefined,
+		);
 	}
 
 	public static async editNote(
@@ -456,7 +509,7 @@ export class NoteHelpers {
 		const user = ctx.user as ILocalUser;
 		const files =
 			request.media_ids && request.media_ids.length > 0
-				? await DriveFiles.findByIds(request.media_ids)
+				? await DriveFiles.findBy({ id: In(request.media_ids) })
 				: [];
 
 		if (request.media_attributes && request.media_attributes.length > 0) {
@@ -497,7 +550,7 @@ export class NoteHelpers {
 		ctx: MastoContext,
 	): Promise<User[]> {
 		const user = ctx.user as ILocalUser;
-		return extractMentionedUsers(user, mfm.parse(text)!);
+		return extractMentionedUsers(user, mfm.parse(text));
 	}
 
 	public static normalizeComposeOptions(
@@ -627,7 +680,7 @@ export class NoteHelpers {
 			return null;
 		return `${user.id}-${
 			Array.isArray(headers["idempotency-key"])
-				? headers["idempotency-key"].at(-1)!
+				? headers["idempotency-key"].at(-1)
 				: headers["idempotency-key"]
 		}`;
 	}
@@ -667,7 +720,7 @@ export class NoteHelpers {
 		ctx: MastoContext,
 	): Promise<MastodonEntity.StatusTranslation> {
 		const user = ctx.user as ILocalUser;
-		const instance = await fetchMeta(true);
+		const instance = await fetchMeta();
 		const provider = instance.libreTranslateApiUrl
 			? "LibreTranslate"
 			: instance.deeplAuthKey
@@ -681,7 +734,7 @@ export class NoteHelpers {
 			targetLang = "en-US";
 		}
 
-		let sourceLang = (status.language) ?? "";
+		let sourceLang = status.language ?? "";
 		let translatedText = "";
 		if (status.content) {
 			const translated = await translate(
@@ -690,13 +743,11 @@ export class NoteHelpers {
 				targetLang,
 			);
 			translatedText = translated.text;
-			sourceLang = (translated.sourceLang) ?? sourceLang;
+			sourceLang = translated.sourceLang ?? sourceLang;
 		}
 
 		const translateText = (text: string) =>
-			translate(text, sourceLang, targetLang as PostLanguage).then(
-				(p) => p.text,
-			);
+			translate(text, sourceLang, targetLang).then((p) => p.text);
 
 		return await awaitAll({
 			content: translatedText,
@@ -704,9 +755,12 @@ export class NoteHelpers {
 				? translateText(status.spoiler_text)
 				: null,
 			media_attachments: Promise.all(
-				status.media_attachments.map(async (s) =>
-					s.description ? translateText(s.description) : null,
-				),
+				status.media_attachments.map(async (s) => ({
+					id: s.id,
+					description: s.description
+						? await translateText(s.description)
+						: null,
+				})),
 			),
 			poll: status.poll
 				? awaitAll({
@@ -729,18 +783,17 @@ export class NoteHelpers {
 		minId: string | undefined,
 		limit = 20,
 		ctx: MastoContext,
-	): Promise<ScheduledNote[]> {
+	): Promise<Note[]> {
 		if (limit > 40) limit = 40;
-		const user = ctx.user as ILocalUser;
 
 		const query = PaginationHelpers.makePaginationQuery(
-			ScheduledNotes.createQueryBuilder("scheduledNote"),
+			Notes.createQueryBuilder("note"),
 			sinceId,
 			maxId,
 			minId,
 		)
-			.leftJoinAndSelect("scheduledNote.note", "note")
-			.leftJoinAndSelect("scheduledNote.user", "user");
+			.andWhere("note.scheduledAt IS NOT NULL")
+			.leftJoinAndSelect("note.user", "user");
 
 		return PaginationHelpers.execQueryLinkPagination(
 			query,
@@ -753,13 +806,13 @@ export class NoteHelpers {
 	public static async getScheduledNoteOr404(
 		id: string,
 		ctx: MastoContext,
-	): Promise<ScheduledNote> {
+	): Promise<Note> {
 		const user = ctx.user as ILocalUser | null;
-		const query = ScheduledNotes.createQueryBuilder("scheduledNote")
-			.where("scheduledNote.noteId = :id", { id })
-			.andWhere("scheduledNote.userId = :userId", { userId: user?.id })
-			.leftJoinAndSelect("scheduledNote.note", "note")
-			.leftJoinAndSelect("scheduledNote.user", "user");
+		const query = Notes.createQueryBuilder("note")
+			.where("note.id = :id", { id })
+			.andWhere("note.userId = :userId", { userId: user?.id })
+			.andWhere("note.scheduledAt IS NOT NULL")
+			.leftJoinAndSelect("note.user", "user");
 		return query.getOneOrFail().catch((_) => {
 			throw new MastoApiError(404);
 		});

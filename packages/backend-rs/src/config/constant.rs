@@ -1,24 +1,27 @@
-#[crate::export]
+//! This module is used in the TypeScript backend only.
+
+#[macros::ts_export]
 pub const SECOND: i32 = 1000;
-#[crate::export]
+#[macros::ts_export]
 pub const MINUTE: i32 = 60 * SECOND;
-#[crate::export]
+#[macros::ts_export]
 pub const HOUR: i32 = 60 * MINUTE;
-#[crate::export]
+#[macros::ts_export]
 pub const DAY: i32 = 24 * HOUR;
 
-#[crate::export]
+#[macros::ts_export]
 pub const USER_ONLINE_THRESHOLD: i32 = 10 * MINUTE;
-#[crate::export]
+#[macros::ts_export]
 pub const USER_ACTIVE_THRESHOLD: i32 = 3 * DAY;
 
 /// List of file types allowed to be viewed directly in the browser
+///
 /// Anything not included here will be responded as application/octet-stream
-/// SVG is not allowed because it generates XSS <- we need to fix this and later allow it to be viewed directly
-/// <https://github.com/sindresorhus/file-type/blob/main/supported.js>
-/// <https://github.com/sindresorhus/file-type/blob/main/core.js>
-/// <https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Containers>
-#[crate::export]
+/// SVG is not allowed because it generates XSS (TODO: fix this and later allow it to be viewed directly)
+/// * <https://github.com/sindresorhus/file-type/blob/main/supported.js>
+/// * <https://github.com/sindresorhus/file-type/blob/main/core.js>
+/// * <https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Containers>
+#[macros::ts_export]
 pub const FILE_TYPE_BROWSERSAFE: [&str; 41] = [
     // Images
     "image/png",

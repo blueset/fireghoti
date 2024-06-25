@@ -151,6 +151,39 @@ pub enum PollNoteVisibility {
 #[serde(rename_all = "camelCase")]
 #[cfg_attr(not(feature = "napi"), derive(Clone))]
 #[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
+#[sea_orm(
+    rs_type = "String",
+    db_type = "Enum",
+    enum_name = "push_subscription_type"
+)]
+pub enum PushSubscriptionType {
+    #[sea_orm(string_value = "admin.report")]
+    AdminReport,
+    #[sea_orm(string_value = "admin.sign_up")]
+    AdminSignUp,
+    #[sea_orm(string_value = "favourite")]
+    Favourite,
+    #[sea_orm(string_value = "follow")]
+    Follow,
+    #[sea_orm(string_value = "follow_request")]
+    FollowRequest,
+    #[sea_orm(string_value = "mention")]
+    Mention,
+    #[sea_orm(string_value = "poll")]
+    Poll,
+    #[sea_orm(string_value = "reblog")]
+    Reblog,
+    #[sea_orm(string_value = "status")]
+    Status,
+    #[sea_orm(string_value = "update")]
+    Update,
+}
+#[derive(
+    Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, serde::Serialize, serde::Deserialize,
+)]
+#[serde(rename_all = "camelCase")]
+#[cfg_attr(not(feature = "napi"), derive(Clone))]
+#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "relay_status")]
 pub enum RelayStatus {
     #[sea_orm(string_value = "accepted")]

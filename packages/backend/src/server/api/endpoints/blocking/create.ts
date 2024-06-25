@@ -69,14 +69,12 @@ export default define(meta, paramDef, async (ps, user) => {
 	});
 
 	// Check if already blocking
-	const exist = await Blockings.exist({
-		where: {
-			blockerId: blocker.id,
-			blockeeId: blockee.id,
-		},
+	const exists = await Blockings.existsBy({
+		blockerId: blocker.id,
+		blockeeId: blockee.id,
 	});
 
-	if (exist) {
+	if (exists) {
 		throw new ApiError(meta.errors.alreadyBlocking);
 	}
 

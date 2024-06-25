@@ -3,7 +3,7 @@ import type { CacheableUser } from "@/models/entities/user.js";
 import type { Note } from "@/models/entities/note.js";
 import { PollVotes, NoteWatchings, Polls, Blockings } from "@/models/index.js";
 import { Not } from "typeorm";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 
 export default async function (
@@ -43,10 +43,12 @@ export default async function (
 		throw new Error("already voted");
 	}
 
+	const now = new Date();
+
 	// Create vote
 	await PollVotes.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		noteId: note.id,
 		userId: user.id,
 		choice: choice,

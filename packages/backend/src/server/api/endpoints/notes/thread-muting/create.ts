@@ -1,5 +1,5 @@
 import { Notes, NoteThreadMutings } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import readNote from "@/services/note/read.js";
 import define from "@/server/api/define.js";
 import { getNote } from "@/server/api/common/getters.js";
@@ -49,9 +49,11 @@ export default define(meta, paramDef, async (ps, user) => {
 
 	await readNote(user.id, mutedNotes);
 
+	const now = new Date();
+
 	await NoteThreadMutings.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		threadId: note.threadId || note.id,
 		userId: user.id,
 	});

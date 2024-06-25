@@ -1,10 +1,10 @@
 use crate::service::stream::{publish_to_stream, Error, Stream};
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
 // TODO: define schema type in other place
-#[derive(Deserialize, Serialize)]
+#[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object)]
+#[macros::export(object)]
 pub struct PackedEmoji {
     pub id: String,
     pub aliases: Vec<String>,
@@ -17,11 +17,11 @@ pub struct PackedEmoji {
     pub height: Option<i32>,
 }
 
-#[crate::export(js_name = "publishToBroadcastStream")]
+#[macros::export(js_name = "publishToBroadcastStream")]
 pub async fn publish(emoji: &PackedEmoji) -> Result<(), Error> {
     publish_to_stream(
         &Stream::CustomEmoji,
-        Some("emojiAdded".to_string()),
+        Some("emojiAdded"),
         Some(format!("{{\"emoji\":{}}}", serde_json::to_string(emoji)?)),
     )
     .await

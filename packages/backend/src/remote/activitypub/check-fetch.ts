@@ -15,7 +15,7 @@ import type { UserPublickey } from "@/models/entities/user-publickey.js";
 import { verify } from "node:crypto";
 
 export async function hasSignature(req: IncomingMessage): Promise<string> {
-	const meta = await fetchMeta(true);
+	const meta = await fetchMeta();
 	const required = meta.secureMode || meta.privateMode;
 
 	try {
@@ -30,7 +30,7 @@ export async function hasSignature(req: IncomingMessage): Promise<string> {
 }
 
 export async function checkFetch(req: IncomingMessage): Promise<number> {
-	const meta = await fetchMeta(true);
+	const meta = await fetchMeta();
 	if (meta.secureMode || meta.privateMode) {
 		if (req.headers.host !== config.host) return 400;
 

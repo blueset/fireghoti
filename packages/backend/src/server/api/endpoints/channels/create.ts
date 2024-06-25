@@ -2,7 +2,7 @@ import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { Channels, DriveFiles } from "@/models/index.js";
 import type { Channel } from "@/models/entities/channel.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 
 export const meta = {
 	tags: ["channels"],
@@ -55,9 +55,11 @@ export default define(meta, paramDef, async (ps, user) => {
 		}
 	}
 
+	const now = new Date();
+
 	const channel = await Channels.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		userId: user.id,
 		name: ps.name,
 		description: ps.description || null,

@@ -30,7 +30,7 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, me) => {
-	const meta = await fetchMeta(true);
+	const meta = await fetchMeta();
 
 	const users = await Promise.all(
 		meta.pinnedUsers

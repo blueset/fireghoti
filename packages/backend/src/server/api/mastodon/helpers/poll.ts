@@ -134,7 +134,7 @@ export class PollHelpers {
 				}
 			});
 
-			// リモート投票の場合リプライ送信
+			// Deliver activity in case of a remote poll
 			if (note.userHost != null) {
 				const pollOwner = (await Users.findOneByOrFail({
 					id: note.userId,

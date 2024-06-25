@@ -7,7 +7,7 @@
 	"prConcurrentLimit": 20,
 	"enabledManagers": ["npm", "cargo"],
 	"baseBranches": ["develop"],
-	"ignorePaths": ["packages/megalodon/package.json", "packages/backend-rs/npm"],
+	"ignorePaths": ["packages/backend-rs/npm"],
 	"lockFileMaintenance": {
 		"enabled": true,
 		"recreateWhen": "always",
@@ -16,8 +16,24 @@
 		"commitMessageAction": "Lock file maintenance"
 	},
 	"packageRules": [
-		{"matchUpdateTypes": "patch", "automerge": true},
-		{"groupName": "definitelyTyped", "matchPackagePrefixes": ["@types/"]},
-		{"groupName": "bull-board", "matchPackagePrefixes": ["@bull-board/"]}
+		{"matchUpdateTypes": ["patch", "lockFileMaintenance"], "automerge": true},
+		{"groupName": "rust-url", "matchManagers": ["cargo"], "matchPackageNames": ["idna", "url"]},
+		{"groupName": "definitelyTyped", "matchManagers": ["npm"], "matchPackagePrefixes": ["@types/"]},
+		{"groupName": "bull-board", "matchManagers": ["npm"], "matchPackagePrefixes": ["@bull-board/"]},
+		{"groupName": "biome", "matchManagers": ["npm"], "matchPackagePrefixes": ["@biomejs/"]},
+		{
+			"groupName": "Misskey dependencies",
+			"matchManagers": ["npm"],
+			"matchPackageNames": [
+				"@misskey-dev/browser-image-resizer",
+				"@syuilo/aiscript",
+				"mfm-js",
+				"rndstr",
+				"summaly",
+				"syuilo-password-strength",
+				"xev"
+			],
+			"automerge": false
+		}
 	]
 }

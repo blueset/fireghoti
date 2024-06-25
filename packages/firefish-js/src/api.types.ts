@@ -1105,16 +1105,22 @@ export type Endpoints = {
 	"users/stats": { req: TODO; res: TODO };
 
 	// Mastodon Client API
-	"v1/firefish/apps/info": { req: {
-		client_id: string;
-	}; res: {
-		name: string;
-	} };
-	"v1/firefish/auth/code": { req: {
-		client_id: string;
-		redirect_uri: string | null;
-		scopes: string | string[];
-	}; res: {
-		code: string;
-	} };
+	"v1/firefish/apps/info": {
+		req: {
+			client_id: string;
+		};
+		res: {
+			name: string;
+		};
+	};
+	"v1/firefish/auth/code": {
+		req: {
+			client_id: string;
+			redirect_uri: string | null;
+			scopes: string | string[];
+		};
+		res: {
+			code: string;
+		};
+	};
 };

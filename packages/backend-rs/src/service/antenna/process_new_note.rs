@@ -1,84 +1,64 @@
-use crate::database::{cache, db_conn, redis_conn, redis_key, RedisConnError};
-use crate::federation::acct::Acct;
-use crate::misc::get_note_all_texts::{all_texts, NoteLike};
-use crate::model::entity::{antenna, note};
-use crate::service::antenna::check_hit::{check_hit_antenna, AntennaCheckError};
-use crate::service::stream;
-use crate::util::id::{get_timestamp, InvalidIdError};
+use crate::{
+    database::{cache, redis_conn, redis_key, RedisConnError},
+    federation::acct::Acct,
+    misc::note::elaborate,
+    model::entity::note,
+    service::{
+        antenna,
+        antenna::check_hit::{check_hit_antenna, AntennaCheckError},
+        stream,
+    },
+    util::id::{get_timestamp, InvalidIdError},
+};
 use redis::{streams::StreamMaxlen, AsyncCommands, RedisError};
-use sea_orm::{DbErr, EntityTrait};
+use sea_orm::prelude::*;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("Database error: {0}")]
+    #[doc = "database error"]
+    #[error(transparent)]
     Db(#[from] DbErr),
-    #[error("Cache error: {0}")]
+    #[error("Redis cache operation has failed")]
     Cache(#[from] cache::Error),
-    #[error("Redis error: {0}")]
+    #[error("failed to execute a Redis command")]
     Redis(#[from] RedisError),
-    #[error("Redis connection error: {0}")]
+    #[error("bad Redis connection")]
     RedisConn(#[from] RedisConnError),
-    #[error("Invalid ID: {0}")]
+    #[doc = "provided string is not a valid Firefish ID"]
+    #[error(transparent)]
     InvalidId(#[from] InvalidIdError),
-    #[error("Stream error: {0}")]
+    #[error("Redis stream operation has failed")]
     Stream(#[from] stream::Error),
-    #[error("Failed to check if the note should be added to antenna: {0}")]
+    #[error("failed to check if the note should be added to antenna")]
     AntennaCheck(#[from] AntennaCheckError),
 }
 
 // for napi export
 // https://github.com/napi-rs/napi-rs/issues/2060
-type Antenna = antenna::Model;
 type Note = note::Model;
 
-// TODO?: it might be better to store this directly in memory
-// (like fetch_meta) instead of Redis as it's used so much
-async fn antennas() -> Result<Vec<Antenna>, Error> {
-    const CACHE_KEY: &str = "antennas";
-
-    if let Some(antennas) = cache::get::<Vec<Antenna>>(CACHE_KEY).await? {
-        Ok(antennas)
-    } else {
-        let antennas = antenna::Entity::find().all(db_conn().await?).await?;
-        cache::set(CACHE_KEY, &antennas, 5 * 60).await?;
-        Ok(antennas)
-    }
-}
-
-#[crate::export]
+#[macros::export]
 pub async fn update_antennas_on_new_note(
-    note: Note,
+    note: &Note,
     note_author: &Acct,
     note_muted_users: &[String],
 ) -> Result<(), Error> {
-    let note_cloned = note.clone();
-    let note_all_texts = all_texts(
-        NoteLike {
-            file_ids: note.file_ids,
-            user_id: note.user_id,
-            text: note.text,
-            cw: note.cw,
-            renote_id: note.renote_id,
-            reply_id: note.reply_id,
-        },
-        false,
-    )
-    .await?;
+    let note_all_texts = elaborate!(note, false).await?;
 
     // TODO: do this in parallel
-    for antenna in antennas().await?.iter() {
+    for antenna in antenna::cache::get().await?.iter() {
         if note_muted_users.contains(&antenna.user_id) {
             continue;
         }
-        if check_hit_antenna(antenna, &note_cloned, &note_all_texts, note_author).await? {
-            add_note_to_antenna(&antenna.id, &note_cloned).await?;
+        if check_hit_antenna(antenna, note, &note_all_texts, note_author).await? {
+            add_note_to_antenna(&antenna.id, note).await?;
         }
     }
 
     Ok(())
 }
 
-pub async fn add_note_to_antenna(antenna_id: &str, note: &Note) -> Result<(), Error> {
+async fn add_note_to_antenna(antenna_id: &str, note: &Note) -> Result<(), Error> {
     // for timeline API
     redis_conn()
         .await?
@@ -91,5 +71,7 @@ pub async fn add_note_to_antenna(antenna_id: &str, note: &Note) -> Result<(), Er
         .await?;
 
     // for streaming API
-    Ok(stream::antenna::publish(antenna_id.to_string(), note).await?)
+    stream::antenna::publish(antenna_id.to_string(), note).await?;
+
+    Ok(())
 }

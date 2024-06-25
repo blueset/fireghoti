@@ -6,7 +6,7 @@ import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import type { StreamMessages } from "@/server/api/stream/types.js";
 import { NotificationConverter } from "@/server/api/mastodon/converters/notification.js";
 import { AnnouncementConverter } from "@/server/api/mastodon/converters/announcement.js";
-import isQuote from "@/misc/is-quote.js";
+import { isQuote } from "backend-rs";
 
 export class MastodonStreamUser extends MastodonStream {
 	public static shouldShare = true;
@@ -48,7 +48,7 @@ export class MastodonStreamUser extends MastodonStream {
 		if (!(await this.shouldProcessNote(note))) return;
 
 		switch (data.type) {
-			case "updated":
+			case "updated": {
 				const encoded = await NoteConverter.encodeEvent(
 					note,
 					this.user,
@@ -56,6 +56,7 @@ export class MastodonStreamUser extends MastodonStream {
 				);
 				this.connection.send(this.chName, "status.update", encoded);
 				break;
+			}
 			case "deleted":
 				this.connection.send(this.chName, "delete", note.id);
 				break;
@@ -66,7 +67,7 @@ export class MastodonStreamUser extends MastodonStream {
 
 	private async onUserEvent(data: StreamMessages["main"]["payload"]) {
 		switch (data.type) {
-			case "notification":
+			case "notification": {
 				const encoded = await NotificationConverter.encodeEvent(
 					data.body.id,
 					this.user,
@@ -74,6 +75,7 @@ export class MastodonStreamUser extends MastodonStream {
 				);
 				if (encoded) this.connection.send(this.chName, "notification", encoded);
 				break;
+			}
 			default:
 				break;
 		}
@@ -87,7 +89,12 @@ export class MastodonStreamUser extends MastodonStream {
 				this.connection.send(
 					this.chName,
 					"announcement",
-					await AnnouncementConverter.encode(data.body, false),
+					await AnnouncementConverter.encode(
+						data.body,
+						false,
+						undefined,
+						undefined,
+					),
 				);
 				break;
 			case "announcementDeleted":

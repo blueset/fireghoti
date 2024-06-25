@@ -84,7 +84,7 @@ export default (endpoint: IEndpoint, ctx: Koa.Context) =>
 
 				// Log IP
 				if (user) {
-					fetchMeta(true).then((meta) => {
+					fetchMeta().then((meta) => {
 						if (!meta.enableIpLogging) return;
 						const ip = ctx.ip;
 						const ips = userIpHistories.get(user.id);

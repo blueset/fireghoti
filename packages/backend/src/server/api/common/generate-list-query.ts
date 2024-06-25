@@ -1,5 +1,5 @@
-import { Brackets, SelectQueryBuilder } from "typeorm";
-import { User } from "@/models/entities/user.js";
+import { Brackets, type SelectQueryBuilder } from "typeorm";
+import type { User } from "@/models/entities/user.js";
 import { UserListJoinings, UserLists } from "@/models/index.js";
 
 export function generateListQuery(
@@ -16,7 +16,7 @@ export function generateListQuery(
 
 	q.andWhere(
 		new Brackets((qb) => {
-			qb.where(`note.userId = :meId`);
+			qb.where("note.userId = :meId");
 			qb.orWhere(`note.userId NOT IN (${memberQuery.getQuery()})`);
 		}),
 	);

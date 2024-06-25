@@ -145,7 +145,7 @@ export class MfmHelpers {
 					.split(/\r\n|\r|\n/)
 					.map((x) => doc.createTextNode(x));
 
-				for (const x of intersperse<FIXME | "br">("br", nodes)) {
+				for (const x of intersperse<Text | "br">("br", nodes)) {
 					inner.appendChild(x === "br" ? doc.createElement("br") : x);
 				}
 
@@ -242,13 +242,12 @@ export class MfmHelpers {
 			},
 
 			text(node) {
-				// const el = doc.createElement("span");
 				const result = [];
 				const nodes = node.props.text
 					.split(/\r\n|\r|\n/)
 					.map((x) => doc.createTextNode(x));
 
-				for (const x of intersperse<FIXME | "br">("br", nodes)) {
+				for (const x of intersperse<Text | "br">("br", nodes)) {
 					result.push(x === "br" ? doc.createElement("br") : x);
 				}
 

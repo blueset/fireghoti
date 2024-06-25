@@ -21,15 +21,13 @@ import {
 	NoteThreadMutings,
 	UserNotePinings,
 } from "@/models/index.js";
-import { decodeReaction } from "backend-rs";
+import { decodeReaction, isQuote } from "backend-rs";
 import { MentionConverter } from "@/server/api/mastodon/converters/mention.js";
 import { PollConverter } from "@/server/api/mastodon/converters/poll.js";
 import { populatePoll } from "@/models/repositories/note.js";
 import { FileConverter } from "@/server/api/mastodon/converters/file.js";
 import { awaitAll } from "@/prelude/await-all.js";
-import {
-	UserHelpers,
-} from "@/server/api/mastodon/helpers/user.js";
+import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { In, IsNull } from "typeorm";
 import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
 import {
@@ -37,18 +35,16 @@ import {
 	type MastoContext,
 } from "@/server/api/mastodon/index.js";
 import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
-import isQuote from "@/misc/is-quote.js";
 import { unique } from "@/prelude/array.js";
 import type { NoteReaction } from "@/models/entities/note-reaction.js";
 import { Cache } from "@/misc/cache.js";
 import { isFiltered } from "@/misc/is-filtered.js";
 import { unfurl } from "unfurl.js";
-import { ScheduledNote } from "@/models/entities/scheduled-note";
 
 export class NoteConverter {
 	private static noteContentHtmlCache = new Cache<string | null>(
 		"html:note:content",
-		config.htmlCache?.ttlSeconds ?? 60 * 60,
+		60 * 60,
 	);
 	private static cardCache = new Cache<MastodonEntity.Card | null>(
 		"note:card",
@@ -108,7 +104,7 @@ export class NoteConverter {
 		const isReblogged =
 			(ctx.renoteAggregate as Map<string, boolean>)?.get(note.id) ??
 			(user
-				? Notes.exist({
+				? Notes.exists({
 						where: {
 							userId: user.id,
 							renoteId: note.id,
@@ -126,7 +122,7 @@ export class NoteConverter {
 		const isBookmarked =
 			(ctx.bookmarkAggregate as Map<string, boolean>)?.get(note.id) ??
 			(user
-				? NoteFavorites.exist({
+				? NoteFavorites.exists({
 						where: {
 							userId: user.id,
 							noteId: note.id,
@@ -140,7 +136,7 @@ export class NoteConverter {
 				note.threadId ?? note.id,
 			) ??
 			(user
-				? NoteThreadMutings.exist({
+				? NoteThreadMutings.exists({
 						where: {
 							userId: user.id,
 							threadId: note.threadId || note.id,
@@ -165,9 +161,7 @@ export class NoteConverter {
 			return renote.url ?? renote.uri ?? `${config.url}/notes/${renote.id}`;
 		});
 
-		const identifier = `${note.id}:${(
-			note.updatedAt ?? note.createdAt
-		).getTime()}`;
+		const identifier = `${note.id}:${(note.updatedAt ?? note.createdAt).getTime()}`;
 
 		const text = quoteUri.then((quoteUri) =>
 			note.text !== null
@@ -224,7 +218,9 @@ export class NoteConverter {
 		const isPinned =
 			(ctx.pinAggregate as Map<string, boolean>)?.get(note.id) ??
 			(user && note.userId === user.id
-				? UserNotePinings.exist({ where: { userId: user.id, noteId: note.id } })
+				? UserNotePinings.exists({
+						where: { userId: user.id, noteId: note.id },
+					})
 				: undefined);
 
 		const tags = note.tags.map((tag) => {
@@ -266,7 +262,6 @@ export class NoteConverter {
 			];
 		});
 
-		// noinspection ES6MissingAwait
 		return await awaitAll({
 			id: note.id,
 			uri: note.uri ?? `https://${config.host}/notes/${note.id}`,
@@ -291,9 +286,7 @@ export class NoteConverter {
 					(!isQuote(note) ? reblog?.reblogs_count : note.renoteCount) ?? 0,
 			),
 			favourites_count: reactionCount,
-			reblogged: isReblogged || reblog.then((reblog) =>
-				reblog && !isQuote(note) ? true : false,
-			),
+			reblogged: isReblogged,
 			favourited: isFavorited,
 			muted: isMuted,
 			sensitive: files.then((files) =>
@@ -329,6 +322,7 @@ export class NoteConverter {
 			),
 			bookmarked: isBookmarked,
 			quote: reblog.then((reblog) => (isQuote(note) ? reblog : null)),
+			quote_id: isQuote(note) ? note.renoteId : null,
 			edited_at: note.updatedAt?.toISOString() ?? null,
 			filtered: filtered,
 		});
@@ -357,8 +351,8 @@ export class NoteConverter {
 		const pinAggregate = new Map<Note["id"], boolean>();
 
 		const renoteIds = notes
-			.filter((n) => n.renoteId != null)
-			.map((n) => n.renoteId!);
+			.map((n) => n.renoteId)
+			.filter((n): n is string => n != null);
 
 		const noteIds = unique(notes.map((n) => n.id));
 		const targets = unique([...noteIds, ...renoteIds]);
@@ -440,11 +434,7 @@ export class NoteConverter {
 		ctx.pinAggregate = pinAggregate;
 
 		const users = notes.filter((p) => !!p.user).map((p) => p.user as User);
-		const renoteUserIds = notes
-			.filter((p) => p.renoteUserId !== null)
-			.map((p) => p.renoteUserId as string);
 		await UserConverter.aggregateData([...users], ctx);
-		await UserConverter.aggregateDataByIds(renoteUserIds, ctx);
 		await prefetchEmojis(aggregateNoteEmojis(notes));
 	}
 
@@ -454,9 +444,8 @@ export class NoteConverter {
 		populated: PopulatedEmoji[],
 		ctx: MastoContext,
 	): MastodonEntity.Reaction[] {
+		// Client compatibility: SoraSNS requires `reactions` to be a `Dictionary<string, int>`.
 		if (ctx?.tokenApp?.name === "SoraSNS for iPad") {
-			// 3rd party compat
-			// SoraSNS requires `reactions` to be a `Dictionary<string, int>`.
 			return reactions as unknown as MastodonEntity.Reaction[];
 		}
 		return Object.keys(reactions)
@@ -512,6 +501,7 @@ export class NoteConverter {
 		}, [] as string[]);
 	}
 
+	/** Generate URL preview metadata from the first possible URL in the list provided. */
 	private static async generateCard(
 		urls: string[],
 		lang?: string,
@@ -584,13 +574,14 @@ export class NoteConverter {
 		return null;
 	}
 
+	/** Encode a schduled note. */
 	public static async encodeScheduledNote(
-		scheduledNote: ScheduledNote,
-		ctx: MastoContext,
+		note: Note,
+		_: MastoContext,
 	): Promise<MastodonEntity.ScheduledStatus> {
-		const { note, user } = scheduledNote;
-
-		const renote = note.renote ?? (note.renoteId ? getNote(note.renoteId, user) : null);
+		const renote =
+			note.renote ??
+			(note.renoteId ? getNote(note.renoteId, { id: note.userId }) : null);
 		const quoteUri = Promise.resolve(renote).then((renote) => {
 			if (!renote || !isQuote(note)) return null;
 			return renote.url ?? renote.uri ?? `${config.url}/notes/${renote.id}`;
@@ -605,17 +596,18 @@ export class NoteConverter {
 					: note.text
 				: "",
 		);
-		
+
 		const files = DriveFiles.packMany(note.fileIds);
 
 		const a = await awaitAll({
-			id: scheduledNote.noteId,
-			scheduled_at: scheduledNote.scheduledAt.toISOString(),
+			id: note.id,
+			scheduled_at: note.scheduledAt!.toISOString(),
 			params: {
 				text,
 				poll: note.hasPoll
-					? populatePoll(note, user?.id ?? null)
-						.then((p) => PollConverter.encodeScheduledPoll(p))
+					? populatePoll(note, note.userId ?? null).then((p) =>
+							PollConverter.encodeScheduledPoll(p),
+						)
 					: null,
 				media_ids: note.fileIds,
 				sensitive: files.then((files) =>
@@ -626,7 +618,7 @@ export class NoteConverter {
 				in_reply_to_id: note.replyId,
 				language: note.lang,
 				application_id: 0,
-				idempotency: scheduledNote.id,
+				idempotency: note.id,
 				with_rate_limit: false,
 			},
 			media_attachments: files.then((files) =>
@@ -635,9 +627,10 @@ export class NoteConverter {
 		});
 		return a;
 	}
-	
+
+	/** Encode an array of schduled notes. */
 	public static async encodeManyScheduledNotes(
-		scheduledNotes: ScheduledNote[],
+		scheduledNotes: Note[],
 		ctx: MastoContext,
 	): Promise<MastodonEntity.ScheduledStatus[]> {
 		const encoded = scheduledNotes.map((n) => this.encodeScheduledNote(n, ctx));

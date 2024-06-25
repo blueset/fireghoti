@@ -17,7 +17,7 @@ import {
 	Instances,
 	UserProfiles,
 } from "@/models/index.js";
-import { genId, isSilencedServer } from "backend-rs";
+import { genIdAt, isSilencedServer } from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
 import type { Packed } from "@/misc/schema.js";
@@ -46,9 +46,11 @@ export async function insertFollowingDoc(
 
 	let alreadyFollowed = false;
 
+	const now = new Date();
+
 	await Followings.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		followerId: follower.id,
 		followeeId: followee.id,
 

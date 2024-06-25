@@ -51,6 +51,9 @@ export function unique<T>(xs: T[]): T[] {
 	return [...new Set(xs)];
 }
 
+/**
+ * Filters an array of elements based on unique outputs of a key function
+ */
 export function uniqBy<T, U>(a: T[], key: (elm: T) => U): T[] {
 	const seen = new Set<U>();
 	return a.filter((item) => {

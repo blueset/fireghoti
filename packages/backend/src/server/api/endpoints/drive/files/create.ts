@@ -95,7 +95,7 @@ export default define(
 			name = null;
 		}
 
-		const instanceMeta = await fetchMeta(true);
+		const instanceMeta = await fetchMeta();
 
 		try {
 			// Create file

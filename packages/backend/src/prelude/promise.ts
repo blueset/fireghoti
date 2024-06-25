@@ -1,4 +1,7 @@
-// Returns T if promise settles before timeout, otherwise returns void, finishing execution in the background.
+/**
+ * Returns T if promise settles before timeout,
+ * otherwise returns void, finishing execution in the background.
+ */
 export async function promiseEarlyReturn<T>(
 	promise: Promise<T>,
 	after: number,

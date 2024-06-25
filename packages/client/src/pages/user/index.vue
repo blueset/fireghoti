@@ -49,7 +49,7 @@ const XGallery = defineAsyncComponent(() => import("./gallery.vue"));
 const props = withDefaults(
 	defineProps<{
 		acct: string;
-		page?: string;
+		page?: "home" | "reactions" | "media" | "clips" | "pages" | "gallery";
 	}>(),
 	{
 		page: "home",

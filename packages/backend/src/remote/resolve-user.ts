@@ -122,18 +122,14 @@ export async function resolveUser(
 					logger.info(
 						`return new remote user: ${chalk.magenta(finalAcctLower)}`,
 					);
-					return await createPerson(
-						fingerRes.self.href
-					);
+					return await createPerson(fingerRes.self.href);
 				}
 			}
 		}
 
 		// Not a split domain setup, so we can simply create and return the new user
 		logger.info(`return new remote user: ${chalk.magenta(finalAcctLower)}`);
-		return await createPerson(
-			fingerRes.self.href
-		);
+		return await createPerson(fingerRes.self.href);
 	}
 
 	// If user information is out of date, return it by starting over from WebFinger

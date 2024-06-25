@@ -5,7 +5,7 @@ import type { User } from "@/models/entities/user.js";
 import { renderPerson } from "@/remote/activitypub/renderer/person.js";
 import { deliverToFollowers } from "@/remote/activitypub/deliver-manager.js";
 import { deliverToRelays } from "@/services/relay.js";
-import { UserProfile } from "@/models/entities/user-profile.js";
+import type { UserProfile } from "@/models/entities/user-profile.js";
 import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
 import mfm from "mfm-js";
 import { extractHashtags } from "@/misc/extract-hashtags.js";
@@ -14,7 +14,6 @@ import { updateUsertags } from "@/services/update-hashtag.js";
 import { publishMainStream, publishUserEvent } from "@/services/stream.js";
 import acceptAllFollowRequests from "@/services/following/requests/accept-all.js";
 import { promiseEarlyReturn } from "@/prelude/promise.js";
-import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 
 export async function publishToFollowers(userId: User["id"]) {
 	const user = await Users.findOneBy({ id: userId });

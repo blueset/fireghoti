@@ -45,18 +45,18 @@ export default define(meta, paramDef, async (ps, user) => {
 	});
 
 	// Check not muting
-	const exist = await ReplyMutings.findOneBy({
+	const record = await ReplyMutings.findOneBy({
 		muterId: muter.id,
 		muteeId: mutee.id,
 	});
 
-	if (exist == null) {
+	if (record == null) {
 		throw new ApiError(meta.errors.notMuting);
 	}
 
 	// Delete mute
 	await ReplyMutings.delete({
-		id: exist.id,
+		id: record.id,
 	});
 
 	// publishUserEvent(user.id, "unmute", mutee);

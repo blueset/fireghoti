@@ -1,12 +1,8 @@
 import { Notes } from "@/models/index.js";
 import type { Note } from "@/models/entities/note.js";
 import define from "@/server/api/define.js";
-import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
-import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
-import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
-import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
 import { sqlLikeEscape } from "backend-rs";
-import type { SelectQueryBuilder } from "typeorm";
+import { searchNotes, type SearchParams } from "@/misc/search.js";
 
 export const meta = {
 	tags: ["notes"],
@@ -69,76 +65,23 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, me) => {
-	async function search(
-		modifier?: (query: SelectQueryBuilder<Note>) => void,
-	): Promise<Note[]> {
-		const query = makePaginationQuery(
-			Notes.createQueryBuilder("note"),
-			ps.sinceId,
-			ps.untilId,
-			ps.sinceDate ?? undefined,
-			ps.untilDate ?? undefined,
-		);
-		modifier?.(query);
-
-		if (ps.userId != null) {
-			query.andWhere("note.userId = :userId", { userId: ps.userId });
-		}
-
-		if (ps.channelId != null) {
-			query.andWhere("note.channelId = :channelId", {
-				channelId: ps.channelId,
-			});
-		}
-
-		query.innerJoinAndSelect("note.user", "user");
-
-		// "from: me": search all (public, home, followers, specified) my posts
-		//  otherwise: search public indexable posts only
-		// if (ps.userId == null || ps.userId !== me?.id) {
-		// 	query
-		// 		.andWhere("note.visibility = 'public'")
-		// 		.andWhere("user.isIndexable = TRUE");
-		// }
-
-		if (ps.userId != null) {
-			query.andWhere("note.userId = :userId", { userId: ps.userId });
-		}
-
-		if (ps.host === null) {
-			query.andWhere("note.userHost IS NULL");
-		}
-		if (ps.host != null) {
-			query.andWhere("note.userHost = :userHost", { userHost: ps.host });
-		}
-
-		if (ps.withFiles === true) {
-			query.andWhere("note.fileIds != '{}'");
-		}
-
-		query
-			.leftJoinAndSelect("user.avatar", "avatar")
-			.leftJoinAndSelect("user.banner", "banner")
-			.leftJoinAndSelect("note.reply", "reply")
-			.leftJoinAndSelect("note.renote", "renote")
-			.leftJoinAndSelect("reply.user", "replyUser")
-			.leftJoinAndSelect("replyUser.avatar", "replyUserAvatar")
-			.leftJoinAndSelect("replyUser.banner", "replyUserBanner")
-			.leftJoinAndSelect("renote.user", "renoteUser")
-			.leftJoinAndSelect("renoteUser.avatar", "renoteUserAvatar")
-			.leftJoinAndSelect("renoteUser.banner", "renoteUserBanner");
-
-		generateVisibilityQuery(query, me);
-		if (me) generateMutedUserQuery(query, me);
-		if (me) generateBlockedUserQuery(query, me);
-
-		return await query.take(ps.limit).getMany();
-	}
-
 	let notes: Note[];
 
+	const params: SearchParams = {
+		withFilesOnly: ps.withFiles ?? false,
+		limit: ps.limit,
+		myId: me?.id,
+		sinceId: ps.sinceId,
+		untilId: ps.untilId,
+		sinceDate: ps.sinceDate ?? undefined,
+		untilDate: ps.untilDate ?? undefined,
+		userId: ps.userId,
+		channelId: ps.channelId,
+		host: ps.host,
+	};
+
 	if (ps.query != null) {
-		const q = sqlLikeEscape(ps.query);
+		const searchWord = sqlLikeEscape(ps.query);
 
 		if (ps.searchCwAndAlt) {
 			// Whether we should return latest notes first
@@ -159,15 +102,15 @@ export default define(meta, paramDef, async (ps, me) => {
 				...new Map(
 					(
 						await Promise.all([
-							search((query) => {
-								query.andWhere("note.text &@~ :q", { q });
+							searchNotes(params, (query) => {
+								query.andWhere("note.text &@~ :q", { q: searchWord });
 							}),
-							search((query) => {
-								query.andWhere("note.cw &@~ :q", { q });
+							searchNotes(params, (query) => {
+								query.andWhere("note.cw &@~ :q", { q: searchWord });
 							}),
-							search((query) => {
+							searchNotes(params, (query) => {
 								query
-									.andWhere("drive_file.comment &@~ :q", { q })
+									.andWhere("drive_file.comment &@~ :q", { q: searchWord })
 									.innerJoin("note.files", "drive_file");
 							}),
 						])
@@ -179,12 +122,12 @@ export default define(meta, paramDef, async (ps, me) => {
 				.sort(compare)
 				.slice(0, ps.limit);
 		} else {
-			notes = await search((query) => {
-				query.andWhere("note.text &@~ :q", { q });
+			notes = await searchNotes(params, (query) => {
+				query.andWhere("note.text &@~ :q", { q: searchWord });
 			});
 		}
 	} else {
-		notes = await search();
+		notes = await searchNotes(params);
 	}
 
 	return await Notes.packMany(notes, me);

@@ -2,8 +2,14 @@ import { db } from "@/db/postgre.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
 import mfm from "mfm-js";
 import { extractMentions } from "@/misc/extract-mentions.js";
-import { type ProfileMention, resolveMentionToUserAndProfile } from "@/remote/resolve-user.js";
-import type { IMentionedRemoteUser, IMentionedRemoteUsers } from "@/models/entities/note.js";
+import {
+	type ProfileMention,
+	resolveMentionToUserAndProfile,
+} from "@/remote/resolve-user.js";
+import type {
+	IMentionedRemoteUser,
+	IMentionedRemoteUsers,
+} from "@/models/entities/note.js";
 import { unique } from "@/prelude/array.js";
 import { config } from "@/config.js";
 import { Mutex, Semaphore } from "async-mutex";
@@ -23,8 +29,9 @@ export const UserProfileRepository = db.getRepository(UserProfile).extend({
 		if (profile.description) tokens.push(...mfm.parse(profile.description));
 		if (profile.fields.length > 0)
 			tokens.push(
-				...profile.fields
-					.flatMap((p) => mfm.parse(p.value).concat(mfm.parse(p.name))),
+				...profile.fields.flatMap((p) =>
+					mfm.parse(p.value).concat(mfm.parse(p.name)),
+				),
 			);
 
 		return queue.runExclusive(async () => {
@@ -47,13 +54,12 @@ async function populateMentions(
 			resolveMentionToUserAndProfile(m.username, m.host, objectHost, limiter),
 		),
 	);
-	const remote = resolved
-		.filter(
-			(p): p is ProfileMention =>
-				!!p &&
-				p.data.host !== config.host &&
-				(p.data.host !== null || objectHost !== null),
-		);
+	const remote = resolved.filter(
+		(p): p is ProfileMention =>
+			!!p &&
+			p.data.host !== config.host &&
+			(p.data.host !== null || objectHost !== null),
+	);
 	const res = remote.map((m) => {
 		return {
 			uri: m.user.uri,

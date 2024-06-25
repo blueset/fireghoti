@@ -1,7 +1,26 @@
+//! Cat language converter
+
 use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
 
-#[crate::export]
+/// Converts the given text into the cat language.
+///
+/// refs:
+/// * <https://misskey-hub.net/ns#isCat>
+/// * <https://firefish.dev/ns#speakAsCat>
+///
+/// # Arguments
+///
+/// * `text` : original text
+/// * `lang` : language code (e.g., `Some("en")`, `Some("en-US")`, `Some("uk-UA")`, `None`)
+///
+/// # Example
+///
+/// ```
+/// # use backend_rs::misc::nyaify::nyaify;
+/// assert_eq!(nyaify("I'll take a nap.", Some("en")), "I'll take a nyap.");
+/// ```
+#[macros::export]
 pub fn nyaify(text: &str, lang: Option<&str>) -> String {
     let mut to_return = text.to_owned();
 
@@ -81,17 +100,28 @@ pub fn nyaify(text: &str, lang: Option<&str>) -> String {
 
 #[cfg(test)]
 mod unit_test {
-    use super::nyaify;
     use pretty_assertions::assert_eq;
 
     #[test]
-    fn can_nyaify() {
-        assert_eq!(nyaify("Hello everyone!", Some("en")), "Hello everynyan!");
-        assert_eq!(nyaify("Nonbinary people", None), "Nyanbinyary people");
-        assert_eq!(nyaify("1分鐘是60秒", Some("zh-TW")), "1分鐘是60喵");
-        assert_eq!(nyaify("1分間は60秒です", Some("ja-JP")), "1分間は60秒です");
-        assert_eq!(nyaify("あなたは誰ですか", None), "あにゃたは誰ですか");
-        assert_eq!(nyaify("Ναυτικός", Some("el-GR")), "Νιαυτικός");
-        assert_eq!(nyaify("일어나다", None), "일어냐다냥");
+    fn nyaify() {
+        assert_eq!(
+            super::nyaify("Hello everyone!", Some("en")),
+            "Hello everynyan!"
+        );
+        assert_eq!(
+            super::nyaify("Nonbinary people", None),
+            "Nyanbinyary people"
+        );
+        assert_eq!(super::nyaify("1分鐘是60秒", Some("zh-TW")), "1分鐘是60喵");
+        assert_eq!(
+            super::nyaify("1分間は60秒です", Some("ja-JP")),
+            "1分間は60秒です"
+        );
+        assert_eq!(
+            super::nyaify("あなたは誰ですか", None),
+            "あにゃたは誰ですか"
+        );
+        assert_eq!(super::nyaify("Ναυτικός", Some("el-GR")), "Νιαυτικός");
+        assert_eq!(super::nyaify("일어나다", None), "일어냐다냥");
     }
 }

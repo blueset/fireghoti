@@ -1,17 +1,18 @@
-use crate::config::CONFIG;
-use crate::database::{cache, db_conn};
-use crate::federation::acct::Acct;
-use crate::model::entity::{antenna, blocking, following, note, sea_orm_active_enums::*};
-use sea_orm::{ColumnTrait, DbErr, EntityTrait, QueryFilter, QuerySelect};
+use crate::{
+    config::CONFIG,
+    database::{cache, db_conn},
+    federation::acct::Acct,
+    model::entity::{antenna, blocking, following, note, sea_orm_active_enums::*},
+};
+use sea_orm::{prelude::*, QuerySelect};
 
 #[derive(thiserror::Error, Debug)]
 pub enum AntennaCheckError {
-    #[error("Database error: {0}")]
+    #[doc = "database error"]
+    #[error(transparent)]
     Db(#[from] DbErr),
-    #[error("Cache error: {0}")]
+    #[error("Redis cache operation has failed")]
     Cache(#[from] cache::Error),
-    #[error("User profile not found: {0}")]
-    UserProfileNotFound(String),
 }
 
 fn match_all(space_separated_words: &str, text: &str, case_sensitive: bool) -> bool {
@@ -27,7 +28,7 @@ fn match_all(space_separated_words: &str, text: &str, case_sensitive: bool) -> b
     }
 }
 
-pub async fn check_hit_antenna(
+pub(super) async fn check_hit_antenna(
     antenna: &antenna::Model,
     note: &note::Model,
     note_all_texts: &[String],
@@ -56,14 +57,15 @@ pub async fn check_hit_antenna(
             return Ok(false);
         }
     } else if antenna.src == AntennaSrc::Instances {
-        let is_from_one_of_specified_servers = antenna.instances.iter().any(|host| {
-            host.to_ascii_lowercase()
-                == note_author
-                    .host
-                    .clone()
-                    .unwrap_or(CONFIG.host.clone())
-                    .to_ascii_lowercase()
-        });
+        let note_author_host = note_author
+            .host
+            .clone()
+            .unwrap_or_else(|| CONFIG.host.clone())
+            .to_ascii_lowercase();
+        let is_from_one_of_specified_servers = antenna
+            .instances
+            .iter()
+            .any(|host| host.to_ascii_lowercase() == note_author_host);
 
         if !is_from_one_of_specified_servers {
             return Ok(false);
@@ -115,7 +117,10 @@ pub async fn check_hit_antenna(
         return Ok(false);
     }
 
-    if [NoteVisibility::Home, NoteVisibility::Followers].contains(&note.visibility) {
+    if matches!(
+        note.visibility,
+        NoteVisibility::Home | NoteVisibility::Followers
+    ) {
         let following_user_ids: Vec<String> =
             if let Some(ids) = cache::get_one(cache::Category::Follow, &antenna.user_id).await? {
                 ids
@@ -153,7 +158,7 @@ mod unit_test {
     use pretty_assertions::assert_eq;
 
     #[test]
-    fn test_match_all() {
+    fn check_match_string() {
         assert_eq!(match_all("Apple", "apple and banana", false), true);
         assert_eq!(match_all("Apple", "apple and banana", true), false);
         assert_eq!(match_all("Apple Banana", "apple and banana", false), true);

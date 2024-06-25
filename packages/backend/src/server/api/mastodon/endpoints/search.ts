@@ -15,13 +15,13 @@ export function setupEndpointsSearch(router: Router): void {
 					"exclude_unreviewed",
 				]),
 			);
-			ctx.body = await SearchHelpers.search(
+			const body = await SearchHelpers.search(
 				args.q,
 				args.type,
 				args.resolve,
 				args.following,
 				args.account_id,
-				args["exclude_unreviewed"],
+				args.exclude_unreviewed,
 				args.max_id,
 				args.min_id,
 				args.limit,
@@ -30,10 +30,13 @@ export function setupEndpointsSearch(router: Router): void {
 			);
 
 			if (ctx.path === "/v1/search") {
-				ctx.body = {
-					...ctx.body,
-					hashtags: ctx.body.hashtags.map((p: MastodonEntity.Tag) => p.name),
+				const v1Body = {
+					...body,
+					hashtags: body.hashtags.map((p: MastodonEntity.Tag) => p.name),
 				};
+				ctx.body = v1Body;
+			} else {
+				ctx.body = body;
 			}
 		},
 	);

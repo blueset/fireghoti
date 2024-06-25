@@ -702,3 +702,8 @@ hiddenTagsDescription: 'Vermeld de hashtags (zonder #) van de hashtags die je wi
   manieren te ontdekken.'
 listsDesc: Met lijsten kun je tijdlijnen aanmaken met gespecificeerde gebruikers.
   Ze zijn toegankelijk via de pagina Tijdlijnen.
+markLocalFilesNsfwByDefault: Alle nieuwe lokale bestanden als NSFW markeren
+toReply: Reageren
+toPost: Publiceren
+replies: Reacties
+sentFollowRequests: Stuur volgverzoek

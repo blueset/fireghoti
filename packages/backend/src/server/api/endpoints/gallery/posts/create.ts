@@ -1,6 +1,6 @@
 import define from "@/server/api/define.js";
 import { DriveFiles, GalleryPosts } from "@/models/index.js";
-import { HOUR, genId } from "backend-rs";
+import { HOUR, genIdAt } from "backend-rs";
 import { GalleryPost } from "@/models/entities/gallery-post.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 
@@ -62,11 +62,13 @@ export default define(meta, paramDef, async (ps, user) => {
 		throw new Error();
 	}
 
+	const now = new Date();
+
 	const post = await GalleryPosts.insert(
 		new GalleryPost({
-			id: genId(),
-			createdAt: new Date(),
-			updatedAt: new Date(),
+			id: genIdAt(now),
+			createdAt: now,
+			updatedAt: now,
 			title: ps.title,
 			description: ps.description,
 			userId: user.id,

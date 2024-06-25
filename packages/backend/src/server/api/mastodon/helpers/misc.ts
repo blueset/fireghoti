@@ -43,17 +43,17 @@ export class MiscHelpers {
 			},
 			order: { id: "ASC" },
 		}).then((p) => (p ? UserConverter.encode(p, ctx) : null));
-		const meta = await fetchMeta(true);
+		const meta = await fetchMeta();
 
 		const res = {
 			uri: config.host,
 			title: meta.name || "Firefish",
 			short_description:
 				meta.description?.substring(0, 50) ||
-				"This is an Firefish instance. It doesn’t seem to have a description.",
+				"This is a Firefish instance. It doesn’t seem to have a description.",
 			description:
 				meta.description ||
-				"This is an Firefish instance. It doesn’t seem to have a description.",
+				"This is a Firefish instance. It doesn’t seem to have a description.",
 			email: meta.maintainerEmail || "",
 			version: `4.2.8 (compatible; Firefish ${config.version})`,
 			urls: {
@@ -85,7 +85,7 @@ export class MiscHelpers {
 					image_size_limit: 10485760,
 					image_matrix_limit: 16777216,
 					video_size_limit: 41943040,
-					video_frame_limit: 60,
+					video_frame_rate_limit: 60,
 					video_matrix_limit: 2304000,
 				},
 				polls: {
@@ -119,7 +119,7 @@ export class MiscHelpers {
 			},
 			order: { id: "ASC" },
 		}).then((p) => (p ? UserConverter.encode(p, ctx) : null));
-		const meta = await fetchMeta(true);
+		const meta = await fetchMeta();
 
 		const res = {
 			domain: config.host,
@@ -128,7 +128,7 @@ export class MiscHelpers {
 			source_url: meta.repositoryUrl,
 			description:
 				meta.description ||
-				"This is an Firefish instance. It doesn’t seem to have a description.",
+				"This is a Firefish instance. It doesn’t seem to have a description.",
 			usage: {
 				users: {
 					active_month: userCount,
@@ -191,6 +191,8 @@ export class MiscHelpers {
 		ctx: MastoContext,
 	): Promise<MastodonEntity.Announcement[]> {
 		const user = ctx.user as ILocalUser;
+		const userProfileLang =
+			(await UserProfiles.findOneBy({ userId: user.id }))?.lang ?? undefined;
 
 		if (includeRead) {
 			const [announcements, reads] = await Promise.all([
@@ -204,7 +206,12 @@ export class MiscHelpers {
 
 			return Promise.all(
 				announcements.map(async (p) =>
-					AnnouncementConverter.encode(p, reads.includes(p.id), ctx),
+					AnnouncementConverter.encode(
+						p,
+						reads.includes(p.id),
+						userProfileLang,
+						ctx,
+					),
 				),
 			);
 		}
@@ -221,7 +228,11 @@ export class MiscHelpers {
 		return query
 			.getMany()
 			.then((p) =>
-				Promise.all(p.map(async (x) => AnnouncementConverter.encode(x, false, ctx))),
+				Promise.all(
+					p.map(async (x) =>
+						AnnouncementConverter.encode(x, false, userProfileLang, ctx),
+					),
+				),
 			);
 	}
 
@@ -230,7 +241,7 @@ export class MiscHelpers {
 		ctx: MastoContext,
 	): Promise<void> {
 		const user = ctx.user as ILocalUser;
-		const exists = await AnnouncementReads.exist({
+		const exists = await AnnouncementReads.exists({
 			where: { userId: user.id, announcementId: announcement.id },
 		});
 		if (!exists) {
@@ -250,7 +261,7 @@ export class MiscHelpers {
 		const user = ctx.user as ILocalUser;
 		const results: Promise<MastodonEntity.SuggestedAccount[]>[] = [];
 
-		const pinned = fetchMeta(true).then((meta) =>
+		const pinned = fetchMeta().then((meta) =>
 			Promise.all(
 				meta.pinnedUsers
 					.map((acct) => stringToAcct(acct))
@@ -369,7 +380,7 @@ export class MiscHelpers {
 	): Promise<MastodonEntity.Tag[]> {
 		if (limit > 20) limit = 20;
 		return [];
-		//FIXME: This was already implemented in api/endpoints/hashtags/trend.ts, but the implementation is sketchy at best. Rewrite from scratch.
+		// FIXME: This was already implemented in api/endpoints/hashtags/trend.ts, but the implementation is sketchy at best. Rewrite from scratch.
 	}
 
 	public static getPreferences(
@@ -387,8 +398,8 @@ export class MiscHelpers {
 			"posting:default:visibility": privacy,
 			"posting:default:sensitive": sensitive,
 			"posting:default:language": language,
-			"reading:expand:media": "default" as "default" | "show_all" | "hide_all", //FIXME: see below
-			"reading:expand:spoilers": false, //FIXME: store this on server instead of client
+			"reading:expand:media": "default" as const, // FIXME: see below
+			"reading:expand:spoilers": false, // FIXME: store this on server instead of client
 		};
 
 		return awaitAll(res);

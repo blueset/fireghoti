@@ -4,8 +4,7 @@ import { isInstanceMuted } from "@/misc/is-instance-muted.js";
 import type { Note } from "@/models/entities/note.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import type { StreamMessages } from "@/server/api/stream/types.js";
-import { fetchMeta } from "backend-rs";
-import isQuote from "@/misc/is-quote.js";
+import { fetchMeta, isQuote } from "backend-rs";
 
 export class MastodonStreamPublic extends MastodonStream {
 	public static shouldShare = true;
@@ -26,7 +25,7 @@ export class MastodonStreamPublic extends MastodonStream {
 	}
 
 	public async init() {
-		const meta = await fetchMeta(true);
+		const meta = await fetchMeta();
 		if (meta.disableGlobalTimeline) {
 			if (this.user == null || !(this.user.isAdmin || this.user.isModerator))
 				return;

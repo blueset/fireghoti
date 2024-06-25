@@ -16,7 +16,7 @@ import type { IRemoteUser, CacheableUser } from "@/models/entities/user.js";
 import { User } from "@/models/entities/user.js";
 import type { Emoji } from "@/models/entities/emoji.js";
 import { UserNotePining } from "@/models/entities/user-note-pining.js";
-import { genId, isSameOrigin, toPuny } from "backend-rs";
+import { genId, genIdAt, isSameOrigin, toPuny } from "backend-rs";
 import { UserPublickey } from "@/models/entities/user-publickey.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
@@ -243,16 +243,17 @@ export async function createPerson(
 
 	// Create user
 	let user: IRemoteUser;
+	const now = new Date();
 	try {
 		// Start transaction
 		await db.transaction(async (transactionalEntityManager) => {
 			user = (await transactionalEntityManager.save(
 				new User({
-					id: genId(),
+					id: genIdAt(now),
 					avatarId: null,
 					bannerId: null,
-					createdAt: new Date(),
-					lastFetchedAt: new Date(),
+					createdAt: now,
+					lastFetchedAt: now,
 					name: truncate(person.name, nameLength),
 					isLocked: !!person.manuallyApprovesFollowers,
 					movedToUri: person.movedTo,

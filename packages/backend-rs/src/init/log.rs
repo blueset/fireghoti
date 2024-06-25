@@ -2,7 +2,8 @@ use crate::config::CONFIG;
 use tracing::Level;
 use tracing_subscriber::FmtSubscriber;
 
-#[crate::export(js_name = "initializeRustLogger")]
+/// Initializes the [tracing] logger.
+#[macros::export(js_name = "initializeRustLogger")]
 pub fn initialize_logger() {
     let mut builder = FmtSubscriber::builder();
 

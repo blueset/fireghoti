@@ -38,7 +38,6 @@ import {
 	type FirefishVisibility,
 	VisibilityConverter,
 } from "@/server/api/mastodon/converters/visibility.js";
-import type { File } from "@/server/api/mastodon/entities/files.js";
 import { toSingleLast } from "@/prelude/array.js";
 import { MediaHelpers } from "@/server/api/mastodon/helpers/media.js";
 import type { UserProfile } from "@/models/entities/user-profile.js";
@@ -74,12 +73,12 @@ export class UserHelpers {
 		notify: boolean,
 		ctx: MastoContext,
 	): Promise<MastodonEntity.Relationship> {
-		//FIXME: implement reblogs & notify params
+		// FIXME: implement reblogs & notify params
 		const localUser = ctx.user as ILocalUser;
-		const following = await Followings.exist({
+		const following = await Followings.exists({
 			where: { followerId: localUser.id, followeeId: target.id },
 		});
-		const requested = await FollowRequests.exist({
+		const requested = await FollowRequests.exists({
 			where: { followerId: localUser.id, followeeId: target.id },
 		});
 		if (!following && !requested) await createFollowing(localUser, target);
@@ -92,10 +91,10 @@ export class UserHelpers {
 		ctx: MastoContext,
 	): Promise<MastodonEntity.Relationship> {
 		const localUser = ctx.user as ILocalUser;
-		const following = await Followings.exist({
+		const following = await Followings.exists({
 			where: { followerId: localUser.id, followeeId: target.id },
 		});
-		const requested = await FollowRequests.exist({
+		const requested = await FollowRequests.exists({
 			where: { followerId: localUser.id, followeeId: target.id },
 		});
 		if (following) await deleteFollowing(localUser, target);
@@ -109,7 +108,7 @@ export class UserHelpers {
 		ctx: MastoContext,
 	): Promise<MastodonEntity.Relationship> {
 		const localUser = ctx.user as ILocalUser;
-		const blocked = await Blockings.exist({
+		const blocked = await Blockings.exists({
 			where: { blockerId: localUser.id, blockeeId: target.id },
 		});
 		if (!blocked) await createBlocking(localUser, target);
@@ -122,7 +121,7 @@ export class UserHelpers {
 		ctx: MastoContext,
 	): Promise<MastodonEntity.Relationship> {
 		const localUser = ctx.user as ILocalUser;
-		const blocked = await Blockings.exist({
+		const blocked = await Blockings.exists({
 			where: { blockerId: localUser.id, blockeeId: target.id },
 		});
 		if (blocked) await deleteBlocking(localUser, target);
@@ -136,9 +135,9 @@ export class UserHelpers {
 		duration = 0,
 		ctx: MastoContext,
 	): Promise<MastodonEntity.Relationship> {
-		//FIXME: respect notifications parameter
+		// FIXME: respect notifications parameter
 		const localUser = ctx.user as ILocalUser;
-		const muted = await Mutings.exist({
+		const muted = await Mutings.exists({
 			where: { muterId: localUser.id, muteeId: target.id },
 		});
 		if (!muted) {
@@ -189,7 +188,7 @@ export class UserHelpers {
 		ctx: MastoContext,
 	): Promise<MastodonEntity.Relationship> {
 		const localUser = ctx.user as ILocalUser;
-		const pending = await FollowRequests.exist({
+		const pending = await FollowRequests.exists({
 			where: { followerId: target.id, followeeId: localUser.id },
 		});
 		if (pending) await acceptFollowRequest(localUser, target);
@@ -201,7 +200,7 @@ export class UserHelpers {
 		ctx: MastoContext,
 	): Promise<MastodonEntity.Relationship> {
 		const localUser = ctx.user as ILocalUser;
-		const pending = await FollowRequests.exist({
+		const pending = await FollowRequests.exists({
 			where: { followerId: target.id, followeeId: localUser.id },
 		});
 		if (pending) await rejectFollowRequest(localUser, target);
@@ -212,8 +211,8 @@ export class UserHelpers {
 		ctx: MastoContext,
 	): Promise<MastodonEntity.Account> {
 		const user = ctx.user as ILocalUser;
-		const files = (ctx.request as any).files as Files | undefined;
-		const formData = (ctx.request as any).body as updateCredsData;
+		const files = ctx.request.files;
+		const formData = ctx.request.body as updateCredsData;
 
 		const updates: Partial<User> = {};
 		const profileUpdates: Partial<UserProfile> = {};
@@ -224,15 +223,11 @@ export class UserHelpers {
 		if (avatar) {
 			const file = await MediaHelpers.uploadMediaBasic(avatar, ctx);
 			updates.avatarId = file.id;
-			updates.avatarBlurhash = file.blurhash;
-			updates.avatarUrl = DriveFiles.getDatabasePrefetchUrl(file, true);
 		}
 
 		if (header) {
 			const file = await MediaHelpers.uploadMediaBasic(header, ctx);
 			updates.bannerId = file.id;
-			updates.bannerBlurhash = file.blurhash;
-			updates.bannerUrl = DriveFiles.getDatabasePrefetchUrl(file, false);
 		}
 
 		if (formData.fields_attributes) {
@@ -588,7 +583,7 @@ export class UserHelpers {
 		} else if (profile.ffVisibility === "followers") {
 			if (!localUser) return [];
 			if (user.id !== localUser.id) {
-				const isFollowed = await Followings.exist({
+				const isFollowed = await Followings.exists({
 					where: {
 						followeeId: user.id,
 						followerId: localUser.id,
@@ -691,11 +686,11 @@ export class UserHelpers {
 			muting: relation.isMuted,
 			muting_notifications: relation.isMuted,
 			requested: relation.hasPendingFollowRequestFromYou,
-			domain_blocking: false, //FIXME
+			domain_blocking: false, // FIXME
 			showing_reblogs: !relation.isRenoteMuted,
 			endorsed: false,
-			notifying: false, //FIXME
-			note: "", //FIXME
+			notifying: false, // FIXME
+			note: "", // FIXME
 		};
 
 		return awaitAll(response);
@@ -743,8 +738,7 @@ export class UserHelpers {
 			lastFetchedAt: new Date(),
 		});
 
-		// noinspection ES6MissingAwait
-		updatePerson(user.uri!, undefined, undefined, user as IRemoteUser);
+		updatePerson(user.uri!, undefined, undefined);
 	}
 
 	public static getFreshAccountCache(): AccountCache {
