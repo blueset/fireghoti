@@ -26,7 +26,7 @@ COPY packages/backend-rs packages/backend-rs/
 
 # Compile backend-rs
 RUN ln -s $(which gcc) /usr/bin/aarch64-linux-musl-gcc
-RUN NODE_ENV='production' pnpm run --filter backend-rs build:container
+RUN NODE_ENV='production' pnpm run --filter backend-rs build
 
 # Copy/Overwrite index.js to mitigate the bug in napi-rs codegen
 COPY packages/backend-rs/index.js packages/backend-rs/built/index.js

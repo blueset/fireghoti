@@ -10,8 +10,7 @@
 		"@napi-rs/cli": "3.0.0-alpha.55"
 	},
 	"scripts": {
-		"build": "RUSTFLAGS='-C target-cpu=native' napi build --features napi --no-const-enum --platform --release --output-dir ./built/",
-		"build:container": "napi build --features napi --no-const-enum --platform --release --output-dir ./built/",
+		"build": "napi build --features napi --no-const-enum --platform --release --output-dir ./built/",
 		"build:debug": "napi build --features napi --no-const-enum --platform --output-dir ./built/"
 	}
 }
