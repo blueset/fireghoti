@@ -224,13 +224,13 @@ export class DriveFile {
 		nullable: true,
 	})
 	@JoinColumn()
-	public user: User | null;
+	public user: Relation<User | null>;
 
 	@ManyToOne(() => DriveFolder, {
 		onDelete: "SET NULL",
 		nullable: true,
 	})
 	@JoinColumn()
-	public folder: DriveFolder | null;
+	public folder: Relation<DriveFolder | null>;
 	//#endregion Relations
 }

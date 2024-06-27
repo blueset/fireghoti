@@ -10,16 +10,13 @@
 		"migration:revert": "typeorm migration:revert --dataSource ./built/ormconfig.js",
 		"migration:new": "pnpm node ./scripts/create-migration.mjs",
 		"check:connect": "node ./check_connect.js",
-		"build": "pnpm swc src --out-dir built --source-maps false --copy-files --strip-leading-paths",
-		"build:debug": "pnpm swc src --out-dir built --source-maps true --copy-files --strip-leading-paths",
-		"watch": "pnpm swc src --out-dir built --source-maps true --copy-files --strip-leading-paths --watch",
+		"build": "pnpm tsc --project tsconfig.json ; pnpm tsc-alias --project tsconfig.json",
+		"build:debug": "pnpm tsc --sourceMap --project tsconfig.json ; pnpm tsc-alias --project tsconfig.json",
+		"watch": "pnpm tsc --project tsconfig.json --watch ; pnpm tsc-alias --project tsconfig.json --watch",
 		"lint": "pnpm biome check --apply **/*.ts ; pnpm run format",
 		"mocha": "cross-env NODE_ENV=test TS_NODE_FILES=true TS_NODE_TRANSPILE_ONLY=true TS_NODE_PROJECT=\"./test/tsconfig.json\" mocha",
 		"test": "pnpm run mocha",
 		"format": "pnpm biome format * --write"
-	},
-	"optionalDependencies": {
-		"@swc/core-android-arm64": "1.3.11"
 	},
 	"dependencies": {
 		"@bull-board/api": "5.20.5",
@@ -120,8 +117,6 @@
 		"xev": "3.0.2"
 	},
 	"devDependencies": {
-		"@swc/cli": "0.3.14",
-		"@swc/core": "1.6.5",
 		"@types/adm-zip": "0.5.5",
 		"@types/color-convert": "2.0.3",
 		"@types/content-disposition": "0.5.8",
@@ -170,9 +165,9 @@
 		"mocha": "10.5.2",
 		"pug": "3.0.3",
 		"strict-event-emitter-types": "2.0.0",
-		"swc-loader": "0.2.6",
 		"ts-loader": "9.5.1",
 		"ts-node": "10.9.2",
+		"tsc-alias": "1.8.10",
 		"tsconfig-paths": "4.2.0",
 		"type-fest": "4.20.1",
 		"typescript": "5.5.2",
