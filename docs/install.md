@@ -213,7 +213,7 @@ sudo ufw status
 
 ### 2. Set up a reverse proxy
 
-In this instruction, we use [Caddy](https://caddyserver.com/) to make the Firefish server accesible from internet. However, you can also use [Nginx](https://nginx.org/en/) if you want ([example Nginx config file](../firefish.nginx.conf)).
+In this instruction, we use [Caddy](https://caddyserver.com/) to make the Firefish server accesible from internet. However, you can also use [Nginx](https://nginx.org/en/) if you want ([example Nginx config file](./firefish.nginx.conf)).
 
 1. Install Caddy
     ```sh
