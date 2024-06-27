@@ -1,6 +1,6 @@
 {
 	"name": "firefish",
-	"version": "20240613",
+	"version": "20240623",
 	"repository": {
 		"type": "git",
 		"url": "https://firefish.dev/firefish/firefish.git"
@@ -47,7 +47,7 @@
 		"@biomejs/cli-darwin-x64": "1.8.2",
 		"@biomejs/cli-linux-arm64": "1.8.2",
 		"@biomejs/cli-linux-x64": "1.8.2",
-		"@types/node": "20.14.8",
+		"@types/node": "20.14.9",
 		"execa": "9.3.0",
 		"pnpm": "9.4.0",
 		"typescript": "5.5.2"

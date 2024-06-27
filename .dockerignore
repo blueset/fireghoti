@@ -43,11 +43,10 @@ animated.svg
 cliff.toml
 docker-compose.yml
 docker-compose.example.yml
-firefish.apache.conf
 firefish.nginx.conf
 title.svg
 /.gitlab
-/chart
+/ci
 /dev
 /docs
 /scripts
@@ -57,5 +56,8 @@ CODE_OF_CONDUCT.md
 CONTRIBUTING.md
 Dockerfile
 Procfile
+Makefile
 README.md
 SECURITY.md
+patrons.json
+renovate.json

@@ -5,8 +5,6 @@ WORKDIR /firefish
 # Copy only backend-rs pnpm-related files first, to cache efficiently
 COPY package.json pnpm-workspace.yaml ./
 COPY packages/backend-rs/package.json packages/backend-rs/package.json
-COPY packages/backend-rs/npm/linux-x64-musl/package.json packages/backend-rs/npm/linux-x64-musl/package.json
-COPY packages/backend-rs/npm/linux-arm64-musl/package.json packages/backend-rs/npm/linux-arm64-musl/package.json
 
 # Install compilation dependencies
 RUN apk update && apk add --no-cache build-base linux-headers curl ca-certificates python3 perl
@@ -27,6 +25,7 @@ RUN cargo fetch --locked --manifest-path Cargo.toml
 COPY packages/backend-rs packages/backend-rs/
 
 # Compile backend-rs
+RUN ln -s $(which gcc) /usr/bin/aarch64-linux-musl-gcc
 RUN NODE_ENV='production' pnpm run --filter backend-rs build
 
 # Copy/Overwrite index.js to mitigate the bug in napi-rs codegen
