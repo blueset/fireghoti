@@ -13,7 +13,7 @@
 		"build": "pnpm tsc --project tsconfig.json ; pnpm tsc-alias --project tsconfig.json",
 		"build:debug": "pnpm tsc --sourceMap --project tsconfig.json ; pnpm tsc-alias --project tsconfig.json",
 		"watch": "pnpm tsc --project tsconfig.json --watch ; pnpm tsc-alias --project tsconfig.json --watch",
-		"lint": "pnpm biome check --apply **/*.ts ; pnpm run format",
+		"lint": "pnpm biome check --write **/*.ts",
 		"mocha": "cross-env NODE_ENV=test TS_NODE_FILES=true TS_NODE_TRANSPILE_ONLY=true TS_NODE_PROJECT=\"./test/tsconfig.json\" mocha",
 		"test": "pnpm run mocha",
 		"format": "pnpm biome format * --write"
@@ -161,7 +161,6 @@
 		"@types/websocket": "1.0.10",
 		"@types/ws": "8.5.10",
 		"cross-env": "7.0.3",
-		"eslint": "9.6.0",
 		"mocha": "10.5.2",
 		"pug": "3.0.3",
 		"strict-event-emitter-types": "2.0.0",
