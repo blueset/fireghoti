@@ -40,10 +40,8 @@ packages/backend/assets/instance.css
 .gitattributes
 .weblate
 animated.svg
-cliff.toml
 docker-compose.yml
 docker-compose.example.yml
-firefish.nginx.conf
 title.svg
 /.gitlab
 /ci
@@ -55,7 +53,6 @@ biome.json
 CODE_OF_CONDUCT.md
 CONTRIBUTING.md
 Dockerfile
-Procfile
 Makefile
 README.md
 SECURITY.md
