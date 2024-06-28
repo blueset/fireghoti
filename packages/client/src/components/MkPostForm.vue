@@ -1195,6 +1195,13 @@ async function post() {
 		}
 	}
 
+	if (
+		defaultStore.state.addAlt4MeTag &&
+		files.value.some((f) => f.comment == null || f.comment.length === 0)
+	) {
+		text.value = `${text.value.trimEnd()}\n#Alt4Me`;
+	}
+
 	const processedText = preprocess(text.value);
 
 	let postData: ApiTypes.NoteSubmitReq = {

@@ -9,6 +9,9 @@ Critical security updates are indicated by the :warning: icon.
 
 - Ported Mastodon API support from Iceshrimp, with added Firefish extensions including push notifications, post languages, schedule post support, and more.
   - The old Mastodon API has been replaced with a new implementation based on Iceshrimp’s.
+- Add ability to automatically append #Alt4Me hashtag when posting a file without an alt text ([What is #Alt4Me?](https://social.growyourown.services/@FediTips/112055775451305236))
+- Fix a build issue on some aarch64 environments
+- Fix bugs
 
 **Breaking changes:**
 

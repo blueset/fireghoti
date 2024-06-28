@@ -29,7 +29,6 @@
 		{"matchManagers": ["npm"], "matchPackageNames": ["mfm-js"], "automerge": false},
 		{"matchManagers": ["npm"], "matchPackageNames": ["rndstr"], "automerge": false},
 		{"matchManagers": ["npm"], "matchPackageNames": ["summaly"], "automerge": false},
-		{"matchManagers": ["npm"], "matchPackageNames": ["syuilo-password-strength"], "automerge": false},
 		{"matchManagers": ["npm"], "matchPackageNames": ["xev"], "automerge": false}
 	]
 }

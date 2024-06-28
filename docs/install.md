@@ -20,19 +20,22 @@ Firefish depends on the following software.
 ## Build dependencies
 
 - At least [Rust](https://www.rust-lang.org/) v1.74
-- C/C++ compiler & build tools
+- C/C++ compiler & build tools (like [GNU Make](https://www.gnu.org/software/make/))
   - `build-essential` on Debian/Ubuntu Linux
   - `base-devel` on Arch Linux
+  - `"Development Tools"` on Fedora/Red Hat Linux
 - [Python 3](https://www.python.org/)
 - [Perl](https://www.perl.org/)
 
 This document shows an example procedure for installing these dependencies and Firefish on Debian 12. Note that there is much room for customizing the server setup; this document merely demonstrates a simple installation.
 
+### Use Docker/Podman containers
+
 If you want to use the pre-built container image, please refer to [`install-container.md`](./install-container.md).
 
-Make sure that you can use the `sudo` command before proceeding.
-
 ## 1. Install dependencies
+
+Make sure that you can use the `sudo` command before proceeding.
 
 ### Utilities
 
@@ -213,7 +216,7 @@ sudo ufw status
 
 ### 2. Set up a reverse proxy
 
-In this instruction, we use [Caddy](https://caddyserver.com/) to make the Firefish server accesible from internet. However, you can also use [Nginx](https://nginx.org/en/) if you want ([example Nginx config file](../firefish.nginx.conf)).
+In this instruction, we use [Caddy](https://caddyserver.com/) to make the Firefish server accesible from internet. However, you can also use [Nginx](https://nginx.org/en/) if you want ([example Nginx config file](./firefish.nginx.conf)).
 
 1. Install Caddy
     ```sh

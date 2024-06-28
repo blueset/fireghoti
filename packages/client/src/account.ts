@@ -7,7 +7,7 @@ import { alert, api, popup, popupMenu, waiting } from "@/os";
 import icon from "@/scripts/icon";
 import { del, get, set } from "@/scripts/idb-proxy";
 import { reloadChannel, unisonReload } from "@/scripts/unison-reload";
-import type { MenuButton, MenuUser } from "./types/menu";
+import type { MenuUser } from "./types/menu";
 
 // TODO: 他のタブと永続化されたstateを同期
 
