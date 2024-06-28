@@ -1091,7 +1091,7 @@ usernameInvalidFormat: Pots fer servir lletres en majúscules o minúscules, nom
 tooShort: Massa curt
 tooLong: Massa llarg
 weakPassword: Contrasenya amb seguretat feble
-strongPassword: Contrasenya amb seguretat forta
+veryStrongPassword: Contrasenya amb seguretat forta
 passwordMatched: Coincidències
 signinWith: Inicia sessió com {x}
 signinFailed: No es pot iniciar sessió. El nom d'usuari o la contrasenya són incorrectes.

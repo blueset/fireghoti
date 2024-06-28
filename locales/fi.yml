@@ -569,7 +569,7 @@ tooShort: Liian lyhyt
 tooLong: Liian pitkä
 weakPassword: Heikko salasana
 normalPassword: Kohtalainen salasana
-strongPassword: Vahva salasana
+veryStrongPassword: Vahva salasana
 passwordMatched: Vastaa
 signinWith: Kirjaudu sisään {x}
 signinFailed: Ei voitu kirjautua sisään. Annettu käyttäjänimi tai salasana virheellinen.

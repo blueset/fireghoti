@@ -598,6 +598,9 @@ importers:
       chartjs-plugin-zoom:
         specifier: 2.0.1
         version: 2.0.1(chart.js@4.4.3)
+      check-password-strength:
+        specifier: 2.0.10
+        version: 2.0.10
       city-timezones:
         specifier: 1.2.1
         version: 1.2.1
@@ -697,9 +700,6 @@ importers:
       swiper:
         specifier: 11.1.4
         version: 11.1.4
-      syuilo-password-strength:
-        specifier: 0.0.1
-        version: 0.0.1
       textarea-caret:
         specifier: 3.1.0
         version: 3.1.0
@@ -3634,6 +3634,9 @@ packages:
     resolution: {integrity: sha512-ogOmLu6e+Q7E1XWOCOz9YwybMslz9qNfGV2a+qjfmqJYpsw5ZMoRHZBUyW+NGhkpQ5PwwPA/+rikHpBZb7PZuA==}
     peerDependencies:
       chart.js: '>=3.2.0'
+
+  check-password-strength@2.0.10:
+    resolution: {integrity: sha512-HRM5ICPmtnNtLnTv2QrfVkq1IxI9z3bzYpDJ1k5ixwD9HtJGHuv265R6JmHOV6r8wLhQMlULnIUVpkrC2yaiCw==}
 
   cheerio@0.22.0:
     resolution: {integrity: sha512-8/MzidM6G/TgRelkzDG13y3Y9LxBjCb+8yOEZ9+wwq5gVF2w2pV0wmHvjfT0RvuxGyR7UEuK36r+yYMbT4uKgA==}
@@ -7510,9 +7513,6 @@ packages:
   syslog-pro@1.0.0:
     resolution: {integrity: sha512-7SNMJKtQBJlwBUp1jxFT7bXya71cnINXPCYJ2AVhlQE4MKL7o2QiPdAXbMdWRiLeykQ2rx+7TNrnoGzvzhO+eA==}
     engines: {node: '>=10.0.0'}
-
-  syuilo-password-strength@0.0.1:
-    resolution: {integrity: sha512-g9rPT3V1Q4WjWFZ/t5BdGC1mT/FpYnsLdBl+M5e6MlRkuE1RSR+R43wcY/3mKI59B9KEr+vxdWCuWNMD3oNHKA==}
 
   tabbable@6.2.0:
     resolution: {integrity: sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==}
@@ -11412,6 +11412,8 @@ snapshots:
     dependencies:
       chart.js: 4.4.3
       hammerjs: 2.0.8
+
+  check-password-strength@2.0.10: {}
 
   cheerio@0.22.0:
     dependencies:
@@ -15951,8 +15953,6 @@ snapshots:
   syslog-pro@1.0.0:
     dependencies:
       moment: 2.30.1
-
-  syuilo-password-strength@0.0.1: {}
 
   tabbable@6.2.0: {}
 
