@@ -58,7 +58,7 @@
 		"gunzip-maybe": "1.4.2",
 		"hpagent": "1.2.0",
 		"ioredis": "5.4.1",
-		"ip-cidr": "4.0.0",
+		"ip-cidr": "4.0.1",
 		"is-svg": "5.0.1",
 		"jsdom": "24.1.0",
 		"json5": "2.2.3",
