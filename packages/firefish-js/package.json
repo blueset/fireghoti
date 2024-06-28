@@ -10,7 +10,7 @@
 		"build": "pnpm tsc --project tsconfig.json ; pnpm tsc-alias --project tsconfig.json",
 		"build:debug": "pnpm tsc --sourceMap --project tsconfig.json ; pnpm tsc-alias --project tsconfig.json",
 		"watch": "pnpm tsc --project tsconfig.json --watch ; pnpm tsc-alias --project tsconfig.json --watch",
-		"lint": "pnpm biome check --apply src",
+		"lint": "pnpm biome check --write src",
 		"format": "pnpm biome format --write src",
 		"jest": "jest --coverage --detectOpenHandles",
 		"test": "pnpm jest && pnpm tsd"

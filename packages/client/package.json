@@ -6,7 +6,7 @@
 		"watch": "pnpm vite build --watch --mode development",
 		"build": "pnpm vite build",
 		"build:debug": "pnpm run build",
-		"lint": "pnpm biome check **/*.ts --apply ; pnpm run lint:vue",
+		"lint": "pnpm biome check **/*.ts --write ; pnpm run lint:vue",
 		"lint:vue": "pnpm eslint src --fix '**/*.vue' --cache ; pnpm run format",
 		"types:check": "pnpm vue-tsc --noEmit",
 		"format": "pnpm biome format * --write"
