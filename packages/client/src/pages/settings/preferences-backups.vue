@@ -127,6 +127,10 @@ const defaultStoreSaveKeys: (keyof (typeof defaultStore)["state"])[] = [
 	"showNoAltTextWarning",
 	"showAddFileDescriptionAtFirstPost",
 	"autocorrectNoteLanguage",
+	"addAlt4MeTag",
+	"addRe",
+	"mergeRenotesInTimeline",
+	"mergeThreadInTimeline",
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 	"lightTheme",
