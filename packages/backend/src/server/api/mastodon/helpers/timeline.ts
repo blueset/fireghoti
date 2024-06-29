@@ -276,7 +276,7 @@ export class TimelineHelpers {
 				const conversations = p.map((c) => {
 					// Gather all unique IDs except for the local user
 					const userIds = unique(
-						[c.userId].concat(c.visibleUserIds).filter((p) => p != user.id),
+						[c.userId].concat(c.visibleUserIds).filter((p) => p !== user.id),
 					);
 					const users = userIds.map((id) =>
 						UserHelpers.getUserCached(id, ctx).catch((_) => null),
@@ -340,6 +340,8 @@ export class TimelineHelpers {
 		ctx: MastoContext,
 	): Promise<MastodonEntity.Marker> {
 		const result: MastodonEntity.Marker = {};
+		const now = new Date();
+
 		for (const key of ["home", "notifications"] as const) {
 			if (!body[key]) continue;
 			let entry = await RegistryItems.createQueryBuilder("item")
@@ -353,8 +355,8 @@ export class TimelineHelpers {
 					userId: ctx.user.id,
 					scope: ["mastodon", "markers"],
 					key,
-					createdAt: new Date(),
-					updatedAt: new Date(),
+					createdAt: now,
+					updatedAt: now,
 					value: {
 						lastReadId: body[key].last_read_id,
 						version: 0,
@@ -365,7 +367,7 @@ export class TimelineHelpers {
 					lastReadId: body[key].last_read_id,
 					version: entry.value.version + 1,
 				};
-				entry.updatedAt = new Date();
+				entry.updatedAt = now;
 			}
 			await RegistryItems.save(entry);
 			result[key] = {
