@@ -6,7 +6,7 @@ import {
 	RegistryItems,
 	UserListJoinings,
 } from "@/models/index.js";
-import { Brackets, type SelectQueryBuilder } from "typeorm";
+import { Brackets } from "typeorm";
 import { generateChannelQuery } from "@/server/api/common/generate-channel-query.js";
 import { generateRepliesQuery } from "@/server/api/common/generate-replies-query.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
