@@ -534,7 +534,7 @@ export class NoteHelpers {
 						expiresAt:
 							request.poll.expires_in && request.poll.expires_in > 0
 								? new Date(
-										new Date().getTime() + request.poll.expires_in * 1000,
+										Date.now() + request.poll.expires_in * 1000,
 									)
 								: null,
 					}
@@ -642,7 +642,7 @@ export class NoteHelpers {
 		const note = await getNote(noteId, ctx.user);
 		const conversationId = note.threadId ?? note.id;
 		const userIds = unique(
-			[note.userId].concat(note.visibleUserIds).filter((p) => p != ctx.user.id),
+			[note.userId].concat(note.visibleUserIds).filter((p) => p !== ctx.user.id),
 		);
 		const users = userIds.map((id) =>
 			UserHelpers.getUserCached(id, ctx).catch((_) => null),
