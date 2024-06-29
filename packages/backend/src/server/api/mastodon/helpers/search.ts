@@ -137,9 +137,7 @@ export class SearchHelpers {
 					}
 				}
 			} catch (e: any) {
-				logger.error(
-					`[mastodon-client] resolve user '${q}' failed: ${e.message}`,
-				);
+				logger.error(`resolve user '${q}' failed: ${e.message}`);
 				return [];
 			}
 		}
