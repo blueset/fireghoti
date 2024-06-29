@@ -19,6 +19,7 @@ import { createNote } from "@/remote/activitypub/models/note.js";
 import { config } from "@/config.js";
 import { logger, type MastoContext } from "@/server/api/mastodon/index.js";
 import { generateFtsQuery } from "@/server/api/common/generate-fts-query.js";
+import note from "@/remote/activitypub/kernel/create/note";
 
 export class SearchHelpers {
 	public static async search(
@@ -37,7 +38,6 @@ export class SearchHelpers {
 		if (q === undefined || q.trim().length === 0)
 			throw new Error("Search query cannot be empty");
 		if (limit > 40) limit = 40;
-		const user = ctx.user as ILocalUser;
 		const notes =
 			type === "statuses" || !type
 				? this.searchNotes(
@@ -233,7 +233,8 @@ export class SearchHelpers {
 			undefined,
 			minId,
 			maxId,
-		);
+		)
+			.andWhere("note.visibility = 'public'");
 
 		if (accountId) {
 			query.andWhere("note.userId = :userId", { userId: accountId });
@@ -266,6 +267,10 @@ export class SearchHelpers {
 
 		query.setParameter("meId", user.id);
 
+		query
+			.innerJoinAndSelect("note.user", "user")
+			.andWhere("user.isIndexable = TRUE");
+
 		return query
 			.skip(offset ?? 0)
 			.take(limit)
@@ -275,7 +280,7 @@ export class SearchHelpers {
 
 	private static async searchTags(
 		q: string,
-		excludeUnreviewed: boolean,
+		_excludeUnreviewed: boolean,
 		limit: number,
 		offset: number | undefined,
 	): Promise<MastodonEntity.Tag[]> {
