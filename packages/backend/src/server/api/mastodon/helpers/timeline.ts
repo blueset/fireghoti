@@ -55,9 +55,10 @@ export class TimelineHelpers {
 		generateMutedUserQuery(query, user);
 		generateBlockedUserQuery(query, user);
 		generateMutedUserRenotesQueryForNotes(query, user);
-		this.generateNoScheduleNotesQuery(query);
 
-		query.andWhere("note.visibility != 'hidden'");
+		query
+			.andWhere("note.visibility != 'hidden'")
+			.andWhere("note.scheduledAt IS NULL");
 
 		return PaginationHelpers.execQueryLinkPagination(
 			query,
@@ -98,7 +99,9 @@ export class TimelineHelpers {
 			sinceId,
 			maxId,
 			minId,
-		).andWhere("note.visibility = 'public'");
+		)
+			.andWhere("note.visibility = 'public'")
+			.andWhere("note.scheduledAt IS NULL");
 
 		if (remote) query.andWhere("note.userHost IS NOT NULL");
 		if (local) query.andWhere("note.userHost IS NULL");
@@ -109,7 +112,7 @@ export class TimelineHelpers {
 			.leftJoinAndSelect("note.renote", "renote");
 
 		generateRepliesQuery(query, true, user);
-		this.generateNoScheduleNotesQuery(query);
+
 		if (user) {
 			generateMutedUserQuery(query, user);
 			generateBlockedUserQuery(query, user);
@@ -150,12 +153,12 @@ export class TimelineHelpers {
 		)
 			.andWhere(`note.userId IN (${listQuery.getQuery()})`)
 			.andWhere("note.visibility != 'specified'")
+			.andWhere("note.scheduledAt IS NULL")
 			.leftJoinAndSelect("note.user", "user")
 			.leftJoinAndSelect("note.renote", "renote")
 			.setParameters({ listId: list.id });
 
 		generateVisibilityQuery(query, user);
-		this.generateNoScheduleNotesQuery(query);
 
 		return PaginationHelpers.execQueryLinkPagination(
 			query,
@@ -195,6 +198,7 @@ export class TimelineHelpers {
 			minId,
 		)
 			.andWhere("note.visibility = 'public'")
+			.andWhere("note.scheduledAt IS NULL")
 			.andWhere("note.tags @> array[:tag]::varchar[]", { tag: tag });
 
 		if (any.length > 0)
@@ -215,7 +219,7 @@ export class TimelineHelpers {
 			.leftJoinAndSelect("note.renote", "renote");
 
 		generateRepliesQuery(query, true, user);
-		this.generateNoScheduleNotesQuery(query);
+
 		if (user) {
 			generateMutedUserQuery(query, user);
 			generateBlockedUserQuery(query, user);
@@ -263,10 +267,9 @@ export class TimelineHelpers {
 			maxId,
 			minId,
 		)
+			.andWhere("note.scheduledAt IS NULL")
 			.innerJoin(`(${sq.getQuery()})`, "sq", "note.id = sq.latest")
 			.setParameters({ userId: user.id });
-
-		this.generateNoScheduleNotesQuery(query);
 
 		return query
 			.take(limit)
@@ -377,10 +380,5 @@ export class TimelineHelpers {
 			};
 		}
 		return result;
-	}
-
-	/** Exclude scheduled notes from Mastodon timeline */
-	public static generateNoScheduleNotesQuery(q: SelectQueryBuilder<Note>) {
-		q.andWhere("note.scheduledAt IS NULL");
 	}
 }
