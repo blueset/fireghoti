@@ -2,21 +2,24 @@
 
 Critical security updates are indicated by the :warning: icon.
 
-- Server administrators should check [notice-for-admins.md](./notice-for-admins.md) as well.
+- Server administrators must check [notice-for-admins.md](./notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](./api-change.md) as well.
 
 ## Unreleased
 
 - Ported Mastodon API support from Iceshrimp, with added Firefish extensions including push notifications, post languages, schedule post support, and more.
   - The old Mastodon API has been replaced with a new implementation based on Iceshrimp’s.
-- Add ability to automatically append #Alt4Me hashtag when posting a file without an alt text ([What is #Alt4Me?](https://social.growyourown.services/@FediTips/112055775451305236))
-- Fix a build issue on some aarch64 environments
-- Fix bugs
 
 **Breaking changes:**
 
 - The new Mastodon API uses a new format to manage Mastodon sessions in the database, whereas old implementation uses Misskey sessions. All previous client app and token registrations will not work with the new API. All clients need to be re-registered and all users need to re-authenticate.
 - All IDs (of statuses/notes, notifications, users, etc.) will be using the alphanumerical format, aligning with the Firefish/Misskey API. The old numerical IDs will not work when queried against the new API.
+
+## [v20240630](https://firefish.dev/firefish/firefish/-/merge_requests/11072/commits)
+
+- Add ability to automatically append #Alt4Me hashtag when posting a file without an alt text ([What is #Alt4Me?](https://social.growyourown.services/@FediTips/112055775451305236))
+- Fix a build issue on some environments
+- Fix bugs
 
 ## [v20240623](https://firefish.dev/firefish/firefish/-/merge_requests/11049/commits)
 

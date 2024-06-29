@@ -2339,3 +2339,5 @@ scheduledPostAt: Der Beitrag wird {time} gesendet
 cancelScheduledPost: Zeitplan entfernen
 media: Medien
 slashQuote: Kettenzitat
+addAlt4MeTag: 'Automatisch den Hashtag #Alt4Me am Ende deines Beitrags einfügen, wenn
+  eine angehängte Datei keine Beschreibung hat'

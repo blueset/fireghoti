@@ -2321,3 +2321,6 @@ scheduledDate: Publica el
 scheduledPost: Programa aquesta publicació
 scheduledPostAt: Aquesta publicació s'enviarà {time}
 cancelScheduledPost: Elimina la planificació
+addAlt4MeTag: "Afegeix automàticament l'etiqueta #Alt4Me a les teves publicacions
+  que tinguin un fitxer adjunt sense descripció"
+strongPassword: Bona contrasenya

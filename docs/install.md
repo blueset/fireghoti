@@ -29,6 +29,56 @@ Firefish depends on the following software.
 
 This document shows an example procedure for installing these dependencies and Firefish on Debian 12. Note that there is much room for customizing the server setup; this document merely demonstrates a simple installation.
 
+### Install on non-Linux systems
+
+We don't test Firefish on non-Linux systems, so please install Firefish on such an environment **only if you can address any problems yourself**. There is absolutely no support. That said, it is possible to install Firefish on some non-Linux systems.
+
+<details>
+
+<summary>Possible setup on FreeBSD (as of version `20240630`)</summary>
+
+You can install Firefish on FreeBSD by adding these extra steps to the standard instructions:
+
+1. Install `vips` package
+2. Add the following block to [`package.json`](../package.json)
+    ```json
+      "pnpm": {
+        "overrides": {
+          "rollup": "npm:@rollup/wasm-node@4.17.2"
+        }
+      }
+    ```
+3. Create an rc script for Firefish
+    ```sh
+    #!/bin/sh
+
+    # PROVIDE: firefish
+    # REQUIRE: DAEMON redis caddy postgresql
+    # KEYWORD: shutdown
+
+    . /etc/rc.subr
+
+    name=firefish
+    rcvar=firefish_enable
+
+    desc="Firefish daemon"
+
+    load_rc_config ${name}
+
+    : ${firefish_chdir:="/path/to/firefish/local/repository"}
+    : ${firefish_env:="npm_config_cache=/tmp NODE_ENV=production NODE_OPTIONS=--max-old-space-size=3072"}
+
+    pidfile="/var/run/${name}.pid"
+    command=/usr/sbin/daemon
+    command_args="-f -S -u firefish -P ${pidfile} /usr/local/bin/pnpm run start"
+
+    run_rc_command "$1"
+    ```
+
+</details>
+
+Please let us know if you deployed Firefish on a curious environment :smile:
+
 ### Use Docker/Podman containers
 
 If you want to use the pre-built container image, please refer to [`install-container.md`](./install-container.md).
