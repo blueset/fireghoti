@@ -2,13 +2,13 @@
 
 Critical security updates are indicated by the :warning: icon.
 
-- Server administrators should check [notice-for-admins.md](./notice-for-admins.md) as well.
+- Server administrators must check [notice-for-admins.md](./notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](./api-change.md) as well.
 
 ## Unreleased
 
 - Add ability to automatically append #Alt4Me hashtag when posting a file without an alt text ([What is #Alt4Me?](https://social.growyourown.services/@FediTips/112055775451305236))
-- Fix a build issue on some aarch64 environments
+- Fix a build issue on some environments
 - Fix bugs
 
 ## [v20240623](https://firefish.dev/firefish/firefish/-/merge_requests/11049/commits)
