@@ -426,6 +426,8 @@ export class NoteHelpers {
 			cw: request.spoiler_text,
 			lang: request.language,
 			visibility: delay != null ? "specified" : visibility,
+			// for scheduled post jobs
+			originalVisibility: visibility,
 			visibleUsers: Promise.resolve(visibility).then((p) =>
 				delay != null
 					? []
@@ -485,12 +487,11 @@ export class NoteHelpers {
 													: null,
 											}
 										: undefined,
-									visibility: data.visibility,
-									visibleUserIds: await Promise.resolve(visibility)
-										.then((v) =>
-											v === "specified" ? data.visibleUsers : undefined,
-										)
-										.then((users) => users?.map((u) => u.id)),
+									visibility: data.originalVisibility,
+									visibleUserIds:
+										data.originalVisibility === "specified"
+											? data.visibleUsers.map((u) => u.id)
+											: undefined,
 									replyId: data.reply?.id ?? undefined,
 									renoteId: data.renote?.id ?? undefined,
 								},
