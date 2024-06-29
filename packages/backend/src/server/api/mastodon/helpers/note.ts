@@ -394,18 +394,18 @@ export class NoteHelpers {
 			? await getNote(request.quote_id, user)
 			: undefined;
 
-		const delay = Math.max(
-			0,
-			(request.scheduled_at?.getTime() ?? Date.now()) - Date.now(),
-		);
+		const now = new Date();
+
+		let delay: number | null =
+			(request.scheduled_at?.getTime() ?? now.getTime()) - now.getTime();
+		if (delay <= 0) delay = null;
 
 		const visibility =
 			request.visibility ?? UserHelpers.getDefaultNoteVisibility(ctx);
 
-		const now = new Date();
-
 		const data = await awaitAll({
 			createdAt: now,
+			scheduledAt: request.scheduled_at ?? null,
 			files: files,
 			poll: request.poll
 				? {
@@ -425,9 +425,9 @@ export class NoteHelpers {
 			renote: renote,
 			cw: request.spoiler_text,
 			lang: request.language,
-			visibility: delay ? "specified" : visibility,
+			visibility: delay != null ? "specified" : visibility,
 			visibleUsers: Promise.resolve(visibility).then((p) =>
-				delay
+				delay != null
 					? []
 					: p === "specified"
 						? this.extractMentions(request.text ?? "", ctx)
@@ -439,7 +439,8 @@ export class NoteHelpers {
 			user,
 			{
 				createdAt: now,
-				scheduledAt: delay != null ? new Date(data.scheduledAt!) : null,
+				scheduledAt:
+					data.scheduledAt != null ? new Date(data.scheduledAt) : null,
 				files: data.files,
 				poll:
 					data.poll != null
@@ -468,7 +469,7 @@ export class NoteHelpers {
 						}),
 			},
 			false,
-			delay
+			delay != null
 				? async (note) => {
 						createScheduledNoteJob(
 							{
