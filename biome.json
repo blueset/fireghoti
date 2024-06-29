@@ -45,7 +45,6 @@
 			"style": {
 				"noCommaOperator": "error",
 				"noInferrableTypes": "error",
-				"noNamespace": "error",
 				"noNonNullAssertion": "warn",
 				"noUselessElse": "off",
 				"noVar": "error",
