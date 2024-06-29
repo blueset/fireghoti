@@ -20,8 +20,9 @@ import {
 	Notes,
 	NoteThreadMutings,
 	UserNotePinings,
+	Users,
 } from "@/models/index.js";
-import { decodeReaction, isQuote } from "backend-rs";
+import { decodeReaction, isQuote, nyaify } from "backend-rs";
 import { MentionConverter } from "@/server/api/mastodon/converters/mention.js";
 import { PollConverter } from "@/server/api/mastodon/converters/poll.js";
 import { populatePoll } from "@/models/repositories/note.js";
@@ -50,6 +51,27 @@ export class NoteConverter {
 		"note:card",
 		60 * 60,
 	);
+
+	private static applyNyaification(text: string, lang?: string) {
+		if (text === "") return "";
+
+		function nyaifyNode(node: mfm.MfmNode) {
+			if (node.type === "quote") return;
+			if (node.type === "text") node.props.text = nyaify(node.props.text, lang);
+
+			if (node.children) {
+				for (const child of node.children) {
+					nyaifyNode(child);
+				}
+			}
+		}
+
+		const tokens = mfm.parse(text);
+		for (const node of tokens) nyaifyNode(node);
+
+		return mfm.toString(tokens);
+	}
+
 	public static async encode(
 		note: Note,
 		ctx: MastoContext,
@@ -163,16 +185,24 @@ export class NoteConverter {
 
 		const identifier = `${note.id}:${(note.updatedAt ?? note.createdAt).getTime()}`;
 
-		const text = quoteUri.then((quoteUri) =>
-			note.text !== null
-				? quoteUri !== null
-					? note.text
-							.replaceAll(`RE: ${quoteUri}`, "")
-							.replaceAll(quoteUri, "")
-							.trimEnd()
-					: note.text
-				: null,
-		);
+		const text = quoteUri
+			.then((quoteUri) =>
+				note.text !== null
+					? quoteUri !== null
+						? note.text
+								.replaceAll(`RE: ${quoteUri}`, "")
+								.replaceAll(quoteUri, "")
+								.trimEnd()
+						: note.text
+					: null,
+			)
+			.then(async (text) => {
+				const user = await Users.findOneBy({ id: note.userId });
+				if (user?.isCat && user?.speakAsCat) {
+					return this.applyNyaification(text, note.lang);
+				}
+				return text;
+			});
 
 		const content = this.noteContentHtmlCache
 			.fetch(
