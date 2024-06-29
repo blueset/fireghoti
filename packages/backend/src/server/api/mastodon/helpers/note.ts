@@ -426,14 +426,19 @@ export class NoteHelpers {
 			cw: request.spoiler_text,
 			lang: request.language,
 			visibility: delay != null ? "specified" : visibility,
-			// for scheduled post jobs
-			originalVisibility: visibility,
 			visibleUsers: Promise.resolve(visibility).then((p) =>
 				delay != null
 					? []
 					: p === "specified"
 						? this.extractMentions(request.text ?? "", ctx)
 						: undefined,
+			),
+			// for scheduled post jobs
+			originalVisibility: visibility,
+			originalVisibleUsers: Promise.resolve(visibility).then((p) =>
+				p === "specified"
+					? this.extractMentions(request.text ?? "", ctx)
+					: undefined,
 			),
 		});
 
@@ -490,7 +495,7 @@ export class NoteHelpers {
 									visibility: data.originalVisibility,
 									visibleUserIds:
 										data.originalVisibility === "specified"
-											? data.visibleUsers.map((u) => u.id)
+											? data.originalVisibleUsers.map((u) => u.id)
 											: undefined,
 									replyId: data.reply?.id ?? undefined,
 									renoteId: data.renote?.id ?? undefined,
