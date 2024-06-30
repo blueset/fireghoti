@@ -198,7 +198,7 @@ export class NoteConverter {
 			)
 			.then(async (text) => {
 				const user = await Users.findOneBy({ id: note.userId });
-				if (user?.isCat && user?.speakAsCat) {
+				if (user?.isCat && user?.speakAsCat && text != null) {
 					return this.applyNyaification(text, note.lang);
 				}
 				return text;
