@@ -13,7 +13,7 @@ Breaking changes are indicated by the :warning: icon.
 <summary>Available endpoints (under <code>https://instance-domain/api/</code>)</summary>
 
 |  method  |              endpoint              |                    note                    |
-|---------:|------------------------------------|--------------------------------------------|
+|----------|------------------------------------|--------------------------------------------|
 |   `POST` | `oauth/token`                      |                                            |
 |   `POST` | `oauth/revoke`                     |                                            |
 |   `POST` | `v1/apps`                          |                                            |
