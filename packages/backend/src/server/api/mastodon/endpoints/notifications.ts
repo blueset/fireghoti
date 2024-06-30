@@ -67,7 +67,7 @@ export function setupEndpointsNotifications(router: Router): void {
 	router.post(
 		"/v1/conversations/:id/read",
 		auth(true, ["write:conversations"]),
-		async (ctx, reply) => {
+		async (ctx, _reply) => {
 			await NotificationHelpers.markConversationAsRead(ctx.params.id, ctx);
 			ctx.body = {};
 		},

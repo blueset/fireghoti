@@ -67,7 +67,7 @@ export function setupEndpointsTimeline(router: Router): void {
 		"/v1/timelines/public",
 		auth(true, ["read:statuses"]),
 		filterContext("public"),
-		async (ctx, reply) => {
+		async (ctx, _reply) => {
 			const args = normalizeUrlQuery(argsToBools(limitToInt(ctx.query)));
 			const res = await TimelineHelpers.getPublicTimeline(
 				args.max_id,
@@ -87,7 +87,7 @@ export function setupEndpointsTimeline(router: Router): void {
 		"/v1/timelines/tag/:hashtag",
 		auth(false, ["read:statuses"]),
 		filterContext("public"),
-		async (ctx, reply) => {
+		async (ctx, _reply) => {
 			const tag = (ctx.params.hashtag ?? "").trim().toLowerCase();
 			const args = normalizeUrlQuery(argsToBools(limitToInt(ctx.query)), [
 				"any[]",
@@ -116,7 +116,7 @@ export function setupEndpointsTimeline(router: Router): void {
 		"/v1/timelines/home",
 		auth(true, ["read:statuses"]),
 		filterContext("home"),
-		async (ctx, reply) => {
+		async (ctx, _reply) => {
 			const args = normalizeUrlQuery(limitToInt(ctx.query));
 			const res = await TimelineHelpers.getHomeTimeline(
 				args.max_id,
@@ -133,7 +133,7 @@ export function setupEndpointsTimeline(router: Router): void {
 		"/v1/timelines/list/:listId",
 		auth(true, ["read:lists"]),
 		filterContext("home"),
-		async (ctx, reply) => {
+		async (ctx, _reply) => {
 			const list = await UserLists.findOneBy({
 				userId: ctx.user.id,
 				id: ctx.params.listId,
@@ -156,7 +156,7 @@ export function setupEndpointsTimeline(router: Router): void {
 	router.get(
 		"/v1/conversations",
 		auth(true, ["read:statuses"]),
-		async (ctx, reply) => {
+		async (ctx, _reply) => {
 			const args = normalizeUrlQuery(limitToInt(ctx.query));
 			ctx.body = await TimelineHelpers.getConversations(
 				args.max_id,
@@ -171,7 +171,7 @@ export function setupEndpointsTimeline(router: Router): void {
 	router.get(
 		"/v1/markers",
 		auth(true, ["read:statuses"]),
-		async (ctx, reply) => {
+		async (ctx, _reply) => {
 			const args = normalizeUrlQuery(ctx.query, ["timeline[]"]);
 			ctx.body = await TimelineHelpers.getMarkers(args["timeline[]"], ctx);
 		},
@@ -180,7 +180,7 @@ export function setupEndpointsTimeline(router: Router): void {
 	router.post(
 		"/v1/markers",
 		auth(true, ["write:statuses"]),
-		async (ctx, reply) => {
+		async (ctx, _reply) => {
 			const body = ctx.request.body;
 			ctx.body = await TimelineHelpers.setMarkers(body, ctx);
 		},
