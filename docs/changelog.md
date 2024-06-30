@@ -7,13 +7,20 @@ Critical security updates are indicated by the :warning: icon.
 
 ## Unreleased
 
-- Ported Mastodon API support from Iceshrimp, with added Firefish extensions including push notifications, post languages, schedule post support, and more.
-  - The old Mastodon API has been replaced with a new implementation based on Iceshrimp’s.
+- Mastodon API implementation was ported from Iceshrimp, with added Firefish extensions including push notifications, post languages, schedule post support, and more.
+
+### Acknowledgement 
+
+The new Mastodon API support would not have been possible without the significant dedication of Laura Hausmann (Iceshrimp lead developer). We thank her and other Iceshrimp contributors from the bottom of our hearts.
 
 ### Breaking changes
 
 - The new Mastodon API uses a new format to manage Mastodon sessions in the database, whereas old implementation uses Misskey sessions. All previous client app and token registrations will not work with the new API. All clients need to be re-registered and all users need to re-authenticate.
 - All IDs (of statuses/notes, notifications, users, etc.) will be using the alphanumerical format, aligning with the Firefish/Misskey API. The old numerical IDs will not work when queried against the new API.
+
+### Important Notice
+
+There are still some incompatibilities and unimplemented things, so please keep in mind that you may experience glitchy behavior on Mastodon clients, and please do NOT report such issues to the Mastodon client developers. Such a “bug” is likely due to our implementation, and Mastodon client developers should not be bothered by such an invalid bug report. In the worst scenario, Mastodon clients may simply block non-Mastodon implementations (some Mastodon clients already do that). If you want to file an issue, please ensure the bug is reproducible with a vanilla Mastodon server.
 
 ## [v20240630](https://firefish.dev/firefish/firefish/-/merge_requests/11072/commits)
 
