@@ -1,6 +1,6 @@
 {
 	"name": "firefish",
-	"version": "20240613.fork",
+	"version": "20240630.fork",
 	"repository": {
 		"type": "git",
 		"url": "https://firefish.dev/firefish/firefish.git"
@@ -22,7 +22,7 @@
 		"dev": "pnpm node ./scripts/dev.mjs",
 		"dev:staging": "NODE_OPTIONS=--max_old_space_size=3072 NODE_ENV=development pnpm run build && pnpm run start",
 		"lint": "pnpm run lint:ts; pnpm run lint:rs",
-		"lint:ts": "pnpm --filter !firefish-js -r --parallel run lint",
+		"lint:ts": "pnpm --filter !firefish-js --recursive run lint ; pnpm run format:ts",
 		"lint:rs": "cargo clippy --fix --allow-dirty --allow-staged && cargo fmt --all --",
 		"debug": "pnpm run build:debug && pnpm run start",
 		"mocha": "pnpm --filter backend run mocha",
@@ -42,14 +42,13 @@
 		"js-yaml": "4.1.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.8.2",
-		"@biomejs/cli-darwin-arm64": "1.8.2",
-		"@biomejs/cli-darwin-x64": "1.8.2",
-		"@biomejs/cli-linux-arm64": "1.8.2",
-		"@biomejs/cli-linux-x64": "1.8.2",
-		"@types/node": "20.14.8",
+		"@biomejs/biome": "1.8.3",
+		"@biomejs/cli-darwin-arm64": "1.8.3",
+		"@biomejs/cli-darwin-x64": "1.8.3",
+		"@biomejs/cli-linux-arm64": "1.8.3",
+		"@biomejs/cli-linux-x64": "1.8.3",
+		"@types/node": "20.14.9",
 		"execa": "9.3.0",
-		"pnpm": "9.4.0",
-		"typescript": "5.5.2"
+		"pnpm": "9.4.0"
 	}
 }

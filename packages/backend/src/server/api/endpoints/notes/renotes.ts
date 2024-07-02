@@ -46,7 +46,7 @@ export const paramDef = {
 			type: "string",
 			enum: ["all", "renote", "quote"],
 			nullable: true,
-			default: null,
+			default: "all",
 		},
 	},
 	required: ["noteId"],

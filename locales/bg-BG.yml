@@ -586,7 +586,7 @@ unavailable: Не е свободно
 tooShort: Твърде кратко
 tooLong: Твърде дълго
 weakPassword: Слаба парола
-strongPassword: Силна парола
+veryStrongPassword: Силна парола
 passwordMatched: Съвпада
 passwordNotMatched: Не съвпада
 signinWith: Вход с {x}

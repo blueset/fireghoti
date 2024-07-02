@@ -34,7 +34,7 @@ export function setupEndpointsAccount(router: Router): void {
 		async (ctx) => {
 			const ids =
 				normalizeUrlQuery(ctx.query, ["id[]"])["id[]"] ??
-				normalizeUrlQuery(ctx.query, ["id"])["id"] ??
+				normalizeUrlQuery(ctx.query, ["id"]).id ??
 				[];
 			ctx.body = await UserHelpers.getUserRelationhipToMany(ids, ctx.user.id);
 		},

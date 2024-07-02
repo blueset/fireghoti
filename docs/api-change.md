@@ -8,6 +8,131 @@ Breaking changes are indicated by the :warning: icon.
   - :warning: The new API uses a new format to manage Mastodon sessions in the database, whereas old implementation uses Misskey sessions. All previous client app and token registrations will not work with the new API. All clients need to be re-registered and all users need to re-authenticate.
   - :warning: All IDs (of statuses/notes, notifications, users, etc.) will be using the alphanumerical format, aligning with the Firefish/Misskey API. The old numerical IDs will not work when queried against the new API.
 
+<details>
+
+<summary>Available endpoints (under <code>https://instance-domain/api/</code>)</summary>
+
+|  method  |              endpoint              |                    note                    |
+|----------|------------------------------------|--------------------------------------------|
+|   `POST` | `oauth/token`                      |                                            |
+|   `POST` | `oauth/revoke`                     |                                            |
+|   `POST` | `v1/apps`                          |                                            |
+|    `GET` | `v1/apps/verify_credentials`       |                                            |
+|   `POST` | `v1/firefish/apps/info`            | Firefish extension, uses MiAuth            |
+|   `POST` | `v1/firefish/auth/code`            | Firefish extension, uses MiAuth            |
+|          |                                    |                                            |
+|    `GET` | `v1/accounts/verify_credentials`   |                                            |
+|  `PATCH` | `v1/accounts/update_credentials`   |                                            |
+|    `GET` | `v1/accounts/lookup`               |                                            |
+|    `GET` | `v1/accounts/relationships`        |                                            |
+|    `GET` | `v1/accounts/search`               |                                            |
+|    `GET` | `v1/accounts/:id`                  |                                            |
+|    `GET` | `v1/accounts/:id/statuses`         |                                            |
+|    `GET` | `v1/accounts/:id/featured_tags`    |                                            |
+|    `GET` | `v1/accounts/:id/followers`        |                                            |
+|    `GET` | `v1/accounts/:id/following`        |                                            |
+|    `GET` | `v1/accounts/:id/lists`            |                                            |
+|   `POST` | `v1/accounts/:id/follow`           |                                            |
+|   `POST` | `v1/accounts/:id/unfollow`         |                                            |
+|   `POST` | `v1/accounts/:id/block`            |                                            |
+|   `POST` | `v1/accounts/:id/unblock`          |                                            |
+|   `POST` | `v1/accounts/:id/mute`             |                                            |
+|   `POST` | `v1/accounts/:id/unmute`           |                                            |
+|          |                                    |                                            |
+|    `GET` | `v1/featured_tags`                 | always returns an empty list               |
+|    `GET` | `v1/followed_tags`                 | always returns an empty list               |
+|    `GET` | `v1/bookmarks`                     |                                            |
+|    `GET` | `v1/favourites`                    |                                            |
+|          |                                    |                                            |
+|    `GET` | `v1/mutes`                         |                                            |
+|    `GET` | `v1/blocks`                        |                                            |
+|    `GET` | `v1/follow_requests`               |                                            |
+|   `POST` | `v1/follow_requests/:id/authorize` |                                            |
+|   `POST` | `v1/follow_requests/:id/reject`    |                                            |
+|          |                                    |                                            |
+|    `GET` | `v1/filters`                       |                                            |
+|   `POST` | `v1/filters`                       |                                            |
+|    `GET` | `v2/filters`                       |                                            |
+|   `POST` | `v2/filters`                       |                                            |
+|          |                                    |                                            |
+|    `GET` | `v1/lists`                         |                                            |
+|   `POST` | `v1/lists`                         |                                            |
+|    `GET` | `v1/lists/:id`                     |                                            |
+|    `PUT` | `v1/lists/:id`                     |                                            |
+| `DELETE` | `v1/lists/:id`                     |                                            |
+|    `GET` | `v1/lists/:id/accounts`            |                                            |
+|   `POST` | `v1/lists/:id/accounts`            |                                            |
+| `DELETE` | `v1/lists/:id/accounts`            |                                            |
+|          |                                    |                                            |
+|    `GET` | `v1/media/:id`                     |                                            |
+|    `PUT` | `v1/media/:id`                     |                                            |
+|   `POST` | `v1/media`                         |                                            |
+|   `POST` | `v2/media`                         |                                            |
+|          |                                    |                                            |
+|    `GET` | `v1/custom_emojis`                 |                                            |
+|    `GET` | `v1/instance`                      |                                            |
+|    `GET` | `v2/instance`                      |                                            |
+|    `GET` | `v1/announcements`                 |                                            |
+|   `POST` | `v1/announcements/:id/dismiss`     |                                            |
+|    `GET` | `v1/trends`                        | pagination is unimplemented                |
+|    `GET` | `v1/trends/tags`                   | pagination is unimplemented                |
+|    `GET` | `v1/trends/statuses`               |                                            |
+|    `GET` | `v1/trends/links`                  | always returns an empty list               |
+|    `GET` | `v1/preferences`                   |                                            |
+|    `GET` | `v2/suggestions`                   |                                            |
+|          |                                    |                                            |
+|    `GET` | `v1/notifications`                 |                                            |
+|    `GET` | `v1/notifications/:id`             |                                            |
+|   `POST` | `v1/notifications/clear`           |                                            |
+|   `POST` | `v1/notifications/:id/dismiss`     |                                            |
+|   `POST` | `v1/conversations/:id/read`        |                                            |
+|    `GET` | `v1/push/subscription`             |                                            |
+|   `POST` | `v1/push/subscription`             |                                            |
+| `DELETE` | `v1/push/subscription`             |                                            |
+|          |                                    |                                            |
+|    `GET` | `v1/search`                        |                                            |
+|    `GET` | `v2/search`                        |                                            |
+|          |                                    |                                            |
+|   `POST` | `v1/statuses`                      |                                            |
+|    `PUT` | `v1/statuses/:id`                  |                                            |
+|    `GET` | `v1/statuses/:id`                  |                                            |
+| `DELETE` | `v1/statuses/:id`                  |                                            |
+|    `GET` | `v1/statuses/:id/context`          |                                            |
+|    `GET` | `v1/statuses/:id/history`          |                                            |
+|    `GET` | `v1/statuses/:id/source`           |                                            |
+|    `GET` | `v1/statuses/:id/reblogged_by`     |                                            |
+|    `GET` | `v1/statuses/:id/favourited_by`    |                                            |
+|   `POST` | `v1/statuses/:id/favourite`        |                                            |
+|   `POST` | `v1/statuses/:id/unfavourite`      |                                            |
+|   `POST` | `v1/statuses/:id/reblog`           |                                            |
+|   `POST` | `v1/statuses/:id/unreblog`         |                                            |
+|   `POST` | `v1/statuses/:id/bookmark`         |                                            |
+|   `POST` | `v1/statuses/:id/unbookmark`       |                                            |
+|   `POST` | `v1/statuses/:id/pin`              |                                            |
+|   `POST` | `v1/statuses/:id/unpin`            |                                            |
+|   `POST` | `v1/statuses/:id/react/:name`      |                                            |
+|   `POST` | `v1/statuses/:id/unreact/:name`    |                                            |
+|   `POST` | `v1/statuses/:id/translate`        |                                            |
+|          |                                    |                                            |
+|    `GET` | `v1/polls/:id`                     |                                            |
+|   `POST` | `v1/polls/:id/votes`               |                                            |
+|          |                                    |                                            |
+|    `GET` | `v1/scheduled_statuses`            |                                            |
+|    `GET` | `v1/scheduled_statuses/:id`        | reschedule (`PUT` method) is unimplemented |
+| `DELETE` | `v1/scheduled_statuses/:id`        |                                            |
+|          |                                    |                                            |
+|    `GET` | `v1/streaming/health`              |                                            |
+|          |                                    |                                            |
+|    `GET` | `v1/timelines/public`              |                                            |
+|    `GET` | `v1/timelines/tag/:hashtag`        |                                            |
+|    `GET` | `v1/timelines/home`                |                                            |
+|    `GET` | `v1/timelines/list/:listId`        |                                            |
+|    `GET` | `v1/conversations`                 |                                            |
+|    `GET` | `v1/markers`                       |                                            |
+|   `POST` | `v1/markers`                       |                                            |
+
+</details>
+
 ## v20240607
 
 - `GET` request is now allowed for the `latest-version` endpoint.

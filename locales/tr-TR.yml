@@ -521,7 +521,7 @@ newMessageExists: Yeni mesaj yok
 invitations: Davetler
 invitationCode: Davet kodu
 signinWith: '{x} ile giriş yap'
-strongPassword: Güçlü şifre
+veryStrongPassword: Güçlü şifre
 passwordNotMatched: Uyuşmuyor
 signinFailed: Giriş yapılamadı. Şifre ve ya kullanıcı adı yanlış.
 tapSecurityKey: Güvenlik anahtarınıza dokunun

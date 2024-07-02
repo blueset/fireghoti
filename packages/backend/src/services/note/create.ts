@@ -743,10 +743,10 @@ async function insertNote(
 		renoteUserId: data.renote ? data.renote.userId : null,
 		renoteUserHost: data.renote ? data.renote.userHost : null,
 		userHost: user.host,
+		updatedAt: undefined,
+		uri: data.uri ?? undefined,
+		url: data.url ?? undefined,
 	});
-
-	if (data.uri != null) note.uri = data.uri;
-	if (data.url != null) note.url = data.url;
 
 	// Append mentions data
 	if (mentionedUsers.length > 0) {

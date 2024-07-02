@@ -5,8 +5,6 @@ WORKDIR /firefish
 # Copy only backend-rs pnpm-related files first, to cache efficiently
 COPY package.json pnpm-workspace.yaml ./
 COPY packages/backend-rs/package.json packages/backend-rs/package.json
-COPY packages/backend-rs/npm/linux-x64-musl/package.json packages/backend-rs/npm/linux-x64-musl/package.json
-COPY packages/backend-rs/npm/linux-arm64-musl/package.json packages/backend-rs/npm/linux-arm64-musl/package.json
 
 # Install compilation dependencies
 RUN apk update && apk add --no-cache build-base linux-headers curl ca-certificates python3 perl
@@ -27,7 +25,8 @@ RUN cargo fetch --locked --manifest-path Cargo.toml
 COPY packages/backend-rs packages/backend-rs/
 
 # Compile backend-rs
-RUN NODE_ENV='production' pnpm run --filter backend-rs build
+RUN ln -s $(which gcc) /usr/bin/aarch64-linux-musl-gcc
+RUN NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=3072' pnpm run --filter backend-rs build
 
 # Copy/Overwrite index.js to mitigate the bug in napi-rs codegen
 COPY packages/backend-rs/index.js packages/backend-rs/built/index.js
@@ -46,7 +45,7 @@ RUN pnpm install --frozen-lockfile
 COPY . ./
 
 # Build other workspaces
-RUN NODE_ENV='production' pnpm run --recursive --filter '!backend-rs' build && pnpm run build:assets
+RUN NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=3072' pnpm run --recursive --filter '!backend-rs' build && pnpm run build:assets
 
 # Trim down the dependencies to only those for production
 RUN find . -path '*/node_modules/*' -delete && pnpm install --prod --frozen-lockfile

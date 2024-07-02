@@ -179,22 +179,28 @@
 				<template #prefix><i :class="icon('ph-lock')"></i></template>
 				<template #caption>
 					<span
-						v-if="passwordStrength == 'low'"
+						v-if="passwordStrength === 'Weak'"
 						style="color: var(--error)"
-						><i :class="icon('ph-warning ph-fw')"></i>
+						><i :class="icon('ph-seal-warning ph-fw')"></i>
 						{{ i18n.ts.weakPassword }}</span
 					>
 					<span
-						v-if="passwordStrength == 'medium'"
+						v-if="passwordStrength === 'Medium'"
 						style="color: var(--warn)"
-						><i :class="icon('ph-check ph-fw')"></i>
+						><i :class="icon('ph-warning ph-fw')"></i>
 						{{ i18n.ts.normalPassword }}</span
 					>
 					<span
-						v-if="passwordStrength == 'high'"
+						v-if="passwordStrength === 'Good'"
 						style="color: var(--success)"
 						><i :class="icon('ph-check ph-fw')"></i>
 						{{ i18n.ts.strongPassword }}</span
+					>
+					<span
+						v-if="passwordStrength === 'Great'"
+						style="color: var(--success)"
+						><i :class="icon('ph-checks ph-fw')"></i>
+						{{ i18n.ts.veryStrongPassword }}</span
 					>
 				</template>
 			</MkInput>
@@ -273,7 +279,7 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 
-import getPasswordStrength from "syuilo-password-strength";
+import { passwordStrength as checkPasswordStrength } from "check-password-strength";
 import { toUnicode } from "punycode/";
 import MkButton from "./MkButton.vue";
 import MkInput from "./form/input.vue";
@@ -333,7 +339,7 @@ const emailState = ref<
 	| "unavailable"
 	| "error"
 >(null);
-const passwordStrength = ref<"" | "low" | "medium" | "high">("");
+const passwordStrength = ref<"" | "Weak" | "Medium" | "Good" | "Great">("");
 const passwordRetypeState = ref<null | "match" | "not-match">(null);
 const submitting = ref(false);
 const ToSAgreement = ref(false);
@@ -423,15 +429,42 @@ function onChangeEmail(): void {
 		});
 }
 
+const passwordStrengthOptions = [
+	{
+		id: 0,
+		value: "Weak",
+		minDiversity: 0,
+		minLength: 0,
+	},
+	{
+		id: 1,
+		value: "Medium",
+		minDiversity: 2,
+		minLength: 8,
+	},
+	{
+		id: 2,
+		value: "Good",
+		minDiversity: 3,
+		minLength: 16,
+	},
+	{
+		id: 3,
+		value: "Great",
+		minDiversity: 4,
+		minLength: 32,
+	},
+];
+
 function onChangePassword(): void {
 	if (password.value === "") {
 		passwordStrength.value = "";
 		return;
 	}
-
-	const strength = getPasswordStrength(password.value);
-	passwordStrength.value =
-		strength > 0.7 ? "high" : strength > 0.3 ? "medium" : "low";
+	passwordStrength.value = checkPasswordStrength(
+		password.value,
+		passwordStrengthOptions,
+	).value;
 }
 
 function onChangePasswordRetype(): void {

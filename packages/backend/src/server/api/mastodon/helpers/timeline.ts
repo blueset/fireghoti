@@ -6,7 +6,7 @@ import {
 	RegistryItems,
 	UserListJoinings,
 } from "@/models/index.js";
-import { Brackets, type SelectQueryBuilder } from "typeorm";
+import { Brackets } from "typeorm";
 import { generateChannelQuery } from "@/server/api/common/generate-channel-query.js";
 import { generateRepliesQuery } from "@/server/api/common/generate-replies-query.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
@@ -55,9 +55,10 @@ export class TimelineHelpers {
 		generateMutedUserQuery(query, user);
 		generateBlockedUserQuery(query, user);
 		generateMutedUserRenotesQueryForNotes(query, user);
-		this.generateNoScheduleNotesQuery(query);
 
-		query.andWhere("note.visibility != 'hidden'");
+		query
+			.andWhere("note.visibility != 'hidden'")
+			.andWhere("note.scheduledAt IS NULL");
 
 		return PaginationHelpers.execQueryLinkPagination(
 			query,
@@ -98,7 +99,9 @@ export class TimelineHelpers {
 			sinceId,
 			maxId,
 			minId,
-		).andWhere("note.visibility = 'public'");
+		)
+			.andWhere("note.visibility = 'public'")
+			.andWhere("note.scheduledAt IS NULL");
 
 		if (remote) query.andWhere("note.userHost IS NOT NULL");
 		if (local) query.andWhere("note.userHost IS NULL");
@@ -109,7 +112,7 @@ export class TimelineHelpers {
 			.leftJoinAndSelect("note.renote", "renote");
 
 		generateRepliesQuery(query, true, user);
-		this.generateNoScheduleNotesQuery(query);
+
 		if (user) {
 			generateMutedUserQuery(query, user);
 			generateBlockedUserQuery(query, user);
@@ -150,12 +153,12 @@ export class TimelineHelpers {
 		)
 			.andWhere(`note.userId IN (${listQuery.getQuery()})`)
 			.andWhere("note.visibility != 'specified'")
+			.andWhere("note.scheduledAt IS NULL")
 			.leftJoinAndSelect("note.user", "user")
 			.leftJoinAndSelect("note.renote", "renote")
 			.setParameters({ listId: list.id });
 
 		generateVisibilityQuery(query, user);
-		this.generateNoScheduleNotesQuery(query);
 
 		return PaginationHelpers.execQueryLinkPagination(
 			query,
@@ -195,6 +198,7 @@ export class TimelineHelpers {
 			minId,
 		)
 			.andWhere("note.visibility = 'public'")
+			.andWhere("note.scheduledAt IS NULL")
 			.andWhere("note.tags @> array[:tag]::varchar[]", { tag: tag });
 
 		if (any.length > 0)
@@ -215,7 +219,7 @@ export class TimelineHelpers {
 			.leftJoinAndSelect("note.renote", "renote");
 
 		generateRepliesQuery(query, true, user);
-		this.generateNoScheduleNotesQuery(query);
+
 		if (user) {
 			generateMutedUserQuery(query, user);
 			generateBlockedUserQuery(query, user);
@@ -263,9 +267,9 @@ export class TimelineHelpers {
 			maxId,
 			minId,
 		)
+			.andWhere("note.scheduledAt IS NULL")
 			.innerJoin(`(${sq.getQuery()})`, "sq", "note.id = sq.latest")
 			.setParameters({ userId: user.id });
-		this.generateNoScheduleNotesQuery(query);
 
 		return query
 			.take(limit)
@@ -275,7 +279,7 @@ export class TimelineHelpers {
 				const conversations = p.map((c) => {
 					// Gather all unique IDs except for the local user
 					const userIds = unique(
-						[c.userId].concat(c.visibleUserIds).filter((p) => p != user.id),
+						[c.userId].concat(c.visibleUserIds).filter((p) => p !== user.id),
 					);
 					const users = userIds.map((id) =>
 						UserHelpers.getUserCached(id, ctx).catch((_) => null),
@@ -339,6 +343,8 @@ export class TimelineHelpers {
 		ctx: MastoContext,
 	): Promise<MastodonEntity.Marker> {
 		const result: MastodonEntity.Marker = {};
+		const now = new Date();
+
 		for (const key of ["home", "notifications"] as const) {
 			if (!body[key]) continue;
 			let entry = await RegistryItems.createQueryBuilder("item")
@@ -352,8 +358,8 @@ export class TimelineHelpers {
 					userId: ctx.user.id,
 					scope: ["mastodon", "markers"],
 					key,
-					createdAt: new Date(),
-					updatedAt: new Date(),
+					createdAt: now,
+					updatedAt: now,
 					value: {
 						lastReadId: body[key].last_read_id,
 						version: 0,
@@ -364,7 +370,7 @@ export class TimelineHelpers {
 					lastReadId: body[key].last_read_id,
 					version: entry.value.version + 1,
 				};
-				entry.updatedAt = new Date();
+				entry.updatedAt = now;
 			}
 			await RegistryItems.save(entry);
 			result[key] = {
@@ -374,10 +380,5 @@ export class TimelineHelpers {
 			};
 		}
 		return result;
-	}
-
-	/** Exclude scheduled notes from Mastodon timeline */
-	public static generateNoScheduleNotesQuery(q: SelectQueryBuilder<Note>) {
-		q.andWhere("note.scheduledAt IS NULL");
 	}
 }

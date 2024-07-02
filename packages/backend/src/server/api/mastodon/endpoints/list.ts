@@ -12,17 +12,17 @@ import { auth } from "@/server/api/mastodon/middleware/auth.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 
 export function setupEndpointsList(router: Router): void {
-	router.get("/v1/lists", auth(true, ["read:lists"]), async (ctx, reply) => {
+	router.get("/v1/lists", auth(true, ["read:lists"]), async (ctx, _reply) => {
 		ctx.body = await ListHelpers.getLists(ctx);
 	});
 	router.get<{ Params: { id: string } }>(
 		"/v1/lists/:id",
 		auth(true, ["read:lists"]),
-		async (ctx, reply) => {
+		async (ctx, _reply) => {
 			ctx.body = await ListHelpers.getListOr404(ctx.params.id, ctx);
 		},
 	);
-	router.post("/v1/lists", auth(true, ["write:lists"]), async (ctx, reply) => {
+	router.post("/v1/lists", auth(true, ["write:lists"]), async (ctx, _reply) => {
 		const body = ctx.request.body as any;
 		const title = (body.title ?? "").trim();
 		ctx.body = await ListHelpers.createList(title, ctx);
@@ -46,7 +46,7 @@ export function setupEndpointsList(router: Router): void {
 	router.delete<{ Params: { id: string } }>(
 		"/v1/lists/:id",
 		auth(true, ["write:lists"]),
-		async (ctx, reply) => {
+		async (ctx, _reply) => {
 			const list = await UserLists.findOneBy({
 				userId: ctx.user.id,
 				id: ctx.params.id,

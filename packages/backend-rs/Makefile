@@ -26,7 +26,7 @@ regenerate-entities:
 .PHONY: update-index
 update-index: index.js index.d.ts
 
-index.js index.d.ts: $(SRC)
+index.js index.d.ts: $(SRC) package.json
 	NODE_OPTIONS='--max_old_space_size=3072' pnpm run build:debug
 	[ -f built/index.js ] && [ -f built/index.d.ts ]
 	rm --force index.js index.d.ts

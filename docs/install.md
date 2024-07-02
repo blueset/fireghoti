@@ -20,19 +20,72 @@ Firefish depends on the following software.
 ## Build dependencies
 
 - At least [Rust](https://www.rust-lang.org/) v1.74
-- C/C++ compiler & build tools
+- C/C++ compiler & build tools (like [GNU Make](https://www.gnu.org/software/make/))
   - `build-essential` on Debian/Ubuntu Linux
   - `base-devel` on Arch Linux
+  - `"Development Tools"` on Fedora/Red Hat Linux
 - [Python 3](https://www.python.org/)
 - [Perl](https://www.perl.org/)
 
 This document shows an example procedure for installing these dependencies and Firefish on Debian 12. Note that there is much room for customizing the server setup; this document merely demonstrates a simple installation.
 
+### Install on non-Linux systems
+
+We don't test Firefish on non-Linux systems, so please install Firefish on such an environment **only if you can address any problems yourself**. There is absolutely no support. That said, it is possible to install Firefish on some non-Linux systems.
+
+<details>
+
+<summary>Possible setup on FreeBSD (as of version `20240630`)</summary>
+
+You can install Firefish on FreeBSD by adding these extra steps to the standard instructions:
+
+1. Install `vips` package
+2. Add the following block to [`package.json`](../package.json)
+    ```json
+      "pnpm": {
+        "overrides": {
+          "rollup": "npm:@rollup/wasm-node@4.17.2"
+        }
+      }
+    ```
+3. Create an rc script for Firefish
+    ```sh
+    #!/bin/sh
+
+    # PROVIDE: firefish
+    # REQUIRE: DAEMON redis caddy postgresql
+    # KEYWORD: shutdown
+
+    . /etc/rc.subr
+
+    name=firefish
+    rcvar=firefish_enable
+
+    desc="Firefish daemon"
+
+    load_rc_config ${name}
+
+    : ${firefish_chdir:="/path/to/firefish/local/repository"}
+    : ${firefish_env:="npm_config_cache=/tmp NODE_ENV=production NODE_OPTIONS=--max-old-space-size=3072"}
+
+    pidfile="/var/run/${name}.pid"
+    command=/usr/sbin/daemon
+    command_args="-f -S -u firefish -P ${pidfile} /usr/local/bin/pnpm run start"
+
+    run_rc_command "$1"
+    ```
+
+</details>
+
+Please let us know if you deployed Firefish on a curious environment :smile:
+
+### Use Docker/Podman containers
+
 If you want to use the pre-built container image, please refer to [`install-container.md`](./install-container.md).
 
-Make sure that you can use the `sudo` command before proceeding.
-
 ## 1. Install dependencies
+
+Make sure that you can use the `sudo` command before proceeding.
 
 ### Utilities
 
@@ -213,7 +266,7 @@ sudo ufw status
 
 ### 2. Set up a reverse proxy
 
-In this instruction, we use [Caddy](https://caddyserver.com/) to make the Firefish server accesible from internet. However, you can also use [Nginx](https://nginx.org/en/) if you want ([example Nginx config file](../firefish.nginx.conf)).
+In this instruction, we use [Caddy](https://caddyserver.com/) to make the Firefish server accesible from internet. However, you can also use [Nginx](https://nginx.org/en/) if you want ([example Nginx config file](./firefish.nginx.conf)).
 
 1. Install Caddy
     ```sh

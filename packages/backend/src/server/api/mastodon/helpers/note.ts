@@ -394,18 +394,18 @@ export class NoteHelpers {
 			? await getNote(request.quote_id, user)
 			: undefined;
 
-		const delay = Math.max(
-			0,
-			(request.scheduled_at?.getTime() ?? Date.now()) - Date.now(),
-		);
+		const now = new Date();
+
+		let delay: number | null =
+			(request.scheduled_at?.getTime() ?? now.getTime()) - now.getTime();
+		if (delay <= 0) delay = null;
 
 		const visibility =
 			request.visibility ?? UserHelpers.getDefaultNoteVisibility(ctx);
 
-		const now = new Date();
-
 		const data = await awaitAll({
 			createdAt: now,
+			scheduledAt: request.scheduled_at ?? null,
 			files: files,
 			poll: request.poll
 				? {
@@ -425,13 +425,20 @@ export class NoteHelpers {
 			renote: renote,
 			cw: request.spoiler_text,
 			lang: request.language,
-			visibility: delay ? "specified" : visibility,
+			visibility: delay != null ? "specified" : visibility,
 			visibleUsers: Promise.resolve(visibility).then((p) =>
-				delay
+				delay != null
 					? []
 					: p === "specified"
 						? this.extractMentions(request.text ?? "", ctx)
 						: undefined,
+			),
+			// for scheduled post jobs
+			originalVisibility: visibility,
+			originalVisibleUsers: Promise.resolve(visibility).then((p) =>
+				p === "specified"
+					? this.extractMentions(request.text ?? "", ctx)
+					: undefined,
 			),
 		});
 
@@ -439,6 +446,8 @@ export class NoteHelpers {
 			user,
 			{
 				createdAt: now,
+				scheduledAt:
+					data.scheduledAt != null ? new Date(data.scheduledAt) : null,
 				files: data.files,
 				poll:
 					data.poll != null
@@ -460,7 +469,6 @@ export class NoteHelpers {
 					? {
 							visibility: "specified",
 							visibleUsers: [],
-							scheduledAt: request.scheduled_at && new Date(request.scheduled_at),
 						}
 					: {
 							visibility: data.visibility,
@@ -468,7 +476,7 @@ export class NoteHelpers {
 						}),
 			},
 			false,
-			delay
+			delay != null
 				? async (note) => {
 						createScheduledNoteJob(
 							{
@@ -484,12 +492,11 @@ export class NoteHelpers {
 													: null,
 											}
 										: undefined,
-									visibility: data.visibility,
-									visibleUserIds: await Promise.resolve(visibility)
-										.then((v) =>
-											v === "specified" ? data.visibleUsers : undefined,
-										)
-										.then((users) => users?.map((u) => u.id)),
+									visibility: data.originalVisibility,
+									visibleUserIds:
+										data.originalVisibility === "specified"
+											? data.originalVisibleUsers.map((u) => u.id)
+											: undefined,
 									replyId: data.reply?.id ?? undefined,
 									renoteId: data.renote?.id ?? undefined,
 								},
@@ -531,9 +538,7 @@ export class NoteHelpers {
 						multiple: request.poll.multiple,
 						expiresAt:
 							request.poll.expires_in && request.poll.expires_in > 0
-								? new Date(
-										new Date().getTime() + request.poll.expires_in * 1000,
-									)
+								? new Date(Date.now() + request.poll.expires_in * 1000)
 								: null,
 					}
 				: undefined,
@@ -640,7 +645,9 @@ export class NoteHelpers {
 		const note = await getNote(noteId, ctx.user);
 		const conversationId = note.threadId ?? note.id;
 		const userIds = unique(
-			[note.userId].concat(note.visibleUserIds).filter((p) => p != ctx.user.id),
+			[note.userId]
+				.concat(note.visibleUserIds)
+				.filter((p) => p !== ctx.user.id),
 		);
 		const users = userIds.map((id) =>
 			UserHelpers.getUserCached(id, ctx).catch((_) => null),

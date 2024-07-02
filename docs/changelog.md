@@ -2,18 +2,35 @@
 
 Critical security updates are indicated by the :warning: icon.
 
-- Server administrators should check [notice-for-admins.md](./notice-for-admins.md) as well.
+- Server administrators must check [notice-for-admins.md](./notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](./api-change.md) as well.
 
 ## Unreleased
 
-- Ported Mastodon API support from Iceshrimp, with added Firefish extensions including push notifications, post languages, schedule post support, and more.
-  - The old Mastodon API has been replaced with a new implementation based on Iceshrimp’s.
+- Mastodon API implementation was ported from Iceshrimp, with added Firefish extensions including push notifications, post languages, schedule post support, and more. (#10880)
 
-**Breaking changes:**
+### Acknowledgement 
+
+The new Mastodon API support would not have been possible without the significant dedication of Laura Hausmann (Iceshrimp lead developer). We thank her and other Iceshrimp contributors from the bottom of our hearts.
+
+### Breaking changes
 
 - The new Mastodon API uses a new format to manage Mastodon sessions in the database, whereas old implementation uses Misskey sessions. All previous client app and token registrations will not work with the new API. All clients need to be re-registered and all users need to re-authenticate.
 - All IDs (of statuses/notes, notifications, users, etc.) will be using the alphanumerical format, aligning with the Firefish/Misskey API. The old numerical IDs will not work when queried against the new API.
+
+### Important Notice
+
+There are still some incompatibilities and unimplemented things in the new Mastodon API support, so please keep in mind that you may experience glitchy behavior on Mastodon clients, and please do NOT report such issues to Mastodon clients. Such a “bug” is likely due to our implementation, and Mastodon client developers should not be bothered by such an invalid bug report. In the worst scenario, they may simply block non-Mastodon implementations (some clients already do that). If you want to file an issue, please ensure the bug is reproducible with a vanilla Mastodon server.
+
+## [v20240630](https://firefish.dev/firefish/firefish/-/merge_requests/11072/commits)
+
+- Add ability to automatically append #Alt4Me hashtag when posting a file without an alt text ([What is #Alt4Me?](https://social.growyourown.services/@FediTips/112055775451305236))
+- Fix a build issue on some environments
+- Fix bugs
+
+## [v20240623](https://firefish.dev/firefish/firefish/-/merge_requests/11049/commits)
+
+- Fix bugs
 
 ## [v20240613](https://firefish.dev/firefish/firefish/-/merge_requests/11003/commits)
 

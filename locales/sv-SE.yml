@@ -381,7 +381,7 @@ noMessagesYet: Inga meddelande ännu
 newMessageExists: Det finns inga nya meddelanden
 weakPassword: Svagt lösenord
 normalPassword: Dugligt lösenord
-strongPassword: Starkt lösenord
+veryStrongPassword: Starkt lösenord
 passwordMatched: Matchar
 passwordNotMatched: Matchar inte
 signinWith: Logga in med {x}

@@ -576,7 +576,7 @@ quoteAttached: Quote
 noMessagesYet: Nog geen berichten
 weakPassword: Zwak wachtwoord
 normalPassword: Middelmatig wachtwoord
-strongPassword: Sterk wachtwoord
+veryStrongPassword: Sterk wachtwoord
 onlyOneFileCanBeAttached: Je kan maar één bestand toevoegen aan je bericht
 invitationCode: Uitnodigingscode
 checking: Controleren...

@@ -677,7 +677,7 @@ checking: Έλεγχος...
 invitationCode: Κωδικός πρόσκλησης
 normalPassword: Μέτριος κωδικός
 weakPassword: Αδύναμος κωδικός
-strongPassword: Δυνατός κωδικός
+veryStrongPassword: Δυνατός κωδικός
 signinWith: Συνδεθείτε με {x}
 tapSecurityKey: Βάλτε το κλειδί ασφάλειας
 signinFailed: Αδυναμία σύνδεσης. Το όνομα μέλους ή ο κωδικός είναι λάθος.
