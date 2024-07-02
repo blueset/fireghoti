@@ -100,7 +100,7 @@ export class TimelineHelpers {
 			maxId,
 			minId,
 		)
-			.andWhere("note.visibility = 'public'")
+			// .andWhere("note.visibility = 'public'")
 			.andWhere("note.scheduledAt IS NULL");
 
 		if (remote) query.andWhere("note.userHost IS NOT NULL");

@@ -363,7 +363,7 @@ export class MiscHelpers {
 			.andWhere("note.createdAt > :date", {
 				date: new Date(Date.now() - 1000 * 60 * 60 * 24),
 			})
-			.andWhere("note.visibility = 'public'")
+			// .andWhere("note.visibility = 'public'")
 			.andWhere("note.userHost IS NULL")
 			.orderBy("note.score", "DESC");
 

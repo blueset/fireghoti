@@ -233,7 +233,7 @@ export class SearchHelpers {
 			undefined,
 			minId,
 			maxId,
-		).andWhere("note.visibility = 'public'");
+		)/* .andWhere("note.visibility = 'public'") */;
 
 		if (accountId) {
 			query.andWhere("note.userId = :userId", { userId: accountId });
@@ -266,9 +266,9 @@ export class SearchHelpers {
 
 		query.setParameter("meId", user.id);
 
-		query
-			.innerJoinAndSelect("note.user", "user")
-			.andWhere("user.isIndexable = TRUE");
+		// query
+		// 	.innerJoinAndSelect("note.user", "user")
+		// 	.andWhere("user.isIndexable = TRUE");
 
 		return query
 			.skip(offset ?? 0)
