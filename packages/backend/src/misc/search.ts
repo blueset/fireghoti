@@ -46,11 +46,11 @@ export async function searchNotes(
 
 	// "from: me": search all (public, home, followers, specified) my posts
 	//  otherwise: search public indexable posts only
-	if (params.userId == null || params.userId !== params.myId) {
-		query
-			.andWhere("note.visibility = 'public'")
-			.andWhere("user.isIndexable = TRUE");
-	}
+	// if (params.userId == null || params.userId !== params.myId) {
+	// 	query
+	// 		.andWhere("note.visibility = 'public'")
+	// 		.andWhere("user.isIndexable = TRUE");
+	// }
 
 	if (params.userId != null) {
 		query.andWhere("note.userId = :userId", { userId: params.userId });
