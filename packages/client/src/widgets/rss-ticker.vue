@@ -56,7 +56,7 @@ const name = "rssTicker";
 const widgetPropsDef = {
 	url: {
 		type: "string" as const,
-		default: "http://feeds.afpbb.com/rss/afpbb/afpbbnews",
+		default: "https://info.firefish.dev/@firefish.rss?noteintitle",
 	},
 	shuffle: {
 		type: "boolean" as const,

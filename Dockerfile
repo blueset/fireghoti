@@ -26,7 +26,7 @@ COPY packages/backend-rs packages/backend-rs/
 
 # Compile backend-rs
 RUN ln -s $(which gcc) /usr/bin/aarch64-linux-musl-gcc
-RUN NODE_ENV='production' pnpm run --filter backend-rs build
+RUN NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=3072' pnpm run --filter backend-rs build
 
 # Copy/Overwrite index.js to mitigate the bug in napi-rs codegen
 COPY packages/backend-rs/index.js packages/backend-rs/built/index.js
@@ -45,7 +45,7 @@ RUN pnpm install --frozen-lockfile
 COPY . ./
 
 # Build other workspaces
-RUN NODE_ENV='production' pnpm run --recursive --filter '!backend-rs' build && pnpm run build:assets
+RUN NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=3072' pnpm run --recursive --filter '!backend-rs' build && pnpm run build:assets
 
 # Trim down the dependencies to only those for production
 RUN find . -path '*/node_modules/*' -delete && pnpm install --prod --frozen-lockfile

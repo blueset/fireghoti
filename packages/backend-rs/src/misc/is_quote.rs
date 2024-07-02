@@ -1,4 +1,3 @@
-// TODO?: handle name collisions
 #[macros::export(object, js_name = "NoteLikeForIsQuote")]
 pub struct NoteLike {
     pub renote_id: Option<String>,

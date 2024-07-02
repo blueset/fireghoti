@@ -5,6 +5,7 @@ import type { User } from "@/models/entities/user.js";
 import type { Note } from "@/models/entities/note.js";
 import { Notes, DriveFiles, UserProfiles, Users } from "@/models/index.js";
 import getNoteHtml from "@/remote/activitypub/misc/get-note-html.js";
+import { isQuote, getNoteSummary } from "backend-rs";
 
 /**
  * If there is this part in the note, it will cause CDATA to be terminated early.
@@ -17,7 +18,7 @@ export default async function (
 	user: User,
 	threadDepth = 5,
 	history = 20,
-	noteintitle = false,
+	noteintitle = true,
 	renotes = true,
 	replies = true,
 ) {
@@ -81,20 +82,26 @@ export default async function (
 			depth -= 1;
 		}
 
-		let title = `${author.name} `;
-		if (note.renoteId) {
-			title += "renotes";
-		} else if (note.replyId) {
-			title += "replies";
-		} else {
-			title += "says";
-		}
+		let title = `Post by ${author.name}`;
+
 		if (noteintitle) {
-			const content = note.cw ?? note.text;
+			if (note.renoteId) {
+				title = `Boost by ${author.name}`;
+			} else if (note.replyId) {
+				title = `Reply by ${author.name}`;
+			} else {
+				title = `Post by ${author.name}`;
+			}
+			const effectiveNote =
+				!isQuote(note) && note.renote != null ? note.renote : note;
+			const content = getNoteSummary(
+				effectiveNote.fileIds,
+				effectiveNote.text,
+				effectiveNote.cw,
+				effectiveNote.hasPoll,
+			);
 			if (content) {
 				title += `: ${content}`;
-			} else {
-				title += "something";
 			}
 		}
 
