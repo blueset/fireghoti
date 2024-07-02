@@ -19,7 +19,7 @@ chrono = { version = "0.4.38", default-features = false }
 convert_case = { version = "0.6.0", default-features = false }
 cuid2 = { version = "0.1.2", default-features = false }
 emojis = { version = "0.6.2", default-features = false }
-idna = { version = "1.0.1", default-features = false }
+idna = { version = "1.0.2", default-features = false }
 image = { version = "0.25.1", default-features = false }
 isahc = { version = "1.7.2", default-features = false }
 nom-exif = { version = "1.2.0", default-features = false }
