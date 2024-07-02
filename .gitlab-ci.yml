@@ -37,6 +37,7 @@ variables:
   POSTGRES_PASSWORD: 'password'
   POSTGRES_HOST_AUTH_METHOD: 'trust'
   DEBIAN_FRONTEND: 'noninteractive'
+  NODE_OPTIONS: '--max_old_space_size=3072'
   CARGO_PROFILE_DEV_OPT_LEVEL: '0'
   CARGO_PROFILE_DEV_LTO: 'off'
   CARGO_PROFILE_DEV_DEBUG: 'none'
