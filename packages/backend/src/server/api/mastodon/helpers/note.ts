@@ -439,7 +439,6 @@ export class NoteHelpers {
 			user,
 			{
 				createdAt: now,
-				scheduledAt: delay != null ? new Date(data.scheduledAt!) : null,
 				files: data.files,
 				poll:
 					data.poll != null
@@ -461,6 +460,7 @@ export class NoteHelpers {
 					? {
 							visibility: "specified",
 							visibleUsers: [],
+							scheduledAt: request.scheduled_at && new Date(request.scheduled_at),
 						}
 					: {
 							visibility: data.visibility,
