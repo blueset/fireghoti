@@ -240,26 +240,20 @@ function checkForSplash() {
 		// テーマリビルドするため
 		localStorage.removeItem("theme");
 
-		try {
-			// 変なバージョン文字列来るとcompareVersionsでエラーになるため
-			// If a strange version string comes, an error will occur in compareVersions.
-			if (
-				lastVersion != null &&
-				lastVersion < version &&
-				defaultStore.state.showUpdates
-			) {
-				// ログインしてる場合だけ
-				if (me) {
-					popup(
-						defineAsyncComponent(() => import("@/components/MkUpdated.vue")),
-						{},
-						{},
-						"closed",
-					);
-				}
+		if (
+			lastVersion != null &&
+			lastVersion < version &&
+			defaultStore.state.showUpdates
+		) {
+			// ログインしてる場合だけ
+			if (me) {
+				popup(
+					defineAsyncComponent(() => import("@/components/MkUpdated.vue")),
+					{},
+					{},
+					"closed",
+				);
 			}
-		} catch (err) {
-			console.error(err);
 		}
 	}
 
