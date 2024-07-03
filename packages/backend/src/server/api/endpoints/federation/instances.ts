@@ -100,7 +100,7 @@ export default define(meta, paramDef, async (ps, me) => {
 	}
 
 	if (typeof ps.blocked === "boolean") {
-		const meta = await fetchMeta(false);
+		const meta = await fetchMeta();
 		if (ps.blocked) {
 			if (meta.blockedHosts.length === 0) {
 				return [];
@@ -116,7 +116,7 @@ export default define(meta, paramDef, async (ps, me) => {
 	}
 
 	if (typeof ps.silenced === "boolean") {
-		const meta = await fetchMeta(false);
+		const meta = await fetchMeta();
 		if (ps.silenced) {
 			if (meta.silencedHosts.length === 0) {
 				return [];

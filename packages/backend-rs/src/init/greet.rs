@@ -12,7 +12,7 @@ const GREETING_MESSAGE: &str = "\
 ";
 
 /// Prints the greeting message and the Firefish version to stdout.
-#[crate::export]
+#[macros::export]
 pub fn greet() {
     println!("{}", GREETING_MESSAGE);
 

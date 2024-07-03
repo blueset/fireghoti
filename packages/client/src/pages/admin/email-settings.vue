@@ -100,13 +100,13 @@ import FormSuspense from "@/components/form/suspense.vue";
 import FormSplit from "@/components/form/split.vue";
 import FormSection from "@/components/form/section.vue";
 import * as os from "@/os";
-import { fetchInstance, instance } from "@/instance";
+import { updateInstanceCache, getInstanceInfo } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
 
 const enableEmail = ref(false);
-const email: any = ref(null);
+const email = ref<string | null>(null);
 const smtpSecure = ref(false);
 const smtpHost = ref("");
 const smtpPort = ref(0);
@@ -115,20 +115,22 @@ const smtpPass = ref("");
 
 async function init() {
 	const meta = await os.api("admin/meta");
-	enableEmail.value = meta.enableEmail;
-	email.value = meta.email;
-	smtpSecure.value = meta.smtpSecure;
-	smtpHost.value = meta.smtpHost;
-	smtpPort.value = meta.smtpPort;
-	smtpUser.value = meta.smtpUser;
-	smtpPass.value = meta.smtpPass;
+	enableEmail.value = meta?.enableEmail;
+	email.value = meta?.email;
+	smtpSecure.value = meta?.smtpSecure;
+	smtpHost.value = meta?.smtpHost;
+	smtpPort.value = meta?.smtpPort;
+	smtpUser.value = meta?.smtpUser;
+	smtpPass.value = meta?.smtpPass;
 }
+
+const { maintainerEmail } = getInstanceInfo();
 
 async function testEmail() {
 	const { canceled, result: destination } = await os.inputText({
 		title: i18n.ts.destination,
 		type: "email",
-		placeholder: instance.maintainerEmail,
+		placeholder: maintainerEmail,
 	});
 	if (canceled) return;
 	os.apiWithDialog("admin/send-email", {
@@ -148,7 +150,7 @@ function save() {
 		smtpUser: smtpUser.value,
 		smtpPass: smtpPass.value,
 	}).then(() => {
-		fetchInstance();
+		updateInstanceCache();
 	});
 }
 

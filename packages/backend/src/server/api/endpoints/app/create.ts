@@ -1,6 +1,6 @@
 import define from "@/server/api/define.js";
 import { Apps } from "@/models/index.js";
-import { genId, generateSecureRandomString } from "backend-rs";
+import { genIdAt, generateSecureRandomString } from "backend-rs";
 import { unique } from "@/prelude/array.js";
 
 export const meta = {
@@ -48,9 +48,10 @@ export default define(meta, paramDef, async (ps, user) => {
 	);
 
 	// Create account
+	const now = new Date();
 	const app = await Apps.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		userId: user ? user.id : null,
 		name: ps.name,
 		description: ps.description,

@@ -164,7 +164,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import type { entities } from "firefish-js";
 import { FocusTrap } from "focus-trap-vue";
 import XSection from "@/components/MkEmojiPicker.section.vue";
@@ -175,7 +175,7 @@ import Ripple from "@/components/MkRipple.vue";
 import * as os from "@/os";
 import { isTouchUsing } from "@/scripts/touch";
 import { deviceKind } from "@/scripts/device-kind";
-import { emojiCategories, instance } from "@/instance";
+import { emojiCategories, getInstanceInfo } from "@/instance";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
@@ -235,7 +235,7 @@ const size = reactionPickerSize;
 const width = reactionPickerWidth;
 const height = reactionPickerHeight;
 const customEmojiCategories = emojiCategories;
-const customEmojis = instance.emojis;
+const customEmojis = getInstanceInfo().emojis;
 const q = ref<string | null>(null);
 const searchResultCustom = ref<entities.CustomEmoji[]>([]);
 const searchResultUnicode = ref<UnicodeEmojiDef[]>([]);
@@ -459,7 +459,6 @@ async function paste(event: ClipboardEvent) {
 }
 
 function done(query?: string | null): boolean {
-	// biome-ignore lint/style/noParameterAssign: assign it intentially
 	if (query == null) query = q.value;
 	if (query == null || typeof query !== "string") return false;
 

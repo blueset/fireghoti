@@ -51,7 +51,7 @@ import { removeColumn, updateColumn } from "./deck-store";
 import XTimeline from "@/components/MkTimeline.vue";
 import * as os from "@/os";
 import { isModerator, isSignedIn, me } from "@/me";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
@@ -69,18 +69,23 @@ const disabled = ref(false);
 const indicated = ref(false);
 const columnActive = ref(true);
 
+const {
+	disableLocalTimeline,
+	disableRecommendedTimeline,
+	disableGlobalTimeline,
+} = getInstanceInfo();
+
 onMounted(() => {
 	if (props.column.tl == null) {
 		setType();
 	} else if (isSignedIn(me)) {
 		disabled.value =
 			!isModerator &&
-			((instance.disableLocalTimeline &&
+			((disableLocalTimeline &&
 				["local", "social"].includes(props.column.tl)) ||
-				(instance.disableRecommendedTimeline &&
+				(disableRecommendedTimeline &&
 					["recommended"].includes(props.column.tl)) ||
-				(instance.disableGlobalTimeline &&
-					["global"].includes(props.column.tl)));
+				(disableGlobalTimeline && ["global"].includes(props.column.tl)));
 	}
 });
 

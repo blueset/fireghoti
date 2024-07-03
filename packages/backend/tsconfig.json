@@ -1,6 +1,5 @@
 {
 	"compilerOptions": {
-		"allowJs": true,
 		"noEmitOnError": false,
 		"noImplicitAny": true,
 		"noImplicitReturns": true,
@@ -8,15 +7,12 @@
 		"noUnusedLocals": false,
 		"noFallthroughCasesInSwitch": true,
 		"declaration": false,
-		"sourceMap": false,
 		"target": "es2021",
 		"module": "esnext",
 		"moduleResolution": "node",
 		"allowSyntheticDefaultImports": true,
 		"removeComments": false,
 		"noLib": false,
-		"strict": true,
-		"strictNullChecks": true,
 		"strictPropertyInitialization": false,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,

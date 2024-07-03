@@ -465,7 +465,7 @@ tooShort: "短すぎます"
 tooLong: "長すぎます"
 weakPassword: "弱いパスワード"
 normalPassword: "普通のパスワード"
-strongPassword: "強いパスワード"
+veryStrongPassword: "とても強いパスワード"
 passwordMatched: "一致しました"
 passwordNotMatched: "一致していません"
 signinWith: "{x}でログイン"
@@ -2087,3 +2087,5 @@ scheduledPost: 予約投稿
 scheduledDate: 予定日
 cancelScheduledPost: 予約を解除する
 scheduledPostAt: '{time}に投稿されます'
+strongPassword: 強いパスワード
+addAlt4MeTag: '説明の無いファイルを投稿する際に自動で #Alt4Me のハッシュタグをつける'

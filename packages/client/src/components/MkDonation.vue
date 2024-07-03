@@ -64,7 +64,7 @@ import MkButton from "@/components/MkButton.vue";
 import { host } from "@/config";
 import { i18n } from "@/i18n";
 import * as os from "@/os";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import icon from "@/scripts/icon";
 
 const show = ref(false);
@@ -73,6 +73,7 @@ const emit = defineEmits<{
 	(ev: "closed"): void;
 }>();
 
+const instance = getInstanceInfo();
 const hostname =
 	instance.name?.length && instance.name?.length < 38 ? instance.name : host;
 

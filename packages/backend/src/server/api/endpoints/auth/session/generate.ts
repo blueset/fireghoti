@@ -3,7 +3,7 @@ import { config } from "@/config.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { Apps, AuthSessions } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 
 export const meta = {
 	tags: ["auth"],
@@ -60,9 +60,10 @@ export default define(meta, paramDef, async (ps) => {
 	const token = uuid();
 
 	// Create session token document
+	const now = new Date();
 	const doc = await AuthSessions.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		appId: app.id,
 		token: token,
 	}).then((x) => AuthSessions.findOneByOrFail(x.identifiers[0]));

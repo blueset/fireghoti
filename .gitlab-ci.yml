@@ -25,10 +25,11 @@ workflow:
     - when: never
 
 stages:
-  - dependency
   - test
   - doc
   - build
+  - dependency
+  - clean
 
 variables:
   POSTGRES_DB: 'firefish_db'
@@ -36,6 +37,7 @@ variables:
   POSTGRES_PASSWORD: 'password'
   POSTGRES_HOST_AUTH_METHOD: 'trust'
   DEBIAN_FRONTEND: 'noninteractive'
+  NODE_OPTIONS: '--max_old_space_size=3072'
   CARGO_PROFILE_DEV_OPT_LEVEL: '0'
   CARGO_PROFILE_DEV_LTO: 'off'
   CARGO_PROFILE_DEV_DEBUG: 'none'
@@ -119,6 +121,7 @@ test:build:backend_ts:
     - cp packages/backend-rs/index.js packages/backend-rs/built/index.js
     - cp packages/backend-rs/index.d.ts packages/backend-rs/built/index.d.ts
     - cp ci/cargo/config.toml /usr/local/cargo/config.toml
+    - test -f packages/backend-rs/built/backend-rs.linux-x64-gnu.node || pnpm install --frozen-lockfile
     - test -f packages/backend-rs/built/backend-rs.linux-x64-gnu.node || pnpm --filter 'backend-rs' run build:debug
     - cp .config/ci.yml .config/default.yml
     - export PGPASSWORD="${POSTGRES_PASSWORD}"
@@ -199,6 +202,8 @@ build:container:
     STORAGE_DRIVER: overlay
   before_script:
     - apt-get update && apt-get -y upgrade
+    - |-
+      sed -i -r 's/"version": "([-0-9]+)",/"version": "\1-dev",/' package.json
     - apt-get install -y --no-install-recommends ca-certificates fuse-overlayfs buildah
     - echo "${CI_REGISTRY_PASSWORD}" | buildah login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
     - export IMAGE_TAG="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
@@ -221,6 +226,31 @@ build:container:
     - buildah inspect "${IMAGE_TAG}"
     - buildah push "${IMAGE_TAG}"
 
+cargo:check:msrv:
+  stage: test
+  image: docker.io/rust:1.74-slim-bookworm
+  rules:
+    - if: $TEST == 'true'
+      when: always
+    - if: $TEST == 'false'
+      when: never
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
+      changes:
+        paths:
+          - packages/backend-rs/**/*
+          - packages/macro-rs/**/*
+          - Cargo.toml
+          - Cargo.lock
+      when: always
+  services: []
+  before_script:
+    - apt-get update && apt-get -y upgrade
+    - apt-get install -y --no-install-recommends build-essential clang mold python3 perl nodejs postgresql-client
+    - cp ci/cargo/config.toml /usr/local/cargo/config.toml
+  script:
+    - cargo fetch --locked --manifest-path Cargo.toml
+    - cargo check --locked --frozen --all-features
+
 cargo:test:
   stage: test
   rules:
@@ -235,7 +265,6 @@ cargo:test:
           - packages/macro-rs/**/*
           - Cargo.toml
           - Cargo.lock
-          - package.json
       when: always
   script:
     - curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C /usr/local/cargo/bin
@@ -287,7 +316,7 @@ cargo:doc:
     - cp ci/cargo/config.toml /usr/local/cargo/config.toml
   script:
     - cargo doc --document-private-items
-    - printf "window.ALL_CRATES = ['backend_rs', 'macro_rs'];" > target/doc/crates.js
+    - printf 'window.ALL_CRATES = ["backend_rs", "macros", "macros_impl"];' > target/doc/crates.js
     - printf '<meta http-equiv="refresh" content="0; url=%s">' 'backend_rs' > target/doc/index.html
     - cd target/doc
     - npx --yes netlify-cli deploy --prod --site="${CARGO_DOC_SITE_ID}" --dir=.
@@ -303,3 +332,19 @@ renovate:
   before_script: []
   script:
     - renovate --platform gitlab --token "${API_TOKEN}" --endpoint "${CI_SERVER_URL}/api/v4" "${CI_PROJECT_PATH}"
+
+clean:
+  stage: clean
+  rules:
+    - if: $CLEAN && $CI_PIPELINE_SOURCE == 'schedule'
+  services: []
+  before_script:
+    - apt-get update && apt-get -y upgrade
+    - apt-get -y --no-install-recommends install curl
+    - curl -fsSL 'https://deb.nodesource.com/setup_18.x' | bash -
+    - apt-get install -y --no-install-recommends nodejs
+    - corepack enable
+    - corepack prepare pnpm@latest --activate
+    - pnpm install --frozen-lockfile
+  script:
+    - pnpm run clean-all

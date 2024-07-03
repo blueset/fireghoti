@@ -4,7 +4,7 @@ import type { IFlag } from "../../type.js";
 import { getApIds } from "../../type.js";
 import { AbuseUserReports, Users } from "@/models/index.js";
 import { In } from "typeorm";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 
 export default async (
 	actor: CacheableRemoteUser,
@@ -23,9 +23,11 @@ export default async (
 	});
 	if (users.length < 1) return "skip";
 
+	const now = new Date();
+
 	await AbuseUserReports.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		targetUserId: users[0].id,
 		targetUserHost: users[0].host,
 		reporterId: actor.id,

@@ -20,25 +20,25 @@ pub fn system_info() -> &'static std::sync::Mutex<System> {
 }
 
 /// Prints the server hardware information as the server info log.
-#[crate::export]
+#[macros::export]
 pub fn show_server_info() -> Result<(), SysinfoPoisonError> {
     let system_info = system_info().lock()?;
 
     tracing::info!(
         "Hostname: {}",
-        System::host_name().unwrap_or("unknown".to_string())
+        System::host_name().unwrap_or_else(|| "unknown".to_string())
     );
     tracing::info!(
         "OS: {}",
-        System::long_os_version().unwrap_or("unknown".to_string())
+        System::long_os_version().unwrap_or_else(|| "unknown".to_string())
     );
     tracing::info!(
         "Kernel: {}",
-        System::kernel_version().unwrap_or("unknown".to_string())
+        System::kernel_version().unwrap_or_else(|| "unknown".to_string())
     );
     tracing::info!(
         "CPU architecture: {}",
-        System::cpu_arch().unwrap_or("unknown".to_string())
+        System::cpu_arch().unwrap_or_else(|| "unknown".to_string())
     );
     tracing::info!("CPU threads: {}", system_info.cpus().len());
     tracing::info!("Total memory: {} MiB", system_info.total_memory() / 1048576);

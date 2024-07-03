@@ -2,6 +2,10 @@
 
 Breaking changes are indicated by the :warning: icon.
 
+## v20240607
+
+- `GET` request is now allowed for the `latest-version` endpoint.
+
 ## v20240523
 
 - Added `scheduledAt` optional parameter to `notes/create` (!10789)

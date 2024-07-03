@@ -74,7 +74,7 @@ import XPostForm from "@/components/MkPostForm.vue";
 import * as os from "@/os";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import { isModerator, isSignedIn, me } from "@/me";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { deviceKind } from "@/scripts/device-kind";
@@ -86,17 +86,22 @@ if (isSignedIn(me) && defaultStore.reactiveState.tutorial.value !== -1) {
 	os.popup(XTutorial, {}, {}, "closed");
 }
 
+const {
+	disableLocalTimeline,
+	enableGuestTimeline,
+	disableRecommendedTimeline,
+	disableGlobalTimeline,
+} = getInstanceInfo();
+
 const isHomeTimelineAvailable = isSignedIn(me);
 const isLocalTimelineAvailable =
-	(!instance.disableLocalTimeline &&
-		(isSignedIn(me) || instance.enableGuestTimeline)) ||
+	(!disableLocalTimeline && (isSignedIn(me) || enableGuestTimeline)) ||
 	isModerator;
 const isSocialTimelineAvailable = isLocalTimelineAvailable && isSignedIn(me);
 const isRecommendedTimelineAvailable =
-	!instance.disableRecommendedTimeline && isSignedIn(me);
+	!disableRecommendedTimeline && isSignedIn(me);
 const isGlobalTimelineAvailable =
-	(!instance.disableGlobalTimeline &&
-		(isSignedIn(me) || instance.enableGuestTimeline)) ||
+	(!disableGlobalTimeline && (isSignedIn(me) || enableGuestTimeline)) ||
 	isModerator;
 const keymap = {
 	t: focus,
@@ -201,7 +206,7 @@ function saveSrc(
 }
 
 function focus(): void {
-	tlComponent.value.focus();
+	tlComponent.value?.focus();
 }
 
 const headerActions = computed(() =>

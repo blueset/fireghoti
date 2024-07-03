@@ -19,7 +19,7 @@ import { ref } from "vue";
 
 import type { entities } from "firefish-js";
 import { instanceName, version } from "@/config";
-import { instance as Instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import { getProxiedImageUrlNullable } from "@/scripts/media-proxy";
 
 const props = defineProps<{
@@ -28,9 +28,10 @@ const props = defineProps<{
 
 const ticker = ref<HTMLElement | null>(null);
 
+// FIXME: the following assumption is not necessarily correct
 // if no instance data is given, this is for the local instance
 const instance = props.instance ?? {
-	faviconUrl: Instance.iconUrl || "/favicon.ico",
+	faviconUrl: getInstanceInfo().iconUrl || "/favicon.ico",
 	name: instanceName,
 	themeColor: (
 		document.querySelector('meta[name="theme-color-orig"]') as HTMLMetaElement
@@ -78,8 +79,8 @@ const bg = {
 
 function getInstanceIcon(instance): string {
 	return (
-		getProxiedImageUrlNullable(instance.iconUrl, "preview") ??
 		getProxiedImageUrlNullable(instance.faviconUrl, "preview") ??
+		getProxiedImageUrlNullable(instance.iconUrl, "preview") ??
 		"/client-assets/dummy.png"
 	);
 }

@@ -1,12 +1,11 @@
-// TODO: We want to get rid of this
+// TODO: Migrate to Redis
 
-use crate::database::db_conn;
-use crate::model::entity::attestation_challenge;
+use crate::{database::db_conn, model::entity::attestation_challenge};
 use chrono::{Duration, Utc};
-use sea_orm::{ColumnTrait, DbErr, EntityTrait, QueryFilter};
+use sea_orm::prelude::*;
 
 /// Delete all entries in the [attestation_challenge] table created at more than 5 minutes ago
-#[crate::export]
+#[macros::export]
 pub async fn remove_old_attestation_challenges() -> Result<(), DbErr> {
     let res = attestation_challenge::Entity::delete_many()
         .filter(attestation_challenge::Column::CreatedAt.lt(Utc::now() - Duration::minutes(5)))

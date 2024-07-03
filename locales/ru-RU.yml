@@ -460,7 +460,7 @@ tooShort: "Слишком короткий"
 tooLong: "Слишком длинный"
 weakPassword: "Слабый пароль"
 normalPassword: "Годный пароль"
-strongPassword: "Надёжный пароль"
+veryStrongPassword: "Надёжный пароль"
 passwordMatched: "Совпали"
 passwordNotMatched: "Не совпадают"
 signinWith: "Использовать {x} для входа"
@@ -2137,3 +2137,15 @@ replies: Ответы
 quotes: Цитаты
 clickToShowPatterns: Нажмите, чтобы показать модуль шаблонов
 renotes: Репосты
+markLocalFilesNsfwByDefaultDescription: Независимо от данной настройки, пользователи
+  могут самостоятельно удалять метку NSFW. Не применяется на существующие файлы.
+toEdit: Редактировать
+attachedToNotes: Посты с этим файлом
+showAttachedNotes: Показывать посты с этим файлом
+strongPassword: Хороший пароль
+toReply: Ответить
+toPost: Выложить
+sentFollowRequests: Отправленные запросы на подписку
+toQuote: Цитировать
+cannotEditVisibility: Вы не можете изменить видимость
+noSentFollowRequests: Вы не отправляли никаких запросов на подписку

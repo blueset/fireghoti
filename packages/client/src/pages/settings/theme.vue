@@ -157,7 +157,7 @@ import { selectFile } from "@/scripts/select-file";
 import { isDeviceDarkmode } from "@/scripts/is-device-darkmode";
 import { ColdDeviceStorage, defaultStore } from "@/store";
 import { i18n } from "@/i18n";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import { uniqueBy } from "@/scripts/array";
 import { fetchThemes, getThemes } from "@/theme-store";
 import { definePageMetadata } from "@/scripts/page-metadata";
@@ -165,9 +165,10 @@ import icon from "@/scripts/icon";
 
 const installedThemes = ref(getThemes());
 const builtinThemes = getBuiltinThemesRef();
+const { defaultDarkTheme, defaultLightTheme } = getInstanceInfo();
 
 const instanceDarkTheme = computed(() =>
-	instance.defaultDarkTheme ? JSON5.parse(instance.defaultDarkTheme) : null,
+	defaultDarkTheme ? JSON5.parse(defaultDarkTheme) : null,
 );
 const installedDarkThemes = computed(() =>
 	installedThemes.value.filter((t) => t.base === "dark" || t.kind === "dark"),
@@ -176,7 +177,7 @@ const builtinDarkThemes = computed(() =>
 	builtinThemes.value.filter((t) => t.base === "dark" || t.kind === "dark"),
 );
 const instanceLightTheme = computed(() =>
-	instance.defaultLightTheme ? JSON5.parse(instance.defaultLightTheme) : null,
+	defaultLightTheme ? JSON5.parse(defaultLightTheme) : null,
 );
 const installedLightThemes = computed(() =>
 	installedThemes.value.filter((t) => t.base === "light" || t.kind === "light"),

@@ -52,7 +52,8 @@ const canRenote = computed(
 useTooltip(buttonRef, async (showing) => {
 	const renotes = await os.api("notes/renotes", {
 		noteId: props.note.id,
-		limit: 11,
+		limit: 10,
+		filter: "renote",
 	});
 
 	const users = renotes.map((x) => x.user);

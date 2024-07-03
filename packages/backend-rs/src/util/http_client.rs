@@ -7,9 +7,9 @@ use std::time::Duration;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("Isahc error: {0}")]
+    #[error("HTTP request failed")]
     Isahc(#[from] isahc::Error),
-    #[error("Url parse error: {0}")]
+    #[error("invalid URL")]
     UrlParse(#[from] isahc::http::uri::InvalidUri),
 }
 
@@ -20,13 +20,13 @@ static CLIENT: OnceCell<HttpClient> = OnceCell::new();
 /// # Example
 /// ```no_run
 /// # use backend_rs::util::http_client::client;
-/// use isahc::ReadResponseExt;
+/// use isahc::AsyncReadResponseExt;
 ///
-/// # fn f() -> Result<(), Box<dyn std::error::Error>> {
-/// let mut response = client()?.get("https://example.com/")?;
+/// # async fn f() -> Result<(), Box<dyn std::error::Error>> {
+/// let mut response = client()?.get_async("https://example.com/").await?;
 ///
 /// if response.status().is_success() {
-///     println!("{}", response.text()?);
+///     println!("{}", response.text().await?);
 /// }
 /// # Ok(())
 /// # }

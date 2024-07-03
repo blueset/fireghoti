@@ -88,7 +88,7 @@ import * as os from "@/os";
 import { useStream } from "@/stream";
 import { useTooltip } from "@/scripts/use-tooltip";
 import { defaultStore } from "@/store";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import icon from "@/scripts/icon";
 import type {
 	NotificationFolded,
@@ -116,8 +116,9 @@ const reactionRef = ref<InstanceType<typeof XReactionIcon> | null>(null);
 const showEmojiReactions =
 	defaultStore.state.enableEmojiReactions ||
 	defaultStore.state.showEmojisInReactionNotifications;
-const defaultReaction = ["⭐", "👍", "❤️"].includes(instance.defaultReaction)
-	? instance.defaultReaction
+const realDefaultReaction = getInstanceInfo().defaultReaction;
+const defaultReaction = ["⭐", "👍", "❤️"].includes(realDefaultReaction)
+	? realDefaultReaction
 	: "⭐";
 
 const users = computed(() => props.notification.users.slice(0, 5));
@@ -178,7 +179,7 @@ useTooltip(reactionRef, (showing) => {
 				? n.reaction.replace(/^:(\w+):$/, ":$1@.:")
 				: n.reaction,
 			emojis: n.note.emojis,
-			targetElement: reactionRef.value!.$el,
+			targetElement: reactionRef.value?.$el,
 		},
 		{},
 		"closed",
@@ -203,7 +204,7 @@ onMounted(() => {
 	readObserver.observe(elRef.value!);
 
 	connection = stream.useChannel("main");
-	connection.on("readAllNotifications", () => readObserver!.disconnect());
+	connection.on("readAllNotifications", () => readObserver?.disconnect());
 });
 
 onUnmounted(() => {

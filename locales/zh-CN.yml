@@ -450,7 +450,7 @@ tooShort: "太短"
 tooLong: "太长"
 weakPassword: "密码强度：弱"
 normalPassword: "密码强度：中等"
-strongPassword: "密码强度：强"
+veryStrongPassword: "密码强度：强"
 passwordMatched: "密码一致"
 passwordNotMatched: "密码不一致"
 signinWith: "以 {x} 登录"
@@ -1950,7 +1950,7 @@ noteId: 帖子 ID
 moveFrom: 从旧账号迁移至此账号
 defaultReaction: 发出和收到帖子的默认表情符号反应
 sendModMail: 发送管理通知
-moderationNote: "管理笔记"
+moderationNote: "管理员备注"
 ipFirstAcknowledged: "首次获取此 IP 地址的日期"
 driveCapacityOverride: "网盘容量变更"
 isLocked: 该账号设置了关注请求

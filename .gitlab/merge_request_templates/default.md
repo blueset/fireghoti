@@ -1,16 +1,19 @@
-<!-- Thanks for taking the time to make Firefish better! It's not required, but please consider using [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) when making your commits. If you use VSCode, please use the [Conventional Commits extension](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits). -->
+<!-- Thanks for taking the time to make Firefish better! -->
 
-## What does this PR do? <!-- Please give us a brief description of what this PR does. -->
+## What does this merge request do?
+<!-- Please give us a brief description of what this merge request does. -->
 
 
 ## Contribution Guidelines
 By submitting this merge request, you agree to follow our [Contribution Guidelines](https://firefish.dev/firefish/firefish/-/blob/develop/CONTRIBUTING.md)
-- [ ] This change is reviewed in an issue / This is a minor bug fix
-- [ ] I agree to follow this project's Contribution Guidelines
-- [ ] I have made sure to test this pull request
-- [ ] I have made sure to run `pnpm run format` before submitting this pull request
+- [ ] This closes issue #0000 (please substitute the number)
+- [ ] This is a minor bug fix or refactoring
 
-If this merge request makes changes to the Firefish API, please update `docs/api-change.md`
+- [ ] I agree to follow this project's Contribution Guidelines
+- [ ] I have made sure to test this merge request
+- [ ] I have made sure to run `pnpm run format` before submitting this merge request
+
+If this merge request makes changes to API, please update `docs/api-change.md`
 - [ ] I updated the document / This merge request doesn't include API changes
 
 <!-- Uncomment if your merge request has multiple authors -->

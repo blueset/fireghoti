@@ -4,29 +4,23 @@ use crate::database::{redis_conn, redis_key, RedisConnError};
 use redis::{AsyncCommands, RedisError};
 use serde::{Deserialize, Serialize};
 
-#[derive(strum::Display, Debug)]
+#[cfg_attr(test, derive(Debug))]
 pub enum Category {
-    #[strum(serialize = "fetchUrl")]
     FetchUrl,
-    #[strum(serialize = "blocking")]
     Block,
-    #[strum(serialize = "following")]
     Follow,
     #[cfg(test)]
-    #[strum(serialize = "usedOnlyForTesting")]
     Test,
 }
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("Redis error: {0}")]
+    #[error("failed to execute Redis command")]
     Redis(#[from] RedisError),
-    #[error("Redis connection error: {0}")]
+    #[error("bad Redis connection")]
     RedisConn(#[from] RedisConnError),
-    #[error("Data serialization error: {0}")]
-    Serialize(#[from] rmp_serde::encode::Error),
-    #[error("Data deserialization error: {0}")]
-    Deserialize(#[from] rmp_serde::decode::Error),
+    #[error("failed to encode data for Redis")]
+    Encode(#[from] rmp_serde::encode::Error),
 }
 
 #[inline]
@@ -34,9 +28,15 @@ fn prefix_key(key: &str) -> String {
     redis_key(format!("cache:{}", key))
 }
 
-#[inline]
 fn categorize(category: Category, key: &str) -> String {
-    format!("{}:{}", category, key)
+    let prefix = match category {
+        Category::FetchUrl => "fetchUrl",
+        Category::Block => "blocking",
+        Category::Follow => "following",
+        #[cfg(test)]
+        Category::Test => "usedOnlyForTesting",
+    };
+    format!("{}:{}", prefix, key)
 }
 
 #[inline]
@@ -50,9 +50,9 @@ fn wildcard(category: Category) -> String {
 ///
 /// # Arguments
 ///
-/// - `key` : key (prefixed automatically)
-/// - `value` : (de)serializable value
-/// - `expire_seconds` : TTL
+/// * `key` : key (prefixed automatically)
+/// * `value` : (de)serializable value
+/// * `expire_seconds` : TTL
 ///
 /// # Example
 ///
@@ -96,7 +96,7 @@ pub async fn set<V: for<'a> Deserialize<'a> + Serialize>(
 ///
 /// # Argument
 ///
-/// - `key` : key (will be prefixed automatically)
+/// * `key` : key (will be prefixed automatically)
 ///
 /// # Example
 ///
@@ -123,7 +123,7 @@ pub async fn set<V: for<'a> Deserialize<'a> + Serialize>(
 pub async fn get<V: for<'a> Deserialize<'a> + Serialize>(key: &str) -> Result<Option<V>, Error> {
     let serialized_value: Option<Vec<u8>> = redis_conn().await?.get(prefix_key(key)).await?;
     Ok(match serialized_value {
-        Some(v) => Some(rmp_serde::from_slice::<V>(v.as_ref())?),
+        Some(v) => rmp_serde::from_slice::<V>(v.as_ref()).ok(),
         None => None,
     })
 }
@@ -135,9 +135,9 @@ pub async fn get<V: for<'a> Deserialize<'a> + Serialize>(key: &str) -> Result<Op
 ///
 /// # Argument
 ///
-/// - `key` : key (prefixed automatically)
+/// * `key` : key (prefixed automatically)
 ///
-/// ## Example
+/// # Example
 ///
 /// ```
 /// # use backend_rs::database::cache;
@@ -169,10 +169,10 @@ pub async fn delete(key: &str) -> Result<(), Error> {
 ///
 /// # Arguments
 ///
-/// - `category` : one of [Category]
-/// - `key` : key (prefixed automatically)
-/// - `value` : (de)serializable value
-/// - `expire_seconds` : TTL
+/// * `category` : one of [Category]
+/// * `key` : key (prefixed automatically)
+/// * `value` : (de)serializable value
+/// * `expire_seconds` : TTL
 pub async fn set_one<V: for<'a> Deserialize<'a> + Serialize>(
     category: Category,
     key: &str,
@@ -188,8 +188,8 @@ pub async fn set_one<V: for<'a> Deserialize<'a> + Serialize>(
 ///
 /// # Arguments
 ///
-/// - `category` : one of [Category]
-/// - `key` : key (prefixed automatically)
+/// * `category` : one of [Category]
+/// * `key` : key (prefixed automatically)
 pub async fn get_one<V: for<'a> Deserialize<'a> + Serialize>(
     category: Category,
     key: &str,
@@ -213,7 +213,7 @@ pub async fn delete_one(category: Category, key: &str) -> Result<(), Error> {
 ///
 /// # Argument
 ///
-/// - `category` : one of [Category]
+/// * `category` : one of [Category]
 pub async fn delete_all(category: Category) -> Result<(), Error> {
     let mut redis = redis_conn().await?;
     let keys: Vec<Vec<u8>> = redis.keys(wildcard(category)).await?;
@@ -234,6 +234,7 @@ mod unit_test {
     use pretty_assertions::assert_eq;
 
     #[tokio::test]
+    #[cfg_attr(miri, ignore)] // can't call foreign function `getaddrinfo` on OS `linux`
     async fn set_get_expire() {
         #[derive(serde::Deserialize, serde::Serialize, PartialEq, Debug)]
         struct Data {
@@ -278,6 +279,7 @@ mod unit_test {
     }
 
     #[tokio::test]
+    #[cfg_attr(miri, ignore)] // can't call foreign function `getaddrinfo` on OS `linux`
     async fn use_category() {
         let key_1 = "fire";
         let key_2 = "fish";

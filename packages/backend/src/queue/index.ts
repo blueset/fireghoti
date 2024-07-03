@@ -1,7 +1,7 @@
 import type httpSignature from "@peertube/http-signature";
 import { v4 as uuid } from "uuid";
 
-import { config, envOption } from "@/config.js";
+import { config } from "@/config.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { IActivity } from "@/remote/activitypub/type.js";
 import type { Webhook, webhookEventTypes } from "@/models/entities/webhook.js";
@@ -518,8 +518,6 @@ export function webhookDeliver(
 }
 
 export default function () {
-	if (envOption.onlyServer) return;
-
 	deliverQueue.process(config.deliverJobConcurrency || 128, processDeliver);
 	inboxQueue.process(config.inboxJobConcurrency || 16, processInbox);
 	endedPollNotificationQueue.process(endedPollNotification);

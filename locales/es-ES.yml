@@ -465,7 +465,7 @@ tooShort: "Demasiado corto"
 tooLong: "Demasiado largo"
 weakPassword: "Contraseña débil"
 normalPassword: "Buena contraseña"
-strongPassword: "Muy buena contraseña"
+veryStrongPassword: "Muy buena contraseña"
 passwordMatched: "Correcto"
 passwordNotMatched: "Las contraseñas no son las mismas"
 signinWith: "Inicie sesión con {x}"
@@ -1073,7 +1073,7 @@ _aboutFirefish:
   source: "Código fuente"
   translation: "Traducir Firefish"
   donate: "Donar a Firefish"
-  pleaseDonateToFirefish: Por favor considera donar a Firefish para apollar su desarrollo.
+  pleaseDonateToFirefish: Por favor considera donar a Firefish para apoyar su desarrollo.
   donateHost: Dona a {host}
   donateTitle: ¿Te gusta Firefish?
   pleaseDonateToHost: También considera donar a tu propio servidor , {host}, para

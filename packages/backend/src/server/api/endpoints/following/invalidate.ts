@@ -69,14 +69,12 @@ export default define(meta, paramDef, async (ps, user) => {
 	});
 
 	// Check not following
-	const exist = await Followings.exist({
-		where: {
-			followerId: follower.id,
-			followeeId: followee.id,
-		},
+	const exists = await Followings.existsBy({
+		followerId: follower.id,
+		followeeId: followee.id,
 	});
 
-	if (!exist) {
+	if (!exists) {
 		throw new ApiError(meta.errors.notFollowing);
 	}
 

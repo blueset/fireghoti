@@ -77,7 +77,7 @@ lists: "Listen"
 noLists: "Du hast keine Listen angelegt"
 note: "Beitrag"
 notes: "Beiträge"
-following: "Folgen"
+following: "Folgend"
 followers: "Folgen mir"
 followsYou: "Folgt dir"
 createList: "Liste erstellen"
@@ -95,7 +95,7 @@ youShouldUpgradeClient: "Bitte aktualisiere diese Seite, um eine neuere Version 
   Clients zu verwenden."
 enterListName: "Gib einen Namen für die Liste ein"
 privacy: "Privatsphäre"
-makeFollowManuallyApprove: "Folgeanfragen bedürfen der Genehmigung"
+makeFollowManuallyApprove: "Folgeanfragen müssen akzeptiert werden"
 defaultNoteVisibility: "Standard-Sichtbarkeit"
 follow: "Folgen"
 followRequest: "Follow anfragen"
@@ -430,7 +430,7 @@ securityKeyName: "Schlüsselname"
 registerSecurityKey: "Sicherheitsschlüssel registrieren"
 lastUsed: "Zuletzt benutzt"
 unregister: "Deaktivieren"
-passwordLessLogin: "Passwortloses Anmelden einrichten"
+passwordLessLogin: "Passwortloses Anmelden"
 resetPassword: "Passwort zurücksetzen"
 newPasswordIs: "Das neue Passwort ist „{password}“"
 reduceUiAnimation: "Animationen der Benutzeroberfläche reduzieren"
@@ -480,7 +480,7 @@ tooShort: "Zu kurz"
 tooLong: "Zu lang"
 weakPassword: "Schwaches Passwort"
 normalPassword: "Durchschnittliches Passwort"
-strongPassword: "Starkes Passwort"
+veryStrongPassword: "Starkes Passwort"
 passwordMatched: "Stimmt überein"
 passwordNotMatched: "Stimmt nicht überein"
 signinWith: "Mit {x} anmelden"
@@ -865,7 +865,7 @@ customCss: "Benutzerdefiniertes CSS"
 customCssWarn: "Verwende diese Einstellung nur, wenn du weißt, was sie tut. Ungültige
   Eingaben können dazu führen, dass der Client nicht mehr normal funktioniert."
 global: "Global"
-squareAvatars: "Profilbilder quadratisch anzeigen"
+squareAvatars: "Profilbilder für Accounts ohne Katzenohren quadratisch anzeigen"
 sent: "Gesendet"
 received: "Erhalten"
 searchResult: "Suchergebnisse"
@@ -948,7 +948,7 @@ check: "Überprüfe"
 driveCapOverrideLabel: "Die Cloud-Drive-Kapazität dieses Nutzers verändern"
 driveCapOverrideCaption: "Gib einen Wert von 0 oder weniger ein, um die Kapazität
   auf den Standard zurückzusetzen."
-requireAdminForView: "Du musst dich mit einem Administratorkonto anmelden um dies
+requireAdminForView: "Du musst dich mit einem Administratorkonto anmelden, um dies
   zu sehen."
 isSystemAccount: "Ein Nutzerkonto, dass durch das System erstellt und automatisch
   kontrolliert wird. Jede Anpassung, Veränderung oder Löschung dieses Nutzerkontos,
@@ -1241,6 +1241,7 @@ _wordMute:
   muteLangsDescription2: Sprachcode verwenden, z.B. en, fr, ja, zh..
   lang: Sprache
   langDescription: Beiträge in der angegebenen Sprache in der Timeline ausblenden.
+  mutePatterns: Gedämpfte Muster
 _instanceMute:
   instanceMuteDescription: "Schaltet alle Beiträge/Boosts stumm, die von den gelisteten
     Servern stammen, inklusive Antworten von Nutzern an einen Nutzer eines stummgeschalteten
@@ -1332,7 +1333,7 @@ _sfx:
   channel: "Kanalbenachrichtigung"
 _ago:
   future: "Zukunft"
-  justNow: "Gerade eben"
+  justNow: "gerade eben"
   secondsAgo: "vor {n} s"
   minutesAgo: "vor {n} min"
   hoursAgo: "vor {n} h"
@@ -1931,6 +1932,7 @@ _notification:
   voted: haben bei deiner Umfrage abgestimmt
   reacted: hat auf deinen Beitrag reagiert
   renoted: hat deinen Beitrag geteilt
+  andCountUsers: und {count} mehr Nutzer {acted}
 _deck:
   alwaysShowMainColumn: "Hauptspalte immer zeigen"
   columnAlign: "Spaltenausrichtung"
@@ -1979,8 +1981,8 @@ flagSpeakAsCatDescription: Deine Beiträge werden im Katzenmodus nyanisiert
 hiddenTags: Versteckte Hashtags
 antennaInstancesDescription: Geben sie einen Server-Namen pro Zeile ein
 secureModeInfo: Bei Anfragen an andere Server nicht ohne Nachweis zurücksenden.
-renoteMute: Boosts stummschalten
-renoteUnmute: Stummschaltung von Boosts aufheben
+renoteMute: Boosts in Timelines stummschalten
+renoteUnmute: Stummschaltung von Boosts in der Timeline aufheben
 noInstances: Keine Server gefunden
 privateModeInfo: Wenn diese Option aktiviert ist, können nur als vertrauenswürdig
   eingestufte Server mit diesem Server föderieren. Alle Beiträge werden für die Öffentlichkeit
@@ -2019,9 +2021,8 @@ moveAccountDescription: 'Dieser Vorgang kann nicht rückgängig gemacht werden! 
   wie folgt ein: @name@server.xyz'
 sendPushNotificationReadMessage: Löschung der Push-Benachrichtigungen sobald die entsprechenden
   Benachrichtigungen oder Nachrichten gelesen wurden
-signupsDisabled: Derzeit sind keine Anmeldungen auf diesem Server möglich! Anmeldungen
-  auf anderen Servern sind jedoch möglich! Wenn Sie einen Einladungscode für diesen
-  Server haben, geben Sie ihn bitte unten ein.
+signupsDisabled: Derzeit sind keine Anmeldungen auf diesem Server möglich. Wenn Sie
+  einen Einladungscode für diesen Server haben, geben Sie ihn bitte unten ein.
 swipeOnDesktop: Am Desktop PC das Wischen wie bei mobilen Geräten zulassen
 enterSendsMessage: Drücken sie zum Senden des Beitrages die Eingabetaste (Strg-Taste
   ausgeschaltet)
@@ -2212,3 +2213,131 @@ quotes: Zitate
 moreUrlsDescription: "Die Seiten, welche angepinnt werde sollen, im Hilfe-Menü in
   der unteren linken Ecke in folgender Notation angeben:\n\"Anzeigename\": https://example.com/"
 toQuote: Zitat
+releaseToReload: Loslassen, um neu zu laden
+pullDownToReload: Herunterziehen zum Aktualisieren
+antennaLimit: Die maximale Anzahl von Antennen, die jeder Nutzer erstellen kann
+toEdit: Bearbeiten
+squareCatAvatars: Profilbilder für Accounts mit Katzenohren quadratisch anzeigen
+moderationNote: Moderationsnotiz
+ipFirstAcknowledged: Das Datum des ersten Erwerbs der IP Adresse
+driveCapacityOverride: Benutzerdefinierte Speicherkapazität
+searchWordsDescription: "Hier den Suchbegriff für Beiträge eingeben. Mit einem Leerzeichen
+  getrennte Begriffe werden in einer UND Suche gesucht, um eine ODER Suche auszuführen
+  'OR' (ohne Anführungszeichen) zwischen die Begriffe schreiben.\nZum Beispiel findet
+  die Suche nach \"Morgen Nacht\" Beiträge, die sowohl \"Morgen, als auch \"Nacht\"\
+  \ enthalten. Die Suchanfrage \"Morgen OR Nacht\" findet Beiträge, die entweder \"\
+  Morgen\" oder \"Nacht\" (oder beides) enthalten.\nDie AND und OR Suche ist zudem
+  kombinierbar, z.B. so: \"(Morgen OR Nacht) Eule)\".\nUm nach einer Sequenz von Wörtern
+  (z.B. einem Satz) zu suchen, muss die gesamte Wortsequenz in Anführungszeichen stehen.
+  Beispiel: \"Nachrichten von heute\"\n\nUm zu einem bestimmten Profil oder Beitrag
+  zu gelangen, muss die ID oder URL (Webadresse) eingegeben und der Suchknopf gedrückt
+  werden. Ansonsten wird nach Beiträgen gesucht, die die ID oder URL wörtlich enthalten."
+useCdnDescription: Einige statische Ressourcen, wie einen Twemoji, vom JSDelivr CDN
+  anstatt von diesem Firefish server laden.
+suggested: Vorgeschlagen
+preventMisclick: Schutz vor versehentlichen Clicks
+replaceWidgetsButtonWithReloadButton: Widget-Knopf durch Aktualisierungs-Knopf ersetzen
+hideFollowButtons: Folgen-Knopf in einer versehentlich clickbaren Position verstecken
+forMobile: Mobil
+privateDescription: Nur für Sie sichtbar machen
+makePrivate: Als privat markieren
+searchUsers: Erstellt von (optional)
+searchWords: Suchbegriffe / ID oder URL als Suchanfrage
+searchCwAndAlt: Inhaltswarnungen und Beschreibungen von Dateien einbeziehen
+searchUsersDescription: "Um nach Beiträgen eines bestimmten Nutzers/ Servers zu suchen,
+  einfach die ID (@Benutzer@beispiel.de, or @Benutzer für einen lokalen Benutzer)
+  oder Webadresse (beispiel.de) eingeben.\n\nDie Suche \"me\" (ohne Anführungszeichen)
+  findet alle Ihre Beiträge (auch nicht-gelistete, direkte, geheime Beiträge und Beiträge,
+  die nur für Follower sichtbar sind).\n\nDie Suche \"local\" (ohne Anführungszeichen)
+  sorgt dafür, dass nur Beiträge von diesem Server angezeigt werden."
+publishTimelines: Timelines für Besucher veröffentlichen
+publishTimelinesDescription: Falls konfiguriert, werden die lokale und globale Timeline
+  auf {url} auch ohne Anmeldung angezeigt.
+showNoAltTextWarning: Eine Warnung beim Hochladen von Dateien ohne Beschreibung anzeigen
+_emojiModPerm:
+  add: Hinzufügen
+  full: Alles erlauben
+  unauthorized: Kein(e)
+  mod: Hinzufügen und bearbeiten
+messagingUnencryptedInfo: Unterhaltungen auf Firefish sind nicht Ende-zu-Ende verschlüsselt.
+  Teilen Sie keine sensiblen Informationen über Firefish.
+autocorrectNoteLanguage: Eine Warnung anzeigen, wenn die Beitragssprache nicht mit
+  der automatisch ermittelten Sprache übereinstimmt
+emojiModPerm: Berechtigung, personalisierte Emojis zu verwalten
+emojiModPermDescription: "Hinzufügen: Erlauben Sie diesem Benutzer, neue benutzerdefinierte
+  Emojis hinzuzufügen und Tag/Kategorie/Lizenz für neu hinzugefügte benutzerdefinierte
+  Emojis einzustellen.\nHinzufügen und Bearbeiten: \"Hinzufügen\" Berechtigung + Erlauben
+  Sie diesem Benutzer, den Namen/die Kategorie/Tag/die Lizenz der vorhandenen benutzerdefinierten
+  Emojis zu bearbeiten.\nAlles erlauben: \"Hinzufügen und Bearbeiten\" Berechtigung
+  + Erlauben Sie diesem Benutzer, bestehende benutzerdefinierte Emojis zu löschen."
+reloading: Aktualisiert
+markLocalFilesNsfwByDefault: Standardmäßig alle neuen lokalen Dateien als sensibel
+  markieren
+markLocalFilesNsfwByDefaultDescription: Unabhäning von dieser Einstellung lässt sich
+  eine NSFW-Markierung entfernen. Bereits existierende Dateien sind nicht betroffen.
+noLanguage: Keine Sprache
+showBigPostButton: Anzeigen eines großen Knopfes zum Teilen des Beitrags im Beitragsformular
+private: Privat
+searchRange: Veröffentlicht zwischen (optional)
+searchPostsWithFiles: Nur Beiträge mit Dateien
+noAltTextWarning: Einige der angehängten Dateien haben keine Beschreibung. Haben Sie
+  vergessen, diese zu schreiben?
+toReply: Antworten
+toPost: Teilen
+sentFollowRequests: Gesendete Follow-Anfragen
+replyMute: Antworten in Timelines stummschalten
+replyUnmute: Stummschaltung von Antworten in Timelines aufheben
+noSentFollowRequests: Keine gesendeten Follow-Anfragen
+postSearch: Beitragssuche auf diesem Server
+enablePullToRefresh: '"Herunterziehen um zu aktualisieren" aktivieren'
+pullToRefreshThreshold: Benötigte heruntergezogene Distanz, um zu Aktualisieren
+showAddFileDescriptionAtFirstPost: Öffne automatisch ein Eingabefeld, um fehlende
+  Dateibeschreibungen beim Hochladen zu ergänßen
+searchRangeDescription: "Um eine Zeitspanne zu filtern, geben Sie diese in diesem
+  Format an: 20220615-20231031 (YYYYMMTT)\n\nDas Auslassen der Jahreszahl (z.B.: 0615-1031
+  oder 20220615-1031) wird automatisch wie die aktuelle Jahreszahl interpretiert.\n
+  \nZudem können das Anfangs- oder Enddatum ausgelassen werden. Zum Beispiel gibt
+  -1031 an, nach Beiträgen vor dem 31.10 dieses Jahres zu suchen. Umgekehrt führt
+  20220615- zu einer Suche nach allen Beiträgen nach dem 15.6.2022."
+incorrectLanguageWarning: "Es sieht so aus, als wäre ihr Beitrag auf {detected}, aber
+  Sie haben {current} ausgewählt.\nMöchten Sie stattdessen die Sprache zu {detected}
+  ändern?"
+noteEditHistory: Bearbeitungsgeschichte des Beitrags
+_later:
+  justNow: gerade eben
+  secondsAgo: in {n}s
+  minutesAgo: in {n}min
+  hoursAgo: in {n}h
+  daysAgo: in {n}d
+  weeksAgo: in {n} Woche(n)
+  monthsAgo: in {n} Monat(en)
+  yearsAgo: in {n} Jahr(en)
+  future: zukünftig
+scheduledPost: Veröffentlichungszeit manuell festlegen
+scheduledDate: Geplantes Datum
+mergeRenotesInTimeline: Mehrere Boosts eines Beitrags gruppieren
+mergeThreadInTimeline: In der Timeline mehrere Beiträge im gleichen Thread zusammenlegen
+cannotEditVisibility: Die Sichtbarkeit lässt sich nicht einstellen
+useThisAccountConfirm: Mit diesem Benutzerkonto fortfahren?
+inputAccountId: Bitte gib dein Benutzerkonto an (z.B. @firefish@info.firefish.dev)
+remoteFollow: Folgen (fremde Instanz)
+foldNotification: Ähnliche Benachrichtigungen gruppieren
+i18nServerInfo: Neue Clients nutzen standardmäßig {language}.
+i18nServerChange: Stattdessen {language} benutzen.
+i18nServerSet: Für neue Clients {language} benutzen.
+getQrCode: QR Code anzeigen
+useCdn: Ressourcen von einem CDN laden
+copyRemoteFollowUrl: URL zum Folgen auf einer fremden Instanz kopieren
+showPreviewByDefault: Standardmäßig Vorschau in Beitragsform anzeigen
+replaceChatButtonWithAccountButton: Unterhaltungen-Knopf durch Knopf zum Wechseln
+  des Benutzerkontos ersetzen
+searchEngine: Verwendete Suchmaschine in der Suchleiste MFM
+makePrivateConfirm: Diese Operation sendet eine Löschungsanfrage an fremde Server
+  und ändert die Sichtbarkeit zu 'privat'. Fortfahren?
+enableTimelineStreaming: Timelines automatisch aktualisieren
+scheduledPostAt: Der Beitrag wird {time} gesendet
+cancelScheduledPost: Zeitplan entfernen
+media: Medien
+slashQuote: Kettenzitat
+addAlt4MeTag: 'Automatisch den Hashtag #Alt4Me am Ende deines Beitrags einfügen, wenn
+  eine angehängte Datei keine Beschreibung hat'

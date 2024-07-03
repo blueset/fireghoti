@@ -285,7 +285,7 @@ import * as os from "@/os";
 import { useStream } from "@/stream";
 import { useTooltip } from "@/scripts/use-tooltip";
 import { defaultStore } from "@/store";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import icon from "@/scripts/icon";
 
 const props = withDefaults(
@@ -309,8 +309,9 @@ const hideFollowButton = defaultStore.state.hideFollowButtons;
 const showEmojiReactions =
 	defaultStore.state.enableEmojiReactions ||
 	defaultStore.state.showEmojisInReactionNotifications;
-const defaultReaction = ["⭐", "👍", "❤️"].includes(instance.defaultReaction)
-	? instance.defaultReaction
+const realDefaultReaction = getInstanceInfo().defaultReaction;
+const defaultReaction = ["⭐", "👍", "❤️"].includes(realDefaultReaction)
+	? realDefaultReaction
 	: "⭐";
 
 let readObserver: IntersectionObserver | undefined;

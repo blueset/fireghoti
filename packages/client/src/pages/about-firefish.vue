@@ -35,7 +35,7 @@
 							><MkEmoji
 								class="emoji"
 								:emoji="emoji.emoji"
-								:custom-emojis="instance.emojis"
+								:custom-emojis="instanceEmojis"
 								:is-reaction="false"
 								:normal="true"
 								:no-style="true"
@@ -96,12 +96,13 @@ import { defaultReactions, defaultStore } from "@/store";
 import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 
 let easterEggReady = false;
 const easterEggEmojis = ref([]);
 const easterEggEngine = ref(null);
 const containerEl = ref<HTMLElement>();
+const instanceEmojis = getInstanceInfo().emojis;
 
 function iconLoaded() {
 	const emojis =

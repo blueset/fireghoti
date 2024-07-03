@@ -1,6 +1,6 @@
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import { AnnouncementReads, Announcements, Users } from "@/models/index.js";
 import { publishMainStream } from "@/services/stream.js";
 
@@ -30,30 +30,30 @@ export const paramDef = {
 
 export default define(meta, paramDef, async (ps, user) => {
 	// Check if announcement exists
-	const exist = await Announcements.exist({
-		where: { id: ps.announcementId },
+	const exists = await Announcements.existsBy({
+		id: ps.announcementId,
 	});
 
-	if (!exist) {
+	if (!exists) {
 		throw new ApiError(meta.errors.noSuchAnnouncement);
 	}
 
 	// Check if already read
-	const read = await AnnouncementReads.exist({
-		where: {
-			announcementId: ps.announcementId,
-			userId: user.id,
-		},
+	const read = await AnnouncementReads.existsBy({
+		announcementId: ps.announcementId,
+		userId: user.id,
 	});
 
 	if (read) {
 		return;
 	}
 
+	const now = new Date();
+
 	// Create read
 	await AnnouncementReads.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		announcementId: ps.announcementId,
 		userId: user.id,
 	});

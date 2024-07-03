@@ -1,5 +1,5 @@
 import { UserLists } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import type { UserList } from "@/models/entities/user-list.js";
 import define from "@/server/api/define.js";
 
@@ -29,9 +29,10 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, user) => {
+	const now = new Date();
 	const userList = await UserLists.insert({
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		userId: user.id,
 		name: ps.name,
 	} as UserList).then((x) => UserLists.findOneByOrFail(x.identifiers[0]));

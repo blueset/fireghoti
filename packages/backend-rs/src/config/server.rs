@@ -1,13 +1,14 @@
+//! Server configuration
+
 use once_cell::sync::Lazy;
 use serde::Deserialize;
-use std::env;
-use std::fs;
+use std::{env, fs};
 
-pub const VERSION: &str = macro_rs::read_version_from_package_json!();
+pub const VERSION: &str = macros::read_version_from_package_json!();
 
-#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 struct ServerConfig {
     pub url: String,
     pub port: u16,
@@ -70,9 +71,9 @@ struct ServerConfig {
     pub object_storage: Option<ObjectStorageConfig>,
 }
 
-#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct DbConfig {
     pub host: String,
     pub port: u16,
@@ -83,9 +84,9 @@ pub struct DbConfig {
     pub extra: Option<serde_json::Value>,
 }
 
-#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct RedisConfig {
     pub host: String,
     pub port: u16,
@@ -98,65 +99,65 @@ pub struct RedisConfig {
     pub prefix: Option<String>,
 }
 
-#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct TlsConfig {
     pub host: String,
     pub reject_unauthorized: bool,
 }
 
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct WorkerConfig {
     pub web: u32,
     pub queue: u32,
 }
 
-#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct WorkerConfigInternal {
     pub web: Option<u32>,
     pub queue: Option<u32>,
 }
 
-#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct IdConfig {
     pub length: Option<u8>,
     pub fingerprint: Option<String>,
 }
 
-#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct SysLogConfig {
     pub host: String,
     pub port: u16,
 }
 
-#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct DeepLConfig {
     pub managed: Option<bool>,
     pub auth_key: Option<String>,
     pub is_pro: Option<bool>,
 }
 
-#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct LibreTranslateConfig {
     pub managed: Option<bool>,
     pub api_url: Option<String>,
     pub api_key: Option<String>,
 }
 
-#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct EmailConfig {
     pub managed: Option<bool>,
     pub address: Option<String>,
@@ -167,9 +168,9 @@ pub struct EmailConfig {
     pub use_implicit_ssl_tls: Option<bool>,
 }
 
-#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct ObjectStorageConfig {
     pub managed: Option<bool>,
     pub base_url: Option<String>,
@@ -185,7 +186,7 @@ pub struct ObjectStorageConfig {
     pub s3_force_path_style: Option<bool>,
 }
 
-#[crate::export(object, use_nullable = false)]
+#[macros::export(object, use_nullable = false)]
 pub struct Config {
     // ServerConfig (from default.yml)
     pub url: String,
@@ -262,7 +263,7 @@ fn read_config_file() -> ServerConfig {
     data
 }
 
-#[crate::export]
+#[macros::export]
 pub fn load_config() -> Config {
     let server_config = read_config_file();
     let version = VERSION.to_owned();
@@ -276,7 +277,10 @@ pub fn load_config() -> Config {
         None => hostname.clone(),
     };
     let scheme = url.scheme().to_owned();
-    let ws_scheme = scheme.replace("http", "ws");
+    let ws_scheme = match scheme.as_str() {
+        "http" => "ws",
+        _ => "wss",
+    };
 
     let cluster_limits = match server_config.cluster_limits {
         Some(cl) => WorkerConfig {
@@ -291,7 +295,7 @@ pub fn load_config() -> Config {
     } else {
         server_config.redis.prefix.clone()
     }
-    .unwrap_or(hostname.clone());
+    .unwrap_or_else(|| hostname.clone());
 
     Config {
         url: server_config.url,
@@ -342,7 +346,7 @@ pub fn load_config() -> Config {
         hostname,
         redis_key_prefix,
         scheme,
-        ws_scheme,
+        ws_scheme: ws_scheme.to_string(),
     }
 }
 

@@ -100,7 +100,7 @@ import * as os from "@/os";
 import { MFM_TAGS } from "@/scripts/mfm-tags";
 import { defaultStore } from "@/store";
 import { addSkinTone, emojilist } from "@/scripts/emojilist";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import { i18n } from "@/i18n";
 
 interface EmojiDef {
@@ -141,7 +141,7 @@ for (const x of lib) {
 emjdb.sort((a, b) => a.name.length - b.name.length);
 
 // #region Construct Emoji DB
-const customEmojis = instance.emojis;
+const customEmojis = getInstanceInfo().emojis;
 const emojiDefinitions: EmojiDef[] = [];
 
 for (const x of customEmojis) {

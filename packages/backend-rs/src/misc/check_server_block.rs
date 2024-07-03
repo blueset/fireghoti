@@ -18,9 +18,9 @@
 /// # Ok(())
 /// # }
 /// ```
-#[crate::ts_export]
+#[macros::ts_export]
 pub async fn is_blocked_server(host: &str) -> Result<bool, sea_orm::DbErr> {
-    Ok(crate::misc::meta::fetch_meta(true)
+    Ok(crate::config::local_server_info()
         .await?
         .blocked_hosts
         .iter()
@@ -45,9 +45,9 @@ pub async fn is_blocked_server(host: &str) -> Result<bool, sea_orm::DbErr> {
 /// # Ok(())
 /// # }
 /// ```
-#[crate::ts_export]
+#[macros::ts_export]
 pub async fn is_silenced_server(host: &str) -> Result<bool, sea_orm::DbErr> {
-    Ok(crate::misc::meta::fetch_meta(true)
+    Ok(crate::config::local_server_info()
         .await?
         .silenced_hosts
         .iter()
@@ -73,9 +73,9 @@ pub async fn is_silenced_server(host: &str) -> Result<bool, sea_orm::DbErr> {
 /// # Ok(())
 /// # }
 /// ```
-#[crate::ts_export]
+#[macros::ts_export]
 pub async fn is_allowed_server(host: &str) -> Result<bool, sea_orm::DbErr> {
-    let meta = crate::misc::meta::fetch_meta(true).await?;
+    let meta = crate::config::local_server_info().await?;
 
     if !meta.private_mode.unwrap_or(false) {
         return Ok(true);

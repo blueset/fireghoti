@@ -27,7 +27,7 @@ import { me } from "@/me";
 import type { NoteTranslation, NoteType } from "@/types/note";
 import { computed, ref, watch } from "vue";
 import * as os from "@/os";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 
 const props = defineProps<{
 	note: NoteType;
@@ -39,7 +39,7 @@ const translating = ref<boolean>();
 const hasError = ref<boolean>();
 const canTranslate = computed(
 	() =>
-		instance.translatorAvailable &&
+		getInstanceInfo().translatorAvailable &&
 		translation.value == null &&
 		translating.value !== true,
 );

@@ -32,7 +32,7 @@ import FormButton from "@/components/MkButton.vue";
 import FormTextarea from "@/components/form/textarea.vue";
 import FormSuspense from "@/components/form/suspense.vue";
 import * as os from "@/os";
-import { fetchInstance } from "@/instance";
+import { updateInstanceCache } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
@@ -41,14 +41,14 @@ const hiddenTags = ref("");
 
 async function init() {
 	const meta = await os.api("admin/meta");
-	hiddenTags.value = meta.hiddenTags.join("\n");
+	hiddenTags.value = meta?.hiddenTags.join("\n");
 }
 
 function save() {
 	os.apiWithDialog("admin/update-meta", {
 		hiddenTags: hiddenTags.value.split("\n").map((h: string) => h.trim()) || [],
 	}).then(() => {
-		fetchInstance();
+		updateInstanceCache();
 	});
 }
 

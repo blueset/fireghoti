@@ -322,7 +322,7 @@ import { selectFiles } from "@/scripts/select-file";
 import { defaultStore, notePostInterruptors, postFormActions } from "@/store";
 import MkInfo from "@/components/MkInfo.vue";
 import { i18n } from "@/i18n";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import { getAccounts, openAccountMenu as openAccountMenu_ } from "@/account";
 import { me } from "@/me";
 import { uploadFile } from "@/scripts/upload";
@@ -497,7 +497,7 @@ const textLength = computed((): number => {
 });
 
 const maxTextLength = computed((): number => {
-	return instance ? instance.maxNoteTextLength : 3000;
+	return getInstanceInfo().maxNoteTextLength ?? 3000;
 });
 
 const canPost = computed((): boolean => {
@@ -1193,6 +1193,13 @@ async function post() {
 			}
 			return;
 		}
+	}
+
+	if (
+		defaultStore.state.addAlt4MeTag &&
+		files.value.some((f) => f.comment == null || f.comment.length === 0)
+	) {
+		text.value = `${text.value.trimEnd()}\n#Alt4Me`;
 	}
 
 	const processedText = preprocess(text.value);

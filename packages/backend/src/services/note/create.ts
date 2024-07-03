@@ -1,9 +1,5 @@
 import * as mfm from "mfm-js";
-import {
-	publishMainStream,
-	publishNotesStream,
-	publishNoteStream,
-} from "@/services/stream.js";
+import { publishMainStream, publishNoteStream } from "@/services/stream.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
 import renderCreate from "@/remote/activitypub/renderer/create.js";
@@ -49,6 +45,7 @@ import {
 	genIdAt,
 	isQuote,
 	isSilencedServer,
+	publishToNotesStream,
 } from "backend-rs";
 import { countSameRenotes } from "@/misc/count-same-renotes.js";
 import { deliverToRelays, getCachedRelays } from "../relay.js";
@@ -133,15 +130,10 @@ class NotificationManager {
 	}
 }
 
-type MinimumUser = {
-	id: User["id"];
-	host: User["host"];
-	username: User["username"];
-	uri: User["uri"];
-};
-
-type Option = {
+type UserLike = Pick<User, "id" | "host" | "username" | "uri">;
+type NoteLike = {
 	createdAt?: Date | null;
+	scheduledAt?: Date | null;
 	name?: string | null;
 	text?: string | null;
 	lang?: string | null;
@@ -152,9 +144,9 @@ type Option = {
 	localOnly?: boolean | null;
 	cw?: string | null;
 	visibility?: string;
-	visibleUsers?: MinimumUser[] | null;
+	visibleUsers?: UserLike[] | null;
 	channel?: Channel | null;
-	apMentions?: MinimumUser[] | null;
+	apMentions?: UserLike[] | null;
 	apHashtags?: string[] | null;
 	apEmojis?: string[] | null;
 	uri?: string | null;
@@ -163,16 +155,11 @@ type Option = {
 };
 
 export default async (
-	user: {
-		id: User["id"];
-		username: User["username"];
-		host: User["host"];
-		isSilenced: User["isSilenced"];
-		createdAt: User["createdAt"];
-		isBot: User["isBot"];
-		inbox?: User["inbox"];
-	},
-	data: Option,
+	user: Pick<
+		User,
+		"id" | "username" | "host" | "isSilenced" | "createdAt" | "isBot"
+	> & { inbox?: User["inbox"] },
+	data: NoteLike,
 	silent = false,
 	waitToPublish?: (note: Note) => Promise<void>,
 ) =>
@@ -180,6 +167,9 @@ export default async (
 	new Promise<Note>(async (res, rej) => {
 		const dontFederateInitially =
 			data.visibility?.startsWith("hidden") === true;
+
+		// Whether this is a scheduled "draft" post (yet to be published)
+		const isDraft = data.scheduledAt != null;
 
 		// If you reply outside the channel, match the scope of the target.
 		// TODO (I think it's a process that could be done on the client side, but it's server side for now.)
@@ -208,6 +198,7 @@ export default async (
 			data.createdAt > now
 		)
 			data.createdAt = now;
+
 		if (data.visibility == null) data.visibility = "public";
 		if (data.localOnly == null) data.localOnly = false;
 		if (data.channel != null) data.visibility = "public";
@@ -277,13 +268,9 @@ export default async (
 			data.localOnly = true;
 		}
 
-		if (data.text) {
-			data.text = data.text.trim();
-		} else {
-			data.text = null;
-		}
+		data.text = data.text?.trim() ?? null;
 
-		if (data.lang) {
+		if (data.lang != null) {
 			if (!Object.keys(langmap).includes(data.lang.toLowerCase()))
 				throw new Error("invalid param");
 			data.lang = data.lang.toLowerCase();
@@ -297,10 +284,10 @@ export default async (
 
 		// Parse MFM if needed
 		if (!(tags && emojis && mentionedUsers)) {
-			const tokens = data.text ? mfm.parse(data.text)! : [];
-			const cwTokens = data.cw ? mfm.parse(data.cw)! : [];
+			const tokens = data.text ? mfm.parse(data.text) : [];
+			const cwTokens = data.cw ? mfm.parse(data.cw) : [];
 			const choiceTokens = data.poll?.choices
-				? concat(data.poll.choices.map((choice) => mfm.parse(choice)!))
+				? concat(data.poll.choices.map((choice) => mfm.parse(choice)))
 				: [];
 
 			const combinedTokens = tokens.concat(cwTokens).concat(choiceTokens);
@@ -318,16 +305,16 @@ export default async (
 			.splice(0, 32);
 
 		if (
-			data.reply &&
+			data.reply != null &&
 			user.id !== data.reply.userId &&
-			!mentionedUsers.some((u) => u.id === data.reply!.userId)
+			!mentionedUsers.some((u) => u.id === data.reply?.userId)
 		) {
 			mentionedUsers.push(
-				await Users.findOneByOrFail({ id: data.reply!.userId }),
+				await Users.findOneByOrFail({ id: data.reply.userId }),
 			);
 		}
 
-		if (data.visibility === "specified") {
+		if (!isDraft && data.visibility === "specified") {
 			if (data.visibleUsers == null) throw new Error("invalid param");
 
 			for (const u of data.visibleUsers) {
@@ -338,10 +325,10 @@ export default async (
 
 			if (
 				data.reply &&
-				!data.visibleUsers.some((x) => x.id === data.reply!.userId)
+				!data.visibleUsers.some((x) => x.id === data.reply?.userId)
 			) {
 				data.visibleUsers.push(
-					await Users.findOneByOrFail({ id: data.reply!.userId }),
+					await Users.findOneByOrFail({ id: data.reply?.userId }),
 				);
 			}
 		}
@@ -365,314 +352,321 @@ export default async (
 			});
 		}
 
-		// ハッシュタグ更新
-		if (data.visibility === "public" || data.visibility === "home") {
-			updateHashtags(user, tags);
-		}
+		if (!isDraft) {
+			// ハッシュタグ更新
+			if (data.visibility === "public" || data.visibility === "home") {
+				updateHashtags(user, tags);
+			}
 
-		// Increment notes count (user)
-		incNotesCountOfUser(user);
+			// Increment notes count (user)
+			incNotesCountOfUser(user);
 
-		// Word mutes & antenna
-		const thisNoteIsMutedBy: string[] = [];
+			// Word mutes & antenna
+			const thisNoteIsMutedBy: string[] = [];
 
-		await hardMutesCache
-			.fetch(null, () =>
-				UserProfiles.find({
-					where: {
-						enableWordMute: true,
-					},
-					select: ["userId", "mutedWords", "mutedPatterns"],
-				}),
-			)
-			.then(async (us) => {
-				for (const u of us) {
-					if (u.userId === user.id) return;
-					await checkWordMute(note, u.mutedWords, u.mutedPatterns).then(
-						(shouldMute: boolean) => {
-							if (shouldMute) {
-								thisNoteIsMutedBy.push(u.userId);
-								MutedNotes.insert({
-									id: genId(),
-									userId: u.userId,
-									noteId: note.id,
-									reason: "word",
-								});
-							}
+			await hardMutesCache
+				.fetch(null, () =>
+					UserProfiles.find({
+						where: {
+							enableWordMute: true,
 						},
-					);
-				}
-			});
+						select: ["userId", "mutedWords", "mutedPatterns"],
+					}),
+				)
+				.then(async (us) => {
+					for (const u of us) {
+						if (u.userId === user.id) return;
+						await checkWordMute(note, u.mutedWords, u.mutedPatterns).then(
+							(shouldMute: boolean) => {
+								if (shouldMute) {
+									thisNoteIsMutedBy.push(u.userId);
+									MutedNotes.insert({
+										id: genId(),
+										userId: u.userId,
+										noteId: note.id,
+										reason: "word",
+									});
+								}
+							},
+						);
+					}
+				});
 
-		// type errors will be resolved by https://github.com/napi-rs/napi-rs/pull/2054
-		const _note = toRustObject(note);
-		if (note.renoteId == null || isQuote(_note)) {
-			await updateAntennasOnNewNote(_note, user, thisNoteIsMutedBy);
-		}
+			// type errors will be resolved by https://github.com/napi-rs/napi-rs/pull/2054
+			const _note = toRustObject(note);
+			if (note.renoteId == null || isQuote(_note)) {
+				await updateAntennasOnNewNote(_note, user, thisNoteIsMutedBy);
+			}
 
-		// Channel
-		if (note.channelId) {
-			ChannelFollowings.findBy({ followeeId: note.channelId }).then(
-				(followings) => {
-					for (const following of followings) {
-						insertNoteUnread(following.followerId, note, {
-							isSpecified: false,
+			// Channel
+			if (note.channelId != null) {
+				ChannelFollowings.findBy({ followeeId: note.channelId }).then(
+					(followings) => {
+						for (const following of followings) {
+							insertNoteUnread(following.followerId, note, {
+								isSpecified: false,
+								isMentioned: false,
+							});
+						}
+					},
+				);
+			}
+
+			if (data.reply) {
+				saveReply(data.reply, note);
+			}
+
+			// この投稿を除く指定したユーザーによる指定したノートのリノートが存在しないとき
+			if (
+				data.renote &&
+				!user.isBot &&
+				(await countSameRenotes(user.id, data.renote.id, note.id)) === 0
+			) {
+				incRenoteCount(data.renote);
+			}
+
+			if (data.poll?.expiresAt) {
+				const delay = data.poll.expiresAt.getTime() - Date.now();
+				endedPollNotificationQueue.add(
+					{
+						noteId: note.id,
+					},
+					{
+						delay,
+						removeOnComplete: true,
+					},
+				);
+			}
+
+			if (!silent) {
+				if (Users.isLocalUser(user)) activeUsersChart.write(user);
+
+				// 未読通知を作成
+				if (data.visibility === "specified") {
+					if (data.visibleUsers == null) throw new Error("invalid param");
+
+					for (const u of data.visibleUsers) {
+						// ローカルユーザーのみ
+						if (!Users.isLocalUser(u)) continue;
+
+						insertNoteUnread(u.id, note, {
+							isSpecified: true,
 							isMentioned: false,
 						});
 					}
-				},
-			);
-		}
-
-		if (data.reply) {
-			saveReply(data.reply, note);
-		}
-
-		// この投稿を除く指定したユーザーによる指定したノートのリノートが存在しないとき
-		if (
-			data.renote &&
-			!user.isBot &&
-			(await countSameRenotes(user.id, data.renote.id, note.id)) === 0
-		) {
-			incRenoteCount(data.renote);
-		}
-
-		if (data.poll?.expiresAt) {
-			const delay = data.poll.expiresAt.getTime() - Date.now();
-			endedPollNotificationQueue.add(
-				{
-					noteId: note.id,
-				},
-				{
-					delay,
-					removeOnComplete: true,
-				},
-			);
-		}
-
-		if (!silent) {
-			if (Users.isLocalUser(user)) activeUsersChart.write(user);
-
-			// 未読通知を作成
-			if (data.visibility === "specified") {
-				if (data.visibleUsers == null) throw new Error("invalid param");
-
-				for (const u of data.visibleUsers) {
-					// ローカルユーザーのみ
-					if (!Users.isLocalUser(u)) continue;
-
-					insertNoteUnread(u.id, note, {
-						isSpecified: true,
-						isMentioned: false,
-					});
-				}
-			} else {
-				for (const u of mentionedUsers) {
-					// ローカルユーザーのみ
-					if (!Users.isLocalUser(u)) continue;
-
-					insertNoteUnread(u.id, note, {
-						isSpecified: false,
-						isMentioned: true,
-					});
-				}
-			}
-
-			if (!dontFederateInitially) {
-				let publishKey: string;
-				let noteToPublish: Note;
-				const relays = await getCachedRelays();
-
-				// Some relays (e.g., aode-relay) deliver posts by boosting them as
-				// Announce activities. In that case, user is the relay's actor.
-				const boostedByRelay =
-					!!user.inbox &&
-					relays.map((relay) => relay.inbox).includes(user.inbox);
-
-				if (boostedByRelay && data.renote && data.renote.userHost) {
-					publishKey = `publishedNote:${data.renote.id}`;
-					noteToPublish = data.renote;
 				} else {
-					publishKey = `publishedNote:${note.id}`;
-					noteToPublish = note;
-				}
+					for (const u of mentionedUsers) {
+						// ローカルユーザーのみ
+						if (!Users.isLocalUser(u)) continue;
 
-				const lock = new Mutex(redisClient, "publishedNote");
-				await lock.acquire();
-				try {
-					const published = (await redisClient.get(publishKey)) != null;
-					if (!published) {
-						await redisClient.set(publishKey, "done", "EX", 30);
-						if (noteToPublish.renoteId) {
-							// Prevents other threads from publishing the boosting post
-							await redisClient.set(
-								`publishedNote:${noteToPublish.renoteId}`,
-								"done",
-								"EX",
-								30,
-							);
-						}
-						publishNotesStream(noteToPublish);
-					}
-				} finally {
-					await lock.release();
-				}
-			}
-			if (note.replyId != null) {
-				// Only provide the reply note id here as the recipient may not be authorized to see the note.
-				publishNoteStream(note.replyId, "replied", {
-					id: note.id,
-				});
-			}
-
-			const webhooks = await getActiveWebhooks().then((webhooks) =>
-				webhooks.filter((x) => x.userId === user.id && x.on.includes("note")),
-			);
-
-			for (const webhook of webhooks) {
-				webhookDeliver(webhook, "note", {
-					note: await Notes.pack(note, user),
-				});
-			}
-
-			const nm = new NotificationManager(user, note);
-			const nmRelatedPromises = [];
-
-			await createMentionedEvents(mentionedUsers, note, nm);
-
-			// If has in reply to note
-			if (data.reply) {
-				// Fetch watchers
-				nmRelatedPromises.push(notifyToWatchersOfReplyee(data.reply, user, nm));
-
-				// 通知
-				if (data.reply.userHost === null) {
-					const threadMuted = await NoteThreadMutings.findOneBy({
-						userId: data.reply.userId,
-						threadId: data.reply.threadId || data.reply.id,
-					});
-
-					if (!threadMuted) {
-						nm.push(data.reply.userId, "reply");
-
-						const packedReply = await Notes.pack(note, {
-							id: data.reply.userId,
+						insertNoteUnread(u.id, note, {
+							isSpecified: false,
+							isMentioned: true,
 						});
-						publishMainStream(data.reply.userId, "reply", packedReply);
+					}
+				}
 
+				if (note.replyId != null) {
+					// Only provide the reply note id here as the recipient may not be authorized to see the note.
+					publishNoteStream(note.replyId, "replied", {
+						id: note.id,
+					});
+				}
+
+				const webhooks = await getActiveWebhooks().then((webhooks) =>
+					webhooks.filter((x) => x.userId === user.id && x.on.includes("note")),
+				);
+
+				for (const webhook of webhooks) {
+					webhookDeliver(webhook, "note", {
+						note: await Notes.pack(note, user),
+					});
+				}
+
+				const nm = new NotificationManager(user, note);
+				const nmRelatedPromises = [];
+
+				await createMentionedEvents(mentionedUsers, note, nm);
+
+				// If has in reply to note
+				if (data.reply != null) {
+					// Fetch watchers
+					nmRelatedPromises.push(
+						notifyToWatchersOfReplyee(data.reply, user, nm),
+					);
+
+					// 通知
+					if (data.reply.userHost === null) {
+						const threadMuted = await NoteThreadMutings.findOneBy({
+							userId: data.reply.userId,
+							threadId: data.reply.threadId || data.reply.id,
+						});
+
+						if (!threadMuted) {
+							nm.push(data.reply.userId, "reply");
+
+							const packedReply = await Notes.pack(note, {
+								id: data.reply.userId,
+							});
+							publishMainStream(data.reply.userId, "reply", packedReply);
+
+							const webhooks = (await getActiveWebhooks()).filter(
+								(x) =>
+									x.userId === data.reply?.userId && x.on.includes("reply"),
+							);
+							for (const webhook of webhooks) {
+								webhookDeliver(webhook, "reply", {
+									note: packedReply,
+								});
+							}
+						}
+					}
+				}
+
+				// If it is renote
+				if (data.renote != null) {
+					const type = data.text ? "quote" : "renote";
+
+					// Notify
+					if (data.renote.userHost === null) {
+						const threadMuted = await NoteThreadMutings.findOneBy({
+							userId: data.renote.userId,
+							threadId: data.renote.threadId || data.renote.id,
+						});
+
+						if (!threadMuted) {
+							nm.push(data.renote.userId, type);
+						}
+					}
+					// Fetch watchers
+					nmRelatedPromises.push(
+						notifyToWatchersOfRenotee(data.renote, user, nm, type),
+					);
+
+					// Publish event
+					if (user.id !== data.renote.userId && data.renote.userHost === null) {
+						const packedRenote = await Notes.pack(note, {
+							id: data.renote.userId,
+						});
+						publishMainStream(data.renote.userId, "renote", packedRenote);
+
+						const renote = data.renote;
 						const webhooks = (await getActiveWebhooks()).filter(
-							(x) => x.userId === data.reply!.userId && x.on.includes("reply"),
+							(x) => x.userId === renote.userId && x.on.includes("renote"),
 						);
 						for (const webhook of webhooks) {
-							webhookDeliver(webhook, "reply", {
-								note: packedReply,
+							webhookDeliver(webhook, "renote", {
+								note: packedRenote,
 							});
 						}
 					}
 				}
-			}
 
-			// If it is renote
-			if (data.renote) {
-				const type = data.text ? "quote" : "renote";
+				Promise.all(nmRelatedPromises).then(() => {
+					nm.deliver();
+				});
 
-				// Notify
-				if (data.renote.userHost === null) {
-					const threadMuted = await NoteThreadMutings.findOneBy({
-						userId: data.renote.userId,
-						threadId: data.renote.threadId || data.renote.id,
-					});
+				//#region AP deliver
+				if (Users.isLocalUser(user) && !dontFederateInitially) {
+					(async () => {
+						const noteActivity = await renderNoteOrRenoteActivity(data, note);
+						const dm = new DeliverManager(user, noteActivity);
 
-					if (!threadMuted) {
-						nm.push(data.renote.userId, type);
-					}
+						// メンションされたリモートユーザーに配送
+						for (const u of mentionedUsers.filter((u) =>
+							Users.isRemoteUser(u),
+						)) {
+							dm.addDirectRecipe(u as IRemoteUser);
+						}
+
+						// 投稿がリプライかつ投稿者がローカルユーザーかつリプライ先の投稿の投稿者がリモートユーザーなら配送
+						if (data.reply?.userHost != null) {
+							const u = await Users.findOneBy({ id: data.reply.userId });
+							if (u && Users.isRemoteUser(u)) dm.addDirectRecipe(u);
+						}
+
+						// 投稿がRenoteかつ投稿者がローカルユーザーかつRenote元の投稿の投稿者がリモートユーザーなら配送
+						if (data.renote?.userHost != null) {
+							const u = await Users.findOneBy({ id: data.renote.userId });
+							if (u && Users.isRemoteUser(u)) dm.addDirectRecipe(u);
+						}
+
+						// フォロワーに配送
+						if (["public", "home", "followers"].includes(note.visibility)) {
+							dm.addFollowersRecipe();
+						}
+
+						if (["public"].includes(note.visibility)) {
+							deliverToRelays(user, noteActivity);
+						}
+
+						dm.execute();
+					})();
 				}
-				// Fetch watchers
-				nmRelatedPromises.push(
-					notifyToWatchersOfRenotee(data.renote, user, nm, type),
-				);
-
-				// Publish event
-				if (user.id !== data.renote.userId && data.renote.userHost === null) {
-					const packedRenote = await Notes.pack(note, {
-						id: data.renote.userId,
-					});
-					publishMainStream(data.renote.userId, "renote", packedRenote);
-
-					const renote = data.renote;
-					const webhooks = (await getActiveWebhooks()).filter(
-						(x) => x.userId === renote.userId && x.on.includes("renote"),
-					);
-					for (const webhook of webhooks) {
-						webhookDeliver(webhook, "renote", {
-							note: packedRenote,
-						});
-					}
-				}
+				//#endregion
 			}
 
-			Promise.all(nmRelatedPromises).then(() => {
-				nm.deliver();
-			});
+			if (data.channel) {
+				Channels.increment({ id: data.channel.id }, "notesCount", 1);
+				Channels.update(data.channel.id, {
+					lastNotedAt: new Date(),
+				});
 
-			//#region AP deliver
-			if (Users.isLocalUser(user) && !dontFederateInitially) {
-				(async () => {
-					const noteActivity = await renderNoteOrRenoteActivity(data, note);
-					const dm = new DeliverManager(user, noteActivity);
-
-					// メンションされたリモートユーザーに配送
-					for (const u of mentionedUsers.filter((u) => Users.isRemoteUser(u))) {
-						dm.addDirectRecipe(u as IRemoteUser);
+				await Notes.countBy({
+					userId: user.id,
+					channelId: data.channel.id,
+				}).then((count) => {
+					// この処理が行われるのはノート作成後なので、ノートが一つしかなかったら最初の投稿だと判断できる
+					// TODO: とはいえノートを削除して何回も投稿すればその分だけインクリメントされる雑さもあるのでどうにかしたい
+					if (count === 1 && data.channel != null) {
+						Channels.increment({ id: data.channel.id }, "usersCount", 1);
 					}
-
-					// 投稿がリプライかつ投稿者がローカルユーザーかつリプライ先の投稿の投稿者がリモートユーザーなら配送
-					if (data.reply?.userHost != null) {
-						const u = await Users.findOneBy({ id: data.reply.userId });
-						if (u && Users.isRemoteUser(u)) dm.addDirectRecipe(u);
-					}
-
-					// 投稿がRenoteかつ投稿者がローカルユーザーかつRenote元の投稿の投稿者がリモートユーザーなら配送
-					if (data.renote?.userHost != null) {
-						const u = await Users.findOneBy({ id: data.renote.userId });
-						if (u && Users.isRemoteUser(u)) dm.addDirectRecipe(u);
-					}
-
-					// フォロワーに配送
-					if (["public", "home", "followers"].includes(note.visibility)) {
-						dm.addFollowersRecipe();
-					}
-
-					if (["public"].includes(note.visibility)) {
-						deliverToRelays(user, noteActivity);
-					}
-
-					dm.execute();
-				})();
+				});
 			}
-			//#endregion
 		}
 
-		if (data.channel) {
-			Channels.increment({ id: data.channel.id }, "notesCount", 1);
-			Channels.update(data.channel.id, {
-				lastNotedAt: new Date(),
-			});
+		if (!dontFederateInitially) {
+			let publishKey: string;
+			let noteToPublish: Note;
+			const relays = await getCachedRelays();
 
-			await Notes.countBy({
-				userId: user.id,
-				channelId: data.channel.id,
-			}).then((count) => {
-				// この処理が行われるのはノート作成後なので、ノートが一つしかなかったら最初の投稿だと判断できる
-				// TODO: とはいえノートを削除して何回も投稿すればその分だけインクリメントされる雑さもあるのでどうにかしたい
-				if (count === 1 && data.channel != null) {
-					Channels.increment({ id: data.channel.id }, "usersCount", 1);
+			// Some relays (e.g., aode-relay) deliver posts by boosting them as
+			// Announce activities. In that case, user is the relay's actor.
+			const boostedByRelay =
+				!!user.inbox && relays.map((relay) => relay.inbox).includes(user.inbox);
+
+			if (boostedByRelay && data.renote && data.renote.userHost) {
+				publishKey = `publishedNote:${data.renote.id}`;
+				noteToPublish = data.renote;
+			} else {
+				publishKey = `publishedNote:${note.id}`;
+				noteToPublish = note;
+			}
+
+			const lock = new Mutex(redisClient, "publishedNote");
+			await lock.acquire();
+			try {
+				const published = (await redisClient.get(publishKey)) != null;
+				if (!published) {
+					await redisClient.set(publishKey, "done", "EX", 30);
+					if (noteToPublish.renoteId) {
+						// Prevents other threads from publishing the boosting post
+						await redisClient.set(
+							`publishedNote:${noteToPublish.renoteId}`,
+							"done",
+							"EX",
+							30,
+						);
+					}
+					publishToNotesStream(toRustObject(noteToPublish));
 				}
-			});
+			} finally {
+				await lock.release();
+			}
 		}
 	});
 
-async function renderNoteOrRenoteActivity(data: Option, note: Note) {
+async function renderNoteOrRenoteActivity(data: NoteLike, note: Note) {
 	if (data.localOnly) return null;
 
 	const content =
@@ -704,17 +698,17 @@ function incRenoteCount(renote: Note) {
 
 async function insertNote(
 	user: { id: User["id"]; host: User["host"] },
-	data: Option,
+	data: NoteLike,
 	tags: string[],
 	emojis: string[],
-	mentionedUsers: MinimumUser[],
+	mentionedUsers: UserLike[],
 ) {
-	if (data.createdAt === null || data.createdAt === undefined) {
-		data.createdAt = new Date();
-	}
-	const insert = new Note({
+	data.createdAt ??= new Date();
+
+	const note = new Note({
 		id: genIdAt(data.createdAt),
 		createdAt: data.createdAt,
+		scheduledAt: data.scheduledAt ?? null,
 		fileIds: data.files ? data.files.map((file) => file.id) : [],
 		replyId: data.reply ? data.reply.id : null,
 		renoteId: data.renote ? data.renote.id : null,
@@ -743,30 +737,30 @@ async function insertNote(
 
 		attachedFileTypes: data.files ? data.files.map((file) => file.type) : [],
 
-		// 以下非正規化データ
+		// denormalized fields
 		replyUserId: data.reply ? data.reply.userId : null,
 		replyUserHost: data.reply ? data.reply.userHost : null,
 		renoteUserId: data.renote ? data.renote.userId : null,
 		renoteUserHost: data.renote ? data.renote.userHost : null,
 		userHost: user.host,
+		updatedAt: undefined,
+		uri: data.uri ?? undefined,
+		url: data.url ?? undefined,
 	});
-
-	if (data.uri != null) insert.uri = data.uri;
-	if (data.url != null) insert.url = data.url;
 
 	// Append mentions data
 	if (mentionedUsers.length > 0) {
-		insert.mentions = mentionedUsers.map((u) => u.id);
-		const profiles = await UserProfiles.findBy({ userId: In(insert.mentions) });
-		insert.mentionedRemoteUsers = JSON.stringify(
+		note.mentions = mentionedUsers.map((u) => u.id);
+		const profiles = await UserProfiles.findBy({ userId: In(note.mentions) });
+		note.mentionedRemoteUsers = JSON.stringify(
 			mentionedUsers
 				.filter((u) => Users.isRemoteUser(u))
 				.map((u) => {
 					const profile = profiles.find((p) => p.userId === u.id);
-					const url = profile != null ? profile.url : null;
+					const url = profile?.url ?? null;
 					return {
 						uri: u.uri,
-						url: url == null ? undefined : url,
+						url: url ?? undefined,
 						username: u.username,
 						host: u.host,
 					} as IMentionedRemoteUsers[0];
@@ -776,12 +770,12 @@ async function insertNote(
 
 	// 投稿を作成
 	try {
-		if (insert.hasPoll) {
+		if (note.hasPoll) {
 			// Start transaction
 			await db.transaction(async (transactionalEntityManager) => {
 				if (!data.poll) throw new Error("Empty poll data");
 
-				await transactionalEntityManager.insert(Note, insert);
+				await transactionalEntityManager.insert(Note, note);
 
 				let expiresAt: Date | null;
 				if (
@@ -794,12 +788,12 @@ async function insertNote(
 				}
 
 				const poll = new Poll({
-					noteId: insert.id,
+					noteId: note.id,
 					choices: data.poll.choices,
 					expiresAt,
 					multiple: data.poll.multiple,
 					votes: new Array(data.poll.choices.length).fill(0),
-					noteVisibility: insert.visibility,
+					noteVisibility: note.visibility,
 					userId: user.id,
 					userHost: user.host,
 				});
@@ -807,10 +801,10 @@ async function insertNote(
 				await transactionalEntityManager.insert(Poll, poll);
 			});
 		} else {
-			await Notes.insert(insert);
+			await Notes.insert(note);
 		}
 
-		return insert;
+		return note;
 	} catch (e) {
 		// duplicate key error
 		if (isDuplicateKeyValueError(e)) {
@@ -857,7 +851,7 @@ async function notifyToWatchersOfReplyee(
 }
 
 async function createMentionedEvents(
-	mentionedUsers: MinimumUser[],
+	mentionedUsers: UserLike[],
 	note: Note,
 	nm: NotificationManager,
 ) {

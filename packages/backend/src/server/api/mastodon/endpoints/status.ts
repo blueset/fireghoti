@@ -211,7 +211,7 @@ export function apiStatusMastodon(router: Router): void {
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/favourite",
 		async (ctx) => {
-			const meta = await fetchMeta(true);
+			const meta = await fetchMeta();
 			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
@@ -233,7 +233,7 @@ export function apiStatusMastodon(router: Router): void {
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/unfavourite",
 		async (ctx) => {
-			const meta = await fetchMeta(true);
+			const meta = await fetchMeta();
 			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);

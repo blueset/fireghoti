@@ -15,7 +15,7 @@ import {
 	UserListJoinings,
 	UserLists,
 } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { genIdAt } from "backend-rs";
 import { getActiveWebhooks } from "@/misc/webhook-cache.js";
 import { webhookDeliver } from "@/queue/index.js";
 
@@ -28,9 +28,11 @@ export default async function (blocker: User, blockee: User) {
 		removeFromList(blockee, blocker),
 	]);
 
+	const now = new Date();
+
 	const blocking = {
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		blocker,
 		blockerId: blocker.id,
 		blockee,

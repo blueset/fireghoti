@@ -1,30 +1,32 @@
-use crate::database::cache;
-use crate::util::http_client;
+use crate::{database::cache, util::http_client};
 use image::{io::Reader, ImageError, ImageFormat};
-use isahc::ReadResponseExt;
+use isahc::AsyncReadResponseExt;
 use nom_exif::{parse_jpeg_exif, EntryValue, ExifTag};
 use std::io::Cursor;
 use tokio::sync::Mutex;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("Redis cache error: {0}")]
+    #[error("Redis cache operation has failed")]
     Cache(#[from] cache::Error),
-    #[error("HTTP client aquisition error: {0}")]
+    #[error("failed to acquire an HTTP client")]
     HttpClient(#[from] http_client::Error),
-    #[error("Isahc error: {0}")]
+    #[error("HTTP request failed")]
     Isahc(#[from] isahc::Error),
-    #[error("HTTP error: {0}")]
-    Http(String),
-    #[error("Image decoding error: {0}")]
+    #[doc = "bad HTTP status"]
+    #[error("bad HTTP status ({0})")]
+    BadStatus(String),
+    #[error("failed to decode an image")]
     Image(#[from] ImageError),
-    #[error("Image decoding error: {0}")]
+    #[error("failed to decode an image")]
     Io(#[from] std::io::Error),
-    #[error("Exif extraction error: {0}")]
+    #[error("failed to extract the exif data")]
     Exif(#[from] nom_exif::Error),
-    #[error("Emoji meta attempt limit exceeded: {0}")]
+    #[doc = "too many fetch attempts"]
+    #[error("too many fetch attempts for {0}")]
     TooManyAttempts(String),
-    #[error("Unsupported image type: {0}")]
+    #[doc = "unsupported image type"]
+    #[error("unsupported image type ({0})")]
     UnsupportedImage(String),
 }
 
@@ -41,14 +43,14 @@ const BROWSER_SAFE_IMAGE_TYPES: [ImageFormat; 8] = [
 
 static MTX_GUARD: Mutex<()> = Mutex::const_new(());
 
-#[derive(Debug, PartialEq)]
-#[crate::export(object)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[macros::export(object)]
 pub struct ImageSize {
     pub width: u32,
     pub height: u32,
 }
 
-#[crate::export]
+#[macros::export]
 pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
     let attempted: bool;
 
@@ -71,15 +73,19 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
 
     tracing::info!("retrieving image from {}", url);
 
-    let mut response = http_client::client()?.get(url)?;
+    let mut response = http_client::client()?.get_async(url).await?;
 
     if !response.status().is_success() {
         tracing::info!("status: {}", response.status());
         tracing::debug!("response body: {:#?}", response.body());
-        return Err(Error::Http(format!("Failed to get image from {}", url)));
+        return Err(Error::BadStatus(format!(
+            "{} returned {}",
+            url,
+            response.status()
+        )));
     }
 
-    let image_bytes = response.bytes()?;
+    let image_bytes = response.bytes().await?;
 
     let reader = Reader::new(Cursor::new(&image_bytes)).with_guessed_format()?;
 
@@ -123,12 +129,13 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
 
 #[cfg(test)]
 mod unit_test {
-    use super::{get_image_size_from_url, ImageSize};
+    use super::ImageSize;
     use crate::database::cache;
     use pretty_assertions::assert_eq;
 
     #[tokio::test]
-    async fn test_get_image_size() {
+    #[cfg_attr(miri, ignore)] // can't call foreign function `getaddrinfo` on OS `linux`
+    async fn get_image_size_from_url() {
         let png_url_1 = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/splash.png";
         let png_url_2 = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/notification-badges/at.png";
         let png_url_3 = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/api-doc.png";
@@ -177,34 +184,43 @@ mod unit_test {
 
         assert_eq!(
             png_size_1,
-            get_image_size_from_url(png_url_1).await.unwrap()
+            super::get_image_size_from_url(png_url_1).await.unwrap()
         );
         assert_eq!(
             png_size_2,
-            get_image_size_from_url(png_url_2).await.unwrap()
+            super::get_image_size_from_url(png_url_2).await.unwrap()
         );
         assert_eq!(
             png_size_3,
-            get_image_size_from_url(png_url_3).await.unwrap()
+            super::get_image_size_from_url(png_url_3).await.unwrap()
         );
         assert_eq!(
             rotated_jpeg_size,
-            get_image_size_from_url(rotated_jpeg_url).await.unwrap()
+            super::get_image_size_from_url(rotated_jpeg_url)
+                .await
+                .unwrap()
         );
         assert_eq!(
             webp_size_1,
-            get_image_size_from_url(webp_url_1).await.unwrap()
+            super::get_image_size_from_url(webp_url_1).await.unwrap()
         );
         assert_eq!(
             webp_size_2,
-            get_image_size_from_url(webp_url_2).await.unwrap()
+            super::get_image_size_from_url(webp_url_2).await.unwrap()
         );
-        assert_eq!(ico_size, get_image_size_from_url(ico_url).await.unwrap());
-        assert_eq!(gif_size, get_image_size_from_url(gif_url).await.unwrap());
-        assert!(get_image_size_from_url(mp3_url).await.is_err());
+        assert_eq!(
+            ico_size,
+            super::get_image_size_from_url(ico_url).await.unwrap()
+        );
+        assert_eq!(
+            gif_size,
+            super::get_image_size_from_url(gif_url).await.unwrap()
+        );
+        assert!(super::get_image_size_from_url(mp3_url).await.is_err());
     }
 
     #[tokio::test]
+    #[cfg_attr(miri, ignore)] // can't call foreign function `getaddrinfo` on OS `linux`
     async fn too_many_attempts() {
         let url = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/splash.png";
 
@@ -213,7 +229,7 @@ mod unit_test {
             .await
             .unwrap();
 
-        assert!(get_image_size_from_url(url).await.is_ok());
-        assert!(get_image_size_from_url(url).await.is_err());
+        assert!(super::get_image_size_from_url(url).await.is_ok());
+        assert!(super::get_image_size_from_url(url).await.is_err());
     }
 }

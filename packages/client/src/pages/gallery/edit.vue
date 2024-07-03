@@ -41,7 +41,7 @@
 				</div>
 
 				<FormSwitch
-					v-if="!instance.markLocalFilesNsfwByDefault"
+					v-if="!markLocalFilesNsfwByDefault"
 					v-model="isSensitive"
 					>{{ i18n.ts.markAsSensitive }}</FormSwitch
 				>
@@ -75,7 +75,7 @@ import { selectFiles } from "@/scripts/select-file";
 import * as os from "@/os";
 import { useRouter } from "@/router";
 import { definePageMetadata } from "@/scripts/page-metadata";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
@@ -90,6 +90,8 @@ const files = ref([]);
 const description = ref(null);
 const title = ref(null);
 const isSensitive = ref(false);
+
+const { markLocalFilesNsfwByDefault } = getInstanceInfo();
 
 function selectFile(evt) {
 	selectFiles(evt.currentTarget ?? evt.target, null).then((selected) => {
@@ -118,7 +120,7 @@ async function save() {
 			fileIds: files.value.map((file) => file.id),
 			isSensitive: isSensitive.value,
 		});
-		router.push(`/gallery/${created.id}`);
+		router.push(`/gallery/${created?.id}`);
 	}
 }
 

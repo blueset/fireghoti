@@ -27,11 +27,11 @@ fn init_id_generator(length: u8, fingerprint: &str) {
 /// It automatically calls [init_id_generator], if the generator has not been initialized.
 fn create_id(datetime: &NaiveDateTime) -> String {
     if GENERATOR.get().is_none() {
-        let length = match &CONFIG.cuid {
-            Some(cuid) => cmp::min(cmp::max(cuid.length.unwrap_or(16), 16), 24),
+        let length = match CONFIG.cuid.as_ref() {
+            Some(cuid) => cuid.length.unwrap_or(16).clamp(16, 24),
             None => 16,
         };
-        let fingerprint = match &CONFIG.cuid {
+        let fingerprint = match CONFIG.cuid.as_ref() {
             Some(cuid) => cuid.fingerprint.as_deref().unwrap_or_default(),
             None => "",
         };
@@ -46,12 +46,13 @@ fn create_id(datetime: &NaiveDateTime) -> String {
 }
 
 #[derive(thiserror::Error, Debug)]
-#[error("Invalid ID: {id}")]
+#[doc = "Error type to indicate invalid Firefish ID"]
+#[error("'{id}' is not a valid Firefish ID")]
 pub struct InvalidIdError {
     id: String,
 }
 
-#[crate::export]
+#[macros::export]
 pub fn get_timestamp(id: &str) -> Result<i64, InvalidIdError> {
     let n: Option<u64> = BASE36.decode_var_len(&id[0..8]);
     if let Some(n) = n {
@@ -67,13 +68,13 @@ pub fn get_timestamp(id: &str) -> Result<i64, InvalidIdError> {
 /// in the same millisecond to reach 50% chance of collision.
 ///
 /// Ref: <https://github.com/paralleldrive/cuid2#parameterized-length>
-#[crate::export]
+#[macros::export]
 pub fn gen_id() -> String {
     create_id(&Utc::now().naive_utc())
 }
 
 /// Generate an ID using a specific datetime
-#[crate::export]
+#[macros::export]
 pub fn gen_id_at(date: DateTime<Utc>) -> String {
     create_id(&date.naive_utc())
 }
@@ -86,7 +87,7 @@ mod unit_test {
     use std::thread;
 
     #[test]
-    fn can_create_and_decode_id() {
+    fn create_and_decode_id() {
         let now = Utc::now();
         assert_eq!(gen_id().len(), 16);
         assert_ne!(gen_id_at(now), gen_id_at(now));
@@ -108,7 +109,7 @@ mod unit_test {
     }
 
     #[test]
-    fn fixture_id_timestamp_check() {
+    fn get_timestamp_from_id() {
         assert_eq!(get_timestamp("9e112pilk1").unwrap(), 1682499501741);
         assert_eq!(get_timestamp("9e183znmxa").unwrap(), 1682511318850);
         assert_eq!(get_timestamp("9e9srqr79p").unwrap(), 1683029748787);

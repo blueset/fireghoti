@@ -395,7 +395,7 @@ _profile:
   metadataLabel: Etiqueta
   metadataContent: Contingut
   changeAvatar: Canvia l'avatar
-  changeBanner: Canvia el banner
+  changeBanner: Canvia el bàner
   locationDescription: Si primer introduïu la vostra ciutat, es mostrarà l'hora local
     a altres usuaris.
   name: Nom
@@ -1022,7 +1022,7 @@ yearsOld: '{age} anys'
 copyUrl: Copia l'adreça URL
 rename: Renombra
 unwatch: Deixa de veure
-accept: Accepta
+accept: Acceptar
 reject: Rebutja
 yearX: '{year}'
 pages: Pàgines
@@ -1091,7 +1091,7 @@ usernameInvalidFormat: Pots fer servir lletres en majúscules o minúscules, nom
 tooShort: Massa curt
 tooLong: Massa llarg
 weakPassword: Contrasenya amb seguretat feble
-strongPassword: Contrasenya amb seguretat forta
+veryStrongPassword: Contrasenya amb seguretat forta
 passwordMatched: Coincidències
 signinWith: Inicia sessió com {x}
 signinFailed: No es pot iniciar sessió. El nom d'usuari o la contrasenya són incorrectes.
@@ -1114,7 +1114,7 @@ createAccount: Crea un compte
 fontSize: Mida del text
 noFollowRequests: No tens cap sol·licitud de seguiment per aprovar
 openImageInNewTab: Obre les imatges a una pestanya nova
-dashboard: Tauler
+dashboard: Taulell
 local: Local
 remote: Remot
 total: Total
@@ -1551,7 +1551,7 @@ itsOn: Activat
 itsOff: Desactivat
 emailRequiredForSignup: Requereix una adreça de correu electrònic per registrar-te
 unread: Sense llegir
-controlPanel: Tauler de control
+controlPanel: Taulell de control
 manageAccounts: Gestionar comptes
 makeReactionsPublic: Estableix l'historial de reaccions com a públic
 classic: Centrat
@@ -2233,7 +2233,7 @@ enablePullToRefresh: Activa "Baixa per actualitzar"
 pullDownToReload: Baixa per actualitzar
 pullToRefreshThreshold: Distancia de baixada per actualitzar
 searchWords: Paraules / ID o adreça URL que vols cercar
-noSentFollowRequests: No tens cap sol·licitud de seguiment enviada
+noSentFollowRequests: No has enviat cap sol·licitud de seguiment
 sentFollowRequests: Enviar sol·licituds de seguiment
 replyMute: Silencia les respostes a les línies de temps
 replyUnmute: Treu el silencia de les respostes a les línies de temps
@@ -2311,7 +2311,7 @@ _later:
   future: futur
   justNow: ara mateix
   secondsAgo: en {n}s
-  minutesAgo: en {n}m
+  minutesAgo: en {n}min
   daysAgo: en {n}d
   weeksAgo: en {n}s
   monthsAgo: en {n}me
@@ -2321,3 +2321,6 @@ scheduledDate: Publica el
 scheduledPost: Programa aquesta publicació
 scheduledPostAt: Aquesta publicació s'enviarà {time}
 cancelScheduledPost: Elimina la planificació
+addAlt4MeTag: "Afegeix automàticament l'etiqueta #Alt4Me a les teves publicacions
+  que tinguin un fitxer adjunt sense descripció"
+strongPassword: Bona contrasenya

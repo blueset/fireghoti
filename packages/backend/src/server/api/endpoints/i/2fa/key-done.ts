@@ -75,7 +75,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	const credentialIdLength = authData.readUInt16BE(53);
 	const credentialId = authData.slice(55, 55 + credentialIdLength);
 	const publicKeyData = authData.slice(55 + credentialIdLength);
-	const publicKey: Map<Number, any> = new Map(
+	const publicKey: Map<number, any> = new Map(
 		Object.entries(decode(publicKeyData)).map(([key, value]) => [
 			Number(key),
 			value,

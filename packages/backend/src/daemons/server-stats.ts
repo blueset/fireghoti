@@ -13,7 +13,7 @@ export default async function () {
 		ev.emit(`serverStatsLog:${x.id}`, log.slice(0, x.length || 50));
 	});
 
-	const meta = await fetchMeta(true);
+	const meta = await fetchMeta();
 	if (!meta.enableServerMachineStats) return;
 
 	async function tick() {

@@ -1,4 +1,5 @@
 <!-- This template is used only when merging the develop branch into the main branch. Please don't use this for other merge requests. -->
+/label Release
 
 ## Checklist
 
@@ -12,8 +13,6 @@ I have updated...
 - [ ] `docs/api-change.md`
 - [ ] `packages/backend-rs/index.js`
 - [ ] OCI container image
-
-<!-- TODO: Add automated tests (task runners are currently down) -->
 
 ## Remarks
 

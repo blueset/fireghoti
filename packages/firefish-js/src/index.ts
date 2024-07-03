@@ -7,8 +7,13 @@ import Stream, { Connection } from "./streaming.js";
 import * as StreamTypes from "./streaming.types.js";
 import type * as TypeUtils from "./type-utils.js";
 
+import * as api from "./api.js";
+import * as entities from "./entities.js";
+
 import type * as SchemaTypes from "./misc/schema.js";
 import * as Schema from "./misc/schema.js";
+
+import { langmap, type PostLanguage } from "./misc/langmap.js";
 
 export {
 	type Endpoints,
@@ -21,6 +26,10 @@ export {
 	type TypeUtils,
 	Schema,
 	type SchemaTypes,
+	langmap,
+	type PostLanguage,
+	api,
+	entities,
 };
 
 export const permissions = consts.permissions;
@@ -30,13 +39,3 @@ export const mutedNoteReasons = consts.mutedNoteReasons;
 export const languages = consts.languages;
 export const ffVisibility = consts.ffVisibility;
 export const instanceSortParam = consts.instanceSortParam;
-
-import { langmap, type PostLanguage } from "./misc/langmap.js";
-export { langmap, type PostLanguage };
-
-// api extractor not supported yet
-//export * as api from './api';
-//export * as entities from './entities';
-import * as api from "./api.js";
-import * as entities from "./entities.js";
-export { api, entities };

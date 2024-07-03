@@ -4,15 +4,16 @@
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("Idna error: {0}")]
+    #[doc = "UTS #46 process has failed"]
+    #[error(transparent)]
     Idna(#[from] idna::Errors),
-    #[error("Url parse error: {0}")]
+    #[error("failed to parse a URL")]
     UrlParse(#[from] url::ParseError),
-    #[error("Hostname is missing")]
+    #[error("hostname is missing")]
     NoHostname,
 }
 
-#[crate::ts_export]
+#[macros::ts_export]
 pub fn get_full_ap_account(username: &str, host: Option<&str>) -> Result<String, Error> {
     Ok(match host {
         Some(host) => format!("{}@{}", username, to_puny(host)?),
@@ -20,7 +21,7 @@ pub fn get_full_ap_account(username: &str, host: Option<&str>) -> Result<String,
     })
 }
 
-#[crate::ts_export]
+#[macros::ts_export]
 pub fn is_self_host(host: Option<&str>) -> Result<bool, Error> {
     Ok(match host {
         Some(host) => extract_host(&crate::config::CONFIG.url)? == to_puny(host)?,
@@ -28,12 +29,12 @@ pub fn is_self_host(host: Option<&str>) -> Result<bool, Error> {
     })
 }
 
-#[crate::ts_export]
+#[macros::ts_export]
 pub fn is_same_origin(uri: &str) -> Result<bool, Error> {
     Ok(url::Url::parse(uri)?.origin().ascii_serialization() == crate::config::CONFIG.url)
 }
 
-#[crate::ts_export]
+#[macros::ts_export]
 pub fn extract_host(uri: &str) -> Result<String, Error> {
     url::Url::parse(uri)?
         .host_str()
@@ -41,7 +42,7 @@ pub fn extract_host(uri: &str) -> Result<String, Error> {
         .and_then(|v| Ok(to_puny(v)?))
 }
 
-#[crate::ts_export]
+#[macros::ts_export]
 pub fn to_puny(host: &str) -> Result<String, idna::Errors> {
     idna::domain_to_ascii(host)
 }

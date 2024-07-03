@@ -17,7 +17,7 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async () => {
-	const instanceMeta = await fetchMeta(true);
+	const instanceMeta = await fetchMeta();
 
 	if (!instanceMeta.enableServerMachineStats) {
 		return {

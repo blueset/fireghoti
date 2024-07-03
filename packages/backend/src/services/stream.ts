@@ -12,7 +12,7 @@ import type {
 	// AntennaStreamTypes,
 	// BroadcastTypes,
 	// ChannelStreamTypes,
-	DriveStreamTypes,
+	// DriveStreamTypes,
 	// GroupMessagingStreamTypes,
 	InternalStreamTypes,
 	MainStreamTypes,
@@ -88,17 +88,18 @@ class Publisher {
 		);
 	};
 
-	public publishDriveStream = <K extends keyof DriveStreamTypes>(
-		userId: User["id"],
-		type: K,
-		value?: DriveStreamTypes[K],
-	): void => {
-		this.publish(
-			`driveStream:${userId}`,
-			type,
-			typeof value === "undefined" ? null : value,
-		);
-	};
+	/* ported to backend-rs */
+	// public publishDriveStream = <K extends keyof DriveStreamTypes>(
+	// 	userId: User["id"],
+	// 	type: K,
+	// 	value?: DriveStreamTypes[K],
+	// ): void => {
+	// 	this.publish(
+	// 		`driveStream:${userId}`,
+	// 		type,
+	// 		typeof value === "undefined" ? null : value,
+	// 	);
+	// };
 
 	public publishNoteStream = <K extends keyof NoteStreamTypes>(
 		noteId: Note["id"],
@@ -193,9 +194,10 @@ class Publisher {
 	// 	);
 	// };
 
-	public publishNotesStream = (note: Note): void => {
-		this.publish("notesStream", null, note);
-	};
+	/* ported to backend-rs */
+	// public publishNotesStream = (note: Note): void => {
+	// 	this.publish("notesStream", null, note);
+	// };
 
 	/* ported to backend-rs */
 	// public publishAdminStream = <K extends keyof AdminStreamTypes>(
@@ -219,9 +221,9 @@ export const publishInternalEvent = publisher.publishInternalEvent;
 export const publishUserEvent = publisher.publishUserEvent;
 // export const publishBroadcastStream = publisher.publishBroadcastStream;
 export const publishMainStream = publisher.publishMainStream;
-export const publishDriveStream = publisher.publishDriveStream;
+// export const publishDriveStream = publisher.publishDriveStream;
 export const publishNoteStream = publisher.publishNoteStream;
-export const publishNotesStream = publisher.publishNotesStream;
+// export const publishNotesStream = publisher.publishNotesStream;
 // export const publishChannelStream = publisher.publishChannelStream;
 export const publishUserListStream = publisher.publishUserListStream;
 // export const publishAntennaStream = publisher.publishAntennaStream;

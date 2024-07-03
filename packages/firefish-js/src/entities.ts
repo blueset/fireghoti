@@ -405,6 +405,7 @@ export type DetailedInstanceMetadata = LiteInstanceMetadata & {
 	emailRequiredForSignup: boolean;
 	mascotImageUrl: string;
 	bannerUrl: string;
+	backgroundImageUrl: string;
 	errorImageUrl: string;
 	iconUrl: string | null;
 	maxCaptionTextLength: number;

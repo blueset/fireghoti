@@ -3,14 +3,12 @@
 use super::sea_orm_active_enums::UserProfileFfvisibility;
 use super::sea_orm_active_enums::UserProfileMutingNotificationTypes;
 use sea_orm::entity::prelude::*;
+use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 #[sea_orm(table_name = "user_profile")]
-#[cfg_attr(
-    feature = "napi",
-    napi_derive::napi(object, js_name = "UserProfile", use_nullable = true)
-)]
+#[macros::export(object, js_name = "UserProfile")]
 pub struct Model {
     #[sea_orm(column_name = "userId", primary_key, auto_increment = false, unique)]
     pub user_id: String,

@@ -1,18 +1,16 @@
 //! Schema definitions of NodeInfo version 2.0 and 2.1
+//!
+//! ref: <https://nodeinfo.diaspora.software/schema.html>
 
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-// TODO: I want to use these macros but they don't work with rmp_serde
-// * #[serde(skip_serializing_if = "Option::is_none")] (https://github.com/3Hren/msgpack-rust/issues/86)
-// * #[serde(tag = "version", rename = "2.1")] (https://github.com/3Hren/msgpack-rust/issues/318)
-
 /// NodeInfo schema version 2.1. <https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.1>
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq, Deserialize))]
+#[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
+#[serde(tag = "version", rename = "2.1")]
 pub struct Nodeinfo21 {
-    /// The schema version, must be 2.1.
-    pub version: String,
     /// Metadata about server software in use.
     pub software: Software21,
     /// The protocols supported on this server.
@@ -28,12 +26,12 @@ pub struct Nodeinfo21 {
 }
 
 /// NodeInfo schema version 2.0. <https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.0>
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object, js_name = "Nodeinfo")]
+#[macros::export(object, js_name = "Nodeinfo")]
+#[serde(tag = "version", rename = "2.0")]
 pub struct Nodeinfo20 {
-    /// The schema version, must be 2.0.
-    pub version: String,
     /// Metadata about server software in use.
     pub software: Software20,
     /// The protocols supported on this server.
@@ -49,7 +47,8 @@ pub struct Nodeinfo20 {
 }
 
 /// Metadata about server software in use (version 2.1).
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq, Deserialize))]
+#[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Software21 {
     /// The canonical name of this server software.
@@ -57,15 +56,18 @@ pub struct Software21 {
     /// The version of this server software.
     pub version: String,
     /// The url of the source code repository of this server software.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub repository: Option<String>,
     /// The url of the homepage of this server software.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub homepage: Option<String>,
 }
 
 /// Metadata about server software in use (version 2.0).
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object)]
+#[macros::export(object)]
 pub struct Software20 {
     /// The canonical name of this server software.
     pub name: String,
@@ -73,9 +75,10 @@ pub struct Software20 {
     pub version: String,
 }
 
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
-#[crate::export(string_enum = "lowercase")]
+#[macros::derive_clone_and_export]
 pub enum Protocol {
     Activitypub,
     Buddycloud,
@@ -90,9 +93,10 @@ pub enum Protocol {
 }
 
 /// The third party sites this server can connect to via their application API.
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object)]
+#[macros::export(object)]
 pub struct Services {
     /// The third party sites this server can retrieve messages from for combined display with regular traffic.
     pub inbound: Vec<Inbound>,
@@ -101,9 +105,10 @@ pub struct Services {
 }
 
 /// The third party sites this server can retrieve messages from for combined display with regular traffic.
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
-#[crate::export(string_enum = "lowercase")]
+#[macros::derive_clone_and_export]
 pub enum Inbound {
     #[serde(rename = "atom1.0")]
     Atom1,
@@ -119,9 +124,10 @@ pub enum Inbound {
 }
 
 /// The third party sites this server can publish messages to on the behalf of a user.
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
-#[crate::export(string_enum = "lowercase")]
+#[macros::derive_clone_and_export]
 pub enum Outbound {
     #[serde(rename = "atom1.0")]
     Atom1,
@@ -156,22 +162,29 @@ pub enum Outbound {
 }
 
 /// Usage statistics for this server.
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object)]
+#[macros::export(object)]
 pub struct Usage {
     pub users: Users,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub local_posts: Option<u32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub local_comments: Option<u32>,
 }
 
 /// statistics about the users of this server.
-#[derive(Deserialize, Serialize, Debug, PartialEq)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-#[crate::export(object)]
+#[macros::export(object)]
 pub struct Users {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub total: Option<u32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub active_halfyear: Option<u32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub active_month: Option<u32>,
 }
 
@@ -187,7 +200,6 @@ impl From<Software21> for Software20 {
 impl From<Nodeinfo21> for Nodeinfo20 {
     fn from(nodeinfo: Nodeinfo21) -> Self {
         Self {
-            version: "2.0".to_string(),
             software: nodeinfo.software.into(),
             protocols: nodeinfo.protocols,
             services: nodeinfo.services,

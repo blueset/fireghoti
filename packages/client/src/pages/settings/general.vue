@@ -127,12 +127,6 @@
 			<FormSwitch v-model="openServerInfo" class="_formBlock">{{
 				i18n.ts.openServerInfo
 			}}</FormSwitch>
-			<FormSwitch v-model="showNoAltTextWarning" class="_formBlock">{{
-				i18n.ts.showNoAltTextWarning
-			}}</FormSwitch>
-			<FormSwitch v-model="showAddFileDescriptionAtFirstPost" class="_formBlock">{{
-				i18n.ts.showAddFileDescriptionAtFirstPost
-			}}</FormSwitch>
 			<FormSwitch v-model="autocorrectNoteLanguage" class="_formBlock">{{
 				i18n.ts.autocorrectNoteLanguage
 			}}</FormSwitch>
@@ -191,6 +185,15 @@
 
 		<FormSection>
 			<template #label>{{ i18n.ts.accessibility }}</template>
+			<FormSwitch v-model="showNoAltTextWarning" class="_formBlock">{{
+				i18n.ts.showNoAltTextWarning
+			}}</FormSwitch>
+			<FormSwitch v-if="showNoAltTextWarning" v-model="showAddFileDescriptionAtFirstPost" class="_formBlock">{{
+				i18n.ts.showAddFileDescriptionAtFirstPost
+			}}</FormSwitch>
+			<FormSwitch v-model="addAlt4MeTag" class="_formBlock">{{
+				i18n.ts.addAlt4MeTag
+			}}</FormSwitch>
 			<FormSwitch v-model="expandOnNoteClick" class="_formBlock"
 				>{{ i18n.ts.expandOnNoteClick
 				}}<template #caption>{{
@@ -568,6 +571,7 @@ const mergeThreadInTimeline = computed(
 const mergeRenotesInTimeline = computed(
 	defaultStore.makeGetterSetter("mergeRenotesInTimeline"),
 );
+const addAlt4MeTag = computed(defaultStore.makeGetterSetter("addAlt4MeTag"));
 
 // This feature (along with injectPromo) is currently disabled
 // function onChangeInjectFeaturedNote(v) {

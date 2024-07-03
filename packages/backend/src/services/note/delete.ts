@@ -42,8 +42,12 @@ export default async function (
 ) {
 	const deletedAt = new Date();
 
+	// Whether this is a scheduled "draft" post
+	const isDraft = note.scheduledAt != null;
+
 	// この投稿を除く指定したユーザーによる指定したノートのリノートが存在しないとき
 	if (
+		!isDraft &&
 		note.renoteId &&
 		(await countSameRenotes(user.id, note.renoteId, note.id)) === 0 &&
 		deleteFromDb
@@ -52,7 +56,7 @@ export default async function (
 		Notes.decrement({ id: note.renoteId }, "score", 1);
 	}
 
-	if (note.replyId && deleteFromDb) {
+	if (!isDraft && note.replyId != null && deleteFromDb) {
 		await Notes.decrement({ id: note.replyId }, "repliesCount", 1);
 	}
 
@@ -74,7 +78,7 @@ export default async function (
 	}
 
 	//#region ローカルの投稿なら削除アクティビティを配送
-	if (Users.isLocalUser(user) && !note.localOnly) {
+	if (!isDraft && Users.isLocalUser(user) && !note.localOnly) {
 		let renote: Note | null = null;
 
 		// if deletd note is renote

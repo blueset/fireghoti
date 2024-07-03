@@ -46,7 +46,7 @@ const name = "rss";
 const widgetPropsDef = {
 	url: {
 		type: "string" as const,
-		default: "http://feeds.afpbb.com/rss/afpbb/afpbbnews",
+		default: "https://info.firefish.dev/@firefish.rss?noteintitle",
 	},
 	height: {
 		type: "number" as const,

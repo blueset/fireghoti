@@ -1,26 +1,25 @@
-use crate::database::db_conn;
-use crate::misc::get_note_summary::{get_note_summary, NoteLike};
-use crate::misc::meta::fetch_meta;
-use crate::model::entity::sw_subscription;
-use crate::util::http_client;
+use crate::{
+    config::local_server_info, database::db_conn, misc::note::summarize,
+    model::entity::sw_subscription, util::http_client,
+};
 use once_cell::sync::OnceCell;
 use sea_orm::prelude::*;
-use web_push::{
-    ContentEncoding, IsahcWebPushClient, SubscriptionInfo, SubscriptionKeys, VapidSignatureBuilder,
-    WebPushClient, WebPushError, WebPushMessageBuilder,
-};
+use serde::Deserialize;
+use web_push::*;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("Database error: {0}")]
+    #[doc = "database error"]
+    #[error(transparent)]
     Db(#[from] DbErr),
-    #[error("Web Push error: {0}")]
+    #[error("web push has failed")]
     WebPush(#[from] WebPushError),
-    #[error("Failed to (de)serialize an object: {0}")]
+    #[error("failed to (de)serialize an object")]
     Serialize(#[from] serde_json::Error),
-    #[error("Invalid content: {0}")]
+    #[doc = "provided content is invalid"]
+    #[error("invalid content ({0})")]
     InvalidContent(String),
-    #[error("HTTP client aquisition error: {0}")]
+    #[error("failed to acquire an HTTP client")]
     HttpClient(#[from] http_client::Error),
 }
 
@@ -32,32 +31,18 @@ fn get_client() -> Result<IsahcWebPushClient, Error> {
         .cloned()?)
 }
 
-#[derive(strum::Display, PartialEq)]
-#[crate::export(string_enum = "camelCase")]
+#[macros::export]
 pub enum PushNotificationKind {
-    #[strum(serialize = "notification")]
     Generic,
-    #[strum(serialize = "unreadMessagingMessage")]
     Chat,
-    #[strum(serialize = "readAllMessagingMessages")]
     ReadAllChats,
-    #[strum(serialize = "readAllMessagingMessagesOfARoom")]
     ReadAllChatsInTheRoom,
-    #[strum(serialize = "readNotifications")]
     ReadNotifications,
-    #[strum(serialize = "readAllNotifications")]
     ReadAllNotifications,
     Mastodon,
 }
 
-fn compact_content(
-    kind: &PushNotificationKind,
-    mut content: serde_json::Value,
-) -> Result<serde_json::Value, Error> {
-    if kind != &PushNotificationKind::Generic {
-        return Ok(content);
-    }
-
+fn compact_content(mut content: serde_json::Value) -> Result<serde_json::Value, Error> {
     if !content.is_object() {
         return Err(Error::InvalidContent("not a JSON object".to_string()));
     }
@@ -87,8 +72,18 @@ fn compact_content(
         ));
     }
 
-    let note_like: NoteLike = serde_json::from_value(note.clone())?;
-    let text = get_note_summary(note_like);
+    // TODO: get rid of this struct
+    #[derive(Deserialize)]
+    #[serde(rename_all = "camelCase")]
+    struct PartialNote {
+        file_ids: Vec<String>,
+        text: Option<String>,
+        cw: Option<String>,
+        has_poll: bool,
+    }
+
+    let note_like: PartialNote = serde_json::from_value(note.clone())?;
+    let text = summarize!(note_like);
 
     let note_object = note.as_object_mut().unwrap();
 
@@ -134,13 +129,13 @@ async fn handle_web_push_failure(
     Ok(())
 }
 
-#[crate::export]
+#[macros::export]
 pub async fn send_push_notification(
     receiver_user_id: &str,
     kind: PushNotificationKind,
     content: &serde_json::Value,
 ) -> Result<(), Error> {
-    let meta = fetch_meta(true).await?;
+    let meta = local_server_info().await?;
 
     if !meta.enable_service_worker || meta.sw_public_key.is_none() || meta.sw_private_key.is_none()
     {
@@ -159,24 +154,40 @@ pub async fn send_push_notification(
         .all(db)
         .await?;
 
+    let use_mastodon_api = matches!(kind, PushNotificationKind::Mastodon);
+
     // TODO: refactoring
-    let payload = if kind == PushNotificationKind::Mastodon {
+    let payload = if use_mastodon_api {
         // Leave the `content` as it is
         serde_json::to_string(content)?
     } else {
         // Format the `content` passed from the TypeScript backend
         // for Firefish push notifications
+        let label = match kind {
+            PushNotificationKind::Generic => "notification",
+            PushNotificationKind::Chat => "unreadMessagingMessage",
+            PushNotificationKind::ReadAllChats => "readAllMessagingMessages",
+            PushNotificationKind::ReadAllChatsInTheRoom => "readAllMessagingMessagesOfARoom",
+            PushNotificationKind::ReadNotifications => "readNotifications",
+            PushNotificationKind::ReadAllNotifications => "readAllNotifications",
+            // unreachable
+            _ => "unknown",
+        };
         format!(
             "{{\"type\":\"{}\",\"userId\":\"{}\",\"dateTime\":{},\"body\":{}}}",
-            kind,
+            label,
             receiver_user_id,
             chrono::Utc::now().timestamp_millis(),
-            serde_json::to_string(&compact_content(&kind, content.clone())?)?
+            match kind {
+                PushNotificationKind::Generic =>
+                    serde_json::to_string(&compact_content(content.to_owned())?)?,
+                _ => serde_json::to_string(&content)?,
+            }
         )
     };
     tracing::trace!("payload: {}", payload);
 
-    let encoding = if kind == PushNotificationKind::Mastodon {
+    let encoding = if use_mastodon_api {
         ContentEncoding::AesGcm
     } else {
         ContentEncoding::Aes128Gcm
@@ -184,13 +195,13 @@ pub async fn send_push_notification(
 
     for subscription in subscriptions.iter() {
         if !subscription.send_read_message
-            && [
-                PushNotificationKind::ReadAllChats,
-                PushNotificationKind::ReadAllChatsInTheRoom,
-                PushNotificationKind::ReadAllNotifications,
-                PushNotificationKind::ReadNotifications,
-            ]
-            .contains(&kind)
+            && matches!(
+                kind,
+                PushNotificationKind::ReadAllChats
+                    | PushNotificationKind::ReadAllChatsInTheRoom
+                    | PushNotificationKind::ReadAllNotifications
+                    | PushNotificationKind::ReadNotifications
+            )
         {
             continue;
         }

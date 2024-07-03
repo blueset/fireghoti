@@ -11,7 +11,7 @@ import {
 } from "@/models/index.js";
 import type { ILocalUser } from "@/models/entities/user.js";
 import {
-	genId,
+	genIdAt,
 	hashPassword,
 	isOldPasswordAlgorithm,
 	verifyPassword,
@@ -27,9 +27,9 @@ export default async (ctx: Koa.Context) => {
 	ctx.set("Access-Control-Allow-Credentials", "true");
 
 	const body = ctx.request.body as any;
-	const username = body["username"];
-	const password = body["password"];
-	const token = body["token"];
+	const username = body.username;
+	const password = body.password;
+	const token = body.token;
 
 	function error(status: number, error: { id: string }) {
 		ctx.status = status;
@@ -101,10 +101,12 @@ export default async (ctx: Koa.Context) => {
 	}
 
 	async function fail(status?: number, failure?: { id: string }) {
+		const now = new Date();
+
 		// Append signin history
 		await Signins.insert({
-			id: genId(),
-			createdAt: new Date(),
+			id: genIdAt(now),
+			createdAt: now,
 			userId: user.id,
 			ip: ctx.ip,
 			headers: ctx.headers,
@@ -251,13 +253,14 @@ export default async (ctx: Koa.Context) => {
 			.replace(/\+/g, "-")
 			.replace(/\//g, "_");
 
-		const challengeId = genId();
+		const now = new Date();
+		const challengeId = genIdAt(now);
 
 		await AttestationChallenges.insert({
 			userId: user.id,
 			id: challengeId,
 			challenge: hash(Buffer.from(challenge, "utf-8")).toString("hex"),
-			createdAt: new Date(),
+			createdAt: now,
 			registrationChallenge: false,
 		});
 

@@ -10,7 +10,7 @@ import {
 	UserLists,
 	UserListJoinings,
 } from "@/models/index.js";
-import { genId, isSelfHost, stringToAcct, toPuny } from "backend-rs";
+import { genIdAt, isSelfHost, stringToAcct, toPuny } from "backend-rs";
 import type { DbUserImportJobData } from "@/queue/types.js";
 import { IsNull } from "typeorm";
 import { inspect } from "node:util";
@@ -54,9 +54,10 @@ export async function importUserLists(
 			});
 
 			if (list == null) {
+				const now = new Date();
 				list = await UserLists.insert({
-					id: genId(),
-					createdAt: new Date(),
+					id: genIdAt(now),
+					createdAt: now,
 					userId: user.id,
 					name: listName,
 				}).then((x) => UserLists.findOneByOrFail(x.identifiers[0]));

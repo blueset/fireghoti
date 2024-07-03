@@ -2,6 +2,7 @@ import { Meta } from "@/models/entities/meta.js";
 import { insertModerationLog } from "@/services/insert-moderation-log.js";
 import { db } from "@/db/postgre.js";
 import define from "@/server/api/define.js";
+import { updateMetaCache } from "backend-rs";
 
 export const meta = {
 	tags: ["admin"],
@@ -583,5 +584,5 @@ export default define(meta, paramDef, async (ps, me) => {
 		}
 	});
 
-	insertModerationLog(me, "updateMeta");
+	await Promise.all([insertModerationLog(me, "updateMeta"), updateMetaCache()]);
 });

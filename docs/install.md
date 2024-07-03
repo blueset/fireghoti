@@ -4,9 +4,9 @@ Firefish depends on the following software.
 
 ## Runtime dependencies
 
-- At least [NodeJS](https://nodejs.org/en/) v18.19.0 (v20/v21 recommended)
+- At least [NodeJS](https://nodejs.org/en/) v18.19.0 (v20/v22 recommended)
 - At least [PostgreSQL](https://www.postgresql.org/) v12 (v16 recommended) with [PGroonga](https://pgroonga.github.io/) extension
-- At least [Redis](https://redis.io/) v7
+- At least [Redis](https://redis.io/) v7 or [Valkey](https://valkey.io/) v7
 - Web Proxy (one of the following)
   - Caddy (recommended)
   - Nginx (recommended)
@@ -15,26 +15,77 @@ Firefish depends on the following software.
 - Caching server (**optional**, one of the following)
   - [DragonflyDB](https://www.dragonflydb.io/)
   - [KeyDB](https://keydb.dev/)
-  - Another [Redis](https://redis.io/) server
+  - Another [Redis](https://redis.io/) / [Valkey](https://valkey.io/) server
 
 ## Build dependencies
 
 - At least [Rust](https://www.rust-lang.org/) v1.74
-- C/C++ compiler & build tools
+- C/C++ compiler & build tools (like [GNU Make](https://www.gnu.org/software/make/))
   - `build-essential` on Debian/Ubuntu Linux
   - `base-devel` on Arch Linux
+  - `"Development Tools"` on Fedora/Red Hat Linux
 - [Python 3](https://www.python.org/)
 - [Perl](https://www.perl.org/)
 
 This document shows an example procedure for installing these dependencies and Firefish on Debian 12. Note that there is much room for customizing the server setup; this document merely demonstrates a simple installation.
 
+### Install on non-Linux systems
+
+We don't test Firefish on non-Linux systems, so please install Firefish on such an environment **only if you can address any problems yourself**. There is absolutely no support. That said, it is possible to install Firefish on some non-Linux systems.
+
+<details>
+
+<summary>Possible setup on FreeBSD (as of version `20240630`)</summary>
+
+You can install Firefish on FreeBSD by adding these extra steps to the standard instructions:
+
+1. Install `vips` package
+2. Add the following block to [`package.json`](../package.json)
+    ```json
+      "pnpm": {
+        "overrides": {
+          "rollup": "npm:@rollup/wasm-node@4.17.2"
+        }
+      }
+    ```
+3. Create an rc script for Firefish
+    ```sh
+    #!/bin/sh
+
+    # PROVIDE: firefish
+    # REQUIRE: DAEMON redis caddy postgresql
+    # KEYWORD: shutdown
+
+    . /etc/rc.subr
+
+    name=firefish
+    rcvar=firefish_enable
+
+    desc="Firefish daemon"
+
+    load_rc_config ${name}
+
+    : ${firefish_chdir:="/path/to/firefish/local/repository"}
+    : ${firefish_env:="npm_config_cache=/tmp NODE_ENV=production NODE_OPTIONS=--max-old-space-size=3072"}
+
+    pidfile="/var/run/${name}.pid"
+    command=/usr/sbin/daemon
+    command_args="-f -S -u firefish -P ${pidfile} /usr/local/bin/pnpm run start"
+
+    run_rc_command "$1"
+    ```
+
+</details>
+
+Please let us know if you deployed Firefish on a curious environment :smile:
+
+### Use Docker/Podman containers
+
 If you want to use the pre-built container image, please refer to [`install-container.md`](./install-container.md).
 
-If you do not prepare your environment as document, be sure to meet the minimum dependencies given at the bottom of the page.
+## 1. Install dependencies
 
 Make sure that you can use the `sudo` command before proceeding.
-
-## 1. Install dependencies
 
 ### Utilities
 
@@ -215,7 +266,7 @@ sudo ufw status
 
 ### 2. Set up a reverse proxy
 
-In this instruction, we use [Caddy](https://caddyserver.com/) to make the Firefish server accesible from internet. However, you can also use [Nginx](https://nginx.org/en/) if you want ([example Nginx config file](../firefish.nginx.conf)).
+In this instruction, we use [Caddy](https://caddyserver.com/) to make the Firefish server accesible from internet. However, you can also use [Nginx](https://nginx.org/en/) if you want ([example Nginx config file](./firefish.nginx.conf)).
 
 1. Install Caddy
     ```sh
@@ -310,7 +361,9 @@ In this instruction, we use [Caddy](https://caddyserver.com/) to make the Firefi
     sudo systemctl enable --now firefish
     ```
 
-## Upgrading
+# Maintain the server
+
+## Upgrade Firefish version
 
 Please refer to the [upgrade instruction](./upgrade.md). Be sure to switch to `firefish` user and go to the Firefish directory before executing the `git` command:
 
@@ -318,6 +371,85 @@ Please refer to the [upgrade instruction](./upgrade.md). Be sure to switch to `f
 sudo su --login firefish
 cd ~/firefish
 ```
+
+## Rotate logs
+
+As the server runs longer and longer, the size of the log files increases, filling up the disk space. To prevent this, you should set up a log rotation (removing old logs automatically).
+
+You can edit the `SystemMaxUse` value in the `[journal]` section of `/etc/systemd/journald.conf` to do it:
+
+```conf
+[journal]
+... (omitted)
+SystemMaxUse=500M
+...
+```
+
+Make sure to remove the leading `#` to uncomment the line. After editing the config file, you need to restart `systemd-journald` service.
+
+```sh
+sudo systemctl restart systemd-journald
+```
+
+It is also recommended that you change the [PGroonga log level](https://pgroonga.github.io/reference/parameters/log-level.html). The default level is `notice`, but this is too verbose for daily use.
+
+To control the log level, add this line to your `postgresql.conf`:
+
+```conf
+pgroonga.log_level = error
+```
+
+You can check the `postgresql.conf` location by this command:
+
+```sh
+sudo --user=postgres psql --command='SHOW config_file'
+```
+
+The PGroonga log file (`pgroonga.log`) is located under this directory:
+
+```sh
+sudo --user=postgres psql --command='SHOW data_directory'
+```
+
+## Tune database configuration
+
+The default PostgreSQL configuration not suitable for running a Firefish server. Thus, it is highly recommended that you use [PGTune](https://pgtune.leopard.in.ua/) to tweak the configuration.
+
+Here is an example set of parameters you can provide to PGTune:
+
+|             Parameter | Value                                                   |
+|----------------------:|---------------------------------------------------------|
+|            DB version | 16 (your PostgreSQL major version)                      |
+|               OS Type | Linux                                                   |
+|               DB Type | Data warehouse                                          |
+|          Total Memory | [total physical memory] minus 700 MB                    |
+|        Number of CPUs | number of CPU threads (or lower value if you have many) |
+| Number of connections | 200                                                     |
+|          Data storage | SSD storage                                             |
+
+Since this is not a dedicated database server, be sure to leave some memory space for other software such as Firefish and Redis.
+
+Once you have entered the appropriate values for your environment, click the "Generate" button to generate a configuration and replace the values in `postgresql.conf` with the suggested values.
+
+After that, you need to restart the PostgreSQL service.
+
+```sh
+sudo systemctl stop firefish
+sudo systemctl restart postgresql
+sudo systemctl start firefish
+```
+
+## VACUUM your database
+
+If the database runs long, accumulated "garbage" can degrade its performance or cause problems. To prevent this, you should `VACUUM` your database regularly.
+
+```sh
+sudo systemctl stop firefish
+sudo --user=postgres psql --dbname=firefish_db --command='VACUUM FULL VERBOSE ANALYZE'
+sudo systemctl start firefish
+```
+
+Note that this operation takes some time.
 
 ## Customize
 

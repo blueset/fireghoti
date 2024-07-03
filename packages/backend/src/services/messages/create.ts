@@ -8,7 +8,7 @@ import {
 	Users,
 } from "@/models/index.js";
 import {
-	genId,
+	genIdAt,
 	sendPushNotification,
 	publishToChatStream,
 	publishToGroupChatStream,
@@ -36,9 +36,10 @@ export async function createMessage(
 	file: DriveFile | null,
 	uri?: string,
 ) {
+	const now = new Date();
 	const message = {
-		id: genId(),
-		createdAt: new Date(),
+		id: genIdAt(now),
+		createdAt: now,
 		fileId: file ? file.id : null,
 		recipientId: recipientUser ? recipientUser.id : null,
 		groupId: recipientGroup ? recipientGroup.id : null,

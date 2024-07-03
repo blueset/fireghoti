@@ -1,51 +1,58 @@
 [workspace]
-members = ["packages/backend-rs", "packages/macro-rs"]
+members = ["packages/backend-rs", "packages/macro-rs/macros", "packages/macro-rs/macros-impl"]
 resolver = "2"
 
 [workspace.dependencies]
-macro-rs = { path = "packages/macro-rs" }
+macros = { path = "packages/macro-rs/macros" }
+macros-impl = { path = "packages/macro-rs/macros-impl" }
 
-napi = { git = "https://github.com/napi-rs/napi-rs.git", rev = "ca2cd5c35a0c39ec4a94e93c6c5695b681046df2", default-features = false }
-napi-derive = { version = "2.16.5", default-features = false }
-napi-build = { version = "2.1.3", default-features = false }
+napi = "2.16.8"
+napi-derive = "2.16.8"
+napi-build = "2.1.3"
 
 argon2 = { version = "0.5.3", default-features = false }
 async-trait = { version = "0.1.80", default-features = false }
 basen = { version = "0.1.0", default-features = false }
-bb8 = { version = "0.8.3", default-features = false }
+bb8 = { version = "0.8.5", default-features = false }
 bcrypt = { version = "0.15.1", default-features = false }
 chrono = { version = "0.4.38", default-features = false }
 convert_case = { version = "0.6.0", default-features = false }
 cuid2 = { version = "0.1.2", default-features = false }
 emojis = { version = "0.6.2", default-features = false }
-idna = { version = "0.5.0", default-features = false }
+idna = { version = "1.0.2", default-features = false }
 image = { version = "0.25.1", default-features = false }
 isahc = { version = "1.7.2", default-features = false }
 nom-exif = { version = "1.2.0", default-features = false }
 once_cell = { version = "1.19.0", default-features = false }
-openssl = { version = "0.10.64", default-features = false }
 pretty_assertions = { version = "1.4.0", default-features = false }
-proc-macro2 = { version = "1.0.84", default-features = false }
+proc-macro2 = { version = "1.0.86", default-features = false }
 quote = { version = "1.0.36", default-features = false }
 rand = { version = "0.8.5", default-features = false }
 redis = { version = "0.25.4", default-features = false }
-regex = { version = "1.10.4", default-features = false }
+regex = { version = "1.10.5", default-features = false }
 rmp-serde = { version = "1.3.0", default-features = false }
 sea-orm = { version = "0.12.15", default-features = false }
 serde = { version = "1.0.203", default-features = false }
-serde_json = { version = "1.0.117", default-features = false }
+serde_json = { version = "1.0.120", default-features = false }
 serde_yaml = { version = "0.9.34", default-features = false }
-strum = { version = "0.26.2", default-features = false }
-syn = { version = "2.0.66", default-features = false }
+syn = { version = "2.0.68", default-features = false }
 sysinfo = { version = "0.30.12", default-features = false }
 thiserror = { version = "1.0.61", default-features = false }
-tokio = { version = "1.37.0", default-features = false }
+tokio = { version = "1.38.0", default-features = false }
 tokio-test = { version = "0.4.4", default-features = false }
 tracing = { version = "0.1.40", default-features = false }
 tracing-subscriber = { version = "0.3.18", default-features = false }
-url = { version = "2.5.0", default-features = false }
+url = { version = "2.5.2", default-features = false }
 urlencoding = { version = "2.1.3", default-features = false }
 web-push = { git = "https://github.com/pimeys/rust-web-push.git", rev = "40febe4085e3cef9cdfd539c315e3e945aba0656", default-features = false }
+
+# subdependencies
+## explicitly list OpenSSL to use the vendored version
+openssl = "0.10.64"
+
+## some subdependencies require higher Rust version than 1.74 (our MSRV)
+## cargo update && cargo update ravif --precise 0.11.5 && cargo update bitstream-io --precise 2.3.0
+## to pin their versions if needed
 
 [profile.release]
 lto = true

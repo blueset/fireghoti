@@ -4,14 +4,14 @@ import semver from "semver";
 
 import Logger from "@/services/logger.js";
 import {
-	fetchMeta,
 	greet,
-	initializeRustLogger,
 	removeOldAttestationChallenges,
 	showServerInfo,
+	updateMetaCache,
+	updateNodeinfoCache,
 	type Config,
 } from "backend-rs";
-import { config, envOption } from "@/config.js";
+import { config } from "@/config.js";
 import { db, initDb } from "@/db/postgre.js";
 import { inspect } from "node:util";
 
@@ -24,7 +24,6 @@ const bootLogger = logger.createSubLogger("boot", "magenta", false);
 export async function masterMain() {
 	// initialize app
 	try {
-		initializeRustLogger();
 		greet();
 		showEnvironment();
 		showServerInfo();
@@ -41,9 +40,7 @@ export async function masterMain() {
 
 	bootLogger.info("Firefish initialized");
 
-	if (!envOption.disableClustering) {
-		await spawnWorkers(config.clusterLimits);
-	}
+	await spawnWorkers(config.clusterLimits);
 
 	bootLogger.info(
 		`Now listening on port ${config.port} on ${config.url}`,
@@ -51,14 +48,14 @@ export async function masterMain() {
 		true,
 	);
 
-	if (!envOption.noDaemons) {
-		import("../daemons/server-stats.js").then((x) => x.default());
-		import("../daemons/queue-stats.js").then((x) => x.default());
-		// Update meta cache every 5 minitues
-		setInterval(() => fetchMeta(false), 1000 * 60 * 5);
-		// Remove old attestation challenges
-		setInterval(() => removeOldAttestationChallenges(), 1000 * 60 * 30);
-	}
+	import("../daemons/server-stats.js").then((x) => x.default());
+	import("../daemons/queue-stats.js").then((x) => x.default());
+	// Update meta cache every 5 minitues
+	setInterval(() => updateMetaCache(), 1000 * 60 * 5);
+	// Update nodeinfo cache every hour
+	setInterval(() => updateNodeinfoCache(), 1000 * 60 * 60);
+	// Remove old attestation challenges
+	setInterval(() => removeOldAttestationChallenges(), 1000 * 60 * 30);
 }
 
 function showEnvironment(): void {

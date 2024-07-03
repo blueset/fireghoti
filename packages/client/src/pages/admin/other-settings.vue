@@ -17,7 +17,7 @@ import { computed } from "vue";
 
 import FormSuspense from "@/components/form/suspense.vue";
 import * as os from "@/os";
-import { fetchInstance } from "@/instance";
+import { updateInstanceCache } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
@@ -28,7 +28,7 @@ async function init() {
 
 function save() {
 	os.apiWithDialog("admin/update-meta").then(() => {
-		fetchInstance();
+		updateInstanceCache();
 	});
 }
 

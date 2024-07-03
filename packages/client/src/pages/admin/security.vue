@@ -151,7 +151,7 @@ import FormInput from "@/components/form/input.vue";
 import FormTextarea from "@/components/form/textarea.vue";
 import FormButton from "@/components/MkButton.vue";
 import * as os from "@/os";
-import { fetchInstance } from "@/instance";
+import { updateInstanceCache } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
@@ -168,15 +168,15 @@ const allowedHosts = ref("");
 
 async function init() {
 	const meta = await os.api("admin/meta");
-	summalyProxy.value = meta.summalyProxy;
-	enableHcaptcha.value = meta.enableHcaptcha;
-	enableRecaptcha.value = meta.enableRecaptcha;
-	enableIpLogging.value = meta.enableIpLogging;
-	enableActiveEmailValidation.value = meta.enableActiveEmailValidation;
+	summalyProxy.value = meta?.summalyProxy;
+	enableHcaptcha.value = meta?.enableHcaptcha;
+	enableRecaptcha.value = meta?.enableRecaptcha;
+	enableIpLogging.value = meta?.enableIpLogging;
+	enableActiveEmailValidation.value = meta?.enableActiveEmailValidation;
 
-	secureMode.value = meta.secureMode;
-	privateMode.value = meta.privateMode;
-	allowedHosts.value = meta.allowedHosts.join("\n");
+	secureMode.value = meta?.secureMode;
+	privateMode.value = meta?.privateMode;
+	allowedHosts.value = meta?.allowedHosts.join("\n");
 }
 
 function save() {
@@ -185,7 +185,7 @@ function save() {
 		enableIpLogging: enableIpLogging.value,
 		enableActiveEmailValidation: enableActiveEmailValidation.value,
 	}).then(() => {
-		fetchInstance();
+		updateInstanceCache();
 	});
 }
 
@@ -195,7 +195,7 @@ function saveInstance() {
 		privateMode: privateMode.value,
 		allowedHosts: allowedHosts.value.split("\n"),
 	}).then(() => {
-		fetchInstance();
+		updateInstanceCache();
 	});
 }
 
