@@ -14,6 +14,7 @@ import promiseLimit from "promise-limit";
 import { unique, concat } from "@/prelude/array.js";
 import type { CacheableUser } from "@/models/entities/user.js";
 import { resolvePerson } from "@/remote/activitypub/models/person.js";
+import { isPublic } from "@/remote/activitypub/audience.js";
 
 const logger = queueLogger.createSubLogger("import-masto-post");
 
@@ -128,7 +129,7 @@ export async function importMastoPost(
 			visibility = "public";
 		} else if (isPublic(post.cc)) {
 			visibility = "home";
-		} else if (isFollowers(post.cc)) {
+		} else if ((post.cc as string).endsWith("/followers")) {
 			visibility = "followers";
 		} else {
 			try {
@@ -181,16 +182,4 @@ export async function importMastoPost(
 	done();
 
 	logger.info("Imported");
-}
-
-function isPublic(id: string) {
-	return [
-		"https://www.w3.org/ns/activitystreams#Public",
-		"as:Public",
-		"Public",
-	].includes(id);
-}
-
-function isFollowers(id: string) {
-	return id.endsWith("/followers");
 }
