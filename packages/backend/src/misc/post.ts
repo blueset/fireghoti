@@ -1,3 +1,5 @@
+import { noteVisibilities } from "@/types.js";
+
 export type Post = {
 	text: string | undefined;
 	cw: string | null;
@@ -12,7 +14,9 @@ export function parse(acct: any): Post {
 		cw: acct.cw,
 		localOnly: acct.localOnly,
 		createdAt: new Date(acct.createdAt),
-		visibility: `hidden${acct.visibility || ""}`,
+		visibility: noteVisibilities.includes(acct.visibility)
+			? acct.visibility
+			: "specified",
 	};
 }
 

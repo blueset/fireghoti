@@ -10,6 +10,11 @@ import type { DriveFile } from "@/models/entities/drive-file.js";
 import { Notes, NoteEdits } from "@/models/index.js";
 import type { Note } from "@/models/entities/note.js";
 import { genId } from "backend-rs";
+import promiseLimit from "promise-limit";
+import { unique, concat } from "@/prelude/array.js";
+import type { CacheableUser } from "@/models/entities/user.js";
+import { resolvePerson } from "@/remote/activitypub/models/person.js";
+import { isPublic } from "@/remote/activitypub/audience.js";
 
 const logger = queueLogger.createSubLogger("import-masto-post");
 
@@ -118,24 +123,57 @@ export async function importMastoPost(
 		logger.info("Post updated");
 	}
 	if (note == null) {
-		note = await create(user, {
-			createdAt: isRenote
-				? new Date(post.published)
-				: new Date(post.object.published),
-			files: files.length === 0 ? undefined : files,
-			poll: undefined,
-			text: text || undefined,
-			reply,
-			renote,
-			cw: !isRenote && post.object.sensitive ? post.object.summary : undefined,
-			localOnly: false,
-			visibility: "hiddenpublic",
-			visibleUsers: [],
-			channel: null,
-			apMentions: new Array(0),
-			apHashtags: undefined,
-			apEmojis: undefined,
-		});
+		let visibility = "specified";
+		let visibleUsers: CacheableUser[] = [];
+		if ((post.to as string[]).some(isPublic)) {
+			visibility = "public";
+		} else if ((post.cc as string[]).some(isPublic)) {
+			visibility = "home";
+		} else if ((post.cc as string[]).some((cc) => cc.endsWith("/followers"))) {
+			visibility = "followers";
+		} else {
+			try {
+				const visibleUsersList = unique(concat([post.to, post.cc]));
+
+				const limit = promiseLimit<CacheableUser | null>(2);
+				visibleUsers = (
+					await Promise.all(
+						visibleUsersList.map((id) =>
+							limit(() => resolvePerson(id).catch(() => null)),
+						),
+					)
+				).filter((x): x is CacheableUser => x != null);
+			} catch {
+				// nothing need to do.
+			}
+		}
+
+		note = await create(
+			user,
+			{
+				createdAt: isRenote
+					? new Date(post.published)
+					: new Date(post.object.published),
+				scheduledAt: undefined,
+				files: files.length === 0 ? undefined : files,
+				poll: undefined,
+				text: text || undefined,
+				reply,
+				renote,
+				cw:
+					!isRenote && post.object.sensitive ? post.object.summary : undefined,
+				localOnly: false,
+				visibility,
+				visibleUsers,
+				channel: null,
+				apMentions: new Array(0),
+				apHashtags: undefined,
+				apEmojis: undefined,
+			},
+			false,
+			undefined,
+			true,
+		);
 		logger.debug("New post has been created");
 	} else {
 		logger.info("This post already exists");
