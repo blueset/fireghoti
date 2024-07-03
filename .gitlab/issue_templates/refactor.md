@@ -19,7 +19,7 @@
 <!-- /label Server -->
 <!-- /label Client -->
 <!-- /label Mobile -->
-<!-- /label "Third-party client" -->
+<!-- /label Third-party-client -->
 <!-- /label Docs -->
 <!-- /label "Build from source" -->
 <!-- /label Container -->
