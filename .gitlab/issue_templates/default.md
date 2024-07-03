@@ -1,3 +1,9 @@
+<!--
+  This issue template is for bug reports.
+	There are other issue templates for feature requests and refactor proposals,
+	so please use them if this is not a bug report.
+-->
+
 <!-- 💖 Thanks for taking the time to fill out this bug report!
 💁 Having trouble with deployment? [Ask the support chat.](https://matrix.to/#/#firefish-community:nitro.chat)
 🔒 Found a security vulnerability? [Please disclose it responsibly.](https://firefish.dev/firefish/firefish/-/blob/develop/SECURITY.md)
