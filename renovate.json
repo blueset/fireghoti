@@ -6,6 +6,7 @@
 		"group:monorepos",
 		"group:definitelyTyped"
 	],
+	"labels": ["Dependency"],
 	"rangeStrategy": "bump",
 	"branchConcurrentLimit": 0,
 	"prHourlyLimit": 20,

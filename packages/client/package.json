@@ -57,7 +57,7 @@
 		"idb-keyval": "6.2.1",
 		"insert-text-at-cursor": "0.3.0",
 		"json5": "2.2.3",
-		"katex": "0.16.10",
+		"katex": "0.16.11",
 		"long": "5.2.3",
 		"libopenmpt-wasm": "git+https://github.com/TheEssem/libopenmpt-packaging.git#d05d151a72b638c6312227af0417aca69521172c",
 		"matter-js": "0.20.0",

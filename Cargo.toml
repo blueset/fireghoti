@@ -49,9 +49,10 @@ web-push = { git = "https://github.com/pimeys/rust-web-push.git", rev = "40febe4
 # subdependencies
 ## explicitly list OpenSSL to use the vendored version
 openssl = "0.10.64"
-## pin ravif and bitstream-io version because the latest one requires Rust 1.79
-ravif = "=0.11.5"
-bitstream-io = "=2.3.0"
+
+## some subdependencies require higher Rust version than 1.74 (our MSRV)
+## cargo update && cargo update ravif --precise 0.11.5 && cargo update bitstream-io --precise 2.3.0
+## to pin their versions if needed
 
 [profile.release]
 lto = true

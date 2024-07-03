@@ -1,18 +1,18 @@
 <!--
-  This issue template is for feature requests.
-	There are other issue templates for bug reports and refactor proposals,
-	so please use them if this is not a feature request.
+  This issue template is for refactor proposals.
+	There are other issue templates for bug reports and feature requests,
+	so please use them if this is not a refactor proposal.
 
-	Also, you don't need to prefix the issue title with "Feature:", because it's
+	Also, you don't need to prefix the issue title with "Refactor:", because it's
 	managed by issue labels.
 -->
 
-<!-- 💖 Thanks for taking the time to fill out this feature request!
+<!-- 💖 Thanks for taking the time to fill out this report!
 💁 Having trouble with deployment? [Ask the support chat.](https://matrix.to/#/#firefish-community:nitro.chat)
 🔒 Found a security vulnerability? [Please disclose it responsibly.](https://firefish.dev/firefish/firefish/-/blob/develop/SECURITY.md)
-🤝 By submitting this refactor proposal, you agree to follow our [Contribution Guidelines.](https://firefish.dev/firefish/firefish/-/blob/develop/CONTRIBUTING.md) -->
+🤝 By submitting this feature request, you agree to follow our [Contribution Guidelines.](https://firefish.dev/firefish/firefish/-/blob/develop/CONTRIBUTING.md) -->
 
-## What type of refactoring is this?
+## What type of feature is this?
 <!-- If this happens on your device and has to do with the user interface, it's client-side. If this happens on either with the API or the backend, or you got a server-side error in the client, it's server-side. -->
 
 <!-- Uncomment (remove surrounding arrow signs) the following line(s) to specify the category of this issue. -->
@@ -26,12 +26,12 @@
 <!-- /label "Firefish API" -->
 <!-- /label "Mastodon API" -->
 
-## What feature would you like implemented?
-<!-- Please give us a brief description of what you'd like to be refactored. -->
+## What parts of the code do you think should be refactored?
+<!-- Please give us a brief description of what you'd like. -->
 
 
-## Why should we add this feature?
-<!-- Please give us a brief description of why your feature is important. -->
+## Why should the code be refactored that way?
+<!-- Please give us a brief description of the reason of your proposal. -->
 
 
 ## Version
@@ -47,12 +47,12 @@ By submitting this issue, you agree to follow our [Contribution Guidelines](http
 - [ ] I agree to follow this project's Contribution Guidelines
 - [ ] I have searched the issue tracker for similar requests, and this is not a duplicate.
 
-## Are you willing to implement this feature? (optional)
-<!-- Please uncomment the following line if you want to implement this feature -->
+## Are you willing to refactor the code? (optional)
+<!-- Please uncomment the following line if you want to implement it -->
 <!-- /assign me -->
 
 <!--
-	Please tell us how to implement this feature.
+	Please tell us how to refactor the code.
 	As noted in the contribution guidelines, there is a good chance that your
 	merge request will not be merged if there is no agreement with the project maintainers.
 	However, we are currently so understaffed that it is virtually impossible to
@@ -64,4 +64,4 @@ By submitting this issue, you agree to follow our [Contribution Guidelines](http
 
 
 <!-- Do not edit the following line -->
-/label Feature
+/label Refactor
