@@ -58,7 +58,7 @@ import { ref } from "vue";
 import { getAccounts } from "@/account";
 import { isSignedIn, me } from "@/me";
 import MkButton from "@/components/MkButton.vue";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import { api, apiWithDialog, promiseDialog } from "@/os";
 import { i18n } from "@/i18n";
 
@@ -76,6 +76,7 @@ defineProps<{
 	showOnlyToRegister?: boolean;
 }>();
 
+const { swPublickey } = getInstanceInfo();
 // ServiceWorker registration
 const registration = ref<ServiceWorkerRegistration | undefined>();
 // If this browser supports push notification
@@ -94,14 +95,14 @@ const pushRegistrationInServer = ref<
 >();
 
 function subscribe() {
-	if (!registration.value || !supported.value || !instance.swPublickey) return;
+	if (!registration.value || !supported.value || !swPublickey) return;
 
 	// SEE: https://developer.mozilla.org/en-US/docs/Web/API/PushManager/subscribe#Parameters
 	return promiseDialog(
 		registration.value.pushManager
 			.subscribe({
 				userVisibleOnly: true,
-				applicationServerKey: urlBase64ToUint8Array(instance.swPublickey),
+				applicationServerKey: urlBase64ToUint8Array(swPublickey),
 			})
 			.then(
 				async (subscription) => {
@@ -186,12 +187,7 @@ if (navigator.serviceWorker == null) {
 		pushSubscription.value =
 			await registration.value.pushManager.getSubscription();
 
-		if (
-			instance.swPublickey &&
-			"PushManager" in window &&
-			isSignedIn(me) &&
-			me.token
-		) {
+		if (swPublickey && "PushManager" in window && isSignedIn(me) && me.token) {
 			supported.value = true;
 
 			if (pushSubscription.value) {

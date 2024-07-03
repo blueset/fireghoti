@@ -17,8 +17,8 @@
 			<div class="main">
 				<img
 					:src="
-						instance.faviconUrl ||
-						instance.iconUrl ||
+						faviconUrl ||
+						iconUrl ||
 						'/favicon.ico'
 					"
 					alt=""
@@ -105,7 +105,7 @@ import MkButton from "@/components/MkButton.vue";
 import MkFeaturedPhotos from "@/components/MkFeaturedPhotos.vue";
 import { instanceName } from "@/config";
 import * as os from "@/os";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import { i18n } from "@/i18n";
 import { defaultReactions } from "@/store";
 import icon from "@/scripts/icon";
@@ -115,6 +115,8 @@ const stats = ref();
 const tags = ref();
 const onlineUsersCount = ref();
 const instances = ref();
+
+const { faviconUrl, iconUrl } = getInstanceInfo();
 
 os.api("meta", { detail: true }).then((_meta) => {
 	meta.value = _meta;
@@ -181,12 +183,12 @@ function showMenu(ev) {
 					os.pageWindow("/about-firefish");
 				},
 			},
-			instance.tosUrl
+			getInstanceInfo.tosUrl
 				? {
 						text: i18n.ts.tos,
 						icon: `${icon("ph-scroll")}`,
 						action: () => {
-							window.open(instance.tosUrl, "_blank");
+							window.open(getInstanceInfo.tosUrl, "_blank");
 						},
 					}
 				: null,

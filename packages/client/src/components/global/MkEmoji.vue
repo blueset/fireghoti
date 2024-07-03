@@ -26,7 +26,7 @@ import type { entities } from "firefish-js";
 import { getStaticImageUrl } from "@/scripts/get-static-image-url";
 import { char2filePath } from "@/scripts/twemoji-base";
 import { defaultStore } from "@/store";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 
 const props = defineProps<{
 	emoji: string;
@@ -41,7 +41,7 @@ const char = computed(() => (isCustom.value ? null : props.emoji));
 const useOsNativeEmojis = computed(
 	() => defaultStore.state.useOsNativeEmojis && !props.isReaction,
 );
-const ce = computed(() => props.customEmojis ?? instance.emojis ?? []);
+const ce = computed(() => props.customEmojis ?? getInstanceInfo().emojis ?? []);
 const customEmoji = computed(() =>
 	isCustom.value
 		? ce.value.find(
@@ -55,7 +55,7 @@ const url = computed(() => {
 	} else {
 		return defaultStore.state.disableShowingAnimatedImages
 			? getStaticImageUrl(customEmoji.value!.url)
-			: customEmoji.value!.url;
+			: customEmoji.value?.url;
 	}
 });
 const alt = computed(() =>

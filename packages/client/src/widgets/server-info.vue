@@ -34,7 +34,7 @@ import type { Widget, WidgetComponentExpose } from "./widget";
 import { useWidgetPropsManager } from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
 import { host } from "@/config";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 
 const name = "serverInfo";
 
@@ -46,6 +46,8 @@ const props = defineProps<{ widget?: Widget<WidgetProps> }>();
 const emit = defineEmits<{ (ev: "updateProps", props: WidgetProps) }>();
 
 const { configure } = useWidgetPropsManager(name, widgetPropsDef, props, emit);
+
+const instance = getInstanceInfo();
 
 defineExpose<WidgetComponentExpose>({
 	name,

@@ -13,13 +13,13 @@ import "@phosphor-icons/web/fill";
 import "@phosphor-icons/web/light";
 import "@phosphor-icons/web/regular";
 
-// #region account indexedDB migration
-
+// #region IndexDB migrations
 const accounts = localStorage.getItem("accounts");
 if (accounts) {
 	set("accounts", JSON.parse(accounts));
 	localStorage.removeItem("accounts");
 }
+localStorage.removeItem("instance");
 // #endregion
 
 import {
@@ -37,7 +37,7 @@ import components from "@/components";
 import { lang, ui, version } from "@/config";
 import directives from "@/directives";
 import { i18n } from "@/i18n";
-import { fetchInstance, instance } from "@/instance";
+import { getInstanceInfo, initializeInstanceCache } from "@/instance";
 import { isSignedIn, me } from "@/me";
 import { alert, api, confirm, popup, post, toast } from "@/os";
 import { deviceKind } from "@/scripts/device-kind";
@@ -68,6 +68,7 @@ function checkForSplash() {
 }
 
 (async () => {
+	await initializeInstanceCache();
 	console.info(`Firefish v${version}`);
 
 	if (_DEV_) {
@@ -177,14 +178,10 @@ function checkForSplash() {
 	}
 	// #endregion
 
-	const fetchInstanceMetaPromise = fetchInstance();
+	localStorage.setItem("v", getInstanceInfo().version);
 
-	fetchInstanceMetaPromise.then(() => {
-		localStorage.setItem("v", instance.version);
-
-		// Init service worker
-		initializeSw();
-	});
+	// Init service worker
+	initializeSw();
 
 	const app = createApp(
 		window.location.search === "?zen"
@@ -341,21 +338,15 @@ function checkForSplash() {
 	};
 	// #endregion
 
-	fetchInstanceMetaPromise.then(() => {
-		if (defaultStore.state.themeInitial) {
-			if (instance.defaultLightTheme != null)
-				ColdDeviceStorage.set(
-					"lightTheme",
-					JSON.parse(instance.defaultLightTheme),
-				);
-			if (instance.defaultDarkTheme != null)
-				ColdDeviceStorage.set(
-					"darkTheme",
-					JSON.parse(instance.defaultDarkTheme),
-				);
-			defaultStore.set("themeInitial", false);
-		}
-	});
+	const { defaultLightTheme, defaultDarkTheme } = getInstanceInfo();
+
+	if (defaultStore.state.themeInitial) {
+		if (defaultLightTheme != null)
+			ColdDeviceStorage.set("lightTheme", JSON.parse(defaultLightTheme));
+		if (defaultDarkTheme != null)
+			ColdDeviceStorage.set("darkTheme", JSON.parse(defaultDarkTheme));
+		defaultStore.set("themeInitial", false);
+	}
 
 	watch(
 		defaultStore.reactiveState.useBlurEffectForModal,

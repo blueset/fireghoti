@@ -30,11 +30,11 @@
 			</g>
 		</svg>
 		<i
-			v-else-if="instance.defaultReaction === '👍'"
+			v-else-if="defaultReaction === '👍'"
 			:class="icon('ph-thumbs-up')"
 		></i>
 		<i
-			v-else-if="instance.defaultReaction === '❤️'"
+			v-else-if="defaultReaction === '❤️'"
 			:class="icon('ph-heart')"
 		></i>
 		<i v-else :class="icon('ph-star')"></i>
@@ -48,19 +48,20 @@ import { pleaseLogin } from "@/scripts/please-login";
 import * as os from "@/os";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	note: entities.Note;
 }>();
 
+const { defaultReaction } = getInstanceInfo();
+
 function star(ev?: MouseEvent): void {
 	pleaseLogin();
 	os.api("notes/reactions/create", {
 		noteId: props.note.id,
-		reaction:
-			defaultStore.state.woozyMode === true ? "🥴" : instance.defaultReaction,
+		reaction: defaultStore.state.woozyMode === true ? "🥴" : defaultReaction,
 	});
 	const el =
 		ev && ((ev.currentTarget ?? ev.target) as HTMLElement | null | undefined);

@@ -71,9 +71,9 @@ import {
 import { i18n } from "@/i18n";
 import MkSuperMenu from "@/components/MkSuperMenu.vue";
 import MkInfo from "@/components/MkInfo.vue";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import { version } from "@/config";
-import { isAdmin, me } from "@/me";
+import { isAdmin } from "@/me";
 import * as os from "@/os";
 import { lookupUser } from "@/scripts/lookup-user";
 import { lookupFile } from "@/scripts/lookup-file";
@@ -98,6 +98,8 @@ const indexInfo = {
 
 provide("shouldOmitHeaderTitle", false);
 
+const instance = getInstanceInfo();
+
 const INFO = ref(indexInfo);
 const childInfo = ref(null);
 const narrow = ref(false);
@@ -110,7 +112,7 @@ const noBotProtection =
 const noEmailServer = !instance.enableEmail;
 const thereIsUnresolvedAbuseReport = ref(false);
 const updateAvailable = ref(false);
-const currentPage = computed(() => router.currentRef.value.child);
+const currentPage = computed(() => router.currentRef.value?.child);
 
 os.api("admin/abuse-user-reports", {
 	state: "unresolved",
@@ -312,7 +314,7 @@ onUnmounted(() => {
 
 watch(router.currentRef, (to) => {
 	if (
-		to.route.path === "/admin" &&
+		to?.route.path === "/admin" &&
 		to.child?.route.name == null &&
 		!narrow.value
 	) {
@@ -404,10 +406,6 @@ const lookup = (ev) => {
 		ev.currentTarget ?? ev.target,
 	);
 };
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(INFO.value);
 

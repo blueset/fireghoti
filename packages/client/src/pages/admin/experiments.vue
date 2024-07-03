@@ -33,7 +33,7 @@ import MkStickyContainer from "@/components/global/MkStickyContainer.vue";
 import FormSuspense from "@/components/form/suspense.vue";
 import FormSwitch from "@/components/form/switch.vue";
 import * as os from "@/os";
-import { fetchInstance } from "@/instance";
+import { updateInstanceCache } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
@@ -62,7 +62,7 @@ function save() {
 		},
 	};
 	os.apiWithDialog("admin/update-meta", experiments).then(() => {
-		fetchInstance();
+		updateInstanceCache();
 	});
 }
 

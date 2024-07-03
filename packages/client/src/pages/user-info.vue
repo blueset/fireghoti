@@ -316,7 +316,7 @@
 							type="number"
 							:placeholder="
 								i18n.t('defaultValueIs', {
-									value: instance.driveCapacityPerLocalUserMb,
+									value: defaultDriveCapacity,
 								})
 							"
 							@update:model-value="applyDriveCapacityOverride"
@@ -364,7 +364,7 @@ import { userPage } from "@/filters/user";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
 import { isAdmin, isModerator } from "@/me";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import icon from "@/scripts/icon";
 
 const props = defineProps<{
@@ -390,6 +390,8 @@ const filesPagination = {
 		userId: props.userId,
 	})),
 };
+
+const defaultDriveCapacity = getInstanceInfo().driveCapacityPerLocalUserMb;
 
 function createFetcher() {
 	if (isModerator) {
