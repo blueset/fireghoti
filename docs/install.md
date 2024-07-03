@@ -361,9 +361,9 @@ In this instruction, we use [Caddy](https://caddyserver.com/) to make the Firefi
     sudo systemctl enable --now firefish
     ```
 
-## Maintain the server
+# Maintain the server
 
-### Upgrade Firefish version
+## Upgrade Firefish version
 
 Please refer to the [upgrade instruction](./upgrade.md). Be sure to switch to `firefish` user and go to the Firefish directory before executing the `git` command:
 
@@ -372,7 +372,7 @@ sudo su --login firefish
 cd ~/firefish
 ```
 
-### Rotate logs
+## Rotate logs
 
 If the server runs long, the size of log files increases, filling up disk space. To prevent this, you should set up a log rotation (removing old logs automatically).
 
@@ -411,7 +411,7 @@ The PGroonga log file (`pgroonga.log`) is located under this directory:
 psql --user postgres --command 'SHOW data_directory'
 ```
 
-### Tune database configuration
+## Tune database configuration
 
 The default PostgreSQL configuration not suitable for running a Firefish server. Thus, it is highly recommended that you use [PGTune](https://pgtune.leopard.in.ua/) to tweak the configuration.
 
@@ -422,7 +422,7 @@ Here is an example set of parameters you can provide to PGTune:
 |            DB version | 16 (your PostgreSQL major version)                      |
 |               OS Type | Linux                                                   |
 |               DB Type | Data warehouse                                          |
-|          Total Memory | (total physical memory) - 700 MB                        |
+|          Total Memory | [total physical memory] minus 700 MB                    |
 |        Number of CPUs | number of CPU threads (or lower value if you have many) |
 | Number of connections | 200                                                     |
 |          Data storage | SSD storage                                             |
@@ -431,7 +431,7 @@ Since this is not a dedicated database server, be sure to leave some memory spac
 
 Once you have entered the appropriate values for your environment, click the "Generate" button to generate a configuration and replace the values in `postgresql.conf` with the suggested values.
 
-### VACUUM your database
+## VACUUM your database
 
 If the database runs long, "garbage" can degrade its performance or cause problems. To prevent this, you should execute the following commands regularly.
 
