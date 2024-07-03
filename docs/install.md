@@ -374,7 +374,7 @@ cd ~/firefish
 
 ## Rotate logs
 
-If the server runs long, the size of log files increases, filling up disk space. To prevent this, you should set up a log rotation (removing old logs automatically).
+As the server runs longer and longer, the size of the log files increases, filling up the disk space. To prevent this, you should set up a log rotation (removing old logs automatically).
 
 You can edit the `SystemMaxUse` value in the `[journal]` section of `/etc/systemd/journald.conf` to do it:
 
@@ -402,13 +402,13 @@ pgroonga.log_level = error
 You can check the `postgresql.conf` location by this command:
 
 ```sh
-psql --user postgres --command 'SHOW config_file'
+sudo --user=postgres psql --command='SHOW config_file'
 ```
 
 The PGroonga log file (`pgroonga.log`) is located under this directory:
 
 ```sh
-psql --user postgres --command 'SHOW data_directory'
+sudo --user=postgres psql --command='SHOW data_directory'
 ```
 
 ## Tune database configuration
@@ -431,9 +431,17 @@ Since this is not a dedicated database server, be sure to leave some memory spac
 
 Once you have entered the appropriate values for your environment, click the "Generate" button to generate a configuration and replace the values in `postgresql.conf` with the suggested values.
 
+After that, you need to restart the PostgreSQL service.
+
+```sh
+sudo systemctl stop firefish
+sudo systemctl restart postgresql
+sudo systemctl start firefish
+```
+
 ## VACUUM your database
 
-If the database runs long, "garbage" can degrade its performance or cause problems. To prevent this, you should execute the following commands regularly.
+If the database runs long, accumulated "garbage" can degrade its performance or cause problems. To prevent this, you should `VACUUM` your database regularly.
 
 ```sh
 sudo systemctl stop firefish

@@ -69,6 +69,8 @@ function checkForSplash() {
 
 (async () => {
 	await initializeInstanceCache();
+	const instance = getInstanceInfo();
+
 	console.info(`Firefish v${version}`);
 
 	if (_DEV_) {
@@ -178,7 +180,7 @@ function checkForSplash() {
 	}
 	// #endregion
 
-	localStorage.setItem("v", getInstanceInfo().version);
+	localStorage.setItem("v", instance.version);
 
 	// Init service worker
 	initializeSw();
@@ -240,26 +242,20 @@ function checkForSplash() {
 		// テーマリビルドするため
 		localStorage.removeItem("theme");
 
-		try {
-			// 変なバージョン文字列来るとcompareVersionsでエラーになるため
-			// If a strange version string comes, an error will occur in compareVersions.
-			if (
-				lastVersion != null &&
-				lastVersion < version &&
-				defaultStore.state.showUpdates
-			) {
-				// ログインしてる場合だけ
-				if (me) {
-					popup(
-						defineAsyncComponent(() => import("@/components/MkUpdated.vue")),
-						{},
-						{},
-						"closed",
-					);
-				}
+		if (
+			lastVersion != null &&
+			lastVersion < version &&
+			defaultStore.state.showUpdates
+		) {
+			// ログインしてる場合だけ
+			if (me) {
+				popup(
+					defineAsyncComponent(() => import("@/components/MkUpdated.vue")),
+					{},
+					{},
+					"closed",
+				);
 			}
-		} catch (err) {
-			console.error(err);
 		}
 	}
 
@@ -338,7 +334,7 @@ function checkForSplash() {
 	};
 	// #endregion
 
-	const { defaultLightTheme, defaultDarkTheme } = getInstanceInfo();
+	const { defaultLightTheme, defaultDarkTheme } = instance;
 
 	if (defaultStore.state.themeInitial) {
 		if (defaultLightTheme != null)
