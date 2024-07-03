@@ -53,7 +53,11 @@ function processMastoFile(fn: string, path: string, dir: string, uid: string) {
 					continue;
 				}
 				for (const attachment of note.object.attachment) {
-					const url = attachment.url.replaceAll("..", "");
+					// The url in some Mastodon import files do not start with /media_attachments/.
+					// If this is not handled properly, these users not be able to import images in their posts.
+					const url = attachment.url
+						.replaceAll("..", "")
+						.replaceAll(/.*\/media_attachments\//g, "/media_attachments/");
 					if (url.indexOf("\0") !== -1) {
 						logger.error(`Found Poison Null Bytes Attack: ${url}`);
 						reject();
