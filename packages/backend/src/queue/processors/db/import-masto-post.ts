@@ -125,11 +125,11 @@ export async function importMastoPost(
 	if (note == null) {
 		let visibility = "specified";
 		let visibleUsers: CacheableUser[] = [];
-		if (isPublic(post.to)) {
+		if ((post.to as string[]).some(isPublic)) {
 			visibility = "public";
-		} else if (isPublic(post.cc)) {
+		} else if ((post.cc as string[]).some(isPublic)) {
 			visibility = "home";
-		} else if ((post.cc as string).endsWith("/followers")) {
+		} else if ((post.cc as string[]).some((cc) => cc.endsWith("/followers"))) {
 			visibility = "followers";
 		} else {
 			try {
