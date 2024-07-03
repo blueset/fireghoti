@@ -3,24 +3,48 @@
 🔒 Found a security vulnerability? [Please disclose it responsibly.](https://firefish.dev/firefish/firefish/-/blob/develop/SECURITY.md)
 🤝 By submitting this issue, you agree to follow our [Contribution Guidelines.](https://firefish.dev/firefish/firefish/-/blob/develop/CONTRIBUTING.md) -->
 
-## What happened? <!-- Please give us a brief description of what happened. -->
+## What type of issue is this?
+<!-- If this happens on your device and has to do with the user interface, it's client-side. If this happens on either with the API or the backend, or you got a server-side error in the client, it's server-side. -->
+
+<!-- Uncomment (remove surrounding arrow signs) the following line(s) to specify the category of this issue. -->
+<!-- /label Server -->
+<!-- /label Client -->
+<!-- /label Mobile -->
+<!-- /label "Third-party client" -->
+<!-- /label Docs -->
+<!-- /label "Build from source" -->
+<!-- /label Container -->
+<!-- /label "Firefish API" -->
+<!-- /label "Mastodon API" -->
+
+## What happened?
+<!-- Please give us a brief description of what happened. -->
 
 
-## What did you expect to happen? <!-- Please give us a brief description of what you expected to happen. -->
+## What did you expect to happen?
+<!-- Please give us a brief description of what you expected to happen. -->
 
 
-## Version <!-- What version of firefish is your instance running? You can find this by clicking your instance's logo at the bottom left and then clicking instance information. -->
+## Steps to reproduce the issue
+<!-- Please describe how to reproduce this issue (preferably, in a ordered list) -->
 
 
-## What type of issue is this? <!-- If this happens on your device and has to do with the user interface, it's client-side. If this happens on either with the API or the backend, or you got a server-side error in the client, it's server-side. -->
+## Reproduces how often
+<!-- Is it always reproducible, or is it conditional/probabilistic ? -->
 
-- [ ] server-side
-- [ ] client-side
-- [ ] not sure
+
+## What did you try to solve the issue
+<!-- Not to repeat the same thing, let us share what you have tried so far. -->
+
+
+## Version
+<!-- What version of firefish is your instance running? You can find this by the instance information page. -->
+
 
 <details>
 
-### Instance <!-- What instance of firefish are you using? -->
+### Instance
+<!-- What instance of firefish are you using? -->
 
 
 ### What browser are you using? (client-side issues only)
@@ -35,7 +59,8 @@
 ### What operating system are you using? (Server-side issues only)
 
 
-### Relevant log output <!-- Please copy and paste any relevant log output. You can find your log by inspecting the page, and going to the "console" tab. -->
+### Relevant log output
+<!-- Please copy and paste any relevant log output. -->
 
 
 </details>
@@ -46,4 +71,20 @@ By submitting this issue, you agree to follow our [Contribution Guidelines](http
 - [ ] I have searched the issue tracker for similar issues, and this is not a duplicate.
 
 ## Are you willing to fix this bug? (optional)
-- [ ] Yes. I will fix this bug and open a merge request if the change is agreed upon.
+<!-- Please uncomment the following line if you want to fix this bug -->
+<!-- /assign me -->
+
+<!--
+	Please tell us how to fix this bug.
+	As noted in the contribution guidelines, there is a good chance that your
+	merge request will not be merged if there is no agreement with the project maintainers.
+	However, we are currently so understaffed that it is virtually impossible to
+	respond to every single proposal. So, feel free to implement it if there is no response
+	for more than a week or there is a thumbs-up emoji reaction from the project maintainer(s).
+-->
+
+
+
+
+<!-- Do not edit the following line -->
+/label Bug?
