@@ -69,6 +69,8 @@ function checkForSplash() {
 
 (async () => {
 	await initializeInstanceCache();
+	const instance = getInstanceInfo();
+
 	console.info(`Firefish v${version}`);
 
 	if (_DEV_) {
@@ -178,7 +180,7 @@ function checkForSplash() {
 	}
 	// #endregion
 
-	localStorage.setItem("v", getInstanceInfo().version);
+	localStorage.setItem("v", instance.version);
 
 	// Init service worker
 	initializeSw();
@@ -332,7 +334,7 @@ function checkForSplash() {
 	};
 	// #endregion
 
-	const { defaultLightTheme, defaultDarkTheme } = getInstanceInfo();
+	const { defaultLightTheme, defaultDarkTheme } = instance;
 
 	if (defaultStore.state.themeInitial) {
 		if (defaultLightTheme != null)
