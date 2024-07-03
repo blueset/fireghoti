@@ -1,3 +1,12 @@
+<!--
+  This issue template is for refactor proposals.
+	There are other issue templates for bug reports and feature requests,
+	so please use them if this is not a refactor proposal.
+
+	Also, you don't need to prefix the issue title with "Refactor:", because it's
+	managed by issue labels.
+-->
+
 <!-- 💖 Thanks for taking the time to fill out this report!
 💁 Having trouble with deployment? [Ask the support chat.](https://matrix.to/#/#firefish-community:nitro.chat)
 🔒 Found a security vulnerability? [Please disclose it responsibly.](https://firefish.dev/firefish/firefish/-/blob/develop/SECURITY.md)

@@ -2,6 +2,9 @@
   This issue template is for bug reports.
 	There are other issue templates for feature requests and refactor proposals,
 	so please use them if this is not a bug report.
+
+	Also, you don't need to prefix the issue title with "Bug:", because it's
+	managed by issue labels.
 -->
 
 <!-- 💖 Thanks for taking the time to fill out this bug report!

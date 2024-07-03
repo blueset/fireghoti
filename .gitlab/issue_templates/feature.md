@@ -1,4 +1,13 @@
-<!-- 💖 Thanks for taking the time to fill out this bug report!
+<!--
+  This issue template is for feature requests.
+	There are other issue templates for bug reports and refactor proposals,
+	so please use them if this is not a feature request.
+
+	Also, you don't need to prefix the issue title with "Feature:", because it's
+	managed by issue labels.
+-->
+
+<!-- 💖 Thanks for taking the time to fill out this feature request!
 💁 Having trouble with deployment? [Ask the support chat.](https://matrix.to/#/#firefish-community:nitro.chat)
 🔒 Found a security vulnerability? [Please disclose it responsibly.](https://firefish.dev/firefish/firefish/-/blob/develop/SECURITY.md)
 🤝 By submitting this refactor proposal, you agree to follow our [Contribution Guidelines.](https://firefish.dev/firefish/firefish/-/blob/develop/CONTRIBUTING.md) -->
