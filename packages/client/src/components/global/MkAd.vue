@@ -40,7 +40,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import { host } from "@/config";
 import MkButton from "@/components/MkButton.vue";
 import { defaultStore } from "@/store";
@@ -48,7 +48,9 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
-type Ad = (typeof instance)["ads"][number];
+// TODO?: rename to community banner
+const instanceAds = getInstanceInfo().ads;
+type Ad = (typeof instanceAds)[number];
 
 const props = defineProps<{
 	prefer: string[];
@@ -65,7 +67,7 @@ const choseAd = (): Ad | Ad[] | null => {
 		return props.specify;
 	}
 
-	const allAds = instance.ads.map((ad) =>
+	const allAds = instanceAds.map((ad) =>
 		defaultStore.state.mutedAds.includes(ad.id)
 			? {
 					...ad,

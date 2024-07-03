@@ -288,7 +288,7 @@ import MkCaptcha from "@/components/MkCaptcha.vue";
 import * as config from "@/config";
 import * as os from "@/os";
 import { signIn } from "@/account";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
@@ -305,6 +305,8 @@ const emit = defineEmits<{
 	(ev: "signup", user: { id: string; i: string }): void;
 	(ev: "signupEmailPending"): void;
 }>();
+
+const instance = getInstanceInfo();
 
 const host = toUnicode(config.host);
 

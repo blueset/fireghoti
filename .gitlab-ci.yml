@@ -120,7 +120,8 @@ test:build:backend_ts:
     - cp packages/backend-rs/index.js packages/backend-rs/built/index.js
     - cp packages/backend-rs/index.d.ts packages/backend-rs/built/index.d.ts
     - cp ci/cargo/config.toml /usr/local/cargo/config.toml
-    - test -f packages/backend-rs/built/backend-rs.linux-x64-gnu.node || pnpm install --frozen-lockfile && pnpm --filter 'backend-rs' run build:debug
+    - test -f packages/backend-rs/built/backend-rs.linux-x64-gnu.node || pnpm install --frozen-lockfile
+    - test -f packages/backend-rs/built/backend-rs.linux-x64-gnu.node || pnpm --filter 'backend-rs' run build:debug
     - cp .config/ci.yml .config/default.yml
     - export PGPASSWORD="${POSTGRES_PASSWORD}"
     - psql --host postgres --user "${POSTGRES_USER}" --dbname "${POSTGRES_DB}" --command 'CREATE EXTENSION pgroonga'

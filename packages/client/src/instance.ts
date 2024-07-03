@@ -1,30 +1,40 @@
 import type { entities } from "firefish-js";
-import { computed, reactive } from "vue";
+import { computed } from "vue";
 import { api } from "./os";
+import { set, get } from "idb-keyval";
 
 // TODO: 他のタブと永続化されたstateを同期
 
-const instanceData = localStorage.getItem("instance");
-// TODO: instanceをリアクティブにするかは再考の余地あり
+// TODO: get("instance") requires top-level await
+let instance: entities.DetailedInstanceMetadata;
 
-export const instance: entities.DetailedInstanceMetadata = reactive(
-	instanceData
-		? JSON.parse(instanceData)
-		: {
-				// TODO: set default values
-			},
-);
+export function getInstanceInfo(): entities.DetailedInstanceMetadata {
+	return instance;
+}
 
-export async function fetchInstance() {
+export async function initializeInstanceCache(): Promise<void> {
+	// Is the data stored in IndexDB?
+	const fromIdb = await get<string>("instance");
+	if (fromIdb != null) {
+		instance = JSON.parse(fromIdb);
+	}
+	// Call API
+	updateInstanceCache();
+}
+
+export async function updateInstanceCache(): Promise<void> {
 	const meta = await api("meta", {
 		detail: true,
 	});
+
+	// TODO: set default values
+	instance = {} as entities.DetailedInstanceMetadata;
 
 	for (const [k, v] of Object.entries(meta)) {
 		instance[k] = v;
 	}
 
-	localStorage.setItem("instance", JSON.stringify(instance));
+	set("instance", JSON.stringify(instance));
 }
 
 export const emojiCategories = computed(() => {

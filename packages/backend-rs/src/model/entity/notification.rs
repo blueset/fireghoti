@@ -2,14 +2,12 @@
 
 use super::sea_orm_active_enums::NotificationType;
 use sea_orm::entity::prelude::*;
+use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 #[sea_orm(table_name = "notification")]
-#[cfg_attr(
-    feature = "napi",
-    napi_derive::napi(object, js_name = "Notification", use_nullable = true)
-)]
+#[macros::export(object, js_name = "Notification")]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,

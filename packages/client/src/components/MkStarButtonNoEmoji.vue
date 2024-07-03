@@ -9,23 +9,23 @@
 	>
 		<span v-if="!reacted">
 			<i
-				v-if="instance.defaultReaction === '👍'"
+				v-if="defaultReaction === '👍'"
 				:class="icon('ph-thumbs-up')"
 			></i>
 			<i
-				v-else-if="instance.defaultReaction === '❤️'"
+				v-else-if="defaultReaction === '❤️'"
 				:class="icon('ph-heart')"
 			></i>
 			<i v-else :class="icon('ph-star')"></i>
 		</span>
 		<span v-else>
 			<i
-				v-if="instance.defaultReaction === '👍'"
+				v-if="defaultReaction === '👍'"
 				class="ph-thumbs-up ph-lg ph-fill"
 				:class="$style.yellow"
 			></i>
 			<i
-				v-else-if="instance.defaultReaction === '❤️'"
+				v-else-if="defaultReaction === '❤️'"
 				class="ph-heart ph-lg ph-fill"
 				:class="$style.red"
 			></i>
@@ -45,7 +45,7 @@ import XDetails from "@/components/MkUsersTooltip.vue";
 import { pleaseLogin } from "@/scripts/please-login";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import { useTooltip } from "@/scripts/use-tooltip";
 import icon from "@/scripts/icon";
 
@@ -57,13 +57,15 @@ const props = defineProps<{
 
 const buttonRef = ref<HTMLElement>();
 
+const { defaultReaction } = getInstanceInfo();
+
 function toggleStar(ev?: MouseEvent): void {
 	pleaseLogin();
 
 	if (!props.reacted) {
 		os.api("notes/reactions/create", {
 			noteId: props.note.id,
-			reaction: instance.defaultReaction,
+			reaction: defaultReaction,
 		});
 		const el =
 			ev && ((ev.currentTarget ?? ev.target) as HTMLElement | null | undefined);

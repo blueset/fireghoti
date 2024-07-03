@@ -159,7 +159,7 @@ import { isAdmin, isModerator, me } from "@/me";
 import { openHelpMenu_ } from "@/scripts/helpMenu";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import { version } from "@/config";
 import icon from "@/scripts/icon";
 
@@ -189,13 +189,20 @@ watch(defaultStore.reactiveState.menuDisplay, () => {
 	calcViewState();
 });
 
+const {
+	maintainerName,
+	maintainerEmail,
+	disableRegistration,
+	enableHcaptcha,
+	enableRecaptcha,
+	enableEmail,
+} = getInstanceInfo();
+
 const noMaintainerInformation =
-	isEmpty(instance.maintainerName) || isEmpty(instance.maintainerEmail);
+	isEmpty(maintainerName) || isEmpty(maintainerEmail);
 const noBotProtection =
-	!instance.disableRegistration &&
-	!instance.enableHcaptcha &&
-	!instance.enableRecaptcha;
-const noEmailServer = !instance.enableEmail;
+	!disableRegistration && !enableHcaptcha && !enableRecaptcha;
+const noEmailServer = !enableEmail;
 const thereIsUnresolvedAbuseReport = ref(false);
 const updateAvailable = ref(false);
 

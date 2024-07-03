@@ -6,12 +6,6 @@
 					><i :class="icon('ph-magnifying-glass')"></i
 				></template>
 			</MkInput>
-
-			<!-- たくさんあると邪魔
-		<div class="tags">
-			<span class="tag _button" v-for="tag in tags" :class="{ active: selectedTags.has(tag) }" @click="toggleTag(tag)">{{ tag }}</span>
-		</div>
-		-->
 		</div>
 
 		<MkFolder v-if="searchEmojis" class="emojis">
@@ -54,7 +48,7 @@ import MkInput from "@/components/form/input.vue";
 import MkSelect from "@/components/form/select.vue";
 import MkFolder from "@/components/MkFolder.vue";
 import MkTab from "@/components/MkTab.vue";
-import { emojiCategories, emojiTags, instance } from "@/instance";
+import { emojiCategories, emojiTags, getInstanceInfo } from "@/instance";
 import { i18n } from "@/i18n";
 import iconify from "@/scripts/icon";
 
@@ -72,7 +66,7 @@ export default defineComponent({
 		return {
 			q: "",
 			customEmojiCategories: emojiCategories,
-			customEmojis: instance.emojis,
+			customEmojis: getInstanceInfo().emojis,
 			tags: emojiTags,
 			selectedTags: new Set(),
 			searchEmojis: null,

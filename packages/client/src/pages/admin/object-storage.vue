@@ -156,7 +156,7 @@ import FormInput from "@/components/form/input.vue";
 import FormSuspense from "@/components/form/suspense.vue";
 import FormSplit from "@/components/form/split.vue";
 import * as os from "@/os";
-import { fetchInstance } from "@/instance";
+import { updateInstanceCache } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
@@ -177,19 +177,19 @@ const objectStorageS3ForcePathStyle = ref(true);
 
 async function init() {
 	const meta = await os.api("admin/meta");
-	useObjectStorage.value = meta.useObjectStorage;
-	objectStorageBaseUrl.value = meta.objectStorageBaseUrl;
-	objectStorageBucket.value = meta.objectStorageBucket;
-	objectStoragePrefix.value = meta.objectStoragePrefix;
-	objectStorageEndpoint.value = meta.objectStorageEndpoint;
-	objectStorageRegion.value = meta.objectStorageRegion;
-	objectStoragePort.value = meta.objectStoragePort;
-	objectStorageAccessKey.value = meta.objectStorageAccessKey;
-	objectStorageSecretKey.value = meta.objectStorageSecretKey;
-	objectStorageUseSSL.value = meta.objectStorageUseSSL;
-	objectStorageUseProxy.value = meta.objectStorageUseProxy;
-	objectStorageSetPublicRead.value = meta.objectStorageSetPublicRead;
-	objectStorageS3ForcePathStyle.value = meta.objectStorageS3ForcePathStyle;
+	useObjectStorage.value = meta?.useObjectStorage;
+	objectStorageBaseUrl.value = meta?.objectStorageBaseUrl;
+	objectStorageBucket.value = meta?.objectStorageBucket;
+	objectStoragePrefix.value = meta?.objectStoragePrefix;
+	objectStorageEndpoint.value = meta?.objectStorageEndpoint;
+	objectStorageRegion.value = meta?.objectStorageRegion;
+	objectStoragePort.value = meta?.objectStoragePort;
+	objectStorageAccessKey.value = meta?.objectStorageAccessKey;
+	objectStorageSecretKey.value = meta?.objectStorageSecretKey;
+	objectStorageUseSSL.value = meta?.objectStorageUseSSL;
+	objectStorageUseProxy.value = meta?.objectStorageUseProxy;
+	objectStorageSetPublicRead.value = meta?.objectStorageSetPublicRead;
+	objectStorageS3ForcePathStyle.value = meta?.objectStorageS3ForcePathStyle;
 }
 
 function save() {
@@ -208,7 +208,7 @@ function save() {
 		objectStorageSetPublicRead: objectStorageSetPublicRead.value,
 		objectStorageS3ForcePathStyle: objectStorageS3ForcePathStyle.value,
 	}).then(() => {
-		fetchInstance();
+		updateInstanceCache();
 	});
 }
 

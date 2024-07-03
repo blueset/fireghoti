@@ -42,7 +42,7 @@ import MkButton from "@/components/MkButton.vue";
 import MkInfo from "@/components/MkInfo.vue";
 import FormSuspense from "@/components/form/suspense.vue";
 import * as os from "@/os";
-import { fetchInstance } from "@/instance";
+import { updateInstanceCache } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
@@ -52,7 +52,7 @@ const proxyAccountId = ref<any>(null);
 
 async function init() {
 	const meta = await os.api("admin/meta");
-	proxyAccountId.value = meta.proxyAccountId;
+	proxyAccountId.value = meta?.proxyAccountId;
 	if (proxyAccountId.value) {
 		proxyAccount.value = await os.api("users/show", {
 			userId: proxyAccountId.value,
@@ -72,7 +72,7 @@ function save() {
 	os.apiWithDialog("admin/update-meta", {
 		proxyAccountId: proxyAccountId.value,
 	}).then(() => {
-		fetchInstance();
+		updateInstanceCache();
 	});
 }
 
@@ -80,7 +80,7 @@ function del() {
 	os.apiWithDialog("admin/update-meta", {
 		proxyAccountId: null,
 	}).then(() => {
-		fetchInstance();
+		updateInstanceCache();
 	});
 }
 

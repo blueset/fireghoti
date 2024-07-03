@@ -1547,10 +1547,10 @@ export interface UserProfile {
   preventAiLearning: boolean
   isIndexable: boolean
   mutedPatterns: Array<string>
-  mentions: Json
   mutedInstances: Array<string>
   mutedWords: Array<string>
   lang: string | null
+  mentions: Json
 }
 
 export enum UserProfileFfvisibility {

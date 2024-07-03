@@ -11,15 +11,16 @@ regenerate-entities:
 	  --output-dir='src/model/entity' \
 	  --database-url='postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@localhost:25432/$(POSTGRES_DB)' \
 	  --date-time-crate='chrono' \
+		--with-serde='both' \
 	  --model-extra-attributes='NAPI_EXTRA_ATTR_PLACEHOLDER' && \
 	for file in src/model/entity/*; do \
 	  base=$$(basename -- "$${file}"); \
 	  jsname=$$(printf '%s\n' "$${base%.*}" | perl -pe 's/(^|_)./uc($$&)/ge;s/_//g'); \
-	  attribute=$$(printf 'cfg_attr(feature = "napi", napi_derive::napi(object, js_name = "%s", use_nullable = true))' "$${jsname}"); \
+	  attribute=$$(printf 'macros::export(object, js_name = "%s")' "$${jsname}"); \
 	  sed -i "s/NAPI_EXTRA_ATTR_PLACEHOLDER/$${attribute}/" "$${file}"; \
-		sed -i 's/#\[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)\]/#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, serde::Serialize, serde::Deserialize)]\n#[serde(rename_all = "camelCase")]/' "$${file}"; \
+		sed -i 's/#\[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)\]/#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]\n#[serde(rename_all = "camelCase")]/' "$${file}"; \
 	done
-	sed -i 's/#\[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum)\]/#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, serde::Serialize, serde::Deserialize)]\n#[serde(rename_all = "camelCase")]\n#[cfg_attr(not(feature = "napi"), derive(Clone))]\n#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]/' \
+	sed -i 's/#\[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)\]/#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]\n#[serde(rename_all = "camelCase")]\n#[macros::derive_clone_and_export(string_enum = "camelCase")]/' \
 	  src/model/entity/sea_orm_active_enums.rs
 	cargo fmt --all --
 

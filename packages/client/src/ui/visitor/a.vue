@@ -3,7 +3,7 @@
 		<div
 			v-if="mainRouter.currentRoute?.name === 'index'"
 			class="banner"
-			:style="{ backgroundImage: `url(${instance.bannerUrl})` }"
+			:style="{ backgroundImage: `url(${bannerUrl})` }"
 		>
 			<div>
 				<h1 v-if="meta">
@@ -32,7 +32,7 @@
 		<div
 			v-else
 			class="banner-mini"
-			:style="{ backgroundImage: `url(${instance.bannerUrl})` }"
+			:style="{ backgroundImage: `url(${bannerUrl})` }"
 		>
 			<div>
 				<h1 v-if="meta">
@@ -86,7 +86,7 @@ import MkButton from "@/components/MkButton.vue";
 import { ColdDeviceStorage, defaultStore } from "@/store";
 import { mainRouter } from "@/router";
 import { i18n } from "@/i18n";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 
 const DESKTOP_THRESHOLD = 1100;
 
@@ -111,6 +111,7 @@ export default defineComponent({
 			mainRouter,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			i18n,
+			bannerUrl: getInstanceInfo().bannerUrl,
 		};
 	},
 
@@ -122,7 +123,6 @@ export default defineComponent({
 					defaultStore.set("darkMode", !defaultStore.state.darkMode);
 				},
 				s: search,
-				"h|/": this.help,
 			};
 		},
 	},
@@ -148,13 +148,6 @@ export default defineComponent({
 	},
 
 	methods: {
-		// @ThatOneCalculator: Are these methods even used?
-		// I can't find references to them anywhere else in the code...
-
-		// setParallax(el) {
-		// 	new simpleParallax(el);
-		// },
-
 		changePage(page) {
 			if (page == null) return;
 
@@ -165,12 +158,6 @@ export default defineComponent({
 
 		top() {
 			window.scroll({ top: 0, behavior: "smooth" });
-		},
-
-		help() {
-			// TODO(thatonecalculator): popup with keybinds
-			// window.open('https://misskey-hub.net/docs/keyboard-shortcut.md', '_blank');
-			console.log("d = dark/light mode, s = search, p = post :3");
 		},
 	},
 });

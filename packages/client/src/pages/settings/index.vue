@@ -48,7 +48,7 @@ import MkSuperMenu from "@/components/MkSuperMenu.vue";
 import { signOut } from "@/account";
 import { me } from "@/me";
 import { unisonReload } from "@/scripts/unison-reload";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import { useRouter } from "@/router";
 import {
 	definePageMetadata,
@@ -71,7 +71,7 @@ const router = useRouter();
 const narrow = ref(false);
 const NARROW_THRESHOLD = 600;
 
-const currentPage = computed(() => router.currentRef.value.child);
+const currentPage = computed(() => router.currentRef.value?.child);
 
 const ro = new ResizeObserver((entries, observer) => {
 	if (entries.length === 0) return;
@@ -282,7 +282,7 @@ onUnmounted(() => {
 
 watch(router.currentRef, (to) => {
 	if (
-		to.route.name === "settings" &&
+		to?.route.name === "settings" &&
 		to.child?.route.name == null &&
 		!narrow.value
 	) {
@@ -291,7 +291,8 @@ watch(router.currentRef, (to) => {
 });
 
 const emailNotConfigured = computed(
-	() => instance.enableEmail && (me.email == null || !me.emailVerified),
+	() =>
+		getInstanceInfo().enableEmail && (me?.email == null || !me.emailVerified),
 );
 
 provideMetadataReceiver((info) => {

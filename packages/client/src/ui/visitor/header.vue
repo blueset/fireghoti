@@ -6,14 +6,6 @@
 					><i :class="icon('ph-house icon')"></i
 					>{{ i18n.ts.home }}</MkA
 				>
-				<!-- <MkA
-					v-if="isTimelineAvailable"
-					to="/timeline"
-					class="link"
-					active-class="active"
-					><i :class="icon('ph-chats-circle icon')"></i
-					>{{ i18n.ts.timeline }}</MkA
-				> -->
 				<MkA to="/explore" class="link" active-class="active"
 					><i :class="icon('ph-compass icon')"></i
 					>{{ i18n.ts.explore }}</MkA
@@ -109,7 +101,6 @@ import { defineComponent } from "vue";
 import XSigninDialog from "@/components/MkSigninDialog.vue";
 import XSignupDialog from "@/components/MkSignupDialog.vue";
 import * as os from "@/os";
-import { instance } from "@/instance";
 import { search } from "@/scripts/search";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
@@ -126,11 +117,6 @@ export default defineComponent({
 			narrow: null,
 			showMenu: false,
 			i18n,
-			isTimelineAvailable:
-				!instance.disableLocalTimeline ||
-				!instance.disableRecommendedTimeline ||
-				!instance.disableGlobalTimeline,
-			icon,
 		};
 	},
 
@@ -162,6 +148,7 @@ export default defineComponent({
 		},
 
 		search,
+		icon,
 	},
 });
 </script>
