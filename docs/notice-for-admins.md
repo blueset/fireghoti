@@ -6,6 +6,10 @@ You can skip intermediate versions when upgrading from an old version, but pleas
 
 Please take a look at #10947.
 
+## Unreleased
+
+This is not related to the recent changes, but we have added a new subsection called "[Maintain the server](https://firefish.dev/firefish/firefish/-/blob/develop/docs/install.md#maintain-the-server)" in the installation guide. We suggest that you take a look at it.
+
 ## v20240607
 
 The following environment variables are deprecated and no longer have any effect:
