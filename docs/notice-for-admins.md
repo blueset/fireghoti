@@ -8,7 +8,9 @@ Please take a look at #10947.
 
 ## Unreleased
 
-This is not related to the recent changes, but we have added a new section called "[Maintain the server](https://firefish.dev/firefish/firefish/-/blob/develop/docs/install.md#maintain-the-server)" in the installation guide. We suggest that you take a look at it.
+### For all users
+
+This is not related to the recent changes, but we have added a new section called "[Maintain the server](https://firefish.dev/firefish/firefish/-/blob/develop/docs/install.md#maintain-the-server)" in the installation guide. We suggest that you take a look at it. (and we welcome your docs contributions!)
 
 ## v20240607
 
