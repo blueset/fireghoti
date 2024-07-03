@@ -5,8 +5,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
+#[macros::derive_clone_and_export(string_enum = "camelCase")]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "antenna_src")]
 pub enum AntennaSrc {
     #[sea_orm(string_value = "all")]
@@ -24,8 +23,7 @@ pub enum AntennaSrc {
 }
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
+#[macros::derive_clone_and_export(string_enum = "camelCase")]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
@@ -39,8 +37,7 @@ pub enum DriveFileUsageHint {
 }
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
+#[macros::derive_clone_and_export(string_enum = "camelCase")]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "muted_note_reason")]
 pub enum MutedNoteReason {
     #[sea_orm(string_value = "manual")]
@@ -54,8 +51,7 @@ pub enum MutedNoteReason {
 }
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
+#[macros::derive_clone_and_export(string_enum = "camelCase")]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "note_visibility")]
 pub enum NoteVisibility {
     #[sea_orm(string_value = "followers")]
@@ -71,8 +67,7 @@ pub enum NoteVisibility {
 }
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
+#[macros::derive_clone_and_export(string_enum = "camelCase")]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "notification_type")]
 pub enum NotificationType {
     #[sea_orm(string_value = "app")]
@@ -102,8 +97,7 @@ pub enum NotificationType {
 }
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
+#[macros::derive_clone_and_export(string_enum = "camelCase")]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "page_visibility")]
 pub enum PageVisibility {
     #[sea_orm(string_value = "followers")]
@@ -115,8 +109,7 @@ pub enum PageVisibility {
 }
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
+#[macros::derive_clone_and_export(string_enum = "camelCase")]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
@@ -134,8 +127,7 @@ pub enum PollNoteVisibility {
 }
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
+#[macros::derive_clone_and_export(string_enum = "camelCase")]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "relay_status")]
 pub enum RelayStatus {
     #[sea_orm(string_value = "accepted")]
@@ -147,8 +139,7 @@ pub enum RelayStatus {
 }
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
+#[macros::derive_clone_and_export(string_enum = "camelCase")]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
@@ -166,8 +157,7 @@ pub enum UserEmojiModPerm {
 }
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
+#[macros::derive_clone_and_export(string_enum = "camelCase")]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
@@ -183,8 +173,7 @@ pub enum UserProfileFfvisibility {
 }
 #[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[cfg_attr(not(feature = "napi"), derive(Clone))]
-#[cfg_attr(feature = "napi", napi_derive::napi(string_enum = "camelCase"))]
+#[macros::derive_clone_and_export(string_enum = "camelCase")]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",

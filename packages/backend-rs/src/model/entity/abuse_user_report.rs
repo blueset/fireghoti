@@ -6,10 +6,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 #[sea_orm(table_name = "abuse_user_report")]
-#[cfg_attr(
-    feature = "napi",
-    napi_derive::napi(object, js_name = "AbuseUserReport", use_nullable = true)
-)]
+#[macros::export(object, js_name = "AbuseUserReport")]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,
