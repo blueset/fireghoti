@@ -36,7 +36,7 @@ let instanceMeta: entities.DetailedInstanceMetadata = {
 	emojis: [],
 	ads: [],
 	langs: [],
-	moreUrls: {},
+	moreUrls: [],
 	repositoryUrl: "https://firefish.dev/firefish/firefish",
 	feedbackUrl: "https://firefish.dev/firefish/firefish/-/issues",
 	defaultDarkTheme: null,
