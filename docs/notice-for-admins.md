@@ -10,7 +10,15 @@ Please take a look at #10947.
 
 ### For all users
 
-This is not related to the recent changes, but we have added a new section called "[Maintain the server](https://firefish.dev/firefish/firefish/-/blob/develop/docs/install.md#maintain-the-server)" in the installation guide. We suggest that you take a look at it. (and we welcome your docs contributions!)
+This is not related to the recent changes, but we have added a new section called "[Maintain the server](https://firefish.dev/firefish/firefish/-/blob/develop/docs/install.md#maintain-the-server)" in the installation guide. We suggest that you take a look at it (and we welcome your docs contributions)!
+
+### For systemd/pm2 users
+
+[Node.js will release a new security fix on July 8th](<https://nodejs.org/en/blog/vulnerability/july-2024-security-releases>). It is highly recommended that you upgrade your Node.js version once it's released.
+
+### For Docker/Podman users
+
+[Node.js will release a new security fix on July 8th](<https://nodejs.org/en/blog/vulnerability/july-2024-security-releases>). Once it's released and the [docker.io/node](<https://hub.docker.com/_/node>) image is updated, we'll rebuild the OCI image based on the new `docker.io/node` image and reupload it as [`registry.firefish.dev/firefish/firefish:latest`](<https://firefish.dev/firefish/firefish/container_registry/1>).
 
 ### For systemd/pm2 users
 

@@ -15,4 +15,5 @@ pub mod nyaify;
 pub mod password;
 pub mod reaction;
 pub mod remove_old_attestation_challenges;
+pub mod should_nyaify;
 pub mod system_info;

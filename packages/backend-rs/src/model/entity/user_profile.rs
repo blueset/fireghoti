@@ -68,13 +68,13 @@ pub struct Model {
     pub is_indexable: bool,
     #[sea_orm(column_name = "mutedPatterns")]
     pub muted_patterns: Vec<String>,
+    #[sea_orm(column_type = "JsonBinary")]
+    pub mentions: Json,
     #[sea_orm(column_name = "mutedInstances")]
     pub muted_instances: Vec<String>,
     #[sea_orm(column_name = "mutedWords")]
     pub muted_words: Vec<String>,
     pub lang: Option<String>,
-    #[sea_orm(column_type = "JsonBinary")]
-    pub mentions: Json,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

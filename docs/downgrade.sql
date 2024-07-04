@@ -5,6 +5,7 @@ DELETE FROM "migrations" WHERE name IN (
     'SwSubscriptionAccessToken1709395223611',
     'UserProfileMentions1711075007936',
     'ClientCredentials1713108561474',
+    'TurnOffCatLanguage1720107645050',
     'RefactorScheduledPosts1716804636187',
     'RemoveEnumTypenameSuffix1716462794927',
     'CreateScheduledNote1714728200194',
@@ -51,6 +52,9 @@ ALTER TABLE "user_profile" DROP COLUMN "mentions";
 
 -- client-credential-support
 ALTER TABLE "access_token" ALTER COLUMN "userId" SET NOT NULL;
+
+-- turn-off-cat-language
+ALTER TABLE "user" DROP COLUMN "readCatLanguage";
 
 -- refactor-scheduled-post
 CREATE TABLE "scheduled_note" (

@@ -92,22 +92,29 @@ export async function importCkPost(
 		logger.info("Post updated");
 	}
 	if (note == null) {
-		note = await create(user, {
-			createdAt: createdAt,
-			files: files.length === 0 ? undefined : files,
-			poll: undefined,
-			text: text || undefined,
-			reply: post.replyId ? job.data.parent : null,
-			renote: post.renoteId ? job.data.parent : null,
-			cw: cw,
-			localOnly,
-			visibility: visibility,
-			visibleUsers: [],
-			channel: null,
-			apMentions: new Array(0),
-			apHashtags: undefined,
-			apEmojis: undefined,
-		});
+		note = await create(
+			user,
+			{
+				createdAt: createdAt,
+				scheduledAt: undefined,
+				files: files.length === 0 ? undefined : files,
+				poll: undefined,
+				text: text || undefined,
+				reply: post.replyId ? job.data.parent : null,
+				renote: post.renoteId ? job.data.parent : null,
+				cw: cw,
+				localOnly,
+				visibility: visibility,
+				visibleUsers: [],
+				channel: null,
+				apMentions: new Array(0),
+				apHashtags: undefined,
+				apEmojis: undefined,
+			},
+			false,
+			undefined,
+			true,
+		);
 		logger.debug("New post has been created");
 	} else {
 		logger.info("This post already exists");

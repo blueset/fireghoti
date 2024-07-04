@@ -67,8 +67,8 @@ importers:
         specifier: 1.7.0
         version: 1.7.0
       '@redocly/openapi-core':
-        specifier: 1.17.0
-        version: 1.17.0
+        specifier: 1.17.1
+        version: 1.17.1
       '@sinonjs/fake-timers':
         specifier: 11.2.2
         version: 11.2.2
@@ -88,8 +88,8 @@ importers:
         specifier: 0.5.0
         version: 0.5.0
       aws-sdk:
-        specifier: 2.1653.0
-        version: 2.1653.0
+        specifier: 2.1654.0
+        version: 2.1654.0
       axios:
         specifier: 1.7.2
         version: 1.7.2
@@ -100,8 +100,8 @@ importers:
         specifier: 2.0.5
         version: 2.0.5
       bull:
-        specifier: 4.15.0
-        version: 4.15.0
+        specifier: 4.15.1
+        version: 4.15.1
       cacheable-lookup:
         specifier: git+https://github.com/TheEssem/cacheable-lookup.git#dd2fb616366a3c68dcf321a57a67295967b204bf
         version: https://codeload.github.com/TheEssem/cacheable-lookup/tar.gz/dd2fb616366a3c68dcf321a57a67295967b204bf
@@ -500,8 +500,8 @@ importers:
         specifier: 5.92.1
         version: 5.92.1
       ws:
-        specifier: 8.17.1
-        version: 8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+        specifier: 8.18.0
+        version: 8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
 
   packages/backend-rs:
     devDependencies:
@@ -2099,8 +2099,8 @@ packages:
   '@redocly/config@0.6.2':
     resolution: {integrity: sha512-c3K5u64eMnr2ootPcpEI0ioIRLE8QP8ptvLxG9MwAmb2sU8HMRfVwXDU3AZiMVY2w4Ts0mDc+Xv4HTIk8DRqFw==}
 
-  '@redocly/openapi-core@1.17.0':
-    resolution: {integrity: sha512-XoNIuksnOGAzAcfpyJkHrMxwurXaQfglnovNE7/pTx4OEjik3OT91+tKAyRCkklVCdMtAA3YokGMZzdhjViUWA==}
+  '@redocly/openapi-core@1.17.1':
+    resolution: {integrity: sha512-PQxDLLNk5cBatJBBxvfk49HFw/nVozw1XZ6Dw/GX0Tviq+WxeEjEuLAKfnLVvb5L0wgs4TNmVG4Y+JyofSPu1A==}
     engines: {node: '>=14.19.0', npm: '>=7.0.0'}
 
   '@rollup/plugin-alias@5.1.0':
@@ -2839,8 +2839,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  aws-sdk@2.1653.0:
-    resolution: {integrity: sha512-9f42kuLpMcL1EPZOsLM8u6wlnOMtFwED1b24SN0fBbi/N7N1xTLZ7vbEMt/haz06Lc3Vr3VMDyv0atfMmkboBw==}
+  aws-sdk@2.1654.0:
+    resolution: {integrity: sha512-b5ryvXipBJod9Uh1GUfQNgi5tIIiluxJbyqr/hZ/mr5U8WxrrfjVq3nGnx5JjevFKYRqXIywhumsVyanfACzFA==}
     engines: {node: '>= 10.0.0'}
 
   axios@0.24.0:
@@ -2981,8 +2981,8 @@ packages:
     resolution: {integrity: sha512-4T53u4PdgsXqKaIctwF8ifXlRTTmEPJ8iEPWFdGZvcf7sbwYo6FKFEX9eNNAnzFZ7EzJAQ3CJeOtCRA4rDp7Pw==}
     engines: {node: '>=6.14.2'}
 
-  bull@4.15.0:
-    resolution: {integrity: sha512-nOEAfUXwUXtFbRPQP3bWCwpQ/NAerAu2Nym/ucv5C1E+Qh2x6RGdKKsYIfZam4mYncayTynTUN/HLhRgGi2N8w==}
+  bull@4.15.1:
+    resolution: {integrity: sha512-knVKiZdrXbRkB+fWqNryDz85b3JfsT3dBrZexkztwvTH/AFmpHvsC933VB3JX18aJCz47E+xdO57xbDvxljoAg==}
     engines: {node: '>=12'}
 
   busboy@1.6.0:
@@ -6856,8 +6856,8 @@ packages:
     resolution: {integrity: sha512-7KxauUdBmSdWnmpaGFg+ppNjKF8uNLry8LyzjauQDOVONfFLNKrKvQOxZ/VuTIcS/gge/YNahf5RIIQWTSarlg==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
 
-  ws@8.17.1:
-    resolution: {integrity: sha512-6XQFvXTkbfUOZOKKILFG1PDK2NDQs4azKQl26T0YS5CxqWLgXajbPZ+h4gZekJyRqFU8pvnbAbbs/3TgRPy+GQ==}
+  ws@8.18.0:
+    resolution: {integrity: sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -8229,7 +8229,7 @@ snapshots:
 
   '@redocly/config@0.6.2': {}
 
-  '@redocly/openapi-core@1.17.0':
+  '@redocly/openapi-core@1.17.1':
     dependencies:
       '@redocly/ajv': 8.11.0
       '@redocly/config': 0.6.2
@@ -9028,7 +9028,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.0.0
 
-  aws-sdk@2.1653.0:
+  aws-sdk@2.1654.0:
     dependencies:
       buffer: 4.9.2
       events: 1.1.1
@@ -9223,7 +9223,7 @@ snapshots:
     dependencies:
       node-gyp-build: 4.8.1
 
-  bull@4.15.0:
+  bull@4.15.1:
     dependencies:
       cron-parser: 4.9.0
       get-port: 5.1.1
@@ -11130,7 +11130,7 @@ snapshots:
       whatwg-encoding: 3.1.1
       whatwg-mimetype: 4.0.0
       whatwg-url: 14.0.0
-      ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      ws: 8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       xml-name-validator: 5.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -13323,7 +13323,7 @@ snapshots:
       imurmurhash: 0.1.4
       signal-exit: 3.0.7
 
-  ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10):
+  ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10):
     optionalDependencies:
       bufferutil: 4.0.8
       utf-8-validate: 5.0.10

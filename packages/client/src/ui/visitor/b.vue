@@ -110,6 +110,10 @@ provideMetadataReceiver((info) => {
 });
 
 const root = computed(() => mainRouter.currentRoute.value?.name === "index");
+const showMenu = ref(false);
+const isDesktop = ref(window.innerWidth >= DESKTOP_THRESHOLD);
+const narrow = ref(window.innerWidth < 1280);
+const meta = ref();
 
 os.api("meta", { detail: true }).then((res) => {
 	meta.value = res;

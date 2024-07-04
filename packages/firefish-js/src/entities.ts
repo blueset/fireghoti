@@ -30,6 +30,7 @@ export type UserLite = {
 	isIndexable: boolean;
 	isCat?: boolean;
 	speakAsCat?: boolean;
+	readCatLanguage?: boolean;
 	driveCapacityOverrideMb: number | null;
 };
 
@@ -395,7 +396,7 @@ export type DetailedInstanceMetadata = LiteInstanceMetadata & {
 		miauth?: boolean;
 	};
 	langs: string[];
-	moreUrls: object;
+	moreUrls: { name: string; url: string }[];
 	repositoryUrl: string;
 	feedbackUrl: string;
 	defaultDarkTheme: string | null;

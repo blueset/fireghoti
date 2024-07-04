@@ -464,7 +464,8 @@ export const UserRepository = db.getRepository(User).extend({
 			isLocked: user.isLocked,
 			isIndexable: user.isIndexable,
 			isCat: user.isCat || falsy,
-			speakAsCat: user.speakAsCat || falsy,
+			speakAsCat: user.speakAsCat,
+			readCatLanguage: user.readCatLanguage,
 			instance: user.host
 				? userInstanceCache
 						.fetch(

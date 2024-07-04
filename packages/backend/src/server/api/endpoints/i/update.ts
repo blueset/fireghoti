@@ -114,6 +114,7 @@ export const paramDef = {
 		isBot: { type: "boolean" },
 		isCat: { type: "boolean" },
 		speakAsCat: { type: "boolean", nullable: true },
+		readCatLanguage: { type: "boolean", nullable: true },
 		isIndexable: { type: "boolean" },
 		injectFeaturedNote: { type: "boolean" },
 		receiveAnnouncementEmail: { type: "boolean" },
@@ -220,6 +221,8 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 		profileUpdates.isIndexable = ps.isIndexable;
 	}
 	if (typeof ps.speakAsCat === "boolean") updates.speakAsCat = ps.speakAsCat;
+	if (typeof ps.readCatLanguage === "boolean")
+		updates.readCatLanguage = ps.readCatLanguage;
 	if (typeof ps.injectFeaturedNote === "boolean")
 		profileUpdates.injectFeaturedNote = ps.injectFeaturedNote;
 	if (typeof ps.receiveAnnouncementEmail === "boolean")

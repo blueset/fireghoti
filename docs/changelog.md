@@ -7,8 +7,9 @@ Critical security updates are indicated by the :warning: icon.
 
 ## Unreleased
 
-- Fix bugs
 - Mastodon API implementation was ported from Iceshrimp, with added Firefish extensions including push notifications, post languages, schedule post support, and more. (#10880)
+- Add ability to disable the cat language conversion (nyaification)
+- Fix bugs
 
 ### Acknowledgement 
 

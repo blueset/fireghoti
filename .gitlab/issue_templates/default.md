@@ -90,6 +90,8 @@ By submitting this issue, you agree to follow our [Contribution Guidelines](http
 	However, we are currently so understaffed that it is virtually impossible to
 	respond to every single proposal. So, feel free to implement it if there is no response
 	for more than a week or there is a thumbs-up emoji reaction from the project maintainer(s).
+
+	Many thanks for your involvement!
 -->
 
 
