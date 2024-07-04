@@ -33,7 +33,13 @@ pub async fn should_nyaify(reader_user_id: &str) -> Result<bool, Error> {
         .await?
         .ok_or_else(|| Error::NotFound(reader_user_id.to_owned()))?;
 
-    cache::set_one(cache::Category::CatLang, reader_user_id, &fetched_value, 10 * 60).await?;
+    cache::set_one(
+        cache::Category::CatLang,
+        reader_user_id,
+        &fetched_value,
+        10 * 60,
+    )
+    .await?;
 
     Ok(fetched_value)
 }
