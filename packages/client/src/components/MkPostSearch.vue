@@ -78,7 +78,7 @@
 				<MkButton inline primary @click="search"
 					>{{ i18n.ts.search }}
 				</MkButton>
-				<MkButton inline @click="lookup">{{ i18n.ts.lookup }}</MkButton>
+				<MkButton inline primary @click="lookup">{{ i18n.ts.lookup }}</MkButton>
 				<MkButton inline @click="cancel">{{ i18n.ts.cancel }}</MkButton>
 			</div>
 		</div>
