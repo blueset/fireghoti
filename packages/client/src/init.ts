@@ -61,9 +61,11 @@ function checkForSplash() {
 	if (splash) {
 		splash.style.opacity = "0";
 		splash.style.pointerEvents = "none";
-		splash.addEventListener("transitionend", () => {
+
+		// remove splash screen
+		window.setTimeout(() => {
 			splash.remove();
-		});
+		}, 1000);
 	}
 }
 
