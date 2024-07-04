@@ -2089,3 +2089,4 @@ cancelScheduledPost: 予約を解除する
 scheduledPostAt: '{time}に投稿されます'
 strongPassword: 強いパスワード
 addAlt4MeTag: '説明の無いファイルを投稿する際に自動で #Alt4Me のハッシュタグをつける'
+turnOffCatLanguage: 猫語への変換を無効化する
