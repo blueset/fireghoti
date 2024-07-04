@@ -5,10 +5,9 @@ import { set, get } from "idb-keyval";
 
 // TODO: 他のタブと永続化されたstateを同期
 
-// TODO: get("instance") requires top-level await
-// TODO: fallback to defaults more nicely
+// TODO: fallback to defaults more nicely (with #10947)
 // default values
-let instance: entities.DetailedInstanceMetadata = {
+let instanceMeta: entities.DetailedInstanceMetadata = {
 	maintainerName: "",
 	maintainerEmail: "",
 	version: "",
@@ -66,15 +65,16 @@ let instance: entities.DetailedInstanceMetadata = {
 	},
 };
 
+// get("instanceMeta") requires top-level await
 export function getInstanceInfo(): entities.DetailedInstanceMetadata {
-	return instance;
+	return instanceMeta;
 }
 
 export async function initializeInstanceCache(): Promise<void> {
 	// Is the data stored in IndexDB?
-	const fromIdb = await get<string>("instance");
+	const fromIdb = await get<string>("instanceMeta");
 	if (fromIdb != null) {
-		instance = JSON.parse(fromIdb);
+		instanceMeta = JSON.parse(fromIdb);
 	}
 	// Call API
 	updateInstanceCache();
@@ -86,24 +86,24 @@ export async function updateInstanceCache(): Promise<void> {
 	});
 
 	for (const [k, v] of Object.entries(meta)) {
-		instance[k] = v;
+		instanceMeta[k] = v;
 	}
-	set("instance", JSON.stringify(instance));
+	set("instanceMeta", JSON.stringify(instanceMeta));
 }
 
 export const emojiCategories = computed(() => {
-	if (instance.emojis == null) return [];
+	if (instanceMeta.emojis == null) return [];
 	const categories = new Set();
-	for (const emoji of instance.emojis) {
+	for (const emoji of instanceMeta.emojis) {
 		categories.add(emoji.category);
 	}
 	return Array.from(categories);
 });
 
 export const emojiTags = computed(() => {
-	if (instance.emojis == null) return [];
+	if (instanceMeta.emojis == null) return [];
 	const tags = new Set();
-	for (const emoji of instance.emojis) {
+	for (const emoji of instanceMeta.emojis) {
 		for (const tag of emoji.aliases) {
 			tags.add(tag);
 		}
