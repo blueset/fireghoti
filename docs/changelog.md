@@ -7,6 +7,7 @@ Critical security updates are indicated by the :warning: icon.
 
 ## Unreleased
 
+- Add ability to disable the cat language conversion (nyaification)
 - Fix bugs
 
 ## [v20240630](https://firefish.dev/firefish/firefish/-/merge_requests/11072/commits)

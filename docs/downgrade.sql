@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'TurnOffCatLanguage1720107645050',
     'RefactorScheduledPosts1716804636187',
     'RemoveEnumTypenameSuffix1716462794927',
     'CreateScheduledNote1714728200194',
@@ -33,6 +34,9 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- turn-off-cat-language
+ALTER TABLE "user" DROP COLUMN "readCatLanguage";
 
 -- refactor-scheduled-post
 CREATE TABLE "scheduled_note" (

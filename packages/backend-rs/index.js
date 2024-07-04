@@ -432,6 +432,7 @@ module.exports.removeOldAttestationChallenges = nativeBinding.removeOldAttestati
 module.exports.safeForSql = nativeBinding.safeForSql
 module.exports.SECOND = nativeBinding.SECOND
 module.exports.sendPushNotification = nativeBinding.sendPushNotification
+module.exports.shouldNyaify = nativeBinding.shouldNyaify
 module.exports.showServerInfo = nativeBinding.showServerInfo
 module.exports.sqlLikeEscape = nativeBinding.sqlLikeEscape
 module.exports.storageUsage = nativeBinding.storageUsage

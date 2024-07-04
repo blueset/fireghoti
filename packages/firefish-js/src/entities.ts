@@ -30,6 +30,7 @@ export type UserLite = {
 	isIndexable: boolean;
 	isCat?: boolean;
 	speakAsCat?: boolean;
+	readCatLanguage?: boolean;
 	driveCapacityOverrideMb: number | null;
 };
 

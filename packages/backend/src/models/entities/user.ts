@@ -160,6 +160,12 @@ export class User {
 	public speakAsCat: boolean;
 
 	@Column("boolean", {
+		default: true,
+		comment: "Whether to enable the cat language conversion.",
+	})
+	public readCatLanguage: boolean;
+
+	@Column("boolean", {
 		default: false,
 		comment: "Whether the User is the admin.",
 	})

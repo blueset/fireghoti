@@ -77,6 +77,8 @@ pub struct Model {
     pub is_indexable: bool,
     #[sea_orm(column_name = "alsoKnownAs")]
     pub also_known_as: Option<Vec<String>>,
+    #[sea_orm(column_name = "readCatLanguage")]
+    pub read_cat_language: bool,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

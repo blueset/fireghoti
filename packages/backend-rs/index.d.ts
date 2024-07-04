@@ -1295,6 +1295,8 @@ export interface Services {
   outbound: Array<Outbound>
 }
 
+export declare function shouldNyaify(readerUserId: string): Promise<boolean>
+
 /** Prints the server hardware information as the server info log. */
 export declare function showServerInfo(): void
 
@@ -1416,6 +1418,7 @@ export interface User {
   emojiModPerm: UserEmojiModPerm
   isIndexable: boolean
   alsoKnownAs: Array<string> | null
+  readCatLanguage: boolean
 }
 
 export const USER_ACTIVE_THRESHOLD: number

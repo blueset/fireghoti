@@ -200,6 +200,11 @@
 					i18n.ts.expandOnNoteClickDesc
 				}}</template>
 			</FormSwitch>
+			<FormSwitch v-model="turnOffCatLanguage" @update:modelValue="save()" class="_formBlock"
+				>{{ i18n.ts.turnOffCatLanguage }}<template #caption>{{
+					i18n.ts.reflectMayTakeTime
+				}}</template>
+			</FormSwitch>
 			<FormSwitch v-model="advancedMfm" class="_formBlock">
 				{{ i18n.ts._mfm.advanced
 				}}<template #caption>{{
@@ -423,6 +428,13 @@ const serverLang = ref(me?.lang);
 const translateLang = ref(localStorage.getItem("translateLang"));
 const fontSize = ref(localStorage.getItem("fontSize"));
 const useSystemFont = ref(localStorage.getItem("useSystemFont") !== "f");
+const turnOffCatLanguage = ref(!me?.readCatLanguage);
+
+function save() {
+	os.api("i/update", {
+		readCatLanguage: !turnOffCatLanguage.value,
+	});
+}
 
 async function reloadAsk() {
 	const { canceled } = await os.confirm({

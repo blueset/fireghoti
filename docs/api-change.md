@@ -2,6 +2,10 @@
 
 Breaking changes are indicated by the :warning: icon.
 
+## Unreleased
+
+- Added `readCatLanguage` field to the response of `i` and request of `i/update` (optional).
+
 ## v20240607
 
 - `GET` request is now allowed for the `latest-version` endpoint.

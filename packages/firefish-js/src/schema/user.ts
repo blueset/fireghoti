@@ -76,6 +76,11 @@ export const packedUserLiteSchema = {
 			nullable: false,
 			optional: true,
 		},
+		readCatLanguage: {
+			type: "boolean",
+			nullable: false,
+			optional: true,
+		},
 		emojis: {
 			type: "array",
 			nullable: false,
