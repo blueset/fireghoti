@@ -6,7 +6,65 @@ import { set, get } from "idb-keyval";
 // TODO: 他のタブと永続化されたstateを同期
 
 // TODO: get("instance") requires top-level await
-let instance: entities.DetailedInstanceMetadata;
+// TODO: fallback to defaults more nicely
+// default values
+let instance: entities.DetailedInstanceMetadata = {
+	maintainerName: "",
+	maintainerEmail: "",
+	version: "",
+	name: null,
+	uri: "",
+	tosUrl: null,
+	description: null,
+	disableRegistration: true,
+	disableLocalTimeline: false,
+	disableGlobalTimeline: false,
+	disableRecommendedTimeline: true,
+	enableGuestTimeline: false,
+	driveCapacityPerLocalUserMb: 1000,
+	driveCapacityPerRemoteUserMb: 0,
+	antennaLimit: 5,
+	enableHcaptcha: false,
+	hcaptchaSiteKey: null,
+	enableRecaptcha: false,
+	recaptchaSiteKey: null,
+	swPublickey: null,
+	maxNoteTextLength: 3000,
+	maxCaptionTextLength: 1500,
+	enableEmail: false,
+	enableServiceWorker: false,
+	markLocalFilesNsfwByDefault: false,
+	emojis: [],
+	ads: [],
+	langs: [],
+	moreUrls: {},
+	repositoryUrl: "https://firefish.dev/firefish/firefish",
+	feedbackUrl: "https://firefish.dev/firefish/firefish/-/issues",
+	defaultDarkTheme: null,
+	defaultLightTheme: null,
+	defaultReaction: "⭐",
+	cacheRemoteFiles: false,
+	proxyAccountName: null,
+	emailRequiredForSignup: false,
+	mascotImageUrl: "",
+	bannerUrl: "",
+	backgroundImageUrl: "",
+	errorImageUrl: "",
+	iconUrl: null,
+	requireSetup: false,
+	translatorAvailable: false,
+	features: {
+		registration: false,
+		localTimeLine: true,
+		recommendedTimeLine: false,
+		globalTimeLine: true,
+		searchFilters: true,
+		hcaptcha: false,
+		recaptcha: false,
+		objectStorage: false,
+		serviceWorker: false,
+	},
+};
 
 export function getInstanceInfo(): entities.DetailedInstanceMetadata {
 	return instance;
@@ -27,13 +85,9 @@ export async function updateInstanceCache(): Promise<void> {
 		detail: true,
 	});
 
-	// TODO: set default values
-	instance = {} as entities.DetailedInstanceMetadata;
-
 	for (const [k, v] of Object.entries(meta)) {
 		instance[k] = v;
 	}
-
 	set("instance", JSON.stringify(instance));
 }
 

@@ -25,10 +25,11 @@ export async function masterMain() {
 	// initialize app
 	try {
 		greet();
-		showEnvironment();
 		showServerInfo();
+		showEnvironment();
 		showNodejsVersion();
 		await connectDb();
+		await updateMetaCache();
 	} catch (e) {
 		bootLogger.error(
 			`Fatal error occurred during initialization:\n${inspect(e)}`,
