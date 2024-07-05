@@ -101,7 +101,7 @@ It is highly encouraged that you write unit tests and test the code yourself (th
 ## Prerequisites
 
 1. `dev/config.env` (see `dev/config.example.env` for reference)
-2. PostgreSQL and Redis/Valkey instances and the config file (`.config/default.yml`)
+2. Firefish config file (`.config/default.yml`)
 3. Dev dependency
     - [cargo-nextest](<https://nexte.st/>)
 

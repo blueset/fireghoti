@@ -51,7 +51,7 @@ define_wrapper_proc_macro_attributes! {
     /// #[cfg_attr(feature = "napi", macros::napi(attr))]
     /// # fn f() {} // to work around doc test compilation error
     /// ```
-    /// where `attr` is given attribute(s). See [macro@napi] for more details.
+    /// where `attr` is given attribute(s). See [macro@napi] and [macros_impl::napi::napi] for more details.
     export(attr, item) {
         #[cfg_attr(feature = "napi", macros::napi(#attr))]
         #item
