@@ -42,7 +42,7 @@ variables:
   CARGO_PROFILE_DEV_LTO: 'off'
   CARGO_PROFILE_DEV_DEBUG: 'none'
   CARGO_TERM_COLOR: 'always'
-  GIT_CLEAN_FLAGS: -ffdx -e node_modules/ -e built/ -e target/ -e packages/backend-rs/built/
+  GIT_CLEAN_FLAGS: -ffdx -e node_modules/ -e built/ -e target/ -e packages/backend-rs/built/ -e ci/target-msrv/
 
 default:
   before_script:
@@ -247,6 +247,7 @@ cargo:check:msrv:
     - apt-get update && apt-get -y upgrade
     - apt-get install -y --no-install-recommends build-essential clang mold python3 perl nodejs postgresql-client
     - cp ci/cargo/config.toml /usr/local/cargo/config.toml
+    - export CARGO_TARGET_DIR='ci/target-msrv'
   script:
     - cargo fetch --locked --manifest-path Cargo.toml
     - cargo check --locked --frozen --all-features
