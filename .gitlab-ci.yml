@@ -328,10 +328,12 @@ cargo:test:miri:
     - if: $MIRI
   script:
     - export RUST_BACKTRACE=1
+    - export CARGO_TARGET_DIR='ci/target-miri'
+    - export MIRI_NIGHTLY=nightly-$(curl -s https://rust-lang.github.io/rustup-components-history/x86_64-unknown-linux-gnu/miri)
     - curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C /usr/local/cargo/bin
-    - rustup default nightly
+    - rustup set profile minimal
+    - rustup override set "${MIRI_NIGHTLY}"
     - rustup component add miri
-    - rustup update
     - MIRIFLAGS='-Zmiri-disable-isolation' cargo miri nextest run -j$(nproc --all)
 
 renovate:
