@@ -1,13 +1,13 @@
 use crate::service::stream::{publish_to_stream, Error, Stream};
 
-#[macros::export]
+#[macros::export(string_enum = "camelCase")]
 pub enum DriveFileEvent {
     Create,
     Update,
     Delete,
 }
 
-#[macros::export]
+#[macros::export(string_enum = "camelCase")]
 pub enum DriveFolderEvent {
     Create,
     Update,

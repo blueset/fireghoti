@@ -97,14 +97,12 @@ export interface Antenna {
   excludeKeywords: Array<string>
 }
 
-export enum AntennaSrc {
-  All = 'all',
-  Group = 'group',
-  Home = 'home',
-  Instances = 'instances',
-  List = 'list',
-  Users = 'users'
-}
+export type AntennaSrc =  'all'|
+'group'|
+'home'|
+'instances'|
+'list'|
+'users';
 
 export interface App {
   id: string
@@ -166,17 +164,13 @@ export interface ChannelNotePining {
   noteId: string
 }
 
-export enum ChatEvent {
-  Message = 0,
-  Read = 1,
-  Deleted = 2,
-  Typing = 3
-}
+export type ChatEvent =  'message'|
+'read'|
+'deleted'|
+'typing';
 
-export enum ChatIndexEvent {
-  Message = 0,
-  Read = 1
-}
+export type ChatIndexEvent =  'message'|
+'read';
 
 /**
  * Returns whether `note` should be hard-muted.
@@ -330,16 +324,12 @@ export interface DriveFile {
   usageHint: DriveFileUsageHint | null
 }
 
-export enum DriveFileEvent {
-  Create = 0,
-  Update = 1,
-  Delete = 2
-}
+export type DriveFileEvent =  'create'|
+'update'|
+'delete';
 
-export enum DriveFileUsageHint {
-  UserAvatar = 'userAvatar',
-  UserBanner = 'userBanner'
-}
+export type DriveFileUsageHint =  'userAvatar'|
+'userBanner';
 
 export interface DriveFolder {
   id: string
@@ -349,11 +339,9 @@ export interface DriveFolder {
   parentId: string | null
 }
 
-export enum DriveFolderEvent {
-  Create = 0,
-  Update = 1,
-  Delete = 2
-}
+export type DriveFolderEvent =  'create'|
+'update'|
+'delete';
 
 export interface EmailConfig {
   managed?: boolean
@@ -513,7 +501,7 @@ export interface ImageSize {
 }
 
 /** The third party sites this server can retrieve messages from for combined display with regular traffic. */
-export enum Inbound {
+export declare enum Inbound {
   Atom1 = 0,
   Gnusocial = 1,
   Imap = 2,
@@ -776,12 +764,10 @@ export interface MutedNote {
   reason: MutedNoteReason
 }
 
-export enum MutedNoteReason {
-  Manual = 'manual',
-  Other = 'other',
-  Spam = 'spam',
-  Word = 'word'
-}
+export type MutedNoteReason =  'manual'|
+'other'|
+'spam'|
+'word';
 
 export interface Muting {
   id: string
@@ -903,13 +889,11 @@ export interface NoteUnread {
   noteChannelId: string | null
 }
 
-export enum NoteVisibility {
-  Followers = 'followers',
-  Hidden = 'hidden',
-  Home = 'home',
-  Public = 'public',
-  Specified = 'specified'
-}
+export type NoteVisibility =  'followers'|
+'hidden'|
+'home'|
+'public'|
+'specified';
 
 export interface NoteWatching {
   id: string
@@ -937,20 +921,18 @@ export interface Notification {
   appAccessTokenId: string | null
 }
 
-export enum NotificationType {
-  App = 'app',
-  Follow = 'follow',
-  FollowRequestAccepted = 'followRequestAccepted',
-  GroupInvited = 'groupInvited',
-  Mention = 'mention',
-  PollEnded = 'pollEnded',
-  PollVote = 'pollVote',
-  Quote = 'quote',
-  Reaction = 'reaction',
-  ReceiveFollowRequest = 'receiveFollowRequest',
-  Renote = 'renote',
-  Reply = 'reply'
-}
+export type NotificationType =  'app'|
+'follow'|
+'followRequestAccepted'|
+'groupInvited'|
+'mention'|
+'pollEnded'|
+'pollVote'|
+'quote'|
+'reaction'|
+'receiveFollowRequest'|
+'renote'|
+'reply';
 
 /**
  * Converts the given text into the cat language.
@@ -989,7 +971,7 @@ export interface ObjectStorageConfig {
 }
 
 /** The third party sites this server can publish messages to on the behalf of a user. */
-export enum Outbound {
+export declare enum Outbound {
   Atom1 = 0,
   Blogger = 1,
   Buddycloud = 2,
@@ -1060,11 +1042,9 @@ export interface PageLike {
   pageId: string
 }
 
-export enum PageVisibility {
-  Followers = 'followers',
-  Public = 'public',
-  Specified = 'specified'
-}
+export type PageVisibility =  'followers'|
+'public'|
+'specified';
 
 export interface PartialNoteToCheckWordMute {
   fileIds: Array<string>
@@ -1092,12 +1072,10 @@ export interface Poll {
   userHost: string | null
 }
 
-export enum PollNoteVisibility {
-  Followers = 'followers',
-  Home = 'home',
-  Public = 'public',
-  Specified = 'specified'
-}
+export type PollNoteVisibility =  'followers'|
+'home'|
+'public'|
+'specified';
 
 export interface PollVote {
   id: string
@@ -1120,7 +1098,7 @@ export interface PromoRead {
   noteId: string
 }
 
-export enum Protocol {
+export declare enum Protocol {
   Activitypub = 0,
   Buddycloud = 1,
   Dfrn = 2,
@@ -1163,15 +1141,13 @@ export interface PugArgs {
   privateMode: boolean | null
 }
 
-export enum PushNotificationKind {
-  Generic = 0,
-  Chat = 1,
-  ReadAllChats = 2,
-  ReadAllChatsInTheRoom = 3,
-  ReadNotifications = 4,
-  ReadAllNotifications = 5,
-  Mastodon = 6
-}
+export type PushNotificationKind =  'generic'|
+'chat'|
+'readAllChats'|
+'readAllChatsInTheRoom'|
+'readNotifications'|
+'readAllNotifications'|
+'mastodon';
 
 export interface RedisConfig {
   host: string
@@ -1207,11 +1183,9 @@ export interface Relay {
   status: RelayStatus
 }
 
-export enum RelayStatus {
-  Accepted = 'accepted',
-  Rejected = 'rejected',
-  Requesting = 'requesting'
-}
+export type RelayStatus =  'accepted'|
+'rejected'|
+'requesting';
 
 /** Delete all entries in the [attestation_challenge] table created at more than 5 minutes ago */
 export declare function removeOldAttestationChallenges(): Promise<void>
@@ -1425,12 +1399,10 @@ export const USER_ACTIVE_THRESHOLD: number
 
 export const USER_ONLINE_THRESHOLD: number
 
-export enum UserEmojiModPerm {
-  Add = 'add',
-  Full = 'full',
-  Mod = 'mod',
-  Unauthorized = 'unauthorized'
-}
+export type UserEmojiModPerm =  'add'|
+'full'|
+'mod'|
+'unauthorized';
 
 export interface UserGroup {
   id: string
@@ -1542,26 +1514,22 @@ export interface UserProfile {
   lang: string | null
 }
 
-export enum UserProfileFfvisibility {
-  Followers = 'followers',
-  Private = 'private',
-  Public = 'public'
-}
+export type UserProfileFfvisibility =  'followers'|
+'private'|
+'public';
 
-export enum UserProfileMutingNotificationTypes {
-  App = 'app',
-  Follow = 'follow',
-  FollowRequestAccepted = 'followRequestAccepted',
-  GroupInvited = 'groupInvited',
-  Mention = 'mention',
-  PollEnded = 'pollEnded',
-  PollVote = 'pollVote',
-  Quote = 'quote',
-  Reaction = 'reaction',
-  ReceiveFollowRequest = 'receiveFollowRequest',
-  Renote = 'renote',
-  Reply = 'reply'
-}
+export type UserProfileMutingNotificationTypes =  'app'|
+'follow'|
+'followRequestAccepted'|
+'groupInvited'|
+'mention'|
+'pollEnded'|
+'pollVote'|
+'quote'|
+'reaction'|
+'receiveFollowRequest'|
+'renote'|
+'reply';
 
 export interface UserPublickey {
   userId: string

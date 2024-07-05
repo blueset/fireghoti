@@ -31,7 +31,7 @@ fn get_client() -> Result<IsahcWebPushClient, Error> {
         .cloned()?)
 }
 
-#[macros::export]
+#[macros::export(string_enum = "camelCase")]
 pub enum PushNotificationKind {
     Generic,
     Chat,

@@ -1,4 +1,4 @@
-import { publishToDriveFolderStream, DriveFolderEvent } from "backend-rs";
+import { publishToDriveFolderStream } from "backend-rs";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { DriveFolders } from "@/models/index.js";
@@ -85,10 +85,10 @@ export default define(meta, paramDef, async (ps, user) => {
 					id: folderId,
 				});
 
-				if (folder2!.id === folder!.id) {
+				if (folder2?.id === folder.id) {
 					return true;
-				} else if (folder2!.parentId) {
-					return await checkCircle(folder2!.parentId);
+				} else if (folder2?.parentId) {
+					return await checkCircle(folder2?.parentId);
 				} else {
 					return false;
 				}
@@ -113,11 +113,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	const folderObj = await DriveFolders.pack(folder);
 
 	// Publish folderUpdated event
-	publishToDriveFolderStream(
-		user.id,
-		DriveFolderEvent.Update,
-		toRustObject(folder),
-	);
+	publishToDriveFolderStream(user.id, "update", toRustObject(folder));
 
 	return folderObj;
 });
