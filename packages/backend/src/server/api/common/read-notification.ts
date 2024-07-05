@@ -1,6 +1,6 @@
 import { In } from "typeorm";
 import { publishMainStream } from "@/services/stream.js";
-import { sendPushNotification, PushNotificationKind } from "backend-rs";
+import { sendPushNotification } from "backend-rs";
 import type { User } from "@/models/entities/user.js";
 import type { Notification } from "@/models/entities/notification.js";
 import { Notifications, Users } from "@/models/index.js";
@@ -47,11 +47,7 @@ export async function readNotificationByQuery(
 
 function postReadAllNotifications(userId: User["id"]) {
 	publishMainStream(userId, "readAllNotifications");
-	return sendPushNotification(
-		userId,
-		PushNotificationKind.ReadAllNotifications,
-		{},
-	);
+	return sendPushNotification(userId, "readAllNotifications", {});
 }
 
 function postReadNotifications(
@@ -59,7 +55,7 @@ function postReadNotifications(
 	notificationIds: Notification["id"][],
 ) {
 	publishMainStream(userId, "readNotifications", notificationIds);
-	return sendPushNotification(userId, PushNotificationKind.ReadNotifications, {
+	return sendPushNotification(userId, "readNotifications", {
 		notificationIds,
 	});
 }

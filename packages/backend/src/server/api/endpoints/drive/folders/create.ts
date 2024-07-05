@@ -1,4 +1,4 @@
-import { publishToDriveFolderStream, DriveFolderEvent } from "backend-rs";
+import { publishToDriveFolderStream } from "backend-rs";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { DriveFolders } from "@/models/index.js";
@@ -65,11 +65,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	const folderObj = await DriveFolders.pack(folder);
 
 	// Publish folderCreated event
-	publishToDriveFolderStream(
-		user.id,
-		DriveFolderEvent.Create,
-		toRustObject(folder),
-	);
+	publishToDriveFolderStream(user.id, "create", toRustObject(folder));
 
 	return folderObj;
 });

@@ -413,7 +413,7 @@ sudo --user=postgres psql --command='SHOW data_directory'
 
 ## Tune database configuration
 
-The default PostgreSQL configuration not suitable for running a Firefish server. Thus, it is highly recommended that you use [PGTune](https://pgtune.leopard.in.ua/) to tweak the configuration.
+The default PostgreSQL configuration is not suitable for running a Firefish server. So, it is highly recommended that you use [PGTune](https://pgtune.leopard.in.ua/) to tweak the configuration.
 
 Here is an example set of parameters you can provide to PGTune:
 
@@ -427,7 +427,7 @@ Here is an example set of parameters you can provide to PGTune:
 | Number of connections | 200                                                     |
 |          Data storage | SSD storage                                             |
 
-Since this is not a dedicated database server, be sure to leave some memory space for other software such as Firefish and Redis.
+Since a Firefish server is not a dedicated database server, be sure to leave some memory space for other software such as Firefish, Redis, and reverse proxy.
 
 Once you have entered the appropriate values for your environment, click the "Generate" button to generate a configuration and replace the values in `postgresql.conf` with the suggested values.
 

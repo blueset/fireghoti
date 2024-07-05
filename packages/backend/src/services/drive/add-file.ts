@@ -7,7 +7,6 @@ import sharp from "sharp";
 import { IsNull } from "typeorm";
 import { publishMainStream } from "@/services/stream.js";
 import {
-	DriveFileEvent,
 	FILE_TYPE_BROWSERSAFE,
 	fetchMeta,
 	genId,
@@ -669,11 +668,7 @@ export async function addFile({
 		DriveFiles.pack(file, { self: true }).then((packedFile) => {
 			// Publish driveFileCreated event
 			publishMainStream(user.id, "driveFileCreated", packedFile);
-			publishToDriveFileStream(
-				user.id,
-				DriveFileEvent.Create,
-				toRustObject(file),
-			);
+			publishToDriveFileStream(user.id, "create", toRustObject(file));
 		});
 	}
 

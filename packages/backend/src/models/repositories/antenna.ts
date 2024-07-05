@@ -16,8 +16,10 @@ export const AntennaRepository = db.getRepository(Antenna).extend({
 			id: antenna.id,
 			createdAt: antenna.createdAt.toISOString(),
 			name: antenna.name,
-			keywords: antenna.keywords.map((row) => row.split(" ")),
-			excludeKeywords: antenna.excludeKeywords.map((row) => row.split(" ")),
+			keywords: antenna.keywords.map((row: string) => row.split(" ")),
+			excludeKeywords: antenna.excludeKeywords.map((row: string) =>
+				row.split(" "),
+			),
 			src: antenna.src,
 			userListId: antenna.userListId,
 			userGroupId: userGroupJoining ? userGroupJoining.userGroupId : null,

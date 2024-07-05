@@ -54,7 +54,7 @@ pub enum Stream {
     },
 }
 
-#[macros::export]
+#[macros::export(string_enum = "camelCase")]
 pub enum ChatEvent {
     Message,
     Read,
