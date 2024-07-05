@@ -322,6 +322,18 @@ cargo:doc:
     - cd target/doc
     - npx --yes netlify-cli deploy --prod --site="${CARGO_DOC_SITE_ID}" --dir=.
 
+cargo:test:miri:
+  stage: test
+  rules:
+    - if: $MIRI
+  script:
+    - export RUST_BACKTRACE=1
+    - curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C /usr/local/cargo/bin
+    - rustup default nightly
+    - rustup component add miri
+    - rustup update
+    - MIRIFLAGS='-Zmiri-disable-isolation' cargo miri nextest run -j$(nproc --all)
+
 renovate:
   stage: dependency
   image:
