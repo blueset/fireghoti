@@ -58,6 +58,7 @@ import { userPage } from "@/filters/user";
 import { i18n } from "@/i18n";
 import { pageWindow } from "@/os";
 import icon from "@/scripts/icon";
+import { me, isSignedIn } from "@/me";
 
 const props = defineProps<{
 	note: entities.Note;
@@ -71,6 +72,8 @@ const showTicker =
 
 function openServerInfo() {
 	if (!props.canOpenServerInfo || !defaultStore.state.openServerInfo) return;
+	if (props.note.user.host != null && !isSignedIn(me)) return;
+
 	const instanceInfoUrl =
 		props.note.user.host == null
 			? "/about"
