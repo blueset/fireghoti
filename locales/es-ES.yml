@@ -2152,7 +2152,6 @@ detectPostLanguage: Detectar automáticamente el idioma y mostrar el botón de t
 indexableDescription: Permitir que el buscador integrado muestre tus publicaciones
 reactions: Reacciones
 exportZip: Exportar ZIP
-emojiPackCreator: Creador de pack de Emoji
 importZip: Importar ZIP
 vibrate: Reproducir vibraciones
 openServerInfo: Mostrar información del servidor al presionar el simbolo del servidor

@@ -2113,7 +2113,6 @@ removeMember: Удалить участника
 confirm: Подтвердить
 importZip: Импортировать ZIP
 exportZip: Экспортировать ZIP
-emojiPackCreator: Генератор паков эмодзи
 objectStorageS3ForcePathStyle: Использовать путь вместо домена в URL
 objectStorageS3ForcePathStyleDesc: Включите, если хотите, чтобы URL был в формате
   's3.amazonaws.com/<bucket>/' вместо '<bucket>.s3.amazonaws.com'.
