@@ -6,7 +6,7 @@ resolver = "2"
 macros = { path = "packages/macro-rs/macros" }
 macros-impl = { path = "packages/macro-rs/macros-impl" }
 
-napi = "3.0.0-alpha.4"
+napi = "3.0.0-alpha.5"
 napi-derive = "3.0.0-alpha.3"
 napi-build = "2.1.3"
 
