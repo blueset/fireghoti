@@ -14,11 +14,14 @@ This is not related to the recent changes, but we have added a new section calle
 
 ### For systemd/pm2 users
 
-[Node.js will release a new security fix on July 8th](<https://nodejs.org/en/blog/vulnerability/july-2024-security-releases>). It is highly recommended that you upgrade your Node.js version once it's released.
+It is highly recommended that you upgrade Node.js, since [there is a new security release](<https://nodejs.org/en/blog/vulnerability/july-2024-security-releases>).
 
-### For Docker/Podman users
+The new versions are:
+  - Node v18.20.4 (v18.x LTS)
+  - Node v20.15.1 (v20.x LTS)
+  - Node v22.4.1 (v22.x)
 
-[Node.js will release a new security fix on July 8th](<https://nodejs.org/en/blog/vulnerability/july-2024-security-releases>). Once it's released and the [docker.io/node](<https://hub.docker.com/_/node>) image is updated, we'll rebuild the OCI image based on the new `docker.io/node` image and reupload it as [`registry.firefish.dev/firefish/firefish:latest`](<https://firefish.dev/firefish/firefish/container_registry/1>).
+[Node v21.x is end-of-life](<https://github.com/nodejs/Release?tab=readme-ov-file#end-of-life-releases>).
 
 ## v20240607
 
