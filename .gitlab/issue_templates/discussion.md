@@ -21,6 +21,7 @@
 <!-- /label Mobile -->
 <!-- /label Third-party-client -->
 <!-- /label Docs -->
+<!-- /label Locale -->
 <!-- /label "Build from source" -->
 <!-- /label Container -->
 <!-- /label "Firefish API" -->
