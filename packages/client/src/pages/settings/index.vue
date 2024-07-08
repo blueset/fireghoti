@@ -107,12 +107,6 @@ const menuDef = computed(() => [
 				active: currentPage.value?.route.name === "drive",
 			},
 			{
-				icon: `${icon("ph-bell")}`,
-				text: i18n.ts.notifications,
-				to: "/settings/notifications",
-				active: currentPage.value?.route.name === "notifications",
-			},
-			{
 				icon: `${icon("ph-envelope-simple-open")}`,
 				text: i18n.ts.email,
 				to: "/settings/email",
@@ -140,6 +134,18 @@ const menuDef = computed(() => [
 				text: i18n.ts.theme,
 				to: "/settings/theme",
 				active: currentPage.value?.route.name === "theme",
+			},
+			{
+				icon: `${icon("ph-person-arms-spread")}`,
+				text: i18n.ts.accessibility,
+				to: "/settings/accessibility",
+				active: currentPage.value?.route.name === "accessibility",
+			},
+			{
+				icon: `${icon("ph-bell")}`,
+				text: i18n.ts.notifications,
+				to: "/settings/notifications",
+				active: currentPage.value?.route.name === "notifications",
 			},
 			{
 				icon: `${icon("ph-list")}`,
@@ -171,18 +177,6 @@ const menuDef = computed(() => [
 		title: i18n.ts.otherSettings,
 		items: [
 			{
-				icon: `${icon("ph-airplane-takeoff")}`,
-				text: i18n.ts.migration,
-				to: "/settings/migration",
-				active: currentPage.value?.route.name === "migration",
-			},
-			{
-				icon: `${icon("ph-package")}`,
-				text: i18n.ts.importAndExport,
-				to: "/settings/import-export",
-				active: currentPage.value?.route.name === "import-export",
-			},
-			{
 				icon: `${icon("ph-speaker-none")}`,
 				text: i18n.ts.instanceMute,
 				to: "/settings/instance-mute",
@@ -211,6 +205,18 @@ const menuDef = computed(() => [
 				text: "Webhook",
 				to: "/settings/webhook",
 				active: currentPage.value?.route.name === "webhook",
+			},
+			{
+				icon: `${icon("ph-package")}`,
+				text: i18n.ts.importAndExport,
+				to: "/settings/import-export",
+				active: currentPage.value?.route.name === "import-export",
+			},
+			{
+				icon: `${icon("ph-airplane-takeoff")}`,
+				text: i18n.ts.migration,
+				to: "/settings/migration",
+				active: currentPage.value?.route.name === "migration",
 			},
 			{
 				icon: `${icon("ph-dots-three-outline")}`,

@@ -2011,7 +2011,6 @@ delete2faConfirm: これで、このアカウントの2要素認証は完全に�
 inputNotMatch: 入力が一致しません
 deletePasskeysConfirm: これで、このアカウントのパスキーは完全に削除されます。続行しますか?
 importZip: ZIPをインポート
-emojiPackCreator: 絵文字パックの作者
 confirm: 確認
 exportZip: ZIPをエクスポート
 openServerInfo: "投稿内のサーバー名をクリックでサーバー情報を開く"
@@ -2090,3 +2089,4 @@ cancelScheduledPost: 予約を解除する
 scheduledPostAt: '{time}に投稿されます'
 strongPassword: 強いパスワード
 addAlt4MeTag: '説明の無いファイルを投稿する際に自動で #Alt4Me のハッシュタグをつける'
+turnOffCatLanguage: 猫語への変換を無効化する

@@ -322,13 +322,6 @@ const menu = (ev: MouseEvent) => {
 						});
 				},
 			},
-			{
-				icon: `${icon("ph-info")}`,
-				text: i18n.ts.emojiPackCreator,
-				action: () => {
-					window.open("https://firefish.dev/firefish/emoji-gen", "_blank");
-				},
-			},
 		],
 		ev.currentTarget ?? ev.target,
 	);

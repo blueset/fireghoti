@@ -1972,7 +1972,6 @@ _feeds:
   rss: RSS
   copyFeed: 複製訂閱URL
   jsonFeed: JSON Feed
-emojiPackCreator: 表情包的作者
 importZip: 匯入ZIP
 delete2fa: 停用二階段認證(2FA)
 confirm: 確認

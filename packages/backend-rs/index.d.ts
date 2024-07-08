@@ -1147,18 +1147,16 @@ export type PushNotificationKind =  'generic'|
 'readAllNotifications'|
 'mastodon';
 
-export enum PushSubscriptionType {
-  AdminReport = 'adminReport',
-  AdminSignUp = 'adminSignUp',
-  Favourite = 'favourite',
-  Follow = 'follow',
-  FollowRequest = 'followRequest',
-  Mention = 'mention',
-  Poll = 'poll',
-  Reblog = 'reblog',
-  Status = 'status',
-  Update = 'update'
-}
+export type PushSubscriptionType =  'adminReport'|
+'adminSignUp'|
+'favourite'|
+'follow'|
+'followRequest'|
+'mention'|
+'poll'|
+'reblog'|
+'status'|
+'update';
 
 export interface RedisConfig {
   host: string

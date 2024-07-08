@@ -45,7 +45,7 @@
 		"check-password-strength": "2.0.10",
 		"city-timezones": "1.2.1",
 		"compare-versions": "6.1.0",
-		"cropperjs": "2.0.0-rc.0",
+		"cropperjs": "2.0.0-rc.1",
 		"date-fns": "3.6.0",
 		"emojilib": "3.0.12",
 		"eventemitter3": "5.0.1",

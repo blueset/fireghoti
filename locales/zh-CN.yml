@@ -1993,7 +1993,6 @@ exportZip: 导出 ZIP
 getQrCode: "获取二维码"
 remoteFollow: "远程关注"
 copyRemoteFollowUrl: "复制远程关注 URL"
-emojiPackCreator: 表情包创建工具
 objectStorageS3ForcePathStyleDesc: 打开此选项可构建格式为 "s3.amazonaws.com/<bucket>/" 而非 "<bucket>.s3.amazonaws.com"
   的端点 URL。
 objectStorageS3ForcePathStyle: 使用基于路径的端点 URL
