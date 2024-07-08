@@ -85,8 +85,8 @@ You can control the verbosity of the server log by adding `maxLogLevel` in `.con
 
 - You need to install Perl to build Firefish. Since Git depends on Perl in many packaging systems, you probably already have Perl installed on your system. You can check the Perl version by this command:
   ```sh
-	perl --version
-	```
+  perl --version
+  ```
 - Not only Firefish but also Node.js has recently fixed a few security issues:
   - https://nodejs.org/en/blog/vulnerability/april-2024-security-releases
   - https://nodejs.org/en/blog/vulnerability/april-2024-security-releases-2
