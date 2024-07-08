@@ -1,6 +1,6 @@
 <!--
   This issue template is for feature requests.
-	There are other issue templates for bug reports and refactor proposals,
+	There are other issue templates for bug reports, refactor proposals, and discussions,
 	so please use them if this is not a feature request.
 
 	Also, you don't need to prefix the issue title with "Feature:", because it's
@@ -12,7 +12,7 @@
 🔒 Found a security vulnerability? [Please disclose it responsibly.](https://firefish.dev/firefish/firefish/-/blob/develop/SECURITY.md)
 🤝 By submitting this refactor proposal, you agree to follow our [Contribution Guidelines.](https://firefish.dev/firefish/firefish/-/blob/develop/CONTRIBUTING.md) -->
 
-## What type of refactoring is this?
+## What type of feature is this?
 <!-- If this happens on your device and has to do with the user interface, it's client-side. If this happens on either with the API or the backend, or you got a server-side error in the client, it's server-side. -->
 
 <!-- Uncomment (remove surrounding arrow signs) the following line(s) to specify the category of this issue. -->

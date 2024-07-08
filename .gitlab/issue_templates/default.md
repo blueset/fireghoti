@@ -1,6 +1,6 @@
 <!--
   This issue template is for bug reports.
-	There are other issue templates for feature requests and refactor proposals,
+	There are other issue templates for feature requests, refactor proposals, and discussions,
 	so please use them if this is not a bug report.
 
 	Also, you don't need to prefix the issue title with "Bug:", because it's

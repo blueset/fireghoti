@@ -1,18 +1,18 @@
 <!--
-  This issue template is for refactor proposals.
-	There are other issue templates for bug reports, feature requests, and discussions,
-	so please use them if this is not a refactor proposal.
+  This issue template is for discussions.
+	There are other issue templates for bug reports, feature requests, and refactor proposals,
+	so please use them if this is not a discussion issue.
 
-	Also, you don't need to prefix the issue title with "Refactor:", because it's
+	Also, you don't need to prefix the issue title with "Discussion:", because it's
 	managed by issue labels.
 -->
 
-<!-- 💖 Thanks for taking the time to fill out this report!
+<!-- 💖 Thanks for taking the time to fill out this bug report!
 💁 Having trouble with deployment? [Ask the support chat.](https://matrix.to/#/#firefish-community:nitro.chat)
 🔒 Found a security vulnerability? [Please disclose it responsibly.](https://firefish.dev/firefish/firefish/-/blob/develop/SECURITY.md)
-🤝 By submitting this feature request, you agree to follow our [Contribution Guidelines.](https://firefish.dev/firefish/firefish/-/blob/develop/CONTRIBUTING.md) -->
+🤝 By submitting this issue, you agree to follow our [Contribution Guidelines.](https://firefish.dev/firefish/firefish/-/blob/develop/CONTRIBUTING.md) -->
 
-## What type of refactoring is this?
+## What type of issue is this?
 <!-- If this happens on your device and has to do with the user interface, it's client-side. If this happens on either with the API or the backend, or you got a server-side error in the client, it's server-side. -->
 
 <!-- Uncomment (remove surrounding arrow signs) the following line(s) to specify the category of this issue. -->
@@ -26,33 +26,48 @@
 <!-- /label "Firefish API" -->
 <!-- /label "Mastodon API" -->
 
-## What parts of the code do you think should be refactored?
-<!-- Please give us a brief description of what you'd like. -->
+## What do you think needs to be discussed?
+<!-- Please tell us your idea. -->
 
 
-## Why should the code be refactored that way?
-<!-- Please give us a brief description of the reason of your proposal. -->
+## Relevant information (optional)
 
 
 ## Version
-<!-- What version of firefish is your instance running? You can find this by clicking your instance's logo at the bottom left and then clicking instance information. -->
+<!-- What version of firefish is your instance running? You can find this by the instance information page. -->
 
 
-## Instance
-<!-- What instance of Firefish are you using? -->
+<details>
 
+### Instance
+<!-- What instance of firefish are you using? -->
+
+
+### What browser are you using? (client-side issues only)
+
+
+### What operating system are you using? (client-side issues only)
+
+
+### How do you deploy Firefish on your server? (server-side issues only)
+
+
+### What operating system are you using? (Server-side issues only)
+
+
+</details>
 
 ## Contribution Guidelines
 By submitting this issue, you agree to follow our [Contribution Guidelines](https://firefish.dev/firefish/firefish/-/blob/develop/CONTRIBUTING.md)
 - [ ] I agree to follow this project's Contribution Guidelines
-- [ ] I have searched the issue tracker for similar requests, and this is not a duplicate.
+- [ ] I have searched the issue tracker for similar issues, and this is not a duplicate.
 
-## Are you willing to refactor the code? (optional)
-<!-- Please uncomment the following line if you want to implement it -->
+## Are you willing to open a merge request? (optional)
+<!-- Please uncomment the following line if you want to implement this yourself -->
 <!-- /assign me -->
 
 <!--
-	Please tell us how to refactor the code.
+	Please tell us how do you want to implement your idea.
 	As noted in the contribution guidelines, there is a good chance that your
 	merge request will not be merged if there is no agreement with the project maintainers.
 	However, we are currently so understaffed that it is virtually impossible to
@@ -66,4 +81,4 @@ By submitting this issue, you agree to follow our [Contribution Guidelines](http
 
 
 <!-- Do not edit the following line -->
-/label Refactor
+/label Discussion
