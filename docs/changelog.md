@@ -5,7 +5,7 @@ Critical security updates are indicated by the :warning: icon.
 - Server administrators must check [notice-for-admins.md](./notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](./api-change.md) as well.
 
-## Unreleased
+## [v20240710](https://firefish.dev/firefish/firefish/-/merge_requests/11110/commits)
 
 - Add ability to disable the cat language conversion (nyaification)
 - Fix bugs
