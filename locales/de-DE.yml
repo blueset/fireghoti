@@ -2340,3 +2340,5 @@ media: Medien
 slashQuote: Kettenzitat
 addAlt4MeTag: 'Automatisch den Hashtag #Alt4Me am Ende deines Beitrags einfügen, wenn
   eine angehängte Datei keine Beschreibung hat'
+turnOffCatLanguage: Katzensprache deaktivieren
+strongPassword: Gutes Passwort

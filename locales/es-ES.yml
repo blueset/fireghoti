@@ -636,7 +636,7 @@ emptyToDisableSmtpAuth: "Deje el nombre del usuario y la contraseña en blanco p
 smtpSecure: "Usar SSL/TLS implícito en la conexión SMTP"
 smtpSecureInfo: "Apagar cuando se use STARTTLS"
 testEmail: "Prueba de envío"
-wordMute: "Silenciar palabras"
+wordMute: "Silenciar palabras y lenguajes"
 regexpError: "Error de la expresión regular"
 regexpErrorDescription: "Ocurrió un error en la expresión regular en la linea {line}
   de las palabras muteadas {tab}"
@@ -2182,3 +2182,10 @@ sentFollowRequests: Enviar solicitudes de seguimiento
 toQuote: Cita
 replyMute: Silenciar respuestas en la linea de tiempo
 replyUnmute: Anular respuestas en las lineas de tiempo
+strongPassword: Buena contraseña
+markLocalFilesNsfwByDefaultDescription: Independientemente de este ajuste, los usuarios
+  pueden eliminar la bandera NSFW por sí mismos. Los archivos existentes no son afectados.
+noSentFollowRequests: No has enviado ninguna solicitud de seguimiento
+antennaLimit: El número máximo de antenas que cada usuario puede crear
+toEdit: Editar
+cannotEditVisibility: No puedes editar la visibilidad
