@@ -3,6 +3,7 @@
 	"main": "./index.js",
 	"private": true,
 	"type": "module",
+	"license": "AGPL-3.0-only",
 	"scripts": {
 		"start": "pnpm node ./built/index.js",
 		"start:test": "NODE_ENV=test pnpm node ./built/index.js",
