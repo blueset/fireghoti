@@ -22,7 +22,9 @@ The new Mastodon API support would not have been possible without the significan
 
 ### Important Notice
 
-There are still some incompatibilities and unimplemented things in the new Mastodon API support, so please keep in mind that you may experience glitchy behavior on Mastodon clients, and please do NOT report such issues to Mastodon clients. Such a “bug” is likely due to our implementation, and Mastodon client developers should not be bothered by such an invalid bug report. In the worst scenario, they may simply block non-Mastodon implementations (some clients already do that). If you want to file an issue, please ensure the bug is reproducible with a vanilla Mastodon server.
+The new Mastodon API support still contains some incompatibilities and unimplemented features, so please keep in mind that you may experience glitchy behavior, and please do NOT report such issues to Mastodon client apps. Such a “bug” is likely due to our implementation, and Mastodon client developers should not be bothered by such an invalid bug report. In the worst scenario, they may simply block non-Mastodon implementations (some clients already do that).
+
+If you find an incompatibility issue (a bug not reproducible with a vanilla Mastodon server), file it to the Firefish repository instead. However, please remember that it is impossible to achieve 100% compatibility, given that Mastodon servers don’t behave exactly like its own documentation.
 
 ## [v20240630](https://firefish.dev/firefish/firefish/-/merge_requests/11072/commits)
 
