@@ -1,12 +1,12 @@
 //! PostgreSQL interface
 
 use crate::config::CONFIG;
-use once_cell::sync::OnceCell;
 use sea_orm::{ConnectOptions, Database, DbConn, DbErr};
 use std::time::Duration;
+use tokio::sync::OnceCell;
 use tracing::log::LevelFilter;
 
-static DB_CONN: OnceCell<DbConn> = OnceCell::new();
+static DB_CONN: OnceCell<DbConn> = OnceCell::const_new();
 
 async fn init_conn() -> Result<&'static DbConn, DbErr> {
     let database_uri = format!(
@@ -22,10 +22,14 @@ async fn init_conn() -> Result<&'static DbConn, DbErr> {
         .sqlx_slow_statements_logging_settings(LevelFilter::Warn, Duration::from_secs(3))
         .to_owned();
 
-    tracing::info!("initializing connection");
+    let conn = DB_CONN
+        .get_or_try_init(|| async {
+            tracing::info!("initializing connection");
+            Database::connect(option).await
+        })
+        .await?;
 
-    let conn = Database::connect(option).await?;
-    Ok(DB_CONN.get_or_init(move || conn))
+    Ok(conn)
 }
 
 /// Returns an async PostgreSQL connection that can be used with [sea_orm] utilities.

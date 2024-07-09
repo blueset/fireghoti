@@ -6,19 +6,22 @@ You can skip intermediate versions when upgrading from an old version, but pleas
 
 Please take a look at #10947.
 
-## Unreleased
+## v20240710
 
 ### For all users
 
-This is not related to the recent changes, but we have added a new section called "[Maintain the server](https://firefish.dev/firefish/firefish/-/blob/develop/docs/install.md#maintain-the-server)" in the installation guide. We suggest that you take a look at it (and we welcome your docs contributions)!
+This is not related to the recent changes, but we have added a new section called "[Maintain the server](https://firefish.dev/firefish/firefish/-/blob/v20240710/docs/install.md#maintain-the-server)" in the installation guide. We suggest that you take a look at it (and we welcome your docs contributions)!
 
 ### For systemd/pm2 users
 
-[Node.js will release a new security fix on July 8th](<https://nodejs.org/en/blog/vulnerability/july-2024-security-releases>). It is highly recommended that you upgrade your Node.js version once it's released.
+It is highly recommended that you upgrade Node.js, since [there is a new security release](<https://nodejs.org/en/blog/vulnerability/july-2024-security-releases>).
 
-### For Docker/Podman users
+The new versions are:
+  - Node v18.20.4 (v18.x LTS)
+  - Node v20.15.1 (v20.x LTS)
+  - Node v22.4.1 (v22.x)
 
-[Node.js will release a new security fix on July 8th](<https://nodejs.org/en/blog/vulnerability/july-2024-security-releases>). Once it's released and the [docker.io/node](<https://hub.docker.com/_/node>) image is updated, we'll rebuild the OCI image based on the new `docker.io/node` image and reupload it as [`registry.firefish.dev/firefish/firefish:latest`](<https://firefish.dev/firefish/firefish/container_registry/1>).
+[Node v21.x is end-of-life](<https://github.com/nodejs/Release?tab=readme-ov-file#end-of-life-releases>).
 
 ### For systemd/pm2 users
 
@@ -93,8 +96,8 @@ You can control the verbosity of the server log by adding `maxLogLevel` in `.con
 
 - You need to install Perl to build Firefish. Since Git depends on Perl in many packaging systems, you probably already have Perl installed on your system. You can check the Perl version by this command:
   ```sh
-	perl --version
-	```
+  perl --version
+  ```
 - Not only Firefish but also Node.js has recently fixed a few security issues:
   - https://nodejs.org/en/blog/vulnerability/april-2024-security-releases
   - https://nodejs.org/en/blog/vulnerability/april-2024-security-releases-2

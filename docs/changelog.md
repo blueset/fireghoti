@@ -8,8 +8,6 @@ Critical security updates are indicated by the :warning: icon.
 ## Unreleased
 
 - Mastodon API implementation was ported from Iceshrimp, with added Firefish extensions including push notifications, post languages, schedule post support, and more. (#10880)
-- Add ability to disable the cat language conversion (nyaification)
-- Fix bugs
 
 ### Acknowledgement 
 
@@ -25,6 +23,11 @@ The new Mastodon API support would not have been possible without the significan
 The new Mastodon API support still contains some incompatibilities and unimplemented features, so please keep in mind that you may experience glitchy behavior, and please do NOT report such issues to Mastodon client apps. Such a “bug” is likely due to our implementation, and Mastodon client developers should not be bothered by such an invalid bug report. In the worst scenario, they may simply block non-Mastodon implementations (some clients already do that).
 
 If you find an incompatibility issue (a bug not reproducible with a vanilla Mastodon server), file it to the Firefish repository instead. However, please remember that it is impossible to achieve 100% compatibility, given that Mastodon servers don’t behave exactly like its own documentation.
+
+## [v20240710](https://firefish.dev/firefish/firefish/-/merge_requests/11110/commits)
+
+- Add ability to disable the cat language conversion (nyaification)
+- Fix bugs
 
 ## [v20240630](https://firefish.dev/firefish/firefish/-/merge_requests/11072/commits)
 
