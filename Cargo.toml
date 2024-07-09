@@ -2,6 +2,10 @@
 members = ["packages/backend-rs", "packages/macro-rs/macros", "packages/macro-rs/macros-impl"]
 resolver = "2"
 
+[workspace.package]
+edition = "2021"
+rust-version = "1.74"
+
 [workspace.dependencies]
 macros = { path = "packages/macro-rs/macros" }
 macros-impl = { path = "packages/macro-rs/macros-impl" }
