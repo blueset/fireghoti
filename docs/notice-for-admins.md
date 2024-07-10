@@ -33,6 +33,10 @@ The new versions are:
 
 [Node v21.x is end-of-life](<https://github.com/nodejs/Release?tab=readme-ov-file#end-of-life-releases>).
 
+### :warning: For Docker/Podman users
+
+This is a security release for you, since the container image for this version is based on the updated Node.js image.
+
 ## v20240607
 
 The following environment variables are deprecated and no longer have any effect:
