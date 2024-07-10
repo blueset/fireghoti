@@ -22,10 +22,10 @@
 <!-- * Third-party-client -->
 <!-- * Docs -->
 <!-- * Locale -->
-<!-- * "Build from source" -->
+<!-- * Build from source -->
 <!-- * Container -->
-<!-- * "Firefish API" -->
-<!-- * "Mastodon API" -->
+<!-- * Firefish API -->
+<!-- * Mastodon API -->
 
 ## What feature would you like implemented?
 <!-- Please give us a brief description of what you'd like to be refactored. -->

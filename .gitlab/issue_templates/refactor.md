@@ -22,10 +22,10 @@
 <!-- * Third-party-client -->
 <!-- * Docs -->
 <!-- * Locale -->
-<!-- * "Build from source" -->
+<!-- * Build from source -->
 <!-- * Container -->
-<!-- * "Firefish API" -->
-<!-- * "Mastodon API" -->
+<!-- * Firefish API -->
+<!-- * Mastodon API -->
 
 ## What parts of the code do you think should be refactored?
 <!-- Please give us a brief description of what you'd like. -->

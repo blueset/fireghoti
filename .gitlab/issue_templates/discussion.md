@@ -22,10 +22,10 @@
 <!-- * Third-party-client -->
 <!-- * Docs -->
 <!-- * Locale -->
-<!-- * "Build from source" -->
+<!-- * Build from source -->
 <!-- * Container -->
-<!-- * "Firefish API" -->
-<!-- * "Mastodon API" -->
+<!-- * Firefish API -->
+<!-- * Mastodon API -->
 
 ## What do you think needs to be discussed?
 <!-- Please tell us your idea. -->
