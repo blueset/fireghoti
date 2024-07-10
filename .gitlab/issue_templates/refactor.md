@@ -16,16 +16,16 @@
 <!-- If this happens on your device and has to do with the user interface, it's client-side. If this happens on either with the API or the backend, or you got a server-side error in the client, it's server-side. -->
 
 <!-- Uncomment (remove surrounding arrow signs) the following line(s) to specify the category of this issue. -->
-<!-- /label Server -->
-<!-- /label Client -->
-<!-- /label Mobile -->
-<!-- /label Third-party-client -->
-<!-- /label Docs -->
-<!-- /label Locale -->
-<!-- /label "Build from source" -->
-<!-- /label Container -->
-<!-- /label "Firefish API" -->
-<!-- /label "Mastodon API" -->
+<!-- * Server -->
+<!-- * Client -->
+<!-- * Mobile -->
+<!-- * Third-party-client -->
+<!-- * Docs -->
+<!-- * Locale -->
+<!-- * "Build from source" -->
+<!-- * Container -->
+<!-- * "Firefish API" -->
+<!-- * "Mastodon API" -->
 
 ## What parts of the code do you think should be refactored?
 <!-- Please give us a brief description of what you'd like. -->
@@ -49,8 +49,7 @@ By submitting this issue, you agree to follow our [Contribution Guidelines](http
 - [ ] I have searched the issue tracker for similar requests, and this is not a duplicate.
 
 ## Are you willing to refactor the code? (optional)
-<!-- Please uncomment the following line if you want to implement it -->
-<!-- /assign me -->
+- [ ] Yes, I will open a merge request that closes this ticket.
 
 <!--
 	Please tell us how to refactor the code.
@@ -63,8 +62,3 @@ By submitting this issue, you agree to follow our [Contribution Guidelines](http
 	Many thanks for your involvement!
 -->
 
-
-
-
-<!-- Do not edit the following line -->
-/label Refactor

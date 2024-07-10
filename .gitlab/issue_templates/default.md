@@ -16,16 +16,16 @@
 <!-- If this happens on your device and has to do with the user interface, it's client-side. If this happens on either with the API or the backend, or you got a server-side error in the client, it's server-side. -->
 
 <!-- Uncomment (remove surrounding arrow signs) the following line(s) to specify the category of this issue. -->
-<!-- /label Server -->
-<!-- /label Client -->
-<!-- /label Mobile -->
-<!-- /label Third-party-client -->
-<!-- /label Docs -->
-<!-- /label Locale -->
-<!-- /label "Build from source" -->
-<!-- /label Container -->
-<!-- /label "Firefish API" -->
-<!-- /label "Mastodon API" -->
+<!-- * Server -->
+<!-- * Client -->
+<!-- * Mobile -->
+<!-- * Third-party-client -->
+<!-- * Docs -->
+<!-- * Locale -->
+<!-- * "Build from source" -->
+<!-- * Container -->
+<!-- * "Firefish API" -->
+<!-- * "Mastodon API" -->
 
 ## What happened?
 <!-- Please give us a brief description of what happened. -->
@@ -81,8 +81,7 @@ By submitting this issue, you agree to follow our [Contribution Guidelines](http
 - [ ] I have searched the issue tracker for similar issues, and this is not a duplicate.
 
 ## Are you willing to fix this bug? (optional)
-<!-- Please uncomment the following line if you want to fix this bug -->
-<!-- /assign me -->
+- [ ] Yes, I will open a merge request that closes this ticket.
 
 <!--
 	Please tell us how to fix this bug.
@@ -95,8 +94,3 @@ By submitting this issue, you agree to follow our [Contribution Guidelines](http
 	Many thanks for your involvement!
 -->
 
-
-
-
-<!-- Do not edit the following line -->
-/label Bug?
