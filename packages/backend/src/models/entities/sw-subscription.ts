@@ -9,6 +9,23 @@ import {
 } from "typeorm";
 import { User } from "./user.js";
 import { id } from "../id.js";
+import { AccessToken } from "./access-token.js";
+
+// for Mastodon push notifications
+const pushSubscriptionTypes = [
+	"mention",
+	"status",
+	"reblog",
+	"follow",
+	"follow_request",
+	"favourite",
+	"poll",
+	"update",
+	"admin.sign_up",
+	"admin.report",
+] as const;
+
+type pushSubscriptionType = (typeof pushSubscriptionTypes)[number];
 
 @Entity()
 export class SwSubscription {
@@ -42,11 +59,40 @@ export class SwSubscription {
 	})
 	public sendReadMessage: boolean;
 
+	/**
+	 * Type of subscription, used for Mastodon API notifications.
+	 * Empty for Misskey notifications.
+	 */
+	@Column({
+		type: "enum",
+		enum: pushSubscriptionTypes,
+		array: true,
+		default: "{}",
+	})
+	public subscriptionTypes: pushSubscriptionType[];
+
+	/**
+	 * App notification app, used for Mastodon API notifications
+	 */
+	@Index()
+	@Column({
+		...id(),
+		nullable: true,
+	})
+	public appAccessTokenId: AccessToken["id"] | null;
+
 	//#region Relations
 	@ManyToOne(() => User, {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
 	public user: Relation<User>;
+
+	@ManyToOne(() => AccessToken, {
+		onDelete: "CASCADE",
+		nullable: true,
+	})
+	@JoinColumn()
+	public appAccessToken: Relation<AccessToken | null>;
 	//#endregion
 }

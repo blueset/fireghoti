@@ -45,7 +45,6 @@
 			"style": {
 				"noCommaOperator": "error",
 				"noInferrableTypes": "error",
-				"noNamespace": "error",
 				"noNonNullAssertion": "warn",
 				"noUselessElse": "off",
 				"noVar": "error",
@@ -395,6 +394,20 @@
 						"noUnsafeNegation": "off",
 						"useGetterReturn": "off",
 						"useValidTypeof": "off"
+					}
+				}
+			}
+		},
+		{
+			"include": ["packages/backend/src/server/api/mastodon/**/*.ts"],
+			"linter": {
+				"rules": {
+					"style": {
+						"noParameterAssign": "off"
+					},
+					"complexity": {
+						"noStaticOnlyClass": "off",
+						"noThisInStatic": "off"
 					}
 				}
 			}

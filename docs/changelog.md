@@ -5,6 +5,25 @@ Critical security updates are indicated by the :warning: icon.
 - Server administrators must check [notice-for-admins.md](./notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](./api-change.md) as well.
 
+## Unreleased
+
+- Mastodon API implementation was ported from Iceshrimp, with added Firefish extensions including push notifications, post languages, schedule post support, and more. (#10880)
+
+### Acknowledgement 
+
+The new Mastodon API support would not have been possible without the significant dedication of Laura Hausmann (Iceshrimp lead developer). We thank her and other Iceshrimp contributors from the bottom of our hearts.
+
+### Breaking changes
+
+- The new Mastodon API uses a new format to manage Mastodon sessions in the database, whereas old implementation uses Misskey sessions. All previous client app and token registrations will not work with the new API. All clients need to be re-registered and all users need to re-authenticate.
+- All IDs (of statuses/notes, notifications, users, etc.) will be using the alphanumerical format, aligning with the Firefish/Misskey API. The old numerical IDs will not work when queried against the new API.
+
+### Important Notice
+
+The new Mastodon API support still contains some incompatibilities and unimplemented features, so please keep in mind that you may experience glitchy behavior, and please do NOT report such issues to Mastodon client apps. Such a “bug” is likely due to our implementation, and Mastodon client developers should not be bothered by such an invalid bug report. In the worst scenario, they may simply block non-Mastodon implementations (some clients already do that).
+
+If you find an incompatibility issue (a bug not reproducible with a vanilla Mastodon server), file it to the Firefish repository instead. However, please remember that it is impossible to achieve 100% compatibility, given that Mastodon servers don’t behave exactly like its own documentation.
+
 ## [v20240710](https://firefish.dev/firefish/firefish/-/merge_requests/11110/commits)
 
 - Add ability to disable the cat language conversion (nyaification)

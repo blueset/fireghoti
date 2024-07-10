@@ -36,7 +36,6 @@ COPY packages/backend/package.json packages/backend/package.json
 COPY packages/client/package.json packages/client/package.json
 COPY packages/sw/package.json packages/sw/package.json
 COPY packages/firefish-js/package.json packages/firefish-js/package.json
-COPY packages/megalodon/package.json packages/megalodon/package.json
 COPY pnpm-lock.yaml ./
 
 # Install dev mode dependencies for compilation
@@ -59,8 +58,6 @@ WORKDIR /firefish
 RUN apk update && apk add --no-cache zip unzip tini ffmpeg curl
 
 COPY . ./
-
-COPY --from=build /firefish/packages/megalodon /firefish/packages/megalodon
 
 # Copy node modules
 COPY --from=build /firefish/node_modules /firefish/node_modules

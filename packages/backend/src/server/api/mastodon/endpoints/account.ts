@@ -1,477 +1,284 @@
-import Router from "@koa/router";
-import { getClient } from "../ApiMastodonCompatibleService.js";
-import { argsToBools, convertTimelinesArgsId, limitToInt } from "./timeline.js";
-import { fromMastodonId, toMastodonId } from "backend-rs";
-import {
-	convertAccount,
-	convertFeaturedTag,
-	convertList,
-	convertRelationship,
-	convertStatus,
-} from "../converters.js";
-import { apiLogger } from "../../logger.js";
-import { inspect } from "node:util";
+import type Router from "@koa/router";
+import { argsToBools, limitToInt, normalizeUrlQuery } from "./timeline.js";
+import { UserConverter } from "@/server/api/mastodon/converters/user.js";
+import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
+import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
+import { ListHelpers } from "@/server/api/mastodon/helpers/list.js";
+import { auth } from "@/server/api/mastodon/middleware/auth.js";
+import { SearchHelpers } from "@/server/api/mastodon/helpers/search.js";
+import { filterContext } from "@/server/api/mastodon/middleware/filter-context.js";
 
-const relationshipModel = {
-	id: "",
-	following: false,
-	followed_by: false,
-	delivery_following: false,
-	blocking: false,
-	blocked_by: false,
-	muting: false,
-	muting_notifications: false,
-	requested: false,
-	domain_blocking: false,
-	showing_reblogs: false,
-	endorsed: false,
-	notifying: false,
-	note: "",
-};
-
-export function apiAccountMastodon(router: Router): void {
-	router.get("/v1/accounts/verify_credentials", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.verifyAccountCredentials();
-			let acct = data.data;
-			acct.id = toMastodonId(acct.id);
-			acct.display_name = acct.display_name || acct.username;
-			acct.url = `${BASE_URL}/@${acct.url}`;
-			acct.note = acct.note || "";
-			acct.avatar_static = acct.avatar;
-			acct.header = acct.header || "/static-assets/transparent.png";
-			acct.header_static = acct.header || "/static-assets/transparent.png";
-			acct.source = {
-				note: acct.note,
-				fields: acct.fields,
-				privacy: await client.getDefaultPostPrivacy(),
-				sensitive: false,
-				language: "",
-			};
-			console.log(acct);
-			ctx.body = acct;
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
-	router.patch("/v1/accounts/update_credentials", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.updateCredentials(
-				(ctx.request as any).body as any,
-			);
-			ctx.body = convertAccount(data.data);
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
+export function setupEndpointsAccount(router: Router): void {
+	router.get(
+		"/v1/accounts/verify_credentials",
+		auth(true, ["read:accounts"]),
+		async (ctx) => {
+			ctx.body = await UserHelpers.verifyCredentials(ctx);
+		},
+	);
+	router.patch(
+		"/v1/accounts/update_credentials",
+		auth(true, ["write:accounts"]),
+		async (ctx) => {
+			ctx.body = await UserHelpers.updateCredentials(ctx);
+		},
+	);
 	router.get("/v1/accounts/lookup", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.search(
-				(ctx.request.query as any).acct,
+		const args = normalizeUrlQuery(ctx.query);
+		const user = await UserHelpers.getUserFromAcct(args.acct);
+		ctx.body = await UserConverter.encode(user, ctx);
+	});
+	router.get(
+		"/v1/accounts/relationships",
+		auth(true, ["read:follows"]),
+		async (ctx) => {
+			const ids =
+				normalizeUrlQuery(ctx.query, ["id[]"])["id[]"] ??
+				normalizeUrlQuery(ctx.query, ["id"]).id ??
+				[];
+			ctx.body = await UserHelpers.getUserRelationhipToMany(ids, ctx.user.id);
+		},
+	);
+	// This must come before /accounts/:id, otherwise that will take precedence
+	router.get(
+		"/v1/accounts/search",
+		auth(true, ["read:accounts"]),
+		async (ctx) => {
+			const args = normalizeUrlQuery(
+				argsToBools(limitToInt(ctx.query), ["resolve", "following"]),
+			);
+			ctx.body = await SearchHelpers.search(
+				args.q,
 				"accounts",
+				args.resolve,
+				args.following,
+				undefined,
+				false,
+				undefined,
+				undefined,
+				args.limit,
+				args.offset,
+				ctx,
+			).then((p) => p.accounts);
+		},
+	);
+	router.get<{ Params: { id: string } }>(
+		"/v1/accounts/:id",
+		auth(false),
+		async (ctx) => {
+			ctx.body = await UserConverter.encode(
+				await UserHelpers.getUserOr404(ctx.params.id),
+				ctx,
 			);
-			ctx.body = convertAccount(data.data.accounts[0]);
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
-	router.get("/v1/accounts/relationships", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		let users;
-		try {
-			// TODO: this should be body
-			let ids = ctx.request.query ? ctx.request.query["id[]"] : null;
-			if (typeof ids === "string") {
-				ids = [ids];
-			}
-			users = ids;
-			relationshipModel.id = ids?.toString() || "1";
-			if (!ids) {
-				ctx.body = [relationshipModel];
-				return;
-			}
-
-			let reqIds = [];
-			for (let i = 0; i < ids.length; i++) {
-				reqIds.push(fromMastodonId(ids[i]));
-			}
-
-			const data = await client.getRelationships(reqIds);
-			ctx.body = data.data.map((relationship) =>
-				convertRelationship(relationship),
-			);
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			let data = e.response.data;
-			data.users = users;
-			ctx.status = 401;
-			ctx.body = data;
-		}
-	});
-	router.get<{ Params: { id: string } }>("/v1/accounts/:id", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const calcId = fromMastodonId(ctx.params.id);
-			const data = await client.getAccount(calcId);
-			ctx.body = convertAccount(data.data);
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
+		},
+	);
 	router.get<{ Params: { id: string } }>(
 		"/v1/accounts/:id/statuses",
+		auth(false, ["read:statuses"]),
+		filterContext("account"),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.getAccountStatuses(
-					fromMastodonId(ctx.params.id),
-					convertTimelinesArgsId(argsToBools(limitToInt(ctx.query as any))),
-				);
-				ctx.body = data.data.map((status) => convertStatus(status));
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const query = await UserHelpers.getUserCachedOr404(ctx.params.id, ctx);
+			const args = normalizeUrlQuery(argsToBools(limitToInt(ctx.query)));
+			const res = await UserHelpers.getUserStatuses(
+				query,
+				args.max_id,
+				args.since_id,
+				args.min_id,
+				args.limit,
+				args.only_media,
+				args.exclude_replies,
+				args.exclude_reblogs,
+				args.pinned,
+				args.tagged,
+				ctx,
+			);
+			ctx.body = await NoteConverter.encodeMany(res, ctx);
 		},
 	);
 	router.get<{ Params: { id: string } }>(
 		"/v1/accounts/:id/featured_tags",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.getAccountFeaturedTags(
-					fromMastodonId(ctx.params.id),
-				);
-				ctx.body = data.data.map((tag) => convertFeaturedTag(tag));
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			ctx.body = [];
 		},
 	);
 	router.get<{ Params: { id: string } }>(
 		"/v1/accounts/:id/followers",
+		auth(false),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.getAccountFollowers(
-					fromMastodonId(ctx.params.id),
-					convertTimelinesArgsId(limitToInt(ctx.query as any)),
-				);
-				ctx.body = data.data.map((account) => convertAccount(account));
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const query = await UserHelpers.getUserCachedOr404(ctx.params.id, ctx);
+			const args = normalizeUrlQuery(limitToInt(ctx.query as any));
+			const res = await UserHelpers.getUserFollowers(
+				query,
+				args.max_id,
+				args.since_id,
+				args.min_id,
+				args.limit,
+				ctx,
+			);
+			ctx.body = await UserConverter.encodeMany(res, ctx);
 		},
 	);
 	router.get<{ Params: { id: string } }>(
 		"/v1/accounts/:id/following",
+		auth(false),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.getAccountFollowing(
-					fromMastodonId(ctx.params.id),
-					convertTimelinesArgsId(limitToInt(ctx.query as any)),
-				);
-				ctx.body = data.data.map((account) => convertAccount(account));
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const query = await UserHelpers.getUserCachedOr404(ctx.params.id, ctx);
+			const args = normalizeUrlQuery(limitToInt(ctx.query as any));
+			const res = await UserHelpers.getUserFollowing(
+				query,
+				args.max_id,
+				args.since_id,
+				args.min_id,
+				args.limit,
+				ctx,
+			);
+			ctx.body = await UserConverter.encodeMany(res, ctx);
 		},
 	);
 	router.get<{ Params: { id: string } }>(
 		"/v1/accounts/:id/lists",
+		auth(true, ["read:lists"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.getAccountLists(
-					fromMastodonId(ctx.params.id),
-				);
-				ctx.body = data.data.map((list) => convertList(list));
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const member = await UserHelpers.getUserCachedOr404(ctx.params.id, ctx);
+			ctx.body = await ListHelpers.getListsByMember(member, ctx);
 		},
 	);
 	router.post<{ Params: { id: string } }>(
 		"/v1/accounts/:id/follow",
+		auth(true, ["write:follows"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.followAccount(fromMastodonId(ctx.params.id));
-				let acct = convertRelationship(data.data);
-				acct.following = true;
-				ctx.body = acct;
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const target = await UserHelpers.getUserCachedOr404(ctx.params.id, ctx);
+			// FIXME: Parse form data
+			ctx.body = await UserHelpers.followUser(target, true, false, ctx);
 		},
 	);
 	router.post<{ Params: { id: string } }>(
 		"/v1/accounts/:id/unfollow",
+		auth(true, ["write:follows"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.unfollowAccount(
-					fromMastodonId(ctx.params.id),
-				);
-				let acct = convertRelationship(data.data);
-				acct.following = false;
-				ctx.body = acct;
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const target = await UserHelpers.getUserCachedOr404(ctx.params.id, ctx);
+			ctx.body = await UserHelpers.unfollowUser(target, ctx);
 		},
 	);
 	router.post<{ Params: { id: string } }>(
 		"/v1/accounts/:id/block",
+		auth(true, ["write:blocks"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.blockAccount(fromMastodonId(ctx.params.id));
-				ctx.body = convertRelationship(data.data);
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const target = await UserHelpers.getUserCachedOr404(ctx.params.id, ctx);
+			ctx.body = await UserHelpers.blockUser(target, ctx);
 		},
 	);
 	router.post<{ Params: { id: string } }>(
 		"/v1/accounts/:id/unblock",
+		auth(true, ["write:blocks"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.unblockAccount(toMastodonId(ctx.params.id));
-				ctx.body = convertRelationship(data.data);
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const target = await UserHelpers.getUserCachedOr404(ctx.params.id, ctx);
+			ctx.body = await UserHelpers.unblockUser(target, ctx);
 		},
 	);
 	router.post<{ Params: { id: string } }>(
 		"/v1/accounts/:id/mute",
+		auth(true, ["write:mutes"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.muteAccount(
-					fromMastodonId(ctx.params.id),
-					(ctx.request as any).body as any,
-				);
-				ctx.body = convertRelationship(data.data);
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			// FIXME: parse form data
+			const args = normalizeUrlQuery(
+				argsToBools(limitToInt(ctx.query, ["duration"]), ["notifications"]),
+			);
+			const target = await UserHelpers.getUserCachedOr404(ctx.params.id, ctx);
+			ctx.body = await UserHelpers.muteUser(
+				target,
+				args.notifications,
+				args.duration,
+				ctx,
+			);
 		},
 	);
 	router.post<{ Params: { id: string } }>(
 		"/v1/accounts/:id/unmute",
+		auth(true, ["write:mutes"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.unmuteAccount(fromMastodonId(ctx.params.id));
-				ctx.body = convertRelationship(data.data);
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const target = await UserHelpers.getUserCachedOr404(ctx.params.id, ctx);
+			ctx.body = await UserHelpers.unmuteUser(target, ctx);
 		},
 	);
 	router.get("/v1/featured_tags", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.getFeaturedTags();
-			ctx.body = data.data.map((tag) => convertFeaturedTag(tag));
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
+		ctx.body = [];
 	});
 	router.get("/v1/followed_tags", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.getFollowedTags();
-			ctx.body = data.data;
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
+		ctx.body = [];
 	});
-	router.get("/v1/bookmarks", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.getBookmarks(
-				convertTimelinesArgsId(limitToInt(ctx.query as any)),
+	router.get("/v1/bookmarks", auth(true, ["read:bookmarks"]), async (ctx) => {
+		const args = normalizeUrlQuery(limitToInt(ctx.query as any));
+		const res = await UserHelpers.getUserBookmarks(
+			args.max_id,
+			args.since_id,
+			args.min_id,
+			args.limit,
+			ctx,
+		);
+		ctx.body = await NoteConverter.encodeMany(res, ctx);
+	});
+	router.get("/v1/favourites", auth(true, ["read:favourites"]), async (ctx) => {
+		const args = normalizeUrlQuery(limitToInt(ctx.query as any));
+		const res = await UserHelpers.getUserFavorites(
+			args.max_id,
+			args.since_id,
+			args.min_id,
+			args.limit,
+			ctx,
+		);
+		ctx.body = await NoteConverter.encodeMany(res, ctx);
+	});
+	router.get("/v1/mutes", auth(true, ["read:mutes"]), async (ctx) => {
+		const args = normalizeUrlQuery(limitToInt(ctx.query as any));
+		ctx.body = await UserHelpers.getUserMutes(
+			args.max_id,
+			args.since_id,
+			args.min_id,
+			args.limit,
+			ctx,
+		);
+	});
+	router.get("/v1/blocks", auth(true, ["read:blocks"]), async (ctx) => {
+		const args = normalizeUrlQuery(limitToInt(ctx.query as any));
+		const res = await UserHelpers.getUserBlocks(
+			args.max_id,
+			args.since_id,
+			args.min_id,
+			args.limit,
+			ctx,
+		);
+		ctx.body = await UserConverter.encodeMany(res, ctx);
+	});
+	router.get(
+		"/v1/follow_requests",
+		auth(true, ["read:follows"]),
+		async (ctx) => {
+			const args = normalizeUrlQuery(limitToInt(ctx.query as any));
+			const res = await UserHelpers.getUserFollowRequests(
+				args.max_id,
+				args.since_id,
+				args.min_id,
+				args.limit,
+				ctx,
 			);
-			ctx.body = data.data.map((status) => convertStatus(status));
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
-	router.get("/v1/favourites", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.getFavourites(
-				convertTimelinesArgsId(limitToInt(ctx.query as any)),
-			);
-			ctx.body = data.data.map((status) => convertStatus(status));
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
-	router.get("/v1/mutes", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.getMutes(
-				convertTimelinesArgsId(limitToInt(ctx.query as any)),
-			);
-			ctx.body = data.data.map((account) => convertAccount(account));
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
-	router.get("/v1/blocks", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.getBlocks(
-				convertTimelinesArgsId(limitToInt(ctx.query as any)),
-			);
-			ctx.body = data.data.map((account) => convertAccount(account));
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
-	router.get("/v1/follow_requests", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.getFollowRequests(
-				((ctx.query as any) || { limit: 20 }).limit,
-			);
-			ctx.body = data.data.map((account) => convertAccount(account));
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
+			ctx.body = await UserConverter.encodeMany(res, ctx);
+		},
+	);
 	router.post<{ Params: { id: string } }>(
 		"/v1/follow_requests/:id/authorize",
+		auth(true, ["write:follows"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.acceptFollowRequest(
-					fromMastodonId(ctx.params.id),
-				);
-				ctx.body = convertRelationship(data.data);
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const target = await UserHelpers.getUserCachedOr404(ctx.params.id, ctx);
+			ctx.body = await UserHelpers.acceptFollowRequest(target, ctx);
 		},
 	);
 	router.post<{ Params: { id: string } }>(
 		"/v1/follow_requests/:id/reject",
+		auth(true, ["write:follows"]),
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			try {
-				const data = await client.rejectFollowRequest(
-					fromMastodonId(ctx.params.id),
-				);
-				ctx.body = convertRelationship(data.data);
-			} catch (e: any) {
-				apiLogger.error(inspect(e));
-				ctx.status = 401;
-				ctx.body = e.response.data;
-			}
+			const target = await UserHelpers.getUserCachedOr404(ctx.params.id, ctx);
+			ctx.body = await UserHelpers.rejectFollowRequest(target, ctx);
 		},
 	);
 }

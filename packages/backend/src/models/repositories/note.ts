@@ -10,6 +10,7 @@ import {
 	Followings,
 	Polls,
 	Channels,
+	UserProfiles,
 	Notes,
 } from "../index.js";
 import type { Packed } from "@/misc/schema.js";
@@ -28,6 +29,7 @@ import {
 } from "@/misc/populate-emojis.js";
 import { db } from "@/db/postgre.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
+import { config } from "@/config.js";
 
 export async function populatePoll(note: Note, meId: User["id"] | null) {
 	const poll = await Polls.findOneByOrFail({ noteId: note.id });
@@ -148,6 +150,29 @@ export const NoteRepository = db.getRepository(Note).extend({
 		}
 
 		return true;
+	},
+
+	async mentionedRemoteUsers(note: Note): Promise<string | undefined> {
+		if (note.mentions?.length) {
+			const mentionedUserIds = [...new Set(note.mentions)].sort();
+			const mentionedUsers = await Users.findBy({
+				id: In(mentionedUserIds),
+			});
+			const userProfiles = await UserProfiles.findBy({
+				userId: In(mentionedUserIds),
+			});
+			return JSON.stringify(
+				mentionedUsers.map((u) => ({
+					username: u.username,
+					host: u.host ?? config.host,
+					uri: u.uri ?? `${config.url}/users/${u.id}`,
+					url:
+						userProfiles.find((p) => p.userId === u.id)?.url ??
+						`${config.url}/@${u.username}`,
+				})),
+			);
+		}
+		return undefined;
 	},
 
 	async pack(
@@ -288,6 +313,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 					}
 				: {}),
 			lang: note.lang,
+			mentionedRemoteUsers: this.mentionedRemoteUsers(note),
 		});
 
 		if (

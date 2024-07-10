@@ -502,6 +502,8 @@ export async function addFile({
 
 		if (much) {
 			logger.info(`file with same hash is found: ${much.id}`);
+			much.comment = comment;
+			await DriveFiles.save(much);
 			return much;
 		}
 	}

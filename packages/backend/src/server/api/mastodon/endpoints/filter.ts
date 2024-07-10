@@ -1,87 +1,23 @@
-import Router from "@koa/router";
-import { getClient } from "../ApiMastodonCompatibleService.js";
-import { IdType, convertId } from "@/server/api/index.js";
-import { convertFilter } from "../converters.js";
-import { apiLogger } from "@/server/api/logger.js";
-import { inspect } from "node:util";
+import type Router from "@koa/router";
+import { auth } from "@/server/api/mastodon/middleware/auth.js";
+import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 
-export function apiFilterMastodon(router: Router): void {
-	router.get("/v1/filters", async (ctx) => {
-		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-		const accessTokens = ctx.request.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		const body: any = ctx.request.body;
-		try {
-			const data = await client.getFilters();
-			ctx.body = data.data.map((filter) => convertFilter(filter));
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
-
-	router.get("/v1/filters/:id", async (ctx) => {
-		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-		const accessTokens = ctx.request.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		const body: any = ctx.request.body;
-		try {
-			const data = await client.getFilter(fromMastodonId(ctx.params.id));
-			ctx.body = convertFilter(data.data);
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
-
-	router.post("/v1/filters", async (ctx) => {
-		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-		const accessTokens = ctx.request.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		const body: any = ctx.request.body;
-		try {
-			const data = await client.createFilter(body.phrase, body.context, body);
-			ctx.body = convertFilter(data.data);
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
-
-	router.post("/v1/filters/:id", async (ctx) => {
-		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-		const accessTokens = ctx.request.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		const body: any = ctx.request.body;
-		try {
-			const data = await client.updateFilter(
-				fromMastodonId(ctx.params.id),
-				body.phrase,
-				body.context,
+export function setupEndpointsFilter(router: Router): void {
+	router.get(
+		["/v1/filters", "/v2/filters"],
+		auth(true, ["read:filters"]),
+		async (ctx) => {
+			ctx.body = [];
+		},
+	);
+	router.post(
+		["/v1/filters", "/v2/filters"],
+		auth(true, ["write:filters"]),
+		async (ctx) => {
+			throw new MastoApiError(
+				400,
+				"Please change word mute settings in the web frontend settings.",
 			);
-			ctx.body = convertFilter(data.data);
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
-
-	router.delete("/v1/filters/:id", async (ctx) => {
-		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-		const accessTokens = ctx.request.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		const body: any = ctx.request.body;
-		try {
-			const data = await client.deleteFilter(fromMastodonId(ctx.params.id));
-			ctx.body = data.data;
-		} catch (e: any) {
-			apiLogger.error(inspect(e));
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
+		},
+	);
 }

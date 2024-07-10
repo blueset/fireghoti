@@ -18,7 +18,6 @@ import { Users } from "@/models/index.js";
 import { fetchMeta, stringToAcct } from "backend-rs";
 import { genIdenticon } from "@/misc/gen-identicon.js";
 import { createTemp } from "@/misc/create-temp.js";
-import megalodon, { type MegalodonInterface } from "megalodon";
 import activityPub from "./activitypub.js";
 import nodeinfo from "./nodeinfo.js";
 import wellKnown from "./well-known.js";
@@ -29,8 +28,8 @@ import webServer from "./web/index.js";
 import { initializeStreamingServer } from "./api/streaming.js";
 import { koaBody } from "koa-body";
 import removeTrailingSlash from "koa-remove-trailing-slashes";
-import { v4 as uuid } from "uuid";
-import { inspect } from "node:util";
+import { setupEndpointsAuthRoot } from "@/server/api/mastodon/endpoints/auth.js";
+import { CatchErrorsMiddleware } from "@/server/api/mastodon/middleware/catch-errors.js";
 
 export const serverLogger = new Logger("server", "gray", false);
 
@@ -90,6 +89,9 @@ mastoRouter.use(async (ctx, next) => {
 	await next();
 });
 
+mastoRouter.use(CatchErrorsMiddleware);
+setupEndpointsAuthRoot(mastoRouter);
+
 // Routing
 router.use(activityPub.routes());
 router.use(nodeinfo.routes());
@@ -122,73 +124,6 @@ router.get("/identicon/:x", async (ctx) => {
 		ctx.body = fs.createReadStream(temp).on("close", () => cleanup());
 	} else {
 		ctx.redirect("/static-assets/avatar.png");
-	}
-});
-
-mastoRouter.get("/oauth/authorize", async (ctx) => {
-	const { client_id, state, redirect_uri } = ctx.request.query;
-	console.log(ctx.request.req);
-	let param = "mastodon=true";
-	if (state) param += `&state=${state}`;
-	if (redirect_uri) param += `&redirect_uri=${redirect_uri}`;
-	const client = client_id ? client_id : "";
-	ctx.redirect(
-		`${Buffer.from(client.toString(), "base64").toString()}?${param}`,
-	);
-});
-
-mastoRouter.post("/oauth/token", async (ctx) => {
-	const body: any = ctx.request.body || ctx.request.query;
-	console.log("token-request", body);
-	console.log("token-query", ctx.request.query);
-	if (body.grant_type === "client_credentials") {
-		const ret = {
-			access_token: uuid(),
-			token_type: "Bearer",
-			scope: "read",
-			created_at: Math.floor(Date.now() / 1000),
-		};
-		ctx.body = ret;
-		return;
-	}
-	let client_id: any = body.client_id;
-	const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-	const generator = (megalodon as any).default;
-	const client = generator(BASE_URL, null) as MegalodonInterface;
-	let token = null;
-	if (body.code) {
-		//m = body.code.match(/^([a-zA-Z0-9]{8})([a-zA-Z0-9]{4})([a-zA-Z0-9]{4})([a-zA-Z0-9]{4})([a-zA-Z0-9]{12})/);
-		//if (!m.length) {
-		//	ctx.body = { error: "Invalid code" };
-		//	return;
-		//}
-		//token = `${m[1]}-${m[2]}-${m[3]}-${m[4]}-${m[5]}`
-		console.log(body.code, token);
-		token = body.code;
-	}
-	if (Array.isArray(client_id)) {
-		client_id = client_id.toString();
-	} else if (!client_id) {
-		client_id = null;
-	}
-	try {
-		const atData = await client.fetchAccessToken(
-			client_id,
-			body.client_secret,
-			token ? token : "",
-		);
-		const ret = {
-			access_token: atData.accessToken,
-			token_type: "Bearer",
-			scope: body.scope || "read write follow push",
-			created_at: Math.floor(Date.now() / 1000),
-		};
-		serverLogger.debug("Mastodon API token response", ret);
-		ctx.body = ret;
-	} catch (err: any) {
-		serverLogger.warn(err);
-		ctx.status = 401;
-		ctx.body = err.response.data;
 	}
 });
 

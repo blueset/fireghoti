@@ -30,7 +30,7 @@ export interface AccessToken {
   createdAt: DateTimeWithTimeZone
   token: string
   hash: string
-  userId: string
+  userId: string | null
   appId: string | null
   lastUsedAt: DateTimeWithTimeZone | null
   session: string | null
@@ -416,8 +416,6 @@ export interface FollowRequest {
 
 /** Converts milliseconds to a human readable string. */
 export declare function formatMilliseconds(milliseconds: number): string
-
-export declare function fromMastodonId(mastodonId: string): string | null
 
 export interface GalleryLike {
   id: string
@@ -1149,6 +1147,17 @@ export type PushNotificationKind =  'generic'|
 'readAllNotifications'|
 'mastodon';
 
+export type PushSubscriptionType =  'adminReport'|
+'adminSignUp'|
+'favourite'|
+'follow'|
+'followRequest'|
+'mention'|
+'poll'|
+'reblog'|
+'status'|
+'update';
+
 export interface RedisConfig {
   host: string
   port: number
@@ -1294,6 +1303,8 @@ export interface Software20 {
 /** Escapes `%` and `\` in the given string. */
 export declare function sqlLikeEscape(src: string): string
 
+export declare function sqlRegexEscape(src: string): string
+
 export interface Storage {
   /** Total storage space in bytes */
   total: number
@@ -1313,6 +1324,8 @@ export interface SwSubscription {
   auth: string
   publickey: string
   sendReadMessage: boolean
+  appAccessTokenId: string | null
+  subscriptionTypes: Array<PushSubscriptionType>
 }
 
 export interface SysLogConfig {
@@ -1326,8 +1339,6 @@ export interface TlsConfig {
 }
 
 export declare function toDbReaction(reaction?: string | undefined | null, host?: string | undefined | null): Promise<string>
-
-export declare function toMastodonId(firefishId: string): string | null
 
 export declare function toPuny(host: string): string
 
@@ -1509,6 +1520,7 @@ export interface UserProfile {
   preventAiLearning: boolean
   isIndexable: boolean
   mutedPatterns: Array<string>
+  mentions: Json
   mutedInstances: Array<string>
   mutedWords: Array<string>
   lang: string | null

@@ -1,6 +1,10 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'AddMastodonSubscriptionType1715181461692',
+    'SwSubscriptionAccessToken1709395223611',
+    'UserProfileMentions1711075007936',
+    'ClientCredentials1713108561474',
     'TurnOffCatLanguage1720107645050',
     'RefactorScheduledPosts1716804636187',
     'RemoveEnumTypenameSuffix1716462794927',
@@ -34,6 +38,20 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- addMastodonSubscriptionType
+ALTER TABLE "sw_subscription" DROP COLUMN "subscriptionTypes";
+DROP TYPE "push_subscription_type";
+
+-- sw-subscription-per-access-token
+ALTER TABLE "sw_subscription" DROP CONSTRAINT "FK_98a1aa2db2a5253924f42f38767";
+ALTER TABLE "sw_subscription" DROP COLUMN "appAccessTokenId";
+
+-- user-profile-mentions
+ALTER TABLE "user_profile" DROP COLUMN "mentions";
+
+-- client-credential-support
+ALTER TABLE "access_token" ALTER COLUMN "userId" SET NOT NULL;
 
 -- turn-off-cat-language
 ALTER TABLE "user" DROP COLUMN "readCatLanguage";

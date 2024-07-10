@@ -10,7 +10,6 @@ pub mod get_image_size;
 pub mod is_quote;
 pub mod is_safe_url;
 pub mod latest_version;
-pub mod mastodon_id;
 pub mod note;
 pub mod nyaify;
 pub mod password;

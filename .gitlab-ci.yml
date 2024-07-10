@@ -108,7 +108,6 @@ test:build:backend_ts:
         paths:
           - packages/backend/**/*
           - packages/firefish-js/**/*
-          - packages/megalodon/**/*
       when: always
   before_script:
     - apt-get update && apt-get -y upgrade
@@ -128,7 +127,7 @@ test:build:backend_ts:
     - psql --host postgres --user "${POSTGRES_USER}" --dbname "${POSTGRES_DB}" --command 'CREATE EXTENSION pgroonga'
   script:
     - pnpm install --frozen-lockfile
-    - pnpm --filter 'backend' --filter 'firefish-js' --filter 'megalodon' run build:debug
+    - pnpm --filter 'backend' --filter 'firefish-js' run build:debug
     - pnpm run migrate
     - psql --host postgres --user "${POSTGRES_USER}" --dbname "${POSTGRES_DB}" --command "$(cat docs/downgrade.sql)"
 

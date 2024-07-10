@@ -23,6 +23,14 @@ The new versions are:
 
 [Node v21.x is end-of-life](<https://github.com/nodejs/Release?tab=readme-ov-file#end-of-life-releases>).
 
+### For systemd/pm2 users
+
+You can remove the `packages/megalodon` directory after pulling the latest source code (`git pull --ff origin main`).
+
+```sh
+rm --recursive --force packages/megalodon
+```
+
 ## v20240607
 
 The following environment variables are deprecated and no longer have any effect:

@@ -57,9 +57,6 @@ packages/backend/assets/instance.css
 packages/backend/assets/sounds/None.mp3
 packages/backend/assets/LICENSE
 
-packages/megalodon/lib
-packages/megalodon/.idea
-
 dev/container/firefish
 dev/container/db
 dev/container/redis

@@ -1,6 +1,12 @@
 use crate::{
-    config::local_server_info, database::db_conn, misc::note::summarize,
-    model::entity::sw_subscription, util::http_client,
+    config::local_server_info,
+    database::db_conn,
+    misc::note::summarize,
+    model::entity::{access_token, app, sw_subscription},
+    util::{
+        http_client,
+        id::{get_timestamp, InvalidIdError},
+    },
 };
 use once_cell::sync::OnceCell;
 use sea_orm::prelude::*;
@@ -19,6 +25,11 @@ pub enum Error {
     #[doc = "provided content is invalid"]
     #[error("invalid content ({0})")]
     InvalidContent(String),
+    #[doc = "found Mastodon subscription is invalid"]
+    #[error("invalid subscription ({0})")]
+    InvalidSubscription(String),
+    #[error("invalid notification ID")]
+    InvalidId(#[from] InvalidIdError),
     #[error("failed to acquire an HTTP client")]
     HttpClient(#[from] http_client::Error),
 }
@@ -96,6 +107,111 @@ fn compact_content(mut content: serde_json::Value) -> Result<serde_json::Value, 
     Ok(serde_json::from_value(Json::Object(object.clone()))?)
 }
 
+/// Returns a tuple containing the token and client name
+async fn get_mastodon_subscription_info(
+    db: &DbConn,
+    subscription_id: &str,
+    token_id: &str,
+) -> Result<(String, String), Error> {
+    let token = access_token::Entity::find()
+        .filter(access_token::Column::Id.eq(token_id))
+        .one(db)
+        .await?;
+
+    if token.is_none() {
+        unsubscribe(db, subscription_id).await?;
+        return Err(Error::InvalidSubscription(
+            "access token not found".to_string(),
+        ));
+    }
+    let token = token.unwrap();
+
+    if token.app_id.is_none() {
+        unsubscribe(db, subscription_id).await?;
+        return Err(Error::InvalidSubscription("no app ID".to_string()));
+    }
+    let app_id = token.app_id.unwrap();
+
+    let client = app::Entity::find()
+        .filter(app::Column::Id.eq(app_id))
+        .one(db)
+        .await?;
+
+    if client.is_none() {
+        unsubscribe(db, subscription_id).await?;
+        return Err(Error::InvalidSubscription("app not found".to_string()));
+    }
+
+    Ok((token.token, client.unwrap().name))
+}
+
+async fn encode_mastodon_payload(
+    mut content: serde_json::Value,
+    db: &DbConn,
+    subscription: &sw_subscription::Model,
+) -> Result<String, Error> {
+    let object = content
+        .as_object_mut()
+        .ok_or(Error::InvalidContent("not a JSON object".to_string()))?;
+
+    if subscription.app_access_token_id.is_none() {
+        unsubscribe(db, &subscription.id).await?;
+        return Err(Error::InvalidSubscription("no access token".to_string()));
+    }
+
+    let (token, client_name) = get_mastodon_subscription_info(
+        db,
+        &subscription.id,
+        subscription.app_access_token_id.as_ref().unwrap(),
+    )
+    .await?;
+
+    object.insert("access_token".to_string(), serde_json::to_value(token)?);
+
+    // Some apps expect notification_id to be an integer,
+    // but doesn’t break when the ID doesn’t match the rest of API.
+    if [
+        "IceCubesApp",
+        "Mammoth",
+        "feather",
+        "MaserApp",
+        "Metatext",
+        "Feditext",
+    ]
+    .contains(&client_name.as_str())
+    {
+        let timestamp = object
+            .get("notification_id")
+            .and_then(|id| id.as_str())
+            .map(get_timestamp)
+            .transpose()?
+            .unwrap_or_default();
+
+        object.insert("notification_id".to_string(), timestamp.into());
+    }
+
+    let res = serde_json::to_string(&content)?;
+
+    // Adding space paddings to the end of JSON payload to prevent
+    // `esm` from adding null bytes payload which many Mastodon clients don’t support.
+    // https://firefish.dev/firefish/firefish/-/merge_requests/10905#note_6733
+    // not using the padding parameter directly on `res` because we want the padding to be
+    // calculated based on the UTF-8 byte size of `res` instead of number of characters.
+    let pad_length = match res.len() % 128 {
+        127 => 127,
+        n => 126 - n,
+    };
+
+    Ok(format!("{}{:pad_length$}", res, ""))
+}
+
+async fn unsubscribe(db: &DbConn, subscription_id: &str) -> Result<(), DbErr> {
+    sw_subscription::Entity::delete_by_id(subscription_id)
+        .exec(db)
+        .await?;
+    Ok(())
+}
+
 async fn handle_web_push_failure(
     db: &DbConn,
     err: WebPushError,
@@ -114,9 +230,7 @@ async fn handle_web_push_failure(
         | WebPushError::MissingCryptoKeys
         | WebPushError::InvalidCryptoKeys
         | WebPushError::InvalidResponse => {
-            sw_subscription::Entity::delete_by_id(subscription_id)
-                .exec(db)
-                .await?;
+            unsubscribe(db, subscription_id).await?;
             tracing::info!("{}; {} was unsubscribed", error_message, subscription_id);
             tracing::debug!("reason: {:#?}", err);
         }
@@ -157,9 +271,9 @@ pub async fn send_push_notification(
     let use_mastodon_api = matches!(kind, PushNotificationKind::Mastodon);
 
     // TODO: refactoring
-    let payload = if use_mastodon_api {
-        // Leave the `content` as it is
-        serde_json::to_string(content)?
+    let mut payload = if use_mastodon_api {
+        // Content generated per subscription
+        "".to_string()
     } else {
         // Format the `content` passed from the TypeScript backend
         // for Firefish push notifications
@@ -206,6 +320,15 @@ pub async fn send_push_notification(
             continue;
         }
 
+        if use_mastodon_api {
+            if subscription.app_access_token_id.is_none() {
+                continue;
+            }
+            payload = encode_mastodon_payload(content.clone(), db, subscription).await?;
+        } else if subscription.app_access_token_id.is_some() {
+            continue;
+        }
+
         let subscription_info = SubscriptionInfo {
             endpoint: subscription.endpoint.to_owned(),
             keys: SubscriptionKeys {
@@ -246,7 +369,28 @@ pub async fn send_push_notification(
             handle_web_push_failure(db, err, &subscription.id, "failed to build a payload").await?;
             continue;
         }
-        if let Err(err) = get_client()?.send(message.unwrap()).await {
+
+        // Ice Cubes cannot process ";rs=4096" at at the end of Encryption header
+        let mut message = message.unwrap();
+
+        if let Some(payload) = message.payload {
+            let crypto_headers: Vec<(&str, String)> = payload
+                .crypto_headers
+                .into_iter()
+                .map(|(key, val)| match key {
+                    "Encryption" => (key, val.replace(";rs=4096", "")),
+                    _ => (key, val),
+                })
+                .collect();
+
+            message.payload = Some(WebPushPayload {
+                content: payload.content,
+                content_encoding: payload.content_encoding,
+                crypto_headers,
+            });
+        }
+
+        if let Err(err) = get_client()?.send(message).await {
             handle_web_push_failure(db, err, &subscription.id, "failed to send").await?;
             continue;
         }

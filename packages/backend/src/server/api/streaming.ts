@@ -8,6 +8,10 @@ import { Users } from "@/models/index.js";
 import MainStreamConnection from "./stream/index.js";
 import authenticate from "./authenticate.js";
 import { apiLogger } from "@/server/api/logger.js";
+import type { AccessToken } from "@/models/entities/access-token.js";
+import type { ILocalUser } from "@/models/entities/user.js";
+import { getTokenFromOAuth } from "@/server/api/mastodon/middleware/auth.js";
+import { MastodonStreamingConnection } from "./mastodon/streaming/index.js";
 
 export const initializeStreamingServer = (server: http.Server) => {
 	// Init websocket server
@@ -20,15 +24,32 @@ export const initializeStreamingServer = (server: http.Server) => {
 		const headers = request.httpRequest.headers["sec-websocket-protocol"] || "";
 		const cred = q.i || q.access_token || headers;
 		const accessToken = cred.toString();
+		const isMastodon =
+			request.resourceURL.pathname?.startsWith("/api/v1/streaming");
 
-		const [user, app] = await authenticate(
-			request.httpRequest.headers.authorization,
-			accessToken,
-		).catch((err) => {
-			request.reject(403, err.message);
-			return [];
-		});
-		if (typeof user === "undefined") {
+		let main: MainStreamConnection | MastodonStreamingConnection;
+		let user: ILocalUser | null | undefined;
+		let app: AccessToken | null | undefined;
+
+		if (!isMastodon) {
+			[user, app] = await authenticate(
+				request.httpRequest.headers.authorization,
+				accessToken,
+			).catch((err) => {
+				request.reject(403, err.message);
+				return [];
+			});
+		} else {
+			app = await getTokenFromOAuth(accessToken);
+			if (!app || !app.user) {
+				request.reject(400);
+				return;
+			}
+
+			user = app.user as ILocalUser;
+		}
+
+		if (!user) {
 			return;
 		}
 
@@ -37,7 +58,9 @@ export const initializeStreamingServer = (server: http.Server) => {
 			return;
 		}
 
-		const connection = request.accept();
+		const connection = request.accept(
+			request.requestedProtocols[0] ?? undefined,
+		);
 
 		const ev = new EventEmitter();
 
@@ -51,15 +74,17 @@ export const initializeStreamingServer = (server: http.Server) => {
 		const prepareStream = q.stream?.toString();
 		apiLogger.trace("initialized streaming", q);
 
-		const main = new MainStreamConnection(
-			connection,
-			ev,
-			user,
-			app,
-			host,
-			accessToken,
-			prepareStream,
-		);
+		main = isMastodon
+			? new MastodonStreamingConnection(connection, ev, user, app, q)
+			: new MainStreamConnection(
+					connection,
+					ev,
+					user,
+					app,
+					host,
+					accessToken,
+					prepareStream,
+				);
 
 		const intervalId = user
 			? setInterval(

@@ -15,7 +15,7 @@ pub struct Model {
     pub token: String,
     pub hash: String,
     #[sea_orm(column_name = "userId")]
-    pub user_id: String,
+    pub user_id: Option<String>,
     #[sea_orm(column_name = "appId")]
     pub app_id: Option<String>,
     #[sea_orm(column_name = "lastUsedAt")]
@@ -41,6 +41,8 @@ pub enum Relation {
     App,
     #[sea_orm(has_many = "super::notification::Entity")]
     Notification,
+    #[sea_orm(has_many = "super::sw_subscription::Entity")]
+    SwSubscription,
     #[sea_orm(
         belongs_to = "super::user::Entity",
         from = "Column::UserId",
@@ -60,6 +62,12 @@ impl Related<super::app::Entity> for Entity {
 impl Related<super::notification::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Notification.def()
+    }
+}
+
+impl Related<super::sw_subscription::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::SwSubscription.def()
     }
 }
 

@@ -11,6 +11,7 @@ import { ffVisibility, notificationTypes } from "@/types.js";
 import { id } from "../id.js";
 import { User } from "./user.js";
 import { Page } from "./page.js";
+import type { IMentionedRemoteUsers } from "./note.js";
 
 // TODO: このテーブルで管理している情報すべてレジストリで管理するようにしても良いかも
 //       ただ、「emailVerified が true なユーザーを find する」のようなクエリは書けなくなるからウーン
@@ -49,6 +50,11 @@ export class UserProfile {
 		value: string;
 		verified?: boolean;
 	}[];
+
+	@Column("jsonb", {
+		default: [],
+	})
+	public mentions: IMentionedRemoteUsers;
 
 	@Column("varchar", {
 		length: 32,
