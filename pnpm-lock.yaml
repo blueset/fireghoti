@@ -262,8 +262,8 @@ importers:
         specifier: 1.5.3
         version: 1.5.3
       qs:
-        specifier: 6.12.2
-        version: 6.12.2
+        specifier: 6.12.3
+        version: 6.12.3
       random-seed:
         specifier: 0.3.0
         version: 0.3.0
@@ -1006,11 +1006,13 @@ packages:
   '@biomejs/cli-darwin-arm64@1.8.3':
     resolution: {integrity: sha512-9DYOjclFpKrH/m1Oz75SSExR8VKvNSSsLnVIqdnKexj6NwmiMlKk94Wa1kZEdv6MCOHGHgyyoV57Cw8WzL5n3A==}
     engines: {node: '>=14.21.3'}
+    cpu: [arm64]
     os: [darwin]
 
   '@biomejs/cli-darwin-x64@1.8.3':
     resolution: {integrity: sha512-UeW44L/AtbmOF7KXLCoM+9PSgPo0IDcyEUfIoOXYeANaNXXf9mLUwV1GeF2OWjyic5zj6CnAJ9uzk2LT3v/wAw==}
     engines: {node: '>=14.21.3'}
+    cpu: [x64]
     os: [darwin]
 
   '@biomejs/cli-linux-arm64-musl@1.8.3':
@@ -1022,6 +1024,7 @@ packages:
   '@biomejs/cli-linux-arm64@1.8.3':
     resolution: {integrity: sha512-fed2ji8s+I/m8upWpTJGanqiJ0rnlHOK3DdxsyVLZQ8ClY6qLuPc9uehCREBifRJLl/iJyQpHIRufLDeotsPtw==}
     engines: {node: '>=14.21.3'}
+    cpu: [arm64]
     os: [linux]
 
   '@biomejs/cli-linux-x64-musl@1.8.3':
@@ -1033,6 +1036,7 @@ packages:
   '@biomejs/cli-linux-x64@1.8.3':
     resolution: {integrity: sha512-I8G2QmuE1teISyT8ie1HXsjFRz9L1m5n83U1O6m30Kw+kPMPSKjag6QGUn+sXT8V+XWIZxFFBoTDEDZW2KPDDw==}
     engines: {node: '>=14.21.3'}
+    cpu: [x64]
     os: [linux]
 
   '@biomejs/cli-win32-arm64@1.8.3':
@@ -5755,8 +5759,8 @@ packages:
     engines: {node: '>=10.13.0'}
     hasBin: true
 
-  qs@6.12.2:
-    resolution: {integrity: sha512-x+NLUpx9SYrcwXtX7ob1gnkSems4i/mGZX5SlYxwIau6RrUSODO89TR/XDGGpn5RPWSYIB+aSfuSlV5+CmbTBg==}
+  qs@6.12.3:
+    resolution: {integrity: sha512-AWJm14H1vVaO/iNZ4/hO+HyaTehuy9nRqVdkTqlJt0HWvBiBIEXFmb4C0DGeYo3Xes9rrEW+TxHsaigCbN5ICQ==}
     engines: {node: '>=0.6'}
 
   querystring@0.2.0:
@@ -9439,14 +9443,14 @@ snapshots:
   co-body@5.2.0:
     dependencies:
       inflation: 2.1.0
-      qs: 6.12.2
+      qs: 6.12.3
       raw-body: 2.5.2
       type-is: 1.6.18
 
   co-body@6.1.0:
     dependencies:
       inflation: 2.1.0
-      qs: 6.12.2
+      qs: 6.12.3
       raw-body: 2.5.2
       type-is: 1.6.18
 
@@ -10213,7 +10217,7 @@ snapshots:
       dezalgo: 1.0.4
       hexoid: 1.0.0
       once: 1.4.0
-      qs: 6.12.2
+      qs: 6.12.3
 
   fresh@0.5.2: {}
 
@@ -12193,7 +12197,7 @@ snapshots:
       pngjs: 5.0.0
       yargs: 15.4.1
 
-  qs@6.12.2:
+  qs@6.12.3:
     dependencies:
       side-channel: 1.0.6
 
