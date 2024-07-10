@@ -366,6 +366,7 @@ module.exports.AntennaSrc = nativeBinding.AntennaSrc
 module.exports.ChatEvent = nativeBinding.ChatEvent
 module.exports.ChatIndexEvent = nativeBinding.ChatIndexEvent
 module.exports.checkWordMute = nativeBinding.checkWordMute
+module.exports.countLocalUsers = nativeBinding.countLocalUsers
 module.exports.countReactions = nativeBinding.countReactions
 module.exports.cpuInfo = nativeBinding.cpuInfo
 module.exports.cpuUsage = nativeBinding.cpuUsage

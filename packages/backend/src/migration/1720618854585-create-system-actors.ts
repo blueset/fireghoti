@@ -1,3 +1,5 @@
+import type { MigrationInterface, QueryRunner } from "typeorm";
+
 import { v4 as uuid } from "uuid";
 import { genRsaKeyPair } from "@/misc/gen-key-pair.js";
 import { User } from "@/models/entities/user.js";
@@ -9,7 +11,7 @@ import { UserKeypair } from "@/models/entities/user-keypair.js";
 import { UsedUsername } from "@/models/entities/used-username.js";
 import { db } from "@/db/postgre.js";
 
-export async function createSystemUser(username: string) {
+async function createSystemUser(username: string) {
 	const password = uuid();
 
 	// Generate hash of password
@@ -20,22 +22,20 @@ export async function createSystemUser(username: string) {
 
 	const keyPair = await genRsaKeyPair(4096);
 
-	let account!: User;
-
 	const exists = await Users.existsBy({
 		usernameLower: username.toLowerCase(),
 		host: IsNull(),
 	});
 
 	if (exists) {
-		throw new Error("the user already exists");
+		return;
 	}
 
 	const now = new Date();
 
 	// Start transaction
 	await db.transaction(async (transactionalEntityManager) => {
-		account = await transactionalEntityManager
+		const account = await transactionalEntityManager
 			.insert(User, {
 				id: genIdAt(now),
 				createdAt: now,
@@ -69,6 +69,18 @@ export async function createSystemUser(username: string) {
 			username: username.toLowerCase(),
 		});
 	});
+}
 
-	return account;
+export class CreateSystemActors1720618854585 implements MigrationInterface {
+	public async up(_: QueryRunner): Promise<void> {
+		if (!db.isInitialized) {
+			db.initialize();
+		}
+		await createSystemUser("instance.actor");
+		await createSystemUser("relay.actor");
+	}
+
+	public async down(_: QueryRunner): Promise<void> {
+		/* You don't need to revert this migration. */
+	}
 }

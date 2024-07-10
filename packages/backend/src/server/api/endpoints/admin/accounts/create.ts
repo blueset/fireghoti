@@ -1,7 +1,7 @@
 import define from "@/server/api/define.js";
 import { Users } from "@/models/index.js";
 import { signup } from "@/server/api/common/signup.js";
-import { IsNull } from "typeorm";
+import { countLocalUsers } from "backend-rs";
 
 export const meta = {
 	tags: ["admin"],
@@ -32,11 +32,8 @@ export const paramDef = {
 
 export default define(meta, paramDef, async (ps, _me, token) => {
 	const me = _me ? await Users.findOneByOrFail({ id: _me.id }) : null;
-	const noUsers =
-		(await Users.countBy({
-			host: IsNull(),
-		})) === 0;
-	if (!noUsers && !me?.isAdmin) throw new Error("access denied");
+	if (!me?.isAdmin && (await countLocalUsers()) !== 0)
+		throw new Error("access denied");
 	if (token) throw new Error("access denied");
 
 	const { account, secret } = await signup({
