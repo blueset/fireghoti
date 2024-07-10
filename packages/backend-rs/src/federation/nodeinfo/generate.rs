@@ -35,6 +35,9 @@ async fn statistics() -> Result<(u64, u64, u64, u64), DbErr> {
     const HALF_YEAR: chrono::TimeDelta = chrono::Duration::days(183);
 
     let local_users = misc::user::count::local_total(db);
+
+    // We don't need to care about the number of system actors here,
+    // because their last active date is null
     let local_active_halfyear = user::Entity::find()
         .filter(user::Column::Host.is_null())
         .filter(user::Column::LastActiveDate.gt(now - HALF_YEAR))
