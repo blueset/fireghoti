@@ -365,7 +365,7 @@ In this instruction, we use [Caddy](https://caddyserver.com/) to make the Firefi
 
 ## Upgrade Firefish version
 
-Please refer to the [upgrade instruction](./upgrade.md). Be sure to switch to `firefish` user and go to the Firefish directory before executing the `git` command:
+Please refer to the [upgrade instruction](https://firefish.dev/firefish/firefish/-/blob/main/docs/upgrade.md). Be sure to switch to `firefish` user and go to the Firefish directory before executing the `git` command:
 
 ```sh
 sudo su --login firefish
