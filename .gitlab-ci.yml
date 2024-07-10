@@ -30,6 +30,7 @@ stages:
   - build
   - dependency
   - clean
+  - manage
 
 variables:
   POSTGRES_DB: 'firefish_db'
@@ -362,3 +363,15 @@ clean:
     - pnpm install --frozen-lockfile
   script:
     - pnpm run clean-all
+
+add-issue-labels:
+  stage: manage
+  rules:
+    - if: $MANAGE && $CI_PIPELINE_SOURCE == 'schedule'
+  image: registry.firefish.dev/firefish/gitlab-issue-labels
+  variables:
+    GITLAB_HOST: "firefish.dev"
+  services: []
+  before_script: []
+  script:
+    - gitlab-issue-labels
