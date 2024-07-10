@@ -18,7 +18,6 @@ import {
 	publishToChannelStream,
 	publishToChatStream,
 	publishToGroupChatStream,
-	ChatEvent,
 } from "backend-rs";
 import type { UserGroup } from "@/models/entities/user-group.js";
 import type { Packed } from "@/misc/schema.js";
@@ -378,15 +377,11 @@ export default class Connection {
 				await publishToChatStream(
 					param.partner,
 					this.user.id,
-					ChatEvent.Typing,
+					"typing",
 					this.user.id,
 				);
 			} else if (param.group != null) {
-				await publishToGroupChatStream(
-					param.group,
-					ChatEvent.Typing,
-					this.user.id,
-				);
+				await publishToGroupChatStream(param.group, "typing", this.user.id);
 			}
 		}
 	}

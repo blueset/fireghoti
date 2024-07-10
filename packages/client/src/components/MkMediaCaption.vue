@@ -76,7 +76,7 @@ import MkButton from "@/components/MkButton.vue";
 import bytes from "@/filters/bytes";
 import number from "@/filters/number";
 import { i18n } from "@/i18n";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 
 const props = withDefaults(
 	defineProps<{
@@ -109,14 +109,14 @@ const modal = ref<InstanceType<typeof MkModal> | null>(null);
 const inputValue = ref(props.input.default ? props.input.default : null);
 
 const remainingLength = computed(() => {
-	const maxCaptionLength = instance.maxCaptionTextLength ?? 512;
+	const maxCaptionLength = getInstanceInfo().maxCaptionTextLength ?? 512;
 	if (typeof inputValue.value !== "string") return maxCaptionLength;
 	return maxCaptionLength - length(inputValue.value);
 });
 
 function done(canceled: boolean, result?: string | null) {
 	emit("done", { canceled, result });
-	modal.value!.close();
+	modal.value?.close();
 }
 
 async function ok() {

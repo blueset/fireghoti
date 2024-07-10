@@ -1,4 +1,3 @@
-import { createSystemUser } from "./create-system-user.js";
 import type { ILocalUser } from "@/models/entities/user.js";
 import { Users } from "@/models/index.js";
 import { Cache } from "@/misc/cache.js";
@@ -15,14 +14,8 @@ export async function getInstanceActor(): Promise<ILocalUser> {
 	const user = (await Users.findOneBy({
 		host: IsNull(),
 		username: ACTOR_USERNAME,
-	})) as ILocalUser | undefined;
+	})) as ILocalUser;
 
-	if (user) {
-		await cache.set(null, user);
-		return user;
-	} else {
-		const created = (await createSystemUser(ACTOR_USERNAME)) as ILocalUser;
-		await cache.set(null, created);
-		return created;
-	}
+	await cache.set(null, user);
+	return user;
 }

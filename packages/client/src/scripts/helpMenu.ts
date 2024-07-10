@@ -1,7 +1,7 @@
 import XTutorial from "@/components/MkTutorialDialog.vue";
 import XCheatSheet from "@/components/MkCheatSheetDialog.vue";
 import { defaultStore } from "@/store";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import { host } from "@/config";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
@@ -9,6 +9,7 @@ import icon from "@/scripts/icon";
 import type { MenuItem } from "@/types/menu";
 
 const instanceSpecificItems: MenuItem[] = [];
+const instance = getInstanceInfo();
 
 if (instance.tosUrl != null) {
 	instanceSpecificItems.push({

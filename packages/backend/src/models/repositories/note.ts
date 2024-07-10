@@ -14,7 +14,12 @@ import {
 	Notes,
 } from "../index.js";
 import type { Packed } from "@/misc/schema.js";
-import { countReactions, decodeReaction, nyaify } from "backend-rs";
+import {
+	countReactions,
+	decodeReaction,
+	nyaify,
+	shouldNyaify,
+} from "backend-rs";
 import { awaitAll } from "@/prelude/await-all.js";
 import type { NoteReaction } from "@/models/entities/note-reaction.js";
 import {
@@ -311,7 +316,13 @@ export const NoteRepository = db.getRepository(Note).extend({
 			mentionedRemoteUsers: this.mentionedRemoteUsers(note),
 		});
 
-		if (packed.user.isCat && packed.user.speakAsCat && packed.text) {
+		if (
+			packed.user.isCat &&
+			packed.user.speakAsCat &&
+			packed.text != null &&
+			meId != null &&
+			(await shouldNyaify(meId))
+		) {
 			const tokens = packed.text ? mfm.parse(packed.text) : [];
 			function nyaifyNode(node: mfm.MfmNode) {
 				if (node.type === "quote") return;

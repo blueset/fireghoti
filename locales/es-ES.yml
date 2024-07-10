@@ -636,7 +636,7 @@ emptyToDisableSmtpAuth: "Deje el nombre del usuario y la contraseña en blanco p
 smtpSecure: "Usar SSL/TLS implícito en la conexión SMTP"
 smtpSecureInfo: "Apagar cuando se use STARTTLS"
 testEmail: "Prueba de envío"
-wordMute: "Silenciar palabras"
+wordMute: "Silenciar palabras y lenguajes"
 regexpError: "Error de la expresión regular"
 regexpErrorDescription: "Ocurrió un error en la expresión regular en la linea {line}
   de las palabras muteadas {tab}"
@@ -1937,7 +1937,7 @@ manageGroups: Administrar grupos
 replayTutorial: Repetir Tutorial
 privateMode: Modo privado
 addInstance: Añadir un servidor
-renoteMute: Silenciar impulsos
+renoteMute: Silenciar impulsos en la línea de tiempo
 renoteUnmute: Dejar de silenciar impulsos
 flagSpeakAsCat: Habla como un gato
 selectInstance: Selecciona un servidor
@@ -2152,7 +2152,6 @@ detectPostLanguage: Detectar automáticamente el idioma y mostrar el botón de t
 indexableDescription: Permitir que el buscador integrado muestre tus publicaciones
 reactions: Reacciones
 exportZip: Exportar ZIP
-emojiPackCreator: Creador de pack de Emoji
 importZip: Importar ZIP
 vibrate: Reproducir vibraciones
 openServerInfo: Mostrar información del servidor al presionar el simbolo del servidor
@@ -2176,3 +2175,17 @@ moreUrlsDescription: 'Ingrese los enlaces de las páginas que desea Fijar en el 
   de ayuda, ubicado en la esquina inferior izquierda, usando este formato de notación:
   ["Nombre para mostrar": https://su-enlace.com/]'
 quotes: Citaciónes
+markLocalFilesNsfwByDefault: Marcar todo nuevo archivo local como sensible por defecto
+toReply: Respuesta
+toPost: Publicar
+sentFollowRequests: Enviar solicitudes de seguimiento
+toQuote: Cita
+replyMute: Silenciar respuestas en la linea de tiempo
+replyUnmute: Anular respuestas en las lineas de tiempo
+strongPassword: Buena contraseña
+markLocalFilesNsfwByDefaultDescription: Independientemente de este ajuste, los usuarios
+  pueden eliminar la bandera NSFW por sí mismos. Los archivos existentes no son afectados.
+noSentFollowRequests: No has enviado ninguna solicitud de seguimiento
+antennaLimit: El número máximo de antenas que cada usuario puede crear
+toEdit: Editar
+cannotEditVisibility: No puedes editar la visibilidad

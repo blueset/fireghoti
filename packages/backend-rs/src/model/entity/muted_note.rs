@@ -2,14 +2,12 @@
 
 use super::sea_orm_active_enums::MutedNoteReason;
 use sea_orm::entity::prelude::*;
+use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 #[sea_orm(table_name = "muted_note")]
-#[cfg_attr(
-    feature = "napi",
-    napi_derive::napi(object, js_name = "MutedNote", use_nullable = true)
-)]
+#[macros::export(object, js_name = "MutedNote")]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,

@@ -2168,7 +2168,6 @@ addRe: Afegeix "re:" al començament del comentari quant responguis a un missatg
 confirm: Confirmar
 importZip: Importar ZIP
 exportZip: Exportar ZIP
-emojiPackCreator: Creador de paquets Emoji
 detectPostLanguage: Detecta l'idioma automàticament i mostra un botó per els articles
   en altres idiomes
 indexableDescription: Permet al cercador intern mostrar els missatges públics
@@ -2324,3 +2323,4 @@ cancelScheduledPost: Elimina la planificació
 addAlt4MeTag: "Afegeix automàticament l'etiqueta #Alt4Me a les teves publicacions
   que tinguin un fitxer adjunt sense descripció"
 strongPassword: Bona contrasenya
+turnOffCatLanguage: Desactiva la conversió al llenguatge de gat

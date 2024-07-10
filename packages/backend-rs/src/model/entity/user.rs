@@ -2,14 +2,12 @@
 
 use super::sea_orm_active_enums::UserEmojiModPerm;
 use sea_orm::entity::prelude::*;
+use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 #[sea_orm(table_name = "user")]
-#[cfg_attr(
-    feature = "napi",
-    napi_derive::napi(object, js_name = "User", use_nullable = true)
-)]
+#[macros::export(object, js_name = "User")]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: String,
@@ -79,6 +77,8 @@ pub struct Model {
     pub is_indexable: bool,
     #[sea_orm(column_name = "alsoKnownAs")]
     pub also_known_as: Option<Vec<String>>,
+    #[sea_orm(column_name = "readCatLanguage")]
+    pub read_cat_language: bool,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

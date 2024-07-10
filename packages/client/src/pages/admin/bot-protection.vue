@@ -81,7 +81,7 @@ import FormButton from "@/components/MkButton.vue";
 import FormSuspense from "@/components/form/suspense.vue";
 import FormSlot from "@/components/form/slot.vue";
 import * as os from "@/os";
-import { fetchInstance } from "@/instance";
+import { updateInstanceCache } from "@/instance";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
@@ -89,7 +89,7 @@ const MkCaptcha = defineAsyncComponent(
 	() => import("@/components/MkCaptcha.vue"),
 );
 
-const provider = ref<any>(null);
+const provider = ref<string | null>(null);
 const hcaptchaSiteKey = ref<string | null>(null);
 const hcaptchaSecretKey = ref<string | null>(null);
 const recaptchaSiteKey = ref<string | null>(null);
@@ -97,14 +97,14 @@ const recaptchaSecretKey = ref<string | null>(null);
 
 async function init() {
 	const meta = await os.api("admin/meta");
-	hcaptchaSiteKey.value = meta.hcaptchaSiteKey;
-	hcaptchaSecretKey.value = meta.hcaptchaSecretKey;
-	recaptchaSiteKey.value = meta.recaptchaSiteKey;
-	recaptchaSecretKey.value = meta.recaptchaSecretKey;
+	hcaptchaSiteKey.value = meta?.hcaptchaSiteKey;
+	hcaptchaSecretKey.value = meta?.hcaptchaSecretKey;
+	recaptchaSiteKey.value = meta?.recaptchaSiteKey;
+	recaptchaSecretKey.value = meta?.recaptchaSecretKey;
 
-	provider.value = meta.enableHcaptcha
+	provider.value = meta?.enableHcaptcha
 		? "hcaptcha"
-		: meta.enableRecaptcha
+		: meta?.enableRecaptcha
 			? "recaptcha"
 			: null;
 }
@@ -118,7 +118,7 @@ function save() {
 		recaptchaSiteKey: recaptchaSiteKey.value,
 		recaptchaSecretKey: recaptchaSecretKey.value,
 	}).then(() => {
-		fetchInstance();
+		updateInstanceCache();
 	});
 }
 </script>

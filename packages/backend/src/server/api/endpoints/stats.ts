@@ -1,6 +1,7 @@
 import { Instances, Users, Notes } from "@/models/index.js";
 import define from "@/server/api/define.js";
 import { IsNull } from "typeorm";
+import { countLocalUsers } from "backend-rs";
 
 export const meta = {
 	requireCredential: false,
@@ -69,11 +70,7 @@ export default define(meta, paramDef, async () => {
 		// usersCount
 		Users.count(),
 		// originalUsersCount
-		Users.count({
-			where: {
-				host: IsNull(),
-			},
-		}),
+		countLocalUsers(),
 		// instances
 		Instances.count(),
 	]);

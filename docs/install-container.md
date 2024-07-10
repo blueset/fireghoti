@@ -51,4 +51,4 @@ NOTE: This will take some time to come fully online, even after download and ext
 
 Once the server is up you can use a web browser to access the web interface at `http://serverip:3000` (where `serverip` is the IP of the server you are running the firefish server on).
 
-To publish your server, please follow the instructions in [section 5 of this installation guide](./install.md#5-preparation-for-publishing-a-server).
+To publish your server, please follow the instructions in [section 5 of this installation guide](https://firefish.dev/firefish/firefish/-/blob/main/docs/install.md#5-preparation-for-publishing-a-server).

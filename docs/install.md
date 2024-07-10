@@ -361,14 +361,95 @@ In this instruction, we use [Caddy](https://caddyserver.com/) to make the Firefi
     sudo systemctl enable --now firefish
     ```
 
-## Upgrading
+# Maintain the server
 
-Please refer to the [upgrade instruction](./upgrade.md). Be sure to switch to `firefish` user and go to the Firefish directory before executing the `git` command:
+## Upgrade Firefish version
+
+Please refer to the [upgrade instruction](https://firefish.dev/firefish/firefish/-/blob/main/docs/upgrade.md). Be sure to switch to `firefish` user and go to the Firefish directory before executing the `git` command:
 
 ```sh
 sudo su --login firefish
 cd ~/firefish
 ```
+
+## Rotate logs
+
+As the server runs longer and longer, the size of the log files increases, filling up the disk space. To prevent this, you should set up a log rotation (removing old logs automatically).
+
+You can edit the `SystemMaxUse` value in the `[journal]` section of `/etc/systemd/journald.conf` to do it:
+
+```conf
+[journal]
+... (omitted)
+SystemMaxUse=500M
+...
+```
+
+Make sure to remove the leading `#` to uncomment the line. After editing the config file, you need to restart `systemd-journald` service.
+
+```sh
+sudo systemctl restart systemd-journald
+```
+
+It is also recommended that you change the [PGroonga log level](https://pgroonga.github.io/reference/parameters/log-level.html). The default level is `notice`, but this is too verbose for daily use.
+
+To control the log level, add this line to your `postgresql.conf`:
+
+```conf
+pgroonga.log_level = error
+```
+
+You can check the `postgresql.conf` location by this command:
+
+```sh
+sudo --user=postgres psql --command='SHOW config_file'
+```
+
+The PGroonga log file (`pgroonga.log`) is located under this directory:
+
+```sh
+sudo --user=postgres psql --command='SHOW data_directory'
+```
+
+## Tune database configuration
+
+The default PostgreSQL configuration is not suitable for running a Firefish server. So, it is highly recommended that you use [PGTune](https://pgtune.leopard.in.ua/) to tweak the configuration.
+
+Here is an example set of parameters you can provide to PGTune:
+
+|             Parameter | Value                                                   |
+|----------------------:|---------------------------------------------------------|
+|            DB version | 16 (your PostgreSQL major version)                      |
+|               OS Type | Linux                                                   |
+|               DB Type | Data warehouse                                          |
+|          Total Memory | [total physical memory] minus 700 MB                    |
+|        Number of CPUs | number of CPU threads (or lower value if you have many) |
+| Number of connections | 200                                                     |
+|          Data storage | SSD storage                                             |
+
+Since a Firefish server is not a dedicated database server, be sure to leave some memory space for other software such as Firefish, Redis, and reverse proxy.
+
+Once you have entered the appropriate values for your environment, click the "Generate" button to generate a configuration and replace the values in `postgresql.conf` with the suggested values.
+
+After that, you need to restart the PostgreSQL service.
+
+```sh
+sudo systemctl stop firefish
+sudo systemctl restart postgresql
+sudo systemctl start firefish
+```
+
+## VACUUM your database
+
+If the database runs long, accumulated "garbage" can degrade its performance or cause problems. To prevent this, you should `VACUUM` your database regularly.
+
+```sh
+sudo systemctl stop firefish
+sudo --user=postgres psql --dbname=firefish_db --command='VACUUM FULL VERBOSE ANALYZE'
+sudo systemctl start firefish
+```
+
+Note that this operation takes some time.
 
 ## Customize
 

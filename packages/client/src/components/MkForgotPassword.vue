@@ -9,7 +9,7 @@
 		<template #header>{{ i18n.ts.forgotPassword }}</template>
 
 		<form
-			v-if="instance.enableEmail"
+			v-if="enableEmail"
 			class="bafeceda"
 			@submit.prevent="onSubmit"
 		>
@@ -68,7 +68,7 @@ import XModalWindow from "@/components/MkModalWindow.vue";
 import MkButton from "@/components/MkButton.vue";
 import MkInput from "@/components/form/input.vue";
 import * as os from "@/os";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import { i18n } from "@/i18n";
 
 const emit = defineEmits<{
@@ -82,6 +82,8 @@ const username = ref("");
 const email = ref("");
 const processing = ref(false);
 
+const { enableEmail } = getInstanceInfo();
+
 async function onSubmit() {
 	processing.value = true;
 	await os.apiWithDialog("request-reset-password", {
@@ -89,7 +91,7 @@ async function onSubmit() {
 		email: email.value,
 	});
 	emit("done");
-	dialog.value!.close();
+	dialog.value?.close();
 }
 </script>
 

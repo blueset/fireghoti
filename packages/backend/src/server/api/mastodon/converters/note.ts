@@ -43,10 +43,6 @@ import { isFiltered } from "@/misc/is-filtered.js";
 import { unfurl } from "unfurl.js";
 
 export class NoteConverter {
-	private static noteContentHtmlCache = new Cache<string | null>(
-		"html:note:content",
-		60 * 60,
-	);
 	private static cardCache = new Cache<MastodonEntity.Card | null>(
 		"note:card",
 		60 * 60,
@@ -197,34 +193,38 @@ export class NoteConverter {
 					: null,
 			)
 			.then(async (text) => {
-				const user = await Users.findOneBy({ id: note.userId });
-				if (user?.isCat && user?.speakAsCat && text != null) {
-					return this.applyNyaification(text, note.lang);
-				}
-				return text;
+				return awaitAll({
+					noteUser,
+					user,
+				}).then(({ noteUser, user }) => {
+					if (
+						noteUser.isCat &&
+						noteUser.speakAsCat &&
+						text != null &&
+						(user == null || user.readCatLanguage)
+					) {
+						return this.applyNyaification(text, note.lang);
+					}
+					return text;
+				});
 			});
 
-		const content = this.noteContentHtmlCache
-			.fetch(
-				identifier,
-				async () =>
-					text.then((text) =>
-						text !== null
-							? quoteUri
-									.then((quoteUri) =>
-										MfmHelpers.toHtml(
-											mfm.parse(text),
-											JSON.parse(note.mentionedRemoteUsers),
-											note.userHost,
-											false,
-											quoteUri,
-											ctx,
-										),
-									)
-									.then((p) => p ?? escapeMFM(text))
-							: "",
-					),
-				true,
+		const content = text
+			.then((text) =>
+				text !== null
+					? quoteUri
+							.then((quoteUri) =>
+								MfmHelpers.toHtml(
+									mfm.parse(text),
+									JSON.parse(note.mentionedRemoteUsers),
+									note.userHost,
+									false,
+									quoteUri,
+									ctx,
+								),
+							)
+							.then((p) => p ?? escapeMFM(text))
+					: "",
 			)
 			.then((p) => p ?? "");
 

@@ -598,6 +598,8 @@ export type Endpoints = {
 			preventAiLearning?: boolean;
 			isBot?: boolean;
 			isCat?: boolean;
+			speakAsCat?: boolean;
+			readCatLanguage?: boolean;
 			injectFeaturedNote?: boolean;
 			receiveAnnouncementEmail?: boolean;
 			alwaysMarkNsfw?: boolean;

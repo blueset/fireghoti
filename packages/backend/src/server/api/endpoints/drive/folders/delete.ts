@@ -1,5 +1,5 @@
 import define from "@/server/api/define.js";
-import { publishToDriveFolderStream, DriveFolderEvent } from "backend-rs";
+import { publishToDriveFolderStream } from "backend-rs";
 import { ApiError } from "@/server/api/error.js";
 import { DriveFolders, DriveFiles } from "@/models/index.js";
 
@@ -56,5 +56,5 @@ export default define(meta, paramDef, async (ps, user) => {
 	await DriveFolders.delete(folder.id);
 
 	// Publish folderCreated event
-	publishToDriveFolderStream(user.id, DriveFolderEvent.Delete, folder.id);
+	publishToDriveFolderStream(user.id, "delete", folder.id);
 });

@@ -12,13 +12,13 @@
 				<i :class="icon('ph-sort-ascending')"></i></button
 		></template>
 
-		<div v-if="!instance.enableServerMachineStats" class="mkw-serverMetric">
+		<div v-if="!enableServerMachineStats" class="mkw-serverMetric">
 			<h3 style="text-align: center; color: var(--error)">
 				{{ i18n.ts.disabled }}
 			</h3>
 		</div>
 		<div
-			v-else-if="meta && instance.enableServerMachineStats"
+			v-else-if="meta && enableServerMachineStats"
 			class="mkw-serverMetric"
 		>
 			<XCpuMemory
@@ -62,7 +62,7 @@ import type { GetFormResultType } from "@/scripts/form";
 import * as os from "@/os";
 import { useStream } from "@/stream";
 import { i18n } from "@/i18n";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import icon from "@/scripts/icon";
 
 const name = "serverMetric";
@@ -96,6 +96,7 @@ const { widgetProps, configure, save } = useWidgetPropsManager(
 );
 
 const meta = ref(null);
+const { enableServerMachineStats } = getInstanceInfo();
 
 os.apiGet("server-info", {}).then((res) => {
 	meta.value = res;

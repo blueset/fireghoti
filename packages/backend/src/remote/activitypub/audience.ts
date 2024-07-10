@@ -90,7 +90,7 @@ function groupingAudience(ids: string[], actor: CacheableRemoteUser) {
 	return groups;
 }
 
-function isPublic(id: string) {
+export function isPublic(id: string) {
 	return [
 		"https://www.w3.org/ns/activitystreams#Public",
 		"as:Public",
@@ -98,6 +98,6 @@ function isPublic(id: string) {
 	].includes(id);
 }
 
-function isFollowers(id: string, actor: CacheableRemoteUser) {
+export function isFollowers(id: string, actor: CacheableRemoteUser) {
 	return id === (actor.followersUri || `${actor.uri}/followers`);
 }

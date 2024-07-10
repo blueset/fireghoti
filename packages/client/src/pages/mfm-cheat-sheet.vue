@@ -471,18 +471,20 @@ import { ref } from "vue";
 import MkTextarea from "@/components/form/textarea.vue";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import icon from "@/scripts/icon";
 
 defineProps<{
 	popup?: boolean;
 }>();
 
+const sampleEmoji = getInstanceInfo().emojis.slice(0, 1);
+
 const preview_mention = ref("@example");
 const preview_hashtag = ref("#test");
 const preview_link = ref(`[${i18n.ts._mfm.dummy}](https://firefish.dev)`);
 const preview_emoji = ref(
-	instance.emojis.length ? `:${instance.emojis[0].name}:` : ":emojiname:",
+	sampleEmoji.length > 0 ? `:${sampleEmoji[0].name}:` : ":emojiname:",
 );
 const preview_bold = ref(`**${i18n.ts._mfm.dummy}**`);
 const preview_small = ref(

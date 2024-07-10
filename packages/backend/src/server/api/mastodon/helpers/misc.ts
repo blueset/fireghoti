@@ -1,6 +1,6 @@
 import { config } from "@/config.js";
 import { FILE_TYPE_BROWSERSAFE } from "backend-rs";
-import { fetchMeta } from "backend-rs";
+import { countLocalUsers, fetchMeta } from "backend-rs";
 import {
 	AnnouncementReads,
 	Announcements,
@@ -31,7 +31,7 @@ export class MiscHelpers {
 	public static async getInstance(
 		ctx: MastoContext,
 	): Promise<MastodonEntity.Instance> {
-		const userCount = Users.count({ where: { host: IsNull() } });
+		const userCount = countLocalUsers();
 		const noteCount = Notes.count({ where: { userHost: IsNull() } });
 		const instanceCount = Instances.count({ cache: 3600000 });
 		const contact = await Users.findOne({
@@ -109,7 +109,7 @@ export class MiscHelpers {
 	public static async getInstanceV2(
 		ctx: MastoContext,
 	): Promise<MastodonEntity.InstanceV2> {
-		const userCount = await Users.count({ where: { host: IsNull() } });
+		const userCount = await countLocalUsers();
 		const contact = await Users.findOne({
 			where: {
 				host: IsNull(),

@@ -10,6 +10,11 @@ import type { DriveFile } from "@/models/entities/drive-file.js";
 import { Notes, NoteEdits } from "@/models/index.js";
 import type { Note } from "@/models/entities/note.js";
 import { genId } from "backend-rs";
+import promiseLimit from "promise-limit";
+import { unique, concat } from "@/prelude/array.js";
+import type { CacheableUser } from "@/models/entities/user.js";
+import { resolvePerson } from "@/remote/activitypub/models/person.js";
+import { isPublic } from "@/remote/activitypub/audience.js";
 
 const logger = queueLogger.createSubLogger("import-masto-post");
 
@@ -85,17 +90,26 @@ export async function importMastoPost(
 		userId: user.id,
 	});
 
-	// FIXME: What is this condition?
-	if (note != null && (note.fileIds?.length || 0) < files.length) {
+	// If an import is completely successful at once, the order should not be out of order.
+	// If it takes multiple imports to complete, the order is not guaranteed to be consistent.
+	if (note != null && files.length > 0) {
+		const addFiles: DriveFile[] = [];
+		for (const file of files) {
+			if (!note.fileIds.includes(file.id)) {
+				addFiles.push(file);
+			}
+		}
+
 		const update: Partial<Note> = {};
-		update.fileIds = files.map((x) => x.id);
+		update.fileIds = addFiles.map((x) => x.id);
 
 		if (update.fileIds != null) {
-			await NoteFiles.delete({ noteId: note.id });
 			await NoteFiles.insert(
 				update.fileIds.map((fileId) => ({ noteId: note?.id, fileId })),
 			);
 		}
+
+		update.fileIds = note.fileIds.concat(update.fileIds);
 
 		await Notes.update(note.id, update);
 		await NoteEdits.insert({
@@ -109,24 +123,57 @@ export async function importMastoPost(
 		logger.info("Post updated");
 	}
 	if (note == null) {
-		note = await create(user, {
-			createdAt: isRenote
-				? new Date(post.published)
-				: new Date(post.object.published),
-			files: files.length === 0 ? undefined : files,
-			poll: undefined,
-			text: text || undefined,
-			reply,
-			renote,
-			cw: !isRenote && post.object.sensitive ? post.object.summary : undefined,
-			localOnly: false,
-			visibility: "hiddenpublic",
-			visibleUsers: [],
-			channel: null,
-			apMentions: new Array(0),
-			apHashtags: undefined,
-			apEmojis: undefined,
-		});
+		let visibility = "specified";
+		let visibleUsers: CacheableUser[] = [];
+		if ((post.to as string[]).some(isPublic)) {
+			visibility = "public";
+		} else if ((post.cc as string[]).some(isPublic)) {
+			visibility = "home";
+		} else if ((post.cc as string[]).some((cc) => cc.endsWith("/followers"))) {
+			visibility = "followers";
+		} else {
+			try {
+				const visibleUsersList = unique(concat([post.to, post.cc]));
+
+				const limit = promiseLimit<CacheableUser | null>(2);
+				visibleUsers = (
+					await Promise.all(
+						visibleUsersList.map((id) =>
+							limit(() => resolvePerson(id).catch(() => null)),
+						),
+					)
+				).filter((x): x is CacheableUser => x != null);
+			} catch {
+				// nothing need to do.
+			}
+		}
+
+		note = await create(
+			user,
+			{
+				createdAt: isRenote
+					? new Date(post.published)
+					: new Date(post.object.published),
+				scheduledAt: undefined,
+				files: files.length === 0 ? undefined : files,
+				poll: undefined,
+				text: text || undefined,
+				reply,
+				renote,
+				cw:
+					!isRenote && post.object.sensitive ? post.object.summary : undefined,
+				localOnly: false,
+				visibility,
+				visibleUsers,
+				channel: null,
+				apMentions: new Array(0),
+				apHashtags: undefined,
+				apEmojis: undefined,
+			},
+			false,
+			undefined,
+			true,
+		);
 		logger.debug("New post has been created");
 	} else {
 		logger.info("This post already exists");

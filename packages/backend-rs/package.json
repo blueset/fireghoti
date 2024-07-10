@@ -3,11 +3,12 @@
 	"version": "0.0.0",
 	"main": "built/index.js",
 	"types": "built/index.d.ts",
+	"license": "AGPL-3.0-only",
 	"napi": {
 		"binaryName": "backend-rs"
 	},
 	"devDependencies": {
-		"@napi-rs/cli": "3.0.0-alpha.55"
+		"@napi-rs/cli": "3.0.0-alpha.57"
 	},
 	"scripts": {
 		"build": "napi build --features napi --no-const-enum --platform --release --output-dir ./built/",

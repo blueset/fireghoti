@@ -1,8 +1,10 @@
 [package]
-edition = "2021"
 name = "backend-rs"
+license = "AGPL-3.0-only"
 version = "0.0.0"
-rust-version = "1.74"
+
+edition = { workspace = true }
+rust-version = { workspace = true }
 
 [features]
 default = []

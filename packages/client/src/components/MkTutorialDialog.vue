@@ -212,14 +212,19 @@ import FormSwitch from "@/components/form/switch.vue";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { isModerator } from "@/me";
-import { instance } from "@/instance";
+import { getInstanceInfo } from "@/instance";
 import icon from "@/scripts/icon";
 
-const isLocalTimelineAvailable = !instance.disableLocalTimeline || isModerator;
+const {
+	disableLocalTimeline,
+	disableRecommendedTimeline,
+	disableGlobalTimeline,
+} = getInstanceInfo();
+
+const isLocalTimelineAvailable = !disableLocalTimeline || isModerator;
 const isRecommendedTimelineAvailable =
-	!instance.disableRecommendedTimeline || isModerator;
-const isGlobalTimelineAvailable =
-	!instance.disableGlobalTimeline || isModerator;
+	!disableRecommendedTimeline || isModerator;
+const isGlobalTimelineAvailable = !disableGlobalTimeline || isModerator;
 
 const timelines = ["home"];
 
@@ -252,13 +257,13 @@ const tutorial = computed({
 	},
 });
 
-const autoplayMfm = computed(
-	defaultStore.makeGetterSetter(
-		"animatedMfm",
-		(v) => !v,
-		(v) => !v,
-	),
-);
+// const autoplayMfm = computed(
+// 	defaultStore.makeGetterSetter(
+// 		"animatedMfm",
+// 		(v) => !v,
+// 		(v) => !v,
+// 	),
+// );
 const reduceAnimation = computed(
 	defaultStore.makeGetterSetter(
 		"animation",
@@ -267,9 +272,9 @@ const reduceAnimation = computed(
 	),
 );
 
-function close(res) {
+function close(_res) {
 	tutorial.value = -1;
-	dialog.value.close();
+	dialog.value?.close();
 }
 </script>
 

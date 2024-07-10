@@ -484,7 +484,7 @@ import FormSplit from "@/components/form/split.vue";
 import FormSuspense from "@/components/form/suspense.vue";
 import MkRadios from "@/components/form/radios.vue";
 import * as os from "@/os";
-import { fetchInstance } from "@/instance";
+import { updateInstanceCache } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
@@ -660,7 +660,7 @@ function save() {
 		enableServerMachineStats: enableServerMachineStats.value,
 		enableIdenticonGeneration: enableIdenticonGeneration.value,
 	}).then(() => {
-		fetchInstance();
+		updateInstanceCache();
 	});
 }
 

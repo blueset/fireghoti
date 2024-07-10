@@ -92,6 +92,11 @@ export const routes: RouteDef[] = [
 				component: page(() => import("./pages/settings/notifications.vue")),
 			},
 			{
+				path: "/accessibility",
+				name: "accessibility",
+				component: page(() => import("./pages/settings/accessibility.vue")),
+			},
+			{
 				path: "/email",
 				name: "email",
 				component: page(() => import("./pages/settings/email.vue")),

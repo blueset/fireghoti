@@ -455,7 +455,7 @@ export const defaultStore = markRaw(
 		},
 		autocorrectNoteLanguage: {
 			where: "account",
-			default: true,
+			default: false,
 		},
 		foldNotification: {
 			where: "deviceAccount",

@@ -162,11 +162,12 @@ export default async (
 	data: NoteLike,
 	silent = false,
 	waitToPublish?: (note: Note) => Promise<void>,
+	dontFederateInitially = false,
 ) =>
 	// biome-ignore lint/suspicious/noAsyncPromiseExecutor: FIXME
 	new Promise<Note>(async (res, rej) => {
-		const dontFederateInitially =
-			data.visibility?.startsWith("hidden") === true;
+		dontFederateInitially =
+			dontFederateInitially || data.visibility?.startsWith("hidden");
 
 		// Whether this is a scheduled "draft" post (yet to be published)
 		const isDraft = data.scheduledAt != null;
@@ -204,8 +205,6 @@ export default async (
 		if (data.channel != null) data.visibility = "public";
 		if (data.channel != null) data.visibleUsers = [];
 		if (data.channel != null) data.localOnly = true;
-		if (data.visibility.startsWith("hidden") && data.visibility !== "hidden")
-			data.visibility = data.visibility.slice(6);
 
 		// enforce silent clients on server
 		if (
@@ -392,7 +391,6 @@ export default async (
 					}
 				});
 
-			// type errors will be resolved by https://github.com/napi-rs/napi-rs/pull/2054
 			const _note = toRustObject(note);
 			if (note.renoteId == null || isQuote(_note)) {
 				await updateAntennasOnNewNote(_note, user, thisNoteIsMutedBy);

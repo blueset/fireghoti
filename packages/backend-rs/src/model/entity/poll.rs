@@ -2,14 +2,12 @@
 
 use super::sea_orm_active_enums::PollNoteVisibility;
 use sea_orm::entity::prelude::*;
+use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 #[sea_orm(table_name = "poll")]
-#[cfg_attr(
-    feature = "napi",
-    napi_derive::napi(object, js_name = "Poll", use_nullable = true)
-)]
+#[macros::export(object, js_name = "Poll")]
 pub struct Model {
     #[sea_orm(column_name = "noteId", primary_key, auto_increment = false, unique)]
     pub note_id: String,

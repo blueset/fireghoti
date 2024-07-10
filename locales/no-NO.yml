@@ -1859,7 +1859,6 @@ enterSendsMessage: Trykk enter for å sende meldinger. (Hvis avslått må du try
 confirmToUnclipAlreadyClippedNote: Denne posten er allerede en del av utklippet "{name}".
   Vil du fjerne den fra dette utklippet i stedet?
 showWithSparkles: Vis med gnister
-emojiPackCreator: Emoji-pakke-bygger
 importZip: Importer zip-fil
 pushNotificationAlreadySubscribed: Push-varsler er allerede påslått
 ratio: Forhold

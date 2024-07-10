@@ -2113,7 +2113,6 @@ removeMember: Удалить участника
 confirm: Подтвердить
 importZip: Импортировать ZIP
 exportZip: Экспортировать ZIP
-emojiPackCreator: Генератор паков эмодзи
 objectStorageS3ForcePathStyle: Использовать путь вместо домена в URL
 objectStorageS3ForcePathStyleDesc: Включите, если хотите, чтобы URL был в формате
   's3.amazonaws.com/<bucket>/' вместо '<bucket>.s3.amazonaws.com'.
@@ -2137,3 +2136,15 @@ replies: Ответы
 quotes: Цитаты
 clickToShowPatterns: Нажмите, чтобы показать модуль шаблонов
 renotes: Репосты
+markLocalFilesNsfwByDefaultDescription: Независимо от данной настройки, пользователи
+  могут самостоятельно удалять метку NSFW. Не применяется на существующие файлы.
+toEdit: Редактировать
+attachedToNotes: Посты с этим файлом
+showAttachedNotes: Показывать посты с этим файлом
+strongPassword: Хороший пароль
+toReply: Ответить
+toPost: Выложить
+sentFollowRequests: Отправленные запросы на подписку
+toQuote: Цитировать
+cannotEditVisibility: Вы не можете изменить видимость
+noSentFollowRequests: Вы не отправляли никаких запросов на подписку

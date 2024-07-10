@@ -50,7 +50,7 @@ import FormTextarea from "@/components/form/textarea.vue";
 import FormSuspense from "@/components/form/suspense.vue";
 import MkTab from "@/components/MkTab.vue";
 import * as os from "@/os";
-import { fetchInstance } from "@/instance";
+import { updateInstanceCache } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
@@ -72,7 +72,7 @@ function save() {
 		blockedHosts: blockedHosts.value.split("\n").map((h) => h.trim()) || [],
 		silencedHosts: silencedHosts.value.split("\n").map((h) => h.trim()) || [],
 	}).then(() => {
-		fetchInstance();
+		updateInstanceCache();
 	});
 }
 

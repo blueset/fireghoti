@@ -17,9 +17,9 @@ Firefish is based off of Misskey, a powerful microblogging server on ActivityPub
 
 # Documents
 
-- [Installation guide](./docs/install.md)
+- [Installation guide](https://firefish.dev/firefish/firefish/-/blob/main/docs/install.md)
 - [Contributing guide](./CONTRIBUTING.md)
-- [Changelog](./docs/changelog.md)
+- [Changelog](https://firefish.dev/firefish/firefish/-/blob/main/docs/changelog.md)
 
 # Links
 

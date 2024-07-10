@@ -1,8 +1,10 @@
 [package]
 name = "macros-impl"
+license = "MIT OR Apache-2.0"
 version = "0.0.0"
-edition = "2021"
-rust-version = "1.74"
+
+edition = { workspace = true }
+rust-version = { workspace = true }
 
 [dependencies]
 convert_case = { workspace = true }

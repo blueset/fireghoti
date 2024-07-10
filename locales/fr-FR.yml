@@ -2193,7 +2193,6 @@ addRe: Ajouter « re: » au début d'un avertissement de contenu (CW) en répo
 confirm: Confirmer
 importZip: Importer ZIP
 exportZip: Exporter ZIP
-emojiPackCreator: Créateur de pack d'émoji
 detectPostLanguage: Détecter automatiquement la langue et afficher un bouton de traduction
   pour les publications en langues étrangères
 indexableDescription: Permettre à la recherche interne d'afficher vos publications

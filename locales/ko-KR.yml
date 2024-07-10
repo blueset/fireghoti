@@ -1980,7 +1980,6 @@ _feeds:
 _dialog:
   charactersExceeded: 글자 수 제한을 초과했습니다! 현재 {current}자 / 최대 {max}자
   charactersBelow: 최소 글자 수 보다 작습니다! 현재 {current}자 / 최소 {max}자
-emojiPackCreator: 이모지 팩 만든이
 objectStorageS3ForcePathStyleDesc: Endpoint URL을 '<bucket>.s3.amazonaws.com'가 아닌 's3.amazonaws.com/<bucket>/'와
   같은 형식으로 사용할 경우에 활성화해 주세요.
 confirm: 확인
