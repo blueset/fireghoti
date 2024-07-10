@@ -257,6 +257,8 @@ export interface Config {
   userAgent: string
 }
 
+export declare function countLocalUsers(): Promise<number>
+
 export declare function countReactions(reactions: Record<string, number>): Record<string, number>
 
 export interface Cpu {
