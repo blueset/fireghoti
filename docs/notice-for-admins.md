@@ -6,6 +6,16 @@ You can skip intermediate versions when upgrading from an old version, but pleas
 
 Please take a look at #10947.
 
+## Unreleased
+
+### For systemd/pm2 users
+
+You can remove the `packages/megalodon` directory after pulling the latest source code (`git pull --ff origin main`).
+
+```sh
+rm --recursive --force packages/megalodon
+```
+
 ## v20240710
 
 ### For all users
@@ -22,14 +32,6 @@ The new versions are:
   - Node v22.4.1 (v22.x)
 
 [Node v21.x is end-of-life](<https://github.com/nodejs/Release?tab=readme-ov-file#end-of-life-releases>).
-
-### For systemd/pm2 users
-
-You can remove the `packages/megalodon` directory after pulling the latest source code (`git pull --ff origin main`).
-
-```sh
-rm --recursive --force packages/megalodon
-```
 
 ## v20240607
 

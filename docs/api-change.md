@@ -2,7 +2,7 @@
 
 Breaking changes are indicated by the :warning: icon.
 
-## v20240710
+## Unreleased
 
 - Added `readCatLanguage` field to the response of `i` and request of `i/update` (optional).
 - The old Mastodon API has been replaced with a new implementation based on Iceshrimp’s.
