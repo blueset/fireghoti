@@ -1,11 +1,6 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
-	"extends": [
-		"config:recommended",
-		"group:recommended",
-		"group:monorepos",
-		"group:definitelyTyped"
-	],
+	"extends": ["config:recommended"],
 	"labels": ["Dependency"],
 	"rangeStrategy": "bump",
 	"branchConcurrentLimit": 0,
@@ -15,6 +10,7 @@
 	"baseBranches": ["develop"],
 	"lockFileMaintenance": {
 		"enabled": true,
+		"enabledManagers": ["npm"],
 		"recreateWhen": "always",
 		"rebaseWhen": "behind-base-branch",
 		"branchTopic": "lock-file-maintenance",
