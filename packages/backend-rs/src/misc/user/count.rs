@@ -1,6 +1,9 @@
 use crate::{database::db_conn, model::entity::user};
 use sea_orm::prelude::*;
 
+// TODO: When `std::mem::variant_count` is stabilized, use
+// it to count system actors instead of hard coding the magic number
+
 // @instance.actor and @relay.actor are not real users
 const NUMBER_OF_SYSTEM_ACTORS: u64 = 2;
 
