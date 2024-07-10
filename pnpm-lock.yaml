@@ -139,8 +139,8 @@ importers:
         specifier: 4.2.2
         version: 4.2.2
       file-type:
-        specifier: 19.1.0
-        version: 19.1.0
+        specifier: 19.1.1
+        version: 19.1.1
       firefish-js:
         specifier: workspace:*
         version: link:../firefish-js
@@ -3979,8 +3979,8 @@ packages:
     resolution: {integrity: sha512-d+l3qxjSesT4V7v2fh+QnmFnUWv9lSpjarhShNTgBOfA0ttejbQUAlHLitbjkoRiDulW0OPoQPYIGhIC8ohejg==}
     engines: {node: '>=18'}
 
-  file-type@19.1.0:
-    resolution: {integrity: sha512-5rzeC2/GeStiAlYCenfrbKrQCiEzJTetCExFinFCH1UUz1XL7NlxRpLTwdWXzlVhLReRrWkfkNCH1Ap5zqOXtg==}
+  file-type@19.1.1:
+    resolution: {integrity: sha512-FF4rVPjylL7HkybFBpnBfcnpdi4MGNSFuk4s4VvTdt1wm9tVMdGmtBhvXyz+nh8565FJ5qDUMIPXR+WHLrfHew==}
     engines: {node: '>=18'}
 
   file-type@3.9.0:
@@ -10129,7 +10129,7 @@ snapshots:
     dependencies:
       is-unicode-supported: 2.0.0
 
-  file-type@19.1.0:
+  file-type@19.1.1:
     dependencies:
       strtok3: 7.1.0
       token-types: 6.0.0
