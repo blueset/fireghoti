@@ -506,8 +506,8 @@ importers:
   packages/backend-rs:
     devDependencies:
       '@napi-rs/cli':
-        specifier: 3.0.0-alpha.56
-        version: 3.0.0-alpha.56(@emnapi/runtime@1.2.0)
+        specifier: 3.0.0-alpha.57
+        version: 3.0.0-alpha.57(@emnapi/runtime@1.2.0)
 
   packages/client:
     devDependencies:
@@ -1721,8 +1721,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@napi-rs/cli@3.0.0-alpha.56':
-    resolution: {integrity: sha512-a03KyEodiZD9+MIL8xnIAcnNzznZy+BT/IBtXZe/kIEUYv/zVcxwpcBuNme5r6zIyDqla8NkhsC6h8IZR+HAgg==}
+  '@napi-rs/cli@3.0.0-alpha.57':
+    resolution: {integrity: sha512-m805X0nApTwOYeYVU5lA3W7F1nGSuz/9Ye0VB0zqbvJGEeuKxIdQfDsJLegEngovgUaPpGeU8CLh3GJMaxwo6Q==}
     engines: {node: '>= 16'}
     hasBin: true
     peerDependencies:
@@ -7907,7 +7907,7 @@ snapshots:
   '@msgpackr-extract/msgpackr-extract-win32-x64@3.0.3':
     optional: true
 
-  '@napi-rs/cli@3.0.0-alpha.56(@emnapi/runtime@1.2.0)':
+  '@napi-rs/cli@3.0.0-alpha.57(@emnapi/runtime@1.2.0)':
     dependencies:
       '@napi-rs/cross-toolchain': 0.0.16
       '@napi-rs/wasm-tools': 0.0.2
