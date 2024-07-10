@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'CreateSystemActors1720618854585',
     'AddMastodonSubscriptionType1715181461692',
     'SwSubscriptionAccessToken1709395223611',
     'UserProfileMentions1711075007936',

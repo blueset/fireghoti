@@ -11,7 +11,6 @@ import { Users, Relays } from "@/models/index.js";
 import { genId } from "backend-rs";
 import { Cache } from "@/misc/cache.js";
 import type { Relay } from "@/models/entities/relay.js";
-import { createSystemUser } from "@/services/create-system-user.js";
 
 const ACTOR_USERNAME = "relay.actor" as const;
 
@@ -23,10 +22,7 @@ export async function getRelayActor(): Promise<ILocalUser> {
 		username: ACTOR_USERNAME,
 	});
 
-	if (user) return user as ILocalUser;
-
-	const created = await createSystemUser(ACTOR_USERNAME);
-	return created as ILocalUser;
+	return user as ILocalUser;
 }
 
 export async function addRelay(inbox: string) {
