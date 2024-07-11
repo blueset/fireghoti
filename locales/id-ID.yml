@@ -463,7 +463,7 @@ usernameInvalidFormat: "Hanya dapat menerima karakter a-z, A-Z dan angka 0-9."
 tooShort: "Terlalu pendek"
 tooLong: "Terlalu panjang"
 weakPassword: "Kata sandi lemah"
-normalPassword: "Kata sandi baik"
+normalPassword: "Kata sandi sedang"
 veryStrongPassword: "Kata sandi kuat"
 passwordMatched: "Kata sandi sama"
 passwordNotMatched: "Kata sandi tidak sama"
@@ -1120,7 +1120,7 @@ _wordMute:
     regular expressions."
   softDescription: "Sembunyikan postingan yang memenuhi aturan kondisi dari lini masa."
   hardDescription: "Cegah postingan memenuhi aturan kondisi dari ditambahkan ke lini
-    masa. Dengan tambahan, kiriman berikut tidak akan ditambahkan ke lini masa meskipun
+    masa. Dengan tambahan, postingan berikut tidak akan ditambahkan ke lini masa meskipun
     jika kondisi tersebut diubah."
   soft: "Lembut"
   hard: "Keras"
@@ -1223,8 +1223,8 @@ _sfx:
   antenna: "Penerimaan Antenna"
   channel: "Pemberitahuan saluran"
 _ago:
-  future: "Masa depan"
-  justNow: "Baru saja"
+  future: "masa depan"
+  justNow: "baru saja"
   secondsAgo: "{n} detik lalu"
   minutesAgo: "{n} menit lalu"
   hoursAgo: "{n} jam lalu"
@@ -1255,7 +1255,7 @@ _tutorial:
   step3_4: "Bingung tidak berpikiran untuk mengatakan sesuatu? Coba saja \"baru aja
     ikutan bikin akun misskey punyaku\"!"
   step4_1: "Mari kita lihat kamu di sana."
-  step4_2: "Untuk kiriman pertama kamu, beberapa orang biasanya membuat postingan
+  step4_2: "Untuk postingan pertama kamu, beberapa orang biasanya membuat postingan
     {introduction} atau \"Halo dunia!\" yang sederhana."
   step5_1: "Linimasa, linimasa di mana-mana!"
   step5_2: "Servermu memiliki {timelines} lini masa berbeda yang diaktifkan."
@@ -1890,7 +1890,7 @@ recommended: Direkomendasikan
 silenceThisInstance: Bisukan server ini
 hiddenTags: Tagar Tersembunyi
 preferencesBackups: Preferensi cadangan
-editNote: Sunting kiriman
+editNote: Sunting postingan
 deleted: Dihapus
 edited: Disunting pada {date} {time}
 selectInstance: Pilih server
@@ -2148,12 +2148,12 @@ confirm: Konfirmasi
 importZip: Impor ZIP
 exportZip: Ekspor ZIP
 detectPostLanguage: Deteksi bahasa secara otomatis dan tampilkan tombol terjemahkan
-  untuk kiriman dalam bahasa asing
-indexableDescription: Perbolehkan pencarian di sini untuk menampilkan kiriman publikmu
+  untuk postingan dalam bahasa asing
+indexableDescription: Perbolehkan pencarian di sini untuk menampilkan postingan publikmu
 indexable: Dapat diindeks
-languageForTranslation: Bahasa terjemahan kiriman
+languageForTranslation: Bahasa terjemahan postingan
 openServerInfo: Tampilkan informasi server dengan mengeklik ticker server di sebuah
-  kiriman
+  postingan
 vibrate: Putar getaran
 clickToShowPatterns: Klik untuk menampilkan pola modul
 iconSet: Set ikon
@@ -2199,52 +2199,52 @@ forMobile: Ponsel
 replaceChatButtonWithAccountButton: Ganti tombol percakapan dengan tombol ganti akun
 replaceWidgetsButtonWithReloadButton: Ganti tombol widget dengan tombol muat ulang
 searchEngine: Mesin pencarian yang digunakan dalam bilah pencarian MFM
-postSearch: Pencarian kiriman di server ini
-showBigPostButton: Tampilkan tombol kirim besar di formulir kiriman
-showPreviewByDefault: Tampilkan pratinjau dalam formulir kiriman secara bawaan
+postSearch: Pencarian postingan di server ini
+showBigPostButton: Tampilkan tombol kirim besar di formulir postingan
+showPreviewByDefault: Tampilkan pratinjau dalam formulir postingan secara bawaan
 useCdn: Dapatkan aset dari CDN
 useCdnDescription: Muat aset statis seperti Twemoji dari CDN JSDelivr daripada server
   Firefish ini.
 sentFollowRequests: Permintaan mengikuti terkirim
 replyUnmute: Suarakan balasan dalam lini masa
-noSentFollowRequests: Kamu belum punya permintaan mengikuti
+noSentFollowRequests: Kamu belum mengirim permintaan mengikuti
 enablePullToRefresh: Aktifkan "Tarik ke bawah untuk memuat ulang"
 pullDownToReload: Tarik ke bawah untuk memuat ulang
 enableTimelineStreaming: Perbarui lini masa secara otomatis
 searchWords: Kata-kata untuk dicari / ID atau URL untuk dicari
 searchUsers: Dikirim oleh (opsional)
 searchCwAndAlt: Termasuk peringatan konten dan deskripsi berkas
-searchPostsWithFiles: Hanya kiriman dengan berkas
+searchPostsWithFiles: Hanya postingan dengan berkas
 publishTimelines: Terbitkan lini masa untuk pengunjung
 publishTimelinesDescription: Jika diaktifkan, lini masa Lokal dan Global akan ditampilkan
   di {url} bahkan ketika keluar dari akun.
-searchWordsDescription: "Masukkan kata kunci di sini untuk mencari kiriman. Pisahkan
+searchWordsDescription: "Masukkan kata kunci di sini untuk mencari postingan. Pisahkan
   kata dengan spasi untuk pencarian AND (dan), atau 'OR' ('atau', tanpa tanda kutip)
   di antara kata-kata untuk pencarian OR.\nMisalnya, 'pagi malam' akan menemukan postingan
   yang mengandung 'pagi' dan 'malam', dan 'pagi OR malam' akan menemukan postingan
   yang mengandung 'pagi' atau 'malam' (atau keduanya).\nAnda juga dapat menggabungkan
-  kondisi AND/OR seperti '(pagi OR malam) mengantuk'.\n\nJika kamu ingin membuka halaman
-  pengguna atau halaman postingan tertentu, masukkan ID atau URL pada kolom ini dan
-  klik tombol 'Cari'. Mengklik 'Cari' akan mencari postingan yang secara harfiah mengandung
-  ID/URL."
+  kondisi AND/OR seperti '(pagi OR malam) mengantuk'.\n\n Jika kamu ingin membuka
+  halaman pengguna atau halaman postingan tertentu, masukkan ID atau URL pada kolom
+  ini dan klik tombol 'Cari'. Mengeklik 'Cari' akan mencari postingan yang secara
+  harfiah mengandung ID/URL."
 pullToRefreshThreshold: Jarak penarikan untuk memuat ulang
 releaseToReload: Lepaskan untuk memuat ulang
 reloading: Memuat ulang
 replyMute: Bisukan balasan dalam lini masa
 searchRange: Dikirim dalam (opsional)
-searchUsersDescription: "Untuk mencari kiriman oleh pengguna/server tertentu, masukkan
+searchUsersDescription: "Untuk mencari postingan oleh pengguna/server tertentu, masukkan
   ID (@pengguna@contoh.id, atau @pengguna untuk pengguna lokal) atau nama domain (contoh.id)\n
-  \nJika kamu memasukkan 'me' ('aku', tanpa tanda kutip), semua kirimanmu (termasuk
-  kiriman yang tidak terdaftar, khusus pengikut, langsung, dan rahasia) akan dicari.\n
+  \nJika kamu memasukkan 'me' ('aku', tanpa tanda kutip), semua postinganmu (termasuk
+  postingan yang tidak terdaftar, khusus pengikut, langsung, dan rahasia) akan dicari.\n
   \nJika Anda memasukkan 'local' (tanpa tanda kutip), hasilnya akan disaring untuk
-  menyertakan hanya kiriman dari server ini."
+  menyertakan hanya postingan dari server ini."
 searchRangeDescription: "Jika kamu ingin memfilter periode waktu, masukkan dalam format
   ini: 20220615-20231031\n\nJika kamu menghilangkan tahun (seperti 0105-0106 atau
   20231105-0110), maka akan ditafsirkan sebagai tahun saat ini.\n\nKamu juga bisa
   menghilangkan tanggal awal atau akhir. Sebagai contoh, -0102 akan memfilter hasil
-  pencarian untuk menampilkan hanya kiriman yang dibuat sebelum tanggal 2 Januari
+  pencarian untuk menampilkan hanya postingan yang dibuat sebelum tanggal 2 Januari
   tahun ini, dan 20231026- akan memfilter hasil pencarian untuk menampilkan hanya
-  kiriman yang dibuat setelah tanggal 26 Oktober 2023."
+  postingan yang dibuat setelah tanggal 26 Oktober 2023."
 toPost: Kirim
 toQuote: Kutip
 noAltTextWarning: Beberapa berkas yang dilampirkan tidak memiliki deskripsi. Lupa
@@ -2258,14 +2258,14 @@ messagingUnencryptedInfo: Percakapan di Firefish tidak terenkripsi secara ujung 
 moderationNote: Catatan Moderasi
 driveCapacityOverride: Penimpaan Kapasitas Drive
 ipFirstAcknowledged: Tanggal akuisisi pertama dari alamat IP
-incorrectLanguageWarning: "Sepertinya kirimanmu dalam bahasa {detected}, tetapi Anda
-  memilih {current}.\nApakah kamu ingin ubah bahasanya ke bahasa {detected} saja?"
-autocorrectNoteLanguage: Tampilkan peringatan jika bahasa kiriman tidak cocok dengan
+incorrectLanguageWarning: "Sepertinya postinganmu dalam bahasa {detected}, tetapi
+  Anda memilih {current}.\nApakah kamu ingin ubah bahasanya ke bahasa {detected} saja?"
+autocorrectNoteLanguage: Tampilkan peringatan jika bahasa postingan tidak cocok dengan
   hasil yang dideteksi secara otomatis
 markLocalFilesNsfwByDefault: Tandai semua berkas lokal baru sensitif secara bawaan
 markLocalFilesNsfwByDefaultDescription: Terlepas dari pengaturan ini, pengguna dapat
   menghapus sendiri tanda NSFW. Berkas yang ada tidak berpengaruh.
-noteEditHistory: Riwayat penyuntingan kiriman
+noteEditHistory: Riwayat penyuntingan postingan
 media: Media
 antennaLimit: Jumlah antena maksimum yang dapat dibuat oleh setiap pengguna
 showAddFileDescriptionAtFirstPost: Buka formulir secara otomatis untuk menulis deskripsi
@@ -2278,3 +2278,28 @@ useThisAccountConfirm: Apakah kamu ingin melanjutkan dengan akun ini?
 inputAccountId: Silakan memasukkan akunmu (misalnya, @firefish@info.firefish.dev)
 copyRemoteFollowUrl: Salin URL ikuti jarak jauh
 slashQuote: Kutipan rantai
+scheduledPostAt: Kiriman akan dikirim {time}
+scheduledPost: Jadwalkan postingan ini
+_later:
+  monthsAgo: dalam {n}bln
+  secondsAgo: dalam {n}d
+  future: masa depan
+  justNow: saat ini
+  daysAgo: dalam {n}hr
+  hoursAgo: dalam {n}j
+  minutesAgo: dalam {n}m
+  weeksAgo: dalam {m}mg
+  yearsAgo: dalam {n}thn
+mergeRenotesInTimeline: Kelompokkan beberapa pembagian postingan yang sama
+cancelScheduledPost: Hapus jadwal
+scheduledDate: Tanggal terjadwal
+mergeThreadInTimeline: Gabungkan beberapa postingan dalam utas yang sama dalam lini
+  masa
+strongPassword: Kata sandi baik
+announcement: Pengumuman
+i18nServerSet: Gunakan {language} untuk klien baru.
+turnOffCatLanguage: Matikan konversi bahasa kucing
+i18nServerInfo: Klien baru akan dalam {language} secara bawaan.
+i18nServerChange: Gunakan {language} saja.
+addAlt4MeTag: 'Tambahkan tagar #Alt4Me secara otomatis pada postinganmu jika berkas
+  yang dilampirkan tidak ada deskripsi'
