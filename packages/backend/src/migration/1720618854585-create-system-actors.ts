@@ -26,10 +26,14 @@ async function createSystemUser(username: string, queryRunner: QueryRunner) {
 	const now = new Date();
 
 	await queryRunner.query(
-		`
-		INSERT INTO "user" ("id", "createdAt", "username", "usernameLower", "host", "token", "isAdmin", "isLocked", "isExplorable", "isBot")
-		VALUES ($1, $2, $3, $4, NULL, $5, FALSE, TRUE, FALSE, TRUE)
-	`,
+		`INSERT INTO "user" (
+			"id", "createdAt", "username", "usernameLower", "host", "token", 
+			"isAdmin", "isLocked", "isExplorable", "isBot"
+		)
+		VALUES (
+			$1, $2, $3, $4, NULL, 
+			$5, FALSE, TRUE, FALSE, TRUE
+		)`,
 		[genIdAt(now), now, username, username.toLowerCase(), secret],
 	);
 
@@ -42,26 +46,20 @@ async function createSystemUser(username: string, queryRunner: QueryRunner) {
 	}
 
 	await queryRunner.query(
-		`
-		INSERT INTO "user_keypair" ("publicKey", "privateKey", "userId")
-		VALUES ($1, $2, $3)
-	`,
+		`INSERT INTO "user_keypair" ("publicKey", "privateKey", "userId")
+		VALUES ($1, $2, $3)`,
 		[keyPair.publicKey, keyPair.privateKey, account[0].id],
 	);
 
 	await queryRunner.query(
-		`
-		INSERT INTO "user_profile" ("userId", "autoAcceptFollowed", "password")
-		VALUES ($1, FALSE, $2)
-	`,
+		`INSERT INTO "user_profile" ("userId", "autoAcceptFollowed", "password")
+		VALUES ($1, FALSE, $2)`,
 		[account[0].id, hash],
 	);
 
 	await queryRunner.query(
-		`
-		INSERT INTO "used_username" ("createdAt", "username")
-		VALUES ($1, $2)
-	`,
+		`INSERT INTO "used_username" ("createdAt", "username")
+		VALUES ($1, $2)`,
 		[now, username.toLowerCase()],
 	);
 }
