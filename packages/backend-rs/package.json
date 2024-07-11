@@ -8,7 +8,7 @@
 		"binaryName": "backend-rs"
 	},
 	"devDependencies": {
-		"@napi-rs/cli": "3.0.0-alpha.57"
+		"@napi-rs/cli": "3.0.0-alpha.58"
 	},
 	"scripts": {
 		"build": "napi build --features napi --no-const-enum --platform --release --output-dir ./built/",
