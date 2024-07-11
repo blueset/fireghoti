@@ -80,6 +80,7 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
+import { dateTimeFormat } from "@/scripts/intl-const";
 
 const props = defineProps<{
 	noteId: string;
@@ -177,7 +178,7 @@ definePageMetadata(
 					title: i18n.t("noteOf", {
 						user: appearNote.value.user.name || appearNote.value.user.username,
 					}),
-					subtitle: new Date(appearNote.value.createdAt).toLocaleString(),
+					subtitle: dateTimeFormat.format(new Date(appearNote.value.createdAt)),
 					avatar: appearNote.value.user,
 					path: `/notes/${appearNote.value.id}`,
 					share: {
