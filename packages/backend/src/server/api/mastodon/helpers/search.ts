@@ -233,7 +233,7 @@ export class SearchHelpers {
 			undefined,
 			minId,
 			maxId,
-		)/* .andWhere("note.visibility = 'public'") */;
+		) /* .andWhere("note.visibility = 'public'") */;
 
 		if (accountId) {
 			query.andWhere("note.userId = :userId", { userId: accountId });

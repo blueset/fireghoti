@@ -388,7 +388,9 @@ export function setupEndpointsStatus(router: Router): void {
 			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
 
 			const body: any = ctx.request.body;
-			const choices = toArray(body.choices ?? []).map((p) => Number.parseInt(p));
+			const choices = toArray(body.choices ?? []).map((p) =>
+				Number.parseInt(p),
+			);
 			if (choices.length < 1)
 				throw new MastoApiError(400, "Must vote for at least one option");
 
@@ -401,7 +403,7 @@ export function setupEndpointsStatus(router: Router): void {
 		auth(true, ["read:statuses"]),
 		async (ctx) => {
 			const args = normalizeUrlQuery(limitToInt(ctx.query));
-			
+
 			const res = await NoteHelpers.getScheduledNotes(
 				args.max_id,
 				args.since_id,
@@ -410,7 +412,7 @@ export function setupEndpointsStatus(router: Router): void {
 				ctx,
 			);
 			ctx.body = await NoteConverter.encodeManyScheduledNotes(res, ctx);
-		}
+		},
 	);
 
 	router.get<{ Params: { id: string } }>(
@@ -419,7 +421,7 @@ export function setupEndpointsStatus(router: Router): void {
 		async (ctx) => {
 			const note = await NoteHelpers.getScheduledNoteOr404(ctx.params.id, ctx);
 			ctx.body = await NoteConverter.encodeScheduledNote(note, ctx);
-		}
+		},
 	);
 
 	// Reeschedule a post to a new time
@@ -429,7 +431,7 @@ export function setupEndpointsStatus(router: Router): void {
 		async (ctx) => {
 			const scheduledAt = new Date(Date.parse(ctx.request.body.scheduled_at));
 			throw new MastoApiError(501, "Not implemented");
-		}
+		},
 	);
 
 	router.delete<{ Params: { id: string } }>(
@@ -437,6 +439,6 @@ export function setupEndpointsStatus(router: Router): void {
 		auth(true, ["write:statuses"]),
 		async (ctx) => {
 			throw new MastoApiError(501, "Not implemented");
-		}
+		},
 	);
 }
