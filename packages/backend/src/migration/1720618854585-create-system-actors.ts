@@ -2,16 +2,9 @@ import type { MigrationInterface, QueryRunner } from "typeorm";
 
 import { v4 as uuid } from "uuid";
 import { genRsaKeyPair } from "@/misc/gen-key-pair.js";
-import { User } from "@/models/entities/user.js";
-import { UserProfile } from "@/models/entities/user-profile.js";
-import { Users } from "@/models/index.js";
-import { IsNull } from "typeorm";
 import { generateUserToken, genIdAt, hashPassword } from "backend-rs";
-import { UserKeypair } from "@/models/entities/user-keypair.js";
-import { UsedUsername } from "@/models/entities/used-username.js";
-import { db } from "@/db/postgre.js";
 
-async function createSystemUser(username: string) {
+async function createSystemUser(username: string, queryRunner: QueryRunner) {
 	const password = uuid();
 
 	// Generate hash of password
@@ -22,62 +15,59 @@ async function createSystemUser(username: string) {
 
 	const keyPair = await genRsaKeyPair(4096);
 
-	const exists = await Users.existsBy({
-		usernameLower: username.toLowerCase(),
-		host: IsNull(),
-	});
-
-	if (exists) {
+	const existsQuery = await queryRunner.query(
+		`SELECT "usernameLower" FROM "user" WHERE "usernameLower" = $1 AND "host" IS NULL`,
+		[username.toLowerCase()],
+	);
+	if (existsQuery.length) {
 		return;
 	}
 
 	const now = new Date();
 
-	// Start transaction
-	await db.transaction(async (transactionalEntityManager) => {
-		const account = await transactionalEntityManager
-			.insert(User, {
-				id: genIdAt(now),
-				createdAt: now,
-				username: username,
-				usernameLower: username.toLowerCase(),
-				host: null,
-				token: secret,
-				isAdmin: false,
-				isLocked: true,
-				isExplorable: false,
-				isBot: true,
-			})
-			.then((x) =>
-				transactionalEntityManager.findOneByOrFail(User, x.identifiers[0]),
-			);
+	await queryRunner.query(
+		`INSERT INTO "user" (
+			"id", "createdAt", "username", "usernameLower", "host", "token", 
+			"isAdmin", "isLocked", "isExplorable", "isBot"
+		)
+		VALUES (
+			$1, $2, $3, $4, NULL, 
+			$5, FALSE, TRUE, FALSE, TRUE
+		)`,
+		[genIdAt(now), now, username, username.toLowerCase(), secret],
+	);
 
-		await transactionalEntityManager.insert(UserKeypair, {
-			publicKey: keyPair.publicKey,
-			privateKey: keyPair.privateKey,
-			userId: account.id,
-		});
+	const account = await queryRunner.query(
+		`SELECT * FROM "user" WHERE "usernameLower" = $1 AND "host" IS NULL`,
+		[username.toLowerCase()],
+	);
+	if (!account.length) {
+		throw new Error("Account not found");
+	}
 
-		await transactionalEntityManager.insert(UserProfile, {
-			userId: account.id,
-			autoAcceptFollowed: false,
-			password: hash,
-		});
+	await queryRunner.query(
+		`INSERT INTO "user_keypair" ("publicKey", "privateKey", "userId")
+		VALUES ($1, $2, $3)`,
+		[keyPair.publicKey, keyPair.privateKey, account[0].id],
+	);
 
-		await transactionalEntityManager.insert(UsedUsername, {
-			createdAt: now,
-			username: username.toLowerCase(),
-		});
-	});
+	await queryRunner.query(
+		`INSERT INTO "user_profile" ("userId", "autoAcceptFollowed", "password")
+		VALUES ($1, FALSE, $2)`,
+		[account[0].id, hash],
+	);
+
+	await queryRunner.query(
+		`INSERT INTO "used_username" ("createdAt", "username")
+		VALUES ($1, $2)`,
+		[now, username.toLowerCase()],
+	);
 }
 
 export class CreateSystemActors1720618854585 implements MigrationInterface {
-	public async up(_: QueryRunner): Promise<void> {
-		if (!db.isInitialized) {
-			db.initialize();
-		}
-		await createSystemUser("instance.actor");
-		await createSystemUser("relay.actor");
+	public async up(queryRunner: QueryRunner): Promise<void> {
+		await createSystemUser("instance.actor", queryRunner);
+		await createSystemUser("relay.actor", queryRunner);
 	}
 
 	public async down(_: QueryRunner): Promise<void> {
