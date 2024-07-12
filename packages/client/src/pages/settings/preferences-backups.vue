@@ -131,6 +131,7 @@ const defaultStoreSaveKeys: (keyof (typeof defaultStore)["state"])[] = [
 	"addRe",
 	"mergeRenotesInTimeline",
 	"mergeThreadInTimeline",
+	"useEmojiCdn",
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 	"lightTheme",
