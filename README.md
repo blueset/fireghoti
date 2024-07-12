@@ -23,7 +23,7 @@ Firefish is based off of Misskey, a powerful microblogging server on ActivityPub
 
 # Links
 
-- Donations: <https://opencollective.com/Firefish>
+- Donations: <https://opencollective.com/firefish>
 - Matrix space: <https://matrix.to/#/#firefish-community:nitro.chat>
 - Official account: <a href="https://info.firefish.dev/@firefish" rel="me">`@firefish@info.firefish.dev`</a>
 - Weblate: <https://hosted.weblate.org/engage/firefish/>
@@ -31,6 +31,6 @@ Firefish is based off of Misskey, a powerful microblogging server on ActivityPub
 # Want to get involved? Great!
 
 - If you know how to program in TypeScript, Vue, or Rust, please read the [contributing guide](./CONTRIBUTING.md).
-- If you have the means to, [donations](https://opencollective.com/Firefish) are a great way to keep us going.
+- If you have the means to, [donations](https://opencollective.com/firefish) are a great way to keep us going.
 - If you know a non-English language, translating Firefish on [Weblate](https://hosted.weblate.org/engage/firefish/) help bring Firefish to more people. No technical experience needed!
 
