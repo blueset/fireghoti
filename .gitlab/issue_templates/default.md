@@ -28,7 +28,7 @@
 <!-- * label: Mastodon API -->
 
 <!-- Please do not edit the next line -->
-* label: Bug?
+* label: Bug
 
 ## What happened?
 <!-- Please give us a brief description of what happened. -->
