@@ -46,7 +46,7 @@
 <!-- Is it always reproducible, or is it conditional/probabilistic ? -->
 
 
-## What did you try to solve the issue
+## What did you try to solve the issue / Do you have any insights
 <!-- Not to repeat the same thing, let us share what you have tried so far. -->
 
 
