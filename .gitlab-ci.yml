@@ -367,7 +367,19 @@ clean:
 add-issue-labels:
   stage: manage
   rules:
-    - if: $MANAGE && $CI_PIPELINE_SOURCE == 'schedule'
+    - if: $ADD_LABEL && $CI_PIPELINE_SOURCE == 'schedule'
+  image: registry.firefish.dev/firefish/gitlab-issue-labels
+  variables:
+    GITLAB_HOST: "firefish.dev"
+  services: []
+  before_script: []
+  script:
+    - gitlab-issue-labels
+
+close-stalled-issues:
+  stage: manage
+  rules:
+    - if: $CLOSE_STALLED && $CI_PIPELINE_SOURCE == 'schedule'
   image: registry.firefish.dev/firefish/gitlab-issue-labels
   variables:
     GITLAB_HOST: "firefish.dev"
