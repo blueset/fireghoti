@@ -60,7 +60,7 @@ async fn init_conn_pool() -> Result<(), RedisError> {
             params.push(user.to_string())
         }
         if let Some(pass) = &redis.pass {
-            params.push(format!(":{}@", pass))
+            params.push(format!(":{}@", urlencoding::encode(pass)))
         }
         params.push(redis.host.to_string());
         params.push(format!(":{}", redis.port));
