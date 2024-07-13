@@ -1,4 +1,3 @@
-import { IsNull } from "typeorm";
 import { renderFollowRelay } from "@/remote/activitypub/renderer/follow-relay.js";
 import {
 	renderActivity,
@@ -6,24 +5,13 @@ import {
 } from "@/remote/activitypub/renderer/index.js";
 import renderUndo from "@/remote/activitypub/renderer/undo.js";
 import { deliver } from "@/queue/index.js";
-import type { ILocalUser, User } from "@/models/entities/user.js";
-import { Users, Relays } from "@/models/index.js";
-import { genId } from "backend-rs";
+import type { User } from "@/models/entities/user.js";
+import { Relays } from "@/models/index.js";
+import { getInternalActor, genId } from "backend-rs";
 import { Cache } from "@/misc/cache.js";
 import type { Relay } from "@/models/entities/relay.js";
 
-const ACTOR_USERNAME = "relay.actor" as const;
-
 const relaysCache = new Cache<Relay[]>("relay", 60 * 60);
-
-export async function getRelayActor(): Promise<ILocalUser> {
-	const user = await Users.findOneBy({
-		host: IsNull(),
-		username: ACTOR_USERNAME,
-	});
-
-	return user as ILocalUser;
-}
 
 export async function addRelay(inbox: string) {
 	const relay = await Relays.insert({
@@ -32,7 +20,7 @@ export async function addRelay(inbox: string) {
 		status: "requesting",
 	}).then((x) => Relays.findOneByOrFail(x.identifiers[0]));
 
-	const relayActor = await getRelayActor();
+	const relayActor = await getInternalActor("relay");
 	const follow = renderFollowRelay(relay, relayActor);
 	const activity = renderActivity(follow);
 	deliver(relayActor, activity, relay.inbox);
@@ -49,7 +37,7 @@ export async function removeRelay(inbox: string) {
 		throw new Error("relay not found");
 	}
 
-	const relayActor = await getRelayActor();
+	const relayActor = await getInternalActor("relay");
 	const follow = renderFollowRelay(relay, relayActor);
 	const undo = renderUndo(follow, relayActor);
 	const activity = renderActivity(undo);

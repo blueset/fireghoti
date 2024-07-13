@@ -1,18 +1,12 @@
-use crate::model::entity::user;
+use crate::{federation::internal_actor::INTERNAL_ACTORS, model::entity::user};
 use sea_orm::prelude::*;
-
-// TODO: When `std::mem::variant_count` is stabilized, use
-// it to count system actors instead of hard coding the magic number
-
-// @instance.actor and @relay.actor are not real users
-const NUMBER_OF_SYSTEM_ACTORS: u64 = 2;
 
 pub async fn local_total(db: &DbConn) -> Result<u64, DbErr> {
     user::Entity::find()
         .filter(user::Column::Host.is_null())
         .count(db)
         .await
-        .map(|count| count - NUMBER_OF_SYSTEM_ACTORS)
+        .map(|count| count - INTERNAL_ACTORS)
 }
 
 #[macros::ts_export(js_name = "countLocalUsers")]

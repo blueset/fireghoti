@@ -8,7 +8,7 @@ pub struct Acct {
 }
 
 #[derive(thiserror::Error, Debug)]
-#[doc = "Error type to indicate a string-to-[`Acct`] conversion failure"]
+#[doc = "Error type to indicate a [`String`]-to-[`Acct`] conversion failure"]
 #[error("failed to convert string '{0}' into acct")]
 pub struct InvalidAcctString(String);
 

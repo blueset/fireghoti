@@ -1,6 +1,6 @@
 import define from "@/server/api/define.js";
 import { AbuseUserReports, Users } from "@/models/index.js";
-import { getInstanceActor } from "@/services/instance-actor.js";
+import { getInternalActor } from "backend-rs";
 import { deliver } from "@/queue/index.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import { renderFlag } from "@/remote/activitypub/renderer/flag.js";
@@ -29,7 +29,7 @@ export default define(meta, paramDef, async (ps, me) => {
 	}
 
 	if (ps.forward && report.targetUserHost != null) {
-		const actor = await getInstanceActor();
+		const actor = await getInternalActor("instance");
 		const targetUser = await Users.findOneByOrFail({ id: report.targetUserId });
 
 		deliver(
