@@ -175,29 +175,7 @@ build:container:
   image: docker.io/debian:trixie-slim
   services: []
   rules:
-    - if: $BUILD == 'true'
-      when: always
-    - if: $BUILD == 'false'
-      when: never
-    - if: $CI_COMMIT_BRANCH == 'develop'
-      changes:
-        paths:
-          - packages/**/*
-          - locales/**/*
-          - scripts/copy-assets.mjs
-          - package.json
-          - Cargo.toml
-          - Cargo.lock
-          - Dockerfile
-          - .dockerignore
-      when: always
-  needs:
-    - job: test:build
-      optional: true
-    - job: test:build:backend_ts_only
-      optional: true
-    - job: test:build:client_only
-      optional: true
+    - if: $BUILD && $CI_PIPELINE_SOURCE == 'schedule'
   variables:
     STORAGE_DRIVER: overlay
   before_script:
@@ -206,8 +184,8 @@ build:container:
       sed -i -r 's/"version": "([-0-9]+)",/"version": "\1-dev",/' package.json
     - apt-get install -y --no-install-recommends ca-certificates fuse-overlayfs buildah
     - echo "${CI_REGISTRY_PASSWORD}" | buildah login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
-    - export IMAGE_TAG="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
-    - export IMAGE_CACHE="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop/cache"
+    - export IMAGE_TAG_1="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
+    - export IMAGE_TAG_2="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production-$(date +%Y%m%d)"
     - buildah version
   script:
     - |-
@@ -218,13 +196,12 @@ build:container:
         --security-opt apparmor=unconfined \
         --cap-add all \
         --platform linux/amd64 \
-        --layers \
-        --cache-to "${IMAGE_CACHE}" \
-        --cache-from "${IMAGE_CACHE}" \
-        --tag "${IMAGE_TAG}" \
+        --tag "${IMAGE_TAG_1}" \
+        --tag "${IMAGE_TAG_2}" \
         .
-    - buildah inspect "${IMAGE_TAG}"
-    - buildah push "${IMAGE_TAG}"
+    - buildah inspect "${IMAGE_TAG_1}"
+    - buildah push "${IMAGE_TAG_1}"
+    - buildah push "${IMAGE_TAG_2}"
 
 cargo:check:msrv:
   stage: test
