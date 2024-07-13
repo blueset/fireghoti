@@ -24,7 +24,7 @@
 		"@types/glob": "8.1.0",
 		"@types/insert-text-at-cursor": "0.3.2",
 		"@types/katex": "0.16.7",
-		"@types/matter-js": "0.19.6",
+		"@types/matter-js": "0.19.7",
 		"@types/prismjs": "1.26.4",
 		"@types/punycode": "2.1.4",
 		"@types/qrcode": "1.5.5",
