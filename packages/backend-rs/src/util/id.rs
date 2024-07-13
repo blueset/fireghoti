@@ -58,7 +58,7 @@ pub fn get_timestamp(id: &str) -> Result<i64, InvalidIdError> {
     if let Some(n) = n {
         Ok(n as i64 + TIME_2000)
     } else {
-        Err(InvalidIdError { id: id.to_string() })
+        Err(InvalidIdError { id: id.to_owned() })
     }
 }
 

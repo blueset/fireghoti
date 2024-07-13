@@ -62,7 +62,7 @@ fn wildcard(category: Category) -> String {
 /// # use backend_rs::database::cache;
 /// # async fn f() -> Result<(), Box<dyn std::error::Error>> {
 /// let key = "apple";
-/// let data = "I want to cache this string".to_string();
+/// let data = "I want to cache this string".to_owned();
 ///
 /// // caches the data for 10 seconds
 /// cache::set(key, &data, 10).await?;
@@ -106,7 +106,7 @@ pub async fn set<V: for<'a> Deserialize<'a> + Serialize>(
 /// # use backend_rs::database::cache;
 /// # async fn f() -> Result<(), Box<dyn std::error::Error>> {
 /// let key = "banana";
-/// let data = "I want to cache this string".to_string();
+/// let data = "I want to cache this string".to_owned();
 ///
 /// // set cache
 /// cache::set(key, &data, 10).await?;
@@ -145,7 +145,7 @@ pub async fn get<V: for<'a> Deserialize<'a> + Serialize>(key: &str) -> Result<Op
 /// # use backend_rs::database::cache;
 /// # async fn f() -> Result<(), Box<dyn std::error::Error>> {
 /// let key = "chocolate";
-/// let value = "I want to cache this string".to_string();
+/// let value = "I want to cache this string".to_owned();
 ///
 /// // set cache
 /// cache::set(key, &value, 10).await?;
@@ -248,12 +248,12 @@ mod unit_test {
         let value_1: Vec<i32> = vec![1, 2, 3, 4, 5];
 
         let key_2 = "CARGO_TEST_CACHE_KEY_2";
-        let value_2 = "Hello fedizens".to_string();
+        let value_2 = "Hello fedizens".to_owned();
 
         let key_3 = "CARGO_TEST_CACHE_KEY_3";
         let value_3 = Data {
             id: 1000000007,
-            kind: "prime number".to_string(),
+            kind: "prime number".to_owned(),
         };
 
         set(key_1, &value_1, 1).await.unwrap();
@@ -287,7 +287,7 @@ mod unit_test {
         let key_2 = "fish";
         let key_3 = "awawa";
 
-        let value_1 = "hello".to_string();
+        let value_1 = "hello".to_owned();
         let value_2 = 998244353u32;
         let value_3 = 'あ';
 

@@ -26,19 +26,19 @@ pub fn show_server_info() -> Result<(), SysinfoPoisonError> {
 
     tracing::info!(
         "Hostname: {}",
-        System::host_name().unwrap_or_else(|| "unknown".to_string())
+        System::host_name().unwrap_or_else(|| "unknown".to_owned())
     );
     tracing::info!(
         "OS: {}",
-        System::long_os_version().unwrap_or_else(|| "unknown".to_string())
+        System::long_os_version().unwrap_or_else(|| "unknown".to_owned())
     );
     tracing::info!(
         "Kernel: {}",
-        System::kernel_version().unwrap_or_else(|| "unknown".to_string())
+        System::kernel_version().unwrap_or_else(|| "unknown".to_owned())
     );
     tracing::info!(
         "CPU architecture: {}",
-        System::cpu_arch().unwrap_or_else(|| "unknown".to_string())
+        System::cpu_arch().unwrap_or_else(|| "unknown".to_owned())
     );
     tracing::info!("CPU threads: {}", system_info.cpus().len());
     tracing::info!("Total memory: {} MiB", system_info.total_memory() / 1048576);

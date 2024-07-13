@@ -13,9 +13,9 @@ pub async fn watch_note(
         note_watching::Entity::insert(note_watching::ActiveModel {
             id: ActiveValue::set(gen_id_at(now)),
             created_at: ActiveValue::set(now.into()),
-            user_id: ActiveValue::Set(watcher_id.to_string()),
-            note_user_id: ActiveValue::Set(note_author_id.to_string()),
-            note_id: ActiveValue::Set(note_id.to_string()),
+            user_id: ActiveValue::Set(watcher_id.to_owned()),
+            note_user_id: ActiveValue::Set(note_author_id.to_owned()),
+            note_id: ActiveValue::Set(note_id.to_owned()),
         })
         .exec(db_conn().await?)
         .await?;

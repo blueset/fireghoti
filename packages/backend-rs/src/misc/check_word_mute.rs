@@ -73,114 +73,114 @@ mod unit_test {
     #[test]
     fn word_mute_match() {
         let texts = [
-            "The quick brown fox jumps over the lazy dog.".to_string(),
-            "色は匂へど 散りぬるを 我が世誰ぞ 常ならむ".to_string(),
-            "😇".to_string(),
+            "The quick brown fox jumps over the lazy dog.".to_owned(),
+            "色は匂へど 散りぬるを 我が世誰ぞ 常ならむ".to_owned(),
+            "😇".to_owned(),
         ];
 
-        let hiragana_1 = r"/[\u{3040}-\u{309f}]/u".to_string();
-        let hiragana_2 = r"/[あ-ん]/u".to_string();
-        let katakana_1 = r"/[\u{30a1}-\u{30ff}]/u".to_string();
-        let katakana_2 = r"/[ア-ン]/u".to_string();
-        let emoji = r"/[\u{1f300}-\u{1f5ff}\u{1f900}-\u{1f9ff}\u{1f600}-\u{1f64f}\u{1f680}-\u{1f6ff}\u{2600}-\u{26ff}\u{2700}-\u{27bf}\u{1f1e6}-\u{1f1ff}\u{1f191}-\u{1f251}\u{1f004}\u{1f0cf}\u{1f170}-\u{1f171}\u{1f17e}-\u{1f17f}\u{1f18e}\u{3030}\u{2b50}\u{2b55}\u{2934}-\u{2935}\u{2b05}-\u{2b07}\u{2b1b}-\u{2b1c}\u{3297}\u{3299}\u{303d}\u{00a9}\u{00ae}\u{2122}\u{23f3}\u{24c2}\u{23e9}-\u{23ef}\u{25b6}\u{23f8}-\u{23fa}]/u".to_string();
+        let hiragana_1 = r"/[\u{3040}-\u{309f}]/u".to_owned();
+        let hiragana_2 = r"/[あ-ん]/u".to_owned();
+        let katakana_1 = r"/[\u{30a1}-\u{30ff}]/u".to_owned();
+        let katakana_2 = r"/[ア-ン]/u".to_owned();
+        let emoji = r"/[\u{1f300}-\u{1f5ff}\u{1f900}-\u{1f9ff}\u{1f600}-\u{1f64f}\u{1f680}-\u{1f6ff}\u{2600}-\u{26ff}\u{2700}-\u{27bf}\u{1f1e6}-\u{1f1ff}\u{1f191}-\u{1f251}\u{1f004}\u{1f0cf}\u{1f170}-\u{1f171}\u{1f17e}-\u{1f17f}\u{1f18e}\u{3030}\u{2b50}\u{2b55}\u{2934}-\u{2935}\u{2b05}-\u{2b07}\u{2b1b}-\u{2b1c}\u{3297}\u{3299}\u{303d}\u{00a9}\u{00ae}\u{2122}\u{23f3}\u{24c2}\u{23e9}-\u{23ef}\u{25b6}\u{23f8}-\u{23fa}]/u".to_owned();
 
-        assert!(check_word_mute_impl(&texts, &[], &["/the/i".to_string()]));
+        assert!(check_word_mute_impl(&texts, &[], &["/the/i".to_owned()]));
 
-        assert!(!check_word_mute_impl(&texts, &[], &["/the/".to_string()]));
+        assert!(!check_word_mute_impl(&texts, &[], &["/the/".to_owned()]));
 
-        assert!(check_word_mute_impl(&texts, &[], &["/QuICk/i".to_string()]));
+        assert!(check_word_mute_impl(&texts, &[], &["/QuICk/i".to_owned()]));
 
-        assert!(!check_word_mute_impl(&texts, &[], &["/QuICk/".to_string()]));
+        assert!(!check_word_mute_impl(&texts, &[], &["/QuICk/".to_owned()]));
 
         assert!(check_word_mute_impl(
             &texts,
             &[
-                "我".to_string(),
-                "有為の奥山 今日越えて 浅き夢見し 酔ひもせず".to_string()
+                "我".to_owned(),
+                "有為の奥山 今日越えて 浅き夢見し 酔ひもせず".to_owned()
             ],
             &[]
         ));
 
         assert!(!check_word_mute_impl(
             &texts,
-            &["有為の奥山 今日越えて 浅き夢見し 酔ひもせず".to_string()],
+            &["有為の奥山 今日越えて 浅き夢見し 酔ひもせず".to_owned()],
             &[]
         ));
 
         assert!(!check_word_mute_impl(
             &texts,
             &[
-                "有為の奥山".to_string(),
-                "今日越えて".to_string(),
-                "浅き夢見し".to_string(),
-                "酔ひもせず".to_string()
+                "有為の奥山".to_owned(),
+                "今日越えて".to_owned(),
+                "浅き夢見し".to_owned(),
+                "酔ひもせず".to_owned()
             ],
             &[]
         ));
 
         assert!(check_word_mute_impl(
             &texts,
-            &["yellow fox".to_string(), "mastodon".to_string()],
+            &["yellow fox".to_owned(), "mastodon".to_owned()],
             &[hiragana_1.clone()]
         ));
 
         assert!(check_word_mute_impl(
             &texts,
-            &["yellow fox".to_string(), "mastodon".to_string()],
+            &["yellow fox".to_owned(), "mastodon".to_owned()],
             &[hiragana_2.clone()]
         ));
 
         assert!(!check_word_mute_impl(
             &texts,
-            &["yellow fox".to_string(), "mastodon".to_string()],
+            &["yellow fox".to_owned(), "mastodon".to_owned()],
             &[katakana_1.clone()]
         ));
 
         assert!(!check_word_mute_impl(
             &texts,
-            &["yellow fox".to_string(), "mastodon".to_string()],
+            &["yellow fox".to_owned(), "mastodon".to_owned()],
             &[katakana_2.clone()]
         ));
 
         assert!(check_word_mute_impl(
             &texts,
-            &["brown fox".to_string(), "mastodon".to_string()],
+            &["brown fox".to_owned(), "mastodon".to_owned()],
             &[katakana_1.clone()]
         ));
 
         assert!(check_word_mute_impl(
             &texts,
-            &["brown fox".to_string(), "mastodon".to_string()],
+            &["brown fox".to_owned(), "mastodon".to_owned()],
             &[katakana_2.clone()]
         ));
 
         assert!(check_word_mute_impl(
             &texts,
-            &["yellow fox".to_string(), "dog".to_string()],
+            &["yellow fox".to_owned(), "dog".to_owned()],
             &[katakana_1.clone()]
         ));
 
         assert!(check_word_mute_impl(
             &texts,
-            &["yellow fox".to_string(), "dog".to_string()],
+            &["yellow fox".to_owned(), "dog".to_owned()],
             &[katakana_2.clone()]
         ));
 
         assert!(check_word_mute_impl(
             &texts,
-            &["yellow fox".to_string(), "mastodon".to_string()],
+            &["yellow fox".to_owned(), "mastodon".to_owned()],
             &[hiragana_1.clone(), katakana_1.clone()]
         ));
 
         assert!(check_word_mute_impl(
             &texts,
-            &["😇".to_string(), "🥲".to_string(), "🥴".to_string()],
+            &["😇".to_owned(), "🥲".to_owned(), "🥴".to_owned()],
             &[]
         ));
 
         assert!(!check_word_mute_impl(
             &texts,
-            &["🙂".to_string(), "🥲".to_string(), "🥴".to_string()],
+            &["🙂".to_owned(), "🥲".to_owned(), "🥴".to_owned()],
             &[]
         ));
 

@@ -109,12 +109,12 @@ mod unit_test {
         let links_1 = NodeinfoLinks {
             links: vec![
                 NodeinfoLink {
-                    rel: "https://example.com/incorrect/schema/2.0".to_string(),
-                    href: "https://example.com/dummy".to_string(),
+                    rel: "https://example.com/incorrect/schema/2.0".to_owned(),
+                    href: "https://example.com/dummy".to_owned(),
                 },
                 NodeinfoLink {
-                    rel: "http://nodeinfo.diaspora.software/ns/schema/2.0".to_string(),
-                    href: "https://example.com/real".to_string(),
+                    rel: "http://nodeinfo.diaspora.software/ns/schema/2.0".to_owned(),
+                    href: "https://example.com/real".to_owned(),
                 },
             ],
         };
@@ -126,12 +126,12 @@ mod unit_test {
         let links_2 = NodeinfoLinks {
             links: vec![
                 NodeinfoLink {
-                    rel: "https://example.com/incorrect/schema/2.0".to_string(),
-                    href: "https://example.com/dummy".to_string(),
+                    rel: "https://example.com/incorrect/schema/2.0".to_owned(),
+                    href: "https://example.com/dummy".to_owned(),
                 },
                 NodeinfoLink {
-                    rel: "http://nodeinfo.diaspora.software/ns/schema/2.1".to_string(),
-                    href: "https://example.com/real".to_string(),
+                    rel: "http://nodeinfo.diaspora.software/ns/schema/2.1".to_owned(),
+                    href: "https://example.com/real".to_owned(),
                 },
             ],
         };
@@ -143,12 +143,12 @@ mod unit_test {
         let links_3 = NodeinfoLinks {
             links: vec![
                 NodeinfoLink {
-                    rel: "https://example.com/incorrect/schema/2.0".to_string(),
-                    href: "https://example.com/dummy/2.0".to_string(),
+                    rel: "https://example.com/incorrect/schema/2.0".to_owned(),
+                    href: "https://example.com/dummy/2.0".to_owned(),
                 },
                 NodeinfoLink {
-                    rel: "https://example.com/incorrect/schema/2.1".to_string(),
-                    href: "https://example.com/dummy/2.1".to_string(),
+                    rel: "https://example.com/incorrect/schema/2.1".to_owned(),
+                    href: "https://example.com/dummy/2.1".to_owned(),
                 },
             ],
         };

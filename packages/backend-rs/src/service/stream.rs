@@ -80,13 +80,13 @@ pub async fn publish_to_stream(
     value: Option<String>,
 ) -> Result<(), Error> {
     let channel = match stream {
-        Stream::Internal => "internal".to_string(),
-        Stream::CustomEmoji => "broadcast".to_string(),
+        Stream::Internal => "internal".to_owned(),
+        Stream::CustomEmoji => "broadcast".to_owned(),
         Stream::Moderation { moderator_id } => format!("adminStream:{moderator_id}"),
         Stream::User { user_id } => format!("user:{user_id}"),
         Stream::Channel { channel_id } => format!("channelStream:{channel_id}"),
         Stream::Note { note_id } => format!("noteStream:{note_id}"),
-        Stream::Notes => "notesStream".to_string(),
+        Stream::Notes => "notesStream".to_owned(),
         Stream::UserList { list_id } => format!("userListStream:{list_id}"),
         Stream::Main { user_id } => format!("mainStream:{user_id}"),
         Stream::Drive { user_id } => format!("driveStream:{user_id}"),
@@ -103,7 +103,7 @@ pub async fn publish_to_stream(
         format!(
             "{{\"type\":\"{}\",\"body\":{}}}",
             kind,
-            value.unwrap_or_else(|| "null".to_string()),
+            value.unwrap_or_else(|| "null".to_owned()),
         )
     } else {
         value.ok_or(Error::InvalidContent)?

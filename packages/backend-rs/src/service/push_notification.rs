@@ -55,7 +55,7 @@ pub enum PushNotificationKind {
 
 fn compact_content(mut content: serde_json::Value) -> Result<serde_json::Value, Error> {
     if !content.is_object() {
-        return Err(Error::InvalidContent("not a JSON object".to_string()));
+        return Err(Error::InvalidContent("not a JSON object".to_owned()));
     }
 
     let object = content.as_object_mut().unwrap();
@@ -69,9 +69,7 @@ fn compact_content(mut content: serde_json::Value) -> Result<serde_json::Value, 
             .get("note")
             .unwrap()
             .get("renote")
-            .ok_or(Error::InvalidContent(
-                "renote object is missing".to_string(),
-            ))?
+            .ok_or(Error::InvalidContent("renote object is missing".to_owned()))?
     } else {
         object.get("note").unwrap()
     }
@@ -79,7 +77,7 @@ fn compact_content(mut content: serde_json::Value) -> Result<serde_json::Value, 
 
     if !note.is_object() {
         return Err(Error::InvalidContent(
-            "(re)note is not an object".to_string(),
+            "(re)note is not an object".to_owned(),
         ));
     }
 
@@ -101,8 +99,8 @@ fn compact_content(mut content: serde_json::Value) -> Result<serde_json::Value, 
     note_object.remove("reply");
     note_object.remove("renote");
     note_object.remove("user");
-    note_object.insert("text".to_string(), text.into());
-    object.insert("note".to_string(), note);
+    note_object.insert("text".to_owned(), text.into());
+    object.insert("note".to_owned(), note);
 
     Ok(serde_json::from_value(Json::Object(object.clone()))?)
 }
@@ -121,14 +119,14 @@ async fn get_mastodon_subscription_info(
     if token.is_none() {
         unsubscribe(db, subscription_id).await?;
         return Err(Error::InvalidSubscription(
-            "access token not found".to_string(),
+            "access token not found".to_owned(),
         ));
     }
     let token = token.unwrap();
 
     if token.app_id.is_none() {
         unsubscribe(db, subscription_id).await?;
-        return Err(Error::InvalidSubscription("no app ID".to_string()));
+        return Err(Error::InvalidSubscription("no app ID".to_owned()));
     }
     let app_id = token.app_id.unwrap();
 
@@ -139,7 +137,7 @@ async fn get_mastodon_subscription_info(
 
     if client.is_none() {
         unsubscribe(db, subscription_id).await?;
-        return Err(Error::InvalidSubscription("app not found".to_string()));
+        return Err(Error::InvalidSubscription("app not found".to_owned()));
     }
 
     Ok((token.token, client.unwrap().name))
@@ -152,11 +150,11 @@ async fn encode_mastodon_payload(
 ) -> Result<String, Error> {
     let object = content
         .as_object_mut()
-        .ok_or(Error::InvalidContent("not a JSON object".to_string()))?;
+        .ok_or(Error::InvalidContent("not a JSON object".to_owned()))?;
 
     if subscription.app_access_token_id.is_none() {
         unsubscribe(db, &subscription.id).await?;
-        return Err(Error::InvalidSubscription("no access token".to_string()));
+        return Err(Error::InvalidSubscription("no access token".to_owned()));
     }
 
     let (token, client_name) = get_mastodon_subscription_info(
@@ -166,7 +164,7 @@ async fn encode_mastodon_payload(
     )
     .await?;
 
-    object.insert("access_token".to_string(), serde_json::to_value(token)?);
+    object.insert("access_token".to_owned(), serde_json::to_value(token)?);
 
     // Some apps expect notification_id to be an integer,
     // but doesn’t break when the ID doesn’t match the rest of API.
@@ -187,7 +185,7 @@ async fn encode_mastodon_payload(
             .transpose()?
             .unwrap_or_default();
 
-        object.insert("notification_id".to_string(), timestamp.into());
+        object.insert("notification_id".to_owned(), timestamp.into());
     }
 
     let res = serde_json::to_string(&content)?;
@@ -273,7 +271,7 @@ pub async fn send_push_notification(
     // TODO: refactoring
     let mut payload = if use_mastodon_api {
         // Content generated per subscription
-        "".to_string()
+        "".to_owned()
     } else {
         // Format the `content` passed from the TypeScript backend
         // for Firefish push notifications

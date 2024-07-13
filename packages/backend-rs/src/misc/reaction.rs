@@ -128,12 +128,12 @@ mod unit_test {
     #[test]
     fn decode_reaction() {
         let unicode_emoji_1 = DecodedReaction {
-            reaction: "⭐".to_string(),
+            reaction: "⭐".to_owned(),
             name: None,
             host: None,
         };
         let unicode_emoji_2 = DecodedReaction {
-            reaction: "🩷".to_string(),
+            reaction: "🩷".to_owned(),
             name: None,
             host: None,
         };
@@ -145,23 +145,23 @@ mod unit_test {
         assert_ne!(super::decode_reaction("🩷"), unicode_emoji_1);
 
         let unicode_emoji_3 = DecodedReaction {
-            reaction: "🖖🏿".to_string(),
+            reaction: "🖖🏿".to_owned(),
             name: None,
             host: None,
         };
         assert_eq!(super::decode_reaction("🖖🏿"), unicode_emoji_3);
 
         let local_emoji = DecodedReaction {
-            reaction: ":meow_melt_tears@.:".to_string(),
-            name: Some("meow_melt_tears".to_string()),
+            reaction: ":meow_melt_tears@.:".to_owned(),
+            name: Some("meow_melt_tears".to_owned()),
             host: None,
         };
         assert_eq!(super::decode_reaction(":meow_melt_tears:"), local_emoji);
 
         let remote_emoji_1 = DecodedReaction {
-            reaction: ":meow_uwu@some-domain.example.org:".to_string(),
-            name: Some("meow_uwu".to_string()),
-            host: Some("some-domain.example.org".to_string()),
+            reaction: ":meow_uwu@some-domain.example.org:".to_owned(),
+            name: Some("meow_uwu".to_owned()),
+            host: Some("some-domain.example.org".to_owned()),
         };
         assert_eq!(
             super::decode_reaction(":meow_uwu@some-domain.example.org:"),
@@ -169,9 +169,9 @@ mod unit_test {
         );
 
         let remote_emoji_2 = DecodedReaction {
-            reaction: ":C++23@xn--eckwd4c7c.example.org:".to_string(),
-            name: Some("C++23".to_string()),
-            host: Some("xn--eckwd4c7c.example.org".to_string()),
+            reaction: ":C++23@xn--eckwd4c7c.example.org:".to_owned(),
+            name: Some("C++23".to_owned()),
+            host: Some("xn--eckwd4c7c.example.org".to_owned()),
         };
         assert_eq!(
             super::decode_reaction(":C++23@xn--eckwd4c7c.example.org:"),
@@ -179,14 +179,14 @@ mod unit_test {
         );
 
         let invalid_reaction_1 = DecodedReaction {
-            reaction: ":foo".to_string(),
+            reaction: ":foo".to_owned(),
             name: None,
             host: None,
         };
         assert_eq!(super::decode_reaction(":foo"), invalid_reaction_1);
 
         let invalid_reaction_2 = DecodedReaction {
-            reaction: ":foo&@example.com:".to_string(),
+            reaction: ":foo&@example.com:".to_owned(),
             name: None,
             host: None,
         };
