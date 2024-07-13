@@ -163,7 +163,7 @@
 		"@types/tmp": "0.2.6",
 		"@types/uuid": "10.0.0",
 		"@types/websocket": "1.0.10",
-		"@types/ws": "8.5.10",
+		"@types/ws": "8.5.11",
 		"cross-env": "7.0.3",
 		"mocha": "10.6.0",
 		"pug": "3.0.3",
