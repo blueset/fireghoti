@@ -14,6 +14,7 @@ export function createAiScriptEnv(opts) {
 				title: title.value,
 				text: text.value,
 			});
+			return values.NULL;
 		}),
 		"Mk:confirm": values.FN_NATIVE(async ([title, text, type]) => {
 			const confirm = await os.confirm({
