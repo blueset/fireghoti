@@ -2195,3 +2195,29 @@ squareCatAvatars: Mostrar avatares cuadrados para las cuentas de gatos
 useThisAccountConfirm: ¿Quieres continuar con esta cuenta?
 i18nServerInfo: Nuevos clientes estarán en {language} por defecto.
 media: Medios
+ipFirstAcknowledged: Fecha de la primera adquisición de la dirección IP
+driveCapacityOverride: Anulación de la capacidad de accionamiento
+useCdn: Obtener activos de CDN
+replaceChatButtonWithAccountButton: Reemplazar boton del chat con el boton de cambio
+  de cuenta
+forMobile: Móvil
+emojiModPerm: Permiso de gestión de emoji personalizado
+replaceWidgetsButtonWithReloadButton: Reemplazar botón del los widgets con el boton
+  de recarga
+inputAccountId: Introduce tu cuenta (ej., @firefish@info.firefish.dev)
+remoteFollow: Seguimiento remoto
+useCdnDescription: Cargar algunos activos estáticos como Twemoji desde JSDelivr CDN
+  en lugar de este servidor de Firefish.
+suggested: Sugerido
+noLanguage: Ningún idioma
+showPreviewByDefault: Mostrar vista previa en el formulario de publicación por defecto
+preventMisclick: Prevención de clic accidental
+announcement: Anuncio
+moderationNote: Nota de moderación
+getQrCode: Mostrar código QR
+copyRemoteFollowUrl: Copiar URL de seguimiento remoto
+hideFollowButtons: Ocultar botón de seguimiento en una posición en la que se pueda
+  hacer clic erróneamente
+searchEngine: Motor de búsqueda usado en la barra de búsqueda MFM
+postSearch: Búsqueda de publicaciones en este servidor
+showBigPostButton: Mostrar un gran botón de Publicar en el formulario de publicación
