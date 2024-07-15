@@ -527,8 +527,8 @@ importers:
         specifier: 5.1.0
         version: 5.1.0(rollup@4.17.2)
       '@syuilo/aiscript':
-        specifier: 0.17.0
-        version: 0.17.0
+        specifier: 0.19.0
+        version: 0.19.0
       '@types/autosize':
         specifier: 4.0.3
         version: 4.0.3
@@ -2290,8 +2290,8 @@ packages:
   '@sqltools/formatter@1.2.5':
     resolution: {integrity: sha512-Uy0+khmZqUrUGm5dmMqVlnvufZRSK0FbYzVgp0UMstm+F5+W2/jnEEQyc9vo1ZR/E5ZI/B1WjjoTqBqwJL6Krw==}
 
-  '@syuilo/aiscript@0.17.0':
-    resolution: {integrity: sha512-3JtQ1rWJHMxQ3153zLCXMUOwrOgjPPYGBl0dPHhR0ohm4tn7okMQRugxMCT0t3YxByemb9FfiM6TUjd0tEGxdA==}
+  '@syuilo/aiscript@0.19.0':
+    resolution: {integrity: sha512-ZWG4s1m6RrFjE7NeIMaxFz769YO1jW5ReTrOROrEO4IHheOrjxxJ/Ffe2TUNqX9/XxDloMwfWplKhfSzx8LGMA==}
 
   '@szmarczak/http-timer@4.0.6':
     resolution: {integrity: sha512-4BAffykYOgO+5nzBWYwE3W90sBgLJoUPRWWcL8wlyiM8IB8ipJz3UMJ9KXQd1RKQXpKp8Tutn80HZtWsu2u76w==}
@@ -8430,7 +8430,7 @@ snapshots:
 
   '@sqltools/formatter@1.2.5': {}
 
-  '@syuilo/aiscript@0.17.0':
+  '@syuilo/aiscript@0.19.0':
     dependencies:
       seedrandom: 3.0.5
       stringz: 2.1.0
