@@ -8,12 +8,8 @@
 
 	--margin: var(--marginFull);
 
-	@media (max-width: 500px) {
-		--margin: var(--marginHalf);
-	}
-
-	// https://larsenwork.com/easing-gradients/
-	--gradient: hsl(0, 0%, 0%) 0%, hsla(0, 0%, 0%, 0.987) 8.1%,
+		// https://larsenwork.com/easing-gradients/
+		--gradient: hsl(0, 0%, 0%) 0%, hsla(0, 0%, 0%, 0.987) 8.1%,
 		hsla(0, 0%, 0%, 0.951) 15.5%, hsla(0, 0%, 0%, 0.896) 22.5%,
 		hsla(0, 0%, 0%, 0.825) 29%, hsla(0, 0%, 0%, 0.741) 35.3%,
 		hsla(0, 0%, 0%, 0.648) 41.2%, hsla(0, 0%, 0%, 0.55) 47.1%,
@@ -23,6 +19,10 @@
 		hsla(0, 0%, 0%, 0.013) 91.9%, hsla(0, 0%, 0%, 0) 100%;
 
 	//--ad: rgb(255 169 0 / 10%);
+
+	@media (max-width: 500px) {
+		--margin: var(--marginHalf);
+	}
 }
 
 /* atkinson-hyperlegible-regular - latin_latin-ext */

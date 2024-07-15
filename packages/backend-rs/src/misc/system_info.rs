@@ -38,9 +38,9 @@ pub fn cpu_info() -> Result<Cpu, SysinfoPoisonError> {
         model: match system_info.cpus() {
             [] => {
                 tracing::debug!("failed to get CPU info");
-                "unknown".to_string()
+                "unknown".to_owned()
             }
-            cpus => cpus[0].brand().to_string(),
+            cpus => cpus[0].brand().to_owned(),
         },
         cores: system_info.cpus().len() as u16,
     })

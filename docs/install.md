@@ -35,7 +35,7 @@ We don't test Firefish on non-Linux systems, so please install Firefish on such 
 
 <details>
 
-<summary>Possible setup on FreeBSD (as of version `20240630`)</summary>
+<summary>Possible setup on FreeBSD (as of version <code>20240630</code>)</summary>
 
 You can install Firefish on FreeBSD by adding these extra steps to the standard instructions:
 

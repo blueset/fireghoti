@@ -2189,3 +2189,9 @@ noSentFollowRequests: No has enviado ninguna solicitud de seguimiento
 antennaLimit: El número máximo de antenas que cada usuario puede crear
 toEdit: Editar
 cannotEditVisibility: No puedes editar la visibilidad
+i18nServerChange: Use el {language} en su lugar.
+i18nServerSet: Use el {language} para nuevos clientes.
+squareCatAvatars: Mostrar avatares cuadrados para las cuentas de gatos
+useThisAccountConfirm: ¿Quieres continuar con esta cuenta?
+i18nServerInfo: Nuevos clientes estarán en {language} por defecto.
+media: Medios

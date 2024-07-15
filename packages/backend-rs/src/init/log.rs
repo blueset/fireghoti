@@ -18,15 +18,15 @@ pub fn initialize_logger() {
         });
     } else if let Some(levels) = &CONFIG.log_level {
         // `logLevel` config is Deprecated
-        if levels.contains(&"trace".to_string()) {
+        if levels.contains(&"trace".to_owned()) {
             builder = builder.with_max_level(Level::TRACE);
-        } else if levels.contains(&"debug".to_string()) {
+        } else if levels.contains(&"debug".to_owned()) {
             builder = builder.with_max_level(Level::DEBUG);
-        } else if levels.contains(&"info".to_string()) {
+        } else if levels.contains(&"info".to_owned()) {
             builder = builder.with_max_level(Level::INFO);
-        } else if levels.contains(&"warning".to_string()) {
+        } else if levels.contains(&"warning".to_owned()) {
             builder = builder.with_max_level(Level::WARN);
-        } else if levels.contains(&"error".to_string()) {
+        } else if levels.contains(&"error".to_owned()) {
             builder = builder.with_max_level(Level::ERROR);
         } else {
             // Fallback

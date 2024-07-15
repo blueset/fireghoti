@@ -16,16 +16,19 @@
 <!-- If this happens on your device and has to do with the user interface, it's client-side. If this happens on either with the API or the backend, or you got a server-side error in the client, it's server-side. -->
 
 <!-- Uncomment (remove surrounding arrow signs) the following line(s) to specify the category of this issue. -->
-<!-- * Server -->
-<!-- * Client -->
-<!-- * Mobile -->
-<!-- * Third-party-client -->
-<!-- * Docs -->
-<!-- * Locale -->
-<!-- * Build from source -->
-<!-- * Container -->
-<!-- * Firefish API -->
-<!-- * Mastodon API -->
+<!-- * label: Server -->
+<!-- * label: Client -->
+<!-- * label: Mobile -->
+<!-- * label: Third-party-client -->
+<!-- * label: Docs -->
+<!-- * label: Locale -->
+<!-- * label: Build from source -->
+<!-- * label: Container -->
+<!-- * label: Firefish API -->
+<!-- * label: Mastodon API -->
+
+<!-- Please do not edit the next line -->
+* label: Bug
 
 ## What happened?
 <!-- Please give us a brief description of what happened. -->
@@ -43,7 +46,7 @@
 <!-- Is it always reproducible, or is it conditional/probabilistic ? -->
 
 
-## What did you try to solve the issue
+## What did you try to solve the issue / Do you have any insights
 <!-- Not to repeat the same thing, let us share what you have tried so far. -->
 
 

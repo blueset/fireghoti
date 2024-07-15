@@ -1,6 +1,6 @@
 {
 	"name": "firefish",
-	"version": "20240710.fork",
+	"version": "20240714.fork",
 	"repository": {
 		"type": "git",
 		"url": "https://firefish.dev/firefish/firefish.git"

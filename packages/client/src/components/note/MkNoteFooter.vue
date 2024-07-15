@@ -239,15 +239,18 @@ defineExpose({
 		margin: 0;
 		padding: 8px;
 		opacity: 0.7;
-		&:disabled {
-			opacity: 0.3 !important;
-		}
+
 		flex-grow: 1;
 		max-width: 3.5em;
 		width: max-content;
 		min-width: max-content;
 		height: auto;
 		transition: opacity 0.2s;
+
+		&:disabled {
+			opacity: 0.3 !important;
+		}
+
 		&::before {
 			content: "";
 			position: absolute;
@@ -257,17 +260,20 @@ defineExpose({
 			z-index: -1;
 			transition: background 0.2s;
 		}
+
 		&:first-of-type {
 			margin-left: -0.5em;
 			&::before {
 				border-radius: 100px 0 0 100px;
 			}
 		}
+
 		&:last-of-type {
 			&::before {
 				border-radius: 0 100px 100px 0;
 			}
 		}
+
 		&:hover {
 			color: var(--fgHighlighted);
 		}

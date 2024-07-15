@@ -57,12 +57,12 @@ async fn init_conn_pool() -> Result<(), RedisError> {
         };
 
         if let Some(user) = &redis.user {
-            params.push(user.to_string())
+            params.push(user.to_owned())
         }
         if let Some(pass) = &redis.pass {
-            params.push(format!(":{}@", pass))
+            params.push(format!(":{}@", urlencoding::encode(pass)))
         }
-        params.push(redis.host.to_string());
+        params.push(redis.host.to_owned());
         params.push(format!(":{}", redis.port));
         params.push(format!("/{}", redis.db));
 
@@ -111,8 +111,8 @@ pub async fn get_conn() -> Result<PooledConnection<'static, RedisConnectionManag
 
 /// prefix Redis key
 #[inline]
-pub fn key(key: impl ToString) -> String {
-    format!("{}:{}", CONFIG.redis_key_prefix, key.to_string())
+pub fn key(key: impl std::fmt::Display) -> String {
+    format!("{}:{}", CONFIG.redis_key_prefix, key)
 }
 
 #[cfg(test)]

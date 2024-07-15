@@ -15,12 +15,12 @@ pub fn summarize_impl(
 
     match file_ids.len() {
         0 => (),
-        1 => buf.push("📎".to_string()),
+        1 => buf.push("📎".to_owned()),
         n => buf.push(format!("📎 ({})", n)),
     };
 
     if has_poll {
-        buf.push("📊".to_string())
+        buf.push("📊".to_owned())
     }
 
     buf.join(" ")
@@ -94,7 +94,7 @@ mod unit_test {
     fn summarize_note() {
         let note = NoteLike {
             file_ids: vec![],
-            text: Some("Hello world!".to_string()),
+            text: Some("Hello world!".to_owned()),
             cw: None,
             has_poll: false,
         };
@@ -102,26 +102,26 @@ mod unit_test {
 
         let note_with_cw = NoteLike {
             file_ids: vec![],
-            text: Some("Hello world!".to_string()),
-            cw: Some("Content warning".to_string()),
+            text: Some("Hello world!".to_owned()),
+            cw: Some("Content warning".to_owned()),
             has_poll: false,
         };
         assert_eq!(summarize!(note_with_cw), "Content warning");
 
         let note_with_file_and_cw = NoteLike {
-            file_ids: vec!["9s7fmcqogiq4igin".to_string()],
+            file_ids: vec!["9s7fmcqogiq4igin".to_owned()],
             text: None,
-            cw: Some("Selfie, no ec".to_string()),
+            cw: Some("Selfie, no ec".to_owned()),
             has_poll: false,
         };
         assert_eq!(summarize!(note_with_file_and_cw), "Selfie, no ec 📎");
 
         let note_with_files_only = NoteLike {
             file_ids: vec![
-                "9s7fmcqogiq4igin".to_string(),
-                "9s7qrld5u14cey98".to_string(),
-                "9s7gebs5zgts4kca".to_string(),
-                "9s5z3e4vefqd29ee".to_string(),
+                "9s7fmcqogiq4igin".to_owned(),
+                "9s7qrld5u14cey98".to_owned(),
+                "9s7gebs5zgts4kca".to_owned(),
+                "9s5z3e4vefqd29ee".to_owned(),
             ],
             text: None,
             cw: None,
@@ -131,13 +131,13 @@ mod unit_test {
 
         let note_all = NoteLike {
             file_ids: vec![
-                "9s7fmcqogiq4igin".to_string(),
-                "9s7qrld5u14cey98".to_string(),
-                "9s7gebs5zgts4kca".to_string(),
-                "9s5z3e4vefqd29ee".to_string(),
+                "9s7fmcqogiq4igin".to_owned(),
+                "9s7qrld5u14cey98".to_owned(),
+                "9s7gebs5zgts4kca".to_owned(),
+                "9s5z3e4vefqd29ee".to_owned(),
             ],
-            text: Some("Hello world!".to_string()),
-            cw: Some("Content warning".to_string()),
+            text: Some("Hello world!".to_owned()),
+            cw: Some("Content warning".to_owned()),
             has_poll: true,
         };
         assert_eq!(summarize!(note_all), "Content warning 📎 (4) 📊");

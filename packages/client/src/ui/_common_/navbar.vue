@@ -263,15 +263,15 @@ function more(ev: MouseEvent) {
 		box-sizing: border-box;
 		overflow: auto;
 		overflow-x: clip;
+		contain: strict;
+		display: flex;
+		flex-direction: column;
 		#firefish_app > :not(.wallpaper) & {
 			background: var(--navBg);
 		}
 		#firefish_app > .wallpaper:not(.centered) & {
 			border-right: 1px solid var(--divider);
 		}
-		contain: strict;
-		display: flex;
-		flex-direction: column;
 	}
 
 	&:not(.iconOnly) {

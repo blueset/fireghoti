@@ -9,7 +9,7 @@ import renderKey from "@/remote/activitypub/renderer/key.js";
 import { renderPerson } from "@/remote/activitypub/renderer/person.js";
 import renderEmoji from "@/remote/activitypub/renderer/emoji.js";
 import { inbox as processInbox } from "@/queue/index.js";
-import { fetchMeta, isSelfHost } from "backend-rs";
+import { fetchMeta, getInternalActor, isSelfHost } from "backend-rs";
 import {
 	Notes,
 	Users,
@@ -24,7 +24,6 @@ import {
 	checkFetch,
 	getSignatureUser,
 } from "@/remote/activitypub/check-fetch.js";
-import { getInstanceActor } from "@/services/instance-actor.js";
 import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import Featured from "./activitypub/featured.js";
 import Following from "./activitypub/following.js";
@@ -296,7 +295,7 @@ router.get("/users/:user/collections/featured", Featured);
 
 // publickey
 router.get("/users/:user/publickey", async (ctx) => {
-	const instanceActor = await getInstanceActor();
+	const instanceActor = await getInternalActor("instance");
 	if (ctx.params.user === instanceActor.id) {
 		ctx.body = renderActivity(
 			renderKey(instanceActor, await getUserKeypair(instanceActor.id)),
@@ -360,7 +359,7 @@ async function userInfo(ctx: Router.RouterContext, user: User | null) {
 router.get("/users/:user", async (ctx, next) => {
 	if (!isActivityPubReq(ctx)) return await next();
 
-	const instanceActor = await getInstanceActor();
+	const instanceActor = await getInternalActor("instance");
 	if (ctx.params.user === instanceActor.id) {
 		await userInfo(ctx, instanceActor);
 		return;
@@ -387,7 +386,7 @@ router.get("/@:user", async (ctx, next) => {
 	if (!isActivityPubReq(ctx)) return await next();
 
 	if (ctx.params.user === "instance.actor") {
-		const instanceActor = await getInstanceActor();
+		const instanceActor = await getInternalActor("instance");
 		await userInfo(ctx, instanceActor);
 		return;
 	}
@@ -407,8 +406,8 @@ router.get("/@:user", async (ctx, next) => {
 	await userInfo(ctx, user);
 });
 
-router.get("/actor", async (ctx, next) => {
-	const instanceActor = await getInstanceActor();
+router.get("/actor", async (ctx, _next) => {
+	const instanceActor = await getInternalActor("instance");
 	await userInfo(ctx, instanceActor);
 });
 //#endregion

@@ -346,7 +346,7 @@ pub fn load_config() -> Config {
         hostname,
         redis_key_prefix,
         scheme,
-        ws_scheme: ws_scheme.to_string(),
+        ws_scheme: ws_scheme.to_owned(),
     }
 }
 

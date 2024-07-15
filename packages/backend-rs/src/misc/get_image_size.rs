@@ -68,7 +68,7 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
 
     if attempted {
         tracing::warn!("attempt limit exceeded: {}", url);
-        return Err(Error::TooManyAttempts(url.to_string()));
+        return Err(Error::TooManyAttempts(url.to_owned()));
     }
 
     tracing::info!("retrieving image from {}", url);

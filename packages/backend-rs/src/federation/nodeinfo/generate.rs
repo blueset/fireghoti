@@ -68,45 +68,45 @@ async fn generate_nodeinfo_2_1() -> Result<Nodeinfo21, DbErr> {
     let meta = local_server_info().await?;
     let mut metadata = HashMap::from([
         (
-            "nodeName".to_string(),
+            "nodeName".to_owned(),
             json!(meta.name.unwrap_or_else(|| CONFIG.host.clone())),
         ),
-        ("nodeDescription".to_string(), json!(meta.description)),
-        ("repositoryUrl".to_string(), json!(meta.repository_url)),
+        ("nodeDescription".to_owned(), json!(meta.description)),
+        ("repositoryUrl".to_owned(), json!(meta.repository_url)),
         (
-            "enableLocalTimeline".to_string(),
+            "enableLocalTimeline".to_owned(),
             json!(!meta.disable_local_timeline),
         ),
         (
-            "enableRecommendedTimeline".to_string(),
+            "enableRecommendedTimeline".to_owned(),
             json!(!meta.disable_recommended_timeline),
         ),
         (
-            "enableGlobalTimeline".to_string(),
+            "enableGlobalTimeline".to_owned(),
             json!(!meta.disable_global_timeline),
         ),
         (
-            "enableGuestTimeline".to_string(),
+            "enableGuestTimeline".to_owned(),
             json!(meta.enable_guest_timeline),
         ),
         (
-            "maintainer".to_string(),
+            "maintainer".to_owned(),
             json!({"name":meta.maintainer_name,"email":meta.maintainer_email}),
         ),
-        ("proxyAccountName".to_string(), json!(meta.proxy_account_id)),
+        ("proxyAccountName".to_owned(), json!(meta.proxy_account_id)),
         (
-            "themeColor".to_string(),
-            json!(meta.theme_color.unwrap_or_else(|| "#31748f".to_string())),
+            "themeColor".to_owned(),
+            json!(meta.theme_color.unwrap_or_else(|| "#31748f".to_owned())),
         ),
     ]);
     metadata.shrink_to_fit();
 
     Ok(Nodeinfo21 {
         software: Software21 {
-            name: "firefish".to_string(),
+            name: "firefish".to_owned(),
             version: CONFIG.version.clone(),
             repository: Some(meta.repository_url),
-            homepage: Some("https://firefish.dev/firefish/firefish".to_string()),
+            homepage: Some("https://firefish.dev/firefish/firefish".to_owned()),
         },
         protocols: vec![Protocol::Activitypub],
         services: Services {

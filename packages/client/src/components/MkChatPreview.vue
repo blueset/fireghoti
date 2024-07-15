@@ -74,7 +74,7 @@ defineProps<{
 }>();
 
 function isMe(message: entities.MessagingMessage): boolean {
-	return message.userId === me!.id;
+	return message.userId === me?.id;
 }
 </script>
 
@@ -84,6 +84,7 @@ function isMe(message: entities.MessagingMessage): boolean {
 		display: block;
 		text-decoration: none;
 		margin-bottom: var(--margin);
+		padding: 20px 30px;
 
 		* {
 			pointer-events: none;
@@ -110,8 +111,6 @@ function isMe(message: entities.MessagingMessage): boolean {
 			display: block;
 			clear: both;
 		}
-
-		padding: 20px 30px;
 
 		> header {
 			display: flex;

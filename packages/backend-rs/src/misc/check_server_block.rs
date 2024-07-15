@@ -81,7 +81,7 @@ pub async fn is_allowed_server(host: &str) -> Result<bool, sea_orm::DbErr> {
         return Ok(true);
     }
     if let Some(allowed_hosts) = meta.allowed_hosts {
-        return Ok(allowed_hosts.contains(&host.to_string()));
+        return Ok(allowed_hosts.contains(&host.to_owned()));
     }
     Ok(false)
 }

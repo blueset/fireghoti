@@ -8,7 +8,7 @@ pub struct Acct {
 }
 
 #[derive(thiserror::Error, Debug)]
-#[doc = "Error type to indicate a string-to-[`Acct`] conversion failure"]
+#[doc = "Error type to indicate a [`String`]-to-[`Acct`] conversion failure"]
 #[error("failed to convert string '{0}' into acct")]
 pub struct InvalidAcctString(String);
 
@@ -25,11 +25,11 @@ impl FromStr for Acct {
         .collect();
 
         Ok(Self {
-            username: split[0].to_string(),
+            username: split[0].to_owned(),
             host: if split.len() == 1 {
                 None
             } else {
-                Some(split[1].to_string())
+                Some(split[1].to_owned())
             },
         })
     }
@@ -70,11 +70,11 @@ mod unit_test {
     #[test]
     fn acct_to_string() {
         let remote_acct = Acct {
-            username: "firefish".to_string(),
-            host: Some("example.com".to_string()),
+            username: "firefish".to_owned(),
+            host: Some("example.com".to_owned()),
         };
         let local_acct = Acct {
-            username: "MisakaMikoto".to_string(),
+            username: "MisakaMikoto".to_owned(),
             host: None,
         };
 
@@ -87,11 +87,11 @@ mod unit_test {
     #[test]
     fn string_to_acct() {
         let remote_acct = Acct {
-            username: "firefish".to_string(),
-            host: Some("example.com".to_string()),
+            username: "firefish".to_owned(),
+            host: Some("example.com".to_owned()),
         };
         let local_acct = Acct {
-            username: "MisakaMikoto".to_string(),
+            username: "MisakaMikoto".to_owned(),
             host: None,
         };
 

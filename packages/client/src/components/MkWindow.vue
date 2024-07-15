@@ -542,18 +542,20 @@ defineExpose({
 				--height: 38px;
 			}
 
-			display: flex;
-			position: relative;
-			z-index: 1;
-			flex-shrink: 0;
-			user-select: none;
-			height: var(--height);
-			background: var(--windowHeader);
-			-webkit-backdrop-filter: var(--blur, blur(15px));
-			backdrop-filter: var(--blur, blur(15px));
-			//border-bottom: solid 1px var(--divider);
-			font-size: 95%;
-			font-weight: bold;
+			& {
+				display: flex;
+				position: relative;
+				z-index: 1;
+				flex-shrink: 0;
+				user-select: none;
+				height: var(--height);
+				background: var(--windowHeader);
+				-webkit-backdrop-filter: var(--blur, blur(15px));
+				backdrop-filter: var(--blur, blur(15px));
+				//border-bottom: solid 1px var(--divider);
+				font-size: 95%;
+				font-weight: bold;
+			}
 
 			> .left,
 			> .right {
