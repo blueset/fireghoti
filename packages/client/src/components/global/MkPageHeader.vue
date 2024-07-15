@@ -264,7 +264,8 @@ onMounted(() => {
 	watch(
 		() => [props.tab, props.tabs],
 		() => {
-			nextTick(() => {
+			nextTick(async () => {
+				await document.fonts.ready;
 				if (props.tab == null) return;
 				if (!isTabs(props.tabs)) return;
 				const tabEl = tabRefs[props.tab];
