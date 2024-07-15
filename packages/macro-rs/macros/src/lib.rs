@@ -71,6 +71,9 @@ define_wrapper_proc_macro_attributes! {
         #[cfg(feature = "napi")]
         #[macros::napi(#attr)]
         #item
+
+        #[cfg(any(test, doctest))]
+        #item
     }
 }
 
