@@ -78,7 +78,8 @@ async function init() {
 				async (user) =>
 					`@${acct.toString((await user).object as entities.UserDetailed)}`,
 			);
-		accountAlias.value = (await Promise.all(aka)) || [""];
+		const accounts = await Promise.all(aka);
+		accountAlias.value = accounts.length > 0 ? accounts : [""];
 	} else {
 		accountAlias.value = [""];
 	}
