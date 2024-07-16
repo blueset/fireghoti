@@ -306,6 +306,7 @@ export class UserHelpers {
 	}
 
 	public static async getUserFromAcct(acct: string): Promise<User> {
+		if (acct.startsWith("@")) acct = acct.slice(1);
 		const split = acct.toLowerCase().split("@");
 		if (split.length > 2) throw new Error("Invalid acct");
 		return split[1] == null
