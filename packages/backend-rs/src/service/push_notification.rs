@@ -13,7 +13,7 @@ use sea_orm::prelude::*;
 use serde::Deserialize;
 use web_push::*;
 
-#[derive(thiserror::Error, Debug)]
+#[macros::errors]
 pub enum Error {
     #[doc = "database error"]
     #[error(transparent)]

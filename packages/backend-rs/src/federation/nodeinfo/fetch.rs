@@ -7,7 +7,7 @@ use isahc::AsyncReadResponseExt;
 use serde::Deserialize;
 
 /// Errors that can occur while fetching NodeInfo from a remote server
-#[derive(thiserror::Error, Debug)]
+#[macros::errors]
 pub enum Error {
     #[error("failed to acquire an HTTP client")]
     HttpClient(#[from] http_client::Error),

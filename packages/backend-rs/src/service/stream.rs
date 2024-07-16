@@ -62,7 +62,7 @@ pub enum ChatEvent {
     Typing,
 }
 
-#[derive(thiserror::Error, Debug)]
+#[macros::errors]
 pub enum Error {
     #[error("failed to execute a Redis command")]
     Redis(#[from] RedisError),

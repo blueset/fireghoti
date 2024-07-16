@@ -13,7 +13,7 @@ use crate::{
 use redis::{streams::StreamMaxlen, AsyncCommands, RedisError};
 use sea_orm::prelude::*;
 
-#[derive(thiserror::Error, Debug)]
+#[macros::errors]
 pub enum Error {
     #[doc = "database error"]
     #[error(transparent)]

@@ -5,7 +5,7 @@ use nom_exif::{parse_jpeg_exif, EntryValue, ExifTag};
 use std::io::Cursor;
 use tokio::sync::Mutex;
 
-#[derive(thiserror::Error, Debug)]
+#[macros::errors]
 pub enum Error {
     #[error("Redis cache operation has failed")]
     Cache(#[from] cache::Error),

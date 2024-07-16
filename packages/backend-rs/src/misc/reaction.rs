@@ -53,7 +53,7 @@ pub fn count_reactions(reactions: &HashMap<String, u32>) -> HashMap<String, u32>
     res
 }
 
-#[derive(thiserror::Error, Debug)]
+#[macros::errors]
 pub enum Error {
     #[doc = "UTS #46 process has failed"]
     #[error(transparent)]

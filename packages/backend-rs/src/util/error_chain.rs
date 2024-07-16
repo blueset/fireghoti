@@ -34,7 +34,7 @@ mod unit_test {
         #[error("unexpected string '{0}'")]
         struct InnerError2(String);
 
-        #[derive(thiserror::Error, Debug)]
+        #[macros::errors]
         enum ErrorVariants {
             #[error("error 1 occured")]
             Error1(#[from] InnerError1),

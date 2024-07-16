@@ -6,7 +6,7 @@ use crate::{
 };
 use sea_orm::{DbErr, EntityTrait, QuerySelect, SelectColumns};
 
-#[derive(thiserror::Error, Debug)]
+#[macros::errors]
 pub enum Error {
     #[doc = "database error"]
     #[error(transparent)]

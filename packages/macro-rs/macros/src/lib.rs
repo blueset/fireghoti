@@ -75,10 +75,20 @@ define_wrapper_proc_macro_attributes! {
         #[cfg(any(test, doctest))]
         #item
     }
+
+    /// When applied to error variant enums, this macro generates a document
+    /// based on error messages unless there is a doc comment
+    errors(attr, item) {
+        #[derive(::thiserror::Error, ::std::fmt::Debug)]
+        #[macros::error_variants(#attr, #item)]
+        #item
+    }
 }
 
 reexport_proc_macro_attributes! {
     /// Creates an extra wrapper function for [napi_derive](https://docs.rs/napi-derive/latest/napi_derive/).
     /// See [macros_impl::napi::napi] for details.
     macros_impl::napi::napi as napi
+
+    macros_impl::error::error_variants as error_variants
 }
