@@ -555,7 +555,7 @@ export type InternalActor =  'instance'|
  * `host` - punycoded instance host
  *
  * # Example
- * ```no_run
+ * ```ignore
  * # use backend_rs::misc::check_server_block::is_allowed_server;
  * # async fn f() -> Result<(), Box<dyn std::error::Error>> {
  * assert_eq!(true, is_allowed_server("allowed.com").await?);
@@ -575,7 +575,7 @@ export declare function isAllowedServer(host: string): Promise<boolean>
  * `host` - punycoded instance host
  *
  * # Example
- * ```no_run
+ * ```ignore
  * # use backend_rs::misc::check_server_block::is_blocked_server;
  * # async fn f() -> Result<(), Box<dyn std::error::Error>> {
  * assert_eq!(true, is_blocked_server("blocked.com").await?);
@@ -606,7 +606,7 @@ export declare function isSelfHost(host?: string | undefined | null): boolean
  * `host` - punycoded instance host
  *
  * # Example
- * ```no_run
+ * ```ignore
  * # use backend_rs::misc::check_server_block::is_silenced_server;
  * # async fn f() -> Result<(), Box<dyn std::error::Error>> {
  * assert_eq!(true, is_silenced_server("silenced.com").await?);
