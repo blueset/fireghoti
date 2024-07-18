@@ -506,8 +506,8 @@ importers:
   packages/backend-rs:
     devDependencies:
       '@napi-rs/cli':
-        specifier: 3.0.0-alpha.60
-        version: 3.0.0-alpha.60(@emnapi/runtime@1.2.0)
+        specifier: 3.0.0-alpha.61
+        version: 3.0.0-alpha.61(@emnapi/runtime@1.2.0)
 
   packages/client:
     devDependencies:
@@ -1767,8 +1767,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@napi-rs/cli@3.0.0-alpha.60':
-    resolution: {integrity: sha512-FVHjxlz83X3MYRc7L+hnhJgokbEoicujDHPk2XFcv3sxlJwVMHGxt5RjnPQpNo5iA4sEzWw+SKt2rtOAJjUHew==}
+  '@napi-rs/cli@3.0.0-alpha.61':
+    resolution: {integrity: sha512-xAJJWacaXc2lKMKmchEdnDIVRRnprbzAB5BjM5PXXc9n48tQ32/OqaoCo28u+3pxHD9svymYYYyZIb/e+8PTqg==}
     engines: {node: '>= 16'}
     hasBin: true
     peerDependencies:
@@ -6036,11 +6036,6 @@ packages:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
     hasBin: true
 
-  semver@7.6.2:
-    resolution: {integrity: sha512-FNAIBWCx9qcRhoHcgcJ0gvU7SN1lYU2ZXuSfl04bSC5OpvDHFyJCjdNHomPXxjQlCBU67YW64PzY7/VIEH7F2w==}
-    engines: {node: '>=10'}
-    hasBin: true
-
   semver@7.6.3:
     resolution: {integrity: sha512-oVekP1cKtI+CTDvHWYFUcMtsK/00wmAEfyqKfNdARm8u1wNVhSgaX7A8d4UuIlUI5e84iEwOhs7ZPYRmzU9U6A==}
     engines: {node: '>=10'}
@@ -8018,7 +8013,7 @@ snapshots:
   '@msgpackr-extract/msgpackr-extract-win32-x64@3.0.3':
     optional: true
 
-  '@napi-rs/cli@3.0.0-alpha.60(@emnapi/runtime@1.2.0)':
+  '@napi-rs/cli@3.0.0-alpha.61(@emnapi/runtime@1.2.0)':
     dependencies:
       '@napi-rs/cross-toolchain': 0.0.16
       '@napi-rs/wasm-tools': 0.0.2
@@ -8029,7 +8024,7 @@ snapshots:
       inquirer: 10.0.1
       js-yaml: 4.1.0
       lodash-es: 4.17.21
-      semver: 7.6.2
+      semver: 7.6.3
       toml: 3.0.0
       typanion: 3.14.0
       wasm-sjlj: 1.0.5
@@ -12541,8 +12536,6 @@ snapshots:
   semver@5.7.2: {}
 
   semver@6.3.1: {}
-
-  semver@7.6.2: {}
 
   semver@7.6.3: {}
 
