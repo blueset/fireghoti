@@ -10,7 +10,7 @@ rust-version = "1.74"
 macros = { path = "packages/macro-rs/macros" }
 macros-impl = { path = "packages/macro-rs/macros-impl" }
 
-napi = "3.0.0-alpha.7"
+napi = "3.0.0-alpha.8"
 napi-derive = "3.0.0-alpha.6"
 napi-build = "2.1.3"
 
