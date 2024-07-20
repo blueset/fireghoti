@@ -163,7 +163,7 @@
 		"@types/websocket": "1.0.10",
 		"@types/ws": "8.5.11",
 		"cross-env": "7.0.3",
-		"mocha": "10.6.0",
+		"mocha": "10.7.0",
 		"pug": "3.0.3",
 		"strict-event-emitter-types": "2.0.0",
 		"ts-loader": "9.5.1",
