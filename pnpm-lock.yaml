@@ -129,9 +129,6 @@ importers:
       deep-email-validator:
         specifier: 0.1.21
         version: 0.1.21
-      deepl-node:
-        specifier: 1.13.0
-        version: 1.13.0
       escape-regexp:
         specifier: 0.0.1
         version: 0.0.1
@@ -231,9 +228,6 @@ importers:
       nodemailer:
         specifier: 6.9.14
         version: 6.9.14
-      opencc-js:
-        specifier: 1.0.5
-        version: 1.0.5
       otpauth:
         specifier: 9.3.1
         version: 9.3.1
@@ -1001,13 +995,11 @@ packages:
   '@biomejs/cli-darwin-arm64@1.8.3':
     resolution: {integrity: sha512-9DYOjclFpKrH/m1Oz75SSExR8VKvNSSsLnVIqdnKexj6NwmiMlKk94Wa1kZEdv6MCOHGHgyyoV57Cw8WzL5n3A==}
     engines: {node: '>=14.21.3'}
-    cpu: [arm64]
     os: [darwin]
 
   '@biomejs/cli-darwin-x64@1.8.3':
     resolution: {integrity: sha512-UeW44L/AtbmOF7KXLCoM+9PSgPo0IDcyEUfIoOXYeANaNXXf9mLUwV1GeF2OWjyic5zj6CnAJ9uzk2LT3v/wAw==}
     engines: {node: '>=14.21.3'}
-    cpu: [x64]
     os: [darwin]
 
   '@biomejs/cli-linux-arm64-musl@1.8.3':
@@ -1019,7 +1011,6 @@ packages:
   '@biomejs/cli-linux-arm64@1.8.3':
     resolution: {integrity: sha512-fed2ji8s+I/m8upWpTJGanqiJ0rnlHOK3DdxsyVLZQ8ClY6qLuPc9uehCREBifRJLl/iJyQpHIRufLDeotsPtw==}
     engines: {node: '>=14.21.3'}
-    cpu: [arm64]
     os: [linux]
 
   '@biomejs/cli-linux-x64-musl@1.8.3':
@@ -1031,7 +1022,6 @@ packages:
   '@biomejs/cli-linux-x64@1.8.3':
     resolution: {integrity: sha512-I8G2QmuE1teISyT8ie1HXsjFRz9L1m5n83U1O6m30Kw+kPMPSKjag6QGUn+sXT8V+XWIZxFFBoTDEDZW2KPDDw==}
     engines: {node: '>=14.21.3'}
-    cpu: [x64]
     os: [linux]
 
   '@biomejs/cli-win32-arm64@1.8.3':
@@ -3662,10 +3652,6 @@ packages:
   deep-equal@1.0.1:
     resolution: {integrity: sha512-bHtC0iYvWhyaTzvV3CZgPeZQqCOBGyGsVV7v4eevpdkLHfiSrXUdBG+qAuSz4RI70sszvjQ1QSZ98An1yNwpSw==}
 
-  deepl-node@1.13.0:
-    resolution: {integrity: sha512-pm8Al5B+/fRHiIKoreoSmv2RlXidF18+CznhtLILiYcj3EbxZpIhxWO8cgXCCsCTrUDMAbScIl8CuH3AqLPpGg==}
-    engines: {node: '>=12.0'}
-
   deepmerge@4.3.1:
     resolution: {integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==}
     engines: {node: '>=0.10.0'}
@@ -4084,10 +4070,6 @@ packages:
   form-data-encoder@4.0.2:
     resolution: {integrity: sha512-KQVhvhK8ZkWzxKxOr56CPulAhH3dobtuQ4+hNQ+HekH/Wp5gSOafqRAeTphQUJAIk0GBvHZgJ2ZGRWd5kphMuw==}
     engines: {node: '>= 18'}
-
-  form-data@3.0.1:
-    resolution: {integrity: sha512-RHkBKtLWUVwd7SqRIvCZMEvAMoGUp0XU+seQiZejj0COz3RI3hWP4sCv3gZWWLjJTd7rGwcsF5eKZGii0r/hbg==}
-    engines: {node: '>= 6'}
 
   form-data@4.0.0:
     resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
@@ -5032,10 +5014,6 @@ packages:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
     engines: {node: '>=10'}
 
-  loglevel@1.9.1:
-    resolution: {integrity: sha512-hP3I3kCrDIMuRwAwHltphhDM1r8i55H33GgqjXbrisuJhF4kRhW1dNuxsRklp4bXl8DSdLaNLuiL4A/LWRfxvg==}
-    engines: {node: '>= 0.6.0'}
-
   long@5.2.3:
     resolution: {integrity: sha512-lcHwpNoggQTObv5apGNCTdJrO69eHOZMi4BNC+rTLER8iHAqGrUVeLh/irVIM7zTw2bOXA8T6uNPeujwOLg/2Q==}
 
@@ -5362,9 +5340,6 @@ packages:
 
   only@0.0.2:
     resolution: {integrity: sha512-Fvw+Jemq5fjjyWz6CpKx6w9s7xxqo3+JCyM0WXWeCSOboZ8ABkyvP8ID4CZuChA/wxSx+XSJmdOm8rGVyJ1hdQ==}
-
-  opencc-js@1.0.5:
-    resolution: {integrity: sha512-LD+1SoNnZdlRwtYTjnQdFrSVCAaYpuDqL5CkmOaHOkKoKh7mFxUicLTRVNLU5C+Jmi1vXQ3QL4jWdgSaa4sKjg==}
 
   opencollective-postinstall@2.0.3:
     resolution: {integrity: sha512-8AV/sCtuzUeTo8gQK5qDZzARrulB3egtLzFgteqB2tcT4Mw7B8Kt7JcDHmltjz6FOAHsvTevk70gZEbhM4ZS9Q==}
@@ -9852,15 +9827,6 @@ snapshots:
 
   deep-equal@1.0.1: {}
 
-  deepl-node@1.13.0:
-    dependencies:
-      '@types/node': 20.14.11
-      axios: 1.7.2
-      form-data: 3.0.1
-      loglevel: 1.9.1
-    transitivePeerDependencies:
-      - debug
-
   deepmerge@4.3.1: {}
 
   defer-to-connect@2.0.1: {}
@@ -10291,12 +10257,6 @@ snapshots:
       signal-exit: 4.1.0
 
   form-data-encoder@4.0.2: {}
-
-  form-data@3.0.1:
-    dependencies:
-      asynckit: 0.4.0
-      combined-stream: 1.0.8
-      mime-types: 2.1.35
 
   form-data@4.0.0:
     dependencies:
@@ -11559,8 +11519,6 @@ snapshots:
       chalk: 4.1.2
       is-unicode-supported: 0.1.0
 
-  loglevel@1.9.1: {}
-
   long@5.2.3: {}
 
   lowercase-keys@2.0.0: {}
@@ -11867,8 +11825,6 @@ snapshots:
       mimic-fn: 2.1.0
 
   only@0.0.2: {}
-
-  opencc-js@1.0.5: {}
 
   opencollective-postinstall@2.0.3: {}
 

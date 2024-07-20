@@ -1349,6 +1349,13 @@ export declare function toDbReaction(reaction?: string | undefined | null, host?
 
 export declare function toPuny(host: string): string
 
+export declare function translate(text: string, sourceLang: string | undefined | null, targetLang: string): Promise<Translation>
+
+export interface Translation {
+  sourceLang: string
+  text: string
+}
+
 export declare function unwatchNote(watcherId: string, noteId: string): Promise<void>
 
 export declare function updateAntennaCache(): Promise<void>

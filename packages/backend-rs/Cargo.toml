@@ -29,7 +29,7 @@ cuid2 = { workspace = true }
 emojis = { workspace = true }
 idna = { workspace = true, features = ["std", "compiled_data"] }
 image = { workspace = true, features = ["avif", "bmp", "gif", "ico", "jpeg", "png", "tiff", "webp"] }
-isahc = { workspace = true, features = ["http2", "text-decoding"] }
+isahc = { workspace = true, features = ["http2", "text-decoding", "json"] }
 nom-exif = { workspace = true }
 once_cell = { workspace = true }
 openssl = { workspace = true, features = ["vendored"] }
@@ -49,6 +49,7 @@ tracing-subscriber = { workspace = true, features = ["ansi"] }
 url = { workspace = true }
 urlencoding = { workspace = true }
 web-push = { workspace = true, features = ["isahc-client"] }
+zhconv = { workspace = true }
 
 [dev-dependencies]
 pretty_assertions = { workspace = true, features = ["std"] }

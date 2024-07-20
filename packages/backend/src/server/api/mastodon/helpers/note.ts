@@ -40,7 +40,7 @@ import {
 	getStubMastoContext,
 	type MastoContext,
 } from "@/server/api/mastodon/index.js";
-import { translate } from "@/misc/translate.js";
+import { translate } from "backend-rs";
 import { createScheduledNoteJob } from "@/queue/index.js";
 
 export class NoteHelpers {
