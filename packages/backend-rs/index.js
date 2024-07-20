@@ -443,6 +443,7 @@ module.exports.storageUsage = nativeBinding.storageUsage
 module.exports.stringToAcct = nativeBinding.stringToAcct
 module.exports.toDbReaction = nativeBinding.toDbReaction
 module.exports.toPuny = nativeBinding.toPuny
+module.exports.translate = nativeBinding.translate
 module.exports.unwatchNote = nativeBinding.unwatchNote
 module.exports.updateAntennaCache = nativeBinding.updateAntennaCache
 module.exports.updateAntennasOnNewNote = nativeBinding.updateAntennasOnNewNote

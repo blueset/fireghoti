@@ -49,10 +49,11 @@ tracing-subscriber = { version = "0.3.18", default-features = false }
 url = { version = "2.5.2", default-features = false }
 urlencoding = { version = "2.1.3", default-features = false }
 web-push = { git = "https://github.com/pimeys/rust-web-push.git", rev = "40febe4085e3cef9cdfd539c315e3e945aba0656", default-features = false }
+zhconv = "0.3.1"
 
 # subdependencies
 ## explicitly list OpenSSL to use the vendored version
-openssl = "0.10.64"
+openssl = "0.10.65"
 
 ## some subdependencies require higher Rust version than 1.74 (our MSRV)
 ## cargo update && cargo update ravif --precise 0.11.5 && cargo update bitstream-io --precise 2.3.0
