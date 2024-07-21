@@ -6,6 +6,14 @@ You can skip intermediate versions when upgrading from an old version, but pleas
 
 Please take a look at #10947.
 
+## Unreleased
+
+### For LibreTranslate self-hosters
+
+Previously, neither the DeepL API nor the LibreTranslate API provided traditional Chinese translations, so we used to provide traditional Chinese post translations using manual conversion from simplified Chinese translations.
+
+However, now that LibreTranslate API supports traditional Chinese translations, we have removed the manual conversion process for LibreTranslate. So, if you are hosting your LibreTranslate instance, please ensure your LibreTranslate version is new enough to support traditional Chinese.
+
 ## v20240714
 
 ### For systemd/pm2 users
