@@ -2240,12 +2240,14 @@ searchWordsDescription: "Per cercar publicacions, escriu el terme a buscar. Sepa
   les paraules amb espais per fer condicions AND o escriules dins de cometes per fer
   una cerca OR.\nPer exemple, 'dia nit' trobarà publicacions que continguin tan 'dia'
   com 'nit', i 'dia OR nit' trobara publicacions que continguin tant 'dia' com 'nit'
-  (o ambdues).\nPots combinar condicions AND/OR per exemple '(dia OR nit) endormiscar'.\n
-  Si vols cercar per una seqüencia de paraules (per exemple una frase) has d'escriure-les
-  entre cometes dobles, per no fer una cerca amb condicionant AND: \"Avui he aprés\"\
-  \n \nSi vols anar a una pàgina d'usuari o publicació en concret, escriu la adreça
-  URL o la ID en aquest camp i fes clic al botó 'Ves a'. Fent clic a 'Cerca' trobarà
-  publicacions que, literalment , continguin la ID/adreça URL."
+  (o ambdues).\nPots filtrar certes paraules en els resultats de la cerca, com 'endormiscat-matí-esmorzar'.
+  Encara més, pots combinar aquestes condicions AND/OR/exclude d'aquesta manera '(mati
+  OR nit) endormiscat-esmorzar'.\n Si vols cercar per una seqüencia de paraules (per
+  exemple una frase) has d'escriure-les entre cometes dobles, per no fer una cerca
+  amb condicionant AND: \"Avui he aprés\"\n \nSi vols anar a una pàgina d'usuari o
+  publicació en concret, escriu la adreça URL o la ID en aquest camp i fes clic al
+  botó 'Ves a'. Fent clic a 'Cerca' trobarà publicacions que, literalment , continguin
+  la ID/adreça URL."
 searchPostsWithFiles: Només publicacions amb fitxers
 searchCwAndAlt: Inclou avisos de contingut i arxius amb descripcions
 searchUsers: Publicat per (opcional)
