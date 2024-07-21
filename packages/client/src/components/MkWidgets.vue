@@ -9,7 +9,7 @@
 				>
 					<template #label>{{ i18n.ts.selectWidget }}</template>
 					<option
-						v-for="widget in widgetDefs"
+						v-for="widget in sortedWidgets"
 						:key="widget"
 						:value="widget"
 					>
@@ -100,6 +100,12 @@ const emit = defineEmits<{
 	(ev: "updateWidget", widget: Partial<Widget>): void;
 	(ev: "exit"): void;
 }>();
+
+const sortedWidgets = computed(() =>
+	widgetDefs.sort((a, b) =>
+		i18n.t(`_widgets.${a}`).localeCompare(i18n.t(`_widgets.${b}`)),
+	),
+);
 
 const widgetRefs = {};
 const configWidget = (id: string) => {
