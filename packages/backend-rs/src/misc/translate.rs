@@ -32,6 +32,11 @@ pub struct Translation {
     pub text: String,
 }
 
+#[inline]
+fn is_zh_hant_tw(lang: &str) -> bool {
+    ["zh-tw", "zh-hant", "zh-hant-tw"].contains(&lang.to_ascii_lowercase().as_str())
+}
+
 #[macros::export]
 pub async fn translate(
     text: &str,
@@ -40,7 +45,7 @@ pub async fn translate(
 ) -> Result<Translation, Error> {
     let config = local_server_info().await?;
 
-    let mut translation = if let Some(api_key) = config.deepl_auth_key {
+    let translation = if let Some(api_key) = config.deepl_auth_key {
         deepl_translate::translate(
             text,
             source_lang,
@@ -86,12 +91,6 @@ pub async fn translate(
         return Err(Error::NoTranslator);
     };
 
-    // DeepL translate and LibreTranslate don't provide zh-Hant-TW translations,
-    // so we convert zh-Hans-CN translations into zh-Hant-TW using zhconv.
-    if ["zh-tw", "zh-hant", "zh-hant-tw"].contains(&target_lang.to_ascii_lowercase().as_str()) {
-        translation.text = zhconv::zhconv(&translation.text, zhconv::Variant::ZhTW)
-    }
-
     Ok(translation)
 }
 
@@ -126,6 +125,8 @@ mod deepl_translate {
         } else {
             "https://api-free.deepl.com/v2/translate"
         };
+
+        let to_zh_hant_tw = super::is_zh_hant_tw(target_lang);
 
         let mut target_lang = target_lang.split('-').collect::<Vec<&str>>()[0];
 
@@ -163,13 +164,21 @@ mod deepl_translate {
             .ok_or(super::Error::NoResponse)?
             .to_owned();
 
-        Ok(super::Translation {
+        let mut translation = super::Translation {
             source_lang: source_lang
                 .map(|s| s.to_owned())
                 .or(result.detected_source_language)
                 .unwrap_or_else(|| "unknown".to_owned()),
             text: result.text,
-        })
+        };
+
+        // DeepL translate don't provide zh-Hant-TW translations at this moment,
+        // so we convert zh-Hans-CN translations into zh-Hant-TW using zhconv.
+        if to_zh_hant_tw {
+            translation.text = zhconv::zhconv(&translation.text, zhconv::Variant::ZhTW);
+        }
+
+        Ok(translation)
     }
 }
 
@@ -199,7 +208,12 @@ mod libre_translate {
         api_key: Option<&str>,
     ) -> Result<super::Translation, super::Error> {
         let client = http_client::client()?;
-        let target_lang = target_lang.split('-').collect::<Vec<&str>>()[0];
+
+        let target_lang = if super::is_zh_hant_tw(target_lang) {
+            "zt"
+        } else {
+            target_lang.split('-').collect::<Vec<&str>>()[0]
+        };
 
         let body = if let Some(source_lang) = source_lang {
             let source_lang = source_lang.split('-').collect::<Vec<&str>>()[0];
