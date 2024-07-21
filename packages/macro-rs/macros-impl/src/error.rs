@@ -9,10 +9,9 @@ pub fn error_variants(_attr: TokenStream, item: TokenStream) -> TokenStream {
 }
 
 fn error_variants_impl(item: TokenStream) -> syn::Result<TokenStream> {
-    let items: syn::ItemEnum = syn::parse2(item.clone())?;
-    let mut new_item = items.clone();
+    let mut item: syn::ItemEnum = syn::parse2(item)?;
 
-    new_item.variants = items
+    item.variants = item
         .variants
         .into_iter()
         .map(|mut variant| {
@@ -29,6 +28,7 @@ fn error_variants_impl(item: TokenStream) -> syn::Result<TokenStream> {
                 Some(lit.value())
             });
 
+            // add #[doc] attribute
             if let Some(msg) = msg {
                 variant.attrs.push(syn::parse_quote! { #[doc = #msg] });
             }
@@ -37,5 +37,5 @@ fn error_variants_impl(item: TokenStream) -> syn::Result<TokenStream> {
         })
         .collect();
 
-    Ok(quote! { #new_item })
+    Ok(quote! { #item })
 }
