@@ -375,6 +375,7 @@ module.exports.decodeReaction = nativeBinding.decodeReaction
 module.exports.DriveFileEvent = nativeBinding.DriveFileEvent
 module.exports.DriveFileUsageHint = nativeBinding.DriveFileUsageHint
 module.exports.DriveFolderEvent = nativeBinding.DriveFolderEvent
+module.exports.extractHashtags = nativeBinding.extractHashtags
 module.exports.extractHost = nativeBinding.extractHost
 module.exports.fetchMeta = nativeBinding.fetchMeta
 module.exports.fetchNodeinfo = nativeBinding.fetchNodeinfo

@@ -8,13 +8,14 @@ import { resolveImage } from "./image.js";
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
 import { htmlToMfm } from "../misc/html-to-mfm.js";
 import { extractApHashtags } from "./tag.js";
-import { unique, toArray, toSingle } from "@/prelude/array.js";
+import { unique, toArray, toSingle, concat } from "@/prelude/array.js";
 import { extractPollFromQuestion } from "./question.js";
 import vote from "@/services/note/polls/vote.js";
 import { apLogger } from "../logger.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import {
 	type ImageSize,
+	extractHashtags,
 	extractHost,
 	genId,
 	getImageSizeFromUrl,
@@ -48,7 +49,6 @@ import { extractApMentions } from "./mention.js";
 import DbResolver from "../db-resolver.js";
 import { StatusError } from "@/misc/fetch.js";
 import { publishNoteStream } from "@/services/stream.js";
-import { extractHashtags } from "@/misc/extract-hashtags.js";
 import { UserProfiles } from "@/models/index.js";
 import { In } from "typeorm";
 import { config } from "@/config.js";
@@ -663,18 +663,35 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 	const apMentions = await extractApMentions(post.tag);
 	const apHashtags = await extractApHashtags(post.tag);
 
+	let hashTags: string[];
+
 	const poll = await extractPollFromQuestion(post, resolver).catch(
 		() => undefined,
 	);
 
-	const choices = poll?.choices.flatMap((choice) => mfm.parse(choice)) ?? [];
+	if (apHashtags) {
+		hashTags = apHashtags;
+	} else {
+		hashTags = unique(
+			(text ? extractHashtags(text) : [])
+				.concat(cw ? extractHashtags(cw) : [])
+				.concat(
+					poll?.choices
+						? concat(
+								poll.choices.map((choice: string) => extractHashtags(choice)),
+							)
+						: [],
+				),
+		);
+	}
+
+	const choices =
+		poll?.choices.flatMap((choice: string) => mfm.parse(choice)) ?? [];
 
 	const tokens = mfm
 		.parse(text || "")
 		.concat(mfm.parse(cw || ""))
 		.concat(choices);
-
-	const hashTags: string[] = apHashtags || extractHashtags(tokens);
 
 	const mentionUsers =
 		apMentions || (await extractMentionedUsers(actor, tokens));

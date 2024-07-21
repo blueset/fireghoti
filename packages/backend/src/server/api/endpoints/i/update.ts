@@ -3,7 +3,7 @@ import { publishMainStream, publishUserEvent } from "@/services/stream.js";
 import acceptAllFollowRequests from "@/services/following/requests/accept-all.js";
 import { publishToFollowers } from "@/services/i/update.js";
 import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
-import { extractHashtags } from "@/misc/extract-hashtags.js";
+import { extractHashtags } from "backend-rs";
 import { updateUsertags } from "@/services/update-hashtag.js";
 import { Users, DriveFiles, UserProfiles, Pages } from "@/models/index.js";
 import type { User } from "@/models/entities/user.js";
@@ -309,7 +309,7 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 	if (newDescription != null) {
 		const tokens = mfm.parse(newDescription);
 		emojis = emojis.concat(extractCustomEmojisFromMfm(tokens!));
-		tags = extractHashtags(tokens!)
+		tags = extractHashtags(newDescription)
 			.map((tag) => normalizeForSearch(tag))
 			.splice(0, 32);
 	}

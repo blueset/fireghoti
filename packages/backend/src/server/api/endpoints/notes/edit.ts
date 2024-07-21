@@ -22,8 +22,8 @@ import { genId, HOUR } from "backend-rs";
 import { getNote } from "@/server/api/common/getters.js";
 import { Poll } from "@/models/entities/poll.js";
 import * as mfm from "mfm-js";
-import { concat } from "@/prelude/array.js";
-import { extractHashtags } from "@/misc/extract-hashtags.js";
+import { concat, unique } from "@/prelude/array.js";
+import { extractHashtags } from "backend-rs";
 import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
 import { extractMentionedUsers } from "@/services/note/create.js";
 import { publishNoteStream } from "@/services/stream.js";
@@ -399,7 +399,15 @@ export default define(meta, paramDef, async (ps, user) => {
 
 	const combinedTokens = tokens.concat(cwTokens).concat(choiceTokens);
 
-	tags = extractHashtags(combinedTokens);
+	tags = unique(
+		(ps.text ? extractHashtags(ps.text) : [])
+			.concat(ps.cw ? extractHashtags(ps.cw) : [])
+			.concat(
+				ps.poll?.choices
+					? concat(ps.poll.choices.map((choice) => extractHashtags(choice)))
+					: [],
+			),
+	);
 
 	emojis = extractCustomEmojisFromMfm(combinedTokens);
 

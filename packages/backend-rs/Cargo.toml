@@ -30,6 +30,7 @@ emojis = { workspace = true }
 idna = { workspace = true, features = ["std", "compiled_data"] }
 image = { workspace = true, features = ["avif", "bmp", "gif", "ico", "jpeg", "png", "tiff", "webp"] }
 isahc = { workspace = true, features = ["http2", "text-decoding", "json"] }
+mfm = { workspace = true }
 nom-exif = { workspace = true }
 once_cell = { workspace = true }
 openssl = { workspace = true, features = ["vendored"] }

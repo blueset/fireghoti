@@ -8,7 +8,7 @@ import { deliverToRelays } from "@/services/relay.js";
 import type { UserProfile } from "@/models/entities/user-profile.js";
 import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
 import mfm from "mfm-js";
-import { extractHashtags } from "@/misc/extract-hashtags.js";
+import { extractHashtags } from "backend-rs";
 import { normalizeForSearch } from "@/misc/normalize-for-search.js";
 import { updateUsertags } from "@/services/update-hashtag.js";
 import { publishMainStream, publishUserEvent } from "@/services/stream.js";
@@ -56,7 +56,7 @@ export async function updateUserProfileData(
 	if (newDescription != null) {
 		const tokens = mfm.parse(newDescription);
 		emojis = emojis.concat(extractCustomEmojisFromMfm(tokens!));
-		tags = extractHashtags(tokens!)
+		tags = extractHashtags(newDescription)
 			.map((tag) => normalizeForSearch(tag))
 			.splice(0, 32);
 	}

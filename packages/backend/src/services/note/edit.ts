@@ -7,7 +7,6 @@ import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
-import { extractHashtags } from "@/misc/extract-hashtags.js";
 import type { IMentionedRemoteUsers } from "@/models/entities/note.js";
 import type { Note } from "@/models/entities/note.js";
 import {
@@ -21,12 +20,13 @@ import {
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import { In } from "typeorm";
 import type { ILocalUser, IRemoteUser } from "@/models/entities/user.js";
-import { genId } from "backend-rs";
+import { extractHashtags, genId } from "backend-rs";
 import type { IPoll } from "@/models/entities/poll.js";
 import { deliverToRelays } from "../relay.js";
 import renderUpdate from "@/remote/activitypub/renderer/update.js";
 import { extractMentionedUsers } from "@/services/note/create.js";
 import { normalizeForSearch } from "@/misc/normalize-for-search.js";
+import { unique } from "@/prelude/array.js";
 
 type Option = {
 	text?: string | null;
@@ -51,7 +51,13 @@ export default async function (
 
 	const tokens = mfm.parse(data.text || "").concat(mfm.parse(data.cw || ""));
 
-	const tags: string[] = extractHashtags(tokens)
+	const extractedTags = unique(
+		(data.text ? extractHashtags(data.text) : []).concat(
+			data.cw ? extractHashtags(data.cw) : [],
+		),
+	);
+
+	const tags: string[] = extractedTags
 		.filter((tag) => Array.from(tag || "").length <= 128)
 		.splice(0, 32)
 		.map(normalizeForSearch);
