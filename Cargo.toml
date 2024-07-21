@@ -54,7 +54,7 @@ zhconv = "0.3.1"
 
 # subdependencies
 ## explicitly list OpenSSL to use the vendored version
-openssl = "0.10.65"
+openssl = "0.10.66"
 
 ## some subdependencies require higher Rust version than 1.74 (our MSRV)
 ## cargo update && cargo update ravif --precise 0.11.5 && cargo update bitstream-io --precise 2.3.0
