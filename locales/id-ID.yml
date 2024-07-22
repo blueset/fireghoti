@@ -2222,11 +2222,12 @@ searchWordsDescription: "Masukkan kata kunci di sini untuk mencari postingan. Pi
   kata dengan spasi untuk pencarian AND (dan), atau 'OR' ('atau', tanpa tanda kutip)
   di antara kata-kata untuk pencarian OR.\nMisalnya, 'pagi malam' akan menemukan postingan
   yang mengandung 'pagi' dan 'malam', dan 'pagi OR malam' akan menemukan postingan
-  yang mengandung 'pagi' atau 'malam' (atau keduanya).\nAnda juga dapat menggabungkan
-  kondisi AND/OR seperti '(pagi OR malam) mengantuk'.\n\n Jika kamu ingin membuka
-  halaman pengguna atau halaman postingan tertentu, masukkan ID atau URL pada kolom
-  ini dan klik tombol 'Cari'. Mengeklik 'Cari' akan mencari postingan yang secara
-  harfiah mengandung ID/URL."
+  yang mengandung 'pagi' atau 'malam' (atau keduanya).\nAnda juga dapat memfilter
+  kata tertentu dari hasil pencarian, seperti 'mengantuk -pagi -sarapan'. Selain itu,
+  Anda dapat menggabungkan AND/OR/tidak sertakan ini seperti '(pagi OR malam) mengantuk'
+  -sarapan.\n\n Jika kamu ingin membuka halaman pengguna atau halaman postingan tertentu,
+  masukkan ID atau URL pada kolom ini dan klik tombol 'Cari'. Mengeklik 'Cari' akan
+  mencari postingan yang secara harfiah mengandung ID/URL."
 pullToRefreshThreshold: Jarak penarikan untuk memuat ulang
 releaseToReload: Lepaskan untuk memuat ulang
 reloading: Memuat ulang
