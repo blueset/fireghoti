@@ -3,7 +3,7 @@ import { Notes } from "@/models/index.js";
 import define from "@/server/api/define.js";
 import { getNote } from "@/server/api/common/getters.js";
 import { ApiError } from "@/server/api/error.js";
-import { SECOND, HOUR } from "backend-rs";
+import { SECOND, HOUR } from "@/const.js";
 import { publishNoteStream } from "@/services/stream.js";
 
 export const meta = {

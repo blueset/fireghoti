@@ -270,8 +270,6 @@ export declare function cpuInfo(): Cpu
 
 export declare function cpuUsage(): number
 
-export const DAY: number
-
 export interface DbConfig {
   host: string
   port: number
@@ -380,17 +378,6 @@ export declare function fetchMeta(): Promise<Meta>
 /** Fetches and returns the NodeInfo (version 2.0) of a remote server. */
 export declare function fetchNodeinfo(host: string): Promise<Nodeinfo>
 
-/**
- * List of file types allowed to be viewed directly in the browser
- *
- * Anything not included here will be responded as application/octet-stream
- * SVG is not allowed because it generates XSS (TODO: fix this and later allow it to be viewed directly)
- * * <https://github.com/sindresorhus/file-type/blob/main/supported.js>
- * * <https://github.com/sindresorhus/file-type/blob/main/core.js>
- * * <https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Containers>
- */
-export const FILE_TYPE_BROWSERSAFE: string[]
-
 export interface Following {
   id: string
   createdAt: DateTimeWithTimeZone
@@ -491,8 +478,6 @@ export interface Hashtag {
   attachedRemoteUserIds: Array<string>
   attachedRemoteUsersCount: number
 }
-
-export const HOUR: number
 
 export interface IdConfig {
   length?: number
@@ -753,8 +738,6 @@ export interface Migrations {
   timestamp: number
   name: string
 }
-
-export const MINUTE: number
 
 export interface ModerationLog {
   id: string
@@ -1225,8 +1208,6 @@ export interface ReplyMuting {
 /** Returns `true` if `src` does not contain suspicious characters like `%`. */
 export declare function safeForSql(src: string): boolean
 
-export const SECOND: number
-
 export declare function sendPushNotification(receiverUserId: string, kind: PushNotificationKind, content: any): Promise<void>
 
 export interface ServerConfig {
@@ -1421,10 +1402,6 @@ export interface User {
   alsoKnownAs: Array<string> | null
   readCatLanguage: boolean
 }
-
-export const USER_ACTIVE_THRESHOLD: number
-
-export const USER_ONLINE_THRESHOLD: number
 
 export type UserEmojiModPerm =  'add'|
 'full'|

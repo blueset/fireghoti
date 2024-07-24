@@ -1,6 +1,7 @@
 import type { User } from "@/models/entities/user.js";
 import { resolveUser } from "@/remote/resolve-user.js";
-import { stringToAcct, DAY } from "backend-rs";
+import { stringToAcct } from "backend-rs";
+import { DAY } from "@/const.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import define from "@/server/api/define.js";

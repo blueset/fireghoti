@@ -7,11 +7,11 @@ import sharp from "sharp";
 import { IsNull } from "typeorm";
 import { publishMainStream } from "@/services/stream.js";
 import {
-	FILE_TYPE_BROWSERSAFE,
 	fetchMeta,
 	genId,
 	publishToDriveFileStream,
 } from "backend-rs";
+import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
 import { contentDisposition } from "@/misc/content-disposition.js";
 import { getFileInfo } from "@/misc/get-file-info.js";
 import {

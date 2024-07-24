@@ -1,6 +1,7 @@
 import define from "@/server/api/define.js";
 import { DriveFiles, GalleryPosts } from "@/models/index.js";
-import { HOUR, genIdAt } from "backend-rs";
+import { genIdAt } from "backend-rs";
+import { HOUR } from "@/const.js";
 import { GalleryPost } from "@/models/entities/gallery-post.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 

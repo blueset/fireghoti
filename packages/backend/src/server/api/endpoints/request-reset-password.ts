@@ -3,7 +3,8 @@ import { IsNull } from "typeorm";
 import { config } from "@/config.js";
 import { Users, UserProfiles, PasswordResetRequests } from "@/models/index.js";
 import { sendEmail } from "@/services/send-email.js";
-import { HOUR, genIdAt } from "backend-rs";
+import { genIdAt } from "backend-rs";
+import { HOUR } from "@/const.js";
 import define from "@/server/api/define.js";
 
 export const meta = {

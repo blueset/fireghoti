@@ -3,7 +3,7 @@ import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { getUser } from "@/server/api/common/getters.js";
 import { Blockings, Users } from "@/models/index.js";
-import { HOUR } from "backend-rs";
+import { HOUR } from "@/const.js";
 
 export const meta = {
 	tags: ["account"],

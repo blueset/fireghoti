@@ -1,6 +1,6 @@
 import define from "@/server/api/define.js";
 import { createExportUserListsJob } from "@/queue/index.js";
-import { MINUTE } from "backend-rs";
+import { MINUTE } from "@/const.js";
 
 export const meta = {
 	secure: true,
