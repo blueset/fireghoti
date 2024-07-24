@@ -5,6 +5,13 @@ Critical security updates are indicated by the :warning: icon.
 - Server administrators must check [notice-for-admins.md](https://firefish.dev/firefish/firefish/-/blob/main/docs/notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](https://firefish.dev/firefish/firefish/-/blob/main/docs/api-change.md) as well.
 
+## Unreleased
+
+- Add followers list export feature
+- Add description about excluding conditions (e.g., 'firefish -info.firefish.dev', '(sleepy OR eepy) -morning') in post search
+	- Technically this is not a new feature
+- Fix bugs
+
 ## [v20240714](https://firefish.dev/firefish/firefish/-/merge_requests/11146/commits)
 
 - Mastodon API implementation was ported from Iceshrimp, with added Firefish extensions including push notifications, post languages, schedule post support, and more. (#10880)
