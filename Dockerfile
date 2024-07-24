@@ -1,56 +1,28 @@
-## Install dev and compilation dependencies, build files
-FROM docker.io/node:20-alpine as build
+# Install dev and compilation dependencies, build files
+FROM docker.io/node:20-alpine AS build
 WORKDIR /firefish
 
-# Copy only backend-rs pnpm-related files first, to cache efficiently
-COPY package.json pnpm-workspace.yaml ./
-COPY packages/backend-rs/package.json packages/backend-rs/package.json
-
-# Install compilation dependencies
+# Install build tools and work around the linker name issue
 RUN apk update && apk add --no-cache build-base linux-headers curl ca-certificates python3 perl
+RUN ln -s $(which gcc) /usr/bin/aarch64-linux-musl-gcc
+
+# Install Rust toolchain
 RUN curl --proto '=https' --tlsv1.2 --silent --show-error --fail https://sh.rustup.rs | sh -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 
-# Copy only backend-rs dependency-related files first, to cache efficiently
-COPY packages/macro-rs packages/macro-rs/
-COPY packages/backend-rs/src/lib.rs packages/backend-rs/src/
-COPY packages/backend-rs/Cargo.toml packages/backend-rs/Cargo.toml
-COPY Cargo.toml Cargo.lock ./
+# Configure pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Configure pnpm, and install backend-rs dependencies
-RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm --filter backend-rs install
-RUN cargo fetch --locked --manifest-path Cargo.toml
-
-# Copy in the rest of the rust files
-COPY packages/backend-rs packages/backend-rs/
-
-# Compile backend-rs
-RUN ln -s $(which gcc) /usr/bin/aarch64-linux-musl-gcc
-RUN NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=3072' pnpm run --filter backend-rs build
-
-# Copy/Overwrite index.js to mitigate the bug in napi-rs codegen
-COPY packages/backend-rs/index.js packages/backend-rs/built/index.js
-
-# Copy only the dependency-related files first, to cache efficiently
-COPY packages/backend/package.json packages/backend/package.json
-COPY packages/client/package.json packages/client/package.json
-COPY packages/sw/package.json packages/sw/package.json
-COPY packages/firefish-js/package.json packages/firefish-js/package.json
-COPY pnpm-lock.yaml ./
-
-# Install dev mode dependencies for compilation
-RUN pnpm install --frozen-lockfile
-
-# Copy in the rest of the files to build
+# Build
 COPY . ./
-
-# Build other workspaces
-RUN NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=3072' pnpm run --recursive --filter '!backend-rs' build && pnpm run build:assets
+RUN pnpm install --frozen-lockfile
+RUN cargo fetch --locked --manifest-path Cargo.toml
+RUN NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=3072' pnpm run build
 
 # Trim down the dependencies to only those for production
 RUN find . -path '*/node_modules/*' -delete && pnpm install --prod --frozen-lockfile
 
-## Runtime container
+# Runtime container
 FROM docker.io/node:20-alpine
 WORKDIR /firefish
 
@@ -66,7 +38,7 @@ COPY --from=build /firefish/packages/backend/node_modules /firefish/packages/bac
 # COPY --from=build /firefish/packages/client/node_modules /firefish/packages/client/node_modules
 COPY --from=build /firefish/packages/firefish-js/node_modules /firefish/packages/firefish-js/node_modules
 
-# Copy the finished compiled files
+# Copy the build artifacts
 COPY --from=build /firefish/built /firefish/built
 COPY --from=build /firefish/packages/backend/built /firefish/packages/backend/built
 COPY --from=build /firefish/packages/backend/assets/instance.css /firefish/packages/backend/assets/instance.css
