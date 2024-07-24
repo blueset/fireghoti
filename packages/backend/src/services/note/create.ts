@@ -8,11 +8,12 @@ import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import { resolveUser } from "@/remote/resolve-user.js";
 import { config } from "@/config.js";
 import { updateHashtags } from "@/services/update-hashtag.js";
-import { concat, unique } from "@/prelude/array.js";
+import { concat } from "@/prelude/array.js";
 import { insertNoteUnread } from "@/services/note/unread.js";
 import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
 import { extractMentions } from "@/misc/extract-mentions.js";
 import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
+import { extractHashtags } from "@/misc/extract-hashtags.js";
 import type { IMentionedRemoteUsers } from "@/models/entities/note.js";
 import { Note } from "@/models/entities/note.js";
 import {
@@ -38,7 +39,6 @@ import { Poll } from "@/models/entities/poll.js";
 import { createNotification } from "@/services/create-notification.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
 import {
-	extractHashtags,
 	updateAntennasOnNewNote,
 	checkWordMute,
 	genId,
@@ -291,21 +291,7 @@ export default async (
 
 			const combinedTokens = tokens.concat(cwTokens).concat(choiceTokens);
 
-			tags =
-				data.apHashtags ||
-				unique(
-					(data.text ? extractHashtags(data.text) : [])
-						.concat(data.cw ? extractHashtags(data.cw) : [])
-						.concat(
-							data.poll?.choices
-								? concat(
-										data.poll.choices.map((choice: string) =>
-											extractHashtags(choice),
-										),
-									)
-								: [],
-						),
-				);
+			tags = data.apHashtags || extractHashtags(combinedTokens);
 
 			emojis = data.apEmojis || extractCustomEmojisFromMfm(combinedTokens);
 

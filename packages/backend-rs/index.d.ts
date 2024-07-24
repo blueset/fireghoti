@@ -369,8 +369,6 @@ export interface Emoji {
   height: number | null
 }
 
-export declare function extractHashtags(text: string): Array<string>
-
 export declare function extractHost(uri: string): string
 
 export declare function fetchMeta(): Promise<Meta>

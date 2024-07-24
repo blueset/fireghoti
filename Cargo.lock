@@ -211,7 +211,6 @@ dependencies = [
  "image",
  "isahc",
  "macros",
- "mfm",
  "napi",
  "napi-build",
  "napi-derive",
@@ -1808,18 +1807,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "78ca9ab1a0babb1e7d5695e3530886289c18cf2f87ec19a575a0abdce112e3a3"
 
 [[package]]
-name = "mfm"
-version = "0.1.0"
-source = "git+https://firefish.dev/firefish/mfm.git?rev=1dc2cc408176e6559db08cb568e63236597341b4#1dc2cc408176e6559db08cb568e63236597341b4"
-dependencies = [
- "emojis",
- "nom",
- "nom-regex",
- "once_cell",
- "unicode-segmentation",
-]
-
-[[package]]
 name = "mime"
 version = "0.3.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1940,16 +1927,6 @@ dependencies = [
  "nom",
  "regex",
  "thiserror",
-]
-
-[[package]]
-name = "nom-regex"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "72e5c7731c4c1370b61604ed52a2475e861aac9e08dec9f23903d4ddfdc91c18"
-dependencies = [
- "nom",
- "regex",
 ]
 
 [[package]]

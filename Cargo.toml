@@ -26,7 +26,6 @@ emojis = { version = "0.6.2", default-features = false }
 idna = { version = "1.0.2", default-features = false }
 image = { version = "0.25.2", default-features = false }
 isahc = { version = "1.7.2", default-features = false }
-mfm = { git = "https://firefish.dev/firefish/mfm.git", rev = "1dc2cc408176e6559db08cb568e63236597341b4" }
 nom-exif = { version = "1.2.6", default-features = false }
 once_cell = { version = "1.19.0", default-features = false }
 pretty_assertions = { version = "1.4.0", default-features = false }

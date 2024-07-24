@@ -44,5 +44,9 @@ export default define(meta, paramDef, async (ps, user) => {
 		return 204;
 	}
 
-	return translate(note.text, note.lang as string | null, ps.targetLang);
+	return translate(
+		note.text,
+		note.lang as string | null,
+		ps.targetLang,
+	);
 });
