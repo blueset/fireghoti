@@ -2,7 +2,7 @@
 
 Breaking changes are indicated by the :warning: icon.
 
-## Unreleased
+## v20240725
 
 - Added `i/export-followers` endpoint.
 

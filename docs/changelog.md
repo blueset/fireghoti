@@ -5,7 +5,7 @@ Critical security updates are indicated by the :warning: icon.
 - Server administrators must check [notice-for-admins.md](https://firefish.dev/firefish/firefish/-/blob/main/docs/notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](https://firefish.dev/firefish/firefish/-/blob/main/docs/api-change.md) as well.
 
-## Unreleased
+## [v20240725](https://firefish.dev/firefish/firefish/-/merge_requests/11196/commits)
 
 - Add followers list export feature
 - Add description about excluding conditions (e.g., 'firefish -info.firefish.dev', '(sleepy OR eepy) -morning') in post search
