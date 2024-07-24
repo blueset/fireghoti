@@ -18,7 +18,6 @@ export const DB_MAX_NOTE_TEXT_LENGTH = 100000;
  */
 export const DB_MAX_IMAGE_COMMENT_LENGTH = 8192;
 
-
 export const MAX_NOTE_TEXT_LENGTH = Math.min(
 	config.maxNoteLength ?? 3000,
 	DB_MAX_NOTE_TEXT_LENGTH,

@@ -424,6 +424,7 @@ module.exports.publishToDriveFolderStream = nativeBinding.publishToDriveFolderSt
 module.exports.publishToGroupChatStream = nativeBinding.publishToGroupChatStream
 module.exports.publishToModerationStream = nativeBinding.publishToModerationStream
 module.exports.publishToNotesStream = nativeBinding.publishToNotesStream
+module.exports.publishToNoteUpdatesStream = nativeBinding.publishToNoteUpdatesStream
 module.exports.PushNotificationKind = nativeBinding.PushNotificationKind
 module.exports.PushSubscriptionType = nativeBinding.PushSubscriptionType
 module.exports.RelayStatus = nativeBinding.RelayStatus

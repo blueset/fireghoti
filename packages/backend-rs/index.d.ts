@@ -1117,6 +1117,8 @@ export declare function publishToModerationStream(moderatorId: string, report: A
 
 export declare function publishToNotesStream(note: Note): Promise<void>
 
+export declare function publishToNoteUpdatesStream(note: Note): Promise<void>
+
 export interface PugArgs {
   img: string | null
   title: string

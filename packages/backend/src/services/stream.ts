@@ -21,7 +21,7 @@ import type {
 	NoteStreamTypes,
 	UserListStreamTypes,
 	UserStreamTypes,
-	NoteUpdatesStreamTypes,
+	// NoteUpdatesStreamTypes,
 } from "@/server/api/stream/types.js";
 
 class Publisher {
@@ -113,12 +113,13 @@ class Publisher {
 		});
 	};
 
-	public publishNoteUpdatesStream = <K extends keyof NoteUpdatesStreamTypes>(
-		type: K,
-		value: NoteUpdatesStreamTypes[K],
-	): void => {
-		this.publish("noteUpdatesStream", type, value);
-	};
+	/* ported to backend-rs */
+	// public publishNoteUpdatesStream = <K extends keyof NoteUpdatesStreamTypes>(
+	// 	type: K,
+	// 	value: NoteUpdatesStreamTypes[K],
+	// ): void => {
+	// 	this.publish("noteUpdatesStream", type, value);
+	// };
 
 	/* ported to backend-rs */
 	// public publishChannelStream = <K extends keyof ChannelStreamTypes>(
@@ -232,7 +233,7 @@ export const publishMainStream = publisher.publishMainStream;
 // export const publishDriveStream = publisher.publishDriveStream;
 export const publishNoteStream = publisher.publishNoteStream;
 // export const publishNotesStream = publisher.publishNotesStream;
-export const publishNoteUpdatesStream = publisher.publishNoteUpdatesStream;
+// export const publishNoteUpdatesStream = publisher.publishNoteUpdatesStream;
 // export const publishChannelStream = publisher.publishChannelStream;
 export const publishUserListStream = publisher.publishUserListStream;
 // export const publishAntennaStream = publisher.publishAntennaStream;
