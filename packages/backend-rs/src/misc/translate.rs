@@ -168,6 +168,13 @@ mod deepl_translate {
             source_lang: source_lang
                 .map(|s| s.to_owned())
                 .or(result.detected_source_language)
+                .and_then(|lang| {
+                    if lang.is_ascii() {
+                        Some(lang.to_ascii_lowercase())
+                    } else {
+                        None
+                    }
+                })
                 .unwrap_or_else(|| "unknown".to_owned()),
             text: result.text,
         };
@@ -250,7 +257,15 @@ mod libre_translate {
         Ok(super::Translation {
             source_lang: source_lang
                 .map(|s| s.to_owned())
-                .unwrap_or(result.detected_language.language),
+                .or(Some(result.detected_language.language))
+                .and_then(|lang| {
+                    if lang.is_ascii() {
+                        Some(lang.to_ascii_lowercase())
+                    } else {
+                        None
+                    }
+                })
+                .unwrap_or_else(|| "unknown".to_owned()),
             text: result.translated_text,
         })
     }
