@@ -7,7 +7,6 @@ import type { Note } from "@/models/entities/note.js";
 import type { Antenna } from "@/models/entities/antenna.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { DriveFolder } from "@/models/entities/drive-folder.js";
-import type { UserList } from "@/models/entities/user-list.js";
 import type { MessagingMessage } from "@/models/entities/messaging-message.js";
 import type { UserGroup } from "@/models/entities/user-group.js";
 import type { AbuseUserReport } from "@/models/entities/abuse-user-report.js";
@@ -165,11 +164,6 @@ export interface ChannelStreamTypes {
 	typing: User["id"];
 }
 
-export interface UserListStreamTypes {
-	userAdded: Packed<"User">;
-	userRemoved: Packed<"User">;
-}
-
 export interface AntennaStreamTypes {
 	note: Note;
 }
@@ -241,10 +235,6 @@ export type StreamMessages = {
 	channel: {
 		name: `channelStream:${Channel["id"]}`;
 		payload: EventUnionFromDictionary<ChannelStreamTypes>;
-	};
-	userList: {
-		name: `userListStream:${UserList["id"]}`;
-		payload: EventUnionFromDictionary<UserListStreamTypes>;
 	};
 	antenna: {
 		name: `antennaStream:${Antenna["id"]}`;

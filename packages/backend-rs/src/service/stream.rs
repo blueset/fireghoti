@@ -32,9 +32,6 @@ pub enum Stream {
     },
     Notes,
     NoteEdit,
-    UserList {
-        list_id: String,
-    },
     Main {
         user_id: String,
     },
@@ -90,7 +87,6 @@ pub async fn publish_to_stream(
         Stream::Note { note_id } => format!("noteStream:{note_id}"),
         Stream::NoteEdit => format!("noteUpdatesStream"),
         Stream::Notes => "notesStream".to_owned(),
-        Stream::UserList { list_id } => format!("userListStream:{list_id}"),
         Stream::Main { user_id } => format!("mainStream:{user_id}"),
         Stream::Drive { user_id } => format!("driveStream:{user_id}"),
         Stream::Antenna { antenna_id } => format!("antennaStream:{antenna_id}"),

@@ -19,7 +19,6 @@ import type {
 	// MessagingIndexStreamTypes,
 	// MessagingStreamTypes,
 	NoteStreamTypes,
-	UserListStreamTypes,
 	UserStreamTypes,
 	// NoteUpdatesStreamTypes,
 } from "@/server/api/stream/types.js";
@@ -134,18 +133,6 @@ class Publisher {
 	// 	);
 	// };
 
-	public publishUserListStream = <K extends keyof UserListStreamTypes>(
-		listId: UserList["id"],
-		type: K,
-		value?: UserListStreamTypes[K],
-	): void => {
-		this.publish(
-			`userListStream:${listId}`,
-			type,
-			typeof value === "undefined" ? null : value,
-		);
-	};
-
 	/* ported to backend-rs */
 	// public publishAntennaStream = <K extends keyof AntennaStreamTypes>(
 	// 	antennaId: Antenna["id"],
@@ -235,7 +222,6 @@ export const publishNoteStream = publisher.publishNoteStream;
 // export const publishNotesStream = publisher.publishNotesStream;
 // export const publishNoteUpdatesStream = publisher.publishNoteUpdatesStream;
 // export const publishChannelStream = publisher.publishChannelStream;
-export const publishUserListStream = publisher.publishUserListStream;
 // export const publishAntennaStream = publisher.publishAntennaStream;
 // export const publishMessagingStream = publisher.publishMessagingStream;
 // export const publishGroupMessagingStream = publisher.publishGroupMessagingStream;

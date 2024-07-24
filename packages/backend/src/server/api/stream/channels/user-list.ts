@@ -29,12 +29,10 @@ export default class extends Channel {
 		if (!exists) return;
 
 		// Subscribe stream
-		this.subscriber.on(`userListStream:${this.listId}`, this.send);
-
 		this.subscriber.on("notesStream", this.onNote);
 
 		this.updateListUsers();
-		this.listUsersClock = setInterval(this.updateListUsers, 5000);
+		this.listUsersClock = setInterval(this.updateListUsers, 10000);
 	}
 
 	private async updateListUsers() {
@@ -65,7 +63,6 @@ export default class extends Channel {
 
 	public dispose() {
 		// Unsubscribe events
-		this.subscriber.off(`userListStream:${this.listId}`, this.send);
 		this.subscriber.off("notesStream", this.onNote);
 
 		clearInterval(this.listUsersClock);
