@@ -33,7 +33,7 @@ macro_rules! macro_doctest {
                 &$macro_name(
                     ::quote::quote!($( $($attr)* )?),
                     ::quote::quote!($($item)*),
-                )
+                ).unwrap()
             ),
             ::std::string::ToString::to_string(
                 &::quote::quote!($($expanded)*)
@@ -81,14 +81,14 @@ macro_rules! macro_doctest {
 macro_rules! macro_unit_tests {
     (@test $macro_name:ident($attr:ident, $item:ident) becomes $expanded:ident) => {
         assert_eq!(
-            ::std::format!("{}", $macro_name($attr, $item)),
+            ::std::format!("{}", $macro_name($attr, $item).unwrap()),
             ::std::format!("{}", $expanded),
         );
     };
     (@test $macro_name:ident($attr:ident, $item:ident) generates $expanded:ident) => {
         let item_str = format!("{}", $item);
         assert_eq!(
-            ::std::format!("{}", $macro_name($attr, $item)),
+            ::std::format!("{}", $macro_name($attr, $item).unwrap()),
             ::std::format!("{} {}", item_str, $expanded),
         );
     };

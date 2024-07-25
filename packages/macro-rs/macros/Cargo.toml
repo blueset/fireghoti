@@ -16,3 +16,4 @@ proc-macro2 = { workspace = true }
 quote = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true, features = ["std"] }
+syn = { workspace = true }

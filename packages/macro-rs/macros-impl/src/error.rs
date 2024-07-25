@@ -1,14 +1,7 @@
 use proc_macro2::TokenStream;
 use quote::quote;
 
-pub fn error_variants(_attr: TokenStream, item: TokenStream) -> TokenStream {
-    match error_variants_impl(item) {
-        Ok(tokens) => tokens,
-        Err(error) => error.to_compile_error(),
-    }
-}
-
-fn error_variants_impl(item: TokenStream) -> syn::Result<TokenStream> {
+pub fn error_variants(_attr: TokenStream, item: TokenStream) -> syn::Result<TokenStream> {
     let mut item: syn::ItemEnum = syn::parse2(item)?;
 
     item.variants = item

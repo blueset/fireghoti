@@ -184,7 +184,7 @@ use quote::{quote, ToTokens};
 /// # });
 /// ```
 ///
-pub fn napi(macro_attr: TokenStream, item: TokenStream) -> TokenStream {
+pub fn napi(macro_attr: TokenStream, item: TokenStream) -> syn::Result<TokenStream> {
     let macro_attr_tokens: Vec<TokenTree> = macro_attr.clone().into_iter().collect();
     // generated extra macro attr TokenStream (prepended before original input `macro_attr`)
     let mut extra_macro_attr = TokenStream::new();
@@ -202,10 +202,10 @@ pub fn napi(macro_attr: TokenStream, item: TokenStream) -> TokenStream {
         }) {
             quote! { use_nullable = true, }.to_tokens(&mut extra_macro_attr);
         }
-        return quote! {
+        return Ok(quote! {
           #[napi_derive::napi(#extra_macro_attr #macro_attr)]
           #item
-        };
+        });
     };
 
     // handle functions
@@ -333,7 +333,7 @@ pub fn napi(macro_attr: TokenStream, item: TokenStream) -> TokenStream {
         quote! { js_name = #js_name, }.to_tokens(&mut extra_macro_attr);
     }
 
-    quote! {
+    Ok(quote! {
       #item_fn
 
       #[napi_derive::napi(#extra_macro_attr #macro_attr)]
@@ -342,7 +342,7 @@ pub fn napi(macro_attr: TokenStream, item: TokenStream) -> TokenStream {
         #ident(#(#called_args),*)
         #(#function_call_modifiers)*
       }
-    }
+    })
 }
 
 crate::macro_unit_tests! {
