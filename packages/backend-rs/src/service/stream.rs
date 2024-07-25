@@ -85,7 +85,7 @@ pub async fn publish_to_stream(
         Stream::User { user_id } => format!("user:{user_id}"),
         Stream::Channel { channel_id } => format!("channelStream:{channel_id}"),
         Stream::Note { note_id } => format!("noteStream:{note_id}"),
-        Stream::NoteEdit => format!("noteUpdatesStream"),
+        Stream::NoteEdit => "noteUpdatesStream".to_owned(),
         Stream::Notes => "notesStream".to_owned(),
         Stream::Main { user_id } => format!("mainStream:{user_id}"),
         Stream::Drive { user_id } => format!("driveStream:{user_id}"),
