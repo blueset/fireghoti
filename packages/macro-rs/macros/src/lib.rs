@@ -37,7 +37,7 @@ define_wrapper_proc_macro_attributes! {
     /// #[cfg_attr(feature = "napi", napi_derive::napi(attr))]
     /// # enum E {} // to work around doc test compilation error
     /// ```
-    /// where `attr` is given attribute(s).
+    /// where `attr` is given attribute(s). See [`macros_impl::napi::napi`] for more details.
     derive_clone_and_export(attr, item) {
         #[cfg_attr(not(feature = "napi"), derive(Clone))]
         #[cfg_attr(feature = "napi", napi_derive::napi(#attr))]
@@ -51,7 +51,7 @@ define_wrapper_proc_macro_attributes! {
     /// #[cfg_attr(feature = "napi", macros::napi(attr))]
     /// # fn f() {} // to work around doc test compilation error
     /// ```
-    /// where `attr` is given attribute(s). See [macro@napi] and [macros_impl::napi::napi] for more details.
+    /// where `attr` is given attribute(s). See [`macros_impl::napi::napi`] for more details.
     export(attr, item) {
         #[cfg_attr(feature = "napi", macros::napi(#attr))]
         #item
@@ -66,7 +66,7 @@ define_wrapper_proc_macro_attributes! {
     /// #[macros::napi(attr)]
     /// # fn f() {} // to work around doc test compilation error
     /// ```
-    /// where `attr` is given attribute(s). See [macro@napi] for more details.
+    /// where `attr` is given attribute(s). See [`macros_impl::napi::napi`] for more details.
     ts_export(attr, item) {
         #[cfg(feature = "napi")]
         #[macros::napi(#attr)]
@@ -76,8 +76,26 @@ define_wrapper_proc_macro_attributes! {
         #item
     }
 
-    /// When applied to error variant enums, this macro generates a document
-    /// based on error messages unless there is a doc comment
+    /// When applied to enums, this macro implements [`std::error::Error`] trait
+    /// and generates a document based on error messages unless there is already a doc comment
+    ///
+    /// See [`macros_impl::error::error_variants`] for more details.
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// # use std::io;
+    /// #[macros::errors]
+    /// pub enum Error {
+    ///     #[error("config file name is not set")]
+    ///     NoConfigFileName,
+    ///     #[error("failed to read the config file")]
+    ///     ReadConfigFile(#[from] io::Error),
+    ///     #[error("invalid file content ({0})")]
+    ///     #[doc = "invalid file content"]
+    ///     InvalidContent(String),
+    /// }
+    /// ```
     errors(attr, item) {
         #[derive(::thiserror::Error, ::std::fmt::Debug)]
         #[macros::error_variants(#attr, #item)]
@@ -90,5 +108,6 @@ reexport_proc_macro_attributes! {
     /// See [macros_impl::napi::napi] for details.
     macros_impl::napi::napi as napi
 
+    /// Generates doc comments for error variants from the error messages
     macros_impl::error::error_variants as error_variants
 }
