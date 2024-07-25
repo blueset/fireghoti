@@ -22,10 +22,10 @@ use quote::quote;
 ///     #[doc = "database error"]
 ///     Db(#[from] sea_orm::DbErr)
 /// }
-/// 
+///
 /// # }, {
 /// /******* the code above expands to *******/
-/// 
+///
 /// pub enum Error {
 ///     #[error("config file name is not set")]
 ///     #[doc = "config file name is not set"]

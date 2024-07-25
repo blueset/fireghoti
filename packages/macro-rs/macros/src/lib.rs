@@ -80,9 +80,9 @@ define_wrapper_proc_macro_attributes! {
     /// and generates a document based on error messages unless there is already a doc comment
     ///
     /// See [`macros_impl::error::error_variants`] for more details.
-    /// 
+    ///
     /// # Example
-    /// 
+    ///
     /// ```
     /// # use std::io;
     /// #[macros::errors]
