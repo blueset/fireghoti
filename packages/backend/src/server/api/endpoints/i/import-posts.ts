@@ -2,7 +2,8 @@ import define from "@/server/api/define.js";
 import { createImportPostsJob } from "@/queue/index.js";
 import { ApiError } from "@/server/api/error.js";
 import { DriveFiles } from "@/models/index.js";
-import { fetchMeta, DAY } from "backend-rs";
+import { fetchMeta } from "backend-rs";
+import { DAY } from "@/const.js";
 
 export const meta = {
 	secure: true,

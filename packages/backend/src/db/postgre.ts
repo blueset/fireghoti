@@ -209,7 +209,7 @@ export const db = new DataSource({
 					family: config.redis.family == null ? 0 : config.redis.family,
 					username: config.redis.user ?? "default",
 					password: config.redis.pass,
-					keyPrefix: `${config.redis.prefix}:query:`,
+					keyPrefix: `${config.redisKeyPrefix}:query:`,
 					db: config.redis.db || 0,
 					tls: config.redis.tls,
 				},

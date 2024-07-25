@@ -336,7 +336,7 @@ if (!nativeBinding || process.env.NAPI_RS_FORCE_WASI) {
     nativeBinding = require('./backend-rs.wasi.cjs')
   } catch (err) {
     if (process.env.NAPI_RS_FORCE_WASI) {
-      console.error(err)
+      loadErrors.push(err)
     }
   }
   if (!nativeBinding) {
@@ -344,7 +344,7 @@ if (!nativeBinding || process.env.NAPI_RS_FORCE_WASI) {
       nativeBinding = require('backend-rs-wasm32-wasi')
     } catch (err) {
       if (process.env.NAPI_RS_FORCE_WASI) {
-        console.error(err)
+        loadErrors.push(err)
       }
     }
   }
@@ -370,7 +370,6 @@ module.exports.countLocalUsers = nativeBinding.countLocalUsers
 module.exports.countReactions = nativeBinding.countReactions
 module.exports.cpuInfo = nativeBinding.cpuInfo
 module.exports.cpuUsage = nativeBinding.cpuUsage
-module.exports.DAY = nativeBinding.DAY
 module.exports.decodeReaction = nativeBinding.decodeReaction
 module.exports.DriveFileEvent = nativeBinding.DriveFileEvent
 module.exports.DriveFileUsageHint = nativeBinding.DriveFileUsageHint
@@ -378,7 +377,6 @@ module.exports.DriveFolderEvent = nativeBinding.DriveFolderEvent
 module.exports.extractHost = nativeBinding.extractHost
 module.exports.fetchMeta = nativeBinding.fetchMeta
 module.exports.fetchNodeinfo = nativeBinding.fetchNodeinfo
-module.exports.FILE_TYPE_BROWSERSAFE = nativeBinding.FILE_TYPE_BROWSERSAFE
 module.exports.formatMilliseconds = nativeBinding.formatMilliseconds
 module.exports.generateSecureRandomString = nativeBinding.generateSecureRandomString
 module.exports.generateUserToken = nativeBinding.generateUserToken
@@ -391,7 +389,6 @@ module.exports.getNoteSummary = nativeBinding.getNoteSummary
 module.exports.getTimestamp = nativeBinding.getTimestamp
 module.exports.greet = nativeBinding.greet
 module.exports.hashPassword = nativeBinding.hashPassword
-module.exports.HOUR = nativeBinding.HOUR
 module.exports.Inbound = nativeBinding.Inbound
 module.exports.initializeRustLogger = nativeBinding.initializeRustLogger
 module.exports.InternalActor = nativeBinding.InternalActor
@@ -408,7 +405,6 @@ module.exports.latestVersion = nativeBinding.latestVersion
 module.exports.loadConfig = nativeBinding.loadConfig
 module.exports.memoryUsage = nativeBinding.memoryUsage
 module.exports.metaToPugArgs = nativeBinding.metaToPugArgs
-module.exports.MINUTE = nativeBinding.MINUTE
 module.exports.MutedNoteReason = nativeBinding.MutedNoteReason
 module.exports.nodeinfo_2_0 = nativeBinding.nodeinfo_2_0
 module.exports.nodeinfo_2_1 = nativeBinding.nodeinfo_2_1
@@ -428,12 +424,12 @@ module.exports.publishToDriveFolderStream = nativeBinding.publishToDriveFolderSt
 module.exports.publishToGroupChatStream = nativeBinding.publishToGroupChatStream
 module.exports.publishToModerationStream = nativeBinding.publishToModerationStream
 module.exports.publishToNotesStream = nativeBinding.publishToNotesStream
+module.exports.publishToNoteUpdatesStream = nativeBinding.publishToNoteUpdatesStream
 module.exports.PushNotificationKind = nativeBinding.PushNotificationKind
 module.exports.PushSubscriptionType = nativeBinding.PushSubscriptionType
 module.exports.RelayStatus = nativeBinding.RelayStatus
 module.exports.removeOldAttestationChallenges = nativeBinding.removeOldAttestationChallenges
 module.exports.safeForSql = nativeBinding.safeForSql
-module.exports.SECOND = nativeBinding.SECOND
 module.exports.sendPushNotification = nativeBinding.sendPushNotification
 module.exports.shouldNyaify = nativeBinding.shouldNyaify
 module.exports.showServerInfo = nativeBinding.showServerInfo
@@ -443,13 +439,12 @@ module.exports.storageUsage = nativeBinding.storageUsage
 module.exports.stringToAcct = nativeBinding.stringToAcct
 module.exports.toDbReaction = nativeBinding.toDbReaction
 module.exports.toPuny = nativeBinding.toPuny
+module.exports.translate = nativeBinding.translate
 module.exports.unwatchNote = nativeBinding.unwatchNote
 module.exports.updateAntennaCache = nativeBinding.updateAntennaCache
 module.exports.updateAntennasOnNewNote = nativeBinding.updateAntennasOnNewNote
 module.exports.updateMetaCache = nativeBinding.updateMetaCache
 module.exports.updateNodeinfoCache = nativeBinding.updateNodeinfoCache
-module.exports.USER_ACTIVE_THRESHOLD = nativeBinding.USER_ACTIVE_THRESHOLD
-module.exports.USER_ONLINE_THRESHOLD = nativeBinding.USER_ONLINE_THRESHOLD
 module.exports.UserEmojiModPerm = nativeBinding.UserEmojiModPerm
 module.exports.UserProfileFfvisibility = nativeBinding.UserProfileFfvisibility
 module.exports.UserProfileMutingNotificationTypes = nativeBinding.UserProfileMutingNotificationTypes

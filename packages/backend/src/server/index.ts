@@ -30,6 +30,7 @@ import { koaBody } from "koa-body";
 import removeTrailingSlash from "koa-remove-trailing-slashes";
 import { setupEndpointsAuthRoot } from "@/server/api/mastodon/endpoints/auth.js";
 import { CatchErrorsMiddleware } from "@/server/api/mastodon/middleware/catch-errors.js";
+import { inspect } from "node:util";
 
 export const serverLogger = new Logger("server", "gray", false);
 

@@ -3,6 +3,7 @@ import type { DbJobData } from "@/queue/types.js";
 import { deleteDriveFiles } from "./delete-drive-files.js";
 import { exportCustomEmojis } from "./export-custom-emojis.js";
 import { exportNotes } from "./export-notes.js";
+import { exportFollowers } from "./export-followers.js";
 import { exportFollowing } from "./export-following.js";
 import { exportMute } from "./export-mute.js";
 import { exportBlocking } from "./export-blocking.js";
@@ -22,6 +23,7 @@ const jobs = {
 	deleteDriveFiles,
 	exportCustomEmojis,
 	exportNotes,
+	exportFollowers,
 	exportFollowing,
 	exportMute,
 	exportBlocking,

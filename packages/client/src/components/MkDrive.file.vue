@@ -48,6 +48,7 @@ import { i18n } from "@/i18n";
 import { me } from "@/me";
 import icon from "@/scripts/icon";
 import type { MenuItem } from "@/types/menu";
+import { useRouter } from "@/router";
 
 const props = withDefaults(
 	defineProps<{
@@ -66,6 +67,8 @@ const emit = defineEmits<{
 	(ev: "dragstart"): void;
 	(ev: "dragend"): void;
 }>();
+
+const router = useRouter();
 
 const isDragging = ref(false);
 
@@ -107,10 +110,11 @@ function getMenu(): MenuItem[] {
 			download: props.file.name,
 		},
 		{
-			type: "a",
-			href: `/my/drive/file/${props.file.id}/attached`,
 			text: i18n.ts.showAttachedNotes,
 			icon: `${icon("ph-paperclip")}`,
+			action: () => {
+				router.push(`/my/drive/file/${props.file.id}/attached`);
+			},
 		},
 		null,
 		{

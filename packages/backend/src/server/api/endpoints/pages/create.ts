@@ -1,5 +1,6 @@
 import { Pages, DriveFiles } from "@/models/index.js";
-import { genIdAt, HOUR } from "backend-rs";
+import { genIdAt } from "backend-rs";
+import { HOUR } from "@/const.js";
 import { Page } from "@/models/entities/page.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";

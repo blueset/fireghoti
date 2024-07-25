@@ -270,8 +270,6 @@ export declare function cpuInfo(): Cpu
 
 export declare function cpuUsage(): number
 
-export const DAY: number
-
 export interface DbConfig {
   host: string
   port: number
@@ -378,17 +376,6 @@ export declare function fetchMeta(): Promise<Meta>
 /** Fetches and returns the NodeInfo (version 2.0) of a remote server. */
 export declare function fetchNodeinfo(host: string): Promise<Nodeinfo>
 
-/**
- * List of file types allowed to be viewed directly in the browser
- *
- * Anything not included here will be responded as application/octet-stream
- * SVG is not allowed because it generates XSS (TODO: fix this and later allow it to be viewed directly)
- * * <https://github.com/sindresorhus/file-type/blob/main/supported.js>
- * * <https://github.com/sindresorhus/file-type/blob/main/core.js>
- * * <https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Containers>
- */
-export const FILE_TYPE_BROWSERSAFE: string[]
-
 export interface Following {
   id: string
   createdAt: DateTimeWithTimeZone
@@ -490,8 +477,6 @@ export interface Hashtag {
   attachedRemoteUsersCount: number
 }
 
-export const HOUR: number
-
 export interface IdConfig {
   length?: number
   fingerprint?: string
@@ -555,7 +540,7 @@ export type InternalActor =  'instance'|
  * `host` - punycoded instance host
  *
  * # Example
- * ```no_run
+ * ```ignore
  * # use backend_rs::misc::check_server_block::is_allowed_server;
  * # async fn f() -> Result<(), Box<dyn std::error::Error>> {
  * assert_eq!(true, is_allowed_server("allowed.com").await?);
@@ -575,7 +560,7 @@ export declare function isAllowedServer(host: string): Promise<boolean>
  * `host` - punycoded instance host
  *
  * # Example
- * ```no_run
+ * ```ignore
  * # use backend_rs::misc::check_server_block::is_blocked_server;
  * # async fn f() -> Result<(), Box<dyn std::error::Error>> {
  * assert_eq!(true, is_blocked_server("blocked.com").await?);
@@ -606,7 +591,7 @@ export declare function isSelfHost(host?: string | undefined | null): boolean
  * `host` - punycoded instance host
  *
  * # Example
- * ```no_run
+ * ```ignore
  * # use backend_rs::misc::check_server_block::is_silenced_server;
  * # async fn f() -> Result<(), Box<dyn std::error::Error>> {
  * assert_eq!(true, is_silenced_server("silenced.com").await?);
@@ -751,8 +736,6 @@ export interface Migrations {
   timestamp: number
   name: string
 }
-
-export const MINUTE: number
 
 export interface ModerationLog {
   id: string
@@ -1134,6 +1117,8 @@ export declare function publishToModerationStream(moderatorId: string, report: A
 
 export declare function publishToNotesStream(note: Note): Promise<void>
 
+export declare function publishToNoteUpdatesStream(note: Note): Promise<void>
+
 export interface PugArgs {
   img: string | null
   title: string
@@ -1222,8 +1207,6 @@ export interface ReplyMuting {
 
 /** Returns `true` if `src` does not contain suspicious characters like `%`. */
 export declare function safeForSql(src: string): boolean
-
-export const SECOND: number
 
 export declare function sendPushNotification(receiverUserId: string, kind: PushNotificationKind, content: any): Promise<void>
 
@@ -1349,6 +1332,13 @@ export declare function toDbReaction(reaction?: string | undefined | null, host?
 
 export declare function toPuny(host: string): string
 
+export declare function translate(text: string, sourceLang: string | undefined | null, targetLang: string): Promise<Translation>
+
+export interface Translation {
+  sourceLang: string
+  text: string
+}
+
 export declare function unwatchNote(watcherId: string, noteId: string): Promise<void>
 
 export declare function updateAntennaCache(): Promise<void>
@@ -1412,10 +1402,6 @@ export interface User {
   alsoKnownAs: Array<string> | null
   readCatLanguage: boolean
 }
-
-export const USER_ACTIVE_THRESHOLD: number
-
-export const USER_ONLINE_THRESHOLD: number
 
 export type UserEmojiModPerm =  'add'|
 'full'|

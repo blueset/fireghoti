@@ -1,5 +1,5 @@
 import { config } from "@/config.js";
-import { FILE_TYPE_BROWSERSAFE } from "backend-rs";
+import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
 import { countLocalUsers, fetchMeta } from "backend-rs";
 import {
 	AnnouncementReads,

@@ -256,6 +256,25 @@ export function createExportFollowingJob(
 	);
 }
 
+export function createExportFollowersJob(
+	user: ThinUser,
+	excludeMuting = false,
+	excludeInactive = false,
+) {
+	return dbQueue.add(
+		"exportFollowers",
+		{
+			user: user,
+			excludeMuting,
+			excludeInactive,
+		},
+		{
+			removeOnComplete: true,
+			removeOnFail: true,
+		},
+	);
+}
+
 export function createExportMuteJob(user: ThinUser) {
 	return dbQueue.add(
 		"exportMute",

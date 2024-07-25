@@ -1,6 +1,6 @@
 import { createExportCustomEmojisJob } from "@/queue/index.js";
 import define from "@/server/api/define.js";
-import { HOUR } from "backend-rs";
+import { HOUR } from "@/const.js";
 
 export const meta = {
 	secure: true,

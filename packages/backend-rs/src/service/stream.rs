@@ -6,6 +6,7 @@ pub mod custom_emoji;
 pub mod drive;
 pub mod group_chat;
 pub mod moderation;
+pub mod note_edit;
 pub mod notes;
 
 use crate::{
@@ -30,9 +31,7 @@ pub enum Stream {
         note_id: String,
     },
     Notes,
-    UserList {
-        list_id: String,
-    },
+    NoteEdit,
     Main {
         user_id: String,
     },
@@ -62,7 +61,7 @@ pub enum ChatEvent {
     Typing,
 }
 
-#[derive(thiserror::Error, Debug)]
+#[macros::errors]
 pub enum Error {
     #[error("failed to execute a Redis command")]
     Redis(#[from] RedisError),
@@ -86,8 +85,8 @@ pub async fn publish_to_stream(
         Stream::User { user_id } => format!("user:{user_id}"),
         Stream::Channel { channel_id } => format!("channelStream:{channel_id}"),
         Stream::Note { note_id } => format!("noteStream:{note_id}"),
+        Stream::NoteEdit => format!("noteUpdatesStream"),
         Stream::Notes => "notesStream".to_owned(),
-        Stream::UserList { list_id } => format!("userListStream:{list_id}"),
         Stream::Main { user_id } => format!("mainStream:{user_id}"),
         Stream::Drive { user_id } => format!("driveStream:{user_id}"),
         Stream::Antenna { antenna_id } => format!("antennaStream:{antenna_id}"),

@@ -1,5 +1,6 @@
 import { Brackets } from "typeorm";
-import { isBlockedServer, DAY } from "backend-rs";
+import { isBlockedServer } from "backend-rs";
+import { DAY } from "@/const.js";
 import { Instances } from "@/models/index.js";
 import type { Instance } from "@/models/entities/instance.js";
 

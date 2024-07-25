@@ -12,8 +12,6 @@ import { pushUserToUserList } from "@/services/user-list/push.js";
 import { genId } from "backend-rs";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import type { MastoContext } from "@/server/api/mastodon/index.js";
-import { pullUserFromUserList } from "@/services/user-list/pull.js";
-import { publishUserEvent } from "@/services/stream.js";
 
 export class ListHelpers {
 	public static async getLists(
@@ -123,14 +121,12 @@ export class ListHelpers {
 					throw Error("Can’t add users you’re not following to list");
 			}
 
-			const exist = await UserListJoinings.exists({
-				where: {
-					userListId: list.id,
-					userId: user.id,
-				},
+			const exists = await UserListJoinings.existsBy({
+				userListId: list.id,
+				userId: user.id,
 			});
 
-			if (exist) continue;
+			if (exists) continue;
 			await pushUserToUserList(user, list);
 		}
 	}
@@ -144,15 +140,13 @@ export class ListHelpers {
 		if (localUser.id !== list.userId)
 			throw new Error("List is not owned by user");
 		for (const user of usersToRemove) {
-			const exist = await UserListJoinings.exists({
-				where: {
-					userListId: list.id,
-					userId: user.id,
-				},
+			const exists = await UserListJoinings.existsBy({
+				userListId: list.id,
+				userId: user.id,
 			});
 
-			if (!exist) continue;
-			await pullUserFromUserList(user, list);
+			if (!exists) continue;
+			await UserListJoinings.delete({ userListId: list.id, userId: user.id });
 		}
 	}
 

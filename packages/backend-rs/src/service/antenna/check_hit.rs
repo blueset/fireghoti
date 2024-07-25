@@ -6,7 +6,7 @@ use crate::{
 };
 use sea_orm::{prelude::*, QuerySelect};
 
-#[derive(thiserror::Error, Debug)]
+#[macros::errors]
 pub enum AntennaCheckError {
     #[doc = "database error"]
     #[error(transparent)]

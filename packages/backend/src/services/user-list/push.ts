@@ -1,4 +1,3 @@
-import { publishUserListStream } from "@/services/stream.js";
 import type { User } from "@/models/entities/user.js";
 import type { UserList } from "@/models/entities/user-list.js";
 import { UserListJoinings, Users } from "@/models/index.js";
@@ -16,8 +15,6 @@ export async function pushUserToUserList(target: User, list: UserList) {
 		userId: target.id,
 		userListId: list.id,
 	} as UserListJoining);
-
-	publishUserListStream(list.id, "userAdded", await Users.pack(target));
 
 	// このインスタンス内にこのリモートユーザーをフォローしているユーザーがいなくても投稿を受け取るためにダミーのユーザーがフォローしたということにする
 	if (Users.isRemoteUser(target)) {

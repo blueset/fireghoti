@@ -52,7 +52,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
-import { acct } from "firefish-js";
+import { acct, type entities } from "firefish-js";
 import FormSection from "@/components/form/section.vue";
 import FormInput from "@/components/form/input.vue";
 import FormButton from "@/components/MkButton.vue";
@@ -61,6 +61,7 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { me } from "@/me";
+import { refreshAccount } from "@/account";
 import icon from "@/scripts/icon";
 
 const moveToAccount = ref("");
@@ -69,12 +70,16 @@ const accountAlias = ref([""]);
 await init();
 
 async function init() {
+	await refreshAccount();
 	if (me?.alsoKnownAs && me.alsoKnownAs.length > 0) {
-		const aka = await os.api("users/show", { userIds: me.alsoKnownAs });
-		accountAlias.value =
-			aka && aka.length > 0
-				? aka.map((user) => `@${acct.toString(user)}`)
-				: [""];
+		const aka = me.alsoKnownAs
+			.map((uri) => os.api("ap/show", { uri }))
+			.map(
+				async (user) =>
+					`@${acct.toString((await user).object as entities.UserDetailed)}`,
+			);
+		const accounts = await Promise.all(aka);
+		accountAlias.value = accounts.length > 0 ? accounts : [""];
 	} else {
 		accountAlias.value = [""];
 	}

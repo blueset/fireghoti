@@ -3,6 +3,5 @@
 pub use meta::local_server_info;
 pub use server::CONFIG;
 
-pub mod constant;
 pub mod meta;
 pub mod server;

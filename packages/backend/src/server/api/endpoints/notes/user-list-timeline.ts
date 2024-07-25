@@ -5,6 +5,7 @@ import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
+import { generateMutedNoteQuery } from "@/server/api/common/generate-muted-note-query.js";
 
 export const meta = {
 	tags: ["notes", "lists"],
@@ -95,6 +96,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		});
 
 	generateVisibilityQuery(query, user);
+	generateMutedNoteQuery(query, user);
 
 	if (ps.includeMyRenotes === false) {
 		query.andWhere(

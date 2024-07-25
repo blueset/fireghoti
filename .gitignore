@@ -34,6 +34,7 @@ coverage
 !/.config/helm_values_example.yml
 !/.config/LICENSE
 /docker-compose.yml
+/compose.yml
 /custom/*
 !/custom/LICENSE
 

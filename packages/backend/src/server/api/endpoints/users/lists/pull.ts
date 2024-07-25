@@ -1,8 +1,6 @@
-import { publishUserListStream } from "@/services/stream.js";
 import { UserLists, UserListJoinings, Users } from "@/models/index.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
-import { getUser } from "@/server/api/common/getters.js";
 
 export const meta = {
 	tags: ["lists", "users"],
@@ -38,25 +36,23 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, me) => {
-	// Fetch the list
-	const userList = await UserLists.findOneBy({
-		id: ps.listId,
-		userId: me.id,
-	});
+	const [userExists, listExists] = await Promise.all([
+		Users.existsBy({
+			id: ps.userId,
+		}),
+		UserLists.existsBy({
+			id: ps.listId,
+			userId: me.id,
+		}),
+	]);
 
-	if (userList == null) {
+	if (!userExists) {
+		throw new ApiError(meta.errors.noSuchUser);
+	}
+	if (!listExists) {
 		throw new ApiError(meta.errors.noSuchList);
 	}
 
-	// Fetch the user
-	const user = await getUser(ps.userId).catch((e) => {
-		if (e.id === "15348ddd-432d-49c2-8a5a-8069753becff")
-			throw new ApiError(meta.errors.noSuchUser);
-		throw e;
-	});
-
-	// Pull the user
-	await UserListJoinings.delete({ userListId: userList.id, userId: user.id });
-
-	publishUserListStream(userList.id, "userRemoved", await Users.pack(user));
+	// Remove the user from the list
+	await UserListJoinings.delete({ userListId: ps.listId, userId: ps.userId });
 });

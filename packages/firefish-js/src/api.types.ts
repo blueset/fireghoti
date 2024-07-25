@@ -499,6 +499,7 @@ export type Endpoints = {
 	"i/delete-account": { req: { password: string }; res: null };
 	"i/export-blocking": { req: TODO; res: TODO };
 	"i/export-following": { req: TODO; res: TODO };
+	"i/export-followers": { req: TODO; res: TODO };
 	"i/export-mute": { req: TODO; res: TODO };
 	"i/export-notes": { req: TODO; res: TODO };
 	"i/export-user-lists": { req: TODO; res: TODO };

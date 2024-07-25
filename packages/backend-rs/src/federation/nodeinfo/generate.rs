@@ -152,8 +152,8 @@ pub async fn nodeinfo_2_0() -> Result<Nodeinfo20, DbErr> {
     Ok(nodeinfo_2_1().await?.into())
 }
 
-#[cfg(feature = "napi")]
-#[derive(thiserror::Error, Debug)]
+#[cfg(any(test, doctest, feature = "napi"))]
+#[macros::errors]
 pub enum Error {
     #[doc = "database error"]
     #[error(transparent)]

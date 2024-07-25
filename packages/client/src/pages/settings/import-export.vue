@@ -24,9 +24,6 @@
 				<FormRadios v-model="importType" class="_formBlock">
 					<option value="firefish">Firefish/Misskey</option>
 					<option value="mastodon">Mastodon/Akkoma/Pleroma</option>
-					<option :disabled="true" value="twitter">
-						Twitter (soon)
-					</option>
 				</FormRadios>
 				<MkButton
 					primary
@@ -74,6 +71,31 @@
 					@click="importFollowing($event)"
 					><i :class="icon('ph-upload-simple')"></i>
 					{{ i18n.ts.import }}</MkButton
+				>
+			</FormFolder>
+		</FormSection>
+		<FormSection>
+			<template #label>{{
+				i18n.ts.followers
+			}}</template>
+			<FormFolder class="_formBlock">
+				<template #label>{{ i18n.ts.export }}</template>
+				<template #icon
+					><i :class="icon('ph-download-simple')"></i
+				></template>
+				<FormSwitch v-model="excludeMutingUsers" class="_formBlock">
+					{{ i18n.ts._exportOrImport.excludeMutingUsers }}
+				</FormSwitch>
+				<FormSwitch v-model="excludeInactiveUsers" class="_formBlock">
+					{{ i18n.ts._exportOrImport.excludeInactiveUsers }}
+				</FormSwitch>
+				<MkButton
+					primary
+					:class="$style.button"
+					inline
+					@click="exportFollowers()"
+					><i :class="icon('ph-download-simple')"></i>
+					{{ i18n.ts.export }}</MkButton
 				>
 			</FormFolder>
 		</FormSection>
@@ -229,6 +251,15 @@ const importPosts = async (ev) => {
 
 const exportFollowing = () => {
 	os.api("i/export-following", {
+		excludeMuting: excludeMutingUsers.value,
+		excludeInactive: excludeInactiveUsers.value,
+	})
+		.then(onExportSuccess)
+		.catch(onError);
+};
+
+const exportFollowers = () => {
+	os.api("i/export-followers", {
 		excludeMuting: excludeMutingUsers.value,
 		excludeInactive: excludeInactiveUsers.value,
 	})

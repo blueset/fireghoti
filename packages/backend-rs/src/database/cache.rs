@@ -14,7 +14,7 @@ pub enum Category {
     Test,
 }
 
-#[derive(thiserror::Error, Debug)]
+#[macros::errors]
 pub enum Error {
     #[error("failed to execute Redis command")]
     Redis(#[from] RedisError),

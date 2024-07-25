@@ -1,11 +1,11 @@
 use crate::{database::cache, util::http_client};
-use image::{io::Reader, ImageError, ImageFormat};
+use image::{ImageError, ImageFormat, ImageReader};
 use isahc::AsyncReadResponseExt;
 use nom_exif::{parse_jpeg_exif, EntryValue, ExifTag};
 use std::io::Cursor;
 use tokio::sync::Mutex;
 
-#[derive(thiserror::Error, Debug)]
+#[macros::errors]
 pub enum Error {
     #[error("Redis cache operation has failed")]
     Cache(#[from] cache::Error),
@@ -87,7 +87,7 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
 
     let image_bytes = response.bytes().await?;
 
-    let reader = Reader::new(Cursor::new(&image_bytes)).with_guessed_format()?;
+    let reader = ImageReader::new(Cursor::new(&image_bytes)).with_guessed_format()?;
 
     let format = reader.format();
     if format.is_none() || !BROWSER_SAFE_IMAGE_TYPES.contains(&format.unwrap()) {

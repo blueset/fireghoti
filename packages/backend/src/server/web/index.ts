@@ -16,13 +16,12 @@ import { KoaAdapter } from "@bull-board/koa";
 
 import { In, IsNull } from "typeorm";
 import {
-	MINUTE,
-	DAY,
 	getNoteSummary,
 	stringToAcct,
 	fetchMeta,
 	metaToPugArgs,
 } from "backend-rs";
+import { MINUTE, DAY } from "@/const.js";
 import { config } from "@/config.js";
 import {
 	Users,

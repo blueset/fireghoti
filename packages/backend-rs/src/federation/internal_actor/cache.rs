@@ -7,7 +7,7 @@ use crate::{database::db_conn, model::entity::user};
 use sea_orm::prelude::*;
 use std::sync::Mutex;
 
-#[derive(thiserror::Error, Debug)]
+#[macros::errors]
 pub enum Error {
     #[error(transparent)]
     #[doc = "database error"]

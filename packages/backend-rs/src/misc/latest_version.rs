@@ -4,7 +4,7 @@ use crate::{database::cache, util::http_client};
 use isahc::AsyncReadResponseExt;
 use serde::Deserialize;
 
-#[derive(thiserror::Error, Debug)]
+#[macros::errors]
 pub enum Error {
     #[error("Redis cache operation has failed")]
     Cache(#[from] cache::Error),

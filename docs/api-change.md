@@ -2,6 +2,10 @@
 
 Breaking changes are indicated by the :warning: icon.
 
+## v20240725
+
+- Added `i/export-followers` endpoint.
+
 ## v20240714
 
 - The old Mastodon API has been replaced with a new implementation based on Iceshrimp’s.

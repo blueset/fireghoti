@@ -15,7 +15,7 @@ import { config } from "@/config.js";
 import { noteVisibilities } from "@/types.js";
 import { ApiError } from "@/server/api/error.js";
 import define from "@/server/api/define.js";
-import { HOUR } from "backend-rs";
+import { HOUR } from "@/const.js";
 import { getNote } from "@/server/api/common/getters.js";
 import { langmap } from "firefish-js";
 import { createScheduledNoteJob } from "@/queue/index.js";

@@ -1,11 +1,11 @@
 {
 	"name": "firefish",
-	"version": "20240714.fork",
+	"version": "20240725.fork",
 	"repository": {
 		"type": "git",
 		"url": "https://firefish.dev/firefish/firefish.git"
 	},
-	"packageManager": "pnpm@9.5.0",
+	"packageManager": "pnpm@9.6.0",
 	"private": true,
 	"scripts": {
 		"rebuild": "pnpm run clean && pnpm run build",
@@ -13,7 +13,7 @@
 		"build:assets": "pnpm node ./scripts/copy-assets.mjs",
 		"build:debug": "pnpm run clean && pnpm --recursive --color run build:debug && pnpm node ./scripts/copy-index-dev.mjs && pnpm run build:assets",
 		"start": "pnpm --filter backend run start",
-		"start:container": "pnpm run migrate && pnpm run start",
+		"start:container": "pnpm run build:assets && pnpm run migrate && pnpm run start",
 		"start:test": "pnpm --filter backend run start:test",
 		"init": "pnpm run migrate",
 		"migrate": "pnpm --filter backend run migration:run",
@@ -47,8 +47,8 @@
 		"@biomejs/cli-darwin-x64": "1.8.3",
 		"@biomejs/cli-linux-arm64": "1.8.3",
 		"@biomejs/cli-linux-x64": "1.8.3",
-		"@types/node": "20.14.10",
+		"@types/node": "20.14.12",
 		"execa": "9.3.0",
-		"pnpm": "9.5.0"
+		"pnpm": "9.6.0"
 	}
 }

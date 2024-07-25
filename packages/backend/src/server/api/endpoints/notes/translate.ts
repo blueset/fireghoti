@@ -1,7 +1,6 @@
 import { ApiError } from "@/server/api/error.js";
 import { getNote } from "@/server/api/common/getters.js";
-import { translate } from "@/misc/translate.js";
-import type { PostLanguage } from "firefish-js";
+import { translate } from "backend-rs";
 import define from "@/server/api/define.js";
 
 export const meta = {
@@ -45,9 +44,5 @@ export default define(meta, paramDef, async (ps, user) => {
 		return 204;
 	}
 
-	return translate(
-		note.text,
-		note.lang as PostLanguage | null,
-		ps.targetLang as PostLanguage,
-	);
+	return translate(note.text, note.lang as string | null, ps.targetLang);
 });

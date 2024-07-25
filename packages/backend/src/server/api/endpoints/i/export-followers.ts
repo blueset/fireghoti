@@ -1,5 +1,5 @@
 import define from "@/server/api/define.js";
-import { createExportFollowingJob } from "@/queue/index.js";
+import { createExportFollowersJob } from "@/queue/index.js";
 import { HOUR } from "@/const.js";
 
 export const meta = {
@@ -21,5 +21,5 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, user) => {
-	createExportFollowingJob(user, ps.excludeMuting, ps.excludeInactive);
+	createExportFollowersJob(user, ps.excludeMuting, ps.excludeInactive);
 });

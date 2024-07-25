@@ -10,8 +10,8 @@ rust-version = "1.74"
 macros = { path = "packages/macro-rs/macros" }
 macros-impl = { path = "packages/macro-rs/macros-impl" }
 
-napi = "3.0.0-alpha.7"
-napi-derive = "3.0.0-alpha.5"
+napi = "3.0.0-alpha.8"
+napi-derive = "3.0.0-alpha.7"
 napi-build = "2.1.3"
 
 argon2 = { version = "0.5.3", default-features = false }
@@ -22,11 +22,11 @@ bcrypt = { version = "0.15.1", default-features = false }
 chrono = { version = "0.4.38", default-features = false }
 convert_case = { version = "0.6.0", default-features = false }
 cuid2 = { version = "0.1.2", default-features = false }
-emojis = { version = "0.6.2", default-features = false }
+emojis = { version = "0.6.3", default-features = false }
 idna = { version = "1.0.2", default-features = false }
-image = { version = "0.25.1", default-features = false }
+image = { version = "0.25.2", default-features = false }
 isahc = { version = "1.7.2", default-features = false }
-nom-exif = { version = "1.2.6", default-features = false }
+nom-exif = { version = "1.3.0", default-features = false }
 once_cell = { version = "1.19.0", default-features = false }
 pretty_assertions = { version = "1.4.0", default-features = false }
 proc-macro2 = { version = "1.0.86", default-features = false }
@@ -39,20 +39,21 @@ sea-orm = { version = "0.12.15", default-features = false }
 serde = { version = "1.0.204", default-features = false }
 serde_json = { version = "1.0.120", default-features = false }
 serde_yaml = { version = "0.9.34", default-features = false }
-syn = { version = "2.0.71", default-features = false }
+syn = { version = "2.0.72", default-features = false }
 sysinfo = { version = "0.30.13", default-features = false }
-thiserror = { version = "1.0.62", default-features = false }
-tokio = { version = "1.38.0", default-features = false }
+thiserror = { version = "1.0.63", default-features = false }
+tokio = { version = "1.39.1", default-features = false }
 tokio-test = { version = "0.4.4", default-features = false }
 tracing = { version = "0.1.40", default-features = false }
 tracing-subscriber = { version = "0.3.18", default-features = false }
 url = { version = "2.5.2", default-features = false }
 urlencoding = { version = "2.1.3", default-features = false }
 web-push = { git = "https://github.com/pimeys/rust-web-push.git", rev = "40febe4085e3cef9cdfd539c315e3e945aba0656", default-features = false }
+zhconv = "0.3.1"
 
 # subdependencies
 ## explicitly list OpenSSL to use the vendored version
-openssl = "0.10.64"
+openssl = "0.10.66"
 
 ## some subdependencies require higher Rust version than 1.74 (our MSRV)
 ## cargo update && cargo update ravif --precise 0.11.5 && cargo update bitstream-io --precise 2.3.0
