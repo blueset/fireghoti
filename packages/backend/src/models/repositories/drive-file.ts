@@ -231,13 +231,13 @@ export const DriveFileRepository = db.getRepository(DriveFile).extend({
 		if (url.startsWith(`${config.url}/identicon`)) return url;
 		if (url.startsWith(`${config.url}/avatar`)) return url;
 
-		const meta = await fetchMeta();
-		const baseUrl = meta
-			? meta.objectStorageBaseUrl ??
-				`${meta.objectStorageUseSsl ? "https" : "http"}://${
-					meta.objectStorageEndpoint
-				}${meta.objectStoragePort ? `:${meta.objectStoragePort}` : ""}/${
-					meta.objectStorageBucket
+		const instanceMeta = await fetchMeta();
+		const baseUrl = instanceMeta
+			? instanceMeta.objectStorageBaseUrl ??
+				`${instanceMeta.objectStorageUseSsl ? "https" : "http"}://${
+					instanceMeta.objectStorageEndpoint
+				}${instanceMeta.objectStoragePort ? `:${instanceMeta.objectStoragePort}` : ""}/${
+					instanceMeta.objectStorageBucket
 				}`
 			: null;
 		if (baseUrl !== null && url.startsWith(baseUrl)) return url;

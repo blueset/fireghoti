@@ -402,7 +402,7 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, me) => {
-	const instance = await fetchMeta();
+	const instanceMeta = await fetchMeta();
 
 	const emojis = await Emojis.find({
 		where: {
@@ -425,56 +425,57 @@ export default define(meta, paramDef, async (ps, me) => {
 	});
 
 	const response: any = {
-		maintainerName: instance.maintainerName,
-		maintainerEmail: instance.maintainerEmail,
+		maintainerName: instanceMeta.maintainerName,
+		maintainerEmail: instanceMeta.maintainerEmail,
 
 		version: config.version,
 
-		name: instance.name,
+		name: instanceMeta.name,
 		uri: config.url,
-		description: instance.description,
-		langs: instance.langs,
-		tosUrl: instance.tosUrl,
-		moreUrls: instance.moreUrls,
-		repositoryUrl: instance.repositoryUrl,
-		feedbackUrl: instance.feedbackUrl,
+		description: instanceMeta.description,
+		langs: instanceMeta.langs,
+		tosUrl: instanceMeta.tosUrl,
+		moreUrls: instanceMeta.moreUrls,
+		repositoryUrl: instanceMeta.repositoryUrl,
+		feedbackUrl: instanceMeta.feedbackUrl,
 
-		secureMode: instance.secureMode,
-		privateMode: instance.privateMode,
+		secureMode: instanceMeta.secureMode,
+		privateMode: instanceMeta.privateMode,
 
-		disableRegistration: instance.disableRegistration,
-		disableLocalTimeline: instance.disableLocalTimeline,
-		disableRecommendedTimeline: instance.disableRecommendedTimeline,
-		disableGlobalTimeline: instance.disableGlobalTimeline,
-		enableGuestTimeline: instance.enableGuestTimeline,
-		driveCapacityPerLocalUserMb: instance.localDriveCapacityMb,
-		driveCapacityPerRemoteUserMb: instance.remoteDriveCapacityMb,
-		antennaLimit: instance.antennaLimit,
-		emailRequiredForSignup: instance.emailRequiredForSignup,
-		enableHcaptcha: instance.enableHcaptcha,
-		hcaptchaSiteKey: instance.hcaptchaSiteKey,
-		enableRecaptcha: instance.enableRecaptcha,
-		recaptchaSiteKey: instance.recaptchaSiteKey,
-		swPublickey: instance.swPublicKey,
-		themeColor: instance.themeColor,
-		mascotImageUrl: instance.mascotImageUrl,
-		bannerUrl: instance.bannerUrl,
-		errorImageUrl: instance.errorImageUrl,
-		iconUrl: instance.iconUrl,
-		backgroundImageUrl: instance.backgroundImageUrl,
-		logoImageUrl: instance.logoImageUrl,
+		disableRegistration: instanceMeta.disableRegistration,
+		disableLocalTimeline: instanceMeta.disableLocalTimeline,
+		disableRecommendedTimeline: instanceMeta.disableRecommendedTimeline,
+		disableGlobalTimeline: instanceMeta.disableGlobalTimeline,
+		enableGuestTimeline: instanceMeta.enableGuestTimeline,
+		driveCapacityPerLocalUserMb: instanceMeta.localDriveCapacityMb,
+		driveCapacityPerRemoteUserMb: instanceMeta.remoteDriveCapacityMb,
+		antennaLimit: instanceMeta.antennaLimit,
+		emailRequiredForSignup: instanceMeta.emailRequiredForSignup,
+		enableHcaptcha: instanceMeta.enableHcaptcha,
+		hcaptchaSiteKey: instanceMeta.hcaptchaSiteKey,
+		enableRecaptcha: instanceMeta.enableRecaptcha,
+		recaptchaSiteKey: instanceMeta.recaptchaSiteKey,
+		swPublickey: instanceMeta.swPublicKey,
+		themeColor: instanceMeta.themeColor,
+		mascotImageUrl: instanceMeta.mascotImageUrl,
+		bannerUrl: instanceMeta.bannerUrl,
+		errorImageUrl: instanceMeta.errorImageUrl,
+		iconUrl: instanceMeta.iconUrl,
+		backgroundImageUrl: instanceMeta.backgroundImageUrl,
+		logoImageUrl: instanceMeta.logoImageUrl,
 		maxNoteTextLength: config.maxNoteLength, // for backward compatibility
 		maxCaptionTextLength: config.maxCaptionLength,
-		emojis: instance.privateMode && !me ? [] : await Emojis.packMany(emojis),
+		emojis:
+			instanceMeta.privateMode && !me ? [] : await Emojis.packMany(emojis),
 		// クライアントの手間を減らすためあらかじめJSONに変換しておく
-		defaultLightTheme: instance.defaultLightTheme
-			? JSON.stringify(JSON5.parse(instance.defaultLightTheme))
+		defaultLightTheme: instanceMeta.defaultLightTheme
+			? JSON.stringify(JSON5.parse(instanceMeta.defaultLightTheme))
 			: null,
-		defaultDarkTheme: instance.defaultDarkTheme
-			? JSON.stringify(JSON5.parse(instance.defaultDarkTheme))
+		defaultDarkTheme: instanceMeta.defaultDarkTheme
+			? JSON.stringify(JSON5.parse(instanceMeta.defaultDarkTheme))
 			: null,
 		ads:
-			instance.privateMode && !me
+			instanceMeta.privateMode && !me
 				? []
 				: ads.map((ad) => ({
 						id: ad.id,
@@ -483,50 +484,52 @@ export default define(meta, paramDef, async (ps, me) => {
 						ratio: ad.ratio,
 						imageUrl: ad.imageUrl,
 					})),
-		enableEmail: instance.enableEmail,
+		enableEmail: instanceMeta.enableEmail,
 
-		enableServiceWorker: instance.enableServiceWorker,
+		enableServiceWorker: instanceMeta.enableServiceWorker,
 
 		translatorAvailable:
-			instance.deeplAuthKey != null || instance.libreTranslateApiUrl != null,
-		defaultReaction: instance.defaultReaction,
-		donationLink: instance.donationLink,
-		enableServerMachineStats: instance.enableServerMachineStats,
-		enableIdenticonGeneration: instance.enableIdenticonGeneration,
+			instanceMeta.deeplAuthKey != null ||
+			instanceMeta.libreTranslateApiUrl != null,
+		defaultReaction: instanceMeta.defaultReaction,
+		donationLink: instanceMeta.donationLink,
+		enableServerMachineStats: instanceMeta.enableServerMachineStats,
+		enableIdenticonGeneration: instanceMeta.enableIdenticonGeneration,
 
 		...(ps.detail
 			? {
-					pinnedPages: instance.privateMode && !me ? [] : instance.pinnedPages,
+					pinnedPages:
+						instanceMeta.privateMode && !me ? [] : instanceMeta.pinnedPages,
 					pinnedClipId:
-						instance.privateMode && !me ? [] : instance.pinnedClipId,
-					cacheRemoteFiles: instance.cacheRemoteFiles,
-					markLocalFilesNsfwByDefault: instance.markLocalFilesNsfwByDefault,
+						instanceMeta.privateMode && !me ? [] : instanceMeta.pinnedClipId,
+					cacheRemoteFiles: instanceMeta.cacheRemoteFiles,
+					markLocalFilesNsfwByDefault: instanceMeta.markLocalFilesNsfwByDefault,
 					requireSetup: (await countLocalUsers()) === 0,
 				}
 			: {}),
 	};
 
 	if (ps.detail) {
-		if (!instance.privateMode || me) {
-			const proxyAccount = instance.proxyAccountId
-				? await Users.pack(instance.proxyAccountId).catch(() => null)
+		if (!instanceMeta.privateMode || me) {
+			const proxyAccount = instanceMeta.proxyAccountId
+				? await Users.pack(instanceMeta.proxyAccountId).catch(() => null)
 				: null;
 			response.proxyAccountName = proxyAccount ? proxyAccount.username : null;
 		}
 
 		response.features = {
-			registration: !instance.disableRegistration,
-			localTimeLine: !instance.disableLocalTimeline,
-			recommendedTimeline: !instance.disableRecommendedTimeline,
-			globalTimeLine: !instance.disableGlobalTimeline,
-			guestTimeline: instance.enableGuestTimeline,
-			emailRequiredForSignup: instance.emailRequiredForSignup,
-			hcaptcha: instance.enableHcaptcha,
-			recaptcha: instance.enableRecaptcha,
-			objectStorage: instance.useObjectStorage,
-			serviceWorker: instance.enableServiceWorker,
+			registration: !instanceMeta.disableRegistration,
+			localTimeLine: !instanceMeta.disableLocalTimeline,
+			recommendedTimeline: !instanceMeta.disableRecommendedTimeline,
+			globalTimeLine: !instanceMeta.disableGlobalTimeline,
+			guestTimeline: instanceMeta.enableGuestTimeline,
+			emailRequiredForSignup: instanceMeta.emailRequiredForSignup,
+			hcaptcha: instanceMeta.enableHcaptcha,
+			recaptcha: instanceMeta.enableRecaptcha,
+			objectStorage: instanceMeta.useObjectStorage,
+			serviceWorker: instanceMeta.enableServiceWorker,
 			postEditing: true,
-			postImports: instance.experimentalFeatures?.postImports || false,
+			postImports: instanceMeta.experimentalFeatures?.postImports || false,
 			miauth: true,
 		};
 	}

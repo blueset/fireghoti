@@ -123,12 +123,12 @@ export default define(meta, paramDef, async (ps, user) => {
 	let userList;
 	let userGroupJoining;
 
-	const instance = await fetchMeta();
+	const instanceMeta = await fetchMeta();
 
 	const antennas = await Antennas.findBy({
 		userId: user.id,
 	});
-	if (antennas.length >= instance.antennaLimit) {
+	if (antennas.length >= instanceMeta.antennaLimit) {
 		throw new ApiError(meta.errors.tooManyAntennas);
 	}
 

@@ -11,23 +11,23 @@ import { validateEmailForAccount } from "@/services/validate-email-for-account.j
 export default async (ctx: Koa.Context) => {
 	const body = ctx.request.body;
 
-	const instance = await fetchMeta();
+	const instanceMeta = await fetchMeta();
 
 	// Verify *Captcha
 	// ただしテスト時はこの機構は障害となるため無効にする
 	if (process.env.NODE_ENV !== "test") {
-		if (instance.enableHcaptcha && instance.hcaptchaSecretKey) {
+		if (instanceMeta.enableHcaptcha && instanceMeta.hcaptchaSecretKey) {
 			await verifyHcaptcha(
-				instance.hcaptchaSecretKey,
+				instanceMeta.hcaptchaSecretKey,
 				body["hcaptcha-response"],
 			).catch((e) => {
 				ctx.throw(400, e);
 			});
 		}
 
-		if (instance.enableRecaptcha && instance.recaptchaSecretKey) {
+		if (instanceMeta.enableRecaptcha && instanceMeta.recaptchaSecretKey) {
 			await verifyRecaptcha(
-				instance.recaptchaSecretKey,
+				instanceMeta.recaptchaSecretKey,
 				body["g-recaptcha-response"],
 			).catch((e) => {
 				ctx.throw(400, e);
@@ -47,7 +47,7 @@ export default async (ctx: Koa.Context) => {
 		return;
 	}
 
-	if (instance.emailRequiredForSignup) {
+	if (instanceMeta.emailRequiredForSignup) {
 		if (emailAddress == null || typeof emailAddress !== "string") {
 			ctx.status = 400;
 			return;
@@ -60,7 +60,7 @@ export default async (ctx: Koa.Context) => {
 		}
 	}
 
-	if (instance.disableRegistration) {
+	if (instanceMeta.disableRegistration) {
 		if (invitationCode == null || typeof invitationCode !== "string") {
 			ctx.status = 400;
 			return;
@@ -78,7 +78,7 @@ export default async (ctx: Koa.Context) => {
 		RegistrationTickets.delete(ticket.id);
 	}
 
-	if (instance.emailRequiredForSignup) {
+	if (instanceMeta.emailRequiredForSignup) {
 		const code = rndstr("a-z0-9", 16);
 
 		// Generate hash of password

@@ -74,8 +74,8 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, user) => {
-	const m = await fetchMeta();
-	if (m.disableRecommendedTimeline) {
+	const instanceMeta = await fetchMeta();
+	if (instanceMeta.disableRecommendedTimeline) {
 		if (user == null || !(user.isAdmin || user.isModerator)) {
 			throw new ApiError(meta.errors.rtlDisabled);
 		}
@@ -90,7 +90,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		ps.untilDate,
 	)
 		.andWhere(
-			`(note.userHost = ANY ('{"${m.recommendedInstances.join('","')}"}'))`,
+			`(note.userHost = ANY ('{"${instanceMeta.recommendedInstances.join('","')}"}'))`,
 		)
 		.andWhere("(note.visibility = 'public')")
 		.innerJoinAndSelect("note.user", "user")

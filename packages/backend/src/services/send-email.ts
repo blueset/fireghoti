@@ -12,30 +12,31 @@ export async function sendEmail(
 	html: string,
 	text: string,
 ) {
-	const meta = await fetchMeta();
+	const instanceMeta = await fetchMeta();
 
 	const iconUrl = `${config.url}/static-assets/mi-white.png`;
 	const emailSettingUrl = `${config.url}/settings/email`;
 
-	const enableAuth = meta.smtpUser != null && meta.smtpUser !== "";
+	const enableAuth =
+		instanceMeta.smtpUser != null && instanceMeta.smtpUser !== "";
 
 	const transporter = nodemailer.createTransport({
-		host: meta.smtpHost,
-		port: meta.smtpPort,
-		secure: meta.smtpSecure,
+		host: instanceMeta.smtpHost,
+		port: instanceMeta.smtpPort,
+		secure: instanceMeta.smtpSecure,
 		ignoreTLS: !enableAuth,
 		proxy: config.proxySmtp,
 		auth: enableAuth
 			? {
-					user: meta.smtpUser,
-					pass: meta.smtpPass,
+					user: instanceMeta.smtpUser,
+					pass: instanceMeta.smtpPass,
 				}
 			: undefined,
 	} as any);
 
 	try {
 		const info = await transporter.sendMail({
-			from: meta.email!,
+			from: instanceMeta.email!,
 			to: to,
 			subject: subject,
 			text: text,
@@ -48,8 +49,8 @@ export async function sendEmail(
 	<body style="background: #191724; padding: 16px; margin: 0; font-family: sans-serif; font-size: 14px;">
 		<main style="max-width: 500px; margin: 0 auto; background: #1f1d2e; color: #e0def4; border-radius: 20px;">
 			<header style="padding: 32px; background: #31748f; color: #e0def4; display: flex; border-radius: 20px;">
-				<img src="${meta.logoImageUrl || meta.iconUrl || iconUrl}" style="max-width: 128px; max-height: 72px; vertical-align: bottom; margin-right: 16px;"/>
-				<h1 style="margin: 0 0 1em 0;">${meta.name}</h1>
+				<img src="${instanceMeta.logoImageUrl || instanceMeta.iconUrl || iconUrl}" style="max-width: 128px; max-height: 72px; vertical-align: bottom; margin-right: 16px;"/>
+				<h1 style="margin: 0 0 1em 0;">${instanceMeta.name}</h1>
 			</header>
 			<article style="padding: 32px;">
 				<h1 style="color: #ebbcba !important;">${subject}</h1>

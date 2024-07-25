@@ -16,9 +16,9 @@ export default class extends Channel {
 	}
 
 	public async init(params: any) {
-		const meta = await fetchMeta();
+		const instanceMeta = await fetchMeta();
 		if (
-			meta.disableRecommendedTimeline &&
+			instanceMeta.disableRecommendedTimeline &&
 			!this.user!.isAdmin &&
 			!this.user!.isModerator
 		)
@@ -36,11 +36,11 @@ export default class extends Channel {
 		// チャンネルの投稿ではなく、その投稿のユーザーをフォローしている または
 		// チャンネルの投稿ではなく、全体公開のローカルの投稿 または
 		// フォローしているチャンネルの投稿 の場合だけ
-		const meta = await fetchMeta();
+		const instanceMeta = await fetchMeta();
 		if (
 			!(
 				note.user.host != null &&
-				meta.recommendedInstances.includes(note.user.host) &&
+				instanceMeta.recommendedInstances.includes(note.user.host) &&
 				note.visibility === "public"
 			)
 		)

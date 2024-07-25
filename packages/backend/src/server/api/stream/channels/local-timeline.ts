@@ -15,13 +15,13 @@ export default class extends Channel {
 	}
 
 	public async init(params: any) {
-		const meta = await fetchMeta();
-		if (meta.disableLocalTimeline) {
+		const instanceMeta = await fetchMeta();
+		if (instanceMeta.disableLocalTimeline) {
 			if (this.user == null || !(this.user.isAdmin || this.user.isModerator))
 				return;
 		}
 
-		if (!meta.enableGuestTimeline && this.user == null) return;
+		if (!instanceMeta.enableGuestTimeline && this.user == null) return;
 
 		this.withReplies = params != null ? !!params.withReplies : true;
 

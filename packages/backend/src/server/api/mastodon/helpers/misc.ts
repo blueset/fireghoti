@@ -43,18 +43,18 @@ export class MiscHelpers {
 			},
 			order: { id: "ASC" },
 		}).then((p) => (p ? UserConverter.encode(p, ctx) : null));
-		const meta = await fetchMeta();
+		const instanceMeta = await fetchMeta();
 
 		const res = {
 			uri: config.host,
-			title: meta.name || "Firefish",
+			title: instanceMeta.name || "Firefish",
 			short_description:
-				meta.description?.substring(0, 50) ||
+				instanceMeta.description?.substring(0, 50) ||
 				"This is a Firefish instance. It doesn’t seem to have a description.",
 			description:
-				meta.description ||
+				instanceMeta.description ||
 				"This is a Firefish instance. It doesn’t seem to have a description.",
-			email: meta.maintainerEmail || "",
+			email: instanceMeta.maintainerEmail || "",
 			version: `4.2.8 (compatible; Firefish ${config.version})`,
 			urls: {
 				streaming_api: `${config.url.replace(/^http(?=s?:\/\/)/, "ws")}`,
@@ -65,11 +65,11 @@ export class MiscHelpers {
 				domain_count: instanceCount,
 			}),
 			max_toot_chars: config.maxNoteLength,
-			thumbnail: meta.bannerUrl || "/static-assets/transparent.png",
-			languages: meta.langs,
-			registrations: !meta.disableRegistration,
-			approval_required: meta.disableRegistration,
-			invites_enabled: meta.disableRegistration,
+			thumbnail: instanceMeta.bannerUrl || "/static-assets/transparent.png",
+			languages: instanceMeta.langs,
+			registrations: !instanceMeta.disableRegistration,
+			approval_required: instanceMeta.disableRegistration,
+			invites_enabled: instanceMeta.disableRegistration,
 			configuration: {
 				accounts: {
 					max_featured_tags: 20,
@@ -96,7 +96,7 @@ export class MiscHelpers {
 				},
 				reactions: {
 					max_reactions: 1,
-					default_reaction: meta.defaultReaction,
+					default_reaction: instanceMeta.defaultReaction,
 				},
 			},
 			contact_account: contact,
@@ -119,15 +119,15 @@ export class MiscHelpers {
 			},
 			order: { id: "ASC" },
 		}).then((p) => (p ? UserConverter.encode(p, ctx) : null));
-		const meta = await fetchMeta();
+		const instanceMeta = await fetchMeta();
 
 		const res = {
 			domain: config.host,
-			title: meta.name || "Firefish",
+			title: instanceMeta.name || "Firefish",
 			version: `4.2.8 (compatible; Firefish ${config.version})`,
-			source_url: meta.repositoryUrl,
+			source_url: instanceMeta.repositoryUrl,
 			description:
-				meta.description ||
+				instanceMeta.description ||
 				"This is a Firefish instance. It doesn’t seem to have a description.",
 			usage: {
 				users: {
@@ -135,15 +135,15 @@ export class MiscHelpers {
 				},
 			},
 			thumbnail: {
-				url: meta.bannerUrl || "/static-assets/transparent.png",
+				url: instanceMeta.bannerUrl || "/static-assets/transparent.png",
 			},
-			languages: meta.langs,
+			languages: instanceMeta.langs,
 			configuration: {
 				urls: {
 					streaming: `${config.url.replace(/^http(?=s?:\/\/)/, "ws")}`,
 				},
 				vapid: {
-					public_key: meta.swPublicKey || "",
+					public_key: instanceMeta.swPublicKey || "",
 				},
 				accounts: {
 					max_featured_tags: 20,
@@ -168,16 +168,18 @@ export class MiscHelpers {
 					max_expiration: 2629746,
 				},
 				translation: {
-					enabled: !!(meta.libreTranslateApiKey || meta.deeplAuthKey),
+					enabled: !!(
+						instanceMeta.libreTranslateApiKey || instanceMeta.deeplAuthKey
+					),
 				},
 			},
 			registrations: {
-				enabled: !meta.disableRegistration,
+				enabled: !instanceMeta.disableRegistration,
 				approval_required: false,
 				message: null,
 			},
 			contact: {
-				email: meta.maintainerEmail || "",
+				email: instanceMeta.maintainerEmail || "",
 				account: contact,
 			},
 			rules: [],

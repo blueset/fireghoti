@@ -117,8 +117,8 @@ export default async (ctx: Router.RouterContext) => {
 
 		setResponseType(ctx);
 	}
-	const meta = await fetchMeta();
-	if (meta.secureMode || meta.privateMode) {
+	const instanceMeta = await fetchMeta();
+	if (instanceMeta.secureMode || instanceMeta.privateMode) {
 		ctx.set("Cache-Control", "private, max-age=0, must-revalidate");
 	} else {
 		ctx.set("Cache-Control", "public, max-age=180");
