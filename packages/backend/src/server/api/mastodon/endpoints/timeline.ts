@@ -82,6 +82,7 @@ export function setupEndpointsTimeline(router: Router): void {
 			ctx.body = await NoteConverter.encodeMany(res, ctx);
 		},
 	);
+
 	router.get<{ Params: { hashtag: string } }>(
 		"/v1/timelines/tag/:hashtag",
 		auth(false, ["read:statuses"]),
@@ -110,6 +111,7 @@ export function setupEndpointsTimeline(router: Router): void {
 			ctx.body = await NoteConverter.encodeMany(res, ctx);
 		},
 	);
+
 	router.get(
 		"/v1/timelines/home",
 		auth(true, ["read:statuses"]),
@@ -126,6 +128,7 @@ export function setupEndpointsTimeline(router: Router): void {
 			ctx.body = await NoteConverter.encodeMany(res, ctx);
 		},
 	);
+
 	router.get<{ Params: { listId: string } }>(
 		"/v1/timelines/list/:listId",
 		auth(true, ["read:lists"]),
@@ -149,6 +152,7 @@ export function setupEndpointsTimeline(router: Router): void {
 			ctx.body = await NoteConverter.encodeMany(res, ctx);
 		},
 	);
+
 	router.get(
 		"/v1/conversations",
 		auth(true, ["read:statuses"]),
@@ -163,6 +167,7 @@ export function setupEndpointsTimeline(router: Router): void {
 			);
 		},
 	);
+
 	router.get(
 		"/v1/markers",
 		auth(true, ["read:statuses"]),
@@ -171,6 +176,7 @@ export function setupEndpointsTimeline(router: Router): void {
 			ctx.body = await TimelineHelpers.getMarkers(args["timeline[]"], ctx);
 		},
 	);
+
 	router.post(
 		"/v1/markers",
 		auth(true, ["write:statuses"]),

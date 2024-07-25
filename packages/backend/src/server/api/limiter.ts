@@ -12,6 +12,7 @@ export const limiter = (
 ) =>
 	new Promise<void>((ok, reject) => {
 		if (process.env.NODE_ENV === "test") ok();
+
 		const hasShortTermLimit = typeof limitation.minInterval === "number";
 
 		const hasLongTermLimit =

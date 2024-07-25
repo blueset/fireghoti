@@ -51,12 +51,11 @@ export const paramDef = {
 		auth: { type: "string" },
 		publickey: { type: "string" },
 		sendReadMessage: { type: "boolean", default: false },
-		isMastodon: { type: "boolean", default: false },
 	},
 	required: ["endpoint", "auth", "publickey"],
 } as const;
 
-export default define(meta, paramDef, async (ps, me, token) => {
+export default define(meta, paramDef, async (ps, me) => {
 	const subscription = await SwSubscriptions.findOneBy({
 		userId: me.id,
 		endpoint: ps.endpoint,
@@ -87,7 +86,6 @@ export default define(meta, paramDef, async (ps, me, token) => {
 		auth: ps.auth,
 		publickey: ps.publickey,
 		sendReadMessage: ps.sendReadMessage,
-		appAccessTokenId: ps.isMastodon && token ? token.id : undefined,
 	});
 
 	return {

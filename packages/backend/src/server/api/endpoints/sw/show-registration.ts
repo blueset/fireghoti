@@ -1,4 +1,3 @@
-import { fetchMeta } from "backend-rs";
 import { SwSubscriptions } from "@/models/index.js";
 import define from "@/server/api/define.js";
 
@@ -29,11 +28,6 @@ export const meta = {
 				optional: false,
 				nullable: false,
 			},
-			key: {
-				type: "string",
-				optional: false,
-				nullable: true,
-			},
 		},
 	},
 } as const;
@@ -41,33 +35,23 @@ export const meta = {
 export const paramDef = {
 	type: "object",
 	properties: {
-		endpoint: { type: "string", default: null },
+		endpoint: { type: "string" },
 	},
-	required: [],
+	required: ["endpoint"],
 } as const;
 
 // eslint-disable-next-line import/no-default-export
-export default define(meta, paramDef, async (ps, me, token) => {
-	const subscription = ps.endpoint
-		? await SwSubscriptions.findOneBy({
-				userId: me.id,
-				endpoint: ps.endpoint,
-			})
-		: token
-			? await SwSubscriptions.findOneBy({
-					userId: me.id,
-					appAccessTokenId: token.id,
-				})
-			: null;
-
-	const instance = await fetchMeta(true);
+export default define(meta, paramDef, async (ps, me) => {
+	const subscription = await SwSubscriptions.findOneBy({
+		userId: me.id,
+		endpoint: ps.endpoint,
+	});
 
 	if (subscription != null) {
 		return {
 			userId: subscription.userId,
 			endpoint: subscription.endpoint,
 			sendReadMessage: subscription.sendReadMessage,
-			key: instance.swPublicKey,
 		};
 	}
 

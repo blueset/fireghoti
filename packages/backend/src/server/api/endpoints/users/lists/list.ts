@@ -1,4 +1,4 @@
-import { UserListJoinings, UserLists } from "@/models/index.js";
+import { UserLists } from "@/models/index.js";
 import define from "@/server/api/define.js";
 
 export const meta = {
@@ -25,24 +25,14 @@ export const meta = {
 
 export const paramDef = {
 	type: "object",
-	properties: {
-		userId: { type: "string", nullable: true },
-	},
+	properties: {},
 	required: [],
 } as const;
 
 export default define(meta, paramDef, async (ps, me) => {
-	let query = UserLists.createQueryBuilder("userLists").where(
-		"userLists.userId = :userId",
-		{ userId: me.id },
-	);
-	if (ps.userId) {
-		query = query.andWhere(
-			`EXISTS(SELECT 1 FROM ${UserListJoinings.metadata.tableName} ulj WHERE ulj."userId" = :joinUserId AND ulj."userListId" = "userLists"."id")`,
-			{ joinUserId: ps.userId },
-		);
-	}
-	const userLists = await query.getMany();
+	const userLists = await UserLists.findBy({
+		userId: me.id,
+	});
 
 	return await Promise.all(userLists.map((x) => UserLists.pack(x)));
 });
