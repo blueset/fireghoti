@@ -89,6 +89,6 @@ export default async function (
 				requestId ?? `${config.url}/follows/${followRequest.id}`,
 			),
 		);
-		deliver(follower, content, followee.inbox);
+		deliver(follower.id, content, followee.inbox);
 	}
 }

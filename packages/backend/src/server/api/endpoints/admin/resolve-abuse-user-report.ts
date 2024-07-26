@@ -1,9 +1,10 @@
 import define from "@/server/api/define.js";
 import { AbuseUserReports, Users } from "@/models/index.js";
-import { getInternalActor } from "backend-rs";
+import { getInstanceActor } from "backend-rs";
 import { deliver } from "@/queue/index.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import { renderFlag } from "@/remote/activitypub/renderer/flag.js";
+import { ILocalUser } from "@/models/entities/user";
 
 export const meta = {
 	tags: ["admin"],
@@ -29,11 +30,11 @@ export default define(meta, paramDef, async (ps, me) => {
 	}
 
 	if (ps.forward && report.targetUserHost != null) {
-		const actor = await getInternalActor("instance");
+		const actor = (await getInstanceActor()) as ILocalUser;
 		const targetUser = await Users.findOneByOrFail({ id: report.targetUserId });
 
 		deliver(
-			actor,
+			actor.id,
 			renderActivity(renderFlag(actor, [targetUser.uri!], report.comment)),
 			targetUser.inbox,
 		);

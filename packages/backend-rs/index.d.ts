@@ -448,9 +448,11 @@ export declare function getFullApAccount(username: string, host?: string | undef
 
 export declare function getImageSizeFromUrl(url: string): Promise<ImageSize>
 
-export declare function getInternalActor(actor: InternalActor): Promise<User>
+export declare function getInstanceActor(): Promise<User>
 
 export declare function getNoteSummary(fileIds: Array<string>, text: string | undefined | null, cw: string | undefined | null, hasPoll: boolean): string
+
+export declare function getRelayActorId(): Promise<string>
 
 export declare function getTimestamp(id: string): number
 

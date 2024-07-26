@@ -1,7 +1,7 @@
 import { publishMainStream, publishUserEvent } from "@/services/stream.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderFollow from "@/remote/activitypub/renderer/follow.js";
-import renderUndo from "@/remote/activitypub/renderer/undo.js";
+import { renderUndo } from "@/remote/activitypub/renderer/undo.js";
 import renderReject from "@/remote/activitypub/renderer/reject.js";
 import { deliver, webhookDeliver } from "@/queue/index.js";
 import Logger from "../logger.js";
@@ -66,9 +66,9 @@ export default async function (
 
 	if (Users.isLocalUser(follower) && Users.isRemoteUser(followee)) {
 		const content = renderActivity(
-			renderUndo(renderFollow(follower, followee), follower),
+			renderUndo(renderFollow(follower, followee), follower.id),
 		);
-		deliver(follower, content, followee.inbox);
+		deliver(follower.id, content, followee.inbox);
 	}
 
 	if (Users.isLocalUser(followee) && Users.isRemoteUser(follower)) {
@@ -76,7 +76,7 @@ export default async function (
 		const content = renderActivity(
 			renderReject(renderFollow(follower, followee), followee),
 		);
-		deliver(followee, content, follower.inbox);
+		deliver(followee.id, content, follower.inbox);
 	}
 }
 

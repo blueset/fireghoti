@@ -1,6 +1,6 @@
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderFollow from "@/remote/activitypub/renderer/follow.js";
-import renderUndo from "@/remote/activitypub/renderer/undo.js";
+import { renderUndo } from "@/remote/activitypub/renderer/undo.js";
 import { deliver } from "@/queue/index.js";
 import { publishMainStream } from "@/services/stream.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
@@ -18,12 +18,12 @@ export default async function (
 ) {
 	if (Users.isRemoteUser(followee)) {
 		const content = renderActivity(
-			renderUndo(renderFollow(follower, followee), follower),
+			renderUndo(renderFollow(follower, followee), follower.id),
 		);
 
 		if (Users.isLocalUser(follower)) {
 			// 本来このチェックは不要だけどTSに怒られるので
-			deliver(follower, content, followee.inbox);
+			deliver(follower.id, content, followee.inbox);
 		}
 	}
 

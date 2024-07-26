@@ -1,6 +1,5 @@
-mod cache;
-
-pub use cache::get;
+pub mod instance;
+pub mod relay;
 
 use super::acct::Acct;
 

@@ -2,7 +2,7 @@ import { Brackets, In } from "typeorm";
 import { publishNoteStream } from "@/services/stream.js";
 import renderDelete from "@/remote/activitypub/renderer/delete.js";
 import renderAnnounce from "@/remote/activitypub/renderer/announce.js";
-import renderUndo from "@/remote/activitypub/renderer/undo.js";
+import { renderUndo } from "@/remote/activitypub/renderer/undo.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderTombstone from "@/remote/activitypub/renderer/tombstone.js";
 import { config } from "@/config.js";
@@ -100,7 +100,7 @@ export default async function (
 							renote.uri || `${config.url}/notes/${renote.id}`,
 							note,
 						),
-						user,
+						user.id,
 					)
 				: renderDelete(renderTombstone(`${config.url}/notes/${note.id}`), user),
 		);

@@ -173,10 +173,10 @@ export async function deliverReadActivity(
 			undefined,
 			contents,
 		);
-		deliver(user, renderActivity(collection), recipient.inbox);
+		deliver(user.id, renderActivity(collection), recipient.inbox);
 	} else {
 		for (const content of contents) {
-			deliver(user, renderActivity(content), recipient.inbox);
+			deliver(user.id, renderActivity(content), recipient.inbox);
 		}
 	}
 }

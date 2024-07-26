@@ -148,7 +148,7 @@ export default class DeliverManager {
 			// skip instances as indicated
 			if (instancesToSkip.includes(valid.host)) continue;
 
-			deliver(this.actor, this.activity, valid.inbox);
+			deliver(this.actor.id, this.activity, valid.inbox);
 		}
 	}
 }

@@ -2,7 +2,7 @@ import { config } from "@/config.js";
 import type { ILocalUser } from "@/models/entities/user.js";
 import {
 	extractHost,
-	getInternalActor,
+	getInstanceActor,
 	isAllowedServer,
 	isBlockedServer,
 	isSelfHost,
@@ -112,7 +112,7 @@ export default class Resolver {
 		}
 
 		if (!this.user) {
-			this.user = await getInternalActor("instance");
+			this.user = (await getInstanceActor()) as ILocalUser;
 		}
 
 		apLogger.info(

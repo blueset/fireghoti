@@ -185,7 +185,7 @@ export async function createMessage(
 
 		const activity = renderActivity(renderCreate(renderedNote, note));
 
-		deliver(user, activity, recipientUser.inbox);
+		deliver(user.id, activity, recipientUser.inbox);
 	}
 	return messageObj;
 }

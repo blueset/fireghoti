@@ -108,7 +108,7 @@ async function deliverReject(followee: Local, follower: Remote) {
 			followee,
 		),
 	);
-	deliver(followee, content, follower.inbox);
+	deliver(followee.id, content, follower.inbox);
 }
 
 /**

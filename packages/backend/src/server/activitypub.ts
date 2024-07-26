@@ -9,7 +9,7 @@ import renderKey from "@/remote/activitypub/renderer/key.js";
 import { renderPerson } from "@/remote/activitypub/renderer/person.js";
 import renderEmoji from "@/remote/activitypub/renderer/emoji.js";
 import { inbox as processInbox } from "@/queue/index.js";
-import { fetchMeta, getInternalActor, isSelfHost } from "backend-rs";
+import { fetchMeta, getInstanceActor, isSelfHost } from "backend-rs";
 import {
 	Notes,
 	Users,
@@ -295,7 +295,7 @@ router.get("/users/:user/collections/featured", Featured);
 
 // publickey
 router.get("/users/:user/publickey", async (ctx) => {
-	const instanceActor = await getInternalActor("instance");
+	const instanceActor = (await getInstanceActor()) as ILocalUser;
 	if (ctx.params.user === instanceActor.id) {
 		ctx.body = renderActivity(
 			renderKey(instanceActor, await getUserKeypair(instanceActor.id)),
@@ -359,7 +359,7 @@ async function userInfo(ctx: Router.RouterContext, user: User | null) {
 router.get("/users/:user", async (ctx, next) => {
 	if (!isActivityPubReq(ctx)) return await next();
 
-	const instanceActor = await getInternalActor("instance");
+	const instanceActor = (await getInstanceActor()) as ILocalUser;
 	if (ctx.params.user === instanceActor.id) {
 		await userInfo(ctx, instanceActor);
 		return;
@@ -386,7 +386,7 @@ router.get("/@:user", async (ctx, next) => {
 	if (!isActivityPubReq(ctx)) return await next();
 
 	if (ctx.params.user === "instance.actor") {
-		const instanceActor = await getInternalActor("instance");
+		const instanceActor = (await getInstanceActor()) as ILocalUser;
 		await userInfo(ctx, instanceActor);
 		return;
 	}
@@ -407,7 +407,7 @@ router.get("/@:user", async (ctx, next) => {
 });
 
 router.get("/actor", async (ctx, _next) => {
-	const instanceActor = await getInternalActor("instance");
+	const instanceActor = (await getInstanceActor()) as ILocalUser;
 	await userInfo(ctx, instanceActor);
 });
 //#endregion

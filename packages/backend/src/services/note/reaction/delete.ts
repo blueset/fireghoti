@@ -1,6 +1,6 @@
 import { publishNoteStream } from "@/services/stream.js";
 import { renderLike } from "@/remote/activitypub/renderer/like.js";
-import renderUndo from "@/remote/activitypub/renderer/undo.js";
+import { renderUndo } from "@/remote/activitypub/renderer/undo.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
@@ -56,7 +56,7 @@ export default async (
 	//#region 配信
 	if (Users.isLocalUser(user) && !note.localOnly) {
 		const content = renderActivity(
-			renderUndo(await renderLike(reaction, note), user),
+			renderUndo(await renderLike(reaction, note), user.id),
 		);
 		const dm = new DeliverManager(user, content);
 		if (note.userHost != null) {

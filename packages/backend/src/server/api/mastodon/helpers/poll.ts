@@ -141,7 +141,7 @@ export class PollHelpers {
 				})) as IRemoteUser;
 
 				deliver(
-					user,
+					user.id,
 					renderActivity(await renderVote(user, vote, note, poll, pollOwner)),
 					pollOwner.inbox,
 				);

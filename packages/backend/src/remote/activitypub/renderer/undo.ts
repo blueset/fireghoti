@@ -1,7 +1,6 @@
 import { config } from "@/config.js";
-import type { User } from "@/models/entities/user.js";
 
-export default (object: any, user: { id: User["id"] }) => {
+export const renderUndo = (object: any, userId: string) => {
 	if (object == null) return null;
 	const id =
 		typeof object.id === "string" && object.id.startsWith(config.url)
@@ -11,7 +10,7 @@ export default (object: any, user: { id: User["id"] }) => {
 	return {
 		type: "Undo",
 		...(id ? { id } : {}),
-		actor: `${config.url}/users/${user.id}`,
+		actor: `${config.url}/users/${userId}`,
 		object,
 		published: new Date().toISOString(),
 	};
