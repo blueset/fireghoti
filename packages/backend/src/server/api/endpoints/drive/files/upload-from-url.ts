@@ -24,6 +24,7 @@ export const paramDef = {
 	type: "object",
 	properties: {
 		url: { type: "string" },
+		name: { type: "string" },
 		folderId: {
 			type: "string",
 			format: "misskey:id",
@@ -41,6 +42,7 @@ export const paramDef = {
 export default define(meta, paramDef, async (ps, user) => {
 	uploadFromUrl({
 		url: ps.url,
+		name: ps.name,
 		user,
 		folderId: ps.folderId,
 		sensitive: ps.isSensitive,

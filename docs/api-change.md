@@ -2,6 +2,11 @@
 
 Breaking changes are indicated by the :warning: icon.
 
+## Unreleased
+
+- Added `name`, `category`, `aliases`, `license` optional parameters to `admin/emoji/add` endpoint.
+- Added `name` optional parameter to `drive/files/upload-from-url` endpoint.
+
 ## v20240725
 
 - Added `i/export-followers` endpoint.

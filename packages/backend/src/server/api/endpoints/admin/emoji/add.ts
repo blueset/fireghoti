@@ -2,7 +2,7 @@ import define from "@/server/api/define.js";
 import { Emojis, DriveFiles } from "@/models/index.js";
 import {
 	type ImageSize,
-	genId,
+	genIdAt,
 	getImageSizeFromUrl,
 	publishToBroadcastStream,
 } from "backend-rs";
@@ -36,7 +36,31 @@ export const meta = {
 export const paramDef = {
 	type: "object",
 	properties: {
-		fileId: { type: "string", format: "misskey:id" },
+		fileId: {
+			type: "string",
+			format: "misskey:id",
+			nullable: false,
+		},
+		name: {
+			type: "string",
+			nullable: false,
+		},
+		category: {
+			type: "string",
+			nullable: false,
+		},
+		aliases: {
+			type: "array",
+			nullable: false,
+			items: {
+				type: "string",
+				nullable: false,
+			},
+		},
+		license: {
+			type: "string",
+			nullable: false,
+		},
 	},
 	required: ["fileId"],
 } as const;
@@ -50,9 +74,12 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (file == null) throw new ApiError(meta.errors.noSuchFile);
 
-	const name = file.name.split(".")[0].match(/^[a-z0-9_]+$/)
-		? file.name.split(".")[0]
-		: `_${rndstr("a-z0-9", 8)}_`;
+	const name =
+		ps.name != null
+			? ps.name
+			: file.name.split(".")[0].match(/^[a-z0-9_]+$/)
+				? file.name.split(".")[0]
+				: `_${rndstr("a-z0-9", 8)}_`;
 
 	let size: ImageSize | null = null;
 	try {
@@ -62,17 +89,19 @@ export default define(meta, paramDef, async (ps, me) => {
 		apiLogger.debug(inspect(err));
 	}
 
+	const now = new Date();
+
 	const emoji = await Emojis.insert({
-		id: genId(),
-		updatedAt: new Date(),
+		id: genIdAt(now),
+		updatedAt: now,
 		name: name,
-		category: null,
+		category: ps.category ?? null,
 		host: null,
-		aliases: [],
+		aliases: ps.aliases ?? [],
 		originalUrl: file.url,
 		publicUrl: file.webpublicUrl ?? file.url,
 		type: file.webpublicType ?? file.type,
-		license: null,
+		license: ps.license ?? null,
 		width: size?.width || null,
 		height: size?.height || null,
 	}).then((x) => Emojis.findOneByOrFail(x.identifiers[0]));

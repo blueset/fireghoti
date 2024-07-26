@@ -21,6 +21,7 @@ type Args = {
 		host: User["host"];
 		driveCapacityOverrideMb: User["driveCapacityOverrideMb"];
 	} | null;
+	name?: string;
 	folderId?: DriveFolder["id"] | null;
 	uri?: string | null;
 	sensitive?: boolean;
@@ -34,6 +35,7 @@ type Args = {
 
 export async function uploadFromUrl({
 	url,
+	name,
 	user,
 	folderId = null,
 	uri = null,
@@ -53,14 +55,14 @@ export async function uploadFromUrl({
 		throw new Error("Private IP is not allowed");
 	}
 
-	let name = parsedUrl.pathname.split("/").pop() || null;
-	if (name == null || !DriveFiles.validateFileName(name)) {
-		name = null;
+	let filename = name ?? parsedUrl.pathname.split("/").pop();
+	if (filename == null || !DriveFiles.validateFileName(filename)) {
+		filename = null;
 	}
 
 	// If the comment is same as the name, skip comment
 	// (image.name is passed in when receiving attachment)
-	if (comment != null && name === comment) {
+	if (comment != null && filename === comment) {
 		comment = null;
 	}
 
@@ -74,7 +76,7 @@ export async function uploadFromUrl({
 		const driveFile = await addFile({
 			user,
 			path,
-			name,
+			name: filename,
 			comment,
 			folderId,
 			force,
