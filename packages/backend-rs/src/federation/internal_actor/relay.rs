@@ -29,7 +29,7 @@ async fn set_id_cache() -> Result<&'static str, Error> {
                 .one(db_conn().await?)
                 .await?;
 
-            Ok::<String, Error>(found_id.ok_or(Error::RelayActorNotFound)?)
+            found_id.ok_or(Error::RelayActorNotFound)
         })
         .await?;
 

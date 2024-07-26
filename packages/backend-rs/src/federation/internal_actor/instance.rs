@@ -30,7 +30,7 @@ async fn set_cache() -> Result<&'static User, Error> {
                 .one(db_conn().await?)
                 .await?;
 
-            Ok::<User, Error>(found_model.ok_or(Error::InstanceActorNotFound)?)
+            found_model.ok_or(Error::InstanceActorNotFound)
         })
         .await?;
 
