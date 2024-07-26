@@ -1,10 +1,10 @@
 //! In-memory relay actor id cache
 
-use super::RELAY_ACTOR_USERNAME;
 use crate::{database::db_conn, model::entity::user};
 use sea_orm::{prelude::*, QuerySelect, SelectColumns};
 use tokio::sync::OnceCell;
 
+pub const USERNAME: &str = "relay.actor";
 static RELAY_ACTOR_ID: OnceCell<String> = OnceCell::const_new();
 
 #[macros::errors]
@@ -23,7 +23,7 @@ async fn set_id_cache() -> Result<&'static str, Error> {
             let found_id = user::Entity::find()
                 .select_only()
                 .select_column(user::Column::Id)
-                .filter(user::Column::Username.eq(RELAY_ACTOR_USERNAME))
+                .filter(user::Column::Username.eq(USERNAME))
                 .filter(user::Column::Host.is_null())
                 .into_tuple::<String>()
                 .one(db_conn().await?)

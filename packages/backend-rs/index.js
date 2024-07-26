@@ -392,7 +392,6 @@ module.exports.greet = nativeBinding.greet
 module.exports.hashPassword = nativeBinding.hashPassword
 module.exports.Inbound = nativeBinding.Inbound
 module.exports.initializeRustLogger = nativeBinding.initializeRustLogger
-module.exports.InternalActor = nativeBinding.InternalActor
 module.exports.isAllowedServer = nativeBinding.isAllowedServer
 module.exports.isBlockedServer = nativeBinding.isBlockedServer
 module.exports.isOldPasswordAlgorithm = nativeBinding.isOldPasswordAlgorithm

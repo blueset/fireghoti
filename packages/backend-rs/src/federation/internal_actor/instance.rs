@@ -1,6 +1,5 @@
 //! In-memory instance actor cache
 
-use super::INSTANCE_ACTOR_USERNAME;
 use crate::{database::db_conn, model::entity::user};
 use sea_orm::prelude::*;
 use tokio::sync::OnceCell;
@@ -9,6 +8,7 @@ use tokio::sync::OnceCell;
 // https://github.com/napi-rs/napi-rs/issues/2060
 type User = user::Model;
 
+pub const USERNAME: &str = "instance.actor";
 static INSTANCE_ACTOR: OnceCell<User> = OnceCell::const_new();
 
 #[macros::errors]
@@ -25,7 +25,7 @@ async fn set_cache() -> Result<&'static User, Error> {
         .get_or_try_init(|| async {
             tracing::debug!("caching @instance.actor");
             let found_model = user::Entity::find()
-                .filter(user::Column::Username.eq(INSTANCE_ACTOR_USERNAME))
+                .filter(user::Column::Username.eq(USERNAME))
                 .filter(user::Column::Host.is_null())
                 .one(db_conn().await?)
                 .await?;

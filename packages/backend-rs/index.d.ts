@@ -531,9 +531,6 @@ export interface Instance {
   faviconUrl: string | null
 }
 
-export type InternalActor =  'instance'|
-'relay';
-
 /**
  * Checks if a server is allowlisted.
  * Returns `Ok(true)` if private mode is disabled.
