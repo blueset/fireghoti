@@ -22,7 +22,6 @@
 			:note="note"
 			:count="note.renoteCount"
 			:detailed-view="detailedView"
-			:disabled="note.scheduledAt != null"
 		/>
 		<XStarButtonNoEmoji
 			v-if="!enableEmojiReactions"

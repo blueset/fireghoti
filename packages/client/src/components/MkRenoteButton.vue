@@ -45,8 +45,9 @@ const buttonRef = ref<HTMLElement>();
 
 const canRenote = computed(
 	() =>
-		["public", "home"].includes(props.note.visibility) ||
-		props.note.userId === me?.id,
+		props.note.scheduledAt == null &&
+		(["public", "home"].includes(props.note.visibility) ||
+			props.note.userId === me?.id),
 );
 
 useTooltip(buttonRef, async (showing) => {
@@ -281,6 +282,9 @@ defineExpose({
 		color: var(--accent) !important;
 		opacity: 1 !important;
 		font-weight: 700;
+	}
+	&:disabled {
+		opacity: 0.3 !important;
 	}
 }
 </style>
