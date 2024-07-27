@@ -43,7 +43,7 @@ const errorRouter = new Router();
 const upload = multer({
 	storage: multer.diskStorage({}),
 	limits: {
-		fileSize: config.maxFileSize || 262144000,
+		fileSize: config.maxFileSize,
 		files: 1,
 	},
 });

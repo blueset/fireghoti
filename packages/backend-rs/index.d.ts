@@ -217,7 +217,7 @@ export interface Config {
   proxySmtp?: string
   proxyBypassHosts?: Array<string>
   allowedPrivateNetworks?: Array<string>
-  maxFileSize?: number
+  maxFileSize: number
   accessLog?: string
   clusterLimits: WorkerConfig
   cuid?: IdConfig
