@@ -39,7 +39,7 @@ We don't test Firefish on non-Linux systems, so please install Firefish on such 
 
 <details>
 
-<summary>Possible setup on FreeBSD (as of version <code>20240630</code>)</summary>
+<summary>Possible setup on FreeBSD (as of version <code>20240725</code>)</summary>
 
 You can install Firefish on FreeBSD by adding these extra steps to the standard instructions:
 
@@ -48,7 +48,7 @@ You can install Firefish on FreeBSD by adding these extra steps to the standard 
     ```json
       "pnpm": {
         "overrides": {
-          "rollup": "npm:@rollup/wasm-node@4.17.2"
+          "rollup": "npm:@rollup/wasm-node
         }
       }
     ```
