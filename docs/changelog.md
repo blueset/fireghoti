@@ -2,6 +2,8 @@
 
 Critical security updates are indicated by the :warning: icon.
 
+This changelog is not an exhaustive list. Code refactorings, minor bug fixes, documentation/dependency updates, etc. are usually not listed here. If you want to see all changes, click on the version number and check the commit history.
+
 - Server administrators must check [notice-for-admins.md](https://firefish.dev/firefish/firefish/-/blob/main/docs/notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](https://firefish.dev/firefish/firefish/-/blob/main/docs/api-change.md) as well.
 
