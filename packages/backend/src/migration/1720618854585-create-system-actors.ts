@@ -8,7 +8,7 @@ import * as util from "node:util";
 
 const generateKeyPair = util.promisify(crypto.generateKeyPair);
 
-export async function genRsaKeyPair(modulusLength = 2048) {
+async function genRsaKeyPair(modulusLength = 2048) {
 	return await generateKeyPair("rsa", {
 		modulusLength,
 		publicKeyEncoding: {
