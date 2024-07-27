@@ -2,7 +2,7 @@
 
 Breaking changes are indicated by the :warning: icon.
 
-## Unreleased
+## v20240728
 
 - Added `name`, `category`, `aliases`, `license` optional parameters to `admin/emoji/add` endpoint.
 - Added `name` optional parameter to `drive/files/upload-from-url` endpoint.
