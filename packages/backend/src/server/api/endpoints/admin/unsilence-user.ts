@@ -1,7 +1,7 @@
 import define from "@/server/api/define.js";
 import { Users } from "@/models/index.js";
 import { insertModerationLog } from "@/services/insert-moderation-log.js";
-import { publishInternalEvent } from "@/services/stream.js";
+import { InternalEvent, publishToInternalStream } from "backend-rs";
 
 export const meta = {
 	tags: ["admin"],
@@ -29,7 +29,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		isSilenced: false,
 	});
 
-	publishInternalEvent("userChangeSilencedState", {
+	publishToInternalStream(InternalEvent.Silence, {
 		id: user.id,
 		isSilenced: false,
 	});

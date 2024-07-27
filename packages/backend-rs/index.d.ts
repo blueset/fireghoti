@@ -574,6 +574,21 @@ export interface Instance {
   faviconUrl: string | null
 }
 
+export declare enum InternalEvent {
+  Suspend = 0,
+  Silence = 1,
+  Moderator = 2,
+  Token = 3,
+  LocalUser = 4,
+  RemoteUser = 5,
+  WebhookCreated = 6,
+  WebhookUpdated = 7,
+  WebhookDeleted = 8,
+  AntennaCreated = 9,
+  AntennaUpdated = 10,
+  AntennaDeleted = 11
+}
+
 /**
  * Checks if a server is allowlisted.
  * Returns `Ok(true)` if private mode is disabled.
@@ -1163,6 +1178,8 @@ export declare function publishToDriveFileStream(userId: string, kind: DriveFile
 export declare function publishToDriveFolderStream(userId: string, kind: DriveFolderEvent, object: any): Promise<void>
 
 export declare function publishToGroupChatStream(groupId: string, kind: ChatEvent, object: any): Promise<void>
+
+export declare function publishToInternalStream(kind: InternalEvent, object: any): Promise<void>
 
 export declare function publishToMainStream(userId: string, kind: Event, object: any): Promise<void>
 

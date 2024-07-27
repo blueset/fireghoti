@@ -1,9 +1,11 @@
-import { publishInternalEvent, publishUserEvent } from "@/services/stream.js";
+import { publishUserEvent } from "@/services/stream.js";
 import define from "@/server/api/define.js";
 import { Users, UserProfiles } from "@/models/index.js";
 import {
 	Event,
 	generateUserToken,
+	InternalEvent,
+	publishToInternalStream,
 	publishToMainStream,
 	verifyPassword,
 } from "backend-rs";
@@ -42,7 +44,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	});
 
 	// Publish event
-	publishInternalEvent("userTokenRegenerated", {
+	publishToInternalStream(InternalEvent.Token, {
 		id: user.id,
 		oldToken,
 		newToken,

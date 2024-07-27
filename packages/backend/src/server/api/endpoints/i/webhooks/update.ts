@@ -1,7 +1,7 @@
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { Webhooks } from "@/models/index.js";
-import { publishInternalEvent } from "@/services/stream.js";
+import { InternalEvent, publishToInternalStream } from "backend-rs";
 import { webhookEventTypes } from "@/models/entities/webhook.js";
 
 export const meta = {
@@ -57,5 +57,5 @@ export default define(meta, paramDef, async (ps, user) => {
 		active: ps.active,
 	});
 
-	publishInternalEvent("webhookUpdated", webhook);
+	publishToInternalStream(InternalEvent.WebhookUpdated, webhook);
 });

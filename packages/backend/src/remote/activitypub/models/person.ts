@@ -16,7 +16,14 @@ import type { IRemoteUser, CacheableUser } from "@/models/entities/user.js";
 import { User } from "@/models/entities/user.js";
 import type { Emoji } from "@/models/entities/emoji.js";
 import { UserNotePining } from "@/models/entities/user-note-pining.js";
-import { genId, genIdAt, isSameOrigin, toPuny } from "backend-rs";
+import {
+	genId,
+	genIdAt,
+	InternalEvent,
+	isSameOrigin,
+	publishToInternalStream,
+	toPuny,
+} from "backend-rs";
 import { UserPublickey } from "@/models/entities/user-publickey.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
@@ -26,7 +33,6 @@ import { normalizeForSearch } from "@/misc/normalize-for-search.js";
 import { truncate } from "@/misc/truncate.js";
 import { StatusError } from "@/misc/fetch.js";
 import { uriPersonCache } from "@/services/user-cache.js";
-import { publishInternalEvent } from "@/services/stream.js";
 import { db } from "@/db/postgre.js";
 import { apLogger } from "../logger.js";
 import { htmlToMfm } from "../misc/html-to-mfm.js";
@@ -611,7 +617,7 @@ export async function updatePerson(
 		},
 	);
 
-	publishInternalEvent("remoteUserUpdated", { id: user.id });
+	publishToInternalStream(InternalEvent.RemoteUser, { id: user.id });
 
 	// Hashtag Update
 	updateUsertags(user, tags);

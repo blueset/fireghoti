@@ -1,8 +1,11 @@
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { Antennas, UserLists, UserGroupJoinings } from "@/models/index.js";
-import { publishInternalEvent } from "@/services/stream.js";
-import { updateAntennaCache } from "backend-rs";
+import {
+	InternalEvent,
+	publishToInternalStream,
+	updateAntennaCache,
+} from "backend-rs";
 
 export const meta = {
 	tags: ["antennas"],
@@ -163,8 +166,8 @@ export default define(meta, paramDef, async (ps, user) => {
 		notify: ps.notify,
 	});
 
-	publishInternalEvent(
-		"antennaUpdated",
+	await publishToInternalStream(
+		InternalEvent.AntennaUpdated,
 		await Antennas.findOneByOrFail({ id: antenna.id }),
 	);
 	await updateAntennaCache();

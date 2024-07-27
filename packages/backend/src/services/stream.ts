@@ -14,7 +14,7 @@ import type {
 	// ChannelStreamTypes,
 	// DriveStreamTypes,
 	// GroupMessagingStreamTypes,
-	InternalStreamTypes,
+	// InternalStreamTypes,
 	// MainStreamTypes,
 	// MessagingIndexStreamTypes,
 	// MessagingStreamTypes,
@@ -45,12 +45,13 @@ class Publisher {
 		);
 	};
 
-	public publishInternalEvent = <K extends keyof InternalStreamTypes>(
-		type: K,
-		value?: InternalStreamTypes[K],
-	): void => {
-		this.publish("internal", type, typeof value === "undefined" ? null : value);
-	};
+	/* ported to backend-rs */
+	// public publishInternalEvent = <K extends keyof InternalStreamTypes>(
+	// 	type: K,
+	// 	value?: InternalStreamTypes[K],
+	// ): void => {
+	// 	this.publish("internal", type, typeof value === "undefined" ? null : value);
+	// };
 
 	public publishUserEvent = <K extends keyof UserStreamTypes>(
 		userId: User["id"],
@@ -215,7 +216,7 @@ const publisher = new Publisher();
 
 export default publisher;
 
-export const publishInternalEvent = publisher.publishInternalEvent;
+// export const publishInternalEvent = publisher.publishInternalEvent;
 export const publishUserEvent = publisher.publishUserEvent;
 // export const publishBroadcastStream = publisher.publishBroadcastStream;
 // export const publishMainStream = publisher.publishMainStream;

@@ -6,10 +6,10 @@ import { config } from "@/config.js";
 import type { User } from "@/models/entities/user.js";
 import { Users, Followings } from "@/models/index.js";
 import { Not, IsNull } from "typeorm";
-import { publishInternalEvent } from "@/services/stream.js";
+import { InternalEvent, publishToInternalStream } from "backend-rs";
 
 export async function doPostUnsuspend(user: User) {
-	publishInternalEvent("userChangeSuspendedState", {
+	publishToInternalStream(InternalEvent.Suspend, {
 		id: user.id,
 		isSuspended: false,
 	});

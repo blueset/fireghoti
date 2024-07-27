@@ -5,6 +5,7 @@ pub mod chat_index;
 pub mod custom_emoji;
 pub mod drive;
 pub mod group_chat;
+pub mod internal;
 pub mod main;
 pub mod moderation;
 pub mod note;
