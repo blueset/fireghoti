@@ -1,4 +1,3 @@
-import { publishMainStream } from "@/services/stream.js";
 import {
 	Notifications,
 	Mutings,
@@ -7,7 +6,13 @@ import {
 	Users,
 	Followings,
 } from "@/models/index.js";
-import { genIdAt, isSilencedServer, sendPushNotification } from "backend-rs";
+import {
+	Event,
+	genIdAt,
+	isSilencedServer,
+	publishToMainStream,
+	sendPushNotification,
+} from "backend-rs";
 import type { User } from "@/models/entities/user.js";
 import type { Notification } from "@/models/entities/notification.js";
 import { sendEmailNotification } from "./send-email-notification.js";
@@ -76,7 +81,7 @@ export async function createNotification(
 	const packed = await Notifications.pack(notification, {});
 
 	// Publish notification event
-	publishMainStream(notifieeId, "notification", packed);
+	publishToMainStream(notifieeId, Event.Notification, packed);
 
 	// 2秒経っても(今回作成した)通知が既読にならなかったら「未読の通知がありますよ」イベントを発行する
 	setTimeout(async () => {
@@ -111,7 +116,7 @@ export async function createNotification(
 		}
 		//#endregion
 
-		publishMainStream(notifieeId, "unreadNotification", packed);
+		publishToMainStream(notifieeId, Event.NewNotification, packed);
 
 		if (type === "follow")
 			sendEmailNotification.follow(

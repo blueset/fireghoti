@@ -2,7 +2,7 @@ import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import { renderUndo } from "@/remote/activitypub/renderer/undo.js";
 import { deliver } from "@/queue/index.js";
-import { publishMainStream } from "@/services/stream.js";
+import { Event, publishToMainStream } from "backend-rs";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
 import type { User } from "@/models/entities/user.js";
 import { Users, FollowRequests } from "@/models/index.js";
@@ -46,5 +46,5 @@ export default async function (
 
 	Users.pack(followee.id, followee, {
 		detail: true,
-	}).then((packed) => publishMainStream(followee.id, "meUpdated", packed));
+	}).then((packed) => publishToMainStream(followee.id, Event.Me, packed));
 }

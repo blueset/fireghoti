@@ -8,8 +8,7 @@ import {
 } from "@/models/index.js";
 import { config } from "@/config.js";
 import { procedures, hash } from "@/server/api/2fa.js";
-import { publishMainStream } from "@/services/stream.js";
-import { verifyPassword } from "backend-rs";
+import { Event, publishToMainStream, verifyPassword } from "backend-rs";
 
 const rpIdHashReal = hash(Buffer.from(config.hostname, "utf-8"));
 
@@ -132,9 +131,9 @@ export default define(meta, paramDef, async (ps, user) => {
 	});
 
 	// Publish meUpdated event
-	publishMainStream(
+	publishToMainStream(
 		user.id,
-		"meUpdated",
+		Event.Me,
 		await Users.pack(user.id, user, {
 			detail: true,
 			includeSecrets: true,

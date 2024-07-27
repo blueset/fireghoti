@@ -1,4 +1,4 @@
-import { publishMainStream, publishUserEvent } from "@/services/stream.js";
+import { publishUserEvent } from "@/services/stream.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import renderAccept from "@/remote/activitypub/renderer/accept.js";
@@ -17,7 +17,12 @@ import {
 	Instances,
 	UserProfiles,
 } from "@/models/index.js";
-import { genIdAt, isSilencedServer } from "backend-rs";
+import {
+	Event,
+	genIdAt,
+	isSilencedServer,
+	publishToMainStream,
+} from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
 import type { Packed } from "@/misc/schema.js";
@@ -126,9 +131,9 @@ export async function insertFollowingDoc(
 				"follow",
 				packed as Packed<"UserDetailedNotMe">,
 			);
-			publishMainStream(
+			publishToMainStream(
 				follower.id,
-				"follow",
+				Event.Follow,
 				packed as Packed<"UserDetailedNotMe">,
 			);
 
@@ -146,7 +151,7 @@ export async function insertFollowingDoc(
 	// Publish followed event
 	if (Users.isLocalUser(followee)) {
 		Users.pack(follower.id, followee).then(async (packed) => {
-			publishMainStream(followee.id, "followed", packed);
+			publishToMainStream(followee.id, Event.Followed, packed);
 
 			const webhooks = (await getActiveWebhooks()).filter(
 				(x) => x.userId === followee.id && x.on.includes("followed"),

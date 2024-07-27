@@ -1,10 +1,9 @@
-import { publishMainStream } from "@/services/stream.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import { deliver } from "@/queue/index.js";
 import type { User } from "@/models/entities/user.js";
 import { Blockings, FollowRequests, Users } from "@/models/index.js";
-import { genIdAt } from "backend-rs";
+import { Event, genIdAt, publishToMainStream } from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 import { config } from "@/config.js";
 
@@ -67,12 +66,12 @@ export default async function (
 	// Publish receiveRequest event
 	if (Users.isLocalUser(followee)) {
 		Users.pack(follower.id, followee).then((packed) =>
-			publishMainStream(followee.id, "receiveFollowRequest", packed),
+			publishToMainStream(followee.id, Event.NewFollowRequest, packed),
 		);
 
 		Users.pack(followee.id, followee, {
 			detail: true,
-		}).then((packed) => publishMainStream(followee.id, "meUpdated", packed));
+		}).then((packed) => publishToMainStream(followee.id, Event.Me, packed));
 
 		// 通知を作成
 		createNotification(followee.id, "receiveFollowRequest", {

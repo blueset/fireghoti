@@ -1,7 +1,7 @@
 import { uploadFromUrl } from "@/services/drive/upload-from-url.js";
 import define from "@/server/api/define.js";
 import { DriveFiles } from "@/models/index.js";
-import { publishMainStream } from "@/services/stream.js";
+import { Event, publishToMainStream } from "backend-rs";
 import { HOUR } from "@/const.js";
 
 export const meta = {
@@ -50,7 +50,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		comment: ps.comment,
 	}).then((file) => {
 		DriveFiles.pack(file, { self: true }).then((packedFile) => {
-			publishMainStream(user.id, "urlUploadFinished", {
+			publishToMainStream(user.id, Event.UrlUploadFinished, {
 				marker: ps.marker,
 				file: packedFile,
 			});

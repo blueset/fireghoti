@@ -5,8 +5,13 @@ import { v4 as uuid } from "uuid";
 import type S3 from "aws-sdk/clients/s3.js"; // TODO: migrate to SDK v3
 import sharp from "sharp";
 import { IsNull } from "typeorm";
-import { publishMainStream } from "@/services/stream.js";
-import { fetchMeta, genId, publishToDriveFileStream } from "backend-rs";
+import {
+	Event,
+	fetchMeta,
+	genId,
+	publishToDriveFileStream,
+	publishToMainStream,
+} from "backend-rs";
 import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
 import { contentDisposition } from "@/misc/content-disposition.js";
 import { getFileInfo } from "@/misc/get-file-info.js";
@@ -667,7 +672,7 @@ export async function addFile({
 	if (user != null) {
 		DriveFiles.pack(file, { self: true }).then((packedFile) => {
 			// Publish driveFileCreated event
-			publishMainStream(user.id, "driveFileCreated", packedFile);
+			publishToMainStream(user.id, Event.DriveFile, packedFile);
 			publishToDriveFileStream(user.id, "create", toRustObject(file));
 		});
 	}

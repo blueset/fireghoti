@@ -1,6 +1,6 @@
 import define from "@/server/api/define.js";
 import { Users, UserProfiles, UserSecurityKeys } from "@/models/index.js";
-import { publishMainStream } from "@/services/stream.js";
+import { Event, publishToMainStream } from "backend-rs";
 import { ApiError } from "@/server/api/error.js";
 
 export const meta = {
@@ -57,5 +57,5 @@ export default define(meta, paramDef, async (ps, user) => {
 		includeSecrets: true,
 	});
 
-	publishMainStream(user.id, "meUpdated", iObj);
+	publishToMainStream(user.id, Event.Me, iObj);
 });

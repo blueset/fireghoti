@@ -15,7 +15,7 @@ import type {
 	// DriveStreamTypes,
 	// GroupMessagingStreamTypes,
 	InternalStreamTypes,
-	MainStreamTypes,
+	// MainStreamTypes,
 	// MessagingIndexStreamTypes,
 	// MessagingStreamTypes,
 	// NoteStreamTypes,
@@ -76,17 +76,18 @@ class Publisher {
 	// 	);
 	// };
 
-	public publishMainStream = <K extends keyof MainStreamTypes>(
-		userId: User["id"],
-		type: K,
-		value?: MainStreamTypes[K],
-	): void => {
-		this.publish(
-			`mainStream:${userId}`,
-			type,
-			typeof value === "undefined" ? null : value,
-		);
-	};
+	/* ported to backend-rs */
+	// public publishMainStream = <K extends keyof MainStreamTypes>(
+	// 	userId: User["id"],
+	// 	type: K,
+	// 	value?: MainStreamTypes[K],
+	// ): void => {
+	// 	this.publish(
+	// 		`mainStream:${userId}`,
+	// 		type,
+	// 		typeof value === "undefined" ? null : value,
+	// 	);
+	// };
 
 	/* ported to backend-rs */
 	// public publishDriveStream = <K extends keyof DriveStreamTypes>(
@@ -217,7 +218,7 @@ export default publisher;
 export const publishInternalEvent = publisher.publishInternalEvent;
 export const publishUserEvent = publisher.publishUserEvent;
 // export const publishBroadcastStream = publisher.publishBroadcastStream;
-export const publishMainStream = publisher.publishMainStream;
+// export const publishMainStream = publisher.publishMainStream;
 // export const publishDriveStream = publisher.publishDriveStream;
 // export const publishNoteStream = publisher.publishNoteStream;
 // export const publishNotesStream = publisher.publishNotesStream;

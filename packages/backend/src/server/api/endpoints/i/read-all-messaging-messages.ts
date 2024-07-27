@@ -1,4 +1,4 @@
-import { publishMainStream } from "@/services/stream.js";
+import { Event, publishToMainStream } from "backend-rs";
 import define from "@/server/api/define.js";
 import { MessagingMessages, UserGroupJoinings } from "@/models/index.js";
 
@@ -16,7 +16,7 @@ export const paramDef = {
 	required: [],
 } as const;
 
-export default define(meta, paramDef, async (ps, user) => {
+export default define(meta, paramDef, async (_ps, user) => {
 	// Update documents
 	await MessagingMessages.update(
 		{
@@ -44,5 +44,5 @@ export default define(meta, paramDef, async (ps, user) => {
 		),
 	);
 
-	publishMainStream(user.id, "readAllMessagingMessages");
+	publishToMainStream(user.id, Event.ReadAllChats, {});
 });

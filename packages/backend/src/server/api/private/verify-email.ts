@@ -1,6 +1,6 @@
 import type Koa from "koa";
 import { Users, UserProfiles } from "@/models/index.js";
-import { publishMainStream } from "@/services/stream.js";
+import { Event, publishToMainStream } from "backend-rs";
 
 export default async (ctx: Koa.Context) => {
 	const body = ctx.request.body;
@@ -20,9 +20,9 @@ export default async (ctx: Koa.Context) => {
 			},
 		);
 
-		publishMainStream(
+		publishToMainStream(
 			profile.userId,
-			"meUpdated",
+			Event.Me,
 			await Users.pack(
 				profile.userId,
 				{ id: profile.userId },

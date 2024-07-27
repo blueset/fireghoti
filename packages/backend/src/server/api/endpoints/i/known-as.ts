@@ -3,8 +3,7 @@ import { Users } from "@/models/index.js";
 import { resolveUser } from "@/remote/resolve-user.js";
 import acceptAllFollowRequests from "@/services/following/requests/accept-all.js";
 import { publishToFollowers } from "@/services/i/update.js";
-import { publishMainStream } from "@/services/stream.js";
-import { stringToAcct } from "backend-rs";
+import { Event, publishToMainStream, stringToAcct } from "backend-rs";
 import { DAY } from "@/const.js";
 import { apiLogger } from "@/server/api/logger.js";
 import define from "@/server/api/define.js";
@@ -97,7 +96,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	});
 
 	// Publish meUpdated event
-	publishMainStream(user.id, "meUpdated", iObj);
+	publishToMainStream(user.id, Event.Me, iObj);
 
 	if (user.isLocked === false) {
 		acceptAllFollowRequests(user);

@@ -1,5 +1,4 @@
-import { publishMainStream } from "@/services/stream.js";
-import { sendPushNotification } from "backend-rs";
+import { Event, publishToMainStream, sendPushNotification } from "backend-rs";
 import { Notifications } from "@/models/index.js";
 import define from "@/server/api/define.js";
 
@@ -30,6 +29,6 @@ export default define(meta, paramDef, async (_, user) => {
 	);
 
 	// 全ての通知を読みましたよというイベントを発行
-	publishMainStream(user.id, "readAllNotifications");
+	await publishToMainStream(user.id, Event.ReadAllNotifications, {});
 	await sendPushNotification(user.id, "readAllNotifications", {});
 });

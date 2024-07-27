@@ -1,4 +1,4 @@
-import { publishMainStream } from "@/services/stream.js";
+import { Event, publishToMainStream } from "backend-rs";
 import { Users, Pages } from "@/models/index.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
@@ -32,7 +32,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		throw new ApiError(meta.errors.noSuchPage);
 	}
 
-	publishMainStream(page.userId, "pageEvent", {
+	publishToMainStream(page.userId, Event.Page, {
 		pageId: ps.pageId,
 		event: ps.event,
 		var: ps.var,

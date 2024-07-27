@@ -1,5 +1,4 @@
 import * as mfm from "mfm-js";
-import { publishMainStream } from "@/services/stream.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
 import renderCreate from "@/remote/activitypub/renderer/create.js";
@@ -48,6 +47,8 @@ import {
 	publishToNotesStream,
 	publishToNoteStream,
 	NoteEvent,
+	publishToMainStream,
+	Event,
 } from "backend-rs";
 import { countSameRenotes } from "@/misc/count-same-renotes.js";
 import { deliverToRelays, getCachedRelays } from "../relay.js";
@@ -508,7 +509,7 @@ export default async (
 							const packedReply = await Notes.pack(note, {
 								id: data.reply.userId,
 							});
-							publishMainStream(data.reply.userId, "reply", packedReply);
+							publishToMainStream(data.reply.userId, Event.Reply, packedReply);
 
 							const webhooks = (await getActiveWebhooks()).filter(
 								(x) =>
@@ -548,7 +549,7 @@ export default async (
 						const packedRenote = await Notes.pack(note, {
 							id: data.renote.userId,
 						});
-						publishMainStream(data.renote.userId, "renote", packedRenote);
+						publishToMainStream(data.renote.userId, Event.Renote, packedRenote);
 
 						const renote = data.renote;
 						const webhooks = (await getActiveWebhooks()).filter(
@@ -874,7 +875,7 @@ async function createMentionedEvents(
 				detail: true,
 			});
 
-			publishMainStream(u.id, "mention", detailPackedNote);
+			publishToMainStream(u.id, Event.Mention, detailPackedNote);
 
 			const webhooks = (await getActiveWebhooks()).filter(
 				(x) => x.userId === u.id && x.on.includes("mention"),

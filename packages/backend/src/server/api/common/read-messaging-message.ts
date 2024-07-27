@@ -1,9 +1,10 @@
-import { publishMainStream } from "@/services/stream.js";
 import {
 	publishToChatStream,
 	publishToGroupChatStream,
 	publishToChatIndexStream,
 	sendPushNotification,
+	publishToMainStream,
+	Event,
 } from "backend-rs";
 import type { User, IRemoteUser } from "@/models/entities/user.js";
 import type { MessagingMessage } from "@/models/entities/messaging-message.js";
@@ -61,7 +62,7 @@ export async function readUserMessagingMessage(
 
 	if (!(await Users.getHasUnreadMessagingMessage(userId))) {
 		// 全ての(いままで未読だった)自分宛てのメッセージを(これで)読みましたよというイベントを発行
-		publishMainStream(userId, "readAllMessagingMessages");
+		await publishToMainStream(userId, Event.ReadAllChats, {});
 		await sendPushNotification(userId, "readAllChats", {});
 	} else {
 		// そのユーザーとのメッセージで未読がなければイベント発行
@@ -135,7 +136,7 @@ export async function readGroupMessagingMessage(
 
 	if (!(await Users.getHasUnreadMessagingMessage(userId))) {
 		// 全ての(いままで未読だった)自分宛てのメッセージを(これで)読みましたよというイベントを発行
-		publishMainStream(userId, "readAllMessagingMessages");
+		await publishToMainStream(userId, Event.ReadAllChats, {});
 		await sendPushNotification(userId, "readAllChats", {});
 	} else {
 		// そのグループにおいて未読がなければイベント発行

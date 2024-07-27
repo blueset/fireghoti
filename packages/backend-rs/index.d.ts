@@ -371,6 +371,40 @@ export interface Emoji {
   height: number | null
 }
 
+export declare enum Event {
+  Notification = 0,
+  NewNotification = 1,
+  Mention = 2,
+  NewMention = 3,
+  Chat = 4,
+  NewChat = 5,
+  NewDm = 6,
+  Reply = 7,
+  Renote = 8,
+  Follow = 9,
+  Followed = 10,
+  Unfollow = 11,
+  NewFollowRequest = 12,
+  Page = 13,
+  ReadAllNotifications = 14,
+  ReadAllMentions = 15,
+  ReadNotifications = 16,
+  ReadAllDms = 17,
+  ReadAllChats = 18,
+  ReadAntenna = 19,
+  ReadAllAntennaPosts = 20,
+  NewAntennaPost = 21,
+  ReadAllAnnouncements = 22,
+  ReadAllChannelPosts = 23,
+  NewChannelPost = 24,
+  DriveFile = 25,
+  UrlUploadFinished = 26,
+  Me = 27,
+  RegenerateMyToken = 28,
+  Signin = 29,
+  Registry = 30
+}
+
 export declare function extractHost(uri: string): string
 
 export declare function fetchMeta(): Promise<Meta>
@@ -1129,6 +1163,8 @@ export declare function publishToDriveFileStream(userId: string, kind: DriveFile
 export declare function publishToDriveFolderStream(userId: string, kind: DriveFolderEvent, object: any): Promise<void>
 
 export declare function publishToGroupChatStream(groupId: string, kind: ChatEvent, object: any): Promise<void>
+
+export declare function publishToMainStream(userId: string, kind: Event, object: any): Promise<void>
 
 export declare function publishToModerationStream(moderatorId: string, report: AbuseUserReportLike): Promise<void>
 
