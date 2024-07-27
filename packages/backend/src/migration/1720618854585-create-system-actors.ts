@@ -1,8 +1,28 @@
 import type { MigrationInterface, QueryRunner } from "typeorm";
 
 import { v4 as uuid } from "uuid";
-import { genRsaKeyPair } from "@/misc/gen-key-pair.js";
 import { generateUserToken, genIdAt, hashPassword } from "backend-rs";
+
+import * as crypto from "node:crypto";
+import * as util from "node:util";
+
+const generateKeyPair = util.promisify(crypto.generateKeyPair);
+
+export async function genRsaKeyPair(modulusLength = 2048) {
+	return await generateKeyPair("rsa", {
+		modulusLength,
+		publicKeyEncoding: {
+			type: "spki",
+			format: "pem",
+		},
+		privateKeyEncoding: {
+			type: "pkcs8",
+			format: "pem",
+			cipher: undefined,
+			passphrase: undefined,
+		},
+	});
+}
 
 async function createSystemUser(username: string, queryRunner: QueryRunner) {
 	const password = uuid();
