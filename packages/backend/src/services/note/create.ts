@@ -1,5 +1,5 @@
 import * as mfm from "mfm-js";
-import { publishMainStream, publishNoteStream } from "@/services/stream.js";
+import { publishMainStream } from "@/services/stream.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
 import renderCreate from "@/remote/activitypub/renderer/create.js";
@@ -46,6 +46,8 @@ import {
 	isQuote,
 	isSilencedServer,
 	publishToNotesStream,
+	publishToNoteStream,
+	NoteEvent,
 } from "backend-rs";
 import { countSameRenotes } from "@/misc/count-same-renotes.js";
 import { deliverToRelays, getCachedRelays } from "../relay.js";
@@ -466,7 +468,7 @@ export default async (
 
 				if (note.replyId != null) {
 					// Only provide the reply note id here as the recipient may not be authorized to see the note.
-					publishNoteStream(note.replyId, "replied", {
+					publishToNoteStream(note.replyId, NoteEvent.Reply, {
 						id: note.id,
 					});
 				}

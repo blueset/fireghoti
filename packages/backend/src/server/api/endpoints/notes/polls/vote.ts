@@ -1,5 +1,4 @@
 import { Not } from "typeorm";
-import { publishNoteStream } from "@/services/stream.js";
 import { createNotification } from "@/services/create-notification.js";
 import { deliver } from "@/queue/index.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
@@ -12,7 +11,7 @@ import {
 	Blockings,
 } from "@/models/index.js";
 import type { IRemoteUser } from "@/models/entities/user.js";
-import { genId } from "backend-rs";
+import { genId, NoteEvent, publishToNoteStream } from "backend-rs";
 import { getNote } from "@/server/api/common/getters.js";
 import { ApiError } from "@/server/api/error.js";
 import define from "@/server/api/define.js";
@@ -139,7 +138,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		`UPDATE poll SET votes[${index}] = votes[${index}] + 1 WHERE "noteId" = '${poll.noteId}'`,
 	);
 
-	publishNoteStream(note.id, "pollVoted", {
+	publishToNoteStream(note.id, NoteEvent.Vote, {
 		choice: ps.choice,
 		userId: user.id,
 	});

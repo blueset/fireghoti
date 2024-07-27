@@ -4,7 +4,7 @@ import define from "@/server/api/define.js";
 import { getNote } from "@/server/api/common/getters.js";
 import { ApiError } from "@/server/api/error.js";
 import { SECOND, HOUR } from "@/const.js";
-import { publishNoteStream } from "@/services/stream.js";
+import { NoteEvent, publishToNoteStream } from "backend-rs";
 
 export const meta = {
 	tags: ["notes"],
@@ -61,7 +61,7 @@ export default define(meta, paramDef, async (ps, user) => {
 
 	// Publish update event for the updated note details
 	// TODO: Send "deleted" to other users?
-	publishNoteStream(note.id, "updated", {
+	publishToNoteStream(note.id, NoteEvent.Update, {
 		updatedAt: new Date(),
 	});
 });

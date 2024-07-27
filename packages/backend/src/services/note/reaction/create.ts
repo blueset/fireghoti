@@ -1,4 +1,3 @@
-import { publishNoteStream } from "@/services/stream.js";
 import { renderLike } from "@/remote/activitypub/renderer/like.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
@@ -13,7 +12,13 @@ import {
 	Blockings,
 } from "@/models/index.js";
 import { IsNull, Not } from "typeorm";
-import { decodeReaction, genIdAt, toDbReaction } from "backend-rs";
+import {
+	decodeReaction,
+	genIdAt,
+	NoteEvent,
+	publishToNoteStream,
+	toDbReaction,
+} from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 import deleteReaction from "./delete.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
@@ -102,7 +107,7 @@ export default async (
 		select: ["name", "host", "originalUrl", "publicUrl"],
 	});
 
-	publishNoteStream(note.id, "reacted", {
+	publishToNoteStream(note.id, NoteEvent.React, {
 		reaction: decodedReaction.reaction,
 		emoji:
 			emoji != null

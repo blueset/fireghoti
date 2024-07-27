@@ -840,6 +840,15 @@ export interface NoteEdit {
   emojis: Array<string>
 }
 
+export declare enum NoteEvent {
+  Delete = 0,
+  React = 1,
+  Unreact = 2,
+  Reply = 3,
+  Update = 4,
+  Vote = 5
+}
+
 export interface NoteFavorite {
   id: string
   createdAt: DateTimeWithTimeZone
@@ -1124,6 +1133,8 @@ export declare function publishToGroupChatStream(groupId: string, kind: ChatEven
 export declare function publishToModerationStream(moderatorId: string, report: AbuseUserReportLike): Promise<void>
 
 export declare function publishToNotesStream(note: Note): Promise<void>
+
+export declare function publishToNoteStream(noteId: string, kind: NoteEvent, object: any): Promise<void>
 
 export declare function publishToNoteUpdatesStream(note: Note): Promise<void>
 

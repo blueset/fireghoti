@@ -10,8 +10,7 @@ import {
 	PollVotes,
 	Users,
 } from "@/models/index.js";
-import { genId } from "backend-rs";
-import { publishNoteStream } from "@/services/stream.js";
+import { genId, NoteEvent, publishToNoteStream } from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 import { deliver } from "@/queue/index.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
@@ -108,7 +107,7 @@ export class PollHelpers {
 				`UPDATE poll SET votes[${index}] = votes[${index}] + 1 WHERE "noteId" = '${poll.noteId}'`,
 			);
 
-			publishNoteStream(note.id, "pollVoted", {
+			publishToNoteStream(note.id, NoteEvent.Vote, {
 				choice: choice,
 				userId: user.id,
 			});

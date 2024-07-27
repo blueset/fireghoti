@@ -6,6 +6,7 @@ pub mod custom_emoji;
 pub mod drive;
 pub mod group_chat;
 pub mod moderation;
+pub mod note;
 pub mod note_edit;
 pub mod notes;
 
