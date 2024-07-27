@@ -1,4 +1,3 @@
-import { renderFollowRelay } from "@/remote/activitypub/renderer/follow-relay.js";
 import {
 	renderActivity,
 	attachLdSignature,
@@ -7,7 +6,7 @@ import { renderUndo } from "@/remote/activitypub/renderer/undo.js";
 import { deliver } from "@/queue/index.js";
 import type { User } from "@/models/entities/user.js";
 import { Relays } from "@/models/index.js";
-import { getRelayActorId, genId } from "backend-rs";
+import { getRelayActorId, genId, renderFollowRelay } from "backend-rs";
 import { Cache } from "@/misc/cache.js";
 import type { Relay } from "@/models/entities/relay.js";
 
@@ -21,7 +20,7 @@ export async function addRelay(inbox: string) {
 	}).then((x) => Relays.findOneByOrFail(x.identifiers[0]));
 
 	const relayActorId = await getRelayActorId();
-	const follow = renderFollowRelay(relay, relayActorId);
+	const follow = await renderFollowRelay(relay.id);
 	const activity = renderActivity(follow);
 	deliver(relayActorId, activity, relay.inbox);
 
@@ -38,7 +37,7 @@ export async function removeRelay(inbox: string) {
 	}
 
 	const relayActorId = await getRelayActorId();
-	const follow = renderFollowRelay(relay, relayActorId);
+	const follow = await renderFollowRelay(relay.id);
 	const undo = renderUndo(follow, relayActorId);
 	const activity = renderActivity(undo);
 	deliver(relayActorId, activity, relay.inbox);

@@ -362,6 +362,7 @@ if (!nativeBinding) {
 }
 
 module.exports.acctToString = nativeBinding.acctToString
+module.exports.Activity = nativeBinding.Activity
 module.exports.AntennaSrc = nativeBinding.AntennaSrc
 module.exports.ChatEvent = nativeBinding.ChatEvent
 module.exports.ChatIndexEvent = nativeBinding.ChatIndexEvent
@@ -429,6 +430,7 @@ module.exports.PushNotificationKind = nativeBinding.PushNotificationKind
 module.exports.PushSubscriptionType = nativeBinding.PushSubscriptionType
 module.exports.RelayStatus = nativeBinding.RelayStatus
 module.exports.removeOldAttestationChallenges = nativeBinding.removeOldAttestationChallenges
+module.exports.renderFollowRelay = nativeBinding.renderFollowRelay
 module.exports.safeForSql = nativeBinding.safeForSql
 module.exports.sendPushNotification = nativeBinding.sendPushNotification
 module.exports.shouldNyaify = nativeBinding.shouldNyaify

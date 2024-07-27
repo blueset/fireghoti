@@ -48,6 +48,8 @@ export interface Acct {
 
 export declare function acctToString(acct: Acct): string
 
+export type Activity =  'Follow';
+
 export interface Ad {
   id: string
   createdAt: DateTimeWithTimeZone
@@ -387,6 +389,13 @@ export interface Following {
   followeeHost: string | null
   followeeInbox: string | null
   followeeSharedInbox: string | null
+}
+
+export interface FollowRelay {
+  id: string
+  type: Activity
+  actor: string
+  object: string
 }
 
 export interface FollowRequest {
@@ -1189,6 +1198,8 @@ export type RelayStatus =  'accepted'|
 
 /** Delete all entries in the [attestation_challenge] table created at more than 5 minutes ago */
 export declare function removeOldAttestationChallenges(): Promise<void>
+
+export declare function renderFollowRelay(relayId: string): Promise<FollowRelay>
 
 export interface RenoteMuting {
   id: string
