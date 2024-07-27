@@ -1,4 +1,3 @@
-import { publishUserEvent } from "@/services/stream.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import { renderUndo } from "@/remote/activitypub/renderer/undo.js";
@@ -15,7 +14,13 @@ import {
 	UserListJoinings,
 	UserLists,
 } from "@/models/index.js";
-import { Event, genIdAt, publishToMainStream } from "backend-rs";
+import {
+	Event,
+	genIdAt,
+	publishToMainStream,
+	publishToUserStream,
+	UserEvent,
+} from "backend-rs";
 import { getActiveWebhooks } from "@/misc/webhook-cache.js";
 import { webhookDeliver } from "@/queue/index.js";
 
@@ -72,8 +77,8 @@ async function cancelRequest(follower: User, followee: User) {
 		Users.pack(followee, follower, {
 			detail: true,
 		}).then(async (packed) => {
-			publishUserEvent(follower.id, "unfollow", packed);
-			publishToMainStream(follower.id, Event.Unfollow, packed);
+			await publishToUserStream(follower.id, UserEvent.Unfollow, packed);
+			await publishToMainStream(follower.id, Event.Unfollow, packed);
 
 			const webhooks = (await getActiveWebhooks()).filter(
 				(x) => x.userId === follower.id && x.on.includes("unfollow"),
@@ -127,7 +132,7 @@ async function unFollow(follower: User, followee: User) {
 		Users.pack(followee, follower, {
 			detail: true,
 		}).then(async (packed) => {
-			publishUserEvent(follower.id, "unfollow", packed);
+			publishToUserStream(follower.id, UserEvent.Unfollow, packed);
 			publishToMainStream(follower.id, Event.Unfollow, packed);
 
 			const webhooks = (await getActiveWebhooks()).filter(

@@ -4,7 +4,7 @@ import { Users, Followings, Notifications } from "@/models/index.js";
 import type { User } from "@/models/entities/user.js";
 import { insertModerationLog } from "@/services/insert-moderation-log.js";
 import { doPostSuspend } from "@/services/suspend-user.js";
-import { publishUserEvent } from "@/services/stream.js";
+import { publishToUserStream, UserEvent } from "backend-rs";
 
 export const meta = {
 	tags: ["admin"],
@@ -46,7 +46,7 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	// Terminate streaming
 	if (Users.isLocalUser(user)) {
-		publishUserEvent(user.id, "terminate", {});
+		await publishToUserStream(user.id, UserEvent.Disconnect, {});
 	}
 
 	(async () => {

@@ -1,4 +1,3 @@
-import { publishUserEvent } from "@/services/stream.js";
 import define from "@/server/api/define.js";
 import { Users, UserProfiles } from "@/models/index.js";
 import {
@@ -7,6 +6,8 @@ import {
 	InternalEvent,
 	publishToInternalStream,
 	publishToMainStream,
+	publishToUserStream,
+	UserEvent,
 	verifyPassword,
 } from "backend-rs";
 
@@ -53,6 +54,6 @@ export default define(meta, paramDef, async (ps, user) => {
 
 	// Terminate streaming
 	setTimeout(() => {
-		publishUserEvent(user.id, "terminate", {});
+		publishToUserStream(user.id, UserEvent.Disconnect, {});
 	}, 5000);
 });

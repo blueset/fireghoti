@@ -1,5 +1,5 @@
 import { redisClient } from "@/db/redis.js";
-import type { User } from "@/models/entities/user.js";
+// import type { User } from "@/models/entities/user.js";
 // import type { Note } from "@/models/entities/note.js";
 // import type { UserList } from "@/models/entities/user-list.js";
 // import type { UserGroup } from "@/models/entities/user-group.js";
@@ -19,7 +19,7 @@ import type {
 	// MessagingIndexStreamTypes,
 	// MessagingStreamTypes,
 	// NoteStreamTypes,
-	UserStreamTypes,
+	// UserStreamTypes,
 	// NoteUpdatesStreamTypes,
 } from "@/server/api/stream/types.js";
 
@@ -53,17 +53,18 @@ class Publisher {
 	// 	this.publish("internal", type, typeof value === "undefined" ? null : value);
 	// };
 
-	public publishUserEvent = <K extends keyof UserStreamTypes>(
-		userId: User["id"],
-		type: K,
-		value?: UserStreamTypes[K],
-	): void => {
-		this.publish(
-			`user:${userId}`,
-			type,
-			typeof value === "undefined" ? null : value,
-		);
-	};
+	/* ported to backend-rs */
+	// public publishUserEvent = <K extends keyof UserStreamTypes>(
+	// 	userId: User["id"],
+	// 	type: K,
+	// 	value?: UserStreamTypes[K],
+	// ): void => {
+	// 	this.publish(
+	// 		`user:${userId}`,
+	// 		type,
+	// 		typeof value === "undefined" ? null : value,
+	// 	);
+	// };
 
 	/* ported to backend-rs */
 	// public publishBroadcastStream = <K extends keyof BroadcastTypes>(
@@ -217,7 +218,7 @@ const publisher = new Publisher();
 export default publisher;
 
 // export const publishInternalEvent = publisher.publishInternalEvent;
-export const publishUserEvent = publisher.publishUserEvent;
+// export const publishUserEvent = publisher.publishUserEvent;
 // export const publishBroadcastStream = publisher.publishBroadcastStream;
 // export const publishMainStream = publisher.publishMainStream;
 // export const publishDriveStream = publisher.publishDriveStream;

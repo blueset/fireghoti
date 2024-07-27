@@ -1191,6 +1191,8 @@ export declare function publishToNoteStream(noteId: string, kind: NoteEvent, obj
 
 export declare function publishToNoteUpdatesStream(note: Note): Promise<void>
 
+export declare function publishToUserStream(userId: string, kind: UserEvent, object: any): Promise<void>
+
 export interface PugArgs {
   img: string | null
   title: string
@@ -1481,6 +1483,17 @@ export type UserEmojiModPerm =  'add'|
 'full'|
 'mod'|
 'unauthorized';
+
+export declare enum UserEvent {
+  Disconnect = 0,
+  FollowChannel = 1,
+  UnfollowChannel = 2,
+  UpdateProfile = 3,
+  Mute = 4,
+  Unmute = 5,
+  Follow = 6,
+  Unfollow = 7
+}
 
 export interface UserGroup {
   id: string

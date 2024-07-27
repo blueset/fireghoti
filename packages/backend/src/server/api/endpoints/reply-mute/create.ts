@@ -66,5 +66,5 @@ export default define(meta, paramDef, async (ps, user) => {
 		muteeId: mutee.id,
 	} as ReplyMuting);
 
-	// publishUserEvent(user.id, "mute", mutee);
+	// await publishToUserStream(user.id, UserEvent.ReplyMute, mutee);
 });

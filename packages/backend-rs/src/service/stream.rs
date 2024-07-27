@@ -11,6 +11,7 @@ pub mod moderation;
 pub mod note;
 pub mod note_edit;
 pub mod notes;
+pub mod user;
 
 use crate::{
     config::CONFIG,

@@ -1,5 +1,9 @@
-import { publishUserEvent } from "@/services/stream.js";
-import { Event, publishToMainStream } from "backend-rs";
+import {
+	Event,
+	publishToMainStream,
+	publishToUserStream,
+	UserEvent,
+} from "backend-rs";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import { renderUndo } from "@/remote/activitypub/renderer/undo.js";
@@ -51,8 +55,8 @@ export default async function (
 		Users.pack(followee.id, follower, {
 			detail: true,
 		}).then(async (packed) => {
-			publishUserEvent(follower.id, "unfollow", packed);
-			publishToMainStream(follower.id, Event.Unfollow, packed);
+			await publishToUserStream(follower.id, UserEvent.Unfollow, packed);
+			await publishToMainStream(follower.id, Event.Unfollow, packed);
 
 			const webhooks = (await getActiveWebhooks()).filter(
 				(x) => x.userId === follower.id && x.on.includes("unfollow"),

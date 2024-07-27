@@ -1,7 +1,7 @@
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { Channels, ChannelFollowings } from "@/models/index.js";
-import { publishUserEvent } from "@/services/stream.js";
+import { publishToUserStream, UserEvent } from "backend-rs";
 
 export const meta = {
 	tags: ["channels"],
@@ -41,5 +41,5 @@ export default define(meta, paramDef, async (ps, user) => {
 		followeeId: channel.id,
 	});
 
-	publishUserEvent(user.id, "unfollowChannel", channel);
+	await publishToUserStream(user.id, UserEvent.UnfollowChannel, channel);
 });

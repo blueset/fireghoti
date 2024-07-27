@@ -2,7 +2,7 @@ import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { getUser } from "@/server/api/common/getters.js";
 import { Mutings } from "@/models/index.js";
-import { publishUserEvent } from "@/services/stream.js";
+import { publishToUserStream, UserEvent } from "backend-rs";
 
 export const meta = {
 	tags: ["account"],
@@ -70,5 +70,5 @@ export default define(meta, paramDef, async (ps, user) => {
 		id: muting.id,
 	});
 
-	publishUserEvent(user.id, "unmute", mutee);
+	await publishToUserStream(user.id, UserEvent.Unmute, mutee);
 });

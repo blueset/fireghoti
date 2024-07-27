@@ -2,8 +2,12 @@ import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import renderReject from "@/remote/activitypub/renderer/reject.js";
 import { deliver, webhookDeliver } from "@/queue/index.js";
-import { publishUserEvent } from "@/services/stream.js";
-import { Event, publishToMainStream } from "backend-rs";
+import {
+	Event,
+	publishToMainStream,
+	publishToUserStream,
+	UserEvent,
+} from "backend-rs";
 import type { ILocalUser, IRemoteUser } from "@/models/entities/user.js";
 import { Users, FollowRequests, Followings } from "@/models/index.js";
 import { decrementFollowing } from "./delete.js";
@@ -120,7 +124,7 @@ async function publishUnfollow(followee: Both, follower: Local) {
 		detail: true,
 	});
 
-	publishUserEvent(follower.id, "unfollow", packedFollowee);
+	publishToUserStream(follower.id, UserEvent.Unfollow, packedFollowee);
 	publishToMainStream(follower.id, Event.Unfollow, packedFollowee);
 
 	const webhooks = (await getActiveWebhooks()).filter(

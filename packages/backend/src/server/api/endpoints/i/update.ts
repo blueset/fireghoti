@@ -1,6 +1,10 @@
 import * as mfm from "mfm-js";
-import { publishUserEvent } from "@/services/stream.js";
-import { Event, publishToMainStream } from "backend-rs";
+import {
+	Event,
+	publishToMainStream,
+	publishToUserStream,
+	UserEvent,
+} from "backend-rs";
 import acceptAllFollowRequests from "@/services/following/requests/accept-all.js";
 import { publishToFollowers } from "@/services/i/update.js";
 import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
@@ -346,10 +350,10 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 	});
 
 	// Publish meUpdated event
-	publishToMainStream(user.id, Event.Me, iObj);
-	publishUserEvent(
+	await publishToMainStream(user.id, Event.Me, iObj);
+	await publishToUserStream(
 		user.id,
-		"updateUserProfile",
+		UserEvent.UpdateProfile,
 		await UserProfiles.findOneBy({ userId: user.id }),
 	);
 

@@ -2,7 +2,7 @@ import type Bull from "bull";
 import { In } from "typeorm";
 import { Mutings } from "@/models/index.js";
 import { queueLogger } from "../../logger.js";
-import { publishUserEvent } from "@/services/stream.js";
+import { publishToUserStream, UserEvent } from "backend-rs";
 
 const logger = queueLogger.createSubLogger("check-expired-mutings");
 
@@ -23,9 +23,11 @@ export async function checkExpiredMutings(
 			id: In(expired.map((m) => m.id)),
 		});
 
-		for (const m of expired) {
-			publishUserEvent(m.muterId, "unmute", m.mutee!);
-		}
+		await Promise.all(
+			expired.map((m) =>
+				publishToUserStream(m.muterId, UserEvent.Unmute, m.mutee),
+			),
+		);
 	}
 
 	logger.info("All expired mutings checked.");

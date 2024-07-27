@@ -1,4 +1,3 @@
-import { publishUserEvent } from "@/services/stream.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import renderAccept from "@/remote/activitypub/renderer/accept.js";
@@ -22,6 +21,8 @@ import {
 	genIdAt,
 	isSilencedServer,
 	publishToMainStream,
+	publishToUserStream,
+	UserEvent,
 } from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
@@ -126,12 +127,12 @@ export async function insertFollowingDoc(
 		Users.pack(followee.id, follower, {
 			detail: true,
 		}).then(async (packed) => {
-			publishUserEvent(
+			await publishToUserStream(
 				follower.id,
-				"follow",
+				UserEvent.Follow,
 				packed as Packed<"UserDetailedNotMe">,
 			);
-			publishToMainStream(
+			await publishToMainStream(
 				follower.id,
 				Event.Follow,
 				packed as Packed<"UserDetailedNotMe">,

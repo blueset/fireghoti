@@ -63,7 +63,6 @@ export interface UserStreamTypes {
 	unmute: User;
 	follow: Packed<"UserDetailedNotMe">;
 	unfollow: Packed<"User">;
-	userAdded: Packed<"User">;
 }
 
 export interface MainStreamTypes {

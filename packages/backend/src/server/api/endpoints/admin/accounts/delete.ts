@@ -1,7 +1,7 @@
 import define from "@/server/api/define.js";
 import { Users } from "@/models/index.js";
 import { doPostSuspend } from "@/services/suspend-user.js";
-import { publishUserEvent } from "@/services/stream.js";
+import { publishToUserStream, UserEvent } from "backend-rs";
 import { createDeleteAccountJob } from "@/queue/index.js";
 
 export const meta = {
@@ -53,6 +53,6 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (Users.isLocalUser(user)) {
 		// Terminate streaming
-		publishUserEvent(user.id, "terminate", {});
+		await publishToUserStream(user.id, UserEvent.Disconnect, {});
 	}
 });

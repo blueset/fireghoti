@@ -1,8 +1,7 @@
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { Channels, ChannelFollowings } from "@/models/index.js";
-import { genIdAt } from "backend-rs";
-import { publishUserEvent } from "@/services/stream.js";
+import { genIdAt, publishToUserStream, UserEvent } from "backend-rs";
 
 export const meta = {
 	tags: ["channels"],
@@ -46,5 +45,5 @@ export default define(meta, paramDef, async (ps, user) => {
 		followeeId: channel.id,
 	});
 
-	publishUserEvent(user.id, "followChannel", channel);
+	await publishToUserStream(user.id, UserEvent.FollowChannel, channel);
 });
