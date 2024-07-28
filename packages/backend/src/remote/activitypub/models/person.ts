@@ -17,7 +17,6 @@ import { User } from "@/models/entities/user.js";
 import type { Emoji } from "@/models/entities/emoji.js";
 import { UserNotePining } from "@/models/entities/user-note-pining.js";
 import {
-	genId,
 	genIdAt,
 	InternalEvent,
 	isSameOrigin,
@@ -52,6 +51,7 @@ import { extractApHashtags } from "./tag.js";
 import { resolveNote, extractEmojis } from "./note.js";
 import { resolveImage } from "./image.js";
 import { inspect } from "node:util";
+import fetch from "node-fetch";
 
 const nameLength = 128;
 const summaryLength = 2048;
@@ -207,6 +207,7 @@ export async function createPerson(
 		try {
 			const data = await fetch(person.followers, {
 				headers: { Accept: "application/json" },
+				size: 1024 * 1024
 			});
 			const json_data = JSON.parse(await data.text());
 
@@ -222,6 +223,7 @@ export async function createPerson(
 		try {
 			const data = await fetch(person.following, {
 				headers: { Accept: "application/json" },
+				size: 1024 * 1024
 			});
 			const json_data = JSON.parse(await data.text());
 
@@ -488,10 +490,11 @@ export async function updatePerson(
 
 	if (typeof person.followers === "string") {
 		try {
-			let data = await fetch(person.followers, {
+			const data = await fetch(person.followers, {
 				headers: { Accept: "application/json" },
+				size: 1024 * 1024
 			});
-			let json_data = JSON.parse(await data.text());
+			const json_data = JSON.parse(await data.text());
 
 			followersCount = json_data.totalItems;
 		} catch {
@@ -503,10 +506,11 @@ export async function updatePerson(
 
 	if (typeof person.following === "string") {
 		try {
-			let data = await fetch(person.following, {
+			const data = await fetch(person.following, {
 				headers: { Accept: "application/json" },
+				size: 1024 * 1024
 			});
-			let json_data = JSON.parse(await data.text());
+			const json_data = JSON.parse(await data.text());
 
 			followingCount = json_data.totalItems;
 		} catch {
@@ -518,10 +522,10 @@ export async function updatePerson(
 
 	if (typeof person.outbox === "string") {
 		try {
-			let data = await fetch(person.outbox, {
+			const data = await fetch(person.outbox, {
 				headers: { Accept: "application/json" },
 			});
-			let json_data = JSON.parse(await data.text());
+			const json_data = JSON.parse(await data.text());
 
 			notesCount = json_data.totalItems;
 		} catch (e) {
@@ -725,9 +729,10 @@ export async function updateFeatured(userId: User["id"], resolver?: Resolver) {
 		let td = 0;
 		for (const note of featuredNotes.filter((note) => note != null)) {
 			td -= 1000;
+			const createdAt = new Date(Date.now() + td);
 			transactionalEntityManager.insert(UserNotePining, {
-				id: genId(new Date(Date.now() + td)),
-				createdAt: new Date(),
+				id: genIdAt(createdAt),
+				createdAt,
 				userId: user.id,
 				noteId: note!.id,
 			});
