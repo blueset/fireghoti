@@ -1,8 +1,11 @@
 import type OAuth from "@/server/api/mastodon/entities/oauth/oauth.js";
-import { generateSecureRandomString } from "backend-rs";
+import {
+	fetchMeta,
+	getTimestamp,
+	generateSecureRandomString,
+	genIdAt,
+} from "backend-rs";
 import { Apps, AccessTokens } from "@/models/index.js";
-import { genId } from "backend-rs";
-import { fetchMeta, getTimestamp } from "backend-rs";
 import type { MastoContext } from "@/server/api/mastodon/index.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import { difference, toSingleLast, unique } from "@/prelude/array.js";
@@ -44,12 +47,13 @@ export class AuthHelpers {
 				permission: scopes,
 			});
 		} catch {
-			const id = genId();
+			const createdAt = new Date();
+			const id = genIdAt(createdAt);
 
 			app = await Apps.insert({
 				id,
 				secret: generateSecureRandomString(32),
-				createdAt: new Date(),
+				createdAt,
 				name: client_name,
 				description: website,
 				permission: scopes,
@@ -100,14 +104,16 @@ export class AuthHelpers {
 		if (!callbackUrls.some((url) => url.startsWith(body.redirect_uri)))
 			throw new MastoApiError(400, "Redirect URI not in list");
 		const secret = generateSecureRandomString(32);
+		const createdAt = new Date();
+		const id = genIdAt(createdAt);
 		const token = await AccessTokens.insert({
-			id: genId(),
+			id,
 			token: secret,
 			hash: secret,
 			appId: app.id,
 			userId: user.id,
 			permission: scopes,
-			createdAt: new Date(),
+			createdAt,
 			fetched: false,
 		}).then((x) => AccessTokens.findOneByOrFail(x.identifiers[0]));
 
@@ -175,16 +181,17 @@ export class AuthHelpers {
 			if (!app || body.client_secret !== app.secret) throw invalidClientError;
 			if (difference(scopes, app.permission).length > 0)
 				throw invalidScopeError;
-
+			const createdAt = new Date();
+			const id = genIdAt(createdAt);
 			const secret = generateSecureRandomString(32);
 			const token = await AccessTokens.insert({
-				id: genId(),
+				id,
 				token: secret,
 				hash: secret,
 				appId: app.id,
 				userId: null,
 				permission: scopes,
-				createdAt: new Date(),
+				createdAt,
 				fetched: false,
 			}).then((x) => AccessTokens.findOneByOrFail(x.identifiers[0]));
 
