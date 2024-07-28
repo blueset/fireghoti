@@ -1668,6 +1668,10 @@ _2fa:
   removeKeyConfirm: "Really delete the {name} key?"
   token: "2FA Token"
 _permissions:
+  read: "Read (read timelines, notifications, reactions, mutes, account information, etc.)"
+  write: "Write (make posts, react to posts, mute users, edit account information, etc.)"
+  push: "Send push notifications"
+  follow: "Follow and unfollow accounts"
   "read:account": "View your account information"
   "write:account": "Edit your account information"
   "read:blocks": "View your list of blocked users"
