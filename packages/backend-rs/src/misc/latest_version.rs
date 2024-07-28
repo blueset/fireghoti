@@ -1,6 +1,7 @@
 //! Fetch latest Firefish version from the Firefish repository
 
 use crate::{database::cache, util::http_client};
+use futures_util::AsyncReadExt;
 use isahc::AsyncReadResponseExt;
 use serde::Deserialize;
 
@@ -30,13 +31,14 @@ async fn get_latest_version() -> Result<String, Error> {
         version: String,
     }
 
+    // Read up to 1 MiB of the response body
     let mut response = http_client::client()?
         .get_async(UPSTREAM_PACKAGE_JSON_URL)
-        .await?;
+        .await?
+        .map(|body| body.take(1024 * 1024));
 
     if !response.status().is_success() {
         tracing::info!("status: {}", response.status());
-        tracing::debug!("response body: {:#?}", response.body());
         return Err(Error::BadStatus(response.status().to_string()));
     }
 

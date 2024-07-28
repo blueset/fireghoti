@@ -3,6 +3,7 @@
 //! ref: <https://nodeinfo.diaspora.software/protocol.html>
 
 use crate::{federation::nodeinfo::schema::*, util::http_client};
+use futures_util::io::AsyncReadExt;
 use isahc::AsyncReadResponseExt;
 use serde::Deserialize;
 
@@ -41,7 +42,7 @@ pub struct NodeinfoLink {
 async fn fetch_nodeinfo_links(host: &str) -> Result<NodeinfoLinks, Error> {
     let client = http_client::client()?;
     let wellknown_url = format!("https://{}/.well-known/nodeinfo", host);
-    let mut wellknown_response = client.get_async(&wellknown_url).await?;
+    let wellknown_response = client.get_async(&wellknown_url).await?;
 
     if !wellknown_response.status().is_success() {
         tracing::debug!("{:#?}", wellknown_response.body());
@@ -52,7 +53,12 @@ async fn fetch_nodeinfo_links(host: &str) -> Result<NodeinfoLinks, Error> {
         )));
     }
 
-    Ok(serde_json::from_str(&wellknown_response.text().await?)?)
+    // Read up to 1 MiB of the response body
+    let text = wellknown_response
+        .map(|body| body.take(1024 * 1024))
+        .text()
+        .await?;
+    Ok(serde_json::from_str(&text)?)
 }
 
 /// Check if any of the following relations is present in the given [NodeinfoLinks].

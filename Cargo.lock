@@ -213,6 +213,7 @@ dependencies = [
  "chrono",
  "cuid2",
  "emojis",
+ "futures-util",
  "idna 1.0.2",
  "image",
  "isahc",
