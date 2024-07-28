@@ -107,6 +107,8 @@ export class AuthHelpers {
 		const createdAt = new Date();
 		const id = genIdAt(createdAt);
 		const token = await AccessTokens.insert({
+			name: app.name,
+			description: app.description,
 			id,
 			token: secret,
 			hash: secret,
@@ -185,6 +187,8 @@ export class AuthHelpers {
 			const id = genIdAt(createdAt);
 			const secret = generateSecureRandomString(32);
 			const token = await AccessTokens.insert({
+				name: app.name,
+				description: app.description,
 				id,
 				token: secret,
 				hash: secret,
