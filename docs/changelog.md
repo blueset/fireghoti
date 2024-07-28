@@ -7,6 +7,11 @@ This changelog is not an exhaustive list. Code refactorings, minor bug fixes, do
 - Server administrators must check [notice-for-admins.md](https://firefish.dev/firefish/firefish/-/blob/main/docs/notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](https://firefish.dev/firefish/firefish/-/blob/main/docs/api-change.md) as well.
 
+## [v20240729](https://firefish.dev/firefish/firefish/-/merge_requests/11214/commits)
+
+- Fix bugs (including a medium severity security issue)
+	- We are very thankful to Laura Hausmann for kindly sharing the information about the security issue.
+
 ## [v20240728](https://firefish.dev/firefish/firefish/-/merge_requests/11211/commits)
 
 - Improve `admin/emoji/add` API
