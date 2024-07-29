@@ -471,6 +471,7 @@ export const UserRepository = db.getRepository(User).extend({
 						.fetch(
 							user.host,
 							() => Instances.findOneBy({ host: user.host! }),
+							false,
 							(v) => v != null,
 						)
 						.then((instance) =>
