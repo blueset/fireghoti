@@ -1934,6 +1934,12 @@ _permissions:
   "read:reactions": Consulta les teves reaccions
   "read:pages": Consulta la teva pàgina
   "read:page-likes": Veure les pàgines que t'agraden
+  push: Enviar notificacions emergents
+  follow: Seguir i deixar de seguir comptes
+  read: Llegir (llegir línies de temps, notificacions, reaccions, silenciats, informació
+    dels comptes, etc.)
+  write: Escriure (escriure publicacions, reaccionar a publicacions, silenciar usuaris,
+    editar informació dels comptes, etc.)
 _poll:
   noOnlyOneChoice: Calen almenys dues opcions
   canMultipleVote: Permet seleccionar diverses opcions
