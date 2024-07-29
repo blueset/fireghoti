@@ -170,7 +170,8 @@ const headerActions = computed(() => [
 		> ._content {
 			> .users {
 				> ._panel {
-					margin: 1rem 2rem;
+					margin-block: 1rem;
+					margin-inline: 2rem;
 				}
 				> .user {
 					display: flex;
@@ -178,8 +179,8 @@ const headerActions = computed(() => [
 					padding: 16px;
 
 					> .avatar {
-						width: 50px;
-						height: 50px;
+						inline-size: 50px;
+						block-size: 50px;
 					}
 
 					> .body {

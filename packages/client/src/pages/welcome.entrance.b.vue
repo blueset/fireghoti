@@ -184,35 +184,35 @@ export default defineComponent({
 <style lang="scss" scoped>
 .rsqzvsbo {
 	> .top {
-		min-height: 100vh;
+		min-block-size: 100vb;
 		box-sizing: border-box;
 
 		> .bg {
 			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
+			inset-block-start: 0;
+			inset-inline-start: 0;
+			inline-size: 100%;
+			block-size: 100%;
 		}
 
 		> .tl {
 			position: absolute;
-			top: 0;
-			bottom: 0;
-			right: 64px;
+			inset-block-start: 0;
+			inset-block-end: 0;
+			inset-inline-end: 64px;
 			margin: auto;
-			width: 500px;
-			height: calc(100% - 128px);
+			inline-size: 500px;
+			block-size: calc(100% - 128px);
 			overflow: hidden;
 			-webkit-mask-image: linear-gradient(
-				0deg,
+				var(--gradient-to-block-start),
 				rgba(0, 0, 0, 0) 0%,
 				rgba(0, 0, 0, 1) 128px,
 				rgba(0, 0, 0, 1) calc(100% - 128px),
 				rgba(0, 0, 0, 0) 100%
 			);
 			mask-image: linear-gradient(
-				0deg,
+				var(--gradient-to-block-start),
 				rgba(0, 0, 0, 0) 0%,
 				rgba(0, 0, 0, 1) 128px,
 				rgba(0, 0, 0, 1) calc(100% - 128px),
@@ -222,40 +222,43 @@ export default defineComponent({
 
 		> .shape {
 			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
+			inset-block-start: 0;
+			inset-inline-start: 0;
+			inline-size: 100%;
+			block-size: 100%;
 			background: var(--accent);
 			clip-path: polygon(0% 0%, 40% 0%, 22% 100%, 0% 100%);
 		}
 
 		> .misskey {
 			position: absolute;
-			bottom: 64px;
-			left: 64px;
-			width: 160px;
+			inset-block-end: 64px;
+			inset-inline-start: 64px;
+			inline-size: 160px;
 		}
 
 		> .main {
 			position: relative;
-			width: min(450px, 100%);
+			inline-size: min(450px, 100%);
 			padding: 64px;
 			color: #fff;
 			font-size: 1.1em;
 
-			@media (max-width: 1200px) {
+			@media (max-inline-size: 1200px) {
 				margin: auto;
 			}
 
 			> h1 {
 				display: block;
-				margin: 0 0 32px 0;
+				margin-block-start: 0;
+				margin-inline-end: 0;
+				margin-block-end: 32px;
+				margin-inline-start: 0;
 				padding: 0;
 
 				> .logo {
 					vertical-align: bottom;
-					max-height: 100px;
+					max-block-size: 100px;
 				}
 			}
 
@@ -264,7 +267,8 @@ export default defineComponent({
 			}
 
 			> .action {
-				margin: 32px 0;
+				margin-block: 32px;
+				margin-inline: 0;
 
 				> * {
 					line-height: 32px;
@@ -282,17 +286,19 @@ export default defineComponent({
 			}
 
 			> .status {
-				margin: 32px 0;
-				border-top: solid 1px rgba(255, 255, 255, 0.5);
+				margin-block: 32px;
+				margin-inline: 0;
+				border-block-start: solid 1px rgba(255, 255, 255, 0.5);
 				font-size: 90%;
 
 				> div {
-					padding: 16px 0;
+					padding-block: 16px;
+					padding-inline: 0;
 
 					> span:not(:last-child) {
-						padding-right: 1em;
-						margin-right: 1em;
-						border-right: solid 1px rgba(255, 255, 255, 0.5);
+						padding-inline-end: 1em;
+						margin-inline-end: 1em;
+						border-inline-end: solid 1px rgba(255, 255, 255, 0.5);
 					}
 				}
 			}

@@ -74,14 +74,16 @@ export default defineComponent({
 .rrevdjwu {
 	> .group {
 		& + .group {
-			margin-top: 16px;
-			padding-top: 16px;
-			border-top: solid 0.5px var(--divider);
+			margin-block-start: 16px;
+			padding-block-start: 16px;
+			border-block-start: solid 0.5px var(--divider);
 		}
 
 		> .title {
 			opacity: 0.7;
-			margin: 0 12px 8px;
+			margin-block-start: 0;
+			margin-inline: 12px;
+			margin-block-end: 8px;
 			font-size: 0.9em;
 		}
 
@@ -89,12 +91,15 @@ export default defineComponent({
 			> .item {
 				display: flex;
 				align-items: center;
-				width: 100%;
+				inline-size: 100%;
 				box-sizing: border-box;
-				padding: 10px 16px 10px 8px;
+				padding-block-start: 10px;
+				padding-inline-end: 16px;
+				padding-block-end: 10px;
+				padding-inline-start: 8px;
 				border-radius: 9px;
 				font-size: 0.9em;
-				margin-bottom: 0.3rem;
+				margin-block-end: 0.3rem;
 
 				&:hover,
 				&:focus-visible {
@@ -112,8 +117,8 @@ export default defineComponent({
 				}
 
 				> .icon {
-					width: 32px;
-					margin-right: 2px;
+					inline-size: 32px;
+					margin-inline-end: 2px;
 					flex-shrink: 0;
 					text-align: center;
 					opacity: 0.8;
@@ -123,7 +128,7 @@ export default defineComponent({
 					white-space: nowrap;
 					text-overflow: ellipsis;
 					overflow: hidden;
-					padding-right: 12px;
+					padding-inline-end: 12px;
 				}
 			}
 		}
@@ -131,43 +136,50 @@ export default defineComponent({
 
 	&.grid {
 		> .group {
-			margin-left: 0;
-			margin-right: 0;
+			margin-inline-start: 0;
+			margin-inline-end: 0;
 
 			& + .group {
-				padding-top: 0;
-				border-top: none;
+				padding-block-start: 0;
+				border-block-start: none;
 			}
 
 			> .title {
 				font-size: 1em;
 				opacity: 0.7;
-				margin: 0 0 8px 16px;
+				margin-block-start: 0;
+				margin-inline-end: 0;
+				margin-block-end: 8px;
+				margin-inline-start: 16px;
 			}
 
 			> .items {
 				display: grid;
 				grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
 				grid-gap: 8px;
-				padding: 0 16px;
+				padding-block: 0;
+				padding-inline: 16px;
 
 				> .item {
 					flex-direction: column;
-					padding: 18px 16px 16px 16px;
+					padding-block-start: 18px;
+					padding-inline-end: 16px;
+					padding-block-end: 16px;
+					padding-inline-start: 16px;
 					background: var(--panel);
 					border-radius: 8px;
 					text-align: center;
 
 					> .icon {
 						display: block;
-						margin-right: 0;
-						margin-bottom: 12px;
+						margin-inline-end: 0;
+						margin-block-end: 12px;
 						font-size: 1.5em;
 					}
 
 					> .text {
-						padding-right: 0;
-						width: 100%;
+						padding-inline-end: 0;
+						inline-size: 100%;
 						font-size: 0.8em;
 					}
 				}

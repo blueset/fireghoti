@@ -105,14 +105,14 @@ export default defineComponent({
 	z-index: 1;
 
 	> .button {
-		margin-top: 32px;
+		margin-block-start: 32px;
 	}
 
-	@media (max-width: 600px) {
+	@media (max-inline-size: 600px) {
 		padding: 16px;
 
 		> .button {
-			margin-top: 16px;
+			margin-block-start: 16px;
 		}
 	}
 }

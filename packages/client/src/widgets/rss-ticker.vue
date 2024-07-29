@@ -134,7 +134,7 @@ defineExpose<WidgetComponentExpose>({
 .change-enter-active,
 .change-leave-active {
 	position: absolute;
-	top: 0;
+	inset-block-start: 0;
 	transition: all 1s ease;
 }
 .change-enter-from {
@@ -152,7 +152,7 @@ defineExpose<WidgetComponentExpose>({
 		padding: 0;
 		font-size: 0.9em;
 		line-height: var(--height);
-		height: var(--height);
+		block-size: var(--height);
 		contain: strict;
 
 		::v-deep(.item) {
@@ -163,9 +163,10 @@ defineExpose<WidgetComponentExpose>({
 
 			> .divider {
 				display: inline-block;
-				width: 0.5px;
-				height: 16px;
-				margin: 0 1em;
+				inline-size: 0.5px;
+				block-size: 16px;
+				margin-block: 0;
+				margin-inline: 1em;
 				background: var(--divider);
 			}
 		}

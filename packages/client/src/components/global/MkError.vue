@@ -30,17 +30,21 @@ import icon from "@/scripts/icon";
 	text-align: center;
 
 	> p {
-		margin: 0 0 8px 0;
+		margin-block-start: 0;
+		margin-inline-end: 0;
+		margin-block-end: 8px;
+		margin-inline-start: 0;
 	}
 
 	> .button {
-		margin: 0 auto;
+		margin-block: 0;
+		margin-inline: auto;
 	}
 
 	> img {
 		vertical-align: bottom;
-		height: 128px;
-		margin-bottom: 16px;
+		block-size: 128px;
+		margin-block-end: 16px;
 		border-radius: 16px;
 	}
 }

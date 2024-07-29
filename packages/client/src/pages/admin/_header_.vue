@@ -40,7 +40,7 @@
 						class="fullButton"
 						primary
 						@click.stop="action.handler"
-						><i :class="action.icon" style="margin-right: 6px"></i
+						><i :class="action.icon" style="margin-inline-end: 6px"></i
 						>{{ action.text }}</MkButton
 					>
 					<button
@@ -171,8 +171,25 @@ onMounted(() => {
 					// https://developer.mozilla.org/ja/docs/Web/API/HTMLElement/offsetWidth#%E5%80%A4
 					const parentRect = tabEl.parentElement.getBoundingClientRect();
 					const rect = tabEl.getBoundingClientRect();
-					tabHighlightEl.value.style.width = rect.width + "px";
-					tabHighlightEl.value.style.left = rect.left - parentRect.left + "px";
+					var inlineSize = rect.width;
+					var insetInlineStart = rect.left - parentRect.left;
+					const isVertical = getComputedStyle(tabHighlightEl.value)['writing-mode'].startsWith("vertical");
+					if (isVertical) {
+						inlineSize = rect.height;
+					}
+					if (getComputedStyle(tabHighlightEl.value).direction === "rtl") {
+						if (isVertical) {
+							tabHighlightEl.value.style.insetBlockEnd = rect.bottom - parentRect.bottom + "px";
+						} else {
+							tabHighlightEl.value.style.insetInlineEnd = rect.right - parentRect.right + "px";
+						}
+					} else {
+						if (isVertical) {
+							tabHighlightEl.value.style.insetBlockStart = rect.top - parentRect.top + "px";
+						}
+					}
+					tabHighlightEl.value.style.inlineSize = inlineSize + "px";
+					tabHighlightEl.value.style.insetInlineStart = insetInlineStart + "px";
 				}
 			});
 		},
@@ -191,7 +208,7 @@ onUnmounted(() => {
 .fdidabkc {
 	--height: 60px;
 	display: flex;
-	width: 100%;
+	inline-size: 100%;
 	-webkit-backdrop-filter: var(--blur, blur(15px));
 	backdrop-filter: var(--blur, blur(15px));
 
@@ -199,23 +216,24 @@ onUnmounted(() => {
 		--margin: 8px;
 		display: flex;
 		align-items: center;
-		height: var(--height);
-		margin: 0 var(--margin);
+		block-size: var(--height);
+		margin-block: 0;
+		margin-inline: var(--margin);
 
 		&.right {
-			margin-left: auto;
+			margin-inline-start: auto;
 		}
 
 		&:empty {
-			width: var(--height);
+			inline-size: var(--height);
 		}
 
 		> .button {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			height: calc(var(--height) - (var(--margin) * 2));
-			width: calc(var(--height) - (var(--margin) * 2));
+			block-size: calc(var(--height) - (var(--margin) * 2));
+			inline-size: calc(var(--height) - (var(--margin) * 2));
 			box-sizing: border-box;
 			position: relative;
 			border-radius: 5px;
@@ -231,7 +249,7 @@ onUnmounted(() => {
 
 		> .fullButton {
 			& + .fullButton {
-				margin-left: 12px;
+				margin-inline-start: 12px;
 			}
 		}
 	}
@@ -239,32 +257,33 @@ onUnmounted(() => {
 	> .titleContainer {
 		display: flex;
 		align-items: center;
-		max-width: 400px;
+		max-inline-size: 400px;
 		overflow: auto;
 		white-space: nowrap;
-		text-align: left;
+		text-align: start;
 		font-weight: bold;
 		flex-shrink: 0;
-		margin-left: 24px;
+		margin-inline-start: 24px;
 
 		> .avatar {
 			$size: 32px;
 			display: inline-block;
-			width: $size;
-			height: $size;
+			inline-size: $size;
+			block-size: $size;
 			vertical-align: bottom;
-			margin: 0 8px;
+			margin-block: 0;
+			margin-inline: 8px;
 			pointer-events: none;
 		}
 
 		> .icon {
-			margin-right: 8px;
-			width: 16px;
+			margin-inline-end: 8px;
+			inline-size: 16px;
 			text-align: center;
 		}
 
 		> .title {
-			min-width: 0;
+			min-inline-size: 0;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
@@ -283,7 +302,7 @@ onUnmounted(() => {
 
 					> .chevron {
 						display: inline-block;
-						margin-left: 6px;
+						margin-inline-start: 6px;
 					}
 				}
 			}
@@ -292,7 +311,7 @@ onUnmounted(() => {
 
 	> .tabs {
 		position: relative;
-		margin-left: 16px;
+		margin-inline-start: 16px;
 		font-size: 0.8em;
 		overflow: auto;
 		white-space: nowrap;
@@ -300,8 +319,9 @@ onUnmounted(() => {
 		> .tab {
 			display: inline-block;
 			position: relative;
-			padding: 0 10px;
-			height: 100%;
+			padding-block: 0;
+			padding-inline: 10px;
+			block-size: 100%;
 			font-weight: normal;
 			opacity: 0.7;
 
@@ -312,14 +332,14 @@ onUnmounted(() => {
 			}
 
 			> .icon + .title {
-				margin-left: 8px;
+				margin-inline-start: 8px;
 			}
 		}
 
 		> .highlight {
 			position: absolute;
-			bottom: 0;
-			height: 3px;
+			inset-block-end: 0;
+			block-size: 3px;
 			background: var(--accent);
 			border-radius: 999px;
 			transition: all 0.2s ease;

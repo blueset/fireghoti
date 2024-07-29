@@ -19,7 +19,7 @@
 			<span class="text"><slot></slot></span>
 			<span class="right">
 				<span class="text"><slot name="suffix"></slot></span>
-				<i :class="icon('ph-caret-right icon')"></i>
+				<i :class="icon('ph-caret-right icon ph-dir')"></i>
 			</span>
 		</MkA>
 	</div>
@@ -48,9 +48,10 @@ defineProps<{
 	> .main {
 		display: flex;
 		align-items: center;
-		width: 100%;
+		inline-size: 100%;
 		box-sizing: border-box;
-		padding: 10px 14px;
+		padding-block: 10px;
+		padding-inline: 14px;
 		background: var(--buttonBg);
 		border-radius: 6px;
 		font-size: 0.9em;
@@ -66,7 +67,7 @@ defineProps<{
 		}
 
 		> .icon {
-			margin-right: 0.75em;
+			margin-inline-end: 0.75em;
 			flex-shrink: 0;
 			text-align: center;
 			color: var(--fgTransparentWeak);
@@ -75,7 +76,7 @@ defineProps<{
 				display: none;
 
 				& + .text {
-					padding-left: 4px;
+					padding-inline-start: 4px;
 				}
 			}
 		}
@@ -84,16 +85,16 @@ defineProps<{
 			white-space: nowrap;
 			text-overflow: ellipsis;
 			overflow: hidden;
-			padding-right: 12px;
+			padding-inline-end: 12px;
 		}
 
 		> .right {
-			margin-left: auto;
+			margin-inline-start: auto;
 			opacity: 0.7;
 			white-space: nowrap;
 
 			> .text:not(:empty) {
-				margin-right: 0.75em;
+				margin-inline-end: 0.75em;
 			}
 		}
 	}

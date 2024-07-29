@@ -1,6 +1,6 @@
 <template>
 	<MkContainer
-		:style="`height: ${widgetProps.height}px;`"
+		:style="`block-size: ${widgetProps.height}px;`"
 		:show-header="widgetProps.showHeader"
 		:scrollable="true"
 		class="mkw-notifications"

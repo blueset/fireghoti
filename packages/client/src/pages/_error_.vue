@@ -89,17 +89,21 @@ definePageMetadata({
 	text-align: center;
 
 	> p {
-		margin: 0 0 12px 0;
+		margin-block-start: 0;
+		margin-inline-end: 0;
+		margin-block-end: 12px;
+		margin-inline-start: 0;
 	}
 
 	> .button {
-		margin: 8px auto;
+		margin-block: 8px;
+		margin-inline: auto;
 	}
 
 	> img {
 		vertical-align: bottom;
-		height: 128px;
-		margin-bottom: 24px;
+		block-size: 128px;
+		margin-block-end: 24px;
 		border-radius: 16px;
 	}
 

@@ -16,26 +16,26 @@
 			<MkInfo warn>{{ information }}</MkInfo>
 		</div>
 		<div class="_section">
-			<div style="margin-bottom: 16px">
+			<div style="margin-block-end: 16px">
 				<b>{{ i18n.ts.name }}</b>
 			</div>
-			<MkInput v-model="name" style="margin-bottom: 16px" />
+			<MkInput v-model="name" style="margin-block-end: 16px" />
 		</div>
 		<div class="_section">
-			<div style="margin-bottom: 16px">
+			<div style="margin-block-end: 16px">
 				<b>{{ i18n.ts.permission }}</b>
 			</div>
 			<MkButton inline @click="disableAll">{{
 				i18n.ts.disableAll
 			}}</MkButton>
-			<MkButton style="margin-bottom: 12px" inline @click="enableAll">{{
+			<MkButton style="margin-block-end: 12px" inline @click="enableAll">{{
 				i18n.ts.enableAll
 			}}</MkButton>
 			<MkSwitch
 				v-for="kind in initialPermissions || kinds"
 				:key="kind"
 				v-model="permissions[kind]"
-				style="margin-bottom: 6px"
+				style="margin-block-end: 6px"
 				>{{ i18n.t(`_permissions.${kind}`) }}</MkSwitch
 			>
 		</div>

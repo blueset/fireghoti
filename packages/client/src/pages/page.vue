@@ -345,8 +345,8 @@ definePageMetadata(
 			> .banner-image {
 				// TODO: 良い感じのアスペクト比で表示
 				display: block;
-				width: 100%;
-				height: 150px;
+				inline-size: 100%;
+				block-size: 150px;
 				background-position: center;
 				background-size: cover;
 				background-image: v-bind("bgImg");
@@ -367,15 +367,15 @@ definePageMetadata(
 					background: rgba(0, 0, 0, 0.2);
 					padding: 8px;
 					border-radius: 24px;
-					width: fit-content;
+					inline-size: fit-content;
 					position: relative;
-					top: -10px;
-					left: 1rem;
+					inset-block-start: -10px;
+					inset-inline-start: 1rem;
 
 					> .menu {
 						vertical-align: bottom;
-						height: 31px;
-						width: 31px;
+						block-size: 31px;
+						inline-size: 31px;
 						color: #fff;
 						text-shadow: 0 0 8px var(--shadow);
 						font-size: 16px;
@@ -383,7 +383,7 @@ definePageMetadata(
 					}
 
 					> .koudoku {
-						margin-left: 4px;
+						margin-inline-start: 4px;
 						vertical-align: bottom;
 					}
 				}
@@ -391,15 +391,17 @@ definePageMetadata(
 		}
 
 		> .content {
-			padding: 16px 0;
+			padding-block: 16px;
+			padding-inline: 0;
 		}
 
 		> .actions {
 			display: flex;
 			align-items: center;
-			margin-top: 16px;
-			padding: 16px 0;
-			border-top: solid 0.5px var(--divider);
+			margin-block-start: 16px;
+			padding-block: 16px;
+			padding-inline: 0;
+			border-block-start: solid 0.5px var(--divider);
 
 			> .like {
 				> .button {
@@ -410,7 +412,7 @@ definePageMetadata(
 					color: #eb6f92;
 
 					::v-deep(.count) {
-						margin-left: 0.5em;
+						margin-inline-start: 0.5em;
 					}
 				}
 			}
@@ -418,7 +420,8 @@ definePageMetadata(
 			> .other {
 				> button {
 					padding: 2px;
-					margin: 0 8px;
+					margin-block: 0;
+					margin-inline: 8px;
 
 					&:hover {
 						color: var(--fgHighlighted);
@@ -427,40 +430,47 @@ definePageMetadata(
 			}
 
 			> .user {
-				margin-left: auto;
+				margin-inline-start: auto;
 				display: flex;
 				align-items: center;
 
 				> .avatar {
-					width: 40px;
-					height: 40px;
+					inline-size: 40px;
+					block-size: 40px;
 				}
 
 				> .name {
-					margin: 0 0 0 12px;
+					margin-block-start: 0;
+					margin-inline-end: 0;
+					margin-block-end: 0;
+					margin-inline-start: 12px;
 					font-size: 90%;
 				}
 
 				> .koudoku {
-					margin-left: auto;
+					margin-inline-start: auto;
 					margin: 1rem;
 				}
 			}
 		}
 
 		> .links {
-			margin-top: 16px;
-			padding: 14px 0;
-			border-top: solid 0.5px var(--divider);
+			margin-block-start: 16px;
+			padding-block: 14px;
+			padding-inline: 0;
+			border-block-start: solid 0.5px var(--divider);
 
 			> .link {
-				margin-right: 2em;
+				margin-inline-end: 2em;
 			}
 		}
 	}
 
 	> .footer {
-		margin: var(--margin) 0 var(--margin) 0;
+		margin-block-start: var(--margin);
+		margin-inline-end: 0;
+		margin-block-end: var(--margin);
+		margin-inline-start: 0;
 		font-size: 85%;
 		opacity: 0.75;
 	}

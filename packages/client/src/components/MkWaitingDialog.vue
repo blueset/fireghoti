@@ -68,12 +68,12 @@ watch(
 	text-align: center;
 	background: var(--panel);
 	border-radius: var(--radius);
-	width: 250px;
+	inline-size: 250px;
 
 	&.iconOnly {
 		padding: 0;
-		width: 96px;
-		height: 96px;
+		inline-size: 96px;
+		block-size: 96px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -93,6 +93,6 @@ watch(
 }
 
 .text {
-	margin-top: 16px;
+	margin-block-start: 16px;
 }
 </style>

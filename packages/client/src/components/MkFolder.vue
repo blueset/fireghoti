@@ -10,10 +10,10 @@
 				:aria-controls="bodyId"
 			>
 				<template v-if="showBody"
-					><i class="ph-caret-up ph-bold ph-lg"></i
+					><i class="ph-caret-up ph-dir ph-bold ph-lg"></i
 				></template>
 				<template v-else
-					><i class="ph-caret-down ph-bold ph-lg"></i
+					><i class="ph-caret-down ph-dir ph-bold ph-lg"></i
 				></template>
 			</button>
 		</header>
@@ -107,7 +107,7 @@ defineExpose({
 <style lang="scss" scoped>
 .folder-toggle-enter-active,
 .folder-toggle-leave-active {
-	overflow-y: hidden;
+	overflow-block: hidden;
 	transition:
 		opacity 0.5s,
 		height 0.5s !important;
@@ -127,20 +127,20 @@ defineExpose({
 		position: relative;
 		z-index: 10;
 		position: sticky;
-		top: var(--stickyTop, 0px);
+		inset-block-start: var(--stickyTop, 0px);
 		padding: var(--x-padding);
 		-webkit-backdrop-filter: var(--blur, blur(8px));
 		backdrop-filter: var(--blur, blur(20px));
 		margin-inline: -12px;
 		padding-inline: 12px;
 		mask: linear-gradient(
-			to right,
+			var(--gradient-to-inline-end),
 			transparent,
 			black 12px calc(100% - 12px),
 			transparent
 		);
 		-webkit-mask: linear-gradient(
-			to right,
+			var(--gradient-to-inline-end),
 			transparent,
 			black 12px calc(100% - 12px),
 			transparent
@@ -157,10 +157,13 @@ defineExpose({
 
 		> .title {
 			margin: 0;
-			padding: 12px 16px 12px 0;
+			padding-block-start: 12px;
+			padding-inline-end: 16px;
+			padding-block-end: 12px;
+			padding-inline-start: 0;
 
 			> i {
-				margin-right: 6px;
+				margin-inline-end: 6px;
 			}
 
 			&:empty {
@@ -171,12 +174,15 @@ defineExpose({
 		> .divider {
 			flex: 1;
 			margin: auto;
-			height: 1px;
+			block-size: 1px;
 			background: var(--divider);
 		}
 
 		> button {
-			padding: 12px 0 12px 16px;
+			padding-block-start: 12px;
+			padding-inline-end: 0;
+			padding-block-end: 12px;
+			padding-inline-start: 16px;
 		}
 	}
 }

@@ -86,7 +86,7 @@ definePageMetadata(
 		list.value
 			? {
 					title: list.value.name,
-					icon: `${icon("ph-list-bullets")}`,
+					icon: `${icon("ph-list-bullets ph-dir")}`,
 				}
 			: null,
 	),

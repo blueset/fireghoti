@@ -94,18 +94,18 @@ if (isSignedIn(me)) {
 	display: block;
 	position: fixed;
 	z-index: 4000000;
-	top: 15px;
-	right: 15px;
+	inset-block-start: 15px;
+	inset-inline-end: 15px;
 
 	&:before {
 		content: "";
 		display: block;
-		width: 18px;
-		height: 18px;
+		inline-size: 18px;
+		block-size: 18px;
 		box-sizing: border-box;
 		border: solid 2px transparent;
-		border-top-color: var(--accent);
-		border-left-color: var(--accent);
+		border-block-start-color: var(--accent);
+		border-inline-start-color: var(--accent);
 		border-radius: 50%;
 		animation: progress-spinner 400ms linear infinite;
 	}
@@ -113,12 +113,13 @@ if (isSignedIn(me)) {
 
 #devTicker {
 	position: fixed;
-	top: 0;
-	left: 0;
+	inset-block-start: 0;
+	inset-inline-start: 0;
 	z-index: 2147483647;
 	color: #f6c177;
 	background: #6e6a86;
-	padding: 4px 5px;
+	padding-block: 4px;
+	padding-inline: 5px;
 	font-size: 14px;
 	pointer-events: none;
 	user-select: none;

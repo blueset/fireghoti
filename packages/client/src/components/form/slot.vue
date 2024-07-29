@@ -20,7 +20,10 @@ function focus() {
 .adhpbeou {
 	> .label {
 		font-size: 0.85em;
-		padding: 0 0 8px 0;
+		padding-block-start: 0;
+		padding-inline-end: 0;
+		padding-block-end: 8px;
+		padding-inline-start: 0;
 		user-select: none;
 
 		&:empty {
@@ -30,7 +33,10 @@ function focus() {
 
 	> .caption {
 		font-size: 0.85em;
-		padding: 8px 0 0 0;
+		padding-block-start: 8px;
+		padding-inline-end: 0;
+		padding-block-end: 0;
+		padding-inline-start: 0;
 		color: var(--fgTransparentWeak);
 
 		&:empty {

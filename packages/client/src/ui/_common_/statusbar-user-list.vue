@@ -78,7 +78,7 @@ useInterval(tick, Math.max(5000, props.refreshIntervalSec * 1000), {
 .change-enter-active,
 .change-leave-active {
 	position: absolute;
-	top: 0;
+	inset-block-start: 0;
 	transition: all 1s ease;
 }
 .change-enter-from {
@@ -102,10 +102,10 @@ useInterval(tick, Math.max(5000, props.refreshIntervalSec * 1000), {
 
 		> .avatar {
 			display: inline-block;
-			height: var(--height);
+			block-size: var(--height);
 			aspect-ratio: 1;
 			vertical-align: bottom;
-			margin-right: 8px;
+			margin-inline-end: 8px;
 		}
 
 		> .text {
@@ -117,9 +117,10 @@ useInterval(tick, Math.max(5000, props.refreshIntervalSec * 1000), {
 
 		> .divider {
 			display: inline-block;
-			width: 0.5px;
-			height: 16px;
-			margin: 0 3em;
+			inline-size: 0.5px;
+			block-size: 16px;
+			margin-block: 0;
+			margin-inline: 3em;
 			background: currentColor;
 			opacity: 0;
 		}

@@ -128,7 +128,7 @@ export default defineComponent({
 	},
 
 	created() {
-		document.documentElement.style.overflowY = "scroll";
+		document.documentElement.style.overflowBlock = "scroll";
 
 		os.api("meta", { detail: true }).then((meta) => {
 			this.meta = meta;
@@ -165,17 +165,17 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .mk-app {
-	min-height: 100vh;
+	min-block-size: 100vb;
 
 	> .banner {
 		position: relative;
-		width: 100%;
+		inline-size: 100%;
 		text-align: center;
 		background-position: center;
 		background-size: cover;
 
 		> div {
-			height: 100%;
+			block-size: 100%;
 			background: rgba(0, 0, 0, 0.3);
 
 			* {
@@ -184,29 +184,34 @@ export default defineComponent({
 
 			> h1 {
 				margin: 0;
-				padding: 96px 32px 0 32px;
+				padding-block-start: 96px;
+				padding-inline-end: 32px;
+				padding-block-end: 0;
+				padding-inline-start: 32px;
 				text-shadow: 0 0 8px black;
 
 				> .logo {
 					vertical-align: bottom;
-					max-height: 150px;
+					max-block-size: 150px;
 				}
 			}
 
 			> .about {
 				padding: 32px;
-				max-width: 580px;
-				margin: 0 auto;
+				max-inline-size: 580px;
+				margin-block: 0;
+				margin-inline: auto;
 				box-sizing: border-box;
 				text-shadow: 0 0 8px black;
 			}
 
 			> .action {
-				padding-bottom: 64px;
+				padding-block-end: 64px;
 
 				> button {
 					display: inline-block;
-					padding: 10px 20px;
+					padding-block: 10px;
+					padding-inline: 20px;
 					box-sizing: border-box;
 					text-align: center;
 					border-radius: 999px;
@@ -219,7 +224,7 @@ export default defineComponent({
 					}
 
 					&:first-child {
-						margin-right: 16px;
+						margin-inline-end: 16px;
 					}
 				}
 			}
@@ -228,7 +233,7 @@ export default defineComponent({
 
 	> .banner-mini {
 		position: relative;
-		width: 100%;
+		inline-size: 100%;
 		text-align: center;
 		background-position: center;
 		background-size: cover;
@@ -236,7 +241,7 @@ export default defineComponent({
 		> div {
 			position: relative;
 			z-index: 1;
-			height: 100%;
+			block-size: 100%;
 			background: rgba(0, 0, 0, 0.3);
 
 			* {
@@ -253,7 +258,7 @@ export default defineComponent({
 
 				> .logo {
 					vertical-align: bottom;
-					max-height: 100px;
+					max-block-size: 100px;
 				}
 			}
 		}
@@ -266,8 +271,8 @@ export default defineComponent({
 
 			> .header {
 				position: sticky;
-				top: 0;
-				left: 0;
+				inset-block-start: 0;
+				inset-inline-start: 0;
 				z-index: 1000;
 			}
 
@@ -275,11 +280,11 @@ export default defineComponent({
 				padding: 28px;
 				font-size: 14px;
 				text-align: center;
-				border-top: 1px solid var(--divider);
+				border-block-start: 1px solid var(--divider);
 
 				> small {
 					display: block;
-					margin-top: 8px;
+					margin-block-start: 8px;
 					opacity: 0.5;
 				}
 			}

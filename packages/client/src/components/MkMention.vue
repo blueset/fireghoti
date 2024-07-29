@@ -60,10 +60,13 @@ const isMe =
 .mention {
 	position: relative;
 	display: inline-block;
-	padding: 2px 8px 2px 2px;
+	padding-block-start: 2px;
+	padding-inline-end: 8px;
+	padding-block-end: 2px;
+	padding-inline-start: 2px;
 	margin-block: 2px;
 	border-radius: 999px;
-	max-width: 100%;
+	max-inline-size: 100%;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	color: var(--mention);
@@ -84,10 +87,13 @@ const isMe =
 	}
 
 	> .icon {
-		width: 1.5em;
-		height: 1.5em;
+		inline-size: 1.5em;
+		block-size: 1.5em;
 		object-fit: cover;
-		margin: 0 0.2em 0 0;
+		margin-block-start: 0;
+		margin-inline-end: 0.2em;
+		margin-block-end: 0;
+		margin-inline-start: 0;
 		vertical-align: bottom;
 		border-radius: 100%;
 	}

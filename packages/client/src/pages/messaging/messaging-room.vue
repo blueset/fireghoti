@@ -367,7 +367,7 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 XMessage:last-of-type {
-	margin-bottom: 4rem;
+	margin-block-end: 4rem;
 }
 
 .mk-messaging-room {
@@ -377,8 +377,10 @@ XMessage:last-of-type {
 	> .body {
 		.more {
 			display: block;
-			margin: 16px auto;
-			padding: 0 12px;
+			margin-block: 16px;
+			margin-inline: auto;
+			padding-block: 0;
+			padding-inline: 12px;
 			line-height: 24px;
 			color: #fff;
 			background: rgba(#000, 0.3);
@@ -397,51 +399,56 @@ XMessage:last-of-type {
 			}
 
 			> i {
-				margin-right: 4px;
+				margin-inline-end: 4px;
 			}
 		}
 
 		.messages {
-			padding: 8px 0;
+			padding-block: 8px;
+			padding-inline: 0;
 
 			> ::v-deep(*) {
-				margin-bottom: 16px;
+				margin-block-end: 16px;
 			}
 		}
 	}
 
 	> footer {
-		width: 100%;
+		inline-size: 100%;
 		position: sticky;
 		z-index: 2;
-		bottom: 0;
-		padding-top: 8px;
-		bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+		inset-block-end: 0;
+		padding-block-start: 8px;
+		inset-block-end: calc(env(safe-area-inset-bottom, 0px) + 8px);
 
 		> .new-message {
-			width: 100%;
-			padding-bottom: 8px;
+			inline-size: 100%;
+			padding-block-end: 8px;
 			text-align: center;
 
 			> button {
 				display: inline-block;
 				margin: 0;
-				padding: 0 12px;
+				padding-block: 0;
+				padding-inline: 12px;
 				line-height: 32px;
 				font-size: 12px;
 				border-radius: 16px;
 
 				> i {
 					display: inline-block;
-					margin-right: 8px;
+					margin-inline-end: 8px;
 				}
 			}
 		}
 
 		> .typers {
 			position: absolute;
-			bottom: 100%;
-			padding: 0 8px 0 8px;
+			inset-block-end: 100%;
+			padding-block-start: 0;
+			padding-inline-end: 8px;
+			padding-block-end: 0;
+			padding-inline-start: 8px;
 			font-size: 0.9em;
 			color: var(--fgTransparentWeak);
 
@@ -458,9 +465,9 @@ XMessage:last-of-type {
 		}
 
 		> .form {
-			max-height: 12em;
-			overflow-y: scroll;
-			border-top: solid 0.5px var(--divider);
+			max-block-size: 12em;
+			overflow-block: scroll;
+			border-block-start: solid 0.5px var(--divider);
 		}
 	}
 }

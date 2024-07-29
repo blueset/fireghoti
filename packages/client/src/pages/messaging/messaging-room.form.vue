@@ -287,17 +287,20 @@ defineExpose({
 <style lang="scss" scoped>
 .pemppnzi {
 	position: relative;
-	margin-top: 1rem;
+	margin-block-start: 1rem;
 
 	> textarea {
 		cursor: auto;
 		display: block;
-		width: 100%;
-		min-width: 100%;
-		max-width: 100%;
-		min-height: 80px;
+		inline-size: 100%;
+		min-inline-size: 100%;
+		max-inline-size: 100%;
+		min-block-size: 80px;
 		margin: 0;
-		padding: 16px 16px 0 16px;
+		padding-block-start: 16px;
+		padding-inline-end: 16px;
+		padding-block-end: 0;
+		padding-inline-start: 16px;
 		resize: none;
 		font-size: 1em;
 		font-family: inherit;
@@ -312,7 +315,7 @@ defineExpose({
 
 	footer {
 		position: sticky;
-		bottom: 0;
+		inset-block-end: 0;
 		background: var(--panel);
 
 		> .file {
@@ -326,7 +329,8 @@ defineExpose({
 	.files {
 		display: block;
 		margin: 0;
-		padding: 0 8px;
+		padding-block: 0;
+		padding-inline: 8px;
 		list-style: none;
 
 		&:after {
@@ -337,11 +341,11 @@ defineExpose({
 
 		> li {
 			display: block;
-			float: left;
+			float: inline-start;
 			margin: 4px;
 			padding: 0;
-			width: 64px;
-			height: 64px;
+			inline-size: 64px;
+			block-size: 64px;
 			background-color: #eee;
 			background-repeat: no-repeat;
 			background-position: center center;
@@ -357,8 +361,8 @@ defineExpose({
 			> .remove {
 				display: none;
 				position: absolute;
-				right: -6px;
-				top: -6px;
+				inset-inline-end: -6px;
+				inset-block-start: -6px;
 				margin: 0;
 				padding: 0;
 				background: transparent;
@@ -393,7 +397,7 @@ defineExpose({
 		}
 
 		> .send {
-			margin-left: auto;
+			margin-inline-start: auto;
 			color: var(--accent);
 
 			&:hover {

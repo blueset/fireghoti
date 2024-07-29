@@ -66,8 +66,8 @@ const toggle = () => {
 
 	> input {
 		position: absolute;
-		width: 0;
-		height: 0;
+		inline-size: 0;
+		block-size: 0;
 		opacity: 0;
 		margin: 0;
 	}
@@ -78,8 +78,8 @@ const toggle = () => {
 		flex-shrink: 0;
 		margin: 0;
 		box-sizing: border-box;
-		width: 23px;
-		height: 23px;
+		inline-size: 23px;
+		block-size: 23px;
 		outline: none;
 		background: var(--panel);
 		border: solid 1px var(--panel);
@@ -104,8 +104,8 @@ const toggle = () => {
 	}
 
 	> .label {
-		margin-left: 12px;
-		margin-top: 2px;
+		margin-inline-start: 12px;
+		margin-block-start: 2px;
 		display: block;
 		transition: inherit;
 		color: var(--fg);
@@ -118,7 +118,10 @@ const toggle = () => {
 		}
 
 		> .caption {
-			margin: 8px 0 0 0;
+			margin-block-start: 8px;
+			margin-inline-end: 0;
+			margin-block-end: 0;
+			margin-inline-start: 0;
 			color: var(--fgTransparentWeak);
 			font-size: 0.85em;
 

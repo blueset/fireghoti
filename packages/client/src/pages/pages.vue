@@ -147,7 +147,7 @@ const headerTabs = computed(() => [
 definePageMetadata(
 	computed(() => ({
 		title: i18n.ts.pages,
-		icon: `${icon("ph-file-text")}`,
+		icon: `${icon("ph-file-text ph-dir")}`,
 	})),
 );
 
@@ -156,6 +156,11 @@ let swiperRef = null;
 function setSwiperRef(swiper) {
 	swiperRef = swiper;
 	syncSlide(tabs.indexOf(tab.value));
+	const styles = getComputedStyle(swiper.el);
+	swiper.changeLanguageDirection(styles.direction as ("rtl" | "ltr"));
+	if (styles['writing-mode'].startsWith('vertical')) {
+		swiper.changeDirection('vertical');
+	}
 }
 
 function onSlideChange() {
@@ -176,20 +181,20 @@ onMounted(() => {
 	> .buttoncontainer {
 		display: grid;
 		justify-content: center;
-		margin-bottom: 1rem;
+		margin-block-end: 1rem;
 	}
 
 	&.my .ckltabjg:first-child {
-		margin-top: 16px;
+		margin-block-start: 16px;
 	}
 
 	.ckltabjg:not(:last-child) {
-		margin-bottom: 8px;
+		margin-block-end: 8px;
 	}
 
-	@media (min-width: 500px) {
+	@media (min-inline-size: 500px) {
 		.ckltabjg:not(:last-child) {
-			margin-bottom: 16px;
+			margin-block-end: 16px;
 		}
 	}
 }

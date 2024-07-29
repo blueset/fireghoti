@@ -47,8 +47,8 @@ function toggle(x: Event) {
 
 	> input {
 		position: absolute;
-		width: 32px;
-		height: 23px;
+		inline-size: 32px;
+		block-size: 23px;
 		opacity: 0;
 		margin: 0;
 	}
@@ -59,8 +59,8 @@ function toggle(x: Event) {
 		flex-shrink: 0;
 		margin: 0;
 		box-sizing: border-box;
-		width: 32px;
-		height: 23px;
+		inline-size: 32px;
+		block-size: 23px;
 		outline: none;
 		background: var(--swutchOffBg);
 		background-clip: content-box;
@@ -72,10 +72,10 @@ function toggle(x: Event) {
 
 		> .knob {
 			position: absolute;
-			top: 3px;
-			left: 3px;
-			width: 15px;
-			height: 15px;
+			inset-block-start: 3px;
+			inset-inline-start: 3px;
+			inline-size: 15px;
+			block-size: 15px;
 			background: var(--swutchOffFg);
 			border-radius: 999px;
 			transition: all 0.2s ease;
@@ -92,8 +92,8 @@ function toggle(x: Event) {
 	}
 
 	> .label {
-		margin-left: 12px;
-		margin-top: 2px;
+		margin-inline-start: 12px;
+		margin-block-start: 2px;
 		display: block;
 		transition: inherit;
 		color: var(--fg);
@@ -107,7 +107,10 @@ function toggle(x: Event) {
 		}
 
 		> .caption {
-			margin: 8px 0 0 0;
+			margin-block-start: 8px;
+			margin-inline-end: 0;
+			margin-block-end: 0;
+			margin-inline-start: 0;
 			color: var(--fgTransparentWeak);
 			font-size: 0.85em;
 
@@ -127,7 +130,7 @@ function toggle(x: Event) {
 		border-color: var(--swutchOnBg) !important;
 
 		> .knob {
-			left: 12px;
+			inset-inline-start: 12px;
 			background: var(--swutchOnFg);
 		}
 	}

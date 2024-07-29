@@ -549,15 +549,15 @@ defineExpose({
 
 .cxiknjgy {
 	> .button {
-		margin-left: auto;
-		margin-right: auto;
+		margin-inline-start: auto;
+		margin-inline-end: auto;
 	}
 }
 .list > :deep(._button) {
 	margin-inline: auto;
-	margin-bottom: 16px;
+	margin-block-end: 16px;
 	&:last-of-type:not(:first-child) {
-		margin-top: 16px;
+		margin-block-start: 16px;
 	}
 }
 </style>

@@ -123,10 +123,11 @@ function onMousedown(evt: MouseEvent): void {
 	position: relative;
 	z-index: 1; // 他コンポーネントのbox-shadowに隠されないようにするため
 	display: block;
-	min-width: 100px;
-	min-height: 35px;
-	width: max-content;
-	padding: 8px 16px;
+	min-inline-size: 100px;
+	min-block-size: 35px;
+	inline-size: max-content;
+	padding-block: 8px;
+	padding-inline: 16px;
 	text-align: center;
 	font-weight: normal;
 	font-size: max(12px, 1em);
@@ -137,8 +138,8 @@ function onMousedown(evt: MouseEvent): void {
 	overflow: clip;
 	box-sizing: border-box;
 	transition: background 0.1s ease;
-	margin-right: 0.2rem;
-	margin-left: 0.2rem;
+	margin-inline-end: 0.2rem;
+	margin-inline-start: 0.2rem;
 
 	&:not(:disabled):hover {
 		background: var(--buttonHoverBg);
@@ -149,7 +150,7 @@ function onMousedown(evt: MouseEvent): void {
 	}
 
 	&.full {
-		width: 100%;
+		inline-size: 100%;
 	}
 
 	&.rounded {
@@ -174,17 +175,17 @@ function onMousedown(evt: MouseEvent): void {
 		font-weight: bold;
 		color: var(--fgOnAccent) !important;
 		background: linear-gradient(
-			90deg,
+			var(--gradient-to-inline-end),
 			var(--buttonGradateA),
 			var(--buttonGradateB)
 		);
 
 		&:not(:disabled):hover {
-			background: linear-gradient(90deg, var(--X8), var(--X8));
+			background: linear-gradient(var(--gradient-to-inline-end), var(--X8), var(--X8));
 		}
 
 		&:not(:disabled):active {
-			background: linear-gradient(90deg, var(--X8), var(--X8));
+			background: linear-gradient(var(--gradient-to-inline-end), var(--X8), var(--X8));
 		}
 	}
 
@@ -206,15 +207,17 @@ function onMousedown(evt: MouseEvent): void {
 	}
 
 	&.mini {
-		padding: 4px 8px;
+		padding-block: 4px;
+		padding-inline: 8px;
 		font-size: max(12px, 0.9em);
 		border-radius: 100px;
 	}
 
 	&.chip {
-		padding: 4px 12px;
+		padding-block: 4px;
+		padding-inline: 12px;
 		font-size: max(12px, 0.9em);
-		min-width: unset;
+		min-inline-size: unset;
 		border-radius: 100px;
 	}
 
@@ -228,24 +231,24 @@ function onMousedown(evt: MouseEvent): void {
 
 	&.inline {
 		display: inline-block;
-		width: auto;
-		min-width: 100px;
+		inline-size: auto;
+		min-inline-size: 100px;
 	}
 
 	> .ripples {
 		position: absolute;
 		z-index: 0;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
+		inset-block-start: 0;
+		inset-inline-start: 0;
+		inline-size: 100%;
+		block-size: 100%;
 		border-radius: 6px;
 		overflow: hidden;
 
 		::v-deep(div) {
 			position: absolute;
-			width: 2px;
-			height: 2px;
+			inline-size: 2px;
+			block-size: 2px;
 			border-radius: 100%;
 			background: rgba(0, 0, 0, 0.1);
 			opacity: 1;

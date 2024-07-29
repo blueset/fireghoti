@@ -10,18 +10,20 @@
 		@drop.stop="onDrop"
 	>
 		<header>
-			<button v-if="!fixed" class="cancel _button" @click="cancel">
-				<i :class="icon('ph-x')" :aria-label="i18n.ts.close"></i>
-			</button>
-			<button
-				v-if="$props.editId == null"
-				v-click-anime
-				v-tooltip="i18n.ts.switchAccount"
-				class="account _button"
-				@click="openAccountMenu"
-			>
-				<MkAvatar :user="postAccount ?? me!" class="avatar" />
-			</button>
+			<div class="left">
+				<button v-if="!fixed" class="cancel _button" @click="cancel">
+					<i :class="icon('ph-x')" :aria-label="i18n.ts.close"></i>
+				</button>
+				<button
+					v-if="$props.editId == null"
+					v-click-anime
+					v-tooltip="i18n.ts.switchAccount"
+					class="account _button"
+					@click="openAccountMenu"
+				>
+					<MkAvatar :user="postAccount ?? me!" class="avatar" />
+				</button>
+			</div>
 			<div class="right">
 				<span
 					class="text-count"
@@ -116,7 +118,7 @@
 				</button>
 			</div>
 			<div v-if="visibility === 'specified'" class="to-specified">
-				<span style="margin-right: 8px">{{ i18n.ts.recipient }}</span>
+				<span style="margin-inline-end: 8px">{{ i18n.ts.recipient }}</span>
 				<div class="visibleUsers">
 					<span v-for="u in visibleUsers" :key="u.id">
 						<MkAcct :user="u" />
@@ -209,58 +211,64 @@
 				:text="text"
 			/>
 			<footer>
-				<button
-					v-tooltip="i18n.ts.attachFile"
-					class="_button"
-					@click="chooseFileFrom"
-				>
-					<i :class="icon('ph-upload')"></i>
-				</button>
-				<button
-					v-tooltip="i18n.ts.poll"
-					class="_button"
-					:class="{ active: poll }"
-					@click="togglePoll"
-				>
-					<i :class="icon('ph-microphone-stage')"></i>
-				</button>
-				<button
-					v-tooltip="i18n.ts.useCw"
-					class="_button"
-					:class="{ active: useCw }"
-					@click="useCw = !useCw"
-				>
-					<i :class="icon('ph-eye-slash')"></i>
-				</button>
-				<!-- <button
-					v-tooltip="i18n.ts.mention"
-					class="_button"
-					@click="insertMention"
-				>
-					<i :class="icon('ph-at')"></i>
-				</button> -->
-				<button
-					v-tooltip="i18n.ts.hashtags"
-					class="_button"
-					:class="{ active: withHashtags }"
-					@click="withHashtags = !withHashtags"
-				>
-					<i :class="icon('ph-hash')"></i>
-				</button>
-				<button
-					v-tooltip="i18n.ts.emoji"
-					class="_button"
-					@click="insertEmoji"
-				>
-					<i :class="icon('ph-smiley')"></i>
-				</button>
-				<button
-					v-tooltip="i18n.ts.more"
-					class="_button right"
-					@click="showMoreMenu"
-				>
-					<i :class="icon('ph-dots-three-outline')"></i>
-				</button>
+				<div class="row">
+					<div class="left">
+						<button
+							v-tooltip="i18n.ts.attachFile"
+							class="_button"
+							@click="chooseFileFrom"
+						>
+							<i :class="icon('ph-upload')"></i>
+						</button>
+						<button
+							v-tooltip="i18n.ts.poll"
+							class="_button"
+							:class="{ active: poll }"
+							@click="togglePoll"
+						>
+							<i :class="icon('ph-microphone-stage')"></i>
+						</button>
+						<button
+							v-tooltip="i18n.ts.useCw"
+							class="_button"
+							:class="{ active: useCw }"
+							@click="useCw = !useCw"
+						>
+							<i :class="icon('ph-eye-slash')"></i>
+						</button>
+						<!-- <button
+							v-tooltip="i18n.ts.mention"
+							class="_button"
+							@click="insertMention"
+						>
+							<i :class="icon('ph-at')"></i>
+						</button> -->
+						<button
+							v-tooltip="i18n.ts.hashtags"
+							class="_button"
+							:class="{ active: withHashtags }"
+							@click="withHashtags = !withHashtags"
+						>
+							<i :class="icon('ph-hash')"></i>
+						</button>
+						<button
+							v-tooltip="i18n.ts.emoji"
+							class="_button"
+							@click="insertEmoji"
+						>
+							<i :class="icon('ph-smiley')"></i>
+						</button>
+					</div>
+					<div class="right">
+						<button
+							v-tooltip="i18n.ts.more"
+							class="_button"
+							@click="showMoreMenu"
+						>
+							<i :class="icon('ph-dots-three-outline ph-dir')"></i>
+						</button>
+					</div>
+				</div>
 				<div v-if="showBigPostButton">
 					<button
 						v-tooltip="submitText"
@@ -1469,49 +1477,52 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.right {
-	float: right;
-}
 .gafaadew {
 	position: relative;
 
 	&.modal {
-		width: 100%;
-		max-width: 520px;
+		inline-size: 100%;
+		max-inline-size: 520px;
 	}
 
 	> header {
 		display: flex;
 		flex-wrap: wrap;
 		z-index: 1000;
-		height: 66px;
+		min-block-size: 66px;
+		justify-content: space-between;
+		> .left {
+			display: flex;
+			flex-grow: 1;
+			justify-content: flex-start;
 
-		> .cancel {
-			padding: 0;
-			font-size: 20px;
-			width: 64px;
-			line-height: 66px;
-		}
+			> .cancel {
+				padding: 0;
+				font-size: 20px;
+				inline-size: 64px;
+				line-height: 66px;
+			}
 
-		> .account {
-			height: 100%;
-			aspect-ratio: 1/1;
-			display: inline-flex;
-			vertical-align: bottom;
+			> .account {
+				block-size: 100%;
+				aspect-ratio: 1/1;
+				display: inline-flex;
+				vertical-align: bottom;
 
-			> .avatar {
-				width: 28px;
-				height: 28px;
-				margin: auto;
+				> .avatar {
+					inline-size: 28px;
+					block-size: 28px;
+					margin: auto;
+				}
 			}
 		}
 
 		> .right {
-			position: absolute;
-			top: 0;
-			right: 0;
 			display: flex;
+			flex-wrap: wrap;
 			align-items: center;
+			justify-content: flex-end;
+			flex-grow: 1;
 
 			> .text-count {
 				opacity: 0.7;
@@ -1519,12 +1530,15 @@ onMounted(() => {
 			}
 
 			> .visibility {
-				height: 34px;
-				width: 34px;
-				margin: 0 0 0 8px;
+				block-size: 34px;
+				inline-size: 34px;
+				margin-block-start: 0;
+				margin-inline-end: 0;
+				margin-block-end: 0;
+				margin-inline-start: 8px;
 
 				& + .localOnly {
-					margin-left: 0 !important;
+					margin-inline-start: 0 !important;
 				}
 
 				> span:only-child > i {
@@ -1533,22 +1547,28 @@ onMounted(() => {
 			}
 
 			> .local-only {
-				margin: 0 0 0 12px;
+				margin-block-start: 0;
+				margin-inline-end: 0;
+				margin-block-end: 0;
+				margin-inline-start: 12px;
 				opacity: 0.7;
 			}
 
 			> .language {
-				height: 34px;
-				width: 34px;
+				block-size: 34px;
+				inline-size: 34px;
 			}
 
 			> .preview {
 				display: inline-block;
 				padding: 0;
-				margin: 0 8px 0 0;
+				margin-block-start: 0;
+				margin-inline-end: 8px;
+				margin-block-end: 0;
+				margin-inline-start: 0;
 				font-size: inherit !important;
-				width: 34px;
-				height: 34px;
+				inline-size: 34px;
+				block-size: 34px;
 				border-radius: 6px;
 
 				&:hover {
@@ -1563,8 +1583,12 @@ onMounted(() => {
 			> .submit {
 				display: inline-flex;
 				align-items: center;
-				margin: 16px 16px 16px 0;
-				padding: 0 12px;
+				margin-block-start: 16px;
+				margin-inline-end: 16px;
+				margin-block-end: 16px;
+				margin-inline-start: 0;
+				padding-block: 0;
+				padding-inline: 12px;
 				line-height: 34px;
 				font-weight: bold;
 				vertical-align: bottom;
@@ -1577,7 +1601,7 @@ onMounted(() => {
 
 				> .spinner,
 				> i {
-					margin-left: 6px;
+					margin-inline-start: 6px;
 				}
 			}
 		}
@@ -1593,7 +1617,7 @@ onMounted(() => {
 			align-items: center;
 			gap: 0.4em;
 			margin-inline: 24px;
-			margin-bottom: 12px;
+			margin-block-end: 12px;
 			color: var(--accent);
 
 			> button {
@@ -1612,14 +1636,15 @@ onMounted(() => {
 		}
 
 		> .to-specified {
-			padding: 6px 24px;
-			margin-bottom: 8px;
+			padding-block: 6px;
+			padding-inline: 24px;
+			margin-block-end: 8px;
 			overflow: auto;
 			line-height: 2rem;
 
 			> .visibleUsers {
 				display: inline;
-				top: -1px;
+				inset-block-start: -1px;
 				font-size: 14px;
 
 				> button {
@@ -1633,19 +1658,26 @@ onMounted(() => {
 
 				> span {
 					margin: 0.3rem;
-					padding: 4px 0 4px 4px;
+					padding-block-start: 4px;
+					padding-inline-end: 0;
+					padding-block-end: 4px;
+					padding-inline-start: 4px;
 					border-radius: 999px;
 					background: var(--X3);
 
 					> button {
-						padding: 4px 8px;
+						padding-block: 4px;
+						padding-inline: 8px;
 					}
 				}
 			}
 		}
 
 		> .form-info {
-			margin: 0 20px 16px 20px;
+			margin-block-start: 0;
+			margin-inline-end: 20px;
+			margin-block-end: 16px;
+			margin-inline-start: 20px;
 		}
 
 		> .cw,
@@ -1653,9 +1685,10 @@ onMounted(() => {
 		> .text {
 			display: block;
 			box-sizing: border-box;
-			padding: 0 24px;
+			padding-block: 0;
+			padding-inline: 24px;
 			margin: 0;
-			width: 100%;
+			inline-size: 100%;
 			font-size: 1.05em;
 			border: none;
 			border-radius: 0;
@@ -1674,45 +1707,68 @@ onMounted(() => {
 
 		> .cw {
 			z-index: 1;
-			padding-bottom: 8px;
-			border-bottom: solid 0.5px var(--divider);
+			padding-block-end: 8px;
+			border-block-end: solid 0.5px var(--divider);
 		}
 
 		> .hashtags {
 			z-index: 1;
-			padding-top: 8px;
-			padding-bottom: 8px;
-			border-top: solid 0.5px var(--divider);
+			padding-block-start: 8px;
+			padding-block-end: 8px;
+			border-block-start: solid 0.5px var(--divider);
 		}
 
 		> .text {
-			max-width: 100%;
-			min-width: 100%;
-			min-height: 90px;
+			max-inline-size: 100%;
+			min-inline-size: 100%;
+			min-block-size: 90px;
 
 			&.withCw {
-				padding-top: 8px;
+				padding-block-start: 8px;
 			}
 		}
 
 		> footer {
-			padding: 0 16px 16px 16px;
+			padding-block-start: 0;
+			padding-inline-end: 16px;
+			padding-block-end: 16px;
+			padding-inline-start: 16px;
 
-			> button {
-				display: inline-block;
-				padding: 0;
-				margin: 0;
-				font-size: 16px;
-				width: 48px;
-				height: 48px;
-				border-radius: 6px;
-
-				&:hover {
-					background: var(--X5);
+			> .row {
+				display: flex;
+				justify-content: space-between;
+				flex-wrap: wrap;
+				
+				> .left {
+					justify-content: flex-start;
 				}
 
-				&.active {
-					color: var(--accent);
+				.right {
+					justify-content: flex-end;
+				}
+
+				> .left, > .right {
+					display: flex;
+					flex-grow: 1;
+					flex-wrap: wrap;
+
+					button {
+						display: inline-block;
+						padding: 0;
+						margin: 0;
+						font-size: 16px;
+						inline-size: 48px;
+						block-size: 48px;
+						border-radius: 6px;
+
+						&:hover {
+							background: var(--X5);
+						}
+
+						&.active {
+							color: var(--accent);
+						}
+					}
 				}
 			}
 		}
@@ -1720,10 +1776,8 @@ onMounted(() => {
 
 	&.max-width_500px, &.widget {
 		> header {
-			height: 50px;
-
 			> .cancel {
-				width: 50px;
+				inline-size: 50px;
 				line-height: 50px;
 			}
 
@@ -1740,26 +1794,31 @@ onMounted(() => {
 
 		> .form {
 			> .to-specified {
-				padding: 6px 16px;
+				padding-block: 6px;
+				padding-inline: 16px;
 			}
 
 			> .cw,
 			> .hashtags,
 			> .text {
-				padding: 0 16px;
+				padding-block: 0;
+				padding-inline: 16px;
 			}
 
 			> .text {
-				min-height: 80px;
+				min-block-size: 80px;
 			}
 
 			> footer {
-				padding: 0 8px 8px 8px;
+				padding-block-start: 0;
+				padding-inline-end: 8px;
+				padding-block-end: 8px;
+				padding-inline-start: 8px;
 
 				> button {
 					font-size: 14px;
-					width: 44px;
-					height: 44px;
+					inline-size: 44px;
+					block-size: 44px;
 				}
 			}
 		}
@@ -1772,7 +1831,8 @@ onMounted(() => {
 	-moz-appearance: none;
 	display: block ruby;
 	padding: 3%;
-	margin: 0 auto;
+	margin-block: 0;
+	margin-inline: auto;
 	border: none;
 	cursor: pointer;
 	color: inherit;
@@ -1781,21 +1841,21 @@ onMounted(() => {
 	font-size: 3em;
 	font-family: inherit;
 	text-decoration: none;
-	width: 100%;
+	inline-size: 100%;
 	border-radius: 10px;
 	user-select: none;
 	-webkit-user-select: none;
 	-webkit-touch-callout: none;
 	color: var(--fgOnAccent);
 	background: linear-gradient(
-		90deg,
+		var(--gradient-to-inline-end),
 		var(--buttonGradateA),
 		var(--buttonGradateB)
 	);
 
 	> .ph-lg {
 		vertical-align: -0.125em;
-		margin-left: 12px;
+		margin-inline-start: 12px;
 	}
 }
 

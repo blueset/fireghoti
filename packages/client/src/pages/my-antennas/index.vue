@@ -105,10 +105,10 @@ definePageMetadata({
 <style lang="scss" scoped>
 .ieepwinx {
 	.uopelskx {
-		float: left;
-		min-width: 25px;
+		float: inline-start;
+		min-inline-size: 25px;
 		padding: 13px;
-		margin-right: 10px;
+		margin-inline-end: 10px;
 		border: solid 1px var(--divider);
 		border-radius: 6px;
 
@@ -121,7 +121,7 @@ definePageMetadata({
 	.ljoevbzj {
 		display: block;
 		padding: 16px;
-		margin-bottom: 8px;
+		margin-block-end: 8px;
 		border: solid 1px var(--divider);
 		border-radius: 6px;
 
@@ -137,8 +137,8 @@ definePageMetadata({
 
 	.notify-icon {
 		position: relative;
-		top: -1em;
-		left: -0.5em;
+		inset-block-start: -1em;
+		inset-inline-start: -0.5em;
 
 		&.ph-circle ph-fill {
 			color: var(--indicator);

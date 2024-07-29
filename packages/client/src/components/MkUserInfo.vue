@@ -120,17 +120,17 @@ const collapsed = ref(isLong.value);
 	flex-direction: column;
 
 	.banner {
-		height: 94px;
+		block-size: 94px;
 		background-color: rgba(0, 0, 0, 0.1);
 		background-size: cover;
 		background-position: center;
-		margin-bottom: calc(0px - var(--radius));
+		margin-block-end: calc(0px - var(--radius));
 		&::before {
 			content: "";
 			position: absolute;
 			inset: 0;
 			z-index: 2;
-			height: inherit;
+			block-size: inherit;
 			background: linear-gradient(
 				-125deg,
 				rgba(0, 0, 0, 0.7),
@@ -140,9 +140,10 @@ const collapsed = ref(isLong.value);
 		}
 		> .followed {
 			position: absolute;
-			top: 12px;
+			inset-block-start: 12px;
 			inset-inline-start: 12px;
-			padding: 4px 8px;
+			padding-block: 4px;
+			padding-inline: 8px;
 			color: #fff;
 			background: var(--accent);
 			font-size: 1em;
@@ -177,11 +178,11 @@ const collapsed = ref(isLong.value);
 		.avatar {
 			display: block;
 			position: absolute;
-			bottom: 6px;
+			inset-block-end: 6px;
 			inset-inline-start: 10px;
 			z-index: 2;
-			width: 58px;
-			height: 58px;
+			inline-size: 58px;
+			block-size: 58px;
 			background: var(--panel);
 			border: solid 4px var(--panel);
 		}
@@ -192,10 +193,10 @@ const collapsed = ref(isLong.value);
 			line-height: 16px;
 			overflow: hidden;
 			text-overflow: ellipsis;
-			height: 1.5em;
+			block-size: 1.5em;
 			margin-block: -0.5em;
 			padding-block: 0.5em 0.25em;
-			max-width: 100%;
+			max-inline-size: 100%;
 		}
 
 		.username {
@@ -213,7 +214,7 @@ const collapsed = ref(isLong.value);
 	.description {
 		overflow: hidden;
 		padding-inline: 16px;
-		margin-bottom: 10px;
+		margin-block-end: 10px;
 		font-size: 0.8em;
 		&.truncate {
 			display: -webkit-box;
@@ -222,7 +223,7 @@ const collapsed = ref(isLong.value);
 		}
 		&.collapsed {
 			position: relative;
-			max-height: calc(9em + 50px);
+			max-block-size: calc(9em + 50px);
 			mask: linear-gradient(black calc(100% - 64px), transparent);
 			-webkit-mask: linear-gradient(black calc(100% - 64px), transparent);
 		}
@@ -236,13 +237,14 @@ const collapsed = ref(isLong.value);
 	:deep(.fade) {
 		position: relative;
 		display: block;
-		width: 100%;
-		margin-top: -4.5em;
+		inline-size: 100%;
+		margin-block-start: -4.5em;
 		z-index: 2;
 		> span {
 			display: inline-block;
 			background: var(--panel);
-			padding: 0.4em 1em;
+			padding-block: 0.4em;
+			padding-inline: 1em;
 			font-size: 0.8em;
 			border-radius: 999px;
 			box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
@@ -254,14 +256,15 @@ const collapsed = ref(isLong.value);
 		}
 	}
 	:deep(.showLess) {
-		width: 100%;
+		inline-size: 100%;
 		position: sticky;
-		bottom: var(--stickyBottom);
+		inset-block-end: var(--stickyBottom);
 
 		> span {
 			display: inline-block;
 			background: var(--panel);
-			padding: 6px 10px;
+			padding-block: 6px;
+			padding-inline: 10px;
 			font-size: 0.8em;
 			border-radius: 999px;
 			box-shadow: 0 0 7px 7px var(--bg);
@@ -271,7 +274,7 @@ const collapsed = ref(isLong.value);
 		padding-inline: 16px;
 		font-size: 0.8em;
 		padding-block: 1em;
-		border-top: 1px solid var(--divider);
+		border-block-start: 1px solid var(--divider);
 
 		> .field {
 			display: flex;
@@ -280,7 +283,7 @@ const collapsed = ref(isLong.value);
 			align-items: center;
 
 			&:not(:last-child) {
-				margin-bottom: 8px;
+				margin-block-end: 8px;
 			}
 
 			:deep(span) {
@@ -288,7 +291,7 @@ const collapsed = ref(isLong.value);
 			}
 
 			> .name {
-				width: 30%;
+				inline-size: 30%;
 				overflow: hidden;
 				white-space: nowrap;
 				text-overflow: ellipsis;
@@ -298,7 +301,7 @@ const collapsed = ref(isLong.value);
 			}
 
 			> .value {
-				width: 70%;
+				inline-size: 70%;
 				overflow: hidden;
 				white-space: nowrap;
 				text-overflow: ellipsis;
@@ -311,8 +314,8 @@ const collapsed = ref(isLong.value);
 		gap: 1em;
 		padding-inline: 16px;
 		font-size: 0.8em;
-		margin-top: auto;
-		border-top: 1px solid var(--divider);
+		margin-block-start: auto;
+		border-block-start: 1px solid var(--divider);
 		> p > :deep(span) {
 			font-weight: 700;
 			color: var(--accent);
@@ -321,9 +324,9 @@ const collapsed = ref(isLong.value);
 
 	.buttons {
 		position: absolute;
-		top: 8px;
+		inset-block-start: 8px;
 		inset-inline-end: 8px;
-		margin-bottom: 1rem;
+		margin-block-end: 1rem;
 		z-index: 3;
 		color: white;
 	}

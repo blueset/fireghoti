@@ -37,8 +37,10 @@ const pagination = {
 
 <style lang="scss" module>
 .tab {
-	margin: calc(var(--margin) / 2) 0;
-	padding: calc(var(--margin) / 2) 0;
+	margin-block: calc(var(--margin) / 2);
+	margin-inline: 0;
+	padding-block: calc(var(--margin) / 2);
+	padding-inline: 0;
 	background: var(--bg);
 }
 </style>

@@ -160,7 +160,7 @@ const menuDef = computed(() => [
 				active: currentPage.value?.route.name === "statusbar",
 			},
 			{
-				icon: `${icon("ph-speaker-high")}`,
+				icon: `${icon("ph-speaker-high ph-dir")}`,
 				text: i18n.ts.sounds,
 				to: "/settings/sounds",
 				active: currentPage.value?.route.name === "sounds",
@@ -177,7 +177,7 @@ const menuDef = computed(() => [
 		title: i18n.ts.otherSettings,
 		items: [
 			{
-				icon: `${icon("ph-speaker-none")}`,
+				icon: `${icon("ph-speaker-none ph-dir")}`,
 				text: i18n.ts.instanceMute,
 				to: "/settings/instance-mute",
 				active: currentPage.value?.route.name === "instance-mute",
@@ -189,7 +189,7 @@ const menuDef = computed(() => [
 				active: currentPage.value?.route.name === "mute-block",
 			},
 			{
-				icon: `${icon("ph-speaker-x")}`,
+				icon: `${icon("ph-speaker-x ph-dir")}`,
 				text: i18n.ts.wordMute,
 				to: "/settings/word-mute",
 				active: currentPage.value?.route.name === "word-mute",
@@ -219,7 +219,7 @@ const menuDef = computed(() => [
 				active: currentPage.value?.route.name === "migration",
 			},
 			{
-				icon: `${icon("ph-dots-three-outline")}`,
+				icon: `${icon("ph-dots-three-outline ph-dir")}`,
 				text: i18n.ts.other,
 				to: "/settings/other",
 				active: currentPage.value?.route.name === "other",
@@ -329,15 +329,19 @@ definePageMetadata(INFO);
 		> .nav {
 			.baaadecd {
 				> .info {
-					margin: 16px 0;
+					margin-block: 16px;
+					margin-inline: 0;
 				}
 
 				> .accounts {
 					> .avatar {
 						display: block;
-						width: 50px;
-						height: 50px;
-						margin: 8px auto 16px auto;
+						inline-size: 50px;
+						block-size: 50px;
+						margin-block-start: 8px;
+						margin-inline-end: auto;
+						margin-block-end: 16px;
+						margin-inline-start: auto;
 					}
 				}
 			}
@@ -347,17 +351,17 @@ definePageMetadata(INFO);
 	&.wide {
 		> .body {
 			display: flex;
-			height: 100%;
+			block-size: 100%;
 
 			> .nav {
-				width: 34%;
-				padding-right: 32px;
+				inline-size: 34%;
+				padding-inline-end: 32px;
 				box-sizing: border-box;
 			}
 
 			> .main {
 				flex: 1;
-				min-width: 0;
+				min-inline-size: 0;
 			}
 		}
 	}

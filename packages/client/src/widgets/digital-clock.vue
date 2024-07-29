@@ -112,7 +112,8 @@ defineExpose<WidgetComponentExpose>({
 
 <style lang="scss" scoped>
 .mkw-digitalClock {
-	padding: 16px 0;
+	padding-block: 16px;
+	padding-inline: 0;
 	text-align: center;
 
 	> .label {

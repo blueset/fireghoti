@@ -50,6 +50,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .voxdxuby {
-	margin: 1em 0;
+	margin-block: 1em;
+	margin-inline: 0;
 }
 </style>

@@ -355,10 +355,11 @@ withDefaults(
 
 	::v-deep(blockquote) {
 		display: block;
-		margin: 8px 0;
-		padding-left: 12px;
+		margin-block: 8px;
+		margin-inline: 0;
+		padding-inline-start: 12px;
 		color: var(--fgTransparentWeak);
-		border-left: solid 4px var(--fgTransparent);
+		border-inline-start: solid 4px var(--fgTransparent);
 	}
 
 	::v-deep(pre) {
@@ -368,7 +369,8 @@ withDefaults(
 	> ::v-deep(code) {
 		font-size: 0.8em;
 		word-break: break-all;
-		padding: 4px 6px;
+		padding-block: 4px;
+		padding-inline: 6px;
 	}
 }
 </style>

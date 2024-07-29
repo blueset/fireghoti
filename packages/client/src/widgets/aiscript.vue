@@ -148,18 +148,18 @@ defineExpose<WidgetComponentExpose>({
 
 <style lang="scss" scoped>
 .uylguesu {
-	text-align: right;
+	text-align: end;
 
 	> textarea {
 		display: block;
-		width: 100%;
-		max-width: 100%;
-		min-width: 100%;
+		inline-size: 100%;
+		max-inline-size: 100%;
+		min-inline-size: 100%;
 		padding: 16px;
 		color: var(--fg);
 		background: transparent;
 		border: none;
-		border-bottom: solid 0.5px var(--divider);
+		border-block-end: solid 0.5px var(--divider);
 		border-radius: 0;
 		box-sizing: border-box;
 		font: inherit;
@@ -172,8 +172,9 @@ defineExpose<WidgetComponentExpose>({
 	> button {
 		display: inline-block;
 		margin: 8px;
-		padding: 0 10px;
-		height: 28px;
+		padding-block: 0;
+		padding-inline: 10px;
+		block-size: 28px;
 		outline: none;
 		border-radius: 4px;
 
@@ -184,8 +185,8 @@ defineExpose<WidgetComponentExpose>({
 	}
 
 	> .logs {
-		border-top: solid 0.5px var(--divider);
-		text-align: left;
+		border-block-start: solid 0.5px var(--divider);
+		text-align: start;
 		padding: 16px;
 
 		&:empty {

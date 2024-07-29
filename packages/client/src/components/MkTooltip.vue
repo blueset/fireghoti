@@ -52,9 +52,28 @@ const el = ref<HTMLElement>();
 const zIndex = os.claimZIndex("high");
 
 function setPosition() {
+	let direction = props.direction;
+	if (getComputedStyle(el.value!).direction === "rtl") {
+		if (direction === "right") {
+			direction = "left";
+		} else if (direction === "left") {
+			direction = "right";
+		}
+	}
+	if (getComputedStyle(el.value!)['writing-mode'].startsWith("vertical")) {
+		if (direction === "top") {
+			direction = "right";
+		} else if (direction === "bottom") {
+			direction = "left";
+		} else if (direction === "right") {
+			direction = "bottom";
+		} else if (direction === "left") {
+			direction = "top";
+		}
+	}
 	const data = calcPopupPosition(el.value!, {
 		anchorElement: props.targetElement,
-		direction: props.direction,
+		direction: direction,
 		align: "center",
 		innerMargin: props.innerMargin,
 		x: props.x,
@@ -106,7 +125,8 @@ onUnmounted(() => {
 .buebdbiu {
 	position: absolute;
 	font-size: 0.8em;
-	padding: 8px 12px;
+	padding-block: 8px;
+	padding-inline: 12px;
 	box-sizing: border-box;
 	text-align: center;
 	border-radius: 4px;

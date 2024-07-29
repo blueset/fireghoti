@@ -11,8 +11,8 @@
 				ref="rootEl"
 				class="ebkgoccj"
 				:style="{
-					width: `${props.width}px`,
-					height: scroll
+					inlineSize: `${props.width}px`,
+					blockSize: scroll
 						? height
 							? `${props.height}px`
 							: undefined
@@ -128,7 +128,7 @@ defineExpose({
 
 	--root-margin: 24px;
 
-	@media (max-width: 500px) {
+	@media (max-inline-size: 500px) {
 		--root-margin: 16px;
 	}
 
@@ -142,33 +142,33 @@ defineExpose({
 		backdrop-filter: var(--blur, blur(15px));
 
 		> button {
-			height: $height;
-			width: $height;
+			block-size: $height;
+			inline-size: $height;
 
-			@media (max-width: 500px) {
-				height: $height-narrow;
-				width: $height-narrow;
+			@media (max-inline-size: 500px) {
+				block-size: $height-narrow;
+				inline-size: $height-narrow;
 			}
 		}
 
 		> .title {
 			flex: 1;
 			line-height: $height;
-			padding-left: 32px;
+			padding-inline-start: 32px;
 			font-weight: bold;
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			pointer-events: none;
 
-			@media (max-width: 500px) {
+			@media (max-inline-size: 500px) {
 				line-height: $height-narrow;
-				padding-left: 16px;
+				padding-inline-start: 16px;
 			}
 		}
 
 		> button + .title {
-			padding-left: 0;
+			padding-inline-start: 0;
 		}
 	}
 

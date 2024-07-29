@@ -129,17 +129,17 @@ definePageMetadata({
 	padding: 12px;
 
 	&:first-child {
-		border-top-left-radius: 6px;
-		border-top-right-radius: 6px;
+		border-start-start-radius: 6px;
+		border-start-end-radius: 6px;
 	}
 
 	&:last-child {
-		border-bottom-left-radius: 6px;
-		border-bottom-right-radius: 6px;
+		border-end-start-radius: 6px;
+		border-end-end-radius: 6px;
 	}
 
 	&:not(:last-child) {
-		border-bottom: solid 0.5px var(--divider);
+		border-block-end: solid 0.5px var(--divider);
 	}
 
 	> header {
@@ -147,8 +147,8 @@ definePageMetadata({
 		align-items: center;
 
 		> .icon {
-			width: 1em;
-			margin-right: 0.75em;
+			inline-size: 1em;
+			margin-inline-end: 0.75em;
 
 			&.succ {
 				color: var(--success);
@@ -161,15 +161,15 @@ definePageMetadata({
 
 		> .ip {
 			flex: 1;
-			min-width: 0;
+			min-inline-size: 0;
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
-			margin-right: 12px;
+			margin-inline-end: 12px;
 		}
 
 		> .time {
-			margin-left: auto;
+			margin-inline-start: auto;
 			opacity: 0.7;
 		}
 	}

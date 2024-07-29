@@ -50,17 +50,17 @@ const emit = defineEmits<{
 <style lang="scss" scoped>
 .qpcyisrl {
 	> .title {
-		margin-bottom: 4px;
+		margin-block-end: 4px;
 	}
 
 	> .series {
 		> .color {
 			display: inline-block;
-			width: 8px;
-			height: 8px;
+			inline-size: 8px;
+			block-size: 8px;
 			border-width: 1px;
 			border-style: solid;
-			margin-right: 8px;
+			margin-inline-end: 8px;
 		}
 	}
 }

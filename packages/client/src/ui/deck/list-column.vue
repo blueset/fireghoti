@@ -6,8 +6,8 @@
 		@parent-focus="($event) => emit('parent-focus', $event)"
 	>
 		<template #header>
-			<i :class="icon('ph-list-bullets')"></i
-			><span style="margin-left: 8px">{{ column.name }}</span>
+			<i :class="icon('ph-list-bullets ph-dir')"></i
+			><span style="margin-inline-start: 8px">{{ column.name }}</span>
 		</template>
 
 		<XTimeline

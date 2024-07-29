@@ -105,9 +105,9 @@ definePageMetadata({
 			padding: 16px;
 
 			> .description {
-				margin-top: 8px;
-				padding-top: 8px;
-				border-top: solid 0.5px var(--divider);
+				margin-block-start: 8px;
+				padding-block-start: 8px;
+				border-block-start: solid 0.5px var(--divider);
 			}
 		}
 	}

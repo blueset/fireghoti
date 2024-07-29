@@ -56,13 +56,14 @@ export default defineComponent({
 <style lang="scss" scoped>
 .mrdgzndn {
 	&:not(:first-child) {
-		margin-top: 0.5em;
+		margin-block-start: 0.5em;
 	}
 	&:not(:last-child) {
-		margin-bottom: 0.5em;
+		margin-block-end: 0.5em;
 	}
 	> .url {
-		margin: 0.5em 0;
+		margin-block: 0.5em;
+		margin-inline: 0;
 	}
 }
 </style>

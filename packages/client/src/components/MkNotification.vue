@@ -400,7 +400,8 @@ useTooltip(reactionRef, (showing) => {
 .qglefbjs {
 	position: relative;
 	box-sizing: border-box;
-	padding: 24px 32px;
+	padding-block: 24px;
+	padding-inline: 32px;
 	font-size: 0.9em;
 	overflow-wrap: break-word;
 	display: flex;
@@ -411,31 +412,32 @@ useTooltip(reactionRef, (showing) => {
 		font-size: 0.9em;
 	}
 	&.max-width_450px {
-		padding: 12px 16px;
+		padding-block: 12px;
+		padding-inline: 16px;
 	}
 
 	> .head {
 		position: sticky;
-		top: 0;
+		inset-block-start: 0;
 		flex-shrink: 0;
-		width: 42px;
-		height: 42px;
-		margin-right: 8px;
+		inline-size: 42px;
+		block-size: 42px;
+		margin-inline-end: 8px;
 
 		> .icon {
 			display: block;
-			width: 100%;
-			height: 100%;
+			inline-size: 100%;
+			block-size: 100%;
 			border-radius: 6px;
 		}
 
 		> .sub-icon {
 			position: absolute;
 			z-index: 1;
-			bottom: -2px;
-			right: -2px;
-			width: 20px;
-			height: 20px;
+			inset-block-end: -2px;
+			inset-inline-end: -2px;
+			inline-size: 20px;
+			block-size: 20px;
 			box-sizing: border-box;
 			border-radius: 100%;
 			background: var(--panel);
@@ -449,8 +451,8 @@ useTooltip(reactionRef, (showing) => {
 
 			> * {
 				color: #fff;
-				width: 100%;
-				height: 100%;
+				inline-size: 100%;
+				block-size: 100%;
 			}
 
 			&.follow,
@@ -502,7 +504,7 @@ useTooltip(reactionRef, (showing) => {
 
 	> .tail {
 		flex: 1;
-		min-width: 0;
+		min-inline-size: 0;
 
 		> header {
 			display: flex;
@@ -512,12 +514,12 @@ useTooltip(reactionRef, (showing) => {
 			> .name {
 				text-overflow: ellipsis;
 				white-space: nowrap;
-				min-width: 0;
+				min-inline-size: 0;
 				overflow: hidden;
 			}
 
 			> .time {
-				margin-left: auto;
+				margin-inline-start: auto;
 				font-size: 0.9em;
 			}
 		}
@@ -537,11 +539,11 @@ useTooltip(reactionRef, (showing) => {
 			}
 
 			> i:first-child {
-				margin-right: 4px;
+				margin-inline-end: 4px;
 			}
 
 			> i:last-child {
-				margin-left: 4px;
+				margin-inline-start: 4px;
 			}
 		}
 	}

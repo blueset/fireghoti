@@ -41,7 +41,7 @@
 						>
 							<i
 								:class="icon('ph-shield-warning ph-xl', false)"
-								style="margin-right: 0.5rem"
+								style="margin-inline-end: 0.5rem"
 							></i>
 							{{ i18n.ts._permissions.allPermissions }}
 						</div>
@@ -54,7 +54,7 @@
 						>
 							<i
 								:class="icon(`ph-${getIcon(p)} ph-xl`, false)"
-								style="margin-right: 0.5rem"
+								style="margin-inline-end: 0.5rem"
 							></i>
 							{{ i18n.t(`_permissions.${p}`) }}
 						</div>
@@ -145,12 +145,13 @@ function onLogin(res): void {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 1rem;
-	margin-bottom: 2rem;
+	margin-block-end: 2rem;
 }
 
 .permission {
 	display: inline-flex;
-	padding: 0.5rem 1rem;
+	padding-block: 0.5rem;
+	padding-inline: 1rem;
 	border-radius: var(--radius);
 	background-color: var(--buttonBg);
 	color: var(--fg);

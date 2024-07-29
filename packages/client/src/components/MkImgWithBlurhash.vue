@@ -87,27 +87,27 @@ onMounted(() => {
 canvas,
 img {
 	display: block;
-	max-width: 100%;
-	max-height: 100%;
+	max-inline-size: 100%;
+	max-block-size: 100%;
 }
 
 canvas {
 	position: absolute;
 	inset: 0;
 	object-fit: cover;
-	width: 100%;
-	height: 100%;
+	inline-size: 100%;
+	block-size: 100%;
 }
 
 img {
 	object-fit: contain;
 
 	&.wide {
-		width: 100%;
+		inline-size: 100%;
 	}
 
 	&.tall {
-		height: 100%;
+		block-size: 100%;
 	}
 }
 
@@ -117,14 +117,15 @@ i.alt-indicator {
 	position: absolute;
 	border-radius: 6px;
 	overflow: hidden;
-	top: 0;
-	right: 0;
+	inset-block-start: 0;
+	inset-inline-end: 0;
 	background-color: var(--accentedBg);
 	-webkit-backdrop-filter: var(--blur, blur(15px));
 	backdrop-filter: var(--blur, blur(15px));
 	color: var(--accent);
 	font-size: 1em;
-	padding: 6px 8px;
+	padding-block: 6px;
+	padding-inline: 8px;
 	text-align: center;
 }
 </style>

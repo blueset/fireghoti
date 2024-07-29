@@ -28,13 +28,12 @@ provideMetadataReceiver((info) => {
 	}
 });
 
-document.documentElement.style.overflowY = "scroll";
+document.documentElement.style.overflowBlock = "scroll";
 </script>
 
 <style lang="scss" scoped>
 .mk-app {
-	// ほんとは単に 100vh と書きたいところだが... https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
-	min-height: calc(var(--vh, 1vh) * 100);
+	min-block-size: 100dvb;
 	box-sizing: border-box;
 }
 </style>

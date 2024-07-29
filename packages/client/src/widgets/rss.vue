@@ -3,7 +3,7 @@
 		:show-header="widgetProps.showHeader"
 		class="mkw-rss"
 		:scrollable="true"
-		:style="`height: ${widgetProps.height}px;`"
+		:style="`block-size: ${widgetProps.height}px;`"
 	>
 		<template #header><i :class="icon('ph-rss')"></i>RSS</template>
 		<template #func
@@ -104,7 +104,8 @@ defineExpose<WidgetComponentExpose>({
 
 		> .item {
 			display: block;
-			padding: 8px 16px;
+			padding-block: 8px;
+			padding-inline: 16px;
 			color: var(--fg);
 			white-space: nowrap;
 			text-overflow: ellipsis;

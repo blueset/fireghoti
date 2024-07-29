@@ -28,7 +28,7 @@
 								class="load next"
 								@click="showNext = true"
 							>
-								<i :class="icon('ph-caret-up')"></i>
+								<i :class="icon('ph-caret-up ph-dir')"></i>
 								{{ `${i18n.ts.loadMore} (${i18n.ts.newer})` }}
 							</MkButton>
 							<div class="note _gap">
@@ -47,7 +47,7 @@
 								class="load prev"
 								@click="showPrev = true"
 							>
-								<i :class="icon('ph-caret-down')"></i>
+								<i :class="icon('ph-caret-down ph-dir')"></i>
 								{{ `${i18n.ts.loadMore} (${i18n.ts.older})` }}
 							</MkButton>
 						</div>
@@ -212,16 +212,17 @@ definePageMetadata(
 	> .note {
 		> .main {
 			> .load {
-				min-width: 0;
-				margin: 0 auto;
+				min-inline-size: 0;
+				margin-block: 0;
+				margin-inline: auto;
 				border-radius: 999px;
 
 				&.next {
-					margin-bottom: var(--margin);
+					margin-block-end: var(--margin);
 				}
 
 				&.prev {
-					margin-top: var(--margin);
+					margin-block-start: var(--margin);
 				}
 			}
 

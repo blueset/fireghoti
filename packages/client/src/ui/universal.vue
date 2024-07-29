@@ -11,7 +11,7 @@
 			/></template>
 			<main
 				id="maincontent"
-				style="min-width: 0"
+				style="min-inline-size: 0"
 				:style="{ background: pageMetadata?.value?.bg }"
 				@contextmenu.stop="onContextmenu"
 			>
@@ -394,7 +394,7 @@ async function startGroup(): void {
 
 onMounted(() => {
 	if (!isDesktop.value) {
-		matchMedia(`(min-width: ${DESKTOP_THRESHOLD - 1}px)`).onchange = (mql) => {
+		matchMedia(`(min-inline-size: ${DESKTOP_THRESHOLD - 1}px)`).onchange = (mql) => {
 			if (mql.matches) isDesktop.value = true;
 		};
 	}
@@ -478,6 +478,15 @@ console.log(mainRouter.currentRoute.value.name);
 .widgetsDrawer-leave-active {
 	opacity: 0;
 	transform: translateX(240px);
+	&:dir(rtl) {
+		transform: translateX(-240px);
+	}
+	.vertical-tb & {
+		transform: translateY(-240px);
+	}
+	.vertical-bt & {
+		transform: translateY(240px);
+	}
 }
 
 .widgetsDrawer-back-enter-active,
@@ -502,6 +511,15 @@ console.log(mainRouter.currentRoute.value.name);
 .menuDrawer-leave-active {
 	opacity: 0;
 	transform: translateX(-240px);
+	&:dir(rtl) {
+		transform: translateX(240px);
+	}
+	.vertical-tb & {
+		transform: translateY(240px);
+	}
+	.vertical-bt & {
+		transform: translateY(-240px);
+	}
 }
 
 .menuDrawer-back-enter-active,
@@ -518,8 +536,7 @@ console.log(mainRouter.currentRoute.value.name);
 	$ui-font-size: 1em; // TODO: どこかに集約したい
 	$widgets-hide-threshold: 1090px;
 
-	// ほんとは単に 100vh と書きたいところだが... https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
-	min-height: calc(var(--vh, 1vh) * 100);
+	min-block-size: 100dvb;
 	box-sizing: border-box;
 	display: flex;
 
@@ -529,7 +546,7 @@ console.log(mainRouter.currentRoute.value.name);
 	}
 	&:not(.isMobile) {
 		> .contents {
-			border-right: 0.5px solid var(--divider);
+			border-inline-end: 0.5px solid var(--divider);
 		}
 	}
 	&.wallpaper {
@@ -547,7 +564,7 @@ console.log(mainRouter.currentRoute.value.name);
 				z-index: -3;
 			}
 			> ._button:last-child {
-				margin-bottom: 0 !important;
+				margin-block-end: 0 !important;
 			}
 		}
 	}
@@ -563,12 +580,12 @@ console.log(mainRouter.currentRoute.value.name);
 		}
 
 		> :deep(.sidebar:not(.iconOnly)) {
-			margin-left: -200px;
-			padding-left: 200px;
+			margin-inline-start: -200px;
+			padding-inline-start: 200px;
 			box-sizing: content-box;
 			.banner {
 				pointer-events: none;
-				top: -20% !important;
+				inset-block-start: -20% !important;
 				mask: radial-gradient(
 					farthest-side at top,
 					hsl(0, 0%, 0%) 0%,
@@ -607,15 +624,15 @@ console.log(mainRouter.currentRoute.value.name);
 					hsla(0, 0%, 0%, 0.013) 85.7%,
 					hsla(0, 0%, 0%, 0) 100%
 				) !important;
-				width: 125% !important;
-				left: -12.5% !important;
-				height: 145% !important;
+				inline-size: 125% !important;
+				inset-inline-start: -12.5% !important;
+				block-size: 145% !important;
 			}
 		}
 
 		> .contents {
-			min-width: 0;
-			width: 750px;
+			min-inline-size: 0;
+			inline-size: 750px;
 			background: var(--panel);
 			border-radius: 0;
 			overflow: clip;
@@ -636,26 +653,27 @@ console.log(mainRouter.currentRoute.value.name);
 	}
 
 	> .contents {
-		width: 100%;
-		min-width: 0;
+		inline-size: 100%;
+		min-inline-size: 0;
 		$widgets-hide-threshold: 1090px;
-		overflow-x: clip;
-		@media (max-width: $widgets-hide-threshold) {
-			padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 96px);
+		overflow-inline: clip;
+		@media (max-inline-size: $widgets-hide-threshold) {
+			padding-block-end: calc(env(safe-area-inset-bottom, 0px) + 96px);
 		}
 	}
 
 	> .widgets-container {
 		position: sticky;
-		top: 0;
-		max-height: 100vh;
-		overflow-y: auto;
-		padding: 0 var(--margin);
-		width: 300px;
-		min-width: max-content;
+		inset-block-start: 0;
+		max-block-size: 100vb;
+		overflow-block: auto;
+		padding-block: 0;
+		padding-inline: var(--margin);
+		inline-size: 300px;
+		min-inline-size: max-content;
 		box-sizing: content-box;
 
-		@media (max-width: $widgets-hide-threshold) {
+		@media (max-inline-size: $widgets-hide-threshold) {
 			display: none;
 		}
 	}
@@ -666,11 +684,10 @@ console.log(mainRouter.currentRoute.value.name);
 
 	> .widgetsDrawer {
 		position: fixed;
-		top: 0;
-		right: 0;
+		inset-block-start: 0;
+		inset-inline-end: 0;
 		z-index: 1001;
-		// ほんとは単に 100vh と書きたいところだが... https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
-		height: calc(var(--vh, 1vh) * 100);
+			block-size: 100dvb;
 		padding: var(--margin);
 		box-sizing: border-box;
 		overflow: auto;
@@ -680,10 +697,10 @@ console.log(mainRouter.currentRoute.value.name);
 
 	> .postButton,
 	.widgetButton {
-		bottom: var(--stickyBottom);
-		right: 1.5rem;
-		height: 4rem;
-		width: 4rem;
+		inset-block-end: var(--stickyBottom);
+		inset-inline-end: 1.5rem;
+		block-size: 4rem;
+		inline-size: 4rem;
 		background-position: center;
 		background: var(--panelHighlight);
 		color: var(--fg);
@@ -713,11 +730,11 @@ console.log(mainRouter.currentRoute.value.name);
 	> .buttons {
 		position: fixed;
 		z-index: 1000;
-		bottom: 0;
-		left: 0;
+		inset-block-end: 0;
+		inset-inline-start: 0;
 		padding: 12px 12px calc(env(safe-area-inset-bottom, 0px) + 12px) 12px;
 		display: flex;
-		width: 100%;
+		inline-size: 100%;
 		box-sizing: border-box;
 		background-color: var(--bg);
 
@@ -726,7 +743,7 @@ console.log(mainRouter.currentRoute.value.name);
 			flex: 1;
 			padding: 0;
 			margin: auto;
-			height: 3.5rem;
+			block-size: 3.5rem;
 			border-radius: 8px;
 			background-position: center;
 			transition: background 0.6s;
@@ -744,7 +761,7 @@ console.log(mainRouter.currentRoute.value.name);
 
 				&.on {
 					background-color: var(--accentedBg);
-					width: 100%;
+					inline-size: 100%;
 					border-radius: 999px;
 					transform: translateY(-0.5em);
 					transition: all 0.2s ease-in-out;
@@ -752,8 +769,8 @@ console.log(mainRouter.currentRoute.value.name);
 
 				> .indicator {
 					position: absolute;
-					top: 0;
-					left: 0;
+					inset-block-start: 0;
+					inset-inline-start: 0;
 					color: var(--indicator);
 					font-size: 16px;
 				}
@@ -764,20 +781,20 @@ console.log(mainRouter.currentRoute.value.name);
 			}
 
 			&:not(:last-child) {
-				margin-right: 12px;
+				margin-inline-end: 12px;
 			}
 
-			@media (max-width: 400px) {
-				height: 60px;
+			@media (max-inline-size: 400px) {
+				block-size: 60px;
 
 				&:not(:last-child) {
-					margin-right: 8px;
+					margin-inline-end: 8px;
 				}
 			}
 			> .indicator {
 				position: absolute;
-				top: 0;
-				left: 0;
+				inset-block-start: 0;
+				inset-inline-start: 0;
 				color: var(--indicator);
 				font-size: 16px;
 			}
@@ -787,11 +804,11 @@ console.log(mainRouter.currentRoute.value.name);
 			}
 
 			&:first-child {
-				margin-left: 0;
+				margin-inline-start: 0;
 			}
 
 			&:last-child {
-				margin-right: 0;
+				margin-inline-end: 0;
 			}
 
 			> * {
@@ -814,12 +831,11 @@ console.log(mainRouter.currentRoute.value.name);
 
 	> .menuDrawer {
 		position: fixed;
-		top: 0;
-		left: 0;
+		inset-block-start: 0;
+		inset-inline-start: 0;
 		z-index: 1001;
-		// ほんとは単に 100vh と書きたいところだが... https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
-		height: calc(var(--vh, 1vh) * 100);
-		width: 240px;
+			block-size: 100dvb;
+		inline-size: 240px;
 		box-sizing: border-box;
 		contain: strict;
 		overflow: auto;
@@ -832,7 +848,7 @@ console.log(mainRouter.currentRoute.value.name);
 <style lang="scss" module>
 .statusbars {
 	position: sticky;
-	top: 0;
-	left: 0;
+	inset-block-start: 0;
+	inset-inline-start: 0;
 }
 </style>

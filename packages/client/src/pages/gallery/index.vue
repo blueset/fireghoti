@@ -195,6 +195,11 @@ let swiperRef = null;
 function setSwiperRef(swiper) {
 	swiperRef = swiper;
 	syncSlide(tabs.indexOf(tab.value));
+	const styles = getComputedStyle(swiper.el);
+	swiper.changeLanguageDirection(styles.direction as ("rtl" | "ltr"));
+	if (styles['writing-mode'].startsWith('vertical')) {
+		swiper.changeDirection('vertical');
+	}
 }
 
 function onSlideChange() {
@@ -215,7 +220,8 @@ onMounted(() => {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 	grid-gap: 12px;
-	margin: 0 var(--margin);
+	margin-block: 0;
+	margin-inline: var(--margin);
 
 	> .post {
 	}

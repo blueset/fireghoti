@@ -60,11 +60,11 @@ defineProps<{
 	color: #f6c177;
 
 	> i {
-		margin-right: 4px;
+		margin-inline-end: 4px;
 	}
 
 	> .hide {
-		margin-left: auto;
+		margin-inline-start: auto;
 		color: inherit;
 	}
 }
@@ -74,25 +74,25 @@ defineProps<{
 	text-overflow: ellipsis;
 
 	.avatar {
-		width: 1.2em;
-		height: 1.2em;
+		inline-size: 1.2em;
+		block-size: 1.2em;
 		border-radius: 2em;
 		overflow: hidden;
-		margin-right: 0.4em;
-		margin-bottom: 0.2em;
+		margin-inline-end: 0.4em;
+		margin-block-end: 0.2em;
 		background: var(--panelHighlight);
 	}
 	.username {
 		font-weight: 700;
 		flex-shrink: 0;
-		max-width: 30%;
+		max-inline-size: 30%;
 		&::after {
 			content: ": ";
 		}
 	}
 	.summary {
 		display: inline-block;
-		max-width: 60%;
+		max-inline-size: 60%;
 		position: absolute;
 	}
 

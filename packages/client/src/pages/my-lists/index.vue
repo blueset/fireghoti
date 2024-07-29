@@ -90,7 +90,7 @@ const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.manageLists,
-	icon: `${icon("ph-list-bullets")}`,
+	icon: `${icon("ph-list-bullets ph-dir")}`,
 	action: {
 		icon: `${icon("ph-plus")}`,
 		handler: create,
@@ -113,7 +113,7 @@ definePageMetadata({
 			}
 
 			> .name {
-				margin-bottom: 4px;
+				margin-block-end: 4px;
 			}
 		}
 	}

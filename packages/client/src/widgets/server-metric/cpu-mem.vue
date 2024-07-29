@@ -171,14 +171,14 @@ function onStatsLog(statsLog) {
 	> svg {
 		display: block;
 		padding: 10px;
-		width: 50%;
+		inline-size: 50%;
 
 		&:first-child {
-			padding-right: 5px;
+			padding-inline-end: 5px;
 		}
 
 		&:last-child {
-			padding-left: 5px;
+			padding-inline-start: 5px;
 		}
 
 		> text {

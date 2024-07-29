@@ -222,8 +222,8 @@ onBeforeUnmount(() => {
 	position: relative;
 	margin: auto;
 	padding: 32px;
-	min-width: 320px;
-	max-width: 480px;
+	min-inline-size: 320px;
+	max-inline-size: 480px;
 	box-sizing: border-box;
 	text-align: center;
 	background: var(--panel);
@@ -231,17 +231,20 @@ onBeforeUnmount(() => {
 }
 
 .input {
-	margin: 12px 0;
+	margin-block: 12px;
+	margin-inline: 0;
 }
 
 .title {
-	margin: 0 0 25px;
+	margin-block-start: 0;
+	margin-inline: 0;
+	margin-block-end: 25px;
 	font-weight: bold;
 	font-size: 1.3em;
 }
 
 .buttons {
-	margin-top: 16px;
+	margin-block-start: 16px;
 	display: flex;
 	gap: 8px;
 	flex-wrap: wrap;

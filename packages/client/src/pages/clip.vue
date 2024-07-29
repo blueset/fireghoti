@@ -139,7 +139,7 @@ definePageMetadata(
 <style lang="scss" scoped>
 .okzinsic {
 	position: relative;
-	margin-bottom: var(--margin);
+	margin-block-end: var(--margin);
 
 	> .description {
 		padding: 16px;
@@ -148,12 +148,12 @@ definePageMetadata(
 	> .user {
 		$height: 32px;
 		padding: 16px;
-		border-top: solid 0.5px var(--divider);
+		border-block-start: solid 0.5px var(--divider);
 		line-height: $height;
 
 		> .avatar {
-			width: $height;
-			height: $height;
+			inline-size: $height;
+			block-size: $height;
 		}
 	}
 }

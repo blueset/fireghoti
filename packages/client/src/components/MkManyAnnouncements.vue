@@ -37,8 +37,8 @@ const checkAnnouncements = () => {
 	margin: auto;
 	position: relative;
 	padding: 32px;
-	min-width: 320px;
-	max-width: 480px;
+	min-inline-size: 320px;
+	max-inline-size: 480px;
 	box-sizing: border-box;
 	text-align: center;
 	background: var(--panel);
@@ -51,6 +51,9 @@ const checkAnnouncements = () => {
 }
 
 .gotIt {
-	margin: 8px 0 0 0;
+	margin-block-start: 8px;
+	margin-inline-end: 0;
+	margin-block-end: 0;
+	margin-inline-start: 0;
 }
 </style>

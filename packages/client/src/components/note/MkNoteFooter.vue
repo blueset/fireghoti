@@ -88,7 +88,7 @@
 			class="button _button"
 			@click.stop="menu()"
 		>
-			<i :class="icon('ph-dots-three-outline')"></i>
+			<i :class="icon('ph-dots-three-outline ph-dir')"></i>
 		</button>
 	</footer>
 </template>
@@ -233,7 +233,7 @@ defineExpose({
 	z-index: 2;
 	display: flex;
 	flex-wrap: wrap;
-	margin-top: 0.4em;
+	margin-block-start: 0.4em;
 	> :deep(.button) {
 		position: relative;
 		margin: 0;
@@ -241,10 +241,10 @@ defineExpose({
 		opacity: 0.7;
 
 		flex-grow: 1;
-		max-width: 3.5em;
-		width: max-content;
-		min-width: max-content;
-		height: auto;
+		max-inline-size: 3.5em;
+		inline-size: max-content;
+		min-inline-size: max-content;
+		block-size: auto;
 		transition: opacity 0.2s;
 
 		&:disabled {
@@ -255,14 +255,14 @@ defineExpose({
 			content: "";
 			position: absolute;
 			inset: 0;
-			bottom: 2px;
+			inset-block-end: 2px;
 			background: var(--panel);
 			z-index: -1;
 			transition: background 0.2s;
 		}
 
 		&:first-of-type {
-			margin-left: -0.5em;
+			margin-inline-start: -0.5em;
 			&::before {
 				border-radius: 100px 0 0 100px;
 			}
@@ -279,12 +279,15 @@ defineExpose({
 		}
 
 		> i {
-			display: inline !important;
+			display: inline-block !important;
 		}
 
 		> .count {
 			display: inline;
-			margin: 0 0 0 8px;
+			margin-block-start: 0;
+			margin-inline-end: 0;
+			margin-block-end: 0;
+			margin-inline-start: 8px;
 			opacity: 0.7;
 		}
 

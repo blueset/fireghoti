@@ -19,7 +19,7 @@
 						{{ i18n.ts._channel.setBanner }}</MkButton
 					>
 					<div v-else-if="bannerUrl">
-						<img :src="bannerUrl" style="width: 100%" />
+						<img :src="bannerUrl" style="inline-size: 100%" />
 						<MkButton @click="removeBannerImage()"
 							><i :class="icon('ph-trash')"></i>
 							{{ i18n.ts._channel.removeBanner }}</MkButton

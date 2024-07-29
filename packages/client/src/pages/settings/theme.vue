@@ -273,7 +273,8 @@ definePageMetadata({
 
 	> .toggle {
 		position: relative;
-		padding: 26px 0;
+		padding-block: 26px;
+		padding-inline: 0;
 		text-align: center;
 
 		&.disabled {
@@ -287,13 +288,14 @@ definePageMetadata({
 
 		> .toggleWrapper {
 			display: inline-block;
-			text-align: left;
-			padding: 0 100px;
+			text-align: start;
+			padding-block: 0;
+			padding-inline: 100px;
 			vertical-align: bottom;
 
 			input {
 				position: absolute;
-				left: -99em;
+				inset-inline-start: -99em;
 			}
 
 			&:focus-within > .toggle {
@@ -305,8 +307,8 @@ definePageMetadata({
 			cursor: pointer;
 			display: inline-block;
 			position: relative;
-			width: 90px;
-			height: 50px;
+			inline-size: 90px;
+			block-size: 50px;
 			background-color: #83d8ff;
 			border-radius: 90px - 6;
 			transition: background-color 200ms
@@ -315,17 +317,17 @@ definePageMetadata({
 			> .before,
 			> .after {
 				position: absolute;
-				top: 15px;
+				inset-block-start: 15px;
 				transition: color 1s ease;
 			}
 
 			> .before {
-				left: -70px;
+				inset-inline-start: -70px;
 				color: var(--accent);
 			}
 
 			> .after {
-				right: -68px;
+				inset-inline-end: -68px;
 				color: var(--fg);
 			}
 		}
@@ -334,10 +336,10 @@ definePageMetadata({
 			display: inline-block;
 			position: relative;
 			z-index: 1;
-			top: 3px;
-			left: 3px;
-			width: 50px - 6;
-			height: 50px - 6;
+			inset-block-start: 3px;
+			inset-inline-start: 3px;
+			inline-size: 50px - 6;
+			block-size: 50px - 6;
 			background-color: #ffcf96;
 			border-radius: 50px;
 			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
@@ -353,24 +355,24 @@ definePageMetadata({
 			}
 
 			.crater--1 {
-				top: 18px;
-				left: 10px;
-				width: 4px;
-				height: 4px;
+				inset-block-start: 18px;
+				inset-inline-start: 10px;
+				inline-size: 4px;
+				block-size: 4px;
 			}
 
 			.crater--2 {
-				top: 28px;
-				left: 22px;
-				width: 6px;
-				height: 6px;
+				inset-block-start: 28px;
+				inset-inline-start: 22px;
+				inline-size: 6px;
+				block-size: 6px;
 			}
 
 			.crater--3 {
-				top: 10px;
-				left: 25px;
-				width: 8px;
-				height: 8px;
+				inset-block-start: 10px;
+				inset-inline-start: 25px;
+				inline-size: 8px;
+				block-size: 8px;
 			}
 		}
 
@@ -382,27 +384,27 @@ definePageMetadata({
 		}
 
 		.star--1 {
-			top: 10px;
-			left: 35px;
+			inset-block-start: 10px;
+			inset-inline-start: 35px;
 			z-index: 0;
-			width: 30px;
-			height: 3px;
+			inline-size: 30px;
+			block-size: 3px;
 		}
 
 		.star--2 {
-			top: 18px;
-			left: 28px;
+			inset-block-start: 18px;
+			inset-inline-start: 28px;
 			z-index: 1;
-			width: 30px;
-			height: 3px;
+			inline-size: 30px;
+			block-size: 3px;
 		}
 
 		.star--3 {
-			top: 27px;
-			left: 40px;
+			inset-block-start: 27px;
+			inset-inline-start: 40px;
 			z-index: 0;
-			width: 30px;
-			height: 3px;
+			inline-size: 30px;
+			block-size: 3px;
 		}
 
 		.star--4,
@@ -413,29 +415,29 @@ definePageMetadata({
 		}
 
 		.star--4 {
-			top: 16px;
-			left: 11px;
+			inset-block-start: 16px;
+			inset-inline-start: 11px;
 			z-index: 0;
-			width: 2px;
-			height: 2px;
+			inline-size: 2px;
+			block-size: 2px;
 			transform: translate3d(3px, 0, 0);
 		}
 
 		.star--5 {
-			top: 32px;
-			left: 17px;
+			inset-block-start: 32px;
+			inset-inline-start: 17px;
 			z-index: 0;
-			width: 3px;
-			height: 3px;
+			inline-size: 3px;
+			block-size: 3px;
 			transform: translate3d(3px, 0, 0);
 		}
 
 		.star--6 {
-			top: 36px;
-			left: 28px;
+			inset-block-start: 36px;
+			inset-inline-start: 28px;
 			z-index: 0;
-			width: 2px;
-			height: 2px;
+			inline-size: 2px;
+			block-size: 2px;
 			transform: translate3d(3px, 0, 0);
 		}
 
@@ -461,19 +463,19 @@ definePageMetadata({
 				}
 
 				.star--1 {
-					width: 2px;
-					height: 2px;
+					inline-size: 2px;
+					block-size: 2px;
 				}
 
 				.star--2 {
-					width: 4px;
-					height: 4px;
+					inline-size: 4px;
+					block-size: 4px;
 					transform: translate3d(-5px, 0, 0);
 				}
 
 				.star--3 {
-					width: 2px;
-					height: 2px;
+					inline-size: 2px;
+					block-size: 2px;
 					transform: translate3d(-7px, 0, 0);
 				}
 
@@ -502,8 +504,9 @@ definePageMetadata({
 		}
 	}
 	> .sync {
-		padding: 14px 16px;
-		border-top: solid 0.5px var(--divider);
+		padding-block: 14px;
+		padding-inline: 16px;
+		border-block-start: solid 0.5px var(--divider);
 	}
 }
 
@@ -515,7 +518,7 @@ definePageMetadata({
 
 		> .select {
 			flex: 1;
-			min-width: 280px;
+			min-inline-size: 280px;
 		}
 	}
 }

@@ -88,8 +88,9 @@ function submit() {
 	border-radius: var(--radius);
 	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 	overflow: hidden;
-	max-width: 500px;
-	margin: 32px auto;
+	max-inline-size: 500px;
+	margin-block: 32px;
+	margin-inline: auto;
 
 	> h1 {
 		margin: 0;
@@ -105,12 +106,13 @@ function submit() {
 		background: var(--panel);
 
 		> p {
-			margin-top: 0;
+			margin-block-start: 0;
 		}
 
 		> .bottom {
 			> * {
-				margin: 0 auto;
+				margin-block: 0;
+				margin-inline: auto;
 			}
 		}
 	}

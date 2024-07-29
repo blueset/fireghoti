@@ -7,7 +7,7 @@
 				></template>
 				<template #label>{{ i18n.ts.host }}</template>
 			</MkInput>
-			<FormSplit style="margin-top: var(--margin)">
+			<FormSplit style="margin-block-start: var(--margin)">
 				<MkSelect v-model="state">
 					<template #label>{{ i18n.ts.state }}</template>
 					<option value="all">{{ i18n.ts.all }}</option>
@@ -156,7 +156,7 @@ function getStatus(instance) {
 .taeiyria {
 	> .query {
 		background: var(--bg);
-		margin-bottom: 16px;
+		margin-block-end: 16px;
 	}
 }
 

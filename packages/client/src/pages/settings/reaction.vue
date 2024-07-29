@@ -26,7 +26,7 @@
 						>
 							<MkEmoji
 								:emoji="item"
-								style="height: 1.7em"
+								style="block-size: 1.7em"
 								class="emoji"
 							/>
 						</div>
@@ -46,22 +46,22 @@
 			<FormRadios v-model="reactionPickerSkinTone" class="_formBlock">
 				<template #label>{{ i18n.ts.reactionPickerSkinTone }}</template>
 				<option :value="1" :aria-label="i18n.ts._skinTones.yellow">
-					<MkEmoji style="height: 1.7em" emoji="✌️" />
+					<MkEmoji style="block-size: 1.7em" emoji="✌️" />
 				</option>
 				<option :value="6" :aria-label="i18n.ts._skinTones.dark">
-					<MkEmoji style="height: 1.7em" emoji="✌🏿" />
+					<MkEmoji style="block-size: 1.7em" emoji="✌🏿" />
 				</option>
 				<option :value="5" :aria-label="i18n.ts._skinTones.mediumDark">
-					<MkEmoji style="height: 1.7em" emoji="✌🏾" />
+					<MkEmoji style="block-size: 1.7em" emoji="✌🏾" />
 				</option>
 				<option :value="4" :aria-label="i18n.ts._skinTones.medium">
-					<MkEmoji style="height: 1.7em" emoji="✌🏽" />
+					<MkEmoji style="block-size: 1.7em" emoji="✌🏽" />
 				</option>
 				<option :value="3" :aria-label="i18n.ts._skinTones.mediumLight">
-					<MkEmoji style="height: 1.7em" emoji="✌🏼" />
+					<MkEmoji style="block-size: 1.7em" emoji="✌🏼" />
 				</option>
 				<option :value="2" :aria-label="i18n.ts._skinTones.light">
-					<MkEmoji style="height: 1.7em" emoji="✌🏻" />
+					<MkEmoji style="block-size: 1.7em" emoji="✌🏻" />
 				</option>
 			</FormRadios>
 			<FormRadios v-model="reactionPickerSize" class="_formBlock">
@@ -253,7 +253,7 @@ definePageMetadata({
 .add {
 	display: inline-block;
 	padding: 8px;
-	margin-left: 12px;
-	margin-bottom: 12px;
+	margin-inline-start: 12px;
+	margin-block-end: 12px;
 }
 </style>

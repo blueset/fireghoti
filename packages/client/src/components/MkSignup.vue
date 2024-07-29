@@ -1,5 +1,5 @@
 <template>
-	<div v-if="instance.disableRegistration" style="margin-bottom: 1rem">
+	<div v-if="instance.disableRegistration" style="margin-block-end: 1rem">
 		<p>{{ i18n.ts.signupsDisabled }}</p>
 	</div>
 	<form
@@ -529,7 +529,8 @@ function onSubmit(): void {
 <style lang="scss" scoped>
 .qlvuhzng {
 	.captcha {
-		margin: 16px 0;
+		margin-block: 16px;
+		margin-inline: 0;
 	}
 }
 </style>

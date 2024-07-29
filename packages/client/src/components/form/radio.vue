@@ -41,10 +41,11 @@ function toggle(_ev: Event) {
 .novjtctn {
 	position: relative;
 	display: inline-block;
-	text-align: left;
+	text-align: start;
 	cursor: pointer;
-	padding: 8px 10px;
-	min-width: 60px;
+	padding-block: 8px;
+	padding-inline: 10px;
+	min-inline-size: 60px;
 	background-color: var(--panel);
 	background-clip: padding-box !important;
 	border: solid 1px var(--panel);
@@ -94,16 +95,16 @@ function toggle(_ev: Event) {
 
 	> input {
 		position: absolute;
-		width: 18px;
-		height: 18px;
+		inline-size: 18px;
+		block-size: 18px;
 		opacity: 0;
 		margin: 0;
 	}
 
 	> .button {
 		position: absolute;
-		width: 14px;
-		height: 14px;
+		inline-size: 14px;
+		block-size: 14px;
 		background: none;
 		border: solid 2px var(--inputBorder);
 		border-radius: 100%;
@@ -114,10 +115,7 @@ function toggle(_ev: Event) {
 			content: "";
 			display: block;
 			position: absolute;
-			top: 3px;
-			right: 3px;
-			bottom: 3px;
-			left: 3px;
+			inset: 3px;
 			border-radius: 100%;
 			opacity: 0;
 			transform: scale(0);
@@ -126,7 +124,7 @@ function toggle(_ev: Event) {
 	}
 
 	> .label {
-		margin-left: 28px;
+		margin-inline-start: 28px;
 		display: block;
 		line-height: 20px;
 		cursor: pointer;

@@ -14,7 +14,7 @@
 						<div class="value">
 							<MkNumber
 								:value="stats.originalUsersCount"
-								style="margin-right: 0.5em"
+								style="margin-inline-end: 0.5em"
 							/>
 						</div>
 						<div class="label">{{ i18n.ts.users }}</div>
@@ -28,7 +28,7 @@
 						<div class="value">
 							<MkNumber
 								:value="stats.originalNotesCount"
-								style="margin-right: 0.5em"
+								style="margin-inline-end: 0.5em"
 							/>
 						</div>
 						<div class="label">{{ i18n.ts.notes }}</div>
@@ -42,7 +42,7 @@
 						<div class="value">
 							<MkNumber
 								:value="stats.instances"
-								style="margin-right: 0.5em"
+								style="margin-inline-end: 0.5em"
 							/>
 						</div>
 						<div class="label">{{ i18n.ts.instances }}</div>
@@ -56,7 +56,7 @@
 						<div class="value">
 							<MkNumber
 								:value="onlineUsersCount"
-								style="margin-right: 0.5em"
+								style="margin-inline-end: 0.5em"
 							/>
 						</div>
 						<div class="label">{{ i18n.ts.online }}</div>
@@ -70,7 +70,7 @@
 						<div class="value">
 							<MkNumber
 								:value="emojiCount"
-								style="margin-right: 0.5em"
+								style="margin-inline-end: 0.5em"
 							/>
 						</div>
 						<div class="label">{{ i18n.ts.emojis }}</div>
@@ -127,9 +127,9 @@ onMounted(async () => {
 			> .icon {
 				display: grid;
 				place-items: center;
-				height: 100%;
+				block-size: 100%;
 				aspect-ratio: 1;
-				margin-right: 12px;
+				margin-inline-end: 12px;
 				background: var(--accentedBg);
 				color: var(--accent);
 				border-radius: 10px;
@@ -178,7 +178,8 @@ onMounted(async () => {
 			}
 
 			> .body {
-				padding: 2px 0;
+				padding-block: 2px;
+				padding-inline: 0;
 
 				> .value {
 					font-size: 1.2em;

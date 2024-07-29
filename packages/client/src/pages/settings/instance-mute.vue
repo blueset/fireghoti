@@ -57,6 +57,6 @@ watch(instanceMutes, () => {
 
 definePageMetadata({
 	title: i18n.ts.instanceMute,
-	icon: `${icon("ph-speaker-none")}`,
+	icon: `${icon("ph-speaker-none ph-dir")}`,
 });
 </script>

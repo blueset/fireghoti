@@ -127,8 +127,8 @@ defineExpose<WidgetComponentExpose>({
 	.img {
 		position: relative;
 		flex: 1 1 33%;
-		width: 33%;
-		height: 80px;
+		inline-size: 33%;
+		block-size: 80px;
 		box-sizing: border-box;
 		background-position: center center;
 		background-size: cover;

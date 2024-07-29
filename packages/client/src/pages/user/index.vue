@@ -113,7 +113,7 @@ const headerTabs = computed(() =>
 							{
 								key: "pages",
 								title: i18n.ts.pages,
-								icon: `${icon("ph-file-text")}`,
+								icon: `${icon("ph-file-text ph-dir")}`,
 							},
 							{
 								key: "gallery",

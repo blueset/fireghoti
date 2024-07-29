@@ -114,7 +114,10 @@ onUnmounted(() => {
 .root {
 	&:global {
 		> .status {
-			padding: 0 0 16px 0;
+			padding-block-start: 0;
+			padding-inline-end: 0;
+			padding-block-end: 16px;
+			padding-inline-start: 0;
 		}
 
 		> .charts {
@@ -123,7 +126,7 @@ onUnmounted(() => {
 			gap: 12px;
 
 			> .chart {
-				min-width: 0;
+				min-inline-size: 0;
 				padding: 16px;
 				background: var(--panel);
 				border-radius: var(--radius);

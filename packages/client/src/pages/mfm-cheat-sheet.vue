@@ -545,7 +545,7 @@ definePageMetadata({
 		> .title {
 			position: sticky;
 			z-index: 1;
-			top: var(--stickyTop, 0px);
+			inset-block-start: var(--stickyTop, 0px);
 			padding: 16px;
 			font-weight: bold;
 			background-color: var(--X16);
@@ -555,11 +555,11 @@ definePageMetadata({
 			> p {
 				margin: 0;
 				padding: 16px;
-				padding-top: 0;
+				padding-block-start: 0;
 			}
 
 			> .preview {
-				border-top: solid 0.5px var(--divider);
+				border-block-start: solid 0.5px var(--divider);
 				padding: 16px;
 			}
 		}

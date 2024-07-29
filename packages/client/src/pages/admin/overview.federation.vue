@@ -80,7 +80,7 @@ onMounted(async () => {
 			display: grid;
 			grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
 			grid-gap: 12px;
-			margin-bottom: 12px;
+			margin-block-end: 12px;
 
 			> .pie {
 				position: relative;
@@ -88,19 +88,19 @@ onMounted(async () => {
 
 				> .title {
 					position: absolute;
-					top: 20px;
-					left: 20px;
+					inset-block-start: 20px;
+					inset-inline-start: 20px;
 					font-size: 90%;
 				}
 
 				> .chart {
-					max-height: 150px;
+					max-block-size: 150px;
 				}
 
 				> .subTitle {
 					position: absolute;
-					bottom: 20px;
-					right: 20px;
+					inset-block-end: 20px;
+					inset-inline-end: 20px;
 					font-size: 85%;
 				}
 			}
@@ -119,9 +119,9 @@ onMounted(async () => {
 				> .icon {
 					display: grid;
 					place-items: center;
-					height: 100%;
+					block-size: 100%;
 					aspect-ratio: 1;
-					margin-right: 12px;
+					margin-inline-end: 12px;
 					background: var(--accentedBg);
 					color: var(--accent);
 					border-radius: 10px;
@@ -142,7 +142,8 @@ onMounted(async () => {
 				}
 
 				> .body {
-					padding: 2px 0;
+					padding-block: 2px;
+					padding-inline: 0;
 
 					> .value {
 						font-size: 1.2em;

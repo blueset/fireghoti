@@ -331,12 +331,12 @@ export function getNoteMenu(props: {
 			statePromise.then((state) =>
 				state?.isMutedThread
 					? {
-							icon: `${icon("ph-speaker-x")}`,
+							icon: `${icon("ph-speaker-x ph-dir")}`,
 							text: i18n.ts.unmuteThread,
 							action: () => toggleThreadMute(false),
 						}
 					: {
-							icon: `${icon("ph-speaker-x")}`,
+							icon: `${icon("ph-speaker-x ph-dir")}`,
 							text: i18n.ts.muteThread,
 							action: () => toggleThreadMute(true),
 						},

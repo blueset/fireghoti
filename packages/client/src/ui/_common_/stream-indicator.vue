@@ -50,16 +50,17 @@ onUnmounted(() => {
 .nsbbhtug {
 	position: fixed;
 	z-index: 16385;
-	bottom: 8px;
-	right: 8px;
+	inset-block-end: 8px;
+	inset-inline-end: 8px;
 	margin: 0;
-	padding: 6px 12px;
+	padding-block: 6px;
+	padding-inline: 12px;
 	font-size: 0.9em;
 	color: #fff;
 	background: #000;
 	opacity: 0.8;
 	border-radius: 4px;
-	max-width: 320px;
+	max-inline-size: 320px;
 
 	> .command {
 		display: flex;

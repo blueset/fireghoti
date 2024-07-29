@@ -37,7 +37,7 @@ const inChannel = inject("inChannel", null);
 	justify-content: space-between;
 	flex-wrap: wrap;
 	gap: 0.7em;
-	margin-top: 16px;
+	margin-block-start: 16px;
 	opacity: 0.7;
 	font-size: 0.9em;
 }

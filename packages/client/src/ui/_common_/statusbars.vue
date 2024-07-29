@@ -72,9 +72,9 @@ const XUserList = defineAsyncComponent(
 
 		display: flex;
 		vertical-align: bottom;
-		width: 100%;
+		inline-size: 100%;
 		line-height: var(--height);
-		height: var(--height);
+		block-size: var(--height);
 		overflow: clip;
 		contain: strict;
 
@@ -103,7 +103,8 @@ const XUserList = defineAsyncComponent(
 		}
 
 		> .name {
-			padding: 0 var(--nameMargin);
+			padding-block: 0;
+			padding-inline: var(--nameMargin);
 			font-weight: bold;
 			color: var(--accent);
 
@@ -113,7 +114,7 @@ const XUserList = defineAsyncComponent(
 		}
 
 		> .body {
-			min-width: 0;
+			min-inline-size: 0;
 			flex: 1;
 		}
 

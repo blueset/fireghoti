@@ -48,6 +48,9 @@ withDefaults(
 
 <style lang="scss" scoped>
 .kjuadyyj {
-	padding: 0 16px 16px 16px;
+	padding-block-start: 0;
+	padding-inline-end: 16px;
+	padding-block-end: 16px;
+	padding-inline-start: 16px;
 }
 </style>

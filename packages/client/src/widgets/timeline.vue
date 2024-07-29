@@ -1,7 +1,7 @@
 <template>
 	<MkContainer
 		:show-header="widgetProps.showHeader"
-		:style="`height: ${widgetProps.height}px;`"
+		:style="`block-size: ${widgetProps.height}px;`"
 		:scrollable="true"
 		class="mkw-timeline"
 	>
@@ -25,13 +25,13 @@
 				></i>
 				<i
 					v-else-if="widgetProps.src === 'list'"
-					:class="icon('ph-list-bullets')"
+					:class="icon('ph-list-bullets ph-dir')"
 				></i>
 				<i
 					v-else-if="widgetProps.src === 'antenna'"
 					:class="icon('ph-television')"
 				></i>
-				<span style="margin-left: 8px">{{
+				<span style="margin-inline-start: 8px">{{
 					widgetProps.src === "list"
 						? widgetProps.list.name
 						: widgetProps.src === "antenna"
@@ -42,11 +42,11 @@
 					:class="
 						icon(
 							menuOpened
-								? 'ph-caret-up ph-lg'
-								: 'ph-caret-down ph-lg',
+								? 'ph-caret-up ph-lg ph-dir'
+								: 'ph-caret-down ph-lg ph-dir',
 						)
 					"
-					style="margin-left: 8px"
+					style="margin-inline-start: 8px"
 				></i>
 			</button>
 		</template>
@@ -146,7 +146,7 @@ const choose = async (ev) => {
 	}));
 	const listItems = lists.map((list) => ({
 		text: list.name,
-		icon: `${icon("ph-list-bullets")}`,
+		icon: `${icon("ph-list-bullets ph-dir")}`,
 		action: () => {
 			widgetProps.list = list;
 			setSrc("list");

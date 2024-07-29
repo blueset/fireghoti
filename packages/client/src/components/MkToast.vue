@@ -56,14 +56,15 @@ onMounted(() => {
 .mk-toast {
 	> .body {
 		position: fixed;
-		left: 0;
-		right: 0;
-		top: 0;
-		margin: 0 auto;
-		margin-top: 16px;
-		min-width: 300px;
-		max-width: calc(100% - 32px);
-		width: min-content;
+		inset-inline-start: 0;
+		inset-inline-end: 0;
+		inset-block-start: 0;
+		margin-block: 0;
+		margin-inline: auto;
+		margin-block-start: 16px;
+		min-inline-size: 300px;
+		max-inline-size: calc(100% - 32px);
+		inline-size: min-content;
 		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 		border-radius: 8px;
 		overflow: clip;
@@ -71,7 +72,8 @@ onMounted(() => {
 		pointer-events: none;
 
 		> .message {
-			padding: 16px 24px;
+			padding-block: 16px;
+			padding-inline: 24px;
 		}
 	}
 }

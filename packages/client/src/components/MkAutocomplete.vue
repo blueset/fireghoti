@@ -226,10 +226,10 @@ function setPosition() {
 	}
 	if (props.y + rootEl.value.offsetHeight > window.innerHeight) {
 		rootEl.value.style.top = props.y - rootEl.value.offsetHeight + "px";
-		rootEl.value.style.marginTop = "0";
+		rootEl.value.style.marginBlockStart = "0";
 	} else {
 		rootEl.value.style.top = props.y + "px";
-		rootEl.value.style.marginTop = "calc(1em + 8px)";
+		rootEl.value.style.marginBlockStart = "calc(1em + 8px)";
 	}
 }
 
@@ -461,8 +461,8 @@ onBeforeUnmount(() => {
 <style lang="scss" scoped>
 .swhvrteh {
 	position: fixed;
-	max-width: 100%;
-	margin-top: calc(1em + 8px);
+	max-inline-size: 100%;
+	margin-block-start: calc(1em + 8px);
 	overflow: hidden;
 	transition:
 		top 0.1s ease,
@@ -471,16 +471,18 @@ onBeforeUnmount(() => {
 	> ol {
 		display: block;
 		margin: 0;
-		padding: 4px 0;
-		max-height: 190px;
-		max-width: 500px;
+		padding-block: 4px;
+		padding-inline: 0;
+		max-block-size: 190px;
+		max-inline-size: 500px;
 		overflow: auto;
 		list-style: none;
 
 		> li {
 			display: flex;
 			align-items: center;
-			padding: 4px 12px;
+			padding-block: 4px;
+			padding-inline: 12px;
 			white-space: nowrap;
 			overflow: hidden;
 			font-size: 0.9em;
@@ -522,33 +524,45 @@ onBeforeUnmount(() => {
 
 	> .users > li {
 		.avatar {
-			min-width: 28px;
-			min-height: 28px;
-			max-width: 28px;
-			max-height: 28px;
-			margin: 0 8px 0 0;
+			min-inline-size: 28px;
+			min-block-size: 28px;
+			max-inline-size: 28px;
+			max-block-size: 28px;
+			margin-block-start: 0;
+			margin-inline-end: 8px;
+			margin-block-end: 0;
+			margin-inline-start: 0;
 			border-radius: 100%;
 		}
 
 		.name {
-			margin: 0 8px 0 0;
+			margin-block-start: 0;
+			margin-inline-end: 8px;
+			margin-block-end: 0;
+			margin-inline-start: 0;
 		}
 	}
 
 	> .emojis > li {
 		.emoji {
 			display: inline-block;
-			margin: 0 4px 0 0;
-			width: 24px;
+			margin-block-start: 0;
+			margin-inline-end: 4px;
+			margin-block-end: 0;
+			margin-inline-start: 0;
+			inline-size: 24px;
 
 			> img {
-				width: 24px;
+				inline-size: 24px;
 				vertical-align: bottom;
 			}
 		}
 
 		.alias {
-			margin: 0 0 0 8px;
+			margin-block-start: 0;
+			margin-inline-end: 0;
+			margin-block-end: 0;
+			margin-inline-start: 8px;
 		}
 	}
 

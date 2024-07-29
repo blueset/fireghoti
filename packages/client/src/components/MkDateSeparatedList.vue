@@ -18,12 +18,12 @@
 			>
 				<p class="date">
 					<span>
-						<i class="icon" :class="icon('ph-caret-up')"></i>
+						<i class="icon" :class="icon('ph-caret-up ph-dir')"></i>
 						{{ getDateText(item.createdAt) }}
 					</span>
 					<span>
 						{{ getDateText(items[index + 1].createdAt) }}
-						<i class="icon" :class="icon('ph-caret-down')"></i>
+						<i class="icon" :class="icon('ph-caret-down  ph-dir')"></i>
 					</span>
 				</p>
 			</div>
@@ -87,7 +87,7 @@ function getDateText(time: string) {
 	}
 
 	&:not(.date-separated-list-nogap) > *:not(:last-child) {
-		margin-bottom: var(--margin);
+		margin-block-end: var(--margin);
 	}
 
 	> .list-move {
@@ -121,7 +121,8 @@ function getDateText(time: string) {
 			display: inline-block;
 			position: relative;
 			margin: 0;
-			padding: 0 16px;
+			padding-block: 0;
+			padding-inline: 16px;
 			line-height: 32px;
 			text-align: center;
 			font-size: 12px;
@@ -129,18 +130,18 @@ function getDateText(time: string) {
 
 			> span {
 				&:first-child {
-					margin-right: 8px;
+					margin-inline-end: 8px;
 
 					> .icon {
-						margin-right: 8px;
+						margin-inline-end: 8px;
 					}
 				}
 
 				&:last-child {
-					margin-left: 8px;
+					margin-inline-start: 8px;
 
 					> .icon {
-						margin-left: 8px;
+						margin-inline-start: 8px;
 					}
 				}
 			}
@@ -162,7 +163,7 @@ function getDateText(time: string) {
 			}
 
 			&:not(:last-child) {
-				border-bottom: solid 0.5px var(--divider);
+				border-block-end: solid 0.5px var(--divider);
 			}
 		}
 	}
