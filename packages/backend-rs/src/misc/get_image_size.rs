@@ -1,7 +1,7 @@
 use crate::{database::cache, util::http_client};
 use futures_util::AsyncReadExt;
 use image::{ImageError, ImageFormat, ImageReader};
-use isahc::prelude::*;
+use isahc::AsyncReadResponseExt;
 use nom_exif::{parse_jpeg_exif, EntryValue, ExifTag};
 use std::io::Cursor;
 use tokio::sync::Mutex;
