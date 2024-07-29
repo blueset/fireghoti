@@ -384,6 +384,7 @@ module.exports.generateSecureRandomString = nativeBinding.generateSecureRandomSt
 module.exports.generateUserToken = nativeBinding.generateUserToken
 module.exports.genId = nativeBinding.genId
 module.exports.genIdAt = nativeBinding.genIdAt
+module.exports.genIdenticon = nativeBinding.genIdenticon
 module.exports.getFullApAccount = nativeBinding.getFullApAccount
 module.exports.getImageSizeFromUrl = nativeBinding.getImageSizeFromUrl
 module.exports.getInstanceActor = nativeBinding.getInstanceActor
