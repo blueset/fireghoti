@@ -1554,7 +1554,7 @@ export interface UserKeypair {
 export interface UserLike {
   id: string
   host: string | null
-  uri: string
+  uri: string | null
 }
 
 export interface UserList {

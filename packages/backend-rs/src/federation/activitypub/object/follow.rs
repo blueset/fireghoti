@@ -5,7 +5,7 @@ use crate::{config::CONFIG, federation::internal_actor, misc::user};
 pub struct UserLike {
     pub id: String,
     pub host: Option<String>,
-    pub uri: String,
+    pub uri: Option<String>,
 }
 
 #[macros::export(object)]
@@ -18,23 +18,31 @@ pub struct Follow {
 
 impl ActivityPubObject for Follow {}
 
+#[macros::errors]
+pub enum Error {
+    #[error("follower uri is missing")]
+    MissingFollowerUri,
+    #[error("followee uri is missing")]
+    MissingFolloweeUri,
+}
+
 impl Follow {
     #[allow(dead_code)] // TODO: remove this line
-    fn new(follower: UserLike, followee: UserLike, request_id: Option<String>) -> Self {
-        Self {
+    fn new(follower: UserLike, followee: UserLike, request_id: Option<String>) -> Result<Self, Error> {
+        Ok(Self {
             id: request_id.unwrap_or_else(|| {
                 format!("{}/follows/{}/{}", CONFIG.url, follower.id, followee.id)
             }),
             r#type: Activity::Follow,
             actor: match user::is_local!(follower) {
                 true => format!("{}/users/{}", CONFIG.url, follower.id),
-                false => follower.uri,
+                false => follower.uri.ok_or(Error::MissingFollowerUri)?,
             },
             object: match user::is_local!(followee) {
                 true => format!("{}/users/{}", CONFIG.url, followee.id),
-                false => followee.uri,
+                false => followee.uri.ok_or(Error::MissingFolloweeUri)?,
             },
-        }
+        })
     }
 
     #[allow(dead_code)] // TODO: remove this line
@@ -53,7 +61,7 @@ impl Follow {
 }
 
 #[macros::ts_export]
-pub fn render_follow(follower: UserLike, followee: UserLike, request_id: Option<String>) -> Follow {
+pub fn render_follow(follower: UserLike, followee: UserLike, request_id: Option<String>) -> Result<Follow, Error> {
     Follow::new(follower, followee, request_id)
 }
 
