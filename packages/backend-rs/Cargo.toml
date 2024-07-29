@@ -49,6 +49,7 @@ tracing = { workspace = true }
 tracing-subscriber = { workspace = true, features = ["ansi"] }
 url = { workspace = true }
 urlencoding = { workspace = true }
+uuid = { workspace = true, features = ["v4", "fast-rng"] }
 web-push = { workspace = true, features = ["isahc-client"] }
 zhconv = { workspace = true }
 

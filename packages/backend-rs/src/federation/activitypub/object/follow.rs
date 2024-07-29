@@ -1,6 +1,5 @@
 use super::*;
 use crate::{config::CONFIG, federation::internal_actor, misc::user};
-use serde::Serialize;
 
 #[macros::export(object)]
 pub struct UserLike {
@@ -9,7 +8,6 @@ pub struct UserLike {
     pub uri: String,
 }
 
-#[derive(Serialize)]
 #[macros::export(object)]
 pub struct Follow {
     pub id: String,

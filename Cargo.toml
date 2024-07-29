@@ -49,6 +49,7 @@ tracing = { version = "0.1.40", default-features = false }
 tracing-subscriber = { version = "0.3.18", default-features = false }
 url = { version = "2.5.2", default-features = false }
 urlencoding = { version = "2.1.3", default-features = false }
+uuid = { version = "1.10.0" }
 web-push = { git = "https://github.com/pimeys/rust-web-push.git", rev = "40febe4085e3cef9cdfd539c315e3e945aba0656", default-features = false }
 zhconv = "0.3.1"
 

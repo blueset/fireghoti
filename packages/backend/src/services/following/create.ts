@@ -1,5 +1,4 @@
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderAccept from "@/remote/activitypub/renderer/accept.js";
 import renderReject from "@/remote/activitypub/renderer/reject.js";
 import { deliver } from "@/queue/index.js";
 import createFollowRequest from "./requests/create.js";
@@ -22,6 +21,7 @@ import {
 	publishToMainStream,
 	publishToUserStream,
 	UserEvent,
+	renderAccept,
 	renderFollow,
 } from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
@@ -275,7 +275,7 @@ export default async function (
 
 	if (Users.isRemoteUser(follower) && Users.isLocalUser(followee)) {
 		const content = renderActivity(
-			renderAccept(renderFollow(follower, followee, requestId), followee),
+			renderAccept(followee.id, renderFollow(follower, followee, requestId)),
 		);
 		deliver(followee.id, content, follower.inbox);
 	}

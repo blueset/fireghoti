@@ -25,6 +25,13 @@ export interface AbuseUserReportLike {
   comment: string
 }
 
+export interface Accept {
+  id: string
+  type: Activity
+  actor: string
+  object: Follow
+}
+
 export interface AccessToken {
   id: string
   createdAt: DateTimeWithTimeZone
@@ -48,7 +55,8 @@ export interface Acct {
 
 export declare function acctToString(acct: Acct): string
 
-export type Activity =  'Follow';
+export type Activity =  'Accept'|
+'Follow';
 
 export interface Ad {
   id: string
@@ -1264,6 +1272,8 @@ export type RelayStatus =  'accepted'|
 
 /** Delete all entries in the [attestation_challenge] table created at more than 5 minutes ago */
 export declare function removeOldAttestationChallenges(): Promise<void>
+
+export declare function renderAccept(userId: string, followObject: Follow): Accept
 
 export declare function renderFollow(follower: UserLike, followee: UserLike, requestId?: string | undefined | null): Follow
 

@@ -1,10 +1,11 @@
+pub mod accept;
 pub mod follow;
 
 pub trait ActivityPubObject {}
 
-#[derive(serde::Serialize)]
 #[macros::export(string_enum)]
 pub enum Activity {
+    Accept,
     Follow,
 }
 
