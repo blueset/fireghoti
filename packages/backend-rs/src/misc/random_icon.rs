@@ -1,5 +1,5 @@
-use identicon_rs::{error::IdenticonError, Identicon};
 use crate::database::cache;
+use identicon_rs::{error::IdenticonError, Identicon};
 
 #[macros::errors]
 pub enum Error {
@@ -14,7 +14,10 @@ pub async fn generate(id: &str) -> Result<Vec<u8>, Error> {
     if let Some(icon) = cache::get_one::<Vec<u8>>(cache::Category::RandomIcon, id).await? {
         Ok(icon)
     } else {
-        let icon = Identicon::new(id).set_border(35).export_png_data()?;
+        let icon = Identicon::new(id)
+            .set_border(16)
+            .set_scale(96)?
+            .export_png_data()?;
         cache::set_one(cache::Category::RandomIcon, id, &icon, 10 * 60).await?;
         Ok(icon)
     }

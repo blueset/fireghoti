@@ -28,7 +28,11 @@ pub enum Error {
 
 impl Follow {
     #[allow(dead_code)] // TODO: remove this line
-    fn new(follower: UserLike, followee: UserLike, request_id: Option<String>) -> Result<Self, Error> {
+    fn new(
+        follower: UserLike,
+        followee: UserLike,
+        request_id: Option<String>,
+    ) -> Result<Self, Error> {
         Ok(Self {
             id: request_id.unwrap_or_else(|| {
                 format!("{}/follows/{}/{}", CONFIG.url, follower.id, followee.id)
@@ -61,7 +65,11 @@ impl Follow {
 }
 
 #[macros::ts_export]
-pub fn render_follow(follower: UserLike, followee: UserLike, request_id: Option<String>) -> Result<Follow, Error> {
+pub fn render_follow(
+    follower: UserLike,
+    followee: UserLike,
+    request_id: Option<String>,
+) -> Result<Follow, Error> {
     Follow::new(follower, followee, request_id)
 }
 
