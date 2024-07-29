@@ -10,6 +10,7 @@ pub enum Category {
     Block,
     Follow,
     CatLang,
+    RandomIcon,
     #[cfg(test)]
     Test,
 }
@@ -35,6 +36,7 @@ fn categorize(category: Category, key: &str) -> String {
         Category::Block => "blocking",
         Category::Follow => "following",
         Category::CatLang => "catlang",
+        Category::RandomIcon => "randomIcon",
         #[cfg(test)]
         Category::Test => "usedOnlyForTesting",
     };

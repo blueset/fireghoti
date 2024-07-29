@@ -1,13 +1,29 @@
 use identicon_rs::{error::IdenticonError, Identicon};
+use crate::database::cache;
 
-pub fn generate(id: &str) -> Result<Vec<u8>, IdenticonError> {
-    Identicon::new(id).set_border(35).export_png_data()
+#[macros::errors]
+pub enum Error {
+    #[doc = "failed to generate identicon"]
+    #[error(transparent)]
+    Identicon(#[from] IdenticonError),
+    #[error("Redis cache operation has failed")]
+    Cache(#[from] cache::Error),
+}
+
+pub async fn generate(id: &str) -> Result<Vec<u8>, Error> {
+    if let Some(icon) = cache::get_one::<Vec<u8>>(cache::Category::RandomIcon, id).await? {
+        Ok(icon)
+    } else {
+        let icon = Identicon::new(id).set_border(35).export_png_data()?;
+        cache::set_one(cache::Category::RandomIcon, id, &icon, 10 * 60).await?;
+        Ok(icon)
+    }
 }
 
 #[cfg(feature = "napi")]
 #[napi_derive::napi(js_name = "genIdenticon")]
-pub fn generate_js(id: String) -> napi::Result<napi::bindgen_prelude::Buffer> {
-    match generate(&id) {
+pub async fn generate_js(id: String) -> napi::Result<napi::bindgen_prelude::Buffer> {
+    match generate(&id).await {
         Ok(icon) => Ok(icon.into()),
         Err(err) => Err(napi::Error::from_reason(format!(
             "\n{}\n",

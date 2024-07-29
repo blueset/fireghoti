@@ -495,7 +495,7 @@ export declare function genId(): string
 /** Generate an ID using a specific datetime */
 export declare function genIdAt(date: Date): string
 
-export declare function genIdenticon(id: string): Buffer
+export declare function genIdenticon(id: string): Promise<Buffer>
 
 export declare function getFullApAccount(username: string, host?: string | undefined | null): string
 
