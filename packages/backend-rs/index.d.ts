@@ -412,6 +412,13 @@ export declare function fetchMeta(): Promise<Meta>
 /** Fetches and returns the NodeInfo (version 2.0) of a remote server. */
 export declare function fetchNodeinfo(host: string): Promise<Nodeinfo>
 
+export interface Follow {
+  id: string
+  type: Activity
+  actor: string
+  object: string
+}
+
 export interface Following {
   id: string
   createdAt: DateTimeWithTimeZone
@@ -423,13 +430,6 @@ export interface Following {
   followeeHost: string | null
   followeeInbox: string | null
   followeeSharedInbox: string | null
-}
-
-export interface FollowRelay {
-  id: string
-  type: Activity
-  actor: string
-  object: string
 }
 
 export interface FollowRequest {
@@ -1265,7 +1265,9 @@ export type RelayStatus =  'accepted'|
 /** Delete all entries in the [attestation_challenge] table created at more than 5 minutes ago */
 export declare function removeOldAttestationChallenges(): Promise<void>
 
-export declare function renderFollowRelay(relayId: string): Promise<FollowRelay>
+export declare function renderFollow(follower: UserLike, followee: UserLike, requestId?: string | undefined | null): Follow
+
+export declare function renderFollowRelay(relayId: string): Promise<Follow>
 
 export interface RenoteMuting {
   id: string
@@ -1535,6 +1537,12 @@ export interface UserKeypair {
   userId: string
   publicKey: string
   privateKey: string
+}
+
+export interface UserLike {
+  id: string
+  host: string | null
+  uri: string
 }
 
 export interface UserList {

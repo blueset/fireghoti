@@ -437,6 +437,7 @@ module.exports.PushNotificationKind = nativeBinding.PushNotificationKind
 module.exports.PushSubscriptionType = nativeBinding.PushSubscriptionType
 module.exports.RelayStatus = nativeBinding.RelayStatus
 module.exports.removeOldAttestationChallenges = nativeBinding.removeOldAttestationChallenges
+module.exports.renderFollow = nativeBinding.renderFollow
 module.exports.renderFollowRelay = nativeBinding.renderFollowRelay
 module.exports.safeForSql = nativeBinding.safeForSql
 module.exports.sendPushNotification = nativeBinding.sendPushNotification

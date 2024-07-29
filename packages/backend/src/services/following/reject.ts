@@ -1,5 +1,4 @@
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import renderReject from "@/remote/activitypub/renderer/reject.js";
 import { deliver, webhookDeliver } from "@/queue/index.js";
 import {
@@ -7,6 +6,7 @@ import {
 	publishToMainStream,
 	publishToUserStream,
 	UserEvent,
+	renderFollow,
 } from "backend-rs";
 import type { ILocalUser, IRemoteUser } from "@/models/entities/user.js";
 import { Users, FollowRequests, Followings } from "@/models/index.js";

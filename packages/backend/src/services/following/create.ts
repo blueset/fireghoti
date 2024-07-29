@@ -1,5 +1,4 @@
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import renderAccept from "@/remote/activitypub/renderer/accept.js";
 import renderReject from "@/remote/activitypub/renderer/reject.js";
 import { deliver } from "@/queue/index.js";
@@ -23,6 +22,7 @@ import {
 	publishToMainStream,
 	publishToUserStream,
 	UserEvent,
+	renderFollow,
 } from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";

@@ -9,7 +9,12 @@ import renderKey from "@/remote/activitypub/renderer/key.js";
 import { renderPerson } from "@/remote/activitypub/renderer/person.js";
 import renderEmoji from "@/remote/activitypub/renderer/emoji.js";
 import { inbox as processInbox } from "@/queue/index.js";
-import { fetchMeta, getInstanceActor, isSelfHost } from "backend-rs";
+import {
+	fetchMeta,
+	getInstanceActor,
+	isSelfHost,
+	renderFollow,
+} from "backend-rs";
 import {
 	Notes,
 	Users,
@@ -24,7 +29,6 @@ import {
 	checkFetch,
 	getSignatureUser,
 } from "@/remote/activitypub/check-fetch.js";
-import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import Featured from "./activitypub/featured.js";
 import Following from "./activitypub/following.js";
 import Followers from "./activitypub/followers.js";

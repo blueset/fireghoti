@@ -1,8 +1,7 @@
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import { renderUndo } from "@/remote/activitypub/renderer/undo.js";
 import { deliver } from "@/queue/index.js";
-import { Event, publishToMainStream } from "backend-rs";
+import { Event, publishToMainStream, renderFollow } from "backend-rs";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
 import type { User } from "@/models/entities/user.js";
 import { Users, FollowRequests } from "@/models/index.js";

@@ -1,5 +1,4 @@
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import { renderUndo } from "@/remote/activitypub/renderer/undo.js";
 import { renderBlock } from "@/remote/activitypub/renderer/block.js";
 import { deliver } from "@/queue/index.js";
@@ -20,6 +19,7 @@ import {
 	publishToMainStream,
 	publishToUserStream,
 	UserEvent,
+	renderFollow,
 } from "backend-rs";
 import { getActiveWebhooks } from "@/misc/webhook-cache.js";
 import { webhookDeliver } from "@/queue/index.js";

@@ -1,9 +1,8 @@
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import { deliver } from "@/queue/index.js";
 import type { User } from "@/models/entities/user.js";
 import { Blockings, FollowRequests, Users } from "@/models/index.js";
-import { Event, genIdAt, publishToMainStream } from "backend-rs";
+import { Event, genIdAt, publishToMainStream, renderFollow } from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 import { config } from "@/config.js";
 

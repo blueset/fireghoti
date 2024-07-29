@@ -207,7 +207,7 @@ export async function createPerson(
 		try {
 			const data = await fetch(person.followers, {
 				headers: { Accept: "application/json" },
-				size: 1024 * 1024
+				size: 1024 * 1024,
 			});
 			const json_data = JSON.parse(await data.text());
 
@@ -223,7 +223,7 @@ export async function createPerson(
 		try {
 			const data = await fetch(person.following, {
 				headers: { Accept: "application/json" },
-				size: 1024 * 1024
+				size: 1024 * 1024,
 			});
 			const json_data = JSON.parse(await data.text());
 
@@ -492,7 +492,7 @@ export async function updatePerson(
 		try {
 			const data = await fetch(person.followers, {
 				headers: { Accept: "application/json" },
-				size: 1024 * 1024
+				size: 1024 * 1024,
 			});
 			const json_data = JSON.parse(await data.text());
 
@@ -508,7 +508,7 @@ export async function updatePerson(
 		try {
 			const data = await fetch(person.following, {
 				headers: { Accept: "application/json" },
-				size: 1024 * 1024
+				size: 1024 * 1024,
 			});
 			const json_data = JSON.parse(await data.text());
 
