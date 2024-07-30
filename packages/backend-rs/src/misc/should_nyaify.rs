@@ -14,6 +14,7 @@ pub enum Error {
     #[doc = "cache error"]
     #[error(transparent)]
     Cache(#[from] cache::Error),
+    #[doc = "user not found"]
     #[error("user {0} not found")]
     NotFound(String),
 }
