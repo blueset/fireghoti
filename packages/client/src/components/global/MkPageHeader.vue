@@ -270,23 +270,28 @@ onMounted(() => {
 				if (!isTabs(props.tabs)) return;
 				const tabEl = tabRefs[props.tab];
 				if (tabEl && tabHighlightEl.value) {
-					const isVertical = getComputedStyle(tabHighlightEl.value)['writing-mode'].startsWith("vertical");
+					const isVertical = getComputedStyle(tabHighlightEl.value)[
+						"writing-mode"
+					].startsWith("vertical");
 					// offsetWidth や offsetLeft は少数を丸めてしまうため getBoundingClientRect を使う必要がある
 					// https://developer.mozilla.org/ja/docs/Web/API/HTMLElement/offsetWidth#%E5%80%A4
-					const tabSizeX = (isVertical ? tabEl.scrollHeight : tabEl.scrollWidth) + 20; // + the tab's padding
+					const tabSizeX =
+						(isVertical ? tabEl.scrollHeight : tabEl.scrollWidth) + 20; // + the tab's padding
 					if (props.tabs.length > 3) {
 						tabEl.style = `--width: ${tabSizeX}px`;
 					}
 					setTimeout(() => {
 						if (tabHighlightEl.value == null) return;
-						let translateFunction = 'translateX';
+						let translateFunction = "translateX";
 						let translateValue = tabEl.offsetLeft;
 						if (isVertical) {
-							translateFunction = 'translateY';
+							translateFunction = "translateY";
 							translateValue = tabEl.offsetTop;
 						}
 						if (getComputedStyle(tabHighlightEl.value).direction === "rtl") {
-							translateValue += isVertical ? tabEl.offsetHeight - tabEl.offsetParent.scrollHeight : tabEl.offsetWidth - tabEl.offsetParent.scrollWidth;
+							translateValue += isVertical
+								? tabEl.offsetHeight - tabEl.offsetParent.scrollHeight
+								: tabEl.offsetWidth - tabEl.offsetParent.scrollWidth;
 						}
 						tabHighlightEl.value.style.inlineSize = `${tabSizeX}px`;
 						tabHighlightEl.value.style.transform = `${translateFunction}(${translateValue}px)`;

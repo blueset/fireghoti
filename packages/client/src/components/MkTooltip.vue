@@ -60,7 +60,7 @@ function setPosition() {
 			direction = "right";
 		}
 	}
-	if (getComputedStyle(el.value!)['writing-mode'].startsWith("vertical")) {
+	if (getComputedStyle(el.value!)["writing-mode"].startsWith("vertical")) {
 		if (direction === "top") {
 			direction = "right";
 		} else if (direction === "bottom") {

@@ -310,9 +310,9 @@ function setSwiperRef(swiper) {
 	swiperRef = swiper;
 	syncSlide(timelineIndex(src.value));
 	const styles = getComputedStyle(swiper.el);
-	swiper.changeLanguageDirection(styles.direction as ("rtl" | "ltr"));
-	if (styles['writing-mode'].startsWith('vertical')) {
-		swiper.changeDirection('vertical');
+	swiper.changeLanguageDirection(styles.direction as "rtl" | "ltr");
+	if (styles["writing-mode"].startsWith("vertical")) {
+		swiper.changeDirection("vertical");
 	}
 }
 

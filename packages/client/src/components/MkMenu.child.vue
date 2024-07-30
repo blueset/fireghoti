@@ -36,35 +36,49 @@ function setPosition() {
 	const rootRect = props.rootElement.getBoundingClientRect();
 	const rect = props.targetElement.getBoundingClientRect();
 	const isRtl = getComputedStyle(props.rootElement).direction === "rtl";
-	const writingMode = getComputedStyle(props.rootElement)['writing-mode'];
+	const writingMode = getComputedStyle(props.rootElement)["writing-mode"];
 	const isVertical = writingMode.startsWith("vertical");
-	const targetInlineSize = isVertical ? props.targetElement.offsetHeight : props.targetElement.offsetWidth;
+	const targetInlineSize = isVertical
+		? props.targetElement.offsetHeight
+		: props.targetElement.offsetWidth;
 	const rectInlineSize = isVertical ? rect.height : rect.width;
 	const windowInlineSize = isVertical ? window.innerHeight : window.innerWidth;
-	const rootInsetInlineStart = 
-		isRtl && isVertical ? rootRect.bottom : 
-		!isRtl && isVertical ? rootRect.top :
-		isRtl && !isVertical ? rootRect.right :
-		rootRect.left;
-	const rectInsetInlineStart = 
-		isRtl && isVertical ? rect.bottom : 
-		!isRtl && isVertical ? rect.top :
-		isRtl && !isVertical ? rect.right :
-		rect.left;
+	const rootInsetInlineStart =
+		isRtl && isVertical
+			? rootRect.bottom
+			: !isRtl && isVertical
+				? rootRect.top
+				: isRtl && !isVertical
+					? rootRect.right
+					: rootRect.left;
+	const rectInsetInlineStart =
+		isRtl && isVertical
+			? rect.bottom
+			: !isRtl && isVertical
+				? rect.top
+				: isRtl && !isVertical
+					? rect.right
+					: rect.left;
 
 	let insetInlineStart = targetInlineSize;
-	if (rootInsetInlineStart + insetInlineStart > windowInlineSize - rectInlineSize) {
+	if (
+		rootInsetInlineStart + insetInlineStart >
+		windowInlineSize - rectInlineSize
+	) {
 		insetInlineStart = -rectInlineSize;
 	}
 	if (rectInsetInlineStart + insetInlineStart < 0) {
 		insetInlineStart = -rectInsetInlineStart;
 	}
 
-	const insetBlockStart = 
-		writingMode === "vertical-rl" ? rootRect.right - rect.right - 8:
-		writingMode === "vertical-lr" ? rootRect.left - rect.left - 8 :
-		writingMode === "horizontal-bt" ? rect.right - rootRect.right - 8 :
-		rect.top - rootRect.top - 8;
+	const insetBlockStart =
+		writingMode === "vertical-rl"
+			? rootRect.right - rect.right - 8
+			: writingMode === "vertical-lr"
+				? rootRect.left - rect.left - 8
+				: writingMode === "horizontal-bt"
+					? rect.right - rootRect.right - 8
+					: rect.top - rootRect.top - 8;
 	el.value!.style.insetInlineStart = `${insetInlineStart}px`;
 	el.value!.style.insetBlockStart = `${insetBlockStart}px`;
 }

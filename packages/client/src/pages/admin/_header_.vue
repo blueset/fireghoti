@@ -173,19 +173,24 @@ onMounted(() => {
 					const rect = tabEl.getBoundingClientRect();
 					var inlineSize = rect.width;
 					var insetInlineStart = rect.left - parentRect.left;
-					const isVertical = getComputedStyle(tabHighlightEl.value)['writing-mode'].startsWith("vertical");
+					const isVertical = getComputedStyle(tabHighlightEl.value)[
+						"writing-mode"
+					].startsWith("vertical");
 					if (isVertical) {
 						inlineSize = rect.height;
 					}
 					if (getComputedStyle(tabHighlightEl.value).direction === "rtl") {
 						if (isVertical) {
-							tabHighlightEl.value.style.insetBlockEnd = rect.bottom - parentRect.bottom + "px";
+							tabHighlightEl.value.style.insetBlockEnd =
+								rect.bottom - parentRect.bottom + "px";
 						} else {
-							tabHighlightEl.value.style.insetInlineEnd = rect.right - parentRect.right + "px";
+							tabHighlightEl.value.style.insetInlineEnd =
+								rect.right - parentRect.right + "px";
 						}
 					} else {
 						if (isVertical) {
-							tabHighlightEl.value.style.insetBlockStart = rect.top - parentRect.top + "px";
+							tabHighlightEl.value.style.insetBlockStart =
+								rect.top - parentRect.top + "px";
 						}
 					}
 					tabHighlightEl.value.style.inlineSize = inlineSize + "px";

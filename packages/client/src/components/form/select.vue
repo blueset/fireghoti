@@ -189,7 +189,11 @@ function show(_ev: MouseEvent) {
 	scanOptions(options);
 
 	os.popupMenu(menu, container.value!, {
-		width: getComputedStyle(container.value!)['writing-mode'].startsWith('vertical') ? container.value!.offsetHeight : container.value!.offsetWidth,
+		width: getComputedStyle(container.value!)["writing-mode"].startsWith(
+			"vertical",
+		)
+			? container.value!.offsetHeight
+			: container.value!.offsetWidth,
 		// onClosing: () => {
 		// 	opening.value = false;
 		// },

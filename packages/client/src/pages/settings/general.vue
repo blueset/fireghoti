@@ -454,9 +454,7 @@ const mergeThreadInTimeline = computed(
 const mergeRenotesInTimeline = computed(
 	defaultStore.makeGetterSetter("mergeRenotesInTimeline"),
 );
-const writingMode = computed(
-	defaultStore.makeGetterSetter("writingMode"),
-);
+const writingMode = computed(defaultStore.makeGetterSetter("writingMode"));
 
 // This feature (along with injectPromo) is currently disabled
 // function onChangeInjectFeaturedNote(v) {
@@ -528,7 +526,7 @@ watch(
 		useEmojiCdn,
 		enableTimelineStreaming,
 		enablePullToRefresh,
-		pullToRefreshThreshold
+		pullToRefreshThreshold,
 	],
 	async () => {
 		await reloadAsk();

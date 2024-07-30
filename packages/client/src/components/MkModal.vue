@@ -221,7 +221,11 @@ function onBgClick() {
 
 if (type.value === "drawer") {
 	maxHeight.value = window.innerHeight / 1.5;
-	if (getComputedStyle(document.documentElement)["writing-mode"].startsWith("vertical")) {
+	if (
+		getComputedStyle(document.documentElement)["writing-mode"].startsWith(
+			"vertical",
+		)
+	) {
 		maxHeight.value = window.innerHeight / 1.5;
 	}
 }
@@ -254,7 +258,7 @@ const align = () => {
 
 	const styles = getComputedStyle(props.src);
 	const direction = styles.direction;
-	const writingMode = styles['writing-mode'];
+	const writingMode = styles["writing-mode"];
 
 	if (direction === "rtl") {
 		if (anchorX === "right") {
@@ -268,27 +272,27 @@ const align = () => {
 		const prevAnchorX = anchorX;
 		const prevAnchorY = anchorY;
 		if (prevAnchorX === "left") {
-			anchorY = "top"
+			anchorY = "top";
 		} else if (prevAnchorX === "right") {
-			anchorY = "bottom"
+			anchorY = "bottom";
 		} else if (prevAnchorX === "center") {
-			anchorY = "top"
+			anchorY = "top";
 		}
 		if (writingMode === "vertical-rl") {
 			if (prevAnchorY === "top") {
-				anchorX = "right"
+				anchorX = "right";
 			} else if (prevAnchorY === "bottom") {
-				anchorX = "left"
+				anchorX = "left";
 			} else if (prevAnchorY === "center") {
-				anchorX = "center"
+				anchorX = "center";
 			}
 		} else if (writingMode === "vertical-lr") {
 			if (prevAnchorY === "top") {
-				anchorX = "left"
+				anchorX = "left";
 			} else if (prevAnchorY === "bottom") {
-				anchorX = "right"
+				anchorX = "right";
 			} else if (prevAnchorY === "center") {
-				anchorX = "center"
+				anchorX = "center";
 			}
 		}
 	}
@@ -313,25 +317,31 @@ const align = () => {
 	const windowBlockSize = isVertical ? window.innerWidth : window.innerHeight;
 	const windowScrollBlock = isVertical ? window.scrollX : window.scrollY;
 	const insetBlockStart =
-		writingMode === "vertical-rl" ? windowBlockSize - left - width :
-		writingMode === "vertical-lr" ? left :
-		top;
+		writingMode === "vertical-rl"
+			? windowBlockSize - left - width
+			: writingMode === "vertical-lr"
+				? left
+				: top;
 	const insetBlockEnd =
-		writingMode === "vertical-rl" ? windowBlockSize - left :
-		writingMode === "vertical-lr" ? left + width :
-		top + height;
+		writingMode === "vertical-rl"
+			? windowBlockSize - left
+			: writingMode === "vertical-lr"
+				? left + width
+				: top + height;
 	const blockSize = isVertical ? width : height;
-	const srcRectBlockStart = 
-		writingMode === "vertical-rl" ? srcRect.right :
-		writingMode === "vertical-lr" ? srcRect.left :
-		srcRect.top;
+	const srcRectBlockStart =
+		writingMode === "vertical-rl"
+			? srcRect.right
+			: writingMode === "vertical-lr"
+				? srcRect.left
+				: srcRect.top;
 
 	if (fixed.value) {
 		// 画面から横にはみ出る場合
 		if (left + width > window.innerWidth) {
 			left = window.innerWidth - width;
 		}
-		
+
 		const underSpace = window.innerHeight - MARGIN - top;
 		const upperSpace = srcRect.top - MARGIN;
 
@@ -345,11 +355,14 @@ const align = () => {
 				top = window.innerHeight - MARGIN - height;
 			}
 		}
-		
+
 		const blockEndSpace = windowBlockSize - MARGIN - insetBlockStart;
 		const blockStartSpace = srcRectBlockStart - MARGIN;
 
-		if (insetBlockEnd > windowBlockSize - MARGIN || blockSize > windowBlockSize - MARGIN) {
+		if (
+			insetBlockEnd > windowBlockSize - MARGIN ||
+			blockSize > windowBlockSize - MARGIN
+		) {
 			if (props.noOverlap) {
 				if (blockEndSpace >= blockStartSpace / 3) {
 					maxHeight.value = blockEndSpace;
@@ -378,8 +391,8 @@ const align = () => {
 			}
 		}
 
-		
-		const blockEndSpace =windowBlockSize - MARGIN - (insetBlockStart - windowScrollBlock);
+		const blockEndSpace =
+			windowBlockSize - MARGIN - (insetBlockStart - windowScrollBlock);
 		const blockStartSpace = srcRectBlockStart - MARGIN;
 
 		// 画面から縦にはみ出る場合
@@ -400,7 +413,10 @@ const align = () => {
 		top = MARGIN;
 	}
 
-	if (left > window.innerWidth - width - MARGIN && writingMode !== "vertical-lr") {
+	if (
+		left > window.innerWidth - width - MARGIN &&
+		writingMode !== "vertical-lr"
+	) {
 		left = window.innerWidth - width - MARGIN;
 	}
 	if (left < 0 && writingMode !== "vertical-rl") {

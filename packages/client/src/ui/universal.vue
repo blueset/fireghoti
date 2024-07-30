@@ -394,7 +394,9 @@ async function startGroup(): void {
 
 onMounted(() => {
 	if (!isDesktop.value) {
-		matchMedia(`(min-inline-size: ${DESKTOP_THRESHOLD - 1}px)`).onchange = (mql) => {
+		matchMedia(`(min-inline-size: ${DESKTOP_THRESHOLD - 1}px)`).onchange = (
+			mql,
+		) => {
 			if (mql.matches) isDesktop.value = true;
 		};
 	}

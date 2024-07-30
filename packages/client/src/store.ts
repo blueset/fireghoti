@@ -471,8 +471,13 @@ export const defaultStore = markRaw(
 		},
 		writingMode: {
 			where: "deviceAccount",
-			default: "horizontal-tb" as "horizontal-tb" | "vertical-rl" | "vertical-lr" | "vertical-rl-upright" | "vertical-lr-upright",
-		}
+			default: "horizontal-tb" as
+				| "horizontal-tb"
+				| "vertical-rl"
+				| "vertical-lr"
+				| "vertical-rl-upright"
+				| "vertical-lr-upright",
+		},
 	}),
 );
 
