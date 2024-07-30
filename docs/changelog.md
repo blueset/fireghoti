@@ -7,6 +7,14 @@ This changelog is not an exhaustive list. Code refactorings, minor bug fixes, do
 - Server administrators must check [notice-for-admins.md](https://firefish.dev/firefish/firefish/-/blob/main/docs/notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](https://firefish.dev/firefish/firefish/-/blob/main/docs/api-change.md) as well.
 
+## Unreleased
+
+- Fix bugs
+
+### Breaking change
+
+The random icon generator has been changed, so your icon will be changed if you haven't set your icon image and random icon generation is enabled on your server.
+
 ## [v20240729](https://firefish.dev/firefish/firefish/-/merge_requests/11214/commits)
 
 - Fix bugs (including a medium severity security issue)
