@@ -126,6 +126,11 @@ html {
 		--gradient-to-block-end: to left;
 	}
 
+	&.upright {
+		text-orientation: upright;
+		text-transform: full-width;
+	}
+
 	&.useCJKFont {
 		font-family: "Hiragino Maru Gothic Pro", "BIZ UDGothic",
 			"Atkinson Hyperlegible", Roboto, HelveticaNeue, Arial, sans-serif;

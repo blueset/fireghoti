@@ -116,6 +116,23 @@ function checkForSplash() {
 	const html = document.documentElement;
 	html.setAttribute("lang", lang || "en-US");
 	html.setAttribute("dir", "auto");
+	const writingMode = localStorage.getItem("writingMode");
+	switch (writingMode) {
+		case "vertical-lr-upright":
+			html.classList.add("vertical-lr");
+			html.classList.add("upright");
+			break;
+		case "vertical-lr":
+			html.classList.add("vertical-lr");
+			break;
+		case "vertical-rl-upright":
+			html.classList.add("vertical-rl");
+			html.classList.add("upright");
+			break;
+		case "vertical-rl":
+			html.classList.add("vertical-rl");
+			break;
+	}
 	// #endregion
 
 	// #region loginId
