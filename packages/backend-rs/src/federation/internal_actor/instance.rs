@@ -4,12 +4,8 @@ use crate::{database::db_conn, model::entity::user};
 use sea_orm::prelude::*;
 use tokio::sync::OnceCell;
 
-// for napi export
-// https://github.com/napi-rs/napi-rs/issues/2060
-type User = user::Model;
-
 pub const USERNAME: &str = "instance.actor";
-static INSTANCE_ACTOR: OnceCell<User> = OnceCell::const_new();
+static INSTANCE_ACTOR: OnceCell<user::Model> = OnceCell::const_new();
 
 #[macros::errors]
 pub enum Error {
@@ -20,7 +16,7 @@ pub enum Error {
     Db(#[from] DbErr),
 }
 
-async fn set_cache() -> Result<&'static User, Error> {
+async fn set_cache() -> Result<&'static user::Model, Error> {
     let instance_actor = INSTANCE_ACTOR
         .get_or_try_init(|| async {
             tracing::debug!("caching @instance.actor");
@@ -37,12 +33,15 @@ async fn set_cache() -> Result<&'static User, Error> {
     Ok(instance_actor)
 }
 
-pub async fn get() -> Result<&'static User, Error> {
+pub async fn get() -> Result<&'static user::Model, Error> {
     match INSTANCE_ACTOR.get() {
         Some(model) => Ok(model),
         None => set_cache().await,
     }
 }
+
+#[macros::for_ts] // https://github.com/napi-rs/napi-rs/issues/2060
+type User = user::Model;
 
 #[macros::ts_export(js_name = "getInstanceActor")]
 pub async fn get_js() -> Result<User, Error> {
