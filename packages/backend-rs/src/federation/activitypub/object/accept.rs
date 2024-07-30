@@ -3,21 +3,21 @@ use crate::config::CONFIG;
 use uuid::Uuid;
 
 #[macros::export(object)]
-pub struct Accept {
+pub struct ApAccept {
     pub id: String,
-    pub r#type: Activity,
+    pub r#type: ApObject,
     pub actor: String,
-    pub object: follow::Follow,
+    pub object: follow::ApFollow,
 }
 
-impl ActivityPubObject for Accept {}
+impl ActivityPubObject for ApAccept {}
 
-impl Accept {
+impl ApAccept {
     #[allow(dead_code)] // TODO: remove this line
-    fn new(user_id: String, follow_object: follow::Follow) -> Self {
+    fn new(user_id: String, follow_object: follow::ApFollow) -> Self {
         Self {
             id: format!("{}/{}", CONFIG.url, Uuid::new_v4()),
-            r#type: Activity::Accept,
+            r#type: ApObject::Accept,
             actor: format!("{}/users/{}", CONFIG.url, user_id),
             object: follow_object,
         }
@@ -25,9 +25,9 @@ impl Accept {
 }
 
 #[cfg(any(test, doctest, feature = "napi"))]
-type Follow = follow::Follow;
+type Follow = follow::ApFollow;
 
 #[macros::ts_export]
-pub fn render_accept(user_id: String, follow_object: Follow) -> Accept {
-    Accept::new(user_id, follow_object)
+pub fn render_accept(user_id: String, follow_object: Follow) -> ApAccept {
+    ApAccept::new(user_id, follow_object)
 }

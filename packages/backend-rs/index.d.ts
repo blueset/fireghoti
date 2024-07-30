@@ -25,13 +25,6 @@ export interface AbuseUserReportLike {
   comment: string
 }
 
-export interface Accept {
-  id: string
-  type: Activity
-  actor: string
-  object: Follow
-}
-
 export interface AccessToken {
   id: string
   createdAt: DateTimeWithTimeZone
@@ -54,9 +47,6 @@ export interface Acct {
 }
 
 export declare function acctToString(acct: Acct): string
-
-export type Activity =  'Accept'|
-'Follow';
 
 export interface Ad {
   id: string
@@ -113,6 +103,33 @@ export type AntennaSrc =  'all'|
 'instances'|
 'list'|
 'users';
+
+export interface ApAccept {
+  id: string
+  type: ApObject
+  actor: string
+  object: ApFollow
+}
+
+export interface ApEmoji {
+  id: string
+  type: ApObject
+  name: string
+  updated: string
+  icon: Icon
+}
+
+export interface ApFollow {
+  id: string
+  type: ApObject
+  actor: string
+  object: string
+}
+
+export type ApObject =  'Accept'|
+'Emoji'|
+'Follow'|
+'Image';
 
 export interface App {
   id: string
@@ -420,13 +437,6 @@ export declare function fetchMeta(): Promise<Meta>
 /** Fetches and returns the NodeInfo (version 2.0) of a remote server. */
 export declare function fetchNodeinfo(host: string): Promise<Nodeinfo>
 
-export interface Follow {
-  id: string
-  type: Activity
-  actor: string
-  object: string
-}
-
 export interface Following {
   id: string
   createdAt: DateTimeWithTimeZone
@@ -530,6 +540,12 @@ export interface Hashtag {
   attachedLocalUsersCount: number
   attachedRemoteUserIds: Array<string>
   attachedRemoteUsersCount: number
+}
+
+export interface Icon {
+  type: ApObject
+  mediaType: string
+  url: string
 }
 
 export interface IdConfig {
@@ -1275,11 +1291,13 @@ export type RelayStatus =  'accepted'|
 /** Delete all entries in the [attestation_challenge] table created at more than 5 minutes ago */
 export declare function removeOldAttestationChallenges(): Promise<void>
 
-export declare function renderAccept(userId: string, followObject: Follow): Accept
+export declare function renderAccept(userId: string, followObject: Follow): ApAccept
 
-export declare function renderFollow(follower: UserLike, followee: UserLike, requestId?: string | undefined | null): Follow
+export declare function renderEmoji(emoji: Emoji): ApEmoji
 
-export declare function renderFollowRelay(relayId: string): Promise<Follow>
+export declare function renderFollow(follower: UserLike, followee: UserLike, requestId?: string | undefined | null): ApFollow
+
+export declare function renderFollowRelay(relayId: string): Promise<ApFollow>
 
 export interface RenoteMuting {
   id: string

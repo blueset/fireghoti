@@ -1,6 +1,7 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'SetEmojiPublicUrl1722346019160',
     'SetAccessTokenName1722134626110',
     'CreateSystemActors1720618854585',
     'AddMastodonSubscriptionType1715181461692',
@@ -40,6 +41,9 @@ DELETE FROM "migrations" WHERE name IN (
     'FirefishUrlMove1707850084123',
     'RemoveNativeUtilsMigration1705877093218'
 );
+
+-- set-emoji-public-url
+ALTER TABLE "emoji" ALTER COLUMN "publicUrl" SET DEFAULT '';
 
 -- addMastodonSubscriptionType
 ALTER TABLE "sw_subscription" DROP COLUMN "subscriptionTypes";

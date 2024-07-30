@@ -7,12 +7,12 @@ import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
 import renderKey from "@/remote/activitypub/renderer/key.js";
 import { renderPerson } from "@/remote/activitypub/renderer/person.js";
-import renderEmoji from "@/remote/activitypub/renderer/emoji.js";
 import { inbox as processInbox } from "@/queue/index.js";
 import {
 	fetchMeta,
 	getInstanceActor,
 	isSelfHost,
+	renderEmoji,
 	renderFollow,
 } from "backend-rs";
 import {

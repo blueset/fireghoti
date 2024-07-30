@@ -6,7 +6,7 @@ import { DriveFiles, Notes, Users, Emojis, Polls } from "@/models/index.js";
 import type { Emoji } from "@/models/entities/emoji.js";
 import type { Poll } from "@/models/entities/poll.js";
 import toHtml from "@/remote/activitypub/misc/get-note-html.js";
-import renderEmoji from "./emoji.js";
+import { renderEmoji } from "backend-rs";
 import renderMention from "./mention.js";
 import renderHashtag from "./hashtag.js";
 import renderDocument from "./document.js";

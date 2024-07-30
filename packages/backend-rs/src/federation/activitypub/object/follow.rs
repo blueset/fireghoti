@@ -9,14 +9,14 @@ pub struct UserLike {
 }
 
 #[macros::export(object)]
-pub struct Follow {
+pub struct ApFollow {
     pub id: String,
-    pub r#type: Activity,
+    pub r#type: ApObject,
     pub actor: String,
     pub object: String,
 }
 
-impl ActivityPubObject for Follow {}
+impl ActivityPubObject for ApFollow {}
 
 #[macros::errors]
 pub enum Error {
@@ -26,7 +26,7 @@ pub enum Error {
     MissingFolloweeUri,
 }
 
-impl Follow {
+impl ApFollow {
     #[allow(dead_code)] // TODO: remove this line
     fn new(
         follower: UserLike,
@@ -37,7 +37,7 @@ impl Follow {
             id: request_id.unwrap_or_else(|| {
                 format!("{}/follows/{}/{}", CONFIG.url, follower.id, followee.id)
             }),
-            r#type: Activity::Follow,
+            r#type: ApObject::Follow,
             actor: match user::is_local!(follower) {
                 true => format!("{}/users/{}", CONFIG.url, follower.id),
                 false => follower.uri.ok_or(Error::MissingFollowerUri)?,
@@ -53,7 +53,7 @@ impl Follow {
     async fn new_relay(relay_id: String) -> Result<Self, internal_actor::relay::Error> {
         Ok(Self {
             id: format!("{}/activities/follow-relay/{}", CONFIG.url, relay_id),
-            r#type: Activity::Follow,
+            r#type: ApObject::Follow,
             actor: format!(
                 "{}/users/{}",
                 CONFIG.url,
@@ -69,11 +69,13 @@ pub fn render_follow(
     follower: UserLike,
     followee: UserLike,
     request_id: Option<String>,
-) -> Result<Follow, Error> {
-    Follow::new(follower, followee, request_id)
+) -> Result<ApFollow, Error> {
+    ApFollow::new(follower, followee, request_id)
 }
 
 #[macros::ts_export]
-pub async fn render_follow_relay(relay_id: String) -> Result<Follow, internal_actor::relay::Error> {
-    Follow::new_relay(relay_id).await
+pub async fn render_follow_relay(
+    relay_id: String,
+) -> Result<ApFollow, internal_actor::relay::Error> {
+    ApFollow::new_relay(relay_id).await
 }

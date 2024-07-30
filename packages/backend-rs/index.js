@@ -362,8 +362,8 @@ if (!nativeBinding) {
 }
 
 module.exports.acctToString = nativeBinding.acctToString
-module.exports.Activity = nativeBinding.Activity
 module.exports.AntennaSrc = nativeBinding.AntennaSrc
+module.exports.ApObject = nativeBinding.ApObject
 module.exports.ChatEvent = nativeBinding.ChatEvent
 module.exports.ChatIndexEvent = nativeBinding.ChatIndexEvent
 module.exports.checkWordMute = nativeBinding.checkWordMute
@@ -439,6 +439,7 @@ module.exports.PushSubscriptionType = nativeBinding.PushSubscriptionType
 module.exports.RelayStatus = nativeBinding.RelayStatus
 module.exports.removeOldAttestationChallenges = nativeBinding.removeOldAttestationChallenges
 module.exports.renderAccept = nativeBinding.renderAccept
+module.exports.renderEmoji = nativeBinding.renderEmoji
 module.exports.renderFollow = nativeBinding.renderFollow
 module.exports.renderFollowRelay = nativeBinding.renderFollowRelay
 module.exports.safeForSql = nativeBinding.safeForSql
