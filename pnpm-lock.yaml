@@ -100,8 +100,8 @@ importers:
         specifier: 2.0.5
         version: 2.0.5
       bull:
-        specifier: 4.15.1
-        version: 4.15.1
+        specifier: 4.16.0
+        version: 4.16.0
       cacheable-lookup:
         specifier: git+https://github.com/TheEssem/cacheable-lookup.git#dd2fb616366a3c68dcf321a57a67295967b204bf
         version: https://codeload.github.com/TheEssem/cacheable-lookup/tar.gz/dd2fb616366a3c68dcf321a57a67295967b204bf
@@ -3004,8 +3004,8 @@ packages:
     resolution: {integrity: sha512-4T53u4PdgsXqKaIctwF8ifXlRTTmEPJ8iEPWFdGZvcf7sbwYo6FKFEX9eNNAnzFZ7EzJAQ3CJeOtCRA4rDp7Pw==}
     engines: {node: '>=6.14.2'}
 
-  bull@4.15.1:
-    resolution: {integrity: sha512-knVKiZdrXbRkB+fWqNryDz85b3JfsT3dBrZexkztwvTH/AFmpHvsC933VB3JX18aJCz47E+xdO57xbDvxljoAg==}
+  bull@4.16.0:
+    resolution: {integrity: sha512-dgHRLULPexLkpm9wP/7F7Vlf2fdvmffdwhv3Bqu5lFhO+XDDJ4yGqlTPE61Jj1zM8CgchLmJEgIfe7y69jtuOg==}
     engines: {node: '>=12'}
 
   busboy@1.6.0:
@@ -9192,7 +9192,7 @@ snapshots:
     dependencies:
       node-gyp-build: 4.8.1
 
-  bull@4.15.1:
+  bull@4.16.0:
     dependencies:
       cron-parser: 4.9.0
       get-port: 5.1.1
