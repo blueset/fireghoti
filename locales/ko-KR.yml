@@ -139,9 +139,9 @@ settingGuide: "추천 설정"
 cacheRemoteFiles: "리모트 파일을 캐시"
 cacheRemoteFilesDescription: "이 설정을 해지하면 리모트 파일을 캐시하지 않고 해당 파일을 직접 링크하게 됩니다. 그에 따라
   서버의 저장 공간을 절약할 수 있지만, 썸네일이 생성되지 않기 때문에 통신량이 증가합니다."
-flagAsBot: "나는 봇입니다"
-flagAsBotDescription: "이 계정을 자동화된 수단으로 운용할 경우에 활성화해 주세요. 이 플래그를 활성화하면, 다른 봇이 이를 참고하여
-  봇 끼리의 무한 연쇄 반응을 회피하거나, 이 계정의 시스템 상에서의 취급이 Bot 운영에 최적화되는 등의 변화가 생깁니다."
+flagAsBot: "이 계정은 자동화된 계정입니다"
+flagAsBotDescription: "이 계정을 자동화된 수단으로 운용할 경우에 활성화해 주세요. 이 플래그를 활성화하면, 다른 자동화 계정이
+  이를 참고하여 자동화 계정 간 무한 연쇄 반응을 회피하거나, 이 계정의 시스템 상에서의 취급이 자동화 계정 운영에 최적화되는 등의 변화가 생깁니다."
 flagAsCat: "나는 고양이다냥"
 flagAsCatDescription: "고양이귀를 쓰고 냥냥거려요!"
 flagShowTimelineReplies: "타임라인에 게시물의 답글을 표시하기"
@@ -261,7 +261,7 @@ agreeTo: "{0}에 동의"
 tos: "이용 약관"
 start: "시작하기"
 home: "홈"
-remoteUserCaution: "리모트 유저이기 때문에, 정보가 정확하지 않을 수 있습니다."
+remoteUserCaution: "리모트 유저는 모든 정보가 표시되지 않습니다."
 activity: "활동"
 images: "이미지"
 birthday: "생일"
@@ -441,8 +441,8 @@ usernameInvalidFormat: "a~z, A~Z, 0-9, _를 사용할 수 있습니다."
 tooShort: "너무 짧습니다"
 tooLong: "너무 깁니다"
 weakPassword: "약한 비밀번호"
-normalPassword: "좋은 비밀번호"
-veryStrongPassword: "강한 비밀번호"
+normalPassword: "보통 비밀번호"
+veryStrongPassword: "매우 강한 비밀번호"
 passwordMatched: "일치합니다"
 passwordNotMatched: "일치하지 않습니다"
 signinWith: "{x}로 로그인"
@@ -605,7 +605,7 @@ emptyToDisableSmtpAuth: "SMTP 인증을 사용하지 않으려면 공란으로 �
 smtpSecure: "SMTP 연결에 Implicit SSL/TTS 사용"
 smtpSecureInfo: "STARTTLS 사용 시에는 해제합니다"
 testEmail: "이메일 전송 테스트"
-wordMute: "단어 뮤트"
+wordMute: "단어 및 언어 뮤트"
 regexpError: "정규 표현식 오류"
 regexpErrorDescription: "{tab}단어 뮤트 {line}행의 정규 표현식에 오류가 발생했습니다:"
 instanceMute: "서버 뮤트"
@@ -798,7 +798,7 @@ customCss: "CSS 사용자화"
 customCssWarn: "이 설정은 기능을 알고 있는 경우에만 사용해야 합니다. 잘못된 값을 입력하면 클라이언트가 정상적으로 작동하지 않을 수
   있습니다."
 global: "글로벌"
-squareAvatars: "프로필 아이콘을 사각형으로 표시"
+squareAvatars: "고양이가 아닌 프로필 아이콘을 사각형으로 표시"
 sent: "전송"
 received: "수신"
 searchResult: "검색 결과"
@@ -942,7 +942,8 @@ _accountDelete:
   inProgress: "삭제 진행 중"
 _ad:
   back: "뒤로"
-  reduceFrequencyOfThisAd: "이 광고의 표시 빈도 낮추기"
+  reduceFrequencyOfThisAd: "이 배너의 표시 빈도 낮추기"
+  adsBy: '{by}에 의한 커뮤니티 배너'
 _forgotPassword:
   enterEmail: "여기에 계정에 등록한 메일 주소를 입력해 주세요. 입력한 메일 주소로 비밀번호 재설정 링크를 발송합니다."
   ifNoEmail: "메일 주소를 등록하지 않은 경우, 서버 관리자에게 문의해 주십시오."
@@ -1122,6 +1123,12 @@ _wordMute:
   soft: "보통"
   hard: "보다 높은 수준"
   mutedNotes: "뮤트된 게시물"
+  mutePatterns: 뮤트할 패턴
+  langDescription: 설정한 언어와 일치하는 게시물을 타임라인에서 숨깁니다.
+  lang: 언어
+  muteLangs: 뮤트할 언어
+  muteLangsDescription: OR의 경우 공백 또는 줄바꿈으로 구분하십시오.
+  muteLangsDescription2: en, fr, ja, zh 와 같은 언어 코드를 입력하세요.
 _instanceMute:
   instanceMuteDescription: "뮤트한 서버에서 오는 답글을 포함한 모든 게시물과 부스트를 뮤트합니다."
   instanceMuteDescription2: "한 줄에 하나씩 입력해 주세요"
@@ -1277,6 +1284,10 @@ _permissions:
   "write:gallery": "갤러리를 추가하거나 삭제합니다"
   "read:gallery-likes": "갤러리의 좋아요를 확인합니다"
   "write:gallery-likes": "갤러리에 좋아요를 추가하거나 취소합니다"
+  push: 푸시 알림 보내기
+  read: 읽기 (타임라인, 알림, 리액션, 뮤트, 계정 정보 등)
+  write: 쓰기 (게시물 작성, 리액션 보내기, 뮤트하기, 계정 정보 수정 등)
+  follow: 계정 팔로우 및 팔로우 해제
 _auth:
   shareAccess: "\"{name}\" 이 계정에 접근하는 것을 허용하시겠습니까?"
   shareAccessAsk: "이 애플리케이션이 계정에 접근하는 것을 허용하시겠습니까?"
@@ -1760,6 +1771,7 @@ _notification:
   reacted: 님의 리액션
   renoted: 님이 부스트
   voted: 님이 투표함
+  andCountUsers: 와(과) {count}명이 {acted}
 _deck:
   alwaysShowMainColumn: "메인 칼럼 항상 표시"
   columnAlign: "칼럼 정렬"
@@ -1803,7 +1815,7 @@ privateMode: 비공개 모드
 audio: 오디오
 customKaTeXMacro: 커스텀 KaTeX 매크로
 replayTutorial: 튜토리얼 다시 보기
-renoteMute: 부스트 뮤트
+renoteMute: 타임라인에서 부스트 숨기기
 antennaInstancesDescription: 서버 호스트를 한 줄에 하나씩 입력하세요
 userSaysSomethingReason: '{name} 님이 {reason}에 대해 말했습니다'
 userSaysSomethingReasonQuote: '{name} 님이 {reason} 을 포함하는 게시물을 인용했습니다'
@@ -1874,11 +1886,11 @@ selectChannel: 채널 선택
 allowedInstancesDescription: 연합을 허가하려는 서버를 한 줄에 하나씩 입력합니다. 비공개 모드에서만 유효합니다.
 splash: 스플래시 화면
 preventAiLearningDescription: 업로드한 게시물이나 미디어를 AI 모델이 학습하지 말기를 요구합니다.
-isBot: 이 계정은 봇입니다
+isBot: 이 계정은 자동화된 계정입니다
 isAdmin: 관리자
 newer: 새로운 게시물
 older: 이전 게시물
-renoteUnmute: 부스트 뮤트 해제
+renoteUnmute: 타임라인에서 부스트 보이기
 accountMoved: '이 유저는 다른 계정으로 이사했습니다:'
 silencedInstances: 사일런스한 서버
 accessibility: 접근성
@@ -1917,8 +1929,7 @@ license: 라이선스
 migrationConfirm: "정말로 이 계정을 {account}로 이사하시겠습니까? 한 번 이사하면, 현재 이 계정은 두 번 다시 사용할 수
   없게 됩니다.\n또한, 이사 갈 계정에 현재 사용 중인 계정의 별칭을 올바르게 작성하였는지 다시 한 번 확인하십시오."
 noteId: 게시물 ID
-signupsDisabled: 현재 이 서버에서는 신규 등록을 받고 있지 않습니다. 초대 코드를 가지고 계신 경우 아래 칸에 입력해 주십시오. 초대
-  코드를 가지고 있지 않더라도, 신규 등록이 열려 있는 다른 서버에 등록하실 수 있습니다!
+signupsDisabled: 현재 이 서버에서는 신규 등록을 받고 있지 않습니다. 초대 코드를 가지고 계신 경우 아래 칸에 입력해 주십시오.
 apps: 앱
 preventAiLearning: AI에 의한 학습을 막기
 isLocked: 이 계정은 팔로우를 수동으로 승인합니다
@@ -2002,3 +2013,108 @@ renotes: 부스트
 quotes: 인용
 sentFollowRequests: 팔로우 요청 보냄
 reactions: 리액션
+searchUsers: 작성한 사람 (옵션)
+replaceChatButtonWithAccountButton: 채팅 버튼을 계정 전환으로 변경
+searchEngine: 검색 MFM에서 사용할 검색 엔진
+turnOffCatLanguage: 냥체 변환을 끄기
+noSentFollowRequests: 승인 대기중인 팔로우 요청이 없습니다
+squareCatAvatars: 고양이 계정의 아이콘을 사각형으로 표시
+useThisAccountConfirm: 이 계정으로 계속 진행하시겠습니까?
+inputAccountId: '당신의 계정을 입력해 주세요 (예시: @firefish@info.firefish.dev)'
+pullToRefreshThreshold: 새로고침하기 위해 아래로 당길 길이
+pullDownToReload: 아래로 당겨 새로고침
+searchRange: 게시시각 범위 (옵션)
+showAddFileDescriptionAtFirstPost: 설명이 없는 첨부파일을 게시하려고 할 때에 자동으로 설명 작성창을 열기
+searchCwAndAlt: CW 주석과 미디어 설명에서도 검색하기
+publishTimelines: 비로그인 유저에게 타임라인을 공개
+addAlt4MeTag: '설명이 없는 파일을 게시할 때에 자동으로 #Alt4Me 해시태그를 포함하여 게시'
+_emojiModPerm:
+  unauthorized: 없음
+  full: 모두 허용
+  add: 추가
+  mod: 추가 및 편집
+openServerInfo: 게시물의 서버 이름을 클릭하여 서버 정보 열기
+iconSet: 아이콘 스타일
+showBigPostButton: 게시물 작성 폼에서 게시 버튼을 매우 크게 하기
+emojiModPerm: 커스텀 이모지 관리 권한
+releaseToReload: 놓아서 새로고침
+searchWords: 검색할 단어 / 조회할 ID 및 URL
+_later:
+  secondsAgo: '{n}초 후'
+  minutesAgo: '{n}분 후'
+  hoursAgo: '{n}시간 후'
+  daysAgo: '{n}일 후'
+  weeksAgo: '{n}주 후'
+  monthsAgo: '{n}개월 후'
+  future: 미래
+  justNow: 잠시 후
+  yearsAgo: '{n}년 후'
+makePrivateConfirm: 리모트 서버에 삭제 요청을 보내고, 게시물의 공개 범위를 '비공개'로 전환합니다. 계속하시겠습니까?
+markLocalFilesNsfwByDefault: 모든 로컬 파일을 기본으로 NSFW로 처리
+markLocalFilesNsfwByDefaultDescription: 이 설정이 켜져 있더라도 유저는 직접 NSFW 설정을 해제할 수 있으며, 이
+  설정은 기존 파일에는 적용되지 않습니다.
+showAttachedNotes: 이 파일이 첨부된 게시물 보기
+noLanguage: 언어 없음
+toReply: 답글
+toQuote: 인용
+replyMute: 타임라인에서 답글 숨기기
+searchPostsWithFiles: 첨부 파일이 있는 게시물만 검색
+antennaLimit: 각 유저가 생성 가능한 최대 안테나 수
+forMobile: 모바일
+reloading: 새로고침하는 중
+noAltTextWarning: 미디어 설명이 없는 파일이 있습니다. 깜빡하고 안 쓰셨나요?
+publishTimelinesDescription: 활성화하면 로그인하지 않아도 {url} 에서 로컬 타임라인과 글로벌 타임라인을 확인할 수 있게
+  됩니다.
+cannotEditVisibility: 공개 범위를 변경할 수 없습니다
+private: 비공개
+preventMisclick: 클릭 실수 방지
+strongPassword: 강한 비밀번호
+_iconSets:
+  light: 얇음
+  regular: 보통
+  bold: 굵음
+i18nServerInfo: 새 단말부터 {language}가 기본값으로 적용됩니다.
+privateDescription: 나를 제외한 모두에게 비공개
+enableTimelineStreaming: 타임라인을 자동으로 갱신
+toPost: 게시
+replyUnmute: 타임라인에서 답글 보이기
+attachedToNotes: 이 파일이 첨부된 게시물
+ipFirstAcknowledged: IP 주소를 처음 발견한 날짜
+driveCapacityOverride: 드라이브 용량 변경
+remoteFollow: 리모트 팔로우
+emojiModPermDescription: "추가: 커스텀 이모지의 신규 추가와 태그/카테고리/라이선스를 신규 지정할 수 있습니다.\n추가 및 편집:
+  '추가'에 더해, 기존 이모지의 이름/카테고리/태그/라이선스를 변경할 수 있습니다.\n모두 허용: '추가 및 편집'에 더해, 기존 커스텀 이모지의
+  삭제를 허가합니다.\n관리자 및 모더레이터는 이 설정을 무시하고 '모두 허용' 권한이 주어집니다."
+searchWordsDescription: "게시물을 검색하시려면, 여기에 검색어를 입력하여 주십시오. 공백으로 구분하여 AND, 'OR'으로 구분하여
+  OR 검색이 가능합니다.\n예를 들어, '아침 저녁'이라고 검색할 경우 '아침'과 '저녁'을 동시에 포함하는 게시물을 검색하며, '아침 OR 저녁'이라고
+  검색할 경우 '아침' 또는 '저녁' 둘 중 하나가 포함된 게시물을 검색합니다.\n-(대시) 부호를 붙여 특정 단어를 제외할 수 있으며, AND/OR/제외는
+  괄호를 사용하여 동시에 사용할 수 있습니다. '(아침 OR 저녁) 졸려 -식곤증' 과 같이 사용합니다.\n띄어쓰기가 포함된 문자열을 검색하려는
+  경우 \"오늘 뭐하지\"와 같이 큰따옴표를 사용하십시오.\n\n특정 유저나 게시물 페이지로 이동하시려면, 이 칸에 ID 또는 URL을 입력하고
+  '조회'를 눌러 주십시오. '검색'을 누르면 해당 ID 또는 URL이 포함된 게시물을 검색합니다."
+searchUsersDescription: "특정 게시자가 올린 게시물을 검색할 경우, @user@example.com 혹은 (로컬 유저의 경우)
+  @user와 같이 게시자의 ID를 입력하십시오. 도메인을 입력하여 해당 서버의 모든 유저가 작성한 게시물을 검색할 수 있습니다.\n\nme 를
+  입력하면 자신의 게시물을 검색합니다. 자신의 검색 결과에는 미등재, 팔로워, 다이렉트, 비공개 게시물이 모두 포함됩니다.\n\nlocal 을 입력하면
+  이 서버의 게시물을 검색합니다."
+searchRangeDescription: "게시 시각을 지정하실 경우, 20220615-20231031 과 같이 입력하십시오.\n\n올해 안에서
+  검색하려면 연도를 생략할 수 있습니다. (0105-0106 또는 20231105-0110 과 같이)\n\n시작 날짜와 종료 날짜를 생략할 수 있습니다.
+  예를 들어 -0102 의 경우 올해 1월 2일까지의 게시물을, 20231026- 의 경우 2023년 10월 26일 이후의 게시물을 검색합니다."
+showNoAltTextWarning: 설명이 없는 첨부 파일을 게시할 때에 경고
+vibrate: 진동 활성화
+clickToShowPatterns: 클릭하여 트랙을 표시
+announcement: 공지사항
+toEdit: 편집
+media: 미디어
+i18nServerChange: '{language}를 대신해서 사용합니다.'
+i18nServerSet: 새 기기의 표시 언어를 {language} 로 설정합니다.
+getQrCode: QR 코드 표시
+copyRemoteFollowUrl: 리모트 팔로우 URL 복사
+useCdn: 일부 구성요소를 CDN에서 가져오기
+useCdnDescription: Twemoji와 같은 일부 정적 구성요소를 JSDelivr CDN에서 가져옵니다. 비활성화할 경우 이 서버에서 가져옵니다.
+suggested: 추천
+showPreviewByDefault: 게시물 작성 화면에서 항상 미리보기 켜기
+hideFollowButtons: 잘못 누르기 쉬운 위치에 있는 팔로우 버튼을 숨기기
+replaceWidgetsButtonWithReloadButton: 위젯 버튼을 새로고침으로 변경
+postSearch: 이 서버의 게시물 검색
+makePrivate: 비공개로 전환
+enablePullToRefresh: "'아래로 당겨 새로고침'을 활성화"
+moderationNote: 모더레이션 노트
