@@ -40,9 +40,7 @@ impl ApEmoji {
     }
 }
 
-// for napi export
-// https://github.com/napi-rs/napi-rs/issues/2060
-#[allow(dead_code)] // TODO: remove this line
+#[macros::for_ts] // https://github.com/napi-rs/napi-rs/issues/2060
 type Emoji = emoji::Model;
 
 #[macros::ts_export]

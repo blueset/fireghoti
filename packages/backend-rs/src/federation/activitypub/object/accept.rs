@@ -24,10 +24,7 @@ impl ApAccept {
     }
 }
 
-#[cfg(any(test, doctest, feature = "napi"))]
-type Follow = follow::ApFollow;
-
 #[macros::ts_export]
-pub fn render_accept(user_id: String, follow_object: Follow) -> ApAccept {
+pub fn render_accept(user_id: String, follow_object: follow::ApFollow) -> ApAccept {
     ApAccept::new(user_id, follow_object)
 }

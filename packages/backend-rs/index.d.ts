@@ -1291,7 +1291,7 @@ export type RelayStatus =  'accepted'|
 /** Delete all entries in the [attestation_challenge] table created at more than 5 minutes ago */
 export declare function removeOldAttestationChallenges(): Promise<void>
 
-export declare function renderAccept(userId: string, followObject: Follow): ApAccept
+export declare function renderAccept(userId: string, followObject: ApFollow): ApAccept
 
 export declare function renderEmoji(emoji: Emoji): ApEmoji
 

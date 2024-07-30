@@ -76,6 +76,11 @@ define_wrapper_proc_macro_attributes! {
         #item
     }
 
+    for_ts(_attr, item) {
+        #[cfg(any(test, doctest, feature = "napi"))]
+        #item
+    }
+
     /// When applied to enums, this macro implements [`std::error::Error`] trait
     /// and generates a document based on error messages unless there is already a doc comment
     ///
