@@ -42,21 +42,31 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .sdgxphyu {
-	margin: 1.5em 0;
+	margin-block: 1.5em;
+	margin-inline: 0;
 
 	> h2 {
 		font-size: 1.35em;
-		margin: 0 0 0.5em 0;
+		margin-block-start: 0;
+		margin-inline-end: 0;
+		margin-block-end: 0.5em;
+		margin-inline-start: 0;
 	}
 
 	> h3 {
 		font-size: 1em;
-		margin: 0 0 0.5em 0;
+		margin-block-start: 0;
+		margin-inline-end: 0;
+		margin-block-end: 0.5em;
+		margin-inline-start: 0;
 	}
 
 	> h4 {
 		font-size: 1em;
-		margin: 0 0 0.5em 0;
+		margin-block-start: 0;
+		margin-inline-end: 0;
+		margin-block-end: 0.5em;
+		margin-inline-start: 0;
 	}
 
 	// > .children {

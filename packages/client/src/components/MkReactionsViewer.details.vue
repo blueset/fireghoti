@@ -53,14 +53,15 @@ const emit = defineEmits<{
 	display: flex;
 
 	> .reaction {
-		max-width: 100px;
+		max-inline-size: 100px;
 		text-align: center;
 
 		> .icon {
 			display: block;
-			width: 60px;
+			inline-size: 60px;
 			font-size: 60px; // unicodeな絵文字についてはwidthが効かないため
-			margin: 0 auto;
+			margin-block: 0;
+			margin-inline: auto;
 		}
 
 		> .name {
@@ -70,13 +71,13 @@ const emit = defineEmits<{
 
 	> .users {
 		flex: 1;
-		min-width: 0;
+		min-inline-size: 0;
 		font-size: 0.95em;
-		border-left: solid 0.5px var(--divider);
-		padding-left: 10px;
-		margin-left: 10px;
-		margin-right: 14px;
-		text-align: left;
+		border-inline-start: solid 0.5px var(--divider);
+		padding-inline-start: 10px;
+		margin-inline-start: 10px;
+		margin-inline-end: 14px;
+		text-align: start;
 
 		> .user {
 			line-height: 24px;
@@ -85,13 +86,13 @@ const emit = defineEmits<{
 			text-overflow: ellipsis;
 
 			&:not(:last-child) {
-				margin-bottom: 3px;
+				margin-block-end: 3px;
 			}
 
 			> .avatar {
-				width: 24px;
-				height: 24px;
-				margin-right: 3px;
+				inline-size: 24px;
+				block-size: 24px;
+				margin-inline-end: 3px;
 			}
 		}
 	}

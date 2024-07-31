@@ -3,7 +3,7 @@
 		<nav
 			:style="
 				fullPageHeader
-					? { 'padding-inline': '24px', height: '55px' }
+					? { paddingInline: '24px', blockSize: '55px' }
 					: { position: 'fixed' }
 			"
 		>
@@ -18,7 +18,7 @@
 				/>
 				<template v-for="f in hierarchyFolders">
 					<span class="separator"
-						><i :class="icon('ph-caret-right')"></i
+						><i :class="icon('ph-caret-right ph-dir')"></i
 					></span>
 					<XNavFolder
 						:folder="f"
@@ -30,14 +30,14 @@
 					/>
 				</template>
 				<span v-if="folder != null" class="separator"
-					><i :class="icon('ph-caret-right')"></i
+					><i :class="icon('ph-caret-right ph-dir')"></i
 				></span>
 				<span v-if="folder != null" class="folder current">{{
 					folder.name
 				}}</span>
 			</div>
 			<button class="menu _button" @click="showMenu">
-				<i :class="icon('ph-dots-three-outline')"></i>
+				<i :class="icon('ph-dots-three-outline ph-dir')"></i>
 			</button>
 		</nav>
 		<div
@@ -766,13 +766,14 @@ onBeforeUnmount(() => {
 .yfudmmck {
 	display: flex;
 	flex-direction: column;
-	height: 100%;
+	block-size: 100%;
 
 	> nav {
 		display: flex;
 		z-index: 2;
-		width: 100%;
-		padding: 0 8px;
+		inline-size: 100%;
+		padding-block: 0;
+		padding-inline: 8px;
 		box-sizing: border-box;
 		overflow: auto;
 		font-size: 0.9em;
@@ -794,7 +795,8 @@ onBeforeUnmount(() => {
 			> * {
 				display: inline-block;
 				margin: 0;
-				padding: 0 8px;
+				padding-block: 0;
+				padding-inline: 8px;
 				line-height: 42px;
 				cursor: pointer;
 
@@ -829,8 +831,9 @@ onBeforeUnmount(() => {
 		}
 
 		> .menu {
-			margin-left: auto;
-			padding: 0 12px;
+			margin-inline-start: auto;
+			padding-block: 0;
+			padding-inline: 12px;
 		}
 	}
 
@@ -838,7 +841,7 @@ onBeforeUnmount(() => {
 		flex: 1;
 		overflow: auto;
 		padding: var(--margin);
-		margin-top: 40px;
+		margin-block-start: 40px;
 
 		&,
 		* {
@@ -858,7 +861,7 @@ onBeforeUnmount(() => {
 		}
 
 		&.uploading {
-			height: calc(100% - 38px - 100px);
+			block-size: calc(100% - 38px - 100px);
 		}
 
 		> .contents {
@@ -870,7 +873,7 @@ onBeforeUnmount(() => {
 				> .folder,
 				> .file {
 					flex-grow: 1;
-					width: 128px;
+					inline-size: 128px;
 					margin: 4px;
 					box-sizing: border-box;
 				}
@@ -878,7 +881,7 @@ onBeforeUnmount(() => {
 				> .padding {
 					flex-grow: 1;
 					pointer-events: none;
-					width: 128px + 8px;
+					inline-size: 128px + 8px;
 				}
 			}
 
@@ -897,10 +900,10 @@ onBeforeUnmount(() => {
 
 	> .dropzone {
 		position: absolute;
-		left: 0;
-		top: 38px;
-		width: 100%;
-		height: calc(100% - 38px);
+		inset-inline-start: 0;
+		inset-block-start: 38px;
+		inline-size: 100%;
+		block-size: calc(100% - 38px);
 		border: dashed 2px var(--focus);
 		pointer-events: none;
 	}

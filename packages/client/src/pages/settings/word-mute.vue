@@ -251,6 +251,6 @@ async function save() {
 
 definePageMetadata({
 	title: i18n.ts.wordMute,
-	icon: `${icon("ph-speaker-x")}`,
+	icon: `${icon("ph-speaker-x ph-dir")}`,
 });
 </script>

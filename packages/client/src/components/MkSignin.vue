@@ -10,7 +10,7 @@
 				class="avatar"
 				:style="{
 					backgroundImage: user ? `url('${user.avatarUrl}')` : null,
-					marginBottom: message ? '1.5em' : null,
+					marginBlockEnd: message ? '1.5em' : null,
 				}"
 			></div>
 			<MkInfo v-if="message">
@@ -89,7 +89,7 @@
 					v-if="user.twoFactorEnabled"
 					class="twofa-group totp-group"
 				>
-					<p style="margin-bottom: 0">
+					<p style="margin-block-end: 0">
 						{{ i18n.ts.twoStepAuthentication }}
 					</p>
 					<MkInput
@@ -350,9 +350,12 @@ function showSuspendedDialog() {
 .eppvobhk {
 	> .auth {
 		> .avatar {
-			margin: 0 auto 0 auto;
-			width: 64px;
-			height: 64px;
+			margin-block-start: 0;
+			margin-inline-end: auto;
+			margin-block-end: 0;
+			margin-inline-start: auto;
+			inline-size: 64px;
+			block-size: 64px;
 			background: var(--accentedBg);
 			background-position: center;
 			background-size: cover;

@@ -112,19 +112,27 @@ function checkForSplash() {
 		else location.reload();
 	});
 
-	// #region SEE: https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
-	// TODO: いつの日にか消したい
-	const vh = window.innerHeight * 0.01;
-	document.documentElement.style.setProperty("--vh", `${vh}px`);
-	window.addEventListener("resize", () => {
-		const vh = window.innerHeight * 0.01;
-		document.documentElement.style.setProperty("--vh", `${vh}px`);
-	});
-	// #endregion
-
 	// #region Set lang attr
 	const html = document.documentElement;
 	html.setAttribute("lang", lang || "en-US");
+	html.setAttribute("dir", "auto");
+	const writingMode = localStorage.getItem("writingMode");
+	switch (writingMode) {
+		case "vertical-lr-upright":
+			html.classList.add("vertical-lr");
+			html.classList.add("upright");
+			break;
+		case "vertical-lr":
+			html.classList.add("vertical-lr");
+			break;
+		case "vertical-rl-upright":
+			html.classList.add("vertical-rl");
+			html.classList.add("upright");
+			break;
+		case "vertical-rl":
+			html.classList.add("vertical-rl");
+			break;
+	}
 	// #endregion
 
 	// #region loginId

@@ -3,7 +3,7 @@
 		<div
 			v-if="pullStarted"
 			:class="$style.frame"
-			:style="`--frame-min-height: ${
+			:style="`--frame-min-block-size: ${
 				pullDistance /
 				(PULL_BRAKE_BASE + pullDistance / PULL_BRAKE_FACTOR)
 			}px;`"
@@ -244,11 +244,11 @@ defineExpose({
 .frame {
 	position: relative;
 	overflow: clip;
-	width: 100%;
-	min-height: var(--frame-min-height, 0px);
-	mask-image: linear-gradient(90deg, #000 0%, #000 80%, transparent);
+	inline-size: 100%;
+	min-block-size: var(--frame-min-height, 0px);
+	mask-image: linear-gradient(var(--gradient-to-inline-end), #000 0%, #000 80%, transparent);
 	-webkit-mask-image: -webkit-linear-gradient(
-		90deg,
+		var(--gradient-to-inline-end),
 		#000 0%,
 		#000 80%,
 		transparent
@@ -257,16 +257,18 @@ defineExpose({
 }
 .frameContent {
 	position: absolute;
-	bottom: 0;
-	width: 100%;
-	margin: 5px 0;
+	inset-block-end: 0;
+	inline-size: 100%;
+	margin-block: 5px;
+	margin-inline: 0;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	font-size: 14px;
 	> .icon,
 	> .loader {
-		margin: 6px 0;
+		margin-block: 6px;
+		margin-inline: 0;
 	}
 	> .icon {
 		transition: transform 0.25s;
@@ -275,10 +277,11 @@ defineExpose({
 		}
 	}
 	> .text {
-		margin: 5px 0;
+		margin-block: 5px;
+		margin-inline: 0;
 	}
 }
 .slotClip {
-	overflow-y: clip;
+	overflow-block: clip;
 }
 </style>

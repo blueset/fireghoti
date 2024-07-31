@@ -255,6 +255,15 @@
 				<option value="respect">{{ i18n.ts._nsfw.respect }}</option>
 				<option value="ignore">{{ i18n.ts._nsfw.ignore }}</option>
 			</FormSelect>
+
+			<FormSelect v-model="writingMode" class="_formBlock">
+				<template #label>{{ i18n.ts.writingMode }}</template>
+				<option value="horizontal-tb">{{ i18n.ts._writingMode.horizontalTB }}</option>
+				<option value="vertical-rl">{{ i18n.ts._writingMode.verticalRL }}</option>
+				<option value="vertical-rl-upright">{{ i18n.ts._writingMode.verticalRLUpright }}</option>
+				<option value="vertical-lr">{{ i18n.ts._writingMode.verticalLR }}</option>
+				<option value="vertical-lr-upright">{{ i18n.ts._writingMode.verticalLRUpright }}</option>
+			</FormSelect>
 		</FormSection>
 
 		<FormSection>
@@ -445,6 +454,7 @@ const mergeThreadInTimeline = computed(
 const mergeRenotesInTimeline = computed(
 	defaultStore.makeGetterSetter("mergeRenotesInTimeline"),
 );
+const writingMode = computed(defaultStore.makeGetterSetter("writingMode"));
 
 // This feature (along with injectPromo) is currently disabled
 // function onChangeInjectFeaturedNote(v) {
@@ -478,6 +488,23 @@ watch(lang, () => {
 
 watch(translateLang, () => {
 	localStorage.setItem("translateLang", translateLang.value as string);
+});
+
+watch(writingMode, () => {
+	localStorage.setItem("writingMode", writingMode.value as string);
+	const { classList } = document.documentElement;
+	classList.remove("vertical-rl");
+	classList.remove("vertical-lr");
+	classList.remove("upright");
+	if (writingMode.value.startsWith("vertical-rl")) {
+		classList.add("vertical-rl");
+	}
+	if (writingMode.value.startsWith("vertical-lr")) {
+		classList.add("vertical-lr");
+	}
+	if (writingMode.value.endsWith("upright")) {
+		classList.add("upright");
+	}
 });
 
 watch(

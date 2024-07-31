@@ -35,20 +35,20 @@ const isMe = computed(() => isSignedIn(me) && me.id === props.note.userId);
 
 <style lang="scss" scoped>
 .reactions-list {
-	margin-top: 0.2em;
-	width: 100%;
+	margin-block-start: 0.2em;
+	inline-size: 100%;
 	display: flex;
-	overflow-x: auto;
+	overflow-inline: auto;
 	margin-inline: -24px;
 	padding-inline: 22px 160px;
 	mask: linear-gradient(
-		to right,
+		var(--gradient-to-inline-end),
 		transparent,
 		black 24px calc(100% - 160px),
 		transparent
 	);
 	-webkit-mask: linear-gradient(
-		to right,
+		var(--gradient-to-inline-end),
 		transparent,
 		black 24px calc(100% - 160px),
 		transparent

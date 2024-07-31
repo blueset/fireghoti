@@ -293,8 +293,9 @@ function focusFooter(ev) {
 .reply-icon {
 	display: inline-block;
 	border-radius: 6px;
-	padding: 0.2em 0.2em;
-	margin-right: 0.2em;
+	padding-block: 0.2em;
+	padding-inline: 0.2em;
+	margin-inline-end: 0.2em;
 	color: var(--accent);
 	transition: background 0.2s;
 	&:hover,
@@ -307,10 +308,10 @@ function focusFooter(ev) {
 	display: block;
 	margin: 0;
 	padding: 0;
-	margin-bottom: 10px;
+	margin-block-end: 10px;
 	overflow-wrap: break-word;
 	> .text {
-		margin-right: 8px;
+		margin-inline-end: 8px;
 	}
 }
 
@@ -320,15 +321,16 @@ function focusFooter(ev) {
 		> .body {
 			transition: filter 0.1s;
 			> .rp {
-				margin-left: 4px;
+				margin-inline-start: 4px;
 				font-style: oblique;
 				color: var(--renote);
 			}
 			.reply-icon {
 				display: inline-block;
 				border-radius: 6px;
-				padding: 0.2em 0.2em;
-				margin-right: 0.2em;
+				padding-block: 0.2em;
+				padding-inline: 0.2em;
+				margin-inline-end: 0.2em;
 				color: var(--accent);
 				transition: background 0.2s;
 				&:hover,
@@ -337,11 +339,11 @@ function focusFooter(ev) {
 				}
 			}
 			> :deep(.files) {
-				margin-top: 0.4em;
-				margin-bottom: 0.4em;
+				margin-block-start: 0.4em;
+				margin-block-end: 0.4em;
 			}
 			> .url-preview {
-				margin-top: 8px;
+				margin-block-start: 8px;
 			}
 
 			> .poll {
@@ -349,7 +351,7 @@ function focusFooter(ev) {
 			}
 
 			> .renote {
-				padding-top: 8px;
+				padding-block-start: 8px;
 				> * {
 					padding: 16px;
 					border: solid 1px var(--renote);
@@ -366,9 +368,9 @@ function focusFooter(ev) {
 		&.collapsed,
 		&.showContent {
 			position: relative;
-			max-height: calc(15em + 100px);
+			max-block-size: calc(15em + 100px);
 			> .body {
-				max-height: inherit;
+				max-block-size: inherit;
 				mask: linear-gradient(black calc(100% - 64px), transparent);
 				-webkit-mask: linear-gradient(
 					black calc(100% - 64px),
@@ -376,8 +378,8 @@ function focusFooter(ev) {
 				);
 				padding-inline: 100px;
 				margin-inline: -100px;
-				margin-top: -100px;
-				padding-top: 100px;
+				margin-block-start: -100px;
+				padding-block-start: 100px;
 				overflow: hidden;
 				user-select: none;
 				-webkit-user-select: none;
@@ -386,7 +388,7 @@ function focusFooter(ev) {
 		}
 		&.collapsed {
 			&.manyImages {
-				max-height: calc(15em + 250px);
+				max-block-size: calc(15em + 250px);
 			}
 			> .body {
 				box-sizing: border-box;
@@ -394,8 +396,8 @@ function focusFooter(ev) {
 		}
 		&.showContent {
 			> .body {
-				min-height: 2em;
-				max-height: 5em;
+				min-block-size: 2em;
+				max-block-size: 5em;
 				filter: blur(5px);
 				:deep(span) {
 					animation: none !important;
@@ -407,7 +409,7 @@ function focusFooter(ev) {
 			}
 			:deep(.fade) {
 				inset: 0;
-				top: 90px;
+				inset-block-start: 90px;
 			}
 		}
 
@@ -416,14 +418,14 @@ function focusFooter(ev) {
 		}
 	}
 	> :deep(button) {
-		margin-top: 10px;
-		margin-left: 0;
-		margin-right: 0.4rem;
+		margin-block-start: 10px;
+		margin-inline-start: 0;
+		margin-inline-end: 0.4rem;
 	}
 	> .fade {
 		position: absolute;
 		inset: 0;
-		bottom: -400px;
+		inset-block-end: -400px;
 		display: flex;
 		align-items: flex-end;
 		z-index: 4;
@@ -431,13 +433,13 @@ function focusFooter(ev) {
 		&::before {
 			content: "";
 			display: block;
-			height: 100px;
+			block-size: 100px;
 			position: sticky;
-			bottom: 0;
-			width: 100%;
+			inset-block-end: 0;
+			inline-size: 100%;
 			background: var(--panel);
-			mask: linear-gradient(to top, var(--gradient));
-			-webkit-mask: linear-gradient(to top, var(--gradient));
+			mask: linear-gradient(var(--gradient-to-block-start) var(--gradient)),;
+			-webkit-mask: linear-gradient(var(--gradient-to-block-start) var(--gradient)),;
 			transition: background 0.2s;
 		}
 	}

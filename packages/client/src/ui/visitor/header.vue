@@ -15,7 +15,7 @@
 					>{{ i18n.ts.channel }}</MkA
 				>
 				<MkA to="/pages" class="link" active-class="active"
-					><i :class="icon('ph-file-text icon')"></i
+					><i :class="icon('ph-file-text ph-dir icon')"></i
 					>{{ i18n.ts.pages }}</MkA
 				>
 				<MkA to="/gallery" class="link" active-class="active"
@@ -157,8 +157,8 @@ export default defineComponent({
 .sqxihjet {
 	$height: 60px;
 	position: sticky;
-	top: 0;
-	left: 0;
+	inset-block-start: 0;
+	inset-inline-start: 0;
 	z-index: 1000;
 	line-height: $height;
 	-webkit-backdrop-filter: var(--blur, blur(32px));
@@ -167,25 +167,27 @@ export default defineComponent({
 
 	> .wide {
 		> .content {
-			max-width: 1400px;
-			margin: 0 auto;
+			max-inline-size: 1400px;
+			margin-block: 0;
+			margin-inline: auto;
 			display: flex;
 			align-items: center;
 
 			> .link {
 				$line: 3px;
 				display: inline-block;
-				padding: 0 16px;
+				padding-block: 0;
+				padding-inline: 16px;
 				line-height: $height - ($line * 2);
-				border-top: solid $line transparent;
-				border-bottom: solid $line transparent;
+				border-block-start: solid $line transparent;
+				border-block-end: solid $line transparent;
 
 				> .icon {
-					margin-right: 0.5em;
+					margin-inline-end: 0.5em;
 				}
 
 				&.page {
-					border-bottom-color: var(--accent);
+					border-block-end-color: var(--accent);
 				}
 			}
 
@@ -199,16 +201,16 @@ export default defineComponent({
 					position: relative;
 
 					> .icon + .text {
-						margin-left: 8px;
+						margin-inline-start: 8px;
 					}
 
 					> .avatar {
 						$size: 32px;
 						display: inline-block;
-						width: $size;
-						height: $size;
+						inline-size: $size;
+						block-size: $size;
 						vertical-align: middle;
-						margin-right: 8px;
+						margin-inline-end: 8px;
 						pointer-events: none;
 					}
 
@@ -225,38 +227,44 @@ export default defineComponent({
 				}
 
 				> .action {
-					padding: 0 0 0 16px;
+					padding-block-start: 0;
+					padding-inline-end: 0;
+					padding-block-end: 0;
+					padding-inline-start: 16px;
 				}
 			}
 
 			> .right {
-				margin-left: auto;
+				margin-inline-start: auto;
 
 				> .search {
 					background: var(--bg);
 					border-radius: 999px;
-					width: 230px;
+					inline-size: 230px;
 					line-height: $height - 20px;
-					margin-right: 16px;
-					text-align: left;
+					margin-inline-end: 16px;
+					text-align: start;
 
 					> * {
 						opacity: 0.7;
 					}
 
 					> .icon {
-						padding: 0 16px;
+						padding-block: 0;
+						padding-inline: 16px;
 					}
 				}
 
 				> .signup {
 					border-radius: 999px;
-					padding: 0 24px;
+					padding-block: 0;
+					padding-inline: 24px;
 					line-height: $height - 20px;
 				}
 
 				> .login {
-					padding: 0 16px;
+					padding-block: 0;
+					padding-inline: 16px;
 				}
 			}
 		}
@@ -267,8 +275,8 @@ export default defineComponent({
 
 		> .menu,
 		> .action {
-			width: $height;
-			height: $height;
+			inline-size: $height;
+			block-size: $height;
 			font-size: 20px;
 		}
 
@@ -281,16 +289,16 @@ export default defineComponent({
 			text-align: center;
 
 			> .icon + .text {
-				margin-left: 8px;
+				margin-inline-start: 8px;
 			}
 
 			> .avatar {
 				$size: 32px;
 				display: inline-block;
-				width: $size;
-				height: $size;
+				inline-size: $size;
+				block-size: $size;
 				vertical-align: middle;
-				margin-right: 8px;
+				margin-inline-end: 8px;
 				pointer-events: none;
 			}
 		}

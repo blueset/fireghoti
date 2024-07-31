@@ -20,7 +20,7 @@
 					{{ i18n.ts.today }}: <b>{{ dayP.toFixed(1) }}%</b>
 				</p>
 				<div class="meter">
-					<div class="val" :style="{ width: `${dayP}%` }"></div>
+					<div class="val" :style="{ inlineSize: `${dayP}%` }"></div>
 				</div>
 			</div>
 			<div>
@@ -28,7 +28,7 @@
 					{{ i18n.ts.thisMonth }}: <b>{{ monthP.toFixed(1) }}%</b>
 				</p>
 				<div class="meter">
-					<div class="val" :style="{ width: `${monthP}%` }"></div>
+					<div class="val" :style="{ inlineSize: `${monthP}%` }"></div>
 				</div>
 			</div>
 			<div>
@@ -36,7 +36,7 @@
 					{{ i18n.ts.thisYear }}: <b>{{ yearP.toFixed(1) }}%</b>
 				</p>
 				<div class="meter">
-					<div class="val" :style="{ width: `${yearP}%` }"></div>
+					<div class="val" :style="{ inlineSize: `${yearP}%` }"></div>
 				</div>
 			</div>
 		</div>
@@ -145,7 +145,8 @@ defineExpose<WidgetComponentExpose>({
 
 <style lang="scss" scoped>
 .mkw-calendar {
-	padding: 16px 0;
+	padding-block: 16px;
+	padding-inline: 0;
 
 	&:after {
 		content: "";
@@ -154,8 +155,8 @@ defineExpose<WidgetComponentExpose>({
 	}
 
 	> .calendar {
-		float: left;
-		width: 60%;
+		float: inline-start;
+		inline-size: 60%;
 		text-align: center;
 
 		&.isHoliday {
@@ -172,12 +173,14 @@ defineExpose<WidgetComponentExpose>({
 
 			> .year,
 			> .month {
-				margin: 0 4px;
+				margin-block: 0;
+				margin-inline: 4px;
 			}
 		}
 
 		> .day {
-			margin: 10px 0;
+			margin-block: 10px;
+			margin-inline: 0;
 			line-height: 32px;
 			font-size: 1.75em;
 		}
@@ -185,37 +188,43 @@ defineExpose<WidgetComponentExpose>({
 
 	> .info {
 		display: block;
-		float: left;
-		width: 40%;
-		padding: 0 16px 0 0;
+		float: inline-start;
+		inline-size: 40%;
+		padding-block-start: 0;
+		padding-inline-end: 16px;
+		padding-block-end: 0;
+		padding-inline-start: 0;
 		box-sizing: border-box;
 
 		> div {
-			margin-bottom: 8px;
+			margin-block-end: 8px;
 
 			&:last-child {
-				margin-bottom: 4px;
+				margin-block-end: 4px;
 			}
 
 			> p {
-				margin: 0 0 2px 0;
+				margin-block-start: 0;
+				margin-inline-end: 0;
+				margin-block-end: 2px;
+				margin-inline-start: 0;
 				font-size: 0.75em;
 				line-height: 18px;
 				opacity: 0.8;
 
 				> b {
-					margin-left: 2px;
+					margin-inline-start: 2px;
 				}
 			}
 
 			> .meter {
-				width: 100%;
+				inline-size: 100%;
 				overflow: hidden;
 				background: var(--X11);
 				border-radius: 8px;
 
 				> .val {
-					height: 4px;
+					block-size: 4px;
 					transition: width 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 				}
 			}

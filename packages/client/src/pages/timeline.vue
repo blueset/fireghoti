@@ -213,7 +213,7 @@ const headerActions = computed(() =>
 	isSignedIn(me)
 		? [
 				{
-					icon: `${icon("ph-list-bullets")}`,
+					icon: `${icon("ph-list-bullets ph-dir")}`,
 					title: i18n.ts.lists,
 					text: i18n.ts.lists,
 					iconOnly: true,
@@ -309,6 +309,11 @@ let swiperRef: any = null;
 function setSwiperRef(swiper) {
 	swiperRef = swiper;
 	syncSlide(timelineIndex(src.value));
+	const styles = getComputedStyle(swiper.el);
+	swiper.changeLanguageDirection(styles.direction as "rtl" | "ltr");
+	if (styles["writing-mode"].startsWith("vertical")) {
+		swiper.changeDirection("vertical");
+	}
 }
 
 function onSlideChange() {
@@ -326,13 +331,13 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .xytnxiau {
-	overflow-y: hidden;
+	overflow-block: hidden;
 	position: absolute;
-	top: 0;
+	inset-block-start: 0;
 }
 
 .upsvvhaz {
-	padding-top: 67px;
+	padding-block-start: 67px;
 }
 
 .cmuxhskf {

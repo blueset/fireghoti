@@ -158,8 +158,8 @@ function reduceFrequency(): void {
 
 			> .menu {
 				position: absolute;
-				top: 1px;
-				right: 1px;
+				inset-block-start: 1px;
+				inset-inline-end: 1px;
 
 				> .info-circle {
 					border: 3px solid var(--panel);
@@ -172,8 +172,8 @@ function reduceFrequency(): void {
 		&.widget {
 			> a,
 			> a > img {
-				max-width: min(300px, 100%);
-				max-height: 300px;
+				max-inline-size: min(300px, 100%);
+				max-block-size: 300px;
 			}
 		}
 
@@ -182,8 +182,8 @@ function reduceFrequency(): void {
 
 			> a,
 			> a > img {
-				max-width: min(600px, 100%);
-				max-height: 80px;
+				max-inline-size: min(600px, 100%);
+				max-block-size: 80px;
 			}
 		}
 
@@ -192,15 +192,15 @@ function reduceFrequency(): void {
 
 			> a,
 			> a > img {
-				max-width: min(600px, 100%);
-				max-height: 250px;
+				max-inline-size: min(600px, 100%);
+				max-block-size: 250px;
 			}
 		}
 
 		&.vertical {
 			> a,
 			> a > img {
-				max-width: min(100px, 100%);
+				max-inline-size: min(100px, 100%);
 			}
 		}
 	}
@@ -211,12 +211,14 @@ function reduceFrequency(): void {
 
 		> .body {
 			padding: 8px;
-			margin: 0 auto;
-			max-width: 400px;
+			margin-block: 0;
+			margin-inline: auto;
+			max-inline-size: 400px;
 			border: solid 1px var(--divider);
 
 			> .button {
-				margin: 8px auto;
+				margin-block: 8px;
+				margin-inline: auto;
 			}
 		}
 	}

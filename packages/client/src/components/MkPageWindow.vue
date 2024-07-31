@@ -17,7 +17,7 @@
 					v-if="pageMetadata.value.icon"
 					class="icon"
 					:class="pageMetadata.value.icon"
-					style="margin-right: 0.5em"
+					style="margin-inline-end: 0.5em"
 				></i>
 				<span>{{ pageMetadata.value.title }}</span>
 			</template>
@@ -67,7 +67,7 @@ const buttonsLeft = computed(() => {
 	if (history.value.length > 1) {
 		return [
 			{
-				icon: `${icon("ph-caret-left")}`,
+				icon: `${icon("ph-dir ph-caret-left")}`,
 				onClick: back,
 			},
 		];
@@ -157,7 +157,7 @@ defineExpose({
 <style lang="scss" scoped>
 .yrolvcoq {
 	overscroll-behavior: none;
-	min-height: 100%;
+	min-block-size: 100%;
 	background: var(--bg);
 }
 </style>

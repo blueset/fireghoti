@@ -52,12 +52,15 @@ export default defineComponent({
 	display: flex;
 	font-size: 90%;
 	border-radius: var(--radius);
-	padding: 10px 8px;
+	padding-block: 10px;
+	padding-inline: 8px;
 
 	> button {
 		flex: 1;
-		padding: 10px 8px;
-		margin: 0 8px;
+		padding-block: 10px;
+		padding-inline: 8px;
+		margin-block: 0;
+		margin-inline: 8px;
 		border-radius: var(--radius);
 
 		&:disabled {
@@ -76,11 +79,11 @@ export default defineComponent({
 		}
 
 		&:not(:first-child) {
-			margin-left: 8px;
+			margin-inline-start: 8px;
 		}
 
 		> .icon {
-			margin-right: 6px;
+			margin-inline-end: 6px;
 		}
 
 		&:empty {
@@ -90,16 +93,17 @@ export default defineComponent({
 
 	&.chips,
 	&.underline {
-		padding: 12px 32px;
+		padding-block: 12px;
+		padding-inline: 32px;
 		font-size: 0.85em;
-		overflow-x: auto;
-		mask: linear-gradient(to right, black calc(100% - 90px), transparent);
+		overflow-inline: auto;
+		mask: linear-gradient(var(--gradient-to-inline-end) black calc(100% - 90px), transparent),;
 		-webkit-mask: linear-gradient(
-			to right,
+			var(--gradient-to-inline-end),
 			black calc(100% - 90px),
 			transparent
 		);
-		padding-right: 90px !important;
+		padding-inline-end: 90px !important;
 		white-space: nowrap;
 
 		&::-webkit-scrollbar {
@@ -111,32 +115,33 @@ export default defineComponent({
 			align-items: center;
 			flex: unset;
 			margin: 0;
-			margin-right: 8px;
-			padding: 0.5em 1em;
+			margin-inline-end: 8px;
+			padding-block: 0.5em;
+			padding-inline: 1em;
 			border-radius: 100px;
 			background: var(--buttonBg);
 			> i {
-				margin-top: -0.1em;
+				margin-block-start: -0.1em;
 			}
 			> .count {
-				margin-right: -0.2em;
+				margin-inline-end: -0.2em;
 			}
 		}
 	}
 
 	&.underline {
 		padding-block: 0 !important;
-		margin-bottom: -1px;
+		margin-block-end: -1px;
 		border-radius: 0;
 		button {
 			background: none !important;
 			border-radius: 0 !important;
 			padding-block: 10px !important;
-			border-bottom: 2px solid transparent;
+			border-block-end: 2px solid transparent;
 			&[aria-selected="true"] {
 				background: none !important;
 				font-weight: 700;
-				border-bottom-color: var(--accent);
+				border-block-end-color: var(--accent);
 			}
 		}
 	}
@@ -145,7 +150,8 @@ export default defineComponent({
 		font-size: 80%;
 
 		> button {
-			padding: 11px 8px;
+			padding-block: 11px;
+			padding-inline: 8px;
 		}
 	}
 }

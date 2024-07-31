@@ -241,6 +241,11 @@ let swiperRef = null;
 function setSwiperRef(swiper) {
 	swiperRef = swiper;
 	syncSlide(tabs.indexOf(tab.value));
+	const styles = getComputedStyle(swiper.el);
+	swiper.changeLanguageDirection(styles.direction as "rtl" | "ltr");
+	if (styles["writing-mode"].startsWith("vertical")) {
+		swiper.changeDirection("vertical");
+	}
 }
 
 function onSlideChange() {
@@ -283,14 +288,17 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 .yweeujhr {
 	> .start {
-		margin: 0 auto var(--margin) auto;
+		margin-block-start: 0;
+		margin-inline-end: auto;
+		margin-block-end: var(--margin);
+		margin-inline-start: auto;
 	}
 
 	> .groupsbuttons {
-		max-width: 100%;
+		max-inline-size: 100%;
 		display: flex;
 		justify-content: center;
-		margin-bottom: 1rem;
+		margin-block-end: 1rem;
 	}
 }
 </style>

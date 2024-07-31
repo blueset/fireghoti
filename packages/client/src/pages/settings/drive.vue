@@ -68,7 +68,7 @@ const alwaysMarkNsfw = ref<boolean>(isSignedIn(me) && me.alwaysMarkNsfw);
 
 const meterStyle = computed(() => {
 	return {
-		width: `${(usage.value / capacity.value) * 100}%`,
+		inlineSize: `${(usage.value / capacity.value) * 100}%`,
 		background: tinycolor({
 			h: 180 - (usage.value / capacity.value) * 180,
 			s: 0.7,
@@ -132,7 +132,7 @@ definePageMetadata({
 		overflow: hidden;
 
 		> div {
-			height: $size;
+			block-size: $size;
 			border-radius: math.div($size, 2);
 		}
 	}

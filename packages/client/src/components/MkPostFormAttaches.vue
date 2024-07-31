@@ -161,7 +161,8 @@ function showFileMenu(file, ev: MouseEvent) {
 
 <style lang="scss" scoped>
 .skeikyzd {
-	padding: 8px 16px;
+	padding-block: 8px;
+	padding-inline: 16px;
 	position: relative;
 
 	> .files {
@@ -170,9 +171,9 @@ function showFileMenu(file, ev: MouseEvent) {
 
 		> .file {
 			position: relative;
-			width: 64px;
-			height: 64px;
-			margin-right: 4px;
+			inline-size: 64px;
+			block-size: 64px;
+			margin-inline-end: 4px;
 			border-radius: 4px;
 			cursor: move;
 
@@ -181,8 +182,8 @@ function showFileMenu(file, ev: MouseEvent) {
 			}
 
 			> .thumbnail {
-				width: 100%;
-				height: 100%;
+				inline-size: 100%;
+				block-size: 100%;
 				z-index: 1;
 				color: var(--fg);
 			}
@@ -190,10 +191,10 @@ function showFileMenu(file, ev: MouseEvent) {
 			> .sensitive {
 				display: flex;
 				position: absolute;
-				width: 64px;
-				height: 64px;
-				top: 0;
-				left: 0;
+				inline-size: 64px;
+				block-size: 64px;
+				inset-block-start: 0;
+				inset-inline-start: 0;
 				z-index: 2;
 				background: var(--header);
 				color: var(--fg);
@@ -208,8 +209,8 @@ function showFileMenu(file, ev: MouseEvent) {
 	> .remain {
 		display: block;
 		position: absolute;
-		top: 8px;
-		right: 8px;
+		inset-block-start: 8px;
+		inset-inline-end: 8px;
 		margin: 0;
 		padding: 0;
 	}

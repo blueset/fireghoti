@@ -46,7 +46,7 @@ defineProps<{
 .ttasepnz {
 	display: block;
 	position: relative;
-	height: 200px;
+	block-size: 200px;
 
 	&:hover,
 	&:focus {
@@ -68,8 +68,8 @@ defineProps<{
 
 	> .thumbnail {
 		display: flex;
-		width: 100%;
-		height: 100%;
+		inline-size: 100%;
+		block-size: 100%;
 		justify-content: center;
 		align-items: center;
 		position: absolute;
@@ -77,8 +77,8 @@ defineProps<{
 
 		> .img {
 			position: relative;
-			width: 100%;
-			height: 100%;
+			inline-size: 100%;
+			block-size: 100%;
 			object-fit: cover;
 		}
 	}
@@ -86,28 +86,28 @@ defineProps<{
 	> article {
 		position: absolute;
 		z-index: 1;
-		width: 100%;
-		height: 100%;
+		inline-size: 100%;
+		block-size: 100%;
 
 		> header {
 			position: absolute;
-			top: 0;
-			width: 100%;
+			inset-block-start: 0;
+			inline-size: 100%;
 			padding: 12px;
 			box-sizing: border-box;
 			display: flex;
 
 			> .avatar {
-				margin-left: auto;
-				width: 32px;
-				height: 32px;
+				margin-inline-start: auto;
+				inline-size: 32px;
+				block-size: 32px;
 			}
 		}
 
 		> footer {
 			position: absolute;
-			bottom: 0;
-			width: 100%;
+			inset-block-end: 0;
+			inline-size: 100%;
 			padding: 16px;
 			box-sizing: border-box;
 			color: #fff;
@@ -119,10 +119,10 @@ defineProps<{
 				display: block;
 				position: absolute;
 				z-index: -1;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
+				inset-block-start: 0;
+				inset-inline-start: 0;
+				inline-size: 100%;
+				block-size: 100%;
 				background: linear-gradient(rgba(0, 0, 0, 0.4), transparent);
 				opacity: 0;
 				transition: opacity 0.5s ease;

@@ -37,7 +37,7 @@
 						}}</MkButton
 					>
 				</div>
-				<div class="_flexList" style="margin-top: 0.6rem">
+				<div class="_flexList" style="margin-block-start: 0.6rem">
 					<MkButton @click="close">{{
 						i18n.ts.remindMeLater
 					}}</MkButton>
@@ -143,44 +143,47 @@ function openExternal(link: string) {
 	background-color: var(--windowHeader);
 	position: fixed;
 	z-index: v-bind(zIndex);
-	bottom: var(--margin);
-	left: 2%;
-	bottom: 2%;
+	inset-block-end: var(--margin);
+	inset-inline-start: 2%;
+	inset-block-end: 2%;
 	margin: auto;
 	box-sizing: border-box;
-	width: calc(100% - (var(--margin) * 2));
-	max-width: 500px;
+	inline-size: calc(100% - (var(--margin) * 2));
+	max-inline-size: 500px;
 	display: flex;
 }
 
 .icon {
 	text-align: center;
-	padding-top: 25px;
-	width: 100px;
+	padding-block-start: 25px;
+	inline-size: 100px;
 	color: var(--accent);
 }
 
-@media (max-width: 500px) {
+@media (max-inline-size: 500px) {
 	.icon {
-		width: 80px;
+		inline-size: 80px;
 	}
 }
 
-@media (max-width: 450px) {
+@media (max-inline-size: 450px) {
 	.icon {
-		width: 70px;
+		inline-size: 70px;
 	}
 }
 
 .main {
-	padding: 25px 25px 25px 0;
+	padding-block-start: 25px;
+	padding-inline-end: 25px;
+	padding-block-end: 25px;
+	padding-inline-start: 0;
 	flex: 1;
 }
 
 .close {
 	position: absolute;
-	top: 8px;
-	right: 8px;
+	inset-block-start: 8px;
+	inset-inline-end: 8px;
 	padding: 8px;
 }
 
@@ -188,6 +191,9 @@ function openExternal(link: string) {
 	font-weight: bold;
 }
 .text {
-	margin: 0.7em 0 1em 0;
+	margin-block-start: 0.7em;
+	margin-inline-end: 0;
+	margin-block-end: 1em;
+	margin-inline-start: 0;
 }
 </style>

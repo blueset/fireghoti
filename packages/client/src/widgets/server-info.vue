@@ -72,8 +72,8 @@ defineExpose<WidgetComponentExpose>({
 
 .icon {
 	display: inline-block;
-	width: 60px;
-	height: 60px;
+	inline-size: 60px;
+	block-size: 60px;
 	border-radius: 8px;
 	box-sizing: border-box;
 	border: solid 3px var(--panelBorder);
@@ -82,8 +82,11 @@ defineExpose<WidgetComponentExpose>({
 .bodyContainer {
 	display: flex;
 	align-items: center;
-	min-width: 0;
-	padding: 0 16px 0 0;
+	min-inline-size: 0;
+	padding-block-start: 0;
+	padding-inline-end: 16px;
+	padding-block-end: 0;
+	padding-inline-start: 0;
 }
 
 .body {

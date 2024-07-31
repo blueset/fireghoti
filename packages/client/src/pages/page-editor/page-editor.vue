@@ -92,7 +92,7 @@
 							<img
 								:src="eyeCatchingImage.url"
 								:alt="eyeCatchingImage.name"
-								style="max-width: 100%"
+								style="max-inline-size: 100%"
 							/>
 							<MkButton
 								v-if="!readonly"
@@ -569,14 +569,15 @@ definePageMetadata(
 		> .title {
 			z-index: 1;
 			margin: 0;
-			padding: 0 16px;
+			padding-block: 0;
+			padding-inline: 16px;
 			line-height: 42px;
 			font-size: 0.9em;
 			font-weight: bold;
 			box-shadow: 0 1px rgba(#000, 0.07);
 
 			> i {
-				margin-right: 6px;
+				margin-inline-end: 6px;
 			}
 
 			&:empty {
@@ -587,12 +588,12 @@ definePageMetadata(
 		> .buttons {
 			position: absolute;
 			z-index: 2;
-			top: 0;
-			right: 0;
+			inset-block-start: 0;
+			inset-inline-end: 0;
 
 			> button {
 				padding: 0;
-				width: 42px;
+				inline-size: 42px;
 				font-size: 0.9em;
 				line-height: 42px;
 			}
@@ -600,28 +601,37 @@ definePageMetadata(
 	}
 
 	> section {
-		padding: 0 32px 32px 32px;
+		padding-block-start: 0;
+		padding-inline-end: 32px;
+		padding-block-end: 32px;
+		padding-inline-start: 32px;
 
-		@media (max-width: 500px) {
-			padding: 0 16px 16px 16px;
+		@media (max-inline-size: 500px) {
+			padding-block-start: 0;
+			padding-inline-end: 16px;
+			padding-block-end: 16px;
+			padding-inline-start: 16px;
 		}
 
 		> .view {
 			display: inline-block;
-			margin: 16px 0 0 0;
+			margin-block-start: 16px;
+			margin-inline-end: 0;
+			margin-block-end: 0;
+			margin-inline-start: 0;
 			font-size: 14px;
 		}
 
 		> .content {
-			margin-bottom: 16px;
+			margin-block-end: 16px;
 		}
 
 		> .eyeCatch {
-			margin-bottom: 16px;
+			margin-block-end: 16px;
 
 			> div {
 				> img {
-					max-width: 100%;
+					max-inline-size: 100%;
 				}
 			}
 		}
@@ -632,11 +642,11 @@ definePageMetadata(
 	padding: 16px;
 
 	> .variables {
-		margin-bottom: 16px;
+		margin-block-end: 16px;
 	}
 
 	> .add {
-		margin-bottom: 16px;
+		margin-block-end: 16px;
 	}
 }
 </style>

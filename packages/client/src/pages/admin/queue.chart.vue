@@ -47,7 +47,7 @@
 					>
 						{{ job[0] }}
 					</a>
-					<span style="margin-left: 8px; opacity: 0.7"
+					<span style="margin-inline-start: 8px; opacity: 0.7"
 						>({{ number(job[1]) }} jobs)</span
 					>
 				</div>
@@ -152,21 +152,21 @@ onUnmounted(() => {
 		gap: 16px;
 
 		> .chart {
-			min-width: 0;
+			min-inline-size: 0;
 			padding: 16px;
 			background: var(--panel);
 			border-radius: var(--radius);
 
 			> .title {
-				margin-bottom: 8px;
+				margin-block-end: 8px;
 			}
 		}
 	}
 
 	> .jobs {
-		margin-top: 16px;
+		margin-block-start: 16px;
 		padding: 16px;
-		max-height: 180px;
+		max-block-size: 180px;
 		overflow: auto;
 		background: var(--panel);
 		border-radius: var(--radius);

@@ -51,13 +51,14 @@ const modal = ref<InstanceType<typeof MkModal> | null>(null);
 .xubzgfga {
 	display: flex;
 	flex-direction: column;
-	height: 100%;
+	block-size: 100%;
 
 	> header,
 	> footer {
 		align-self: center;
 		display: inline-block;
-		padding: 6px 9px;
+		padding-block: 6px;
+		padding-inline: 9px;
 		font-size: 90%;
 		background: rgba(0, 0, 0, 0.5);
 		border-radius: 6px;
@@ -65,28 +66,28 @@ const modal = ref<InstanceType<typeof MkModal> | null>(null);
 	}
 
 	> header {
-		margin-bottom: 8px;
+		margin-block-end: 8px;
 		opacity: 0.9;
 	}
 
 	> img {
 		display: block;
 		flex: 1;
-		min-height: 0;
+		min-block-size: 0;
 		object-fit: contain;
-		width: 100%;
+		inline-size: 100%;
 		cursor: zoom-out;
 		image-orientation: from-image;
 	}
 
 	> footer {
-		margin-top: 8px;
+		margin-block-start: 8px;
 		opacity: 0.8;
 
 		> span + span {
-			margin-left: 0.5em;
-			padding-left: 0.5em;
-			border-left: solid 1px rgba(255, 255, 255, 0.5);
+			margin-inline-start: 0.5em;
+			padding-inline-start: 0.5em;
+			border-inline-start: solid 1px rgba(255, 255, 255, 0.5);
 		}
 	}
 }

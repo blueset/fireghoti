@@ -97,27 +97,32 @@ definePageMetadata(
 	> .user {
 		display: flex;
 		padding: 16px;
-		margin: 10px 0 auto;
+		margin-block-start: 10px;
+		margin-inline: 0;
+		margin-block-end: auto;
 
 		> .avatar {
 			display: block;
 			flex-shrink: 0;
-			margin: 0 12px 0 0;
-			width: 42px;
-			height: 42px;
+			margin-block-start: 0;
+			margin-inline-end: 12px;
+			margin-block-end: 0;
+			margin-inline-start: 0;
+			inline-size: 42px;
+			block-size: 42px;
 			border-radius: 8px;
 		}
 
 		> .body {
 			display: flex;
-			width: calc(100% - 54px);
+			inline-size: calc(100% - 54px);
 			position: relative;
 
 			> .name {
-				width: 45%;
+				inline-size: 45%;
 
-				@media (max-width: 500px) {
-					width: 100%;
+				@media (max-inline-size: 500px) {
+					inline-size: 100%;
 				}
 
 				> .name,
@@ -142,18 +147,18 @@ definePageMetadata(
 			}
 
 			> .description {
-				width: 55%;
+				inline-size: 55%;
 				line-height: 42px;
 				white-space: nowrap;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				opacity: 0.7;
 				font-size: 14px;
-				padding-right: 40px;
-				padding-left: 8px;
+				padding-inline-end: 40px;
+				padding-inline-start: 8px;
 				box-sizing: border-box;
 
-				@media (max-width: 500px) {
+				@media (max-inline-size: 500px) {
 					display: none;
 				}
 			}

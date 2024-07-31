@@ -48,23 +48,24 @@ const pagination = {
 	> .header {
 		display: flex;
 		align-items: center;
-		padding: 8px 16px;
-		margin-bottom: 8px;
-		border-bottom: solid 2px var(--divider);
+		padding-block: 8px;
+		padding-inline: 16px;
+		margin-block-end: 8px;
+		border-block-end: solid 2px var(--divider);
 
 		> .avatar {
-			width: 24px;
-			height: 24px;
-			margin-right: 8px;
+			inline-size: 24px;
+			block-size: 24px;
+			margin-inline-end: 8px;
 		}
 
 		> .reaction {
-			width: 32px;
-			height: 32px;
+			inline-size: 32px;
+			block-size: 32px;
 		}
 
 		> .createdAt {
-			margin-left: auto;
+			margin-inline-start: auto;
 		}
 	}
 }

@@ -52,7 +52,7 @@
 					>{{ i18n.ts.channel }}</MkA
 				>
 				<MkA to="/pages" class="link" active-class="active"
-					><i :class="icon('ph-file-text icon')"></i
+					><i :class="icon('ph-file-text ph-dir icon')"></i
 					>{{ i18n.ts.pages }}</MkA
 				>
 				<MkA to="/gallery" class="link" active-class="active"
@@ -185,28 +185,28 @@ defineExpose({
 
 .mk-app {
 	display: flex;
-	min-height: 100vh;
+	min-block-size: 100vb;
 	background-position: center;
 	background-size: cover;
 	background-attachment: fixed;
 
 	> .side {
-		width: 500px;
-		height: 100vh;
+		inline-size: 500px;
+		block-size: 100vb;
 
 		> .kanban {
 			position: fixed;
-			top: 0;
-			left: 0;
-			width: 500px;
-			height: 100vh;
+			inset-block-start: 0;
+			inset-inline-start: 0;
+			inline-size: 500px;
+			block-size: 100vb;
 			overflow: auto;
 		}
 	}
 
 	> .main {
 		flex: 1;
-		min-width: 0;
+		min-inline-size: 0;
 
 		> .banner {
 		}
@@ -219,11 +219,11 @@ defineExpose({
 				padding: 28px;
 				font-size: 14px;
 				text-align: center;
-				border-top: 1px solid var(--divider);
+				border-block-start: 1px solid var(--divider);
 
 				> small {
 					display: block;
-					margin-top: 8px;
+					margin-block-start: 8px;
 					opacity: 0.5;
 				}
 			}
@@ -233,19 +233,19 @@ defineExpose({
 	> .menu-back {
 		position: fixed;
 		z-index: 1001;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
+		inset-block-start: 0;
+		inset-inline-start: 0;
+		inline-size: 100vi;
+		block-size: 100vb;
 	}
 
 	> .menu {
 		position: fixed;
 		z-index: 1001;
-		top: 0;
-		left: 0;
-		width: 240px;
-		height: 100vh;
+		inset-block-start: 0;
+		inset-inline-start: 0;
+		inline-size: 240px;
+		block-size: 100vb;
 		background: var(--panel);
 
 		> .link {
@@ -253,7 +253,7 @@ defineExpose({
 			padding: 16px;
 
 			> .icon {
-				margin-right: 1em;
+				margin-inline-end: 1em;
 			}
 		}
 
@@ -262,7 +262,7 @@ defineExpose({
 
 			> button {
 				display: block;
-				width: 100%;
+				inline-size: 100%;
 				padding: 10px;
 				box-sizing: border-box;
 				text-align: center;
@@ -273,7 +273,7 @@ defineExpose({
 				}
 
 				&:first-child {
-					margin-bottom: 16px;
+					margin-block-end: 16px;
 				}
 			}
 		}

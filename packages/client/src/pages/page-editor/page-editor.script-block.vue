@@ -360,9 +360,9 @@ export default defineComponent({
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
-		width: 100%;
-		max-width: 100%;
-		min-width: 100%;
+		inline-size: 100%;
+		max-inline-size: 100%;
+		min-inline-size: 100%;
 		border: none;
 		box-shadow: none;
 		padding: 16px;
@@ -373,7 +373,7 @@ export default defineComponent({
 	}
 
 	> textarea {
-		min-height: 100px;
+		min-block-size: 100px;
 	}
 }
 
@@ -384,7 +384,7 @@ export default defineComponent({
 		display: block;
 		padding: 4px;
 		font-size: 16px;
-		width: 100%;
+		inline-size: 100%;
 	}
 }
 </style>

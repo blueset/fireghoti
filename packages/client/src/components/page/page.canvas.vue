@@ -40,7 +40,7 @@ export default defineComponent({
 	display: inline-block;
 	vertical-align: bottom;
 	overflow: auto;
-	max-width: 100%;
+	max-inline-size: 100%;
 
 	> canvas {
 		display: block;

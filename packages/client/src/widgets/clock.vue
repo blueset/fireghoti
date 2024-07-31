@@ -243,23 +243,23 @@ defineExpose<WidgetComponentExpose>({
 		opacity: 0.7;
 
 		&.a {
-			top: 14px;
-			left: 14px;
+			inset-block-start: 14px;
+			inset-inline-start: 14px;
 		}
 
 		&.b {
-			top: 14px;
-			right: 14px;
+			inset-block-start: 14px;
+			inset-inline-end: 14px;
 		}
 
 		&.c {
-			bottom: 14px;
-			left: 14px;
+			inset-block-end: 14px;
+			inset-inline-start: 14px;
 		}
 
 		&.d {
-			bottom: 14px;
-			right: 14px;
+			inset-block-end: 14px;
+			inset-inline-end: 14px;
 		}
 	}
 
@@ -271,7 +271,7 @@ defineExpose<WidgetComponentExpose>({
 		padding: 12px;
 
 		> .clock {
-			height: 100px;
+			block-size: 100px;
 		}
 	}
 
@@ -279,7 +279,7 @@ defineExpose<WidgetComponentExpose>({
 		padding: 14px;
 
 		> .clock {
-			height: 150px;
+			block-size: 150px;
 		}
 	}
 
@@ -287,7 +287,7 @@ defineExpose<WidgetComponentExpose>({
 		padding: 16px;
 
 		> .clock {
-			height: 200px;
+			block-size: 200px;
 		}
 	}
 }

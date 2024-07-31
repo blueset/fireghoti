@@ -155,7 +155,7 @@ definePageMetadata(
 		list.value
 			? {
 					title: list.value.name,
-					icon: `${icon("ph-list-bullets")}`,
+					icon: `${icon("ph-list-bullets ph-dir")}`,
 				}
 			: null,
 	),
@@ -171,11 +171,13 @@ definePageMetadata(
 					display: flex;
 					align-items: center;
 					padding: 16px;
-					margin: 10px 0 auto;
+					margin-block-start: 10px;
+					margin-inline: 0;
+					margin-block-end: auto;
 
 					> .avatar {
-						width: 50px;
-						height: 50px;
+						inline-size: 50px;
+						block-size: 50px;
 					}
 
 					> .body {

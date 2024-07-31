@@ -516,55 +516,56 @@ defineExpose({
 	}
 
 	&.w1 {
-		width: calc((var(--eachSize) * 5) + (#{$pad} * 2));
+		inline-size: calc((var(--eachSize) * 5) + (#{$pad} * 2));
 		--columns: 1fr 1fr 1fr 1fr 1fr;
 	}
 
 	&.w2 {
-		width: calc((var(--eachSize) * 6) + (#{$pad} * 2));
+		inline-size: calc((var(--eachSize) * 6) + (#{$pad} * 2));
 		--columns: 1fr 1fr 1fr 1fr 1fr 1fr;
 	}
 
 	&.w3 {
-		width: calc((var(--eachSize) * 7) + (#{$pad} * 2));
+		inline-size: calc((var(--eachSize) * 7) + (#{$pad} * 2));
 		--columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 	}
 
 	&.w4 {
-		width: calc((var(--eachSize) * 8) + (#{$pad} * 2));
+		inline-size: calc((var(--eachSize) * 8) + (#{$pad} * 2));
 		--columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 	}
 
 	&.w5 {
-		width: calc((var(--eachSize) * 9) + (#{$pad} * 2));
+		inline-size: calc((var(--eachSize) * 9) + (#{$pad} * 2));
 		--columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 	}
 
 	&.h1 {
-		height: calc((var(--eachSize) * 4) + (#{$pad} * 2));
+		block-size: calc((var(--eachSize) * 4) + (#{$pad} * 2));
 	}
 
 	&.h2 {
-		height: calc((var(--eachSize) * 6) + (#{$pad} * 2));
+		block-size: calc((var(--eachSize) * 6) + (#{$pad} * 2));
 	}
 
 	&.h3 {
-		height: calc((var(--eachSize) * 8) + (#{$pad} * 2));
+		block-size: calc((var(--eachSize) * 8) + (#{$pad} * 2));
 	}
 
 	&.h4 {
-		height: calc((var(--eachSize) * 10) + (#{$pad} * 2));
+		block-size: calc((var(--eachSize) * 10) + (#{$pad} * 2));
 	}
 
 	&.asDrawer {
-		width: 100% !important;
+		inline-size: 100% !important;
 
 		> .emojis {
 			::v-deep(section) {
 				> header {
-					height: 32px;
+					block-size: 32px;
 					line-height: 32px;
-					padding: 0 12px;
+					padding-block: 0;
+					padding-inline: 12px;
 					font-size: 15px;
 				}
 
@@ -575,9 +576,9 @@ defineExpose({
 
 					> .item {
 						aspect-ratio: 1 / 1;
-						width: auto;
-						height: auto;
-						min-width: 0;
+						inline-size: auto;
+						block-size: auto;
+						min-inline-size: 0;
 					}
 				}
 			}
@@ -585,7 +586,7 @@ defineExpose({
 	}
 
 	> .search {
-		width: 100%;
+		inline-size: 100%;
 		padding: 12px;
 		box-sizing: border-box;
 		font-size: 1em;
@@ -607,20 +608,20 @@ defineExpose({
 
 		> .tab {
 			flex: 1;
-			height: 38px;
-			border-top: solid 0.5px var(--divider);
+			block-size: 38px;
+			border-block-start: solid 0.5px var(--divider);
 
 			&.active {
-				border-top: solid 1px var(--accent);
+				border-block-start: solid 1px var(--accent);
 				color: var(--accent);
 			}
 		}
 	}
 
 	> .emojis {
-		height: 100%;
-		overflow-y: auto;
-		overflow-x: hidden;
+		block-size: 100%;
+		overflow-block: auto;
+		overflow-inline: hidden;
 
 		scrollbar-width: none;
 
@@ -630,18 +631,22 @@ defineExpose({
 
 		> .group {
 			&:not(.index) {
-				padding: 4px 0 8px 0;
-				border-top: solid 0.5px var(--divider);
+				padding-block-start: 4px;
+				padding-inline-end: 0;
+				padding-block-end: 8px;
+				padding-inline-start: 0;
+				border-block-start: solid 0.5px var(--divider);
 			}
 
 			> header {
 				/*position: sticky;
-				top: 0;
-				left: 0;*/
-				height: 32px;
+				inset-block-start: 0;
+				inset-inline-start: 0;*/
+				block-size: 32px;
 				line-height: 32px;
 				z-index: 2;
-				padding: 0 8px;
+				padding-block: 0;
+				padding-inline: 8px;
 				font-size: 12px;
 			}
 		}
@@ -649,12 +654,13 @@ defineExpose({
 		::v-deep(section) {
 			> header {
 				position: sticky;
-				top: 0;
-				left: 0;
-				height: 32px;
+				inset-block-start: 0;
+				inset-inline-start: 0;
+				block-size: 32px;
 				line-height: 32px;
 				z-index: 1;
-				padding: 0 8px;
+				padding-block: 0;
+				padding-inline: 8px;
 				font-size: 12px;
 				cursor: pointer;
 
@@ -670,8 +676,8 @@ defineExpose({
 				> .item {
 					position: relative;
 					padding: 0;
-					width: var(--eachSize);
-					height: var(--eachSize);
+					inline-size: var(--eachSize);
+					block-size: var(--eachSize);
 					contain: strict;
 					border-radius: 4px;
 					font-size: 24px;
@@ -691,7 +697,7 @@ defineExpose({
 					}
 
 					> .emoji {
-						height: 1.25em;
+						block-size: 1.25em;
 						vertical-align: -0.25em;
 						pointer-events: none;
 					}
@@ -699,7 +705,7 @@ defineExpose({
 			}
 
 			&.result {
-				border-bottom: solid 0.5px var(--divider);
+				border-block-end: solid 0.5px var(--divider);
 
 				&:empty {
 					display: none;

@@ -447,13 +447,10 @@ onUpdated(() => {
 			display: block;
 			position: absolute;
 			z-index: 10;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
+			inset: 0;
 			margin: auto;
-			width: calc(100% - 8px);
-			height: calc(100% - 8px);
+			inline-size: calc(100% - 8px);
+			block-size: calc(100% - 8px);
 			border: solid 1px var(--focus);
 			border-radius: var(--radius);
 			box-sizing: border-box;
@@ -461,41 +458,41 @@ onUpdated(() => {
 	}
 
 	> .reply-to {
-		margin-bottom: -16px;
-		padding-bottom: 16px;
+		margin-block-end: -16px;
+		padding-block-end: 16px;
 	}
 
 	> :deep(.note-container) {
 		padding-block: 28px 0;
-		padding-top: 12px;
+		padding-block-start: 12px;
 		font-size: 1.1rem;
 		overflow: clip;
 		outline: none;
-		scroll-margin-top: calc(var(--stickyTop) + 20vh);
+		scroll-margin-block-start: calc(var(--stickyTop) + 20vb);
 		&:not(:last-child) {
-			border-bottom: 1px solid var(--divider);
-			margin-bottom: 4px;
+			border-block-end: 1px solid var(--divider);
+			margin-block-end: 4px;
 		}
 		.article {
 			cursor: unset;
-			padding-bottom: 0;
+			padding-block-end: 0;
 		}
 		&:first-child {
-			padding-top: 28px;
+			padding-block-start: 28px;
 		}
 	}
 
 	> :deep(.chips) {
 		padding-block: 6px 12px;
-		padding-left: 32px;
+		padding-inline-start: 32px;
 		&:last-child {
-			margin-bottom: 12px;
+			margin-block-end: 12px;
 		}
 	}
 	> :deep(.user-card-mini),
 	> :deep(.reacted-users > *) {
 		padding-inline: 32px;
-		border-top: 1px solid var(--divider);
+		border-block-start: 1px solid var(--divider);
 		border-radius: 0;
 	}
 	> :deep(.reacted-users > div) {
@@ -503,9 +500,9 @@ onUpdated(() => {
 	}
 
 	> .reply {
-		border-top: solid 0.5px var(--divider);
-		padding-top: 24px;
-		padding-bottom: 10px;
+		border-block-start: solid 0.5px var(--divider);
+		padding-block-start: 24px;
+		padding-block-end: 10px;
 	}
 
 	// Hover
@@ -517,7 +514,7 @@ onUpdated(() => {
 			content: "";
 			position: absolute;
 			inset: -12px -24px;
-			bottom: -0px;
+			inset-block-end: -0px;
 			background: var(--panelHighlight);
 			border-radius: var(--radius);
 			opacity: 0;
@@ -531,13 +528,13 @@ onUpdated(() => {
 				inset: 0px 8px;
 			}
 			&:not(.max-width_500px)::before {
-				bottom: 16px;
+				inset-block-end: 16px;
 			}
 			&:first-of-type::before {
-				top: 12px;
+				inset-block-start: 12px;
 			}
 			&.reply.max-width_500px:first-of-type::before {
-				top: 4px;
+				inset-block-start: 4px;
 			}
 		}
 		// &::after {
@@ -588,18 +585,21 @@ onUpdated(() => {
 				inset-inline: -24px;
 			}
 			&:first-child {
-				padding-top: 14px;
+				padding-block-start: 14px;
 				&::before {
-					top: -24px;
+					inset-block-start: -24px;
 				}
 			}
 		}
 
 		> :deep(.note-container) {
-			padding: 12px 0 0 0;
+			padding-block-start: 12px;
+			padding-inline-end: 0;
+			padding-block-end: 0;
+			padding-inline-start: 0;
 			font-size: 1.05rem;
 			> .header > .body {
-				padding-left: 10px;
+				padding-inline-start: 10px;
 			}
 		}
 		> .clips,
@@ -608,7 +608,7 @@ onUpdated(() => {
 			padding-inline: 16px !important;
 		}
 		> :deep(.underline) {
-			padding-left: 16px !important;
+			padding-inline-start: 16px !important;
 		}
 	}
 
@@ -625,14 +625,15 @@ onUpdated(() => {
 
 .clips {
 	// want to redesign at some point
-	padding: 24px 32px;
-	padding-top: 0;
+	padding-block: 24px;
+	padding-inline: 32px;
+	padding-block-start: 0;
 	> .item {
 		display: block;
 		padding: 16px;
 		// background: var(--buttonBg);
 		border: 1px solid var(--divider);
-		margin-bottom: var(--margin);
+		margin-block-end: var(--margin);
 		transition: background 0.2s;
 		&:hover,
 		&:focus-within {
@@ -640,18 +641,19 @@ onUpdated(() => {
 		}
 
 		> .description {
-			padding: 8px 0;
+			padding-block: 8px;
+			padding-inline: 0;
 		}
 
 		> .user {
 			$height: 32px;
-			padding-top: 16px;
-			border-top: solid 0.5px var(--divider);
+			padding-block-start: 16px;
+			border-block-start: solid 0.5px var(--divider);
 			line-height: $height;
 
 			> .avatar {
-				width: $height;
-				height: $height;
+				inline-size: $height;
+				block-size: $height;
 			}
 		}
 	}

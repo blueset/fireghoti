@@ -137,7 +137,7 @@ watch(menuDisplay, async () => {
 
 definePageMetadata({
 	title: i18n.ts.navbar,
-	icon: `${icon("ph-list-bullets")}`,
+	icon: `${icon("ph-list-bullets ph-dir")}`,
 });
 </script>
 
@@ -150,7 +150,7 @@ definePageMetadata({
 	overflow: hidden;
 	white-space: nowrap;
 	border-radius: var(--radius);
-	margin-bottom: 0.5rem;
+	margin-block-end: 0.5rem;
 	color: var(--navFg);
 	background-color: var(--panel);
 
@@ -161,25 +161,26 @@ definePageMetadata({
 	> .itemText {
 		position: relative;
 		font-size: 0.9em;
-		margin-left: 1rem;
+		margin-inline-start: 1rem;
 	}
 
 	> .itemRemove {
 		position: absolute;
 		z-index: 10000;
-		width: 32px;
-		height: 32px;
+		inline-size: 32px;
+		block-size: 32px;
 		color: var(--error);
-		top: 4px;
-		right: 8px;
+		inset-block-start: 4px;
+		inset-inline-end: 8px;
 		opacity: 0.8;
 	}
 
 	> .itemHandle {
 		cursor: move;
-		width: 32px;
-		height: 32px;
-		margin: 0 1rem;
+		inline-size: 32px;
+		block-size: 32px;
+		margin-block: 0;
+		margin-inline: 1rem;
 		opacity: 0.5;
 	}
 }

@@ -83,8 +83,9 @@ function isMe(message: entities.MessagingMessage): boolean {
 	> .message {
 		display: block;
 		text-decoration: none;
-		margin-bottom: var(--margin);
-		padding: 20px 30px;
+		margin-block-end: var(--margin);
+		padding-block: 20px;
+		padding-inline: 30px;
 
 		* {
 			pointer-events: none;
@@ -115,7 +116,7 @@ function isMe(message: entities.MessagingMessage): boolean {
 		> header {
 			display: flex;
 			align-items: center;
-			margin-bottom: 2px;
+			margin-block-end: 2px;
 			white-space: nowrap;
 			overflow: hidden;
 
@@ -130,19 +131,26 @@ function isMe(message: entities.MessagingMessage): boolean {
 			}
 
 			> .username {
-				margin: 0 8px;
+				margin-block: 0;
+				margin-inline: 8px;
 			}
 
 			> .time {
-				margin: 0 0 0 auto;
+				margin-block-start: 0;
+				margin-inline-end: 0;
+				margin-block-end: 0;
+				margin-inline-start: auto;
 			}
 		}
 
 		> .avatar {
-			float: left;
-			width: 54px;
-			height: 54px;
-			margin: 0 16px 0 0;
+			float: inline-start;
+			inline-size: 54px;
+			block-size: 54px;
+			margin-block-start: 0;
+			margin-inline-end: 16px;
+			margin-block-end: 0;
+			margin-inline-start: 0;
 			border-radius: 8px;
 			transition: all 0.1s ease;
 		}
@@ -150,7 +158,10 @@ function isMe(message: entities.MessagingMessage): boolean {
 		> .body {
 			> .text {
 				display: block;
-				margin: 0 0 0 0;
+				margin-block-start: 0;
+				margin-inline-end: 0;
+				margin-block-end: 0;
+				margin-inline-start: 0;
 				padding: 0;
 				overflow: hidden;
 				overflow-wrap: break-word;
@@ -165,8 +176,8 @@ function isMe(message: entities.MessagingMessage): boolean {
 
 			> .image {
 				display: block;
-				max-width: 100%;
-				max-height: 512px;
+				max-inline-size: 100%;
+				max-block-size: 512px;
 			}
 		}
 	}
@@ -178,7 +189,10 @@ function isMe(message: entities.MessagingMessage): boolean {
 				font-size: 0.9em;
 
 				> .avatar {
-					margin: 0 12px 0 0;
+					margin-block-start: 0;
+					margin-inline-end: 12px;
+					margin-block-end: 0;
+					margin-inline-start: 0;
 				}
 			}
 		}

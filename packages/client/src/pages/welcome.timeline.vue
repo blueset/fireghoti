@@ -77,15 +77,15 @@ export default defineComponent({
 		transform: translate3d(0, 0, 0);
 	}
 	75% {
-		transform: translate3d(0, calc(-100% + 90vh), 0);
+		transform: translate3d(0, calc(-100% + 90vb), 0);
 	}
 	90% {
-		transform: translate3d(0, calc(-100% + 90vh), 0);
+		transform: translate3d(0, calc(-100% + 90vb), 0);
 	}
 }
 
 .civpbkhh {
-	text-align: right;
+	text-align: end;
 
 	> .scrollbox {
 		&.scroll {
@@ -93,16 +93,22 @@ export default defineComponent({
 		}
 
 		> .note {
-			margin: 16px 0 16px auto;
+			margin-block-start: 16px;
+			margin-inline-end: 0;
+			margin-block-end: 16px;
+			margin-inline-start: auto;
 
 			> .content {
 				padding: 16px;
-				margin: 0 0 0 auto;
-				max-width: max-content;
+				margin-block-start: 0;
+				margin-inline-end: 0;
+				margin-block-end: 0;
+				margin-inline-start: auto;
+				max-inline-size: max-content;
 				border-radius: 16px;
 
 				> .richcontent {
-					min-width: 250px;
+					min-inline-size: 250px;
 				}
 			}
 		}

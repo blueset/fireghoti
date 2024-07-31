@@ -11,24 +11,27 @@
 
 <style lang="scss" scoped>
 .vrtktovh {
-	border-top: solid 0.5px var(--divider);
-	border-bottom: solid 0.5px var(--divider);
+	border-block-start: solid 0.5px var(--divider);
+	border-block-end: solid 0.5px var(--divider);
 
 	& + .vrtktovh {
-		border-top: none;
+		border-block-start: none;
 	}
 
 	&:first-child {
-		border-top: none;
+		border-block-start: none;
 	}
 
 	&:last-child {
-		border-bottom: none;
+		border-block-end: none;
 	}
 
 	> .label {
 		font-weight: bold;
-		margin: 1.5em 0 16px 0;
+		margin-block-start: 1.5em;
+		margin-inline-end: 0;
+		margin-block-end: 16px;
+		margin-inline-start: 0;
 		font-size: 1em;
 
 		&:empty {
@@ -37,7 +40,8 @@
 	}
 
 	> .main {
-		margin: 1.5em 0;
+		margin-block: 1.5em;
+		margin-inline: 0;
 	}
 }
 </style>

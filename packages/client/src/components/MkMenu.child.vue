@@ -35,16 +35,52 @@ const align = "left";
 function setPosition() {
 	const rootRect = props.rootElement.getBoundingClientRect();
 	const rect = props.targetElement.getBoundingClientRect();
-	let left = props.targetElement.offsetWidth;
-	if (rootRect.x + left > window.innerWidth - rect.width) {
-		left = -rect.width;
+	const isRtl = getComputedStyle(props.rootElement).direction === "rtl";
+	const writingMode = getComputedStyle(props.rootElement)["writing-mode"];
+	const isVertical = writingMode.startsWith("vertical");
+	const targetInlineSize = isVertical
+		? props.targetElement.offsetHeight
+		: props.targetElement.offsetWidth;
+	const rectInlineSize = isVertical ? rect.height : rect.width;
+	const windowInlineSize = isVertical ? window.innerHeight : window.innerWidth;
+	const rootInsetInlineStart =
+		isRtl && isVertical
+			? rootRect.bottom
+			: !isRtl && isVertical
+				? rootRect.top
+				: isRtl && !isVertical
+					? rootRect.right
+					: rootRect.left;
+	const rectInsetInlineStart =
+		isRtl && isVertical
+			? rect.bottom
+			: !isRtl && isVertical
+				? rect.top
+				: isRtl && !isVertical
+					? rect.right
+					: rect.left;
+
+	let insetInlineStart = targetInlineSize;
+	if (
+		rootInsetInlineStart + insetInlineStart >
+		windowInlineSize - rectInlineSize
+	) {
+		insetInlineStart = -rectInlineSize;
 	}
-	if (rect.x + left < 0) {
-		left = -rect.x;
+	if (rectInsetInlineStart + insetInlineStart < 0) {
+		insetInlineStart = -rectInsetInlineStart;
 	}
-	const top = rect.top - rootRect.top - 8;
-	el.value!.style.left = `${left}px`;
-	el.value!.style.top = `${top}px`;
+
+	const insetBlockStart =
+		writingMode === "vertical-rl"
+			? rootRect.right - rect.right - 8
+			: writingMode === "vertical-lr"
+				? rootRect.left - rect.left - 8
+				: writingMode === "horizontal-bt"
+					? rect.right - rootRect.right - 8
+					: rect.top - rootRect.top - 8;
+	el.value!.style.insetInlineStart = `${insetInlineStart}px`;
+	el.value!.style.insetBlockStart = `${insetBlockStart}px`;
 }
 
 function onChildClosed(actioned?: boolean) {

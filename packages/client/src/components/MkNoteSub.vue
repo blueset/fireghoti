@@ -268,16 +268,23 @@ function noteClick(e: MouseEvent) {
 
 <style lang="scss" scoped>
 .wrpstxzv {
-	padding: 16px 32px;
+	padding-block: 16px;
+	padding-inline: 32px;
 	outline: none;
 	&.children {
-		padding: 10px 0 0 var(--indent);
-		padding-left: var(--indent) !important;
+		padding-block-start: 10px;
+		padding-inline-end: 0;
+		padding-block-end: 0;
+		padding-inline-start: var(--indent);
+		padding-inline-start: var(--indent) !important;
 		font-size: 1em;
 		cursor: auto;
 
 		&.max-width_500px {
-			padding: 10px 0 0 8px;
+			padding-block-start: 10px;
+			padding-inline-end: 0;
+			padding-block-end: 0;
+			padding-inline-start: 8px;
 		}
 	}
 
@@ -285,13 +292,13 @@ function noteClick(e: MouseEvent) {
 		display: flex;
 
 		> .avatar-container {
-			margin-right: 8px;
+			margin-inline-end: 8px;
 			z-index: 2;
 			> .avatar {
 				flex-shrink: 0;
 				display: block;
-				width: 38px;
-				height: 38px;
+				inline-size: 38px;
+				block-size: 38px;
 				border-radius: 8px;
 			}
 		}
@@ -299,16 +306,18 @@ function noteClick(e: MouseEvent) {
 		> .body {
 			position: relative;
 			flex: 1;
-			min-width: 0;
-			margin: 0 -200px;
-			padding: 0 200px;
+			min-inline-size: 0;
+			margin-block: 0;
+			margin-inline: -200px;
+			padding-block: 0;
+			padding-inline: 200px;
 			overflow: clip;
 			@media (pointer: coarse) {
 				cursor: default;
 			}
 
 			> .header {
-				margin-bottom: 2px;
+				margin-block-end: 2px;
 				cursor: auto;
 			}
 			> .footer {
@@ -324,10 +333,10 @@ function noteClick(e: MouseEvent) {
 					opacity: 0.7;
 
 					flex-grow: 1;
-					max-width: 3.5em;
-					width: max-content;
-					min-width: max-content;
-					height: auto;
+					max-inline-size: 3.5em;
+					inline-size: max-content;
+					min-inline-size: max-content;
+					block-size: auto;
 					transition: opacity 0.2s;
 
 					&:disabled {
@@ -338,14 +347,14 @@ function noteClick(e: MouseEvent) {
 						content: "";
 						position: absolute;
 						inset: 0;
-						bottom: 2px;
+						inset-block-end: 2px;
 						background: var(--panel);
 						z-index: -1;
 						transition: background 0.2s;
 					}
 
 					&:first-of-type {
-						margin-left: -0.5em;
+						margin-inline-start: -0.5em;
 						&::before {
 							border-radius: 100px 0 0 100px;
 						}
@@ -367,7 +376,10 @@ function noteClick(e: MouseEvent) {
 
 					> .count {
 						display: inline;
-						margin: 0 0 0 8px;
+						margin-block-start: 0;
+						margin-inline-end: 0;
+						margin-block-end: 0;
+						margin-inline-start: 8px;
 						opacity: 0.7;
 					}
 
@@ -389,32 +401,32 @@ function noteClick(e: MouseEvent) {
 	&.reply,
 	&.reply-to {
 		> .main > .body {
-			margin-right: -24px;
-			padding-right: 24px;
-			margin-top: -12px;
-			padding-top: 12px;
-			margin-left: calc(0px - var(--avatarSize) - 32px);
-			padding-left: calc(var(--avatarSize) + 32px);
+			margin-inline-end: -24px;
+			padding-inline-end: 24px;
+			margin-block-start: -12px;
+			padding-block-start: 12px;
+			margin-inline-start: calc(0px - var(--avatarSize) - 32px);
+			padding-inline-start: calc(var(--avatarSize) + 32px);
 			border-radius: var(--radius);
 		}
 	}
 	&.reply-to {
 		> .main > .body {
-			margin-left: calc(0px - var(--avatarSize) - 38px);
-			padding-left: calc(var(--avatarSize) + 38px);
-			margin-top: -16px;
-			padding-top: 16px;
+			margin-inline-start: calc(0px - var(--avatarSize) - 38px);
+			padding-inline-start: calc(var(--avatarSize) + 38px);
+			margin-block-start: -16px;
+			padding-block-start: 16px;
 		}
 	}
 	&.reply {
 		--avatarSize: 38px;
 		.avatar-container {
-			margin-right: 8px !important;
+			margin-inline-end: 8px !important;
 		}
 	}
 	> .reply,
 	> .more {
-		margin-top: 10px;
+		margin-block-start: 10px;
 		&.single {
 			padding: 0 !important;
 			> .line {
@@ -431,12 +443,12 @@ function noteClick(e: MouseEvent) {
 			position: relative;
 			z-index: 2;
 			flex-grow: 0 !important;
-			margin-top: -10px !important;
-			margin-bottom: 10px !important;
-			margin-right: 10px !important;
+			margin-block-start: -10px !important;
+			margin-block-end: 10px !important;
+			margin-inline-end: 10px !important;
 			&::before {
-				border-left-style: dashed !important;
-				border-bottom-left-radius: 100px !important;
+				border-inline-start-style: dashed !important;
+				border-end-start-radius: 100px !important;
 			}
 		}
 		i {
@@ -469,12 +481,12 @@ function noteClick(e: MouseEvent) {
 
 	&.reply-to,
 	&.reply-to-more {
-		padding-bottom: 0;
+		padding-block-end: 0;
 		&:first-child {
-			padding-top: 24px;
+			padding-block-start: 24px;
 		}
 		.line::before {
-			margin-bottom: -16px;
+			margin-block-end: -16px;
 		}
 	}
 
@@ -488,11 +500,11 @@ function noteClick(e: MouseEvent) {
 				display: flex;
 				flex-direction: column;
 				align-items: center;
-				margin-right: 14px;
-				width: var(--avatarSize);
+				margin-inline-end: 14px;
+				inline-size: var(--avatarSize);
 				> .avatar {
-					width: var(--avatarSize);
-					height: var(--avatarSize);
+					inline-size: var(--avatarSize);
+					block-size: var(--avatarSize);
 					margin: 0;
 				}
 			}
@@ -500,33 +512,33 @@ function noteClick(e: MouseEvent) {
 		.line {
 			position: relative;
 			z-index: 2;
-			width: var(--avatarSize);
+			inline-size: var(--avatarSize);
 			display: flex;
 			flex-grow: 1;
-			margin-bottom: -10px;
+			margin-block-end: -10px;
 			pointer-events: none;
 			opacity: 0.25;
 			&::before {
 				content: "";
 				position: absolute;
-				border-left: 2px solid currentColor;
-				margin-left: calc((var(--avatarSize) / 2) - 1px);
-				width: calc(var(--indent) / 2);
+				border-inline-start: 2px solid currentColor;
+				margin-inline-start: calc((var(--avatarSize) / 2) - 1px);
+				inline-size: calc(var(--indent) / 2);
 				inset-block: 0;
-				min-height: 8px;
+				min-block-size: 8px;
 			}
 		}
 	}
 	&.reply-to,
 	&.reply-to-more {
 		> .main > .avatar-container > .line {
-			margin-bottom: 0px !important;
+			margin-block-end: 0px !important;
 		}
 	}
 	&.single,
 	&.singleStart {
 		> .main > .avatar-container > .line {
-			margin-bottom: -10px !important;
+			margin-block-end: -10px !important;
 		}
 	}
 	.reply.children:not(:last-child) {
@@ -534,9 +546,9 @@ function noteClick(e: MouseEvent) {
 		position: relative;
 		> .line {
 			position: absolute;
-			top: 0;
-			left: 0;
-			bottom: 0;
+			inset-block-start: 0;
+			inset-inline-start: 0;
+			inset-block-end: 0;
 		}
 	}
 	// Reply line connectors
@@ -545,51 +557,52 @@ function noteClick(e: MouseEvent) {
 		> .line {
 			position: absolute;
 			z-index: 2;
-			left: 0;
-			top: 0;
+			inset-inline-start: 0;
+			inset-block-start: 0;
 			opacity: 0.25;
 			&::after {
 				content: "";
 				position: absolute;
-				border-left: 2px solid currentColor;
-				border-bottom: 2px solid currentColor;
-				margin-left: calc((var(--avatarSize) / 2) - 1px);
-				width: calc(var(--indent) / 2);
-				height: calc((var(--avatarSize) / 2));
-				border-bottom-left-radius: calc(var(--indent) / 2);
-				top: 8px;
+				border-inline-start: 2px solid currentColor;
+				border-block-end: 2px solid currentColor;
+				margin-inline-start: calc((var(--avatarSize) / 2) - 1px);
+				inline-size: calc(var(--indent) / 2);
+				block-size: calc((var(--avatarSize) / 2));
+				border-end-start-radius: calc(var(--indent) / 2);
+				inset-block-start: 8px;
 			}
 		}
 		&:not(:last-child) > .line::after {
-			mask: linear-gradient(to right, transparent 2px, black 2px);
-			-webkit-mask: linear-gradient(to right, transparent 2px, black 2px);
+			mask: linear-gradient(var(--gradient-to-inline-end) transparent 2px, black 2px),;
+			-webkit-mask: linear-gradient(var(--gradient-to-inline-end) transparent 2px, black 2px),;
 		}
 	}
 	// End Reply Divider
 	.children > .main:last-child {
-		padding-bottom: 1em;
+		padding-block-end: 1em;
 		&::before {
-			bottom: 1em;
+			inset-block-end: 1em;
 		}
 		// &::after {
 		// 	content: "";
-		// 	border-top: 1px solid var(--X13);
+		// 	border-block-start: 1px solid var(--X13);
 		// 	position: absolute;
-		// 	bottom: 0;
-		// 	margin-left: calc(var(--avatarSize) + 12px);
+		// 	inset-block-end: 0;
+		// 	margin-inline-start: calc(var(--avatarSize) + 12px);
 		// 	inset-inline: 0;
 		// }
 	}
 	&.firstColumn > .children:last-child > .main {
-		padding-bottom: 0 !important;
+		padding-block-end: 0 !important;
 		&::before {
-			bottom: 0 !important;
+			inset-block-end: 0 !important;
 		}
 		// &::after { content: unset }
 	}
 
 	&.max-width_500px {
-		padding: 14px 16px;
+		padding-block: 14px;
+		padding-inline: 16px;
 		:not(.reply) > & {
 			.reply {
 				--avatarSize: 24px;
@@ -604,22 +617,23 @@ function noteClick(e: MouseEvent) {
 				--indent: 35px;
 			}
 			> .children:not(.single) {
-				padding-left: 28px !important;
+				padding-inline-start: 28px !important;
 			}
 		}
 		&.reply-to {
 			--avatarSize: 46px;
-			padding: 14px 16px;
-			padding-top: 14px !important;
-			padding-bottom: 0 !important;
-			margin-bottom: 0 !important;
+			padding-block: 14px;
+			padding-inline: 16px;
+			padding-block-start: 14px !important;
+			padding-block-end: 0 !important;
+			margin-block-end: 0 !important;
 		}
 		> .main > .avatar-container {
-			margin-right: 10px;
+			margin-inline-end: 10px;
 		}
 		&:first-child > .main > .body {
-			margin-top: -20px;
-			padding-top: 22px;
+			margin-block-start: -20px;
+			padding-block-start: 22px;
 		}
 	}
 }

@@ -155,17 +155,20 @@ definePageMetadata({
 .lcjjdxlm {
 	display: flex;
 	padding: 16px;
-	width: 100%;
+	inline-size: 100%;
 	text-align: unset;
 
 	> .avatar {
 		display: block;
 		flex-shrink: 0;
-		margin: 0 12px 0 0;
+		margin-block-start: 0;
+		margin-inline-end: 12px;
+		margin-block-end: 0;
+		margin-inline-start: 0;
 
 		> .avatar {
-			width: 50px;
-			height: 50px;
+			inline-size: 50px;
+			block-size: 50px;
 		}
 	}
 
@@ -173,7 +176,7 @@ definePageMetadata({
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		width: calc(100% - 62px);
+		inline-size: calc(100% - 62px);
 		position: relative;
 
 		> .name {

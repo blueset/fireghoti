@@ -28,6 +28,6 @@ import icon from "@/scripts/icon";
 
 definePageMetadata({
 	title: i18n.ts.other,
-	icon: `${icon("ph-dots-three-outline")}`,
+	icon: `${icon("ph-dots-three-outline ph-dir")}`,
 });
 </script>

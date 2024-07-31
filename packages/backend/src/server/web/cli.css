@@ -10,7 +10,7 @@ main {
   border-radius: 10px;
   margin: 10px;
   padding: 10px;
-	width: fit-content;
+	inline-size: fit-content;
 }
 #tl > div > header {
 	font-weight: 700;
@@ -19,7 +19,7 @@ main {
 
 img {
 	border-radius: 10px;
-	margin-right: 10px;
+	margin-inline-end: 10px;
 }
 
 #form {
@@ -42,11 +42,11 @@ html {
 button {
 	border-radius:999px;
 	padding:0 40px;
-	margin-top: 1rem;
+	margin-block-start: 1rem;
 	border:none;
 	cursor:pointer;
-	margin-bottom:12px;
-	background:linear-gradient(90deg,#9ccfd8,#31748f);
+	margin-block-end:12px;
+	background:linear-gradient(var(--gradient-to-inline-end),#9ccfd8,#31748f);
 	line-height:50px;
 	color:#191724;
 	font-weight:700;
@@ -75,9 +75,9 @@ code {
 	border: solid #aaa;
 	border-radius: 10px;
 	color: #e0def4;
-	margin-top: 3rem;
-	width: 20rem;
-	height: 5rem;
+	margin-block-start: 3rem;
+	inline-size: 20rem;
+	block-size: 5rem;
 	padding: 0.5rem;
 }
 
@@ -85,8 +85,8 @@ code {
 	border: solid #eee;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-inline-size: 500px) {
   #text {
-    width: 80%
+    inline-size: 80%
   }
 }

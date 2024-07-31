@@ -22,13 +22,13 @@
 				v-if="note && !value.detailed"
 				:key="note.id + ':normal'"
 				v-model:note="note"
-				style="margin-bottom: 16px"
+				style="margin-block-end: 16px"
 			/>
 			<XNoteDetailed
 				v-if="note && value.detailed"
 				:key="note.id + ':detail'"
 				v-model:note="note"
-				style="margin-bottom: 16px"
+				style="margin-block-end: 16px"
 			/>
 		</section>
 	</XContainer>

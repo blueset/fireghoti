@@ -1356,6 +1356,13 @@ _nsfw:
   respect: "Hide NSFW media"
   ignore: "Don't hide NSFW media"
   force: "Hide all media"
+writingMode: "Writing mode"
+_writingMode:
+  horizontalTB: "Horizontal, top to bottom"
+  verticalLR: "Vertical, left to right, sideways"
+  verticalRL: "Vertical, right to left, sideways"
+  verticalLRUpright: "Vertical, left to right, upright"
+  verticalRLUpright: "Vertical, right to left, upright"
 _mfm:
   play: "Play MFM"
   stop: "Stop MFM"

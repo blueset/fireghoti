@@ -348,7 +348,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 			: undefined,
 		null,
 		{
-			icon: `${icon("ph-list-bullets")}`,
+			icon: `${icon("ph-list-bullets ph-dir")}`,
 			text: i18n.ts.addToList,
 			action: pushList,
 		},

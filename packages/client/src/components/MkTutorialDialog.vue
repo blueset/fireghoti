@@ -17,7 +17,7 @@
 								:disabled="tutorial === 0"
 								@click="tutorial--"
 							>
-								<i :class="icon('ph-caret-left')"></i>
+								<i :class="icon('ph-caret-left ph-dir')"></i>
 							</button>
 							<span>{{ tutorial + 1 }} / 6</span>
 							<button
@@ -25,7 +25,7 @@
 								:disabled="tutorial === 5"
 								@click="tutorial++"
 							>
-								<i :class="icon('ph-caret-right')"></i>
+								<i :class="icon('ph-caret-right ph-dir')"></i>
 							</button>
 						</div>
 						<MkButton
@@ -309,21 +309,22 @@ function close(_res) {
 				}
 
 				&:first-child {
-					padding-right: 8px;
+					padding-inline-end: 8px;
 				}
 
 				&:last-child {
-					padding-left: 8px;
+					padding-inline-start: 8px;
 				}
 			}
 
 			> span {
-				margin: 0 4px;
+				margin-block: 0;
+				margin-inline: 4px;
 			}
 		}
 
 		> .ok {
-			margin-left: auto;
+			margin-inline-start: auto;
 		}
 	}
 }

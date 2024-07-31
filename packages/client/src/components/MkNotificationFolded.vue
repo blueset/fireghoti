@@ -226,34 +226,40 @@ onUnmounted(() => {
 		font-size: 0.9em;
 	}
 	&.max-width_450px > .meta {
-		padding: 12px 16px 0 16px;
+		padding-block-start: 12px;
+		padding-inline-end: 16px;
+		padding-block-end: 0;
+		padding-inline-start: 16px;
 	}
 
 	> .meta {
-		margin-top: 1px; // Otherwise it will cover the line
-		padding: 24px 32px 0 32px;
+		margin-block-start: 1px; // Otherwise it will cover the line
+		padding-block-start: 24px;
+		padding-inline-end: 32px;
+		padding-block-end: 0;
+		padding-inline-start: 32px;
 		display: flex;
 		align-items: baseline;
 		white-space: nowrap;
 		> .info {
 			text-overflow: ellipsis;
 				white-space: nowrap;
-				min-width: 0;
+				min-inline-size: 0;
 				overflow: hidden;
 			// flex-grow: 1;
 			// display: inline-flex;
 			> .sub-icon {
-				margin-right: 3px;
+				margin-inline-end: 3px;
 				font-size: 14px;
 			}
 			> .avatars > .avatar {
-				width: 20px;
-				height: 20px;
-				margin-right: 5px;
+				inline-size: 20px;
+				block-size: 20px;
+				margin-inline-end: 5px;
 			}
 		}
 		> .time {
-			margin-left: auto;
+			margin-inline-start: auto;
 			// flex-grow: 0;
 			// flex-shrink: 0;
 			white-space: nowrap;

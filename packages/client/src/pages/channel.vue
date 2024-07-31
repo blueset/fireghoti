@@ -22,10 +22,10 @@
 						@click="() => (showBanner = !showBanner)"
 					>
 						<template v-if="showBanner"
-							><i :class="icon('ph-caret-up')"></i
+							><i :class="icon('ph-caret-up ph-dir')"></i
 						></template>
 						<template v-else
-							><i :class="icon('ph-caret-down')"></i
+							><i :class="icon('ph-caret-down ph-dir')"></i
 						></template>
 					</button>
 					<div v-if="!showBanner" class="hideOverlay"></div>
@@ -43,7 +43,7 @@
 								><I18n
 									:src="i18n.ts._channel.usersCount"
 									tag="span"
-									style="margin-left: 4px"
+									style="margin-inline-start: 4px"
 									><template #n
 										><b>{{
 											channel.usersCount
@@ -56,7 +56,7 @@
 								><I18n
 									:src="i18n.ts._channel.notesCount"
 									tag="span"
-									style="margin-left: 4px"
+									style="margin-inline-start: 4px"
 									><template #n
 										><b>{{
 											channel.notesCount
@@ -166,18 +166,18 @@ definePageMetadata(
 	> .subscribe {
 		position: absolute;
 		z-index: 1;
-		top: 16px;
-		left: 16px;
+		inset-block-start: 16px;
+		inset-inline-start: 16px;
 	}
 
 	> .toggle {
 		position: absolute;
 		z-index: 2;
-		top: 8px;
-		right: 8px;
+		inset-block-start: 8px;
+		inset-inline-end: 8px;
 		font-size: 1.2em;
-		width: 48px;
-		height: 48px;
+		inline-size: 48px;
+		block-size: 48px;
 		color: #fff;
 		background: rgba(0, 0, 0, 0.5);
 		border-radius: 100%;
@@ -189,25 +189,26 @@ definePageMetadata(
 
 	> .banner {
 		position: relative;
-		height: 200px;
+		block-size: 200px;
 		background-position: center;
 		background-size: cover;
 
 		> .fade {
 			position: absolute;
-			bottom: 0;
-			left: 0;
-			width: 100%;
-			height: 64px;
-			background: linear-gradient(0deg, var(--panel), var(--X15));
+			inset-block-end: 0;
+			inset-inline-start: 0;
+			inline-size: 100%;
+			block-size: 64px;
+			background: linear-gradient(var(--gradient-to-block-start), var(--panel), var(--X15));
 		}
 
 		> .status {
 			position: absolute;
 			z-index: 1;
-			bottom: 16px;
-			right: 16px;
-			padding: 8px 12px;
+			inset-block-end: 16px;
+			inset-inline-end: 16px;
+			padding-block: 8px;
+			padding-inline: 12px;
 			font-size: 80%;
 			background: rgba(0, 0, 0, 0.7);
 			border-radius: 6px;
@@ -222,10 +223,10 @@ definePageMetadata(
 	> .hideOverlay {
 		position: absolute;
 		z-index: 1;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
+		inset-block-start: 0;
+		inset-inline-start: 0;
+		inline-size: 100%;
+		block-size: 100%;
 		-webkit-backdrop-filter: var(--blur, blur(16px));
 		backdrop-filter: var(--blur, blur(16px));
 		background: rgba(0, 0, 0, 0.3);
@@ -237,14 +238,14 @@ definePageMetadata(
 		}
 
 		> .toggle {
-			top: 0;
-			right: 0;
-			height: 100%;
+			inset-block-start: 0;
+			inset-inline-end: 0;
+			block-size: 100%;
 			background: transparent;
 		}
 
 		> .banner {
-			height: 42px;
+			block-size: 42px;
 			filter: blur(8px);
 
 			> * {

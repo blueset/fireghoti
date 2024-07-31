@@ -42,7 +42,7 @@ const pagination = {
 	grid-gap: 6px;
 }
 
-@media (max-width: 720px) {
+@media (max-inline-size: 720px) {
 	.stream {
 		grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
 	}

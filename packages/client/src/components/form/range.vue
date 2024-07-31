@@ -120,7 +120,10 @@ function tooltipHide() {
 
 	> .label {
 		font-size: 0.85em;
-		padding: 0 0 8px 0;
+		padding-block-start: 0;
+		padding-inline-end: 0;
+		padding-block-end: 8px;
+		padding-inline-start: 0;
 		user-select: none;
 
 		&:empty {
@@ -130,7 +133,10 @@ function tooltipHide() {
 
 	> .caption {
 		font-size: 0.85em;
-		padding: 8px 0 0 0;
+		padding-block-start: 8px;
+		padding-inline-end: 0;
+		padding-block-end: 0;
+		padding-inline-start: 0;
 		color: var(--fgTransparentWeak);
 
 		&:empty {
@@ -142,13 +148,15 @@ function tooltipHide() {
 	$thumbWidth: 20px;
 
 	> .body {
-		padding: 10px 0;
+		padding-block: 10px;
+		padding-inline: 0;
 		background: none;
 		border: none;
 		border-radius: 6px;
 
 		&.background {
-			padding: 10px 12px;
+			padding-block: 10px;
+			padding-inline: 12px;
 			background: var(--panel);
 			border: solid 1px var(--panel);
 		}
@@ -157,10 +165,10 @@ function tooltipHide() {
 			position: relative;
 			display: flex;
 			align-items: center;
-			height: $thumbHeight;
+			block-size: $thumbHeight;
 
 			@mixin track {
-				height: 3px;
+				block-size: 3px;
 				background: rgba(0, 0, 0, 0.1);
 				border-radius: 999px;
 			}
@@ -170,8 +178,8 @@ function tooltipHide() {
 			}
 
 			@mixin thumb {
-				width: $thumbWidth;
-				height: $thumbHeight;
+				inline-size: $thumbWidth;
+				block-size: $thumbHeight;
 				background: var(--accent);
 				border-radius: 999px;
 
@@ -181,7 +189,7 @@ function tooltipHide() {
 				}
 			}
 			> input {
-				width: 100%;
+				inline-size: 100%;
 				background: none;
 
 				&::-webkit-slider-runnable-track {
@@ -202,7 +210,7 @@ function tooltipHide() {
 				}
 
 				&::-webkit-slider-thumb {
-					margin-top: -6.5px;
+					margin-block-start: -6.5px;
 					@include thumb;
 				}
 				&::-moz-range-thumb {

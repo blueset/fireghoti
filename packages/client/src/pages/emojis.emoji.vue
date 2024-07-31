@@ -56,7 +56,7 @@ function menu(ev) {
 	display: flex;
 	align-items: center;
 	padding: 12px;
-	text-align: left;
+	text-align: start;
 	background: var(--panel);
 	border-radius: 8px;
 
@@ -65,12 +65,15 @@ function menu(ev) {
 	}
 
 	> .img {
-		width: 42px;
-		height: 42px;
+		inline-size: 42px;
+		block-size: 42px;
 	}
 
 	> .body {
-		padding: 0 0 0 8px;
+		padding-block-start: 0;
+		padding-inline-end: 0;
+		padding-block-end: 0;
+		padding-inline-start: 8px;
 		white-space: nowrap;
 		overflow: hidden;
 

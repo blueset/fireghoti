@@ -36,7 +36,7 @@
 						<div v-else>{{ i18n.ts.system }}</div>
 					</div>
 					<div>
-						<span style="margin-right: 1em">{{ file.type }}</span>
+						<span style="margin-inline-end: 1em">{{ file.type }}</span>
 						<span>{{ bytes(file.size) }}</span>
 					</div>
 					<div>
@@ -77,14 +77,14 @@ defineProps<{
 }
 
 .urempief {
-	margin-top: var(--margin);
+	margin-block-start: var(--margin);
 
 	&.list {
 		> .file {
 			display: flex;
-			width: 100%;
+			inline-size: 100%;
 			box-sizing: border-box;
-			text-align: left;
+			text-align: start;
 			align-items: center;
 
 			&:hover {
@@ -92,16 +92,16 @@ defineProps<{
 			}
 
 			> .thumbnail {
-				width: 128px;
-				height: 128px;
+				inline-size: 128px;
+				block-size: 128px;
 			}
 
 			> .body {
-				margin-left: 0.3em;
+				margin-inline-start: 0.3em;
 				padding: 8px;
 				flex: 1;
 
-				@media (max-width: 500px) {
+				@media (max-inline-size: 500px) {
 					font-size: 14px;
 				}
 			}
@@ -112,23 +112,25 @@ defineProps<{
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
 		grid-gap: 12px;
-		margin: var(--margin) 0;
+		margin-block: var(--margin);
+		margin-inline: 0;
 
 		> .file {
 			position: relative;
 			aspect-ratio: 1;
 
 			> .thumbnail {
-				width: 100%;
-				height: 100%;
+				inline-size: 100%;
+				block-size: 100%;
 			}
 
 			> .sensitive-label {
 				position: absolute;
 				z-index: 10;
-				top: 8px;
-				left: 8px;
-				padding: 2px 4px;
+				inset-block-start: 8px;
+				inset-inline-start: 8px;
+				padding-block: 2px;
+				padding-inline: 4px;
 				background: #ff0000bf;
 				color: #fff;
 				border-radius: 4px;

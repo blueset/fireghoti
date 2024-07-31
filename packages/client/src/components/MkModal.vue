@@ -221,6 +221,13 @@ function onBgClick() {
 
 if (type.value === "drawer") {
 	maxHeight.value = window.innerHeight / 1.5;
+	if (
+		getComputedStyle(document.documentElement)["writing-mode"].startsWith(
+			"vertical",
+		)
+	) {
+		maxHeight.value = window.innerHeight / 1.5;
+	}
 }
 
 const keymap = {
@@ -247,21 +254,87 @@ const align = () => {
 	const x = srcRect.left + (fixed.value ? 0 : window.scrollX);
 	const y = srcRect.top + (fixed.value ? 0 : window.scrollY);
 
-	if (props.anchor.x === "center") {
+	let { x: anchorX, y: anchorY } = props.anchor;
+
+	const styles = getComputedStyle(props.src);
+	const direction = styles.direction;
+	const writingMode = styles["writing-mode"];
+
+	if (direction === "rtl") {
+		if (anchorX === "right") {
+			anchorX = "left";
+		} else if (anchorX === "left") {
+			anchorX = "right";
+		}
+	}
+
+	if (writingMode.startsWith("vertical")) {
+		const prevAnchorX = anchorX;
+		const prevAnchorY = anchorY;
+		if (prevAnchorX === "left") {
+			anchorY = "top";
+		} else if (prevAnchorX === "right") {
+			anchorY = "bottom";
+		} else if (prevAnchorX === "center") {
+			anchorY = "top";
+		}
+		if (writingMode === "vertical-rl") {
+			if (prevAnchorY === "top") {
+				anchorX = "right";
+			} else if (prevAnchorY === "bottom") {
+				anchorX = "left";
+			} else if (prevAnchorY === "center") {
+				anchorX = "center";
+			}
+		} else if (writingMode === "vertical-lr") {
+			if (prevAnchorY === "top") {
+				anchorX = "left";
+			} else if (prevAnchorY === "bottom") {
+				anchorX = "right";
+			} else if (prevAnchorY === "center") {
+				anchorX = "center";
+			}
+		}
+	}
+
+	if (anchorX === "center") {
 		left = x + props.src.offsetWidth / 2 - width / 2;
-	} else if (props.anchor.x === "left") {
-		left = x + props.src.offsetWidth - width;
-	} else if (props.anchor.x === "right") {
+	} else if (anchorX === "left") {
+		left = x - width;
+	} else if (anchorX === "right") {
 		left = x + props.src.offsetWidth;
 	}
 
-	if (props.anchor.y === "center") {
+	if (anchorY === "center") {
 		top = y - height / 2;
-	} else if (props.anchor.y === "top") {
-		// TODO
-	} else if (props.anchor.y === "bottom") {
+	} else if (anchorY === "top") {
+		top = y;
+	} else if (anchorY === "bottom") {
 		top = y + props.src.offsetHeight;
 	}
+
+	const isVertical = writingMode.startsWith("vertical");
+	const windowBlockSize = isVertical ? window.innerWidth : window.innerHeight;
+	const windowScrollBlock = isVertical ? window.scrollX : window.scrollY;
+	const insetBlockStart =
+		writingMode === "vertical-rl"
+			? windowBlockSize - left - width
+			: writingMode === "vertical-lr"
+				? left
+				: top;
+	const insetBlockEnd =
+		writingMode === "vertical-rl"
+			? windowBlockSize - left
+			: writingMode === "vertical-lr"
+				? left + width
+				: top + height;
+	const blockSize = isVertical ? width : height;
+	const srcRectBlockStart =
+		writingMode === "vertical-rl"
+			? srcRect.right
+			: writingMode === "vertical-lr"
+				? srcRect.left
+				: srcRect.top;
 
 	if (fixed.value) {
 		// 画面から横にはみ出る場合
@@ -274,18 +347,29 @@ const align = () => {
 
 		// 画面から縦にはみ出る場合
 		if (top + height > window.innerHeight - MARGIN) {
-			if (props.noOverlap && props.anchor.x === "center") {
-				if (underSpace >= upperSpace / 3) {
-					maxHeight.value = underSpace;
-				} else {
-					maxHeight.value = upperSpace;
+			if (props.noOverlap && anchorX === "center") {
+				if (underSpace < upperSpace / 3) {
 					top = upperSpace + MARGIN - height;
 				}
 			} else {
 				top = window.innerHeight - MARGIN - height;
 			}
-		} else {
-			maxHeight.value = underSpace;
+		}
+
+		const blockEndSpace = windowBlockSize - MARGIN - insetBlockStart;
+		const blockStartSpace = srcRectBlockStart - MARGIN;
+
+		if (
+			insetBlockEnd > windowBlockSize - MARGIN ||
+			blockSize > windowBlockSize - MARGIN
+		) {
+			if (props.noOverlap) {
+				if (blockEndSpace >= blockStartSpace / 3) {
+					maxHeight.value = blockEndSpace;
+				} else {
+					maxHeight.value = blockStartSpace;
+				}
+			}
 		}
 	} else {
 		// 画面から横にはみ出る場合
@@ -298,18 +382,30 @@ const align = () => {
 
 		// 画面から縦にはみ出る場合
 		if (top + height - window.scrollY > window.innerHeight - MARGIN) {
-			if (props.noOverlap && props.anchor.x === "center") {
-				if (underSpace >= upperSpace / 3) {
-					maxHeight.value = underSpace;
-				} else {
-					maxHeight.value = upperSpace;
+			if (props.noOverlap && anchorX === "center") {
+				if (underSpace < upperSpace / 3) {
 					top = window.scrollY + (upperSpace + MARGIN - height);
 				}
 			} else {
 				top = window.innerHeight - MARGIN - height + window.scrollY - 1;
 			}
+		}
+
+		const blockEndSpace =
+			windowBlockSize - MARGIN - (insetBlockStart - windowScrollBlock);
+		const blockStartSpace = srcRectBlockStart - MARGIN;
+
+		// 画面から縦にはみ出る場合
+		if (insetBlockEnd - windowScrollBlock > windowBlockSize - MARGIN) {
+			if (props.noOverlap) {
+				if (blockEndSpace >= blockStartSpace / 3) {
+					maxHeight.value = blockEndSpace;
+				} else {
+					maxHeight.value = blockStartSpace;
+				}
+			}
 		} else {
-			maxHeight.value = underSpace;
+			maxHeight.value = blockEndSpace;
 		}
 	}
 
@@ -317,10 +413,13 @@ const align = () => {
 		top = MARGIN;
 	}
 
-	if (left > window.innerWidth - width - MARGIN) {
+	if (
+		left > window.innerWidth - width - MARGIN &&
+		writingMode !== "vertical-lr"
+	) {
 		left = window.innerWidth - width - MARGIN;
 	}
-	if (left < 0) {
+	if (left < 0 && writingMode !== "vertical-rl") {
 		left = 0;
 	}
 
@@ -534,22 +633,19 @@ defineExpose({
 	&.dialog {
 		> .content {
 			position: fixed;
-			top: 0;
-			bottom: 0;
-			left: 0;
-			right: 0;
+			inset: 0;
 			margin: auto;
 			padding: 32px;
 			// TODO: mask-imageはiOSだとやたら重い。なんとかしたい
 			-webkit-mask-image: linear-gradient(
-				0deg,
+				var(--gradient-to-block-start),
 				rgba(0, 0, 0, 0) 0%,
 				rgba(0, 0, 0, 1) 32px,
 				rgba(0, 0, 0, 1) calc(100% - 32px),
 				rgba(0, 0, 0, 0) 100%
 			);
 			mask-image: linear-gradient(
-				0deg,
+				var(--gradient-to-block-start),
 				rgba(0, 0, 0, 0) 0%,
 				rgba(0, 0, 0, 1) 32px,
 				rgba(0, 0, 0, 1) calc(100% - 32px),
@@ -558,17 +654,17 @@ defineExpose({
 			overflow: auto;
 			display: flex;
 
-			@media (max-width: 500px) {
+			@media (max-inline-size: 500px) {
 				padding: 16px;
 				-webkit-mask-image: linear-gradient(
-					0deg,
+					var(--gradient-to-block-start),
 					rgba(0, 0, 0, 0) 0%,
 					rgba(0, 0, 0, 1) 16px,
 					rgba(0, 0, 0, 1) calc(100% - 16px),
 					rgba(0, 0, 0, 0) 100%
 				);
 				mask-image: linear-gradient(
-					0deg,
+					var(--gradient-to-block-start),
 					rgba(0, 0, 0, 0) 0%,
 					rgba(0, 0, 0, 1) 16px,
 					rgba(0, 0, 0, 1) calc(100% - 16px),
@@ -582,7 +678,7 @@ defineExpose({
 
 			&.top {
 				> ::v-deep(*) {
-					margin-top: 0;
+					margin-block-start: 0;
 				}
 			}
 		}
@@ -600,17 +696,17 @@ defineExpose({
 
 	&.drawer {
 		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
+		inset-block-start: 0;
+		inset-inline-start: 0;
+		inline-size: 100%;
+		block-size: 100%;
 		overflow: clip;
 
 		> .content {
 			position: fixed;
-			bottom: 0;
-			left: 0;
-			right: 0;
+			inset-block-end: 0;
+			inset-inline-start: 0;
+			inset-inline-end: 0;
 			margin: auto;
 
 			> ::v-deep(*) {

@@ -105,6 +105,6 @@ defineExpose({
 	border: solid 0.5px var(--divider);
 	border-radius: var(--radius);
 	padding: 12px;
-	margin-top: 8px;
+	margin-block-start: 8px;
 }
 </style>

@@ -41,9 +41,10 @@ const emit = defineEmits<{
 
 	> .icon {
 		display: block;
-		width: 60px;
+		inline-size: 60px;
 		font-size: 60px; // unicodeな絵文字についてはwidthが効かないため
-		margin: 0 auto;
+		margin-block: 0;
+		margin-inline: auto;
 	}
 
 	> .name {

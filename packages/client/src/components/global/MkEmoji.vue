@@ -65,11 +65,11 @@ const alt = computed(() =>
 
 <style lang="scss" scoped>
 .mk-emoji {
-	height: 1.25em;
+	block-size: 1.25em;
 	vertical-align: -0.25em;
 
 	&.custom {
-		height: 2em;
+		block-size: 2em;
 		vertical-align: middle;
 		transition: transform 0.2s ease;
 
@@ -78,7 +78,7 @@ const alt = computed(() =>
 		}
 
 		&.normal {
-			height: 1.25em;
+			block-size: 1.25em;
 			vertical-align: -0.25em;
 
 			&:hover {
@@ -88,7 +88,7 @@ const alt = computed(() =>
 	}
 
 	&.noStyle {
-		height: auto !important;
+		block-size: auto !important;
 	}
 }
 </style>

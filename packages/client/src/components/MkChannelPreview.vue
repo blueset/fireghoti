@@ -12,7 +12,7 @@
 					<I18n
 						:src="i18n.ts._channel.usersCount"
 						tag="span"
-						style="margin-left: 4px"
+						style="margin-inline-start: 4px"
 					>
 						<template #n>
 							<b>{{ channel.usersCount }}</b>
@@ -24,7 +24,7 @@
 					<I18n
 						:src="i18n.ts._channel.notesCount"
 						tag="span"
-						style="margin-left: 4px"
+						style="margin-inline-start: 4px"
 					>
 						<template #n>
 							<b>{{ channel.notesCount }}</b>
@@ -73,7 +73,7 @@ const bannerStyle = computed(() => {
 .eftoefju {
 	display: block;
 	overflow: hidden;
-	width: 100%;
+	inline-size: 100%;
 
 	&:hover {
 		text-decoration: none;
@@ -81,25 +81,26 @@ const bannerStyle = computed(() => {
 
 	> .banner {
 		position: relative;
-		width: 100%;
-		height: 200px;
+		inline-size: 100%;
+		block-size: 200px;
 		background-position: center;
 		background-size: cover;
 
 		> .fade {
 			position: absolute;
-			bottom: 0;
-			left: 0;
-			width: 100%;
-			height: 64px;
-			background: linear-gradient(0deg, var(--panel), var(--X15));
+			inset-block-end: 0;
+			inset-inline-start: 0;
+			inline-size: 100%;
+			block-size: 64px;
+			background: linear-gradient(var(--gradient-to-block-start), var(--panel), var(--X15));
 		}
 
 		> .name {
 			position: absolute;
-			top: 16px;
-			left: 16px;
-			padding: 12px 16px;
+			inset-block-start: 16px;
+			inset-inline-start: 16px;
+			padding-block: 12px;
+			padding-inline: 16px;
 			-webkit-backdrop-filter: var(--blur, blur(8px));
 			backdrop-filter: var(--blur, blur(8px));
 			background: rgba(0, 0, 0, 0.2);
@@ -111,9 +112,10 @@ const bannerStyle = computed(() => {
 		> .status {
 			position: absolute;
 			z-index: 1;
-			bottom: 16px;
-			right: 16px;
-			padding: 8px 12px;
+			inset-block-end: 16px;
+			inset-inline-end: 16px;
+			padding-block: 8px;
+			padding-inline: 12px;
 			font-size: 80%;
 			-webkit-backdrop-filter: var(--blur, blur(8px));
 			backdrop-filter: var(--blur, blur(8px));
@@ -133,8 +135,9 @@ const bannerStyle = computed(() => {
 	}
 
 	> footer {
-		padding: 12px 16px;
-		border-top: solid 0.5px var(--divider);
+		padding-block: 12px;
+		padding-inline: 16px;
+		border-block-start: solid 0.5px var(--divider);
 
 		> span {
 			opacity: 0.7;
@@ -142,11 +145,11 @@ const bannerStyle = computed(() => {
 		}
 	}
 
-	@media (max-width: 550px) {
+	@media (max-inline-size: 550px) {
 		font-size: 0.9em;
 
 		> .banner {
-			height: 80px;
+			block-size: 80px;
 
 			> .status {
 				display: none;
@@ -162,11 +165,11 @@ const bannerStyle = computed(() => {
 		}
 	}
 
-	@media (max-width: 500px) {
+	@media (max-inline-size: 500px) {
 		font-size: 0.8em;
 
 		> .banner {
-			height: 70px;
+			block-size: 70px;
 		}
 
 		> article {

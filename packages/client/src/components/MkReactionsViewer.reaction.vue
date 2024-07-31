@@ -105,11 +105,12 @@ useTooltip(
 .hkzvhatu {
 	position: relative;
 	display: inline-block;
-	height: 32px;
+	block-size: 32px;
 	margin-block: 2px;
-	padding: 0 8px;
+	padding-block: 0;
+	padding-inline: 8px;
 	pointer-events: all;
-	min-width: max-content;
+	min-inline-size: max-content;
 	&::before {
 		content: "";
 		position: absolute;
@@ -167,7 +168,10 @@ useTooltip(
 	> .count {
 		font-size: 0.9em;
 		line-height: 32px;
-		margin: 0 0 0 4px;
+		margin-block-start: 0;
+		margin-inline-end: 0;
+		margin-block-end: 0;
+		margin-inline-start: 4px;
 	}
 }
 </style>

@@ -444,13 +444,14 @@ definePageMetadata(
 			display: grid;
 			grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
 			grid-gap: 12px;
-			margin: var(--margin) 0;
+			margin-block: var(--margin);
+			margin-inline: 0;
 
 			> .emoji {
 				display: flex;
 				align-items: center;
 				padding: 11px;
-				text-align: left;
+				text-align: start;
 				border: solid 1px var(--panel);
 
 				&:hover {
@@ -462,12 +463,15 @@ definePageMetadata(
 				}
 
 				> .img {
-					width: 42px;
-					height: 42px;
+					inline-size: 42px;
+					block-size: 42px;
 				}
 
 				> .body {
-					padding: 0 0 0 8px;
+					padding-block-start: 0;
+					padding-inline-end: 0;
+					padding-block-end: 0;
+					padding-inline-start: 8px;
 					white-space: nowrap;
 					overflow: hidden;
 
@@ -495,25 +499,29 @@ definePageMetadata(
 			display: grid;
 			grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
 			grid-gap: 12px;
-			margin: var(--margin) 0;
+			margin-block: var(--margin);
+			margin-inline: 0;
 
 			> .emoji {
 				display: flex;
 				align-items: center;
 				padding: 12px;
-				text-align: left;
+				text-align: start;
 
 				&:hover {
 					color: var(--accent);
 				}
 
 				> .img {
-					width: 32px;
-					height: 32px;
+					inline-size: 32px;
+					block-size: 32px;
 				}
 
 				> .body {
-					padding: 0 0 0 8px;
+					padding-block-start: 0;
+					padding-inline-end: 0;
+					padding-block-end: 0;
+					padding-inline-start: 8px;
 					white-space: nowrap;
 					overflow: hidden;
 

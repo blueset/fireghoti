@@ -114,11 +114,12 @@ definePageMetadata({
 <style lang="scss" scoped>
 .relaycxt {
 	> .status {
-		margin: 8px 0;
+		margin-block: 8px;
+		margin-inline: 0;
 
 		> .icon {
-			width: 1em;
-			margin-right: 0.75em;
+			inline-size: 1em;
+			margin-inline-end: 0.75em;
 
 			&.accepted {
 				color: var(--success);

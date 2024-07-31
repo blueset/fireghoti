@@ -7,7 +7,7 @@
 		@parent-focus="($event) => emit('parent-focus', $event)"
 	>
 		<template #header
-			><i :class="icon('ph-browser')" style="margin-right: 8px"></i
+			><i :class="icon('ph-browser')" style="margin-inline-end: 8px"></i
 			>{{ column.name }}</template
 		>
 		<div class="wtdtxvec">
@@ -91,7 +91,8 @@ const menu = [
 	--margin: 8px;
 	--panelBorder: none;
 
-	padding: 0 var(--margin);
+	padding-block: 0;
+	padding-inline: var(--margin);
 
 	> .intro {
 		padding: 16px;

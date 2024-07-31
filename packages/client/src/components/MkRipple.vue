@@ -124,8 +124,8 @@ onMounted(() => {
 .vswabwbm {
 	pointer-events: none;
 	position: fixed;
-	width: 128px;
-	height: 128px;
+	inline-size: 128px;
+	block-size: 128px;
 
 	> svg {
 		> circle {

@@ -47,8 +47,8 @@ onMounted(() => {
 <style lang="scss" scoped>
 .fgmtyycl {
 	position: absolute;
-	width: 500px;
-	max-width: calc(90vw - 12px);
+	inline-size: 500px;
+	max-inline-size: calc(90vi - 12px);
 	pointer-events: none;
 }
 </style>

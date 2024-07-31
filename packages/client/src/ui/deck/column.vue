@@ -31,10 +31,10 @@
 				@click="toggleActive"
 			>
 				<template v-if="active"
-					><i :class="icon('ph-caret-up')"></i
+					><i :class="icon('ph-caret-up ph-dir')"></i
 				></template>
 				<template v-else
-					><i :class="icon('ph-caret-down')"></i
+					><i :class="icon('ph-caret-down ph-dir')"></i
 				></template>
 			</button>
 			<div class="action">
@@ -46,7 +46,7 @@
 				class="menu _button"
 				@click.stop="showSettingsMenu"
 			>
-				<i :class="icon('ph-dots-three-outline-vertical')"></i>
+				<i :class="icon('ph-dots-three-outline ph-dir-vertical')"></i>
 			</button>
 		</header>
 		<div v-show="active" ref="body">
@@ -321,7 +321,7 @@ function onDrop(ev) {
 	--root-margin: 10px;
 	--deckColumnHeaderHeight: 42px;
 
-	height: 100%;
+	block-size: 100%;
 	overflow: hidden;
 	contain: strict;
 
@@ -333,10 +333,10 @@ function onDrop(ev) {
 			display: block;
 			position: absolute;
 			z-index: 1000;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
+			inset-block-start: 0;
+			inset-inline-start: 0;
+			inline-size: 100%;
+			block-size: 100%;
 			background: var(--focus);
 		}
 	}
@@ -347,10 +347,10 @@ function onDrop(ev) {
 			display: block;
 			position: absolute;
 			z-index: 1000;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
+			inset-block-start: 0;
+			inset-inline-start: 0;
+			inline-size: 100%;
+			block-size: 100%;
 			background: var(--focus);
 			opacity: 0.5;
 		}
@@ -364,7 +364,7 @@ function onDrop(ev) {
 
 	&:not(.active) {
 		flex-basis: var(--deckColumnHeaderHeight);
-		min-height: var(--deckColumnHeaderHeight);
+		min-block-size: var(--deckColumnHeaderHeight);
 
 		> header.indicated {
 			box-shadow: 4px 0px var(--accent) inset;
@@ -395,8 +395,9 @@ function onDrop(ev) {
 		display: flex;
 		z-index: 2;
 		line-height: var(--deckColumnHeaderHeight);
-		height: var(--deckColumnHeaderHeight);
-		padding: 0 16px;
+		block-size: var(--deckColumnHeaderHeight);
+		padding-block: 0;
+		padding-inline: 16px;
 		font-size: 0.9em;
 		color: var(--panelHeaderFg);
 		background: var(--panelHeaderBg);
@@ -421,14 +422,14 @@ function onDrop(ev) {
 		}
 
 		> span:only-of-type {
-			width: 100%;
+			inline-size: 100%;
 		}
 
 		> .toggleActive,
 		> .action > ::v-deep(*),
 		> .menu {
 			z-index: 1;
-			width: var(--deckColumnHeaderHeight);
+			inline-size: var(--deckColumnHeaderHeight);
 			line-height: var(--deckColumnHeaderHeight);
 			color: var(--faceTextButton);
 
@@ -443,7 +444,7 @@ function onDrop(ev) {
 
 		> .toggleActive,
 		> .action {
-			margin-left: -16px;
+			margin-inline-start: -16px;
 		}
 
 		> .action {
@@ -455,16 +456,16 @@ function onDrop(ev) {
 		}
 
 		> .menu {
-			margin-left: auto;
-			margin-right: -16px;
+			margin-inline-start: auto;
+			margin-inline-end: -16px;
 		}
 	}
 
 	> div {
-		height: calc(100% - var(--deckColumnHeaderHeight));
-		overflow-y: auto;
-		overflow-x: hidden; // Safari does not supports clip
-		overflow-x: clip;
+		block-size: calc(100% - var(--deckColumnHeaderHeight));
+		overflow-block: auto;
+		overflow-inline: hidden; // Safari does not supports clip
+		overflow-inline: clip;
 		-webkit-overflow-scrolling: touch;
 		box-sizing: border-box;
 	}

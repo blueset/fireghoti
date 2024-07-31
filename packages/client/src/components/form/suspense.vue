@@ -113,7 +113,7 @@ export default defineComponent({
 	text-align: center;
 
 	> .retry {
-		margin-top: 16px;
+		margin-block-start: 16px;
 	}
 }
 </style>

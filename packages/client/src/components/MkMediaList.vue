@@ -215,20 +215,20 @@ const previewableCount = computed(
 <style lang="scss" scoped>
 .hoawjimk {
 	> .dmWidth {
-		min-width: 20rem;
-		max-width: 40rem;
+		min-inline-size: 20rem;
+		max-inline-size: 40rem;
 	}
 
 	> .grid-container {
 		position: relative;
-		width: 100%;
-		margin-top: 4px;
+		inline-size: 100%;
+		margin-block-start: 4px;
 		border-radius: var(--radius);
 		overflow: hidden;
 		pointer-events: none;
 
 		&[data-count] {
-			padding-top: 56.25%; // 16:9;
+			padding-block-start: 56.25%; // 16:9;
 			> div {
 				position: absolute;
 				inset: 0;
@@ -264,7 +264,7 @@ const previewableCount = computed(
 		}
 
 		&:not([data-count]) > div > div {
-			max-height: 300px;
+			max-block-size: 300px;
 		}
 
 		> div {
@@ -276,7 +276,7 @@ const previewableCount = computed(
 				overflow: hidden;
 				border-radius: 6px;
 				pointer-events: all;
-				min-height: 50px;
+				min-block-size: 50px;
 			}
 
 			> :nth-child(1) {
@@ -315,24 +315,25 @@ const previewableCount = computed(
 	align-items: center;
 
 	position: absolute;
-	bottom: 30px;
-	left: 50%;
+	inset-block-end: 30px;
+	inset-inline-start: 50%;
 	transform: translateX(-50%);
 
-	width: 75%;
+	inline-size: 75%;
 }
 
 .pwsp__alt-text {
 	color: white;
-	margin: 0 auto;
+	margin-block: 0;
+	margin-inline: auto;
 	text-align: center;
 	padding: 10px;
 	background: rgba(0, 0, 0, 0.5);
 	border-radius: 5px;
 
-	max-height: 10vh;
-	overflow-x: clip;
-	overflow-y: auto;
+	max-block-size: 10vb;
+	overflow-inline: clip;
+	overflow-block: auto;
 	overscroll-behavior: contain;
 	white-space: pre-line;
 }

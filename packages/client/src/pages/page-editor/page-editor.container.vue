@@ -14,10 +14,10 @@
 				</div>
 				<button class="_button" @click="toggleContent(!showBody)">
 					<template v-if="showBody"
-						><i :class="icon('ph-caret-up')"></i
+						><i :class="icon('ph-caret-up ph-dir')"></i
 					></template>
 					<template v-else
-						><i :class="icon('ph-caret-down')"></i
+						><i :class="icon('ph-caret-down ph-dir')"></i
 					></template>
 				</button>
 			</div>
@@ -113,12 +113,12 @@ export default defineComponent({
 	}
 
 	& + .cpjygsrt {
-		margin-top: 16px;
+		margin-block-start: 16px;
 	}
 
 	> header {
 		display: flex;
-		padding-top: 0.5em;
+		padding-block-start: 0.5em;
 
 		> .title {
 			z-index: 1;
@@ -143,7 +143,7 @@ export default defineComponent({
 			> ._button,
 			> :slotted(._button) {
 				padding: 0;
-				width: 42px;
+				inline-size: 42px;
 				font-size: 0.9em;
 				text-align: center;
 			}
@@ -157,14 +157,20 @@ export default defineComponent({
 	> .warn {
 		color: #ea9d34;
 		margin: 0;
-		padding: 16px 16px 0 16px;
+		padding-block-start: 16px;
+		padding-inline-end: 16px;
+		padding-block-end: 0;
+		padding-inline-start: 16px;
 		font-size: 14px;
 	}
 
 	> .error {
 		color: #b4637a;
 		margin: 0;
-		padding: 16px 16px 0 16px;
+		padding-block-start: 16px;
+		padding-inline-end: 16px;
+		padding-block-end: 0;
+		padding-inline-start: 16px;
 		font-size: 14px;
 	}
 
@@ -172,11 +178,11 @@ export default defineComponent({
 		::v-deep(.juejbjww),
 		::v-deep(.eiipwacr) {
 			&:not(.inline):first-child {
-				margin-top: 28px;
+				margin-block-start: 28px;
 			}
 
 			&:not(.inline):last-child {
-				margin-bottom: 20px;
+				margin-block-end: 20px;
 			}
 		}
 	}

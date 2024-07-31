@@ -17,7 +17,7 @@
 					@click.stop="goBack()"
 					@touchstart="preventDrag"
 				>
-					<i :class="icon('ph-caret-left')"></i>
+					<i :class="icon('ph-dir ph-caret-left')"></i>
 				</button>
 				<MkAvatar
 					v-if="narrow && props.displayMyAvatar && me"
@@ -270,19 +270,34 @@ onMounted(() => {
 				if (!isTabs(props.tabs)) return;
 				const tabEl = tabRefs[props.tab];
 				if (tabEl && tabHighlightEl.value) {
+					const isVertical = getComputedStyle(tabHighlightEl.value)[
+						"writing-mode"
+					].startsWith("vertical");
 					// offsetWidth や offsetLeft は少数を丸めてしまうため getBoundingClientRect を使う必要がある
 					// https://developer.mozilla.org/ja/docs/Web/API/HTMLElement/offsetWidth#%E5%80%A4
-					const tabSizeX = tabEl.scrollWidth + 20; // + the tab's padding
+					const tabSizeX =
+						(isVertical ? tabEl.scrollHeight : tabEl.scrollWidth) + 20; // + the tab's padding
 					if (props.tabs.length > 3) {
 						tabEl.style = `--width: ${tabSizeX}px`;
 					}
 					setTimeout(() => {
 						if (tabHighlightEl.value == null) return;
-						tabHighlightEl.value.style.width = `${tabSizeX}px`;
-						tabHighlightEl.value.style.transform = `translateX(${tabEl.offsetLeft}px)`;
+						let translateFunction = "translateX";
+						let translateValue = tabEl.offsetLeft;
+						if (isVertical) {
+							translateFunction = "translateY";
+							translateValue = tabEl.offsetTop;
+						}
+						if (getComputedStyle(tabHighlightEl.value).direction === "rtl") {
+							translateValue += isVertical
+								? tabEl.offsetHeight - tabEl.offsetParent.scrollHeight
+								: tabEl.offsetWidth - tabEl.offsetParent.scrollWidth;
+						}
+						tabHighlightEl.value.style.inlineSize = `${tabSizeX}px`;
+						tabHighlightEl.value.style.transform = `${translateFunction}(${translateValue}px)`;
 						window.requestAnimationFrame(() => {
 							tabsEl.value?.scrollTo({
-								left: tabEl.offsetLeft - 60,
+								left: translateValue - 60,
 								behavior: "smooth",
 							});
 						});
@@ -316,23 +331,23 @@ onUnmounted(() => {
 	--height: 55px;
 	display: flex;
 	justify-content: space-between;
-	width: 100%;
-	height: var(--height);
+	inline-size: 100%;
+	block-size: var(--height);
 	padding-inline: 24px;
 	box-sizing: border-box;
 	overflow: hidden;
 	-webkit-backdrop-filter: var(--blur, blur(15px));
 	backdrop-filter: var(--blur, blur(15px));
-	@media (max-width: 500px) {
+	@media (max-inline-size: 500px) {
 		padding-inline: 16px;
 		&.tabs > .buttons > :deep(.follow-button > span) {
 			display: none;
 		}
 	}
-	@media (max-width: 700px) {
+	@media (max-inline-size: 700px) {
 		> .left {
-			min-width: unset !important;
-			max-width: 40%;
+			min-inline-size: unset !important;
+			max-inline-size: 40%;
 		}
 		> .left,
 		> .right {
@@ -340,9 +355,9 @@ onUnmounted(() => {
 		}
 		&:not(.tabs) {
 			> .left {
-				width: 0 !important;
+				inline-size: 0 !important;
 				flex-grow: 1 !important;
-				max-width: unset !important;
+				max-inline-size: unset !important;
 			}
 		}
 		&.tabs {
@@ -360,7 +375,7 @@ onUnmounted(() => {
 		content: "";
 		position: absolute;
 		inset: 0;
-		border-bottom: solid 0.5px var(--divider);
+		border-block-end: solid 0.5px var(--divider);
 		z-index: -1;
 	}
 	&::after {
@@ -386,13 +401,13 @@ onUnmounted(() => {
 		display: flex;
 		> .buttons {
 			&:not(:empty) {
-				margin-right: 8px;
-				margin-left: calc(0px - var(--margin));
+				margin-inline-end: 8px;
+				margin-inline-start: calc(0px - var(--margin));
 			}
 			> .avatar {
-				width: 32px;
-				height: 32px;
-				margin-left: var(--margin);
+				inline-size: 32px;
+				block-size: 32px;
+				margin-inline-start: var(--margin);
 			}
 		}
 	}
@@ -401,20 +416,20 @@ onUnmounted(() => {
 		--margin: 8px;
 		display: flex;
 		align-items: center;
-		height: var(--height);
+		block-size: var(--height);
 		&.right {
 			justify-content: flex-end;
 			z-index: 2;
-			// margin-right: calc(0px - var(--margin));
-			// margin-left: var(--margin);
+			// margin-inline-end: calc(0px - var(--margin));
+			// margin-inline-start: var(--margin);
 			> .button:last-child {
-				margin-right: calc(0px - var(--margin));
+				margin-inline-end: calc(0px - var(--margin));
 			}
 		}
 
 		> .fullButton {
 			& + .fullButton {
-				margin-left: 12px;
+				margin-inline-start: 12px;
 			}
 		}
 	}
@@ -428,30 +443,30 @@ onUnmounted(() => {
 		> .titleContainer {
 			display: flex;
 			align-items: center;
-			max-width: 400px;
+			max-inline-size: 400px;
 			overflow: auto;
 			white-space: nowrap;
-			text-align: left;
+			text-align: start;
 			font-weight: bold;
 			flex-shrink: 0;
 			> .avatar {
 				$size: 32px;
 				display: inline-block;
-				width: $size;
-				height: $size;
+				inline-size: $size;
+				block-size: $size;
 				vertical-align: bottom;
-				margin-right: 8px;
+				margin-inline-end: 8px;
 			}
 
 			> .icon {
-				margin-right: 8px;
-				min-width: 16px;
-				width: 1em;
+				margin-inline-end: 8px;
+				min-inline-size: 16px;
+				inline-size: 1em;
 				text-align: center;
 			}
 
 			> .title {
-				min-width: 0;
+				min-inline-size: 0;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				white-space: nowrap;
@@ -470,7 +485,7 @@ onUnmounted(() => {
 
 						> .chevron {
 							display: inline-block;
-							margin-left: 6px;
+							margin-inline-start: 6px;
 						}
 					}
 				}
@@ -485,34 +500,34 @@ onUnmounted(() => {
 		overflow: hidden;
 	}
 	> .left {
-		min-width: 20%;
-		margin-left: -10px;
-		padding-left: 10px;
+		min-inline-size: 20%;
+		margin-inline-start: -10px;
+		padding-inline-start: 10px;
 	}
 	> .right {
-		// margin-left: auto;
-		min-width: max-content;
-		margin-right: -10px;
-		padding-right: 10px;
+		// margin-inline-start: auto;
+		min-inline-size: max-content;
+		margin-inline-end: -10px;
+		padding-inline-end: 10px;
 	}
 
 	> .tabs {
 		position: relative;
 		font-size: 1em;
-		overflow-x: auto;
+		overflow-inline: auto;
 		white-space: nowrap;
 		contain: content;
 		display: flex;
 		padding-inline: 20px;
 		margin-inline: -20px;
 		mask: linear-gradient(
-			to right,
+			var(--gradient-to-inline-end),
 			transparent,
 			black 20px calc(100% - 20px),
 			transparent
 		);
 		-webkit-mask: linear-gradient(
-			to right,
+			var(--gradient-to-inline-end),
 			transparent,
 			black 20px calc(100% - 20px),
 			transparent
@@ -526,8 +541,8 @@ onUnmounted(() => {
 			--width: 2.7em;
 			// --width: 1.33333em
 			> .tab {
-				width: 2.7em;
-				min-width: 2.7em !important;
+				inline-size: 2.7em;
+				min-inline-size: 2.7em !important;
 				&:not(.active) > .title {
 					opacity: 0;
 				}
@@ -542,8 +557,8 @@ onUnmounted(() => {
 			align-items: center;
 			position: relative;
 			border-inline: 10px solid transparent;
-			height: 100%;
-			min-width: max-content;
+			block-size: 100%;
+			min-inline-size: max-content;
 			font-weight: normal;
 			opacity: 0.7;
 			overflow: hidden;
@@ -562,12 +577,12 @@ onUnmounted(() => {
 				opacity: 1;
 				color: var(--accent);
 				font-weight: 600;
-				width: var(--width);
-				min-width: var(--width) !important;
+				inline-size: var(--width);
+				min-inline-size: var(--width) !important;
 			}
 
 			> .icon + .title {
-				margin-left: 8px;
+				margin-inline-start: 8px;
 			}
 			> .title {
 				transition: opacity 0.2s;
@@ -575,9 +590,9 @@ onUnmounted(() => {
 		}
 		> .highlight {
 			position: absolute;
-			bottom: 0;
-			left: 0;
-			height: 3px;
+			inset-block-end: 0;
+			inset-inline-start: 0;
+			block-size: 3px;
 			background: var(--accent);
 			border-radius: 999px;
 			transition:

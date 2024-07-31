@@ -204,7 +204,10 @@ export default defineComponent({
 	> label {
 		> .label {
 			font-size: 0.85em;
-			padding: 0 0 8px 0;
+			padding-block-start: 0;
+			padding-inline-end: 0;
+			padding-block-end: 8px;
+			padding-inline-start: 0;
 			user-select: none;
 			&:empty {
 				display: none;
@@ -212,7 +215,10 @@ export default defineComponent({
 		}
 		> .caption {
 			font-size: 0.85em;
-			padding: 8px 0 0 0;
+			padding-block-start: 8px;
+			padding-inline-end: 0;
+			padding-block-end: 0;
+			padding-inline-start: 0;
 			color: var(--fgTransparentWeak);
 
 			&:empty {
@@ -226,10 +232,10 @@ export default defineComponent({
 				appearance: none;
 				-webkit-appearance: none;
 				display: block;
-				width: 100%;
-				min-width: 100%;
-				max-width: 100%;
-				min-height: 130px;
+				inline-size: 100%;
+				min-inline-size: 100%;
+				max-inline-size: 100%;
+				min-block-size: 130px;
 				margin: 0;
 				padding: 12px;
 				font: inherit;
@@ -266,7 +272,7 @@ export default defineComponent({
 
 			&.tall {
 				> textarea {
-					min-height: 200px;
+					min-block-size: 200px;
 				}
 			}
 
@@ -279,7 +285,10 @@ export default defineComponent({
 	}
 
 	> .save {
-		margin: 8px 0 0 0;
+		margin-block-start: 8px;
+		margin-inline-end: 0;
+		margin-block-end: 0;
+		margin-inline-start: 0;
 	}
 }
 </style>

@@ -47,7 +47,7 @@
 			>
 				<i
 					v-if="isMyNote"
-					:class="icon('ph-dots-three-outline dropdownIcon')"
+					:class="icon('ph-dots-three-outline ph-dir dropdownIcon')"
 				></i>
 				<MkTime
 					v-if="renotesSliced && renotesSliced.length > 0"
@@ -122,15 +122,15 @@ function showRenoteMenu(viaKeyboard = false): void {
 	cursor: pointer;
 
 	> i {
-		margin-right: 4px;
+		margin-inline-end: 4px;
 	}
 
 	.avatar {
-		width: 1.2em;
-		height: 1.2em;
+		inline-size: 1.2em;
+		block-size: 1.2em;
 		border-radius: 2em;
 		overflow: hidden;
-		margin-right: 0.4em;
+		margin-inline-end: 0.4em;
 		background: var(--panelHighlight);
 		transform: translateY(-4px);
 	}
@@ -147,7 +147,7 @@ function showRenoteMenu(viaKeyboard = false): void {
 	}
 
 	> .info {
-		margin-left: auto;
+		margin-inline-start: auto;
 		font-size: 0.9em;
 		display: flex;
 
@@ -157,7 +157,7 @@ function showRenoteMenu(viaKeyboard = false): void {
 			display: inline-flex;
 			align-items: center;
 			> .dropdownIcon {
-				margin-right: 4px;
+				margin-inline-end: 4px;
 			}
 		}
 	}

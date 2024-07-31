@@ -4,12 +4,12 @@
 			<PrismEditor
 				v-model="code"
 				class="_code code"
-				style="height: 30vh"
+				style="block-size: 30vb"
 				:highlight="highlighter"
 				:line-numbers="false"
 			/>
 			<MkButton
-				style="position: absolute; top: 8px; right: 8px"
+				style="position: absolute; inset-block-start: 8px; right: 8px"
 				primary
 				@click="run()"
 				><i :class="icon('ph-play')"></i

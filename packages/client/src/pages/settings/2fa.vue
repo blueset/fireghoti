@@ -7,7 +7,7 @@
 				<template #icon
 					><i
 						:class="icon('ph-shield-check')"
-						style="margin-right: 0.5rem"
+						style="margin-inline-end: 0.5rem"
 					></i
 				></template>
 				<template #label>{{ i18n.ts.totp }}</template>
@@ -17,7 +17,7 @@
 					<MkButton @click="unregisterTOTP"
 						><i
 							:class="icon('ph-shield-slash')"
-							style="margin-right: 0.5rem"
+							style="margin-inline-end: 0.5rem"
 						></i
 						>{{ i18n.ts.unregister }}</MkButton
 					>
@@ -32,7 +32,7 @@
 
 			<MkFolder>
 				<template #icon
-					><i :class="icon('ph-key')" style="margin-right: 0.5rem"></i
+					><i :class="icon('ph-key')" style="margin-inline-end: 0.5rem"></i
 				></template>
 				<template #label>{{ i18n.ts.securityKeyAndPasskey }}</template>
 				<div class="_gaps_s">
@@ -50,7 +50,7 @@
 						<MkButton primary @click="addSecurityKey"
 							><i
 								:class="icon('ph-key')"
-								style="margin-right: 0.5rem"
+								style="margin-inline-end: 0.5rem"
 							></i
 							>{{ i18n.ts._2fa.registerSecurityKey }}</MkButton
 						>

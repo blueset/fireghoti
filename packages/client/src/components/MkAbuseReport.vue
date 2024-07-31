@@ -99,11 +99,11 @@ function resolve() {
 	display: flex;
 
 	> .target {
-		width: 35%;
+		inline-size: 35%;
 		box-sizing: border-box;
-		text-align: left;
+		text-align: start;
 		padding: 24px;
-		border-right: solid 1px var(--divider);
+		border-inline-end: solid 1px var(--divider);
 
 		> .info {
 			display: flex;
@@ -125,13 +125,14 @@ function resolve() {
 			background-size: 16px 16px;
 
 			> .avatar {
-				width: 42px;
-				height: 42px;
+				inline-size: 42px;
+				block-size: 42px;
 			}
 
 			> .names {
-				margin-left: 0.3em;
-				padding: 0 8px;
+				margin-inline-start: 0.3em;
+				padding-block: 0;
+				padding-inline: 8px;
 				flex: 1;
 
 				> .name {
