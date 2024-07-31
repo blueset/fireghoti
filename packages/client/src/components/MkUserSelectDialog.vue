@@ -20,7 +20,11 @@
 						<template #label>{{ i18n.ts.username }}</template>
 						<template #prefix>@</template>
 					</MkInput>
-					<MkInput v-model="host" @update:modelValue="search">
+					<MkInput
+						ref="hostEl"
+						v-model="host"
+						@update:modelValue="search"
+					>
 						<template #label>{{ i18n.ts.host }}</template>
 						<template #prefix>@</template>
 					</MkInput>
@@ -88,7 +92,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch, nextTick } from "vue";
 import type { entities } from "firefish-js";
 import MkInput from "@/components/form/input.vue";
 import FormSplit from "@/components/form/split.vue";
@@ -109,6 +113,7 @@ const users = ref<entities.UserDetailed[]>([]);
 const recentUsers = ref<entities.UserDetailed[]>([]);
 const selected = ref<entities.UserDetailed | null>(null);
 const dialogEl = ref();
+const hostEl = ref();
 
 const search = () => {
 	if (username.value === "" && host.value === "") {
@@ -148,6 +153,21 @@ onMounted(() => {
 	}).then((users) => {
 		recentUsers.value = users;
 	});
+});
+
+watch(username, (newValue) => {
+	if (newValue.includes("@")) {
+		if (newValue.length !== 1) {
+			hostEl.value.focus();
+		}
+		nextTick(() => {
+			const newUser = username.value.startsWith("@")
+				? username.value.substring(1)
+				: username.value;
+			username.value = newUser.substring(0, newUser.indexOf("@"));
+			host.value = newUser.substring(newUser.indexOf("@") + 1);
+		});
+	}
 });
 </script>
 
