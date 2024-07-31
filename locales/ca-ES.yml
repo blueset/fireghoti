@@ -735,7 +735,7 @@ _notification:
   pollEnded: Es resultat de la enquesta ja està disponible
   emptyPushNotificationMessage: Les notificacions push s'han actualitzat
   youWereInvitedToGroup: "{userName} t'ha convidat a un grup"
-  reacted: Ha reaccionat a la teva publicació
+  reacted: han reaccionat a la teva publicació
   renoted: Ha impulsat la teva publicació
   voted: Ha votat a la teva enquesta
   andCountUsers: I {count} usuaris més {acted}
