@@ -2333,3 +2333,10 @@ addAlt4MeTag: "Afegeix automàticament l'etiqueta #Alt4Me a les teves publicacio
 strongPassword: Bona contrasenya
 turnOffCatLanguage: Desactiva la conversió al llenguatge de gat
 announcement: Anunci
+_writingMode:
+  horizontalTB: Horitzontal, de d'alt a baix
+  verticalRL: Vertical, de dreta a esquerra, lateralment
+  verticalLRUpright: Vertical, esquerra andreta, cap amunt
+  verticalRLUpright: Vertical, de dreta i esquerra, cap amunt
+  verticalLR: Vertical, d'esquerra a dreta, lateralment
+writingMode: Mode d'escriptura
