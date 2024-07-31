@@ -635,20 +635,20 @@ defineExpose({
 			position: fixed;
 			inset: 0;
 			margin: auto;
-			padding: 32px;
+			padding: 16px;
 			// TODO: mask-imageはiOSだとやたら重い。なんとかしたい
 			-webkit-mask-image: linear-gradient(
 				var(--gradient-to-block-start),
 				rgba(0, 0, 0, 0) 0%,
-				rgba(0, 0, 0, 1) 32px,
-				rgba(0, 0, 0, 1) calc(100% - 32px),
+				rgba(0, 0, 0, 1) 16px,
+				rgba(0, 0, 0, 1) calc(100% - 16px),
 				rgba(0, 0, 0, 0) 100%
 			);
 			mask-image: linear-gradient(
 				var(--gradient-to-block-start),
 				rgba(0, 0, 0, 0) 0%,
-				rgba(0, 0, 0, 1) 32px,
-				rgba(0, 0, 0, 1) calc(100% - 32px),
+				rgba(0, 0, 0, 1) 16px,
+				rgba(0, 0, 0, 1) calc(100% - 16px),
 				rgba(0, 0, 0, 0) 100%
 			);
 			overflow: auto;
