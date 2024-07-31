@@ -62,7 +62,7 @@ import { db } from "@/db/postgre.js";
 import { getActiveWebhooks } from "@/misc/webhook-cache.js";
 import { redisClient } from "@/db/redis.js";
 import { Mutex } from "redis-semaphore";
-import { langmap } from "firefish-js";
+import { bcp47Pattern } from "firefish-js";
 import Logger from "@/services/logger.js";
 import { inspect } from "node:util";
 import { toRustObject } from "@/prelude/undefined-to-null.js";
@@ -273,8 +273,7 @@ export default async (
 		data.text = data.text?.trim() ?? null;
 
 		if (data.lang != null) {
-			if (!Object.keys(langmap).includes(data.lang.toLowerCase()))
-				throw new Error("invalid param");
+			if (!bcp47Pattern.test(data.lang)) rej("Invalid language code");
 			data.lang = data.lang.toLowerCase();
 		} else {
 			data.lang = null;
@@ -317,7 +316,7 @@ export default async (
 		}
 
 		if (!isDraft && data.visibility === "specified") {
-			if (data.visibleUsers == null) throw new Error("invalid param");
+			if (data.visibleUsers == null) rej("invalid param");
 
 			for (const u of data.visibleUsers) {
 				if (!mentionedUsers.some((x) => x.id === u.id)) {
@@ -444,7 +443,7 @@ export default async (
 
 				// 未読通知を作成
 				if (data.visibility === "specified") {
-					if (data.visibleUsers == null) throw new Error("invalid param");
+					if (data.visibleUsers == null) rej("invalid param");
 
 					for (const u of data.visibleUsers) {
 						// ローカルユーザーのみ

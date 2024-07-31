@@ -864,9 +864,14 @@ function setLanguage() {
 			active: true,
 			action: () => {},
 		});
-	} else {
-		// Unrecognized language, set to null
-		language.value = null;
+	} else if (language.value != null) {
+		// Unrecognized language, add it to the list as an ad-hoc language
+		actions.push({
+			text: language.value,
+			danger: false,
+			active: true,
+			action: () => {},
+		});
 	}
 
 	const langs = Object.keys(langmap);
