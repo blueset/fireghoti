@@ -67,8 +67,8 @@ importers:
         specifier: 1.7.0
         version: 1.7.0
       '@redocly/openapi-core':
-        specifier: 1.18.1
-        version: 1.18.1
+        specifier: 1.19.0
+        version: 1.19.0
       '@sinonjs/fake-timers':
         specifier: 11.2.2
         version: 11.2.2
@@ -2131,8 +2131,8 @@ packages:
   '@redocly/config@0.7.0':
     resolution: {integrity: sha512-6GKxTo/9df0654Mtivvr4lQnMOp+pRj9neVywmI5+BwfZLTtkJnj2qB3D6d8FHTr4apsNOf6zTa5FojX0Evh4g==}
 
-  '@redocly/openapi-core@1.18.1':
-    resolution: {integrity: sha512-y2ZR3aaVF80XRVoFP0Dp2z5DeCOilPTuS7V4HnHIYZdBTfsqzjkO169h5JqAaifnaLsLBhe3YArdgLb7W7wW6Q==}
+  '@redocly/openapi-core@1.19.0':
+    resolution: {integrity: sha512-ezK6qr80sXvjDgHNrk/zmRs9vwpIAeHa0T/qmo96S+ib4ThQ5a8f3qjwEqxMeVxkxCTbkaY9sYSJKOxv4ejg5w==}
     engines: {node: '>=14.19.0', npm: '>=7.0.0'}
 
   '@rollup/plugin-alias@5.1.0':
@@ -8211,7 +8211,7 @@ snapshots:
 
   '@redocly/config@0.7.0': {}
 
-  '@redocly/openapi-core@1.18.1':
+  '@redocly/openapi-core@1.19.0':
     dependencies:
       '@redocly/ajv': 8.11.0
       '@redocly/config': 0.7.0
