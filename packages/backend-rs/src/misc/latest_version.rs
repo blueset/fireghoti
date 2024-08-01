@@ -1,6 +1,6 @@
 //! Fetch latest Firefish version from the Firefish repository
 
-use crate::{cache, util::http_client};
+use crate::{cache::Cache, util::http_client};
 use chrono::Duration;
 use futures_util::AsyncReadExt;
 use isahc::AsyncReadResponseExt;
@@ -8,8 +8,6 @@ use serde::Deserialize;
 
 #[macros::errors]
 pub enum Error {
-    #[error("Redis cache operation has failed")]
-    Cache(#[from] cache::redis::Error),
     #[error("HTTP request failed")]
     Isahc(#[from] isahc::Error),
     #[error("failed to acquire an HTTP client")]
@@ -23,15 +21,17 @@ pub enum Error {
     Json(#[from] serde_json::Error),
 }
 
+#[derive(Clone, Deserialize)]
+struct PackageJson {
+    version: String,
+}
+
 const UPSTREAM_PACKAGE_JSON_URL: &str =
     "https://firefish.dev/firefish/firefish/-/raw/main/package.json";
 
-async fn get_latest_version() -> Result<String, Error> {
-    #[derive(Debug, Deserialize)]
-    struct Response {
-        version: String,
-    }
+static PACKAGE_JSON_CACHE: Cache<PackageJson> = Cache::new_with_ttl(Duration::hours(3));
 
+async fn get_package_json() -> Result<PackageJson, Error> {
     // Read up to 1 MiB of the response body
     let mut response = http_client::client()?
         .get_async(UPSTREAM_PACKAGE_JSON_URL)
@@ -43,42 +43,33 @@ async fn get_latest_version() -> Result<String, Error> {
         return Err(Error::BadStatus(response.status().to_string()));
     }
 
-    let res_parsed: Response = serde_json::from_str(&response.text().await?)?;
+    let package_json: PackageJson = serde_json::from_str(&response.text().await?)?;
 
-    Ok(res_parsed.version)
+    Ok(package_json)
 }
 
 /// Returns the latest Firefish version.
 #[macros::export]
 pub async fn latest_version() -> Result<String, Error> {
-    let version: Option<String> =
-        cache::get_one(cache::Category::FetchUrl, UPSTREAM_PACKAGE_JSON_URL).await?;
-
-    if let Some(v) = version {
-        tracing::trace!("use cached value: {}", v);
-        Ok(v)
+    if let Some(package_json) = PACKAGE_JSON_CACHE.get() {
+        tracing::trace!("use cached value: {}", package_json.version);
+        Ok(package_json.version)
     } else {
         tracing::trace!("cache is expired, fetching the latest version");
-        let fetched_version = get_latest_version().await?;
-        tracing::trace!("fetched value: {}", fetched_version);
+        let package_json = get_package_json().await?;
+        tracing::trace!("fetched value: {}", package_json.version);
 
-        cache::set_one(
-            cache::Category::FetchUrl,
-            UPSTREAM_PACKAGE_JSON_URL,
-            &fetched_version,
-            Duration::hours(3),
-        )
-        .await?;
-        Ok(fetched_version)
+        PACKAGE_JSON_CACHE.set(package_json.clone());
+        Ok(package_json.version)
     }
 }
 
 #[cfg(test)]
 mod unit_test {
-    use super::{latest_version, UPSTREAM_PACKAGE_JSON_URL};
-    use crate::cache;
+    use super::latest_version;
+    use pretty_assertions::assert_eq;
 
-    fn validate_version(version: String) {
+    fn validate_version(version: &str) {
         // version: YYYYMMDD or YYYYMMDD-X
         assert!(version.len() >= 8);
         assert!(version[..8].chars().all(|c| c.is_ascii_digit()));
@@ -104,15 +95,14 @@ mod unit_test {
     #[tokio::test]
     #[cfg_attr(miri, ignore)] // can't call foreign function `getaddrinfo` on OS `linux`
     async fn get_latest_version() {
-        // delete caches in case you run this test multiple times
-        cache::delete_one(cache::Category::FetchUrl, UPSTREAM_PACKAGE_JSON_URL)
-            .await
-            .unwrap();
-
         // fetch from firefish.dev
-        validate_version(latest_version().await.unwrap());
+        let version_1 = latest_version().await.unwrap();
+        validate_version(&version_1);
 
         // use cache
-        validate_version(latest_version().await.unwrap());
+        let version_2 = latest_version().await.unwrap();
+        validate_version(&version_2);
+
+        assert_eq!(version_1, version_2);
     }
 }
