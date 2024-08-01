@@ -9,6 +9,7 @@ This changelog is not an exhaustive list. Code refactorings, minor bug fixes, do
 
 ## Unreleased
 
+- Add writing mode (right-to-left, vertical) support (!11222)
 - Fix bugs
 
 ### Breaking change
