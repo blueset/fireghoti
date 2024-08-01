@@ -26,7 +26,7 @@
 		"jest-fetch-mock": "3.0.3",
 		"jest-websocket-mock": "2.5.0",
 		"mock-socket": "9.3.1",
-		"ts-jest": "29.2.3",
+		"ts-jest": "29.2.4",
 		"ts-node": "10.9.2",
 		"tsc-alias": "1.8.10",
 		"tsd": "0.31.1",
