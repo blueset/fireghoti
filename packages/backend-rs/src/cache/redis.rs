@@ -86,15 +86,14 @@ pub async fn set<V: for<'a> Deserialize<'a> + Serialize>(
     value: &V,
     ttl: Duration,
 ) -> Result<(), Error> {
-    redis_conn()
+    Ok(redis_conn()
         .await?
         .set_ex(
             prefix_key(key),
             rmp_serde::encode::to_vec(&value)?,
             ttl.num_seconds().try_into().map_err(|_| Error::TTL)?,
         )
-        .await?;
-    Ok(())
+        .await?)
 }
 
 /// Gets a Redis cache.

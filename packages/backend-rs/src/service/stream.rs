@@ -112,13 +112,11 @@ pub async fn publish_to_stream(
         value.ok_or(Error::InvalidContent)?
     };
 
-    redis_conn()
+    Ok(redis_conn()
         .await?
         .publish(
             &CONFIG.host,
             format!("{{\"channel\":\"{}\",\"message\":{}}}", channel, message),
         )
-        .await?;
-
-    Ok(())
+        .await?)
 }

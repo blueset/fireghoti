@@ -60,8 +60,11 @@ pub async fn update_antennas_on_new_note(
 }
 
 async fn add_note_to_antenna(antenna_id: &str, note: &Note) -> Result<(), Error> {
+    // for streaming API
+    stream::antenna::publish(antenna_id.to_owned(), note).await?;
+
     // for timeline API
-    redis_conn()
+    Ok(redis_conn()
         .await?
         .xadd_maxlen(
             redis_key(format!("antennaTimeline:{}", antenna_id)),
@@ -69,10 +72,5 @@ async fn add_note_to_antenna(antenna_id: &str, note: &Note) -> Result<(), Error>
             format!("{}-*", get_timestamp(&note.id)?),
             &[("note", &note.id)],
         )
-        .await?;
-
-    // for streaming API
-    stream::antenna::publish(antenna_id.to_owned(), note).await?;
-
-    Ok(())
+        .await?)
 }
