@@ -319,6 +319,8 @@ const previewableCount = computed(
 	inset-inline-start: 50%;
 	transform: translateX(-50%);
 
+	inline-size: 75%;
+
 	&:dir(rtl) {
 		inset-inline-start: auto;
 		inset-inline-end: 50%;
@@ -332,8 +334,6 @@ const previewableCount = computed(
 		inset-inline-end: 50%;
 		inset-inline-start: auto;
 	}
-
-	inline-size: 75%;
 }
 
 .pwsp__alt-text {
