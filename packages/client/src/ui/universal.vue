@@ -663,7 +663,16 @@ console.log(mainRouter.currentRoute.value.name);
 		inline-size: 100%;
 		min-inline-size: 0;
 		$widgets-hide-threshold: 1090px;
+		overflow-x: clip;
 		overflow-inline: clip;
+
+		@supports not (overflow-inline: clip) {
+			.vertical-lr &, .vertical-rl & {
+				overflow-x: visible;
+				overflow-y: clip;
+			}
+		}
+
 		@media (max-inline-size: $widgets-hide-threshold) {
 			padding-block-end: calc(env(safe-area-inset-bottom, 0px) + 96px);
 		}
@@ -673,12 +682,20 @@ console.log(mainRouter.currentRoute.value.name);
 		position: sticky;
 		inset-block-start: 0;
 		max-block-size: 100vb;
+		overflow-y: auto;
 		overflow-block: auto;
 		padding-block: 0;
 		padding-inline: var(--margin);
 		inline-size: 300px;
 		min-inline-size: max-content;
 		box-sizing: content-box;
+
+		@supports not (overflow-block: auto) {
+			.vertical-lr &, .vertical-rl & {
+				overflow-y: visible;
+				overflow-x: auto;
+			}
+		}
 
 		@media (max-inline-size: $widgets-hide-threshold) {
 			display: none;

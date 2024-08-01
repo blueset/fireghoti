@@ -620,10 +620,19 @@ defineExpose({
 
 	> .emojis {
 		block-size: 100%;
+		overflow-y: auto;
 		overflow-block: auto;
+		overflow-x: hidden;
 		overflow-inline: hidden;
 
 		scrollbar-width: none;
+
+		@supports not (overflow-block: auto) {
+			.vertical-lr &, .vertical-rl & {
+				overflow-y: hidden;
+				overflow-x: auto;
+			}
+		}
 
 		&::-webkit-scrollbar {
 			display: none;

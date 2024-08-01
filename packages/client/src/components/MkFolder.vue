@@ -107,10 +107,18 @@ defineExpose({
 <style lang="scss" scoped>
 .folder-toggle-enter-active,
 .folder-toggle-leave-active {
+	overflow-y: hidden;
 	overflow-block: hidden;
 	transition:
 		opacity 0.5s,
 		height 0.5s !important;
+
+	@supports not (overflow-block: hidden) {
+		.vertical-lr &, .vertical-rl & {
+			overflow-y: visible;
+			overflow-x: hidden;
+		}
+	}
 }
 .folder-toggle-enter-from {
 	opacity: 0;

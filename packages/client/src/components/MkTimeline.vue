@@ -16,7 +16,7 @@
 			@click="tlComponent?.scrollTop()"
 		>
 			{{ i18n.ts.newNoteRecived }}
-			<i :class="icon('ph-arrow-up', false)"></i>
+			<i :class="icon('ph-arrow-up ph-dir', false)"></i>
 		</button>
 	</div>
 	<MkPullToRefresh

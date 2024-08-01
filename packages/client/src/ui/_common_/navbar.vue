@@ -261,10 +261,19 @@ function more(ev: MouseEvent) {
 			block-size: 100dvb;
 		box-sizing: border-box;
 		overflow: auto;
+		overflow-x: clip;
 		overflow-inline: clip;
 		contain: strict;
 		display: flex;
 		flex-direction: column;
+		
+		@supports not (overflow-inline: clip) {
+			.vertical-lr &, .vertical-rl & {
+				overflow-x: auto;
+				overflow-y: clip;
+			}
+		}
+
 		#firefish_app > :not(.wallpaper) & {
 			background: var(--navBg);
 		}

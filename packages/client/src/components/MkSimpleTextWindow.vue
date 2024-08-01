@@ -31,9 +31,17 @@ const emit = defineEmits<{
 <style lang="scss" scoped>
 .thppypvi {
 	max-block-size: 70%;
+	overflow-y: scroll;
 	overflow-block: scroll;
 	-ms-overflow-style: none;
 	scrollbar-width: none;
+	
+	@supports not (overflow-block: scroll) {
+		.vertical-lr &, .vertical-rl & {
+			overflow-y: visible;
+			overflow-x: scroll;
+		}
+	}
 }
 
 .thppypvi::-webkit-scrollbar {

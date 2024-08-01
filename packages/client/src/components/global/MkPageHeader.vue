@@ -514,6 +514,7 @@ onUnmounted(() => {
 	> .tabs {
 		position: relative;
 		font-size: 1em;
+		overflow-x: auto;
 		overflow-inline: auto;
 		white-space: nowrap;
 		contain: content;
@@ -533,6 +534,14 @@ onUnmounted(() => {
 			transparent
 		);
 		scrollbar-width: none;
+
+		@supports not (overflow-inline: auto) {
+			.vertical-lr &, .vertical-rl & {
+				overflow-x: visible;
+				overflow-y: auto;
+			}
+		}
+
 		&::-webkit-scrollbar {
 			display: none;
 		}

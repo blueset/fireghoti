@@ -423,11 +423,19 @@ onDeactivated(() => {
 
 		> .mod-pattern {
 			display: grid;
+			overflow-y: hidden;
 			overflow-block: hidden;
 			block-size: 0;
 			padding-block-start: calc((56.25% - 48px) / 2);
 			padding-block-end: calc((56.25% - 48px) / 2);
 			content-visibility: auto;
+
+			@supports not (overflow-block: hidden) {
+				.vertical-lr &, .vertical-rl & {
+					overflow-y: visible;
+					overflow-x: hidden;
+				}
+			}
 
 			> .modRowActive {
 				opacity: 1;

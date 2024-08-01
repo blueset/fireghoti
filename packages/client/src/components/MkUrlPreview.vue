@@ -305,7 +305,16 @@ onUnmounted(() => {
 		border-block-start: 1px solid var(--divider);
 		display: block;
 		inline-size: 100%;
+		overflow-y: auto;
 		overflow-block: auto;
+		
+		@supports not (overflow-block: auto) {
+			.vertical-lr &, .vertical-rl & {
+				overflow-y: visible;
+				overflow-x: auto;
+			}
+		}
+		
 		&:not([src^="https://platform.twitter"])
 		{
 			max-block-size: 70vb;

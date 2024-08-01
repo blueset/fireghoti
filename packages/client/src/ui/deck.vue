@@ -432,8 +432,17 @@ async function deleteProfile() {
 		> .columns {
 			flex: 1;
 			display: flex;
+			overflow-x: auto;
 			overflow-inline: auto;
+			overflow-y: clip;
 			overflow-block: clip;
+
+			@supports not (overflow-block: clip) {
+				.vertical-lr &, .vertical-rl & {
+					overflow-y: auto;
+					overflow-x: clip;
+				}
+			}
 
 			&.center {
 				> .column:first-of-type {
