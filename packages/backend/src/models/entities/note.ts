@@ -138,7 +138,6 @@ export class Note {
 
 	@Column("integer", {
 		default: 0,
-		select: false,
 	})
 	public score: number;
 

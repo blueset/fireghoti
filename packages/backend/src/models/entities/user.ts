@@ -56,7 +56,6 @@ export class User {
 	@Index()
 	@Column("varchar", {
 		length: 128,
-		select: false,
 		comment: "The username (lowercased) of the User.",
 	})
 	public usernameLower: string;
