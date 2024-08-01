@@ -13,6 +13,12 @@ struct TimedData<T: Clone> {
     last_updated: DateTime<Utc>,
 }
 
+impl<T: Clone> Default for Cache<T> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl<T: Clone> Cache<T> {
     pub const fn new() -> Self {
         Self {
@@ -36,10 +42,7 @@ impl<T: Clone> Cache<T> {
 
     pub fn set(&self, value: T) {
         if self.ttl.is_none() {
-            let _ = self
-                .cache
-                .lock()
-                .map(|mut cache| (*cache).value = Some(value));
+            let _ = self.cache.lock().map(|mut cache| cache.value = Some(value));
         } else {
             let _ = self.cache.lock().map(|mut cache| {
                 *cache = TimedData {
