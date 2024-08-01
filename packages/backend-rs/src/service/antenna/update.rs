@@ -2,6 +2,6 @@
 
 #[macros::ts_export]
 pub async fn update_antenna_cache() -> Result<(), sea_orm::DbErr> {
-    super::cache::update().await?;
+    super::update().await?;
     Ok(())
 }

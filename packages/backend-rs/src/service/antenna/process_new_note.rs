@@ -46,7 +46,7 @@ pub async fn update_antennas_on_new_note(
     let note_all_texts = elaborate!(note, false).await?;
 
     // TODO: do this in parallel
-    for antenna in antenna::cache::get().await?.iter() {
+    for antenna in antenna::get_antennas().await?.iter() {
         if note_muted_users.contains(&antenna.user_id) {
             continue;
         }
