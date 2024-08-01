@@ -978,7 +978,7 @@ recipient: Destinatari(s)
 annotation: Comentaris
 blockedInstances: Servidors bloquejats
 blockedInstancesDescription: Llista les adreces dels servidors que vols bloquejar.
-  Els servidors de la llista no podrán comunicarse amb aquests servidors.
+  Els servidors de la llista no podrán comunicarse amb aquest servidor.
 hiddenTags: Etiquetes amagades
 hiddenTagsDescription: 'Enumereu les etiquetes (sense el #) que voleu ocultar de tendències
   i explorar. Les etiquetes ocultes encara es poden descobrir per altres mitjans.'
