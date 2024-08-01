@@ -115,7 +115,29 @@ function checkForSplash() {
 	// #region Set lang attr
 	const html = document.documentElement;
 	html.setAttribute("lang", lang || "en-US");
-	html.setAttribute("dir", "auto");
+	html.setAttribute(
+		"dir",
+		[
+			"ar",
+			"arc",
+			"dv",
+			"fa",
+			"ha",
+			"he",
+			"iw",
+			"ktw",
+			"ks",
+			"ku",
+			"pk",
+			"ps",
+			"ug",
+			"ur",
+			"xb",
+			"yi",
+		].includes((lang ?? "en").split("-")[0])
+			? "rtl"
+			: "ltr",
+	);
 	const writingMode = localStorage.getItem("writingMode");
 	switch (writingMode) {
 		case "vertical-lr-upright":

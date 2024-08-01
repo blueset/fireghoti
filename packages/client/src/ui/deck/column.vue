@@ -463,11 +463,22 @@ function onDrop(ev) {
 
 	> div {
 		block-size: calc(100% - var(--deckColumnHeaderHeight));
+		overflow-y: auto;
 		overflow-block: auto;
+		overflow-x: hidden;
 		overflow-inline: hidden; // Safari does not supports clip
+		overflow-x: clip;
 		overflow-inline: clip;
 		-webkit-overflow-scrolling: touch;
 		box-sizing: border-box;
+		
+		@supports not (overflow-block: auto) {
+			.vertical-lr &, .vertical-rl & {
+				overflow-y: hidden;
+				overflow-y: clip;
+				overflow-x: auto;
+			}
+		}
 	}
 }
 </style>

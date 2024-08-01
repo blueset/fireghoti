@@ -96,6 +96,7 @@ export default defineComponent({
 		padding-block: 12px;
 		padding-inline: 32px;
 		font-size: 0.85em;
+		overflow-x: auto;
 		overflow-inline: auto;
 		mask: linear-gradient(var(--gradient-to-inline-end) black calc(100% - 90px), transparent),;
 		-webkit-mask: linear-gradient(
@@ -105,6 +106,13 @@ export default defineComponent({
 		);
 		padding-inline-end: 90px !important;
 		white-space: nowrap;
+		
+		@supports not (overflow-inline: auto) {
+			.vertical-lr &, .vertical-rl & {
+				overflow-x: visible;
+				overflow-y: auto;
+			}
+		}
 
 		&::-webkit-scrollbar {
 			display: none;

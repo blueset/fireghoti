@@ -11,7 +11,7 @@
 			<div :class="$style.frameContent">
 				<i
 					v-if="!isRefreshing"
-					:class="[$style.icon, icon('ph-arrow-down'), { [$style.refresh]: pullEnded }]"
+					:class="[$style.icon, icon('ph-arrow-down ph-dir'), { [$style.refresh]: pullEnded }]"
 				></i>
 				<div :class="$style.text">
 					<template v-if="pullEnded">{{
@@ -160,12 +160,28 @@ function moving(event: TouchEvent | PointerEvent) {
 	const moveScreenX = getScreenX(event);
 	const moveHeight = moveScreenY - startScreenY!;
 	const moveWidth = moveScreenX - startScreenX!;
-	if (Math.abs(moveWidth / moveHeight) > MAX_PULL_TAN_ANGLE) {
-		if (Math.abs(moveWidth) > 30) pullStarted.value = false;
+	const writingMode = rootEl.value
+		? getComputedStyle(rootEl.value)["writing-mode"]
+		: "horizontal-tb";
+	const moveScreenBlock =
+		writingMode === "vertical-rl"
+			? -moveWidth
+			: writingMode === "vertical-lr"
+				? moveWidth
+				: moveHeight;
+	const moveScreenInline = writingMode.startsWith("vertical")
+		? moveHeight
+		: moveWidth;
+
+	if (Math.abs(moveScreenInline / moveScreenBlock) > MAX_PULL_TAN_ANGLE) {
+		if (Math.abs(moveScreenInline) > 30) pullStarted.value = false;
 		return;
 	}
 
-	pullDistance.value = Math.min(Math.max(moveHeight, 0), MAX_PULL_DISTANCE);
+	pullDistance.value = Math.min(
+		Math.max(moveScreenBlock, 0),
+		MAX_PULL_DISTANCE,
+	);
 
 	if (pullDistance.value > 0) {
 		if (event.cancelable) event.preventDefault();
@@ -282,6 +298,14 @@ defineExpose({
 	}
 }
 .slotClip {
+	overflow-y: clip;
 	overflow-block: clip;
+
+	@supports not (overflow-block: clip) {
+		.vertical-lr &, .vertical-rl & {
+			overflow-y: visible;
+			overflow-x: clip;
+		}
+	}
 }
 </style>

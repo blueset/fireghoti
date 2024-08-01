@@ -278,16 +278,20 @@ onMounted(() => {
 			display: inline-block;
 			block-size: 50%;
 			inline-size: 50%;
+			position: absolute;
+			top: 0;  // Cat ear positions are irrelevant to text flow direction
 		}
 
 		&:before {
 			border-radius: 25% 75% 75%;
 			transform: rotate(37.5deg) skew(30deg);
+			left: 0;  // Cat ear positions are irrelevant to text flow direction
 		}
 
 		&:after {
 			border-radius: 75% 25% 75% 75%;
 			transform: rotate(-37.5deg) skew(-30deg);
+			right: 0;  // Cat ear positions are irrelevant to text flow direction
 		}
 
 		&:hover {

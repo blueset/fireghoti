@@ -331,9 +331,17 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .xytnxiau {
+	overflow-y: hidden;
 	overflow-block: hidden;
 	position: absolute;
 	inset-block-start: 0;
+
+	@supports not (overflow-block: hidden) {
+		.vertical-lr &, .vertical-rl & {
+			overflow-y: visible;
+			overflow-x: hidden;
+		}
+	}
 }
 
 .upsvvhaz {

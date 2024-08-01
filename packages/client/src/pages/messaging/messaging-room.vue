@@ -466,8 +466,16 @@ XMessage:last-of-type {
 
 		> .form {
 			max-block-size: 12em;
+			overflow-y: scroll;
 			overflow-block: scroll;
 			border-block-start: solid 0.5px var(--divider);
+			
+			@supports not (overflow-block: scroll) {
+				.vertical-lr &, .vertical-rl & {
+					overflow-y: visible;
+					overflow-x: scroll;
+				}
+			}
 		}
 	}
 }

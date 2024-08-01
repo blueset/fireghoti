@@ -319,6 +319,20 @@ const previewableCount = computed(
 	inset-inline-start: 50%;
 	transform: translateX(-50%);
 
+	&:dir(rtl) {
+		inset-inline-start: auto;
+		inset-inline-end: 50%;
+	}
+
+	.vertical-rl &, .vertical-lr & {
+		transform: translateY(-50%);
+	}
+
+	.vertical-rl:not(.upright) &:dir(rtl), .vertical-lr:dir(rtl):not(.upright) & {
+		inset-inline-end: 50%;
+		inset-inline-start: auto;
+	}
+
 	inline-size: 75%;
 }
 
@@ -332,10 +346,19 @@ const previewableCount = computed(
 	border-radius: 5px;
 
 	max-block-size: 10vb;
+	overflow-x: clip;
 	overflow-inline: clip;
+	overflow-y: auto;
 	overflow-block: auto;
 	overscroll-behavior: contain;
 	white-space: pre-line;
+			
+	@supports not (overflow-block: auto) {
+		.vertical-lr &, .vertical-rl & {
+			overflow-x: auto;
+			overflow-y: clip;
+		}
+	}
 }
 
 .pwsp__alt-text:empty {

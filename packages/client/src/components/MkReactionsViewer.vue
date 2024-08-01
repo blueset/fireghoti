@@ -38,6 +38,7 @@ const isMe = computed(() => isSignedIn(me) && me.id === props.note.userId);
 	margin-block-start: 0.2em;
 	inline-size: 100%;
 	display: flex;
+	overflow-x: auto;
 	overflow-inline: auto;
 	margin-inline: -24px;
 	padding-inline: 22px 160px;
@@ -55,6 +56,14 @@ const isMe = computed(() => isSignedIn(me) && me.id === props.note.userId);
 	);
 	scrollbar-width: none;
 	pointer-events: none;
+
+	@supports not (overflow-inline: auto) {
+		.vertical-lr &, .vertical-rl & {
+			overflow-x: visible;
+			overflow-y: auto;
+		}
+	}
+
 	:deep(*) {
 		pointer-events: all;
 	}
