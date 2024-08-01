@@ -110,12 +110,13 @@ pub async fn set<V: for<'a> Deserialize<'a> + Serialize>(
 ///
 /// ```
 /// # use backend_rs::cache;
+/// use chrono::Duration;
 /// # async fn f() -> Result<(), Box<dyn std::error::Error>> {
 /// let key = "banana";
 /// let data = "I want to cache this string".to_owned();
 ///
 /// // set cache
-/// cache::set(key, &data, 10).await?;
+/// cache::set(key, &data, Duration::seconds(10)).await?;
 ///
 /// // get cache
 /// let cached_data = cache::get::<String>(key).await?;
@@ -149,12 +150,13 @@ pub async fn get<V: for<'a> Deserialize<'a> + Serialize>(key: &str) -> Result<Op
 ///
 /// ```
 /// # use backend_rs::cache;
+/// use chrono::Duration;
 /// # async fn f() -> Result<(), Box<dyn std::error::Error>> {
 /// let key = "chocolate";
 /// let value = "I want to cache this string".to_owned();
 ///
 /// // set cache
-/// cache::set(key, &value, 10).await?;
+/// cache::set(key, &value, Duration::seconds(10)).await?;
 ///
 /// // delete the cache
 /// cache::delete("foo").await?;
