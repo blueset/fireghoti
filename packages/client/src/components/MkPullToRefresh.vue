@@ -261,7 +261,7 @@ defineExpose({
 	position: relative;
 	overflow: clip;
 	inline-size: 100%;
-	min-block-size: var(--frame-min-height, 0px);
+	min-block-size: var(--frame-min-block-size, 0px);
 	mask-image: linear-gradient(var(--gradient-to-inline-end), #000 0%, #000 80%, transparent);
 	-webkit-mask-image: -webkit-linear-gradient(
 		var(--gradient-to-inline-end),
@@ -290,6 +290,12 @@ defineExpose({
 		transition: transform 0.25s;
 		&.refresh {
 			transform: rotate(180deg);
+			:global(.vertical-rl) & {
+				transform: rotate(-90deg);
+			}
+			:global(.vertical-lr) & {
+				transform: rotate(90deg);
+			}
 		}
 	}
 	> .text {
