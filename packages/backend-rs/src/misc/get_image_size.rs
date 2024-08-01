@@ -1,4 +1,4 @@
-use crate::{database::cache, util::http_client};
+use crate::{cache, util::http_client};
 use futures_util::AsyncReadExt;
 use image::{ImageError, ImageFormat, ImageReader};
 use isahc::AsyncReadResponseExt;
@@ -9,7 +9,7 @@ use tokio::sync::Mutex;
 #[macros::errors]
 pub enum Error {
     #[error("Redis cache operation has failed")]
-    Cache(#[from] cache::Error),
+    Cache(#[from] cache::redis::Error),
     #[error("failed to acquire an HTTP client")]
     HttpClient(#[from] http_client::Error),
     #[error("HTTP request failed")]
@@ -134,7 +134,7 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
 #[cfg(test)]
 mod unit_test {
     use super::ImageSize;
-    use crate::database::cache;
+    use crate::cache;
     use pretty_assertions::assert_eq;
 
     #[tokio::test]

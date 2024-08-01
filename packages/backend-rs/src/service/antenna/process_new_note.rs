@@ -1,5 +1,6 @@
 use crate::{
-    database::{cache, redis_conn, redis_key, RedisConnError},
+    cache,
+    database::{redis_conn, redis_key, RedisConnError},
     federation::acct::Acct,
     misc::note::elaborate,
     model::entity::note,
@@ -19,7 +20,7 @@ pub enum Error {
     #[error(transparent)]
     Db(#[from] DbErr),
     #[error("Redis cache operation has failed")]
-    Cache(#[from] cache::Error),
+    Cache(#[from] cache::redis::Error),
     #[error("failed to execute a Redis command")]
     Redis(#[from] RedisError),
     #[error("bad Redis connection")]

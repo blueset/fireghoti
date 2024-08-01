@@ -61,7 +61,7 @@ fn wildcard(category: Category) -> String {
 /// # Example
 ///
 /// ```
-/// # use backend_rs::database::cache;
+/// # use backend_rs::cache;
 /// # async fn f() -> Result<(), Box<dyn std::error::Error>> {
 /// let key = "apple";
 /// let data = "I want to cache this string".to_owned();
@@ -105,7 +105,7 @@ pub async fn set<V: for<'a> Deserialize<'a> + Serialize>(
 /// # Example
 ///
 /// ```
-/// # use backend_rs::database::cache;
+/// # use backend_rs::cache;
 /// # async fn f() -> Result<(), Box<dyn std::error::Error>> {
 /// let key = "banana";
 /// let data = "I want to cache this string".to_owned();
@@ -144,7 +144,7 @@ pub async fn get<V: for<'a> Deserialize<'a> + Serialize>(key: &str) -> Result<Op
 /// # Example
 ///
 /// ```
-/// # use backend_rs::database::cache;
+/// # use backend_rs::cache;
 /// # async fn f() -> Result<(), Box<dyn std::error::Error>> {
 /// let key = "chocolate";
 /// let value = "I want to cache this string".to_owned();
@@ -229,12 +229,10 @@ pub async fn delete_all(category: Category) -> Result<(), Error> {
     Ok(())
 }
 
-// TODO: get_all()
-
 #[cfg(test)]
 mod unit_test {
     use super::{delete_all, get, get_one, set, set_one, Category::Test};
-    use crate::database::cache::delete_one;
+    use crate::cache::delete_one;
     use pretty_assertions::assert_eq;
 
     #[tokio::test]

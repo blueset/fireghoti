@@ -1,6 +1,7 @@
 use crate::{
+    cache,
     config::CONFIG,
-    database::{cache, db_conn},
+    database::db_conn,
     federation::acct::Acct,
     model::entity::{antenna, blocking, following, note, sea_orm_active_enums::*},
 };
@@ -12,7 +13,7 @@ pub enum AntennaCheckError {
     #[error(transparent)]
     Db(#[from] DbErr),
     #[error("Redis cache operation has failed")]
-    Cache(#[from] cache::Error),
+    Cache(#[from] cache::redis::Error),
 }
 
 fn match_all(space_separated_words: &str, text: &str, case_sensitive: bool) -> bool {

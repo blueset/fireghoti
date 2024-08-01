@@ -1,6 +1,6 @@
 //! Fetch latest Firefish version from the Firefish repository
 
-use crate::{database::cache, util::http_client};
+use crate::{cache, util::http_client};
 use futures_util::AsyncReadExt;
 use isahc::AsyncReadResponseExt;
 use serde::Deserialize;
@@ -8,7 +8,7 @@ use serde::Deserialize;
 #[macros::errors]
 pub enum Error {
     #[error("Redis cache operation has failed")]
-    Cache(#[from] cache::Error),
+    Cache(#[from] cache::redis::Error),
     #[error("HTTP request failed")]
     Isahc(#[from] isahc::Error),
     #[error("failed to acquire an HTTP client")]
@@ -75,7 +75,7 @@ pub async fn latest_version() -> Result<String, Error> {
 #[cfg(test)]
 mod unit_test {
     use super::{latest_version, UPSTREAM_PACKAGE_JSON_URL};
-    use crate::database::cache;
+    use crate::cache;
 
     fn validate_version(version: String) {
         // version: YYYYMMDD or YYYYMMDD-X

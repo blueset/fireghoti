@@ -1,7 +1,8 @@
 //! Determine whether to enable the cat language conversion
 
 use crate::{
-    database::{cache, db_conn},
+    cache,
+    database::db_conn,
     model::entity::user,
 };
 use sea_orm::{DbErr, EntityTrait, QuerySelect, SelectColumns};
@@ -13,7 +14,7 @@ pub enum Error {
     Db(#[from] DbErr),
     #[doc = "cache error"]
     #[error(transparent)]
-    Cache(#[from] cache::Error),
+    Cache(#[from] cache::redis::Error),
     #[doc = "user not found"]
     #[error("user {0} not found")]
     NotFound(String),

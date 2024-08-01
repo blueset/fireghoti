@@ -1,4 +1,4 @@
-use crate::database::cache;
+use crate::cache;
 use identicon_rs::{error::IdenticonError, Identicon};
 
 #[macros::errors]
@@ -7,7 +7,7 @@ pub enum Error {
     #[error(transparent)]
     Identicon(#[from] IdenticonError),
     #[error("Redis cache operation has failed")]
-    Cache(#[from] cache::Error),
+    Cache(#[from] cache::redis::Error),
 }
 
 pub async fn generate(id: &str) -> Result<Vec<u8>, Error> {
