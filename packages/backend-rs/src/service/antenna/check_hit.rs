@@ -5,6 +5,7 @@ use crate::{
     federation::acct::Acct,
     model::entity::{antenna, blocking, following, note, sea_orm_active_enums::*},
 };
+use chrono::Duration;
 use sea_orm::{prelude::*, QuerySelect};
 
 #[macros::errors]
@@ -109,7 +110,13 @@ pub(super) async fn check_hit_antenna(
                 .into_tuple::<String>()
                 .all(db)
                 .await?;
-            cache::set_one(cache::Category::Block, &note.user_id, &blocks, 10 * 60).await?;
+            cache::set_one(
+                cache::Category::Block,
+                &note.user_id,
+                &blocks,
+                Duration::minutes(10),
+            )
+            .await?;
             blocks
         };
 
@@ -138,7 +145,7 @@ pub(super) async fn check_hit_antenna(
                     cache::Category::Follow,
                     &antenna.user_id,
                     &following,
-                    10 * 60,
+                    Duration::minutes(10),
                 )
                 .await?;
                 following

@@ -1,6 +1,7 @@
 //! Fetch latest Firefish version from the Firefish repository
 
 use crate::{cache, util::http_client};
+use chrono::Duration;
 use futures_util::AsyncReadExt;
 use isahc::AsyncReadResponseExt;
 use serde::Deserialize;
@@ -65,7 +66,7 @@ pub async fn latest_version() -> Result<String, Error> {
             cache::Category::FetchUrl,
             UPSTREAM_PACKAGE_JSON_URL,
             &fetched_version,
-            3 * 60 * 60,
+            Duration::hours(3),
         )
         .await?;
         Ok(fetched_version)

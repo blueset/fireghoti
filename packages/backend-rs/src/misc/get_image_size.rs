@@ -1,4 +1,5 @@
 use crate::{cache, util::http_client};
+use chrono::Duration;
 use futures_util::AsyncReadExt;
 use image::{ImageError, ImageFormat, ImageReader};
 use isahc::AsyncReadResponseExt;
@@ -63,7 +64,7 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
             .is_some();
 
         if !attempted {
-            cache::set_one(cache::Category::FetchUrl, url, &true, 10 * 60).await?;
+            cache::set_one(cache::Category::FetchUrl, url, &true, Duration::minutes(10)).await?;
         }
     }
 

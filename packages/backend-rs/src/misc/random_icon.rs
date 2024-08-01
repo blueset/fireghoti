@@ -1,4 +1,5 @@
 use crate::cache;
+use chrono::Duration;
 use identicon_rs::{error::IdenticonError, Identicon};
 
 #[macros::errors]
@@ -18,7 +19,13 @@ pub async fn generate(id: &str) -> Result<Vec<u8>, Error> {
             .set_border(16)
             .set_scale(96)?
             .export_png_data()?;
-        cache::set_one(cache::Category::RandomIcon, id, &icon, 10 * 60).await?;
+        cache::set_one(
+            cache::Category::RandomIcon,
+            id,
+            &icon,
+            Duration::minutes(10),
+        )
+        .await?;
         Ok(icon)
     }
 }

@@ -1,6 +1,7 @@
 //! Determine whether to enable the cat language conversion
 
 use crate::{cache, database::db_conn, model::entity::user};
+use chrono::Duration;
 use sea_orm::{DbErr, EntityTrait, QuerySelect, SelectColumns};
 
 #[macros::errors]
@@ -35,7 +36,7 @@ pub async fn should_nyaify(reader_user_id: &str) -> Result<bool, Error> {
         cache::Category::CatLang,
         reader_user_id,
         &fetched_value,
-        10 * 60,
+        Duration::minutes(10),
     )
     .await?;
 

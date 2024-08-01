@@ -1,6 +1,7 @@
 //! Utilities for using Redis cache
 
 use crate::database::{redis_conn, redis_key, RedisConnError};
+use chrono::Duration;
 use redis::{AsyncCommands, RedisError};
 use serde::{Deserialize, Serialize};
 
@@ -23,6 +24,8 @@ pub enum Error {
     RedisConn(#[from] RedisConnError),
     #[error("failed to encode data for Redis")]
     Encode(#[from] rmp_serde::encode::Error),
+    #[error("invalid cache TTL")]
+    TTL,
 }
 
 #[inline]
@@ -56,18 +59,19 @@ fn wildcard(category: Category) -> String {
 ///
 /// * `key` : key (prefixed automatically)
 /// * `value` : (de)serializable value
-/// * `expire_seconds` : TTL
+/// * `ttl` : cache lifetime
 ///
 /// # Example
 ///
 /// ```
 /// # use backend_rs::cache;
+/// use chrono::Duration;
 /// # async fn f() -> Result<(), Box<dyn std::error::Error>> {
 /// let key = "apple";
 /// let data = "I want to cache this string".to_owned();
 ///
 /// // caches the data for 10 seconds
-/// cache::set(key, &data, 10).await?;
+/// cache::set(key, &data, Duration::seconds(10)).await?;
 ///
 /// // get the cache
 /// let cached_data = cache::get::<String>(key).await?;
@@ -80,14 +84,14 @@ fn wildcard(category: Category) -> String {
 pub async fn set<V: for<'a> Deserialize<'a> + Serialize>(
     key: &str,
     value: &V,
-    expire_seconds: u64,
+    ttl: Duration,
 ) -> Result<(), Error> {
     redis_conn()
         .await?
         .set_ex(
             prefix_key(key),
             rmp_serde::encode::to_vec(&value)?,
-            expire_seconds,
+            ttl.num_seconds().try_into().map_err(|_| Error::TTL)?,
         )
         .await?;
     Ok(())
@@ -176,14 +180,14 @@ pub async fn delete(key: &str) -> Result<(), Error> {
 /// * `category` : one of [Category]
 /// * `key` : key (prefixed automatically)
 /// * `value` : (de)serializable value
-/// * `expire_seconds` : TTL
+/// * `ttl` : cache lifetime
 pub async fn set_one<V: for<'a> Deserialize<'a> + Serialize>(
     category: Category,
     key: &str,
     value: &V,
-    expire_seconds: u64,
+    ttl: Duration,
 ) -> Result<(), Error> {
-    set(&categorize(category, key), value, expire_seconds).await
+    set(&categorize(category, key), value, ttl).await
 }
 
 /// Gets a Redis cache under a `category`.
@@ -233,6 +237,7 @@ pub async fn delete_all(category: Category) -> Result<(), Error> {
 mod unit_test {
     use super::{delete_all, get, get_one, set, set_one, Category::Test};
     use crate::cache::delete_one;
+    use chrono::Duration;
     use pretty_assertions::assert_eq;
 
     #[tokio::test]
@@ -256,9 +261,9 @@ mod unit_test {
             kind: "prime number".to_owned(),
         };
 
-        set(key_1, &value_1, 1).await.unwrap();
-        set(key_2, &value_2, 1).await.unwrap();
-        set(key_3, &value_3, 1).await.unwrap();
+        set(key_1, &value_1, Duration::seconds(1)).await.unwrap();
+        set(key_2, &value_2, Duration::seconds(1)).await.unwrap();
+        set(key_3, &value_3, Duration::seconds(1)).await.unwrap();
 
         let cached_value_1: Vec<i32> = get(key_1).await.unwrap().unwrap();
         let cached_value_2: String = get(key_2).await.unwrap().unwrap();
@@ -291,9 +296,15 @@ mod unit_test {
         let value_2 = 998244353u32;
         let value_3 = 'あ';
 
-        set_one(Test, key_1, &value_1, 5 * 60).await.unwrap();
-        set_one(Test, key_2, &value_2, 5 * 60).await.unwrap();
-        set_one(Test, key_3, &value_3, 5 * 60).await.unwrap();
+        set_one(Test, key_1, &value_1, Duration::minutes(5))
+            .await
+            .unwrap();
+        set_one(Test, key_2, &value_2, Duration::minutes(5))
+            .await
+            .unwrap();
+        set_one(Test, key_3, &value_3, Duration::minutes(5))
+            .await
+            .unwrap();
 
         assert_eq!(
             get_one::<String>(Test, key_1).await.unwrap().unwrap(),
