@@ -6,7 +6,7 @@ use crate::{cache::Cache, database::db_conn, model::entity::antenna};
 use sea_orm::prelude::*;
 use std::sync::Arc;
 
-static ANTENNAS_CACHE: Cache<Arc<[antenna::Model]>> = Cache::new(None);
+static ANTENNAS_CACHE: Cache<Arc<[antenna::Model]>> = Cache::new();
 
 async fn update() -> Result<Arc<[antenna::Model]>, DbErr> {
     tracing::debug!("updating cache");

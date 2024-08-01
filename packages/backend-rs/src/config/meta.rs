@@ -1,26 +1,27 @@
 //! Server information
 
 use crate::{cache::Cache, database::db_conn, model::entity::meta};
+use chrono::Duration;
 use sea_orm::{prelude::*, ActiveValue};
 
 type Meta = meta::Model;
 
-static INSTANCE_META_CACHE: Cache<Meta> = Cache::new(None);
+static INSTANCE_META_CACHE: Cache<Meta> = Cache::new_with_ttl(Duration::minutes(5));
 
 #[macros::export(js_name = "fetchMeta")]
 pub async fn local_server_info() -> Result<Meta, DbErr> {
-    local_server_info_impl(true).await
+    local_server_info_impl(false).await
 }
 
 #[macros::export(js_name = "updateMetaCache")]
 pub async fn update() -> Result<(), DbErr> {
-    local_server_info_impl(false).await?;
+    local_server_info_impl(true).await?;
     Ok(())
 }
 
-async fn local_server_info_impl(use_cache: bool) -> Result<Meta, DbErr> {
+async fn local_server_info_impl(force_update_cache: bool) -> Result<Meta, DbErr> {
     // try using cache
-    if use_cache {
+    if !force_update_cache {
         if let Some(cache) = INSTANCE_META_CACHE.get() {
             return Ok(cache);
         }

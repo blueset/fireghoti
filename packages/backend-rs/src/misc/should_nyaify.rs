@@ -1,10 +1,6 @@
 //! Determine whether to enable the cat language conversion
 
-use crate::{
-    cache,
-    database::db_conn,
-    model::entity::user,
-};
+use crate::{cache, database::db_conn, model::entity::user};
 use sea_orm::{DbErr, EntityTrait, QuerySelect, SelectColumns};
 
 #[macros::errors]

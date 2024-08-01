@@ -8,11 +8,12 @@ use crate::{
     misc,
     model::entity::{note, user},
 };
+use chrono::Duration;
 use sea_orm::prelude::*;
 use serde_json::json;
 use std::collections::HashMap;
 
-static NODEINFO_CACHE: Cache<Nodeinfo21> = Cache::new(None);
+static NODEINFO_CACHE: Cache<Nodeinfo21> = Cache::new_with_ttl(Duration::hours(1));
 
 /// Fetches the number of total/active local users and local posts.
 ///
@@ -122,11 +123,10 @@ async fn generate_nodeinfo_2_1() -> Result<Nodeinfo21, DbErr> {
     })
 }
 
-async fn nodeinfo_2_1_impl(use_cache: bool) -> Result<Nodeinfo21, DbErr> {
-    if use_cache {
-        if let Some(nodeinfo) = NODEINFO_CACHE.get() {
-            return Ok(nodeinfo);
-        }
+/// Returns NodeInfo (version 2.1) of the local server.
+pub async fn nodeinfo_2_1() -> Result<Nodeinfo21, DbErr> {
+    if let Some(nodeinfo) = NODEINFO_CACHE.get() {
+        return Ok(nodeinfo);
     }
 
     let nodeinfo = generate_nodeinfo_2_1().await?;
@@ -135,11 +135,6 @@ async fn nodeinfo_2_1_impl(use_cache: bool) -> Result<Nodeinfo21, DbErr> {
     NODEINFO_CACHE.set(nodeinfo.clone());
 
     Ok(nodeinfo)
-}
-
-/// Returns NodeInfo (version 2.1) of the local server.
-pub async fn nodeinfo_2_1() -> Result<Nodeinfo21, DbErr> {
-    nodeinfo_2_1_impl(true).await
 }
 
 /// Returns NodeInfo (version 2.0) of the local server.
@@ -165,10 +160,4 @@ pub async fn nodeinfo_2_1_as_json() -> Result<serde_json::Value, Error> {
 #[macros::ts_export(js_name = "nodeinfo_2_0")]
 pub async fn nodeinfo_2_0_as_json() -> Result<serde_json::Value, Error> {
     Ok(serde_json::to_value(nodeinfo_2_0().await?)?)
-}
-
-#[macros::ts_export(js_name = "updateNodeinfoCache")]
-pub async fn update_cache() -> Result<(), DbErr> {
-    nodeinfo_2_1_impl(false).await?;
-    Ok(())
 }

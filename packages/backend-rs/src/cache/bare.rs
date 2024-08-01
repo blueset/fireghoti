@@ -14,13 +14,23 @@ struct TimedData<T: Clone> {
 }
 
 impl<T: Clone> Cache<T> {
-    pub const fn new(ttl: Option<Duration>) -> Self {
+    pub const fn new() -> Self {
         Self {
             cache: Mutex::new(TimedData {
                 value: None,
                 last_updated: DateTime::UNIX_EPOCH,
             }),
-            ttl,
+            ttl: None,
+        }
+    }
+
+    pub const fn new_with_ttl(ttl: Duration) -> Self {
+        Self {
+            cache: Mutex::new(TimedData {
+                value: None,
+                last_updated: DateTime::UNIX_EPOCH,
+            }),
+            ttl: Some(ttl),
         }
     }
 

@@ -1455,8 +1455,6 @@ export declare function updateAntennasOnNewNote(note: Note, noteAuthor: Acct, no
 
 export declare function updateMetaCache(): Promise<void>
 
-export declare function updateNodeinfoCache(): Promise<void>
-
 /** Usage statistics for this server. */
 export interface Usage {
   users: Users

@@ -457,7 +457,6 @@ module.exports.unwatchNote = nativeBinding.unwatchNote
 module.exports.updateAntennaCache = nativeBinding.updateAntennaCache
 module.exports.updateAntennasOnNewNote = nativeBinding.updateAntennasOnNewNote
 module.exports.updateMetaCache = nativeBinding.updateMetaCache
-module.exports.updateNodeinfoCache = nativeBinding.updateNodeinfoCache
 module.exports.UserEmojiModPerm = nativeBinding.UserEmojiModPerm
 module.exports.UserEvent = nativeBinding.UserEvent
 module.exports.UserProfileFfvisibility = nativeBinding.UserProfileFfvisibility
