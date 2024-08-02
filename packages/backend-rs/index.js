@@ -442,6 +442,7 @@ module.exports.renderAccept = nativeBinding.renderAccept
 module.exports.renderEmoji = nativeBinding.renderEmoji
 module.exports.renderFollow = nativeBinding.renderFollow
 module.exports.renderFollowRelay = nativeBinding.renderFollowRelay
+module.exports.renderTombstone = nativeBinding.renderTombstone
 module.exports.safeForSql = nativeBinding.safeForSql
 module.exports.sendPushNotification = nativeBinding.sendPushNotification
 module.exports.shouldNyaify = nativeBinding.shouldNyaify

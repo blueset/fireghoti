@@ -129,7 +129,8 @@ export interface ApFollow {
 export type ApObject =  'Accept'|
 'Emoji'|
 'Follow'|
-'Image';
+'Image'|
+'Tombstone';
 
 export interface App {
   id: string
@@ -140,6 +141,11 @@ export interface App {
   description: string
   permission: Array<string>
   callbackUrl: string | null
+}
+
+export interface ApTombstone {
+  id: string
+  type: ApObject
 }
 
 export interface AttestationChallenge {
@@ -1298,6 +1304,8 @@ export declare function renderEmoji(emoji: Emoji): ApEmoji
 export declare function renderFollow(follower: UserLike, followee: UserLike, requestId?: string | undefined | null): ApFollow
 
 export declare function renderFollowRelay(relayId: string): Promise<ApFollow>
+
+export declare function renderTombstone(noteId: string): ApTombstone
 
 export interface RenoteMuting {
   id: string

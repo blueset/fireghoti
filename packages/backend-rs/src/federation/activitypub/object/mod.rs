@@ -1,6 +1,7 @@
 pub mod accept;
 pub mod emoji;
 pub mod follow;
+pub mod tombstone;
 
 pub trait ActivityPubObject {}
 
@@ -10,6 +11,7 @@ pub enum ApObject {
     Emoji,
     Follow,
     Image,
+    Tombstone,
 }
 
 const AS_PUBLIC_URL: &str = "https://www.w3.org/ns/activitystreams#Public";

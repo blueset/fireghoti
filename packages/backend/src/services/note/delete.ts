@@ -3,7 +3,6 @@ import renderDelete from "@/remote/activitypub/renderer/delete.js";
 import renderAnnounce from "@/remote/activitypub/renderer/announce.js";
 import { renderUndo } from "@/remote/activitypub/renderer/undo.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderTombstone from "@/remote/activitypub/renderer/tombstone.js";
 import { config } from "@/config.js";
 import type { User, ILocalUser, IRemoteUser } from "@/models/entities/user.js";
 import type { Note, IMentionedRemoteUsers } from "@/models/entities/note.js";
@@ -16,7 +15,7 @@ import { countSameRenotes } from "@/misc/count-same-renotes.js";
 import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
 import { deliverToRelays } from "@/services/relay.js";
 import type { IActivity } from "@/remote/activitypub/type.js";
-import { NoteEvent, publishToNoteStream } from "backend-rs";
+import { NoteEvent, publishToNoteStream, renderTombstone } from "backend-rs";
 
 async function recalculateNotesCountOfLocalUser(user: {
 	id: User["id"];
@@ -102,7 +101,7 @@ export default async function (
 						),
 						user.id,
 					)
-				: renderDelete(renderTombstone(`${config.url}/notes/${note.id}`), user),
+				: renderDelete(renderTombstone(note.id), user),
 		);
 
 		deliverToConcerned(user, note, content);
@@ -127,10 +126,7 @@ export default async function (
 		affectedLocalUsers[cascadingNote.user.id] ??= cascadingNote.user;
 		if (cascadingNote.localOnly) continue; // filter out local-only notes
 		const content = renderActivity(
-			renderDelete(
-				renderTombstone(`${config.url}/notes/${cascadingNote.id}`),
-				cascadingNote.user,
-			),
+			renderDelete(renderTombstone(cascadingNote.id), cascadingNote.user),
 		);
 		deliverToConcerned(cascadingNote.user, cascadingNote, content);
 	}

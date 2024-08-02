@@ -1,10 +1,12 @@
-import { config } from "@/config.js";
 import { MessagingMessages, Users } from "@/models/index.js";
 import type { MessagingMessage } from "@/models/entities/messaging-message.js";
-import { publishToChatStream, publishToGroupChatStream } from "backend-rs";
+import {
+	publishToChatStream,
+	publishToGroupChatStream,
+	renderTombstone,
+} from "backend-rs";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderDelete from "@/remote/activitypub/renderer/delete.js";
-import renderTombstone from "@/remote/activitypub/renderer/tombstone.js";
 import { deliver } from "@/queue/index.js";
 
 export async function deleteMessage(message: MessagingMessage) {
@@ -36,10 +38,7 @@ async function postDeleteMessage(message: MessagingMessage) {
 
 		if (Users.isLocalUser(user) && Users.isRemoteUser(recipient)) {
 			const activity = renderActivity(
-				renderDelete(
-					renderTombstone(`${config.url}/notes/${message.id}`),
-					user,
-				),
+				renderDelete(renderTombstone(message.id), user),
 			);
 			deliver(user.id, activity, recipient.inbox);
 		}
