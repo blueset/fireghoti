@@ -83,8 +83,8 @@ function opening() {
 .ryghynhb {
 	&.drawer {
 		border-radius: 24px;
-		border-bottom-right-radius: 0;
-		border-bottom-left-radius: 0;
+		border-end-end-radius: 0;
+		border-end-start-radius: 0;
 	}
 }
 </style>

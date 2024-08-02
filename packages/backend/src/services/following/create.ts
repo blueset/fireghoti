@@ -1,7 +1,4 @@
-import { publishMainStream, publishUserEvent } from "@/services/stream.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderFollow from "@/remote/activitypub/renderer/follow.js";
-import renderAccept from "@/remote/activitypub/renderer/accept.js";
 import renderReject from "@/remote/activitypub/renderer/reject.js";
 import { deliver } from "@/queue/index.js";
 import createFollowRequest from "./requests/create.js";
@@ -17,7 +14,16 @@ import {
 	Instances,
 	UserProfiles,
 } from "@/models/index.js";
-import { genIdAt, isSilencedServer } from "backend-rs";
+import {
+	Event,
+	genIdAt,
+	isSilencedServer,
+	publishToMainStream,
+	publishToUserStream,
+	UserEvent,
+	renderAccept,
+	renderFollow,
+} from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
 import type { Packed } from "@/misc/schema.js";
@@ -121,14 +127,14 @@ export async function insertFollowingDoc(
 		Users.pack(followee.id, follower, {
 			detail: true,
 		}).then(async (packed) => {
-			publishUserEvent(
+			await publishToUserStream(
 				follower.id,
-				"follow",
+				UserEvent.Follow,
 				packed as Packed<"UserDetailedNotMe">,
 			);
-			publishMainStream(
+			await publishToMainStream(
 				follower.id,
-				"follow",
+				Event.Follow,
 				packed as Packed<"UserDetailedNotMe">,
 			);
 
@@ -146,7 +152,7 @@ export async function insertFollowingDoc(
 	// Publish followed event
 	if (Users.isLocalUser(followee)) {
 		Users.pack(follower.id, followee).then(async (packed) => {
-			publishMainStream(followee.id, "followed", packed);
+			publishToMainStream(followee.id, Event.Followed, packed);
 
 			const webhooks = (await getActiveWebhooks()).filter(
 				(x) => x.userId === followee.id && x.on.includes("followed"),
@@ -192,7 +198,7 @@ export default async function (
 		const content = renderActivity(
 			renderReject(renderFollow(follower, followee, requestId), followee),
 		);
-		deliver(followee, content, follower.inbox);
+		deliver(followee.id, content, follower.inbox);
 		return;
 	} else if (
 		Users.isRemoteUser(follower) &&
@@ -269,8 +275,8 @@ export default async function (
 
 	if (Users.isRemoteUser(follower) && Users.isLocalUser(followee)) {
 		const content = renderActivity(
-			renderAccept(renderFollow(follower, followee, requestId), followee),
+			renderAccept(followee.id, renderFollow(follower, followee, requestId)),
 		);
-		deliver(followee, content, follower.inbox);
+		deliver(followee.id, content, follower.inbox);
 	}
 }

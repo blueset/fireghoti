@@ -117,8 +117,9 @@ async function del() {
 	> .img {
 		position: relative;
 		display: block;
-		height: 64px;
-		margin: 0 auto;
+		block-size: 64px;
+		margin-block: 0;
+		margin-inline: auto;
 	}
 }
 </style>

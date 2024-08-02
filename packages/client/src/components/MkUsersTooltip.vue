@@ -37,7 +37,7 @@ const emit = defineEmits<{
 <style lang="scss" scoped>
 .beaffaef {
 	font-size: 0.9em;
-	text-align: left;
+	text-align: start;
 
 	> .user {
 		line-height: 24px;
@@ -46,13 +46,13 @@ const emit = defineEmits<{
 		text-overflow: ellipsis;
 
 		&:not(:last-child) {
-			margin-bottom: 3px;
+			margin-block-end: 3px;
 		}
 
 		> .avatar {
-			width: 24px;
-			height: 24px;
-			margin-right: 3px;
+			inline-size: 24px;
+			block-size: 24px;
+			margin-inline-end: 3px;
 		}
 	}
 }

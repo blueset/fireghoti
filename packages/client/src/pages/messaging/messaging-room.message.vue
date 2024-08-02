@@ -122,24 +122,24 @@ function del(): void {
 
 	> .avatar {
 		position: sticky;
-		top: calc(var(--stickyTop, 0px) + 20px);
+		inset-block-start: calc(var(--stickyTop, 0px) + 20px);
 		display: block;
-		width: 45px;
-		height: 45px;
+		inline-size: 45px;
+		block-size: 45px;
 		transition: all 0.1s ease;
 	}
 
 	> .content {
-		min-width: 0;
+		min-inline-size: 0;
 
 		> .balloon {
 			position: relative;
 			display: inline-flex;
 			align-items: center;
 			padding: 0;
-			min-height: 38px;
+			min-block-size: 38px;
 			border-radius: 16px;
-			max-width: 100%;
+			max-inline-size: 100%;
 
 			& + * {
 				clear: both;
@@ -155,8 +155,8 @@ function del(): void {
 				display: none;
 				position: absolute;
 				z-index: 1;
-				top: -4px;
-				right: -4px;
+				inset-block-start: -4px;
+				inset-inline-end: -4px;
 				margin: 0;
 				padding: 0;
 				cursor: pointer;
@@ -168,14 +168,14 @@ function del(): void {
 
 				> img {
 					vertical-align: bottom;
-					width: 16px;
-					height: 16px;
+					inline-size: 16px;
+					block-size: 16px;
 					cursor: pointer;
 				}
 			}
 
 			> .content {
-				max-width: 100%;
+				max-inline-size: 100%;
 
 				> .is-deleted {
 					display: block;
@@ -190,7 +190,8 @@ function del(): void {
 				> .text {
 					display: block;
 					margin: 0;
-					padding: 12px 18px;
+					padding-block: 12px;
+					padding-inline: 18px;
 					overflow: hidden;
 					overflow-wrap: break-word;
 					word-break: break-word;
@@ -207,7 +208,7 @@ function del(): void {
 				> .file {
 					> a {
 						display: block;
-						max-width: 100%;
+						max-inline-size: 100%;
 						border-radius: 16px;
 						overflow: hidden;
 						text-decoration: none;
@@ -223,8 +224,8 @@ function del(): void {
 						> * {
 							display: block;
 							margin: 0;
-							width: 100%;
-							max-height: 512px;
+							inline-size: 100%;
+							max-block-size: 512px;
 							object-fit: contain;
 							box-sizing: border-box;
 						}
@@ -242,25 +243,29 @@ function del(): void {
 
 		> footer {
 			display: block;
-			margin: 2px 0 0 0;
+			margin-block-start: 2px;
+			margin-inline-end: 0;
+			margin-block-end: 0;
+			margin-inline-start: 0;
 			font-size: 0.65em;
 
 			> .read {
-				margin: 0 8px;
+				margin-block: 0;
+				margin-inline: 8px;
 			}
 
 			> i {
-				margin-left: 4px;
+				margin-inline-start: 4px;
 			}
 		}
 	}
 
 	&:not(.isMe) {
-		padding-left: var(--margin);
+		padding-inline-start: var(--margin);
 
 		> .content {
-			padding-left: 16px;
-			padding-right: 32px;
+			padding-inline-start: 16px;
+			padding-inline-end: 32px;
 
 			> .balloon {
 				$color: var(--X4);
@@ -271,11 +276,11 @@ function del(): void {
 				}
 
 				&:not(.noText):before {
-					left: -14px;
-					border-top: solid 8px transparent;
-					border-right: solid 8px $color;
-					border-bottom: solid 8px transparent;
-					border-left: solid 8px transparent;
+					inset-inline-start: -14px;
+					border-block-start: solid 8px transparent;
+					border-inline-end: solid 8px $color;
+					border-block-end: solid 8px transparent;
+					border-inline-start: solid 8px transparent;
 				}
 
 				> .content {
@@ -286,24 +291,24 @@ function del(): void {
 			}
 
 			> footer {
-				text-align: left;
+				text-align: start;
 			}
 		}
 	}
 
 	&.isMe {
 		flex-direction: row-reverse;
-		padding-right: var(--margin);
-		right: var(--margin); // 削除時にposition: absoluteになったときに使う
+		padding-inline-end: var(--margin);
+		inset-inline-end: var(--margin); // 削除時にposition: absoluteになったときに使う
 
 		> .content {
-			padding-right: 16px;
-			padding-left: 32px;
-			text-align: right;
+			padding-inline-end: 16px;
+			padding-inline-start: 32px;
+			text-align: end;
 
 			> .balloon {
 				background: $me-balloon-color;
-				text-align: left;
+				text-align: start;
 
 				::selection {
 					color: var(--accent);
@@ -315,12 +320,12 @@ function del(): void {
 				}
 
 				&:not(.noText):before {
-					right: -14px;
-					left: auto;
-					border-top: solid 8px transparent;
-					border-right: solid 8px transparent;
-					border-bottom: solid 8px transparent;
-					border-left: solid 8px $me-balloon-color;
+					inset-inline-end: -14px;
+					inset-inline-start: auto;
+					border-block-start: solid 8px transparent;
+					border-inline-end: solid 8px transparent;
+					border-block-end: solid 8px transparent;
+					border-inline-start: solid 8px $me-balloon-color;
 				}
 
 				> .content {
@@ -341,7 +346,7 @@ function del(): void {
 			}
 
 			> footer {
-				text-align: right;
+				text-align: end;
 
 				> .read {
 					user-select: none;
@@ -352,8 +357,8 @@ function del(): void {
 
 	&.max-width_400px {
 		> .avatar {
-			width: 48px;
-			height: 48px;
+			inline-size: 48px;
+			block-size: 48px;
 		}
 
 		> .content {
@@ -372,7 +377,8 @@ function del(): void {
 			> .balloon {
 				> .content {
 					> .text {
-						padding: 8px 16px;
+						padding-block: 8px;
+						padding-inline: 16px;
 					}
 				}
 			}

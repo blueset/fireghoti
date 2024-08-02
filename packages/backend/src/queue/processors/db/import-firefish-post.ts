@@ -1,4 +1,3 @@
-import * as Post from "@/misc/post.js";
 import create from "@/services/note/create.js";
 import { NoteFiles, Users } from "@/models/index.js";
 import type { DbUserImportMastoPostJobData } from "@/queue/types.js";
@@ -10,6 +9,7 @@ import { createImportCkPostJob } from "@/queue/index.js";
 import { Notes, NoteEdits } from "@/models/index.js";
 import type { Note } from "@/models/entities/note.js";
 import { genId } from "backend-rs";
+import { noteVisibilities } from "@/types.js";
 
 const logger = queueLogger.createSubLogger("import-firefish-post");
 
@@ -52,10 +52,15 @@ export async function importCkPost(
 			logger.info(`Skipped adding file to drive: ${url}`);
 		}
 	}
-	const { text, cw, localOnly, createdAt, visibility } = Post.parse(post);
+
+	const createdAt = new Date(post.createdAt);
+	const visibility = noteVisibilities.includes(post.visibility)
+		? post.visibility
+		: "specified";
+
 	let note = await Notes.findOneBy({
-		createdAt: createdAt,
-		text: text,
+		createdAt,
+		text: post.text || undefined,
 		userId: user.id,
 	});
 
@@ -95,16 +100,16 @@ export async function importCkPost(
 		note = await create(
 			user,
 			{
-				createdAt: createdAt,
+				createdAt,
 				scheduledAt: undefined,
 				files: files.length === 0 ? undefined : files,
 				poll: undefined,
-				text: text || undefined,
+				text: post.text || undefined,
 				reply: post.replyId ? job.data.parent : null,
 				renote: post.renoteId ? job.data.parent : null,
-				cw: cw,
-				localOnly,
-				visibility: visibility,
+				cw: post.cw,
+				localOnly: post.localOnly,
+				visibility,
 				visibleUsers: [],
 				channel: null,
 				apMentions: new Array(0),

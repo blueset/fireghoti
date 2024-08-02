@@ -36,14 +36,14 @@ export async function createImage(
 
 	apLogger.info(`Creating an image: ${image.url}`);
 
-	const instance = await fetchMeta();
+	const instanceMeta = await fetchMeta();
 
 	let file = await uploadFromUrl({
 		url: image.url,
 		user: actor,
 		uri: image.url,
 		sensitive: image.sensitive,
-		isLink: !instance.cacheRemoteFiles,
+		isLink: !instanceMeta.cacheRemoteFiles,
 		comment: truncate(image.name, config.maxCaptionLength),
 		usageHint: usage,
 	});

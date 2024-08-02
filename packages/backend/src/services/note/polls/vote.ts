@@ -1,9 +1,8 @@
-import { publishNoteStream } from "@/services/stream.js";
 import type { CacheableUser } from "@/models/entities/user.js";
 import type { Note } from "@/models/entities/note.js";
 import { PollVotes, NoteWatchings, Polls, Blockings } from "@/models/index.js";
 import { Not } from "typeorm";
-import { genIdAt } from "backend-rs";
+import { genIdAt, NoteEvent, publishToNoteStream } from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 
 export default async function (
@@ -60,7 +59,7 @@ export default async function (
 		`UPDATE poll SET votes[${index}] = votes[${index}] + 1 WHERE "noteId" = '${poll.noteId}'`,
 	);
 
-	publishNoteStream(note.id, "pollVoted", {
+	publishToNoteStream(note.id, NoteEvent.Vote, {
 		choice: choice,
 		userId: user.id,
 	});

@@ -1,7 +1,6 @@
-import { publishMainStream } from "@/services/stream.js";
 import define from "@/server/api/define.js";
 import { RegistryItems } from "@/models/index.js";
-import { genIdAt } from "backend-rs";
+import { Event, genIdAt, publishToMainStream } from "backend-rs";
 
 export const meta = {
 	requireCredential: true,
@@ -55,7 +54,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	}
 
 	// TODO: サードパーティアプリが傍受出来てしまうのでどうにかする
-	publishMainStream(user.id, "registryUpdated", {
+	publishToMainStream(user.id, Event.Registry, {
 		scope: ps.scope,
 		key: ps.key,
 		value: ps.value,

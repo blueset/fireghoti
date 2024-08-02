@@ -163,13 +163,13 @@ watch(
 .hidden {
 	all: unset;
 	position: relative;
-	width: 100%;
-	height: 100%;
+	inline-size: 100%;
+	block-size: 100%;
 
 	> .text {
 		position: relative;
-		width: 100%;
-		height: 100%;
+		inline-size: 100%;
+		block-size: 100%;
 		z-index: 1;
 		display: flex;
 		justify-content: center;
@@ -203,15 +203,16 @@ watch(
 		position: absolute;
 		border-radius: 6px;
 		overflow: hidden;
-		top: 12px;
-		right: 12px;
+		inset-block-start: 12px;
+		inset-inline-end: 12px;
 		> * {
 			background-color: var(--accentedBg);
 			-webkit-backdrop-filter: var(--blur, blur(15px));
 			backdrop-filter: var(--blur, blur(15px));
 			color: var(--accent);
 			font-size: 0.8em;
-			padding: 6px 8px;
+			padding-block: 6px;
+			padding-inline: 8px;
 			text-align: center;
 		}
 	}
@@ -220,8 +221,8 @@ watch(
 		display: flex;
 		cursor: zoom-in;
 		overflow: hidden;
-		width: 100%;
-		height: 100%;
+		inline-size: 100%;
+		block-size: 100%;
 		background-position: center;
 		background-size: contain;
 		background-repeat: no-repeat;
@@ -240,33 +241,34 @@ watch(
 			display: inline-block;
 			font-size: 14px;
 			font-weight: bold;
-			left: 12px;
+			inset-inline-start: 12px;
 			opacity: 0.5;
-			padding: 0 6px;
+			padding-block: 0;
+			padding-inline: 6px;
 			text-align: center;
-			top: 12px;
+			inset-block-start: 12px;
 			pointer-events: none;
 		}
 	}
 	:deep(.plyr__controls) {
 		contain: strict;
-		height: 24px;
+		block-size: 24px;
 		box-sizing: content-box;
 	}
 	:deep(.plyr__volume) {
 		display: flex;
-		min-width: max-content;
-		width: 110px;
+		min-inline-size: max-content;
+		inline-size: 110px;
 		transition: width 0.2s cubic-bezier(0, 0, 0, 1);
 		[data-plyr="volume"] {
-			width: 0;
+			inline-size: 0;
 			flex-grow: 1;
 			transition:
 				margin 0.3s,
 				opacity 0.2s 0.2s;
 		}
 		&:not(:hover):not(:focus-within) {
-			width: 0px;
+			inline-size: 0px;
 			transition: width 0.2s;
 			[data-plyr="volume"] {
 				margin-inline: 0px;
@@ -279,7 +281,7 @@ watch(
 	}
 	&.max-width_350px {
 		:deep(.plyr:not(:fullscreen)) {
-			min-width: unset !important;
+			min-inline-size: unset !important;
 			.plyr__control--overlaid,
 			.plyr__progress__container,
 			.plyr__volume,

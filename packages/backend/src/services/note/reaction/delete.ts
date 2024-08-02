@@ -1,13 +1,12 @@
-import { publishNoteStream } from "@/services/stream.js";
 import { renderLike } from "@/remote/activitypub/renderer/like.js";
-import renderUndo from "@/remote/activitypub/renderer/undo.js";
+import { renderUndo } from "@/remote/activitypub/renderer/undo.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
 import type { User, IRemoteUser } from "@/models/entities/user.js";
 import type { Note } from "@/models/entities/note.js";
 import { NoteReactions, Users, Notes } from "@/models/index.js";
-import { decodeReaction } from "backend-rs";
+import { decodeReaction, NoteEvent, publishToNoteStream } from "backend-rs";
 
 export default async (
 	user: { id: User["id"]; host: User["host"] },
@@ -48,7 +47,7 @@ export default async (
 
 	Notes.decrement({ id: note.id }, "score", 1);
 
-	publishNoteStream(note.id, "unreacted", {
+	publishToNoteStream(note.id, NoteEvent.Unreact, {
 		reaction: decodeReaction(reaction.reaction).reaction,
 		userId: user.id,
 	});
@@ -56,7 +55,7 @@ export default async (
 	//#region 配信
 	if (Users.isLocalUser(user) && !note.localOnly) {
 		const content = renderActivity(
-			renderUndo(await renderLike(reaction, note), user),
+			renderUndo(await renderLike(reaction, note), user.id),
 		);
 		const dm = new DeliverManager(user, content);
 		if (note.userHost != null) {

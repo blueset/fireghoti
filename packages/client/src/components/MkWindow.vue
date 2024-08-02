@@ -523,16 +523,16 @@ defineExpose({
 
 .ebkgocck {
 	position: fixed;
-	top: 0;
-	left: 0;
+	inset-block-start: 0;
+	inset-inline-start: 0;
 
 	> .body {
 		overflow: clip;
 		display: flex;
 		flex-direction: column;
 		contain: content;
-		width: 100%;
-		height: 100%;
+		inline-size: 100%;
+		block-size: 100%;
 		border-radius: var(--radius);
 
 		> .header {
@@ -548,11 +548,11 @@ defineExpose({
 				z-index: 1;
 				flex-shrink: 0;
 				user-select: none;
-				height: var(--height);
+				block-size: var(--height);
 				background: var(--windowHeader);
 				-webkit-backdrop-filter: var(--blur, blur(15px));
 				backdrop-filter: var(--blur, blur(15px));
-				//border-bottom: solid 1px var(--divider);
+				//border-block-end: solid 1px var(--divider);
 				font-size: 95%;
 				font-weight: bold;
 			}
@@ -560,8 +560,8 @@ defineExpose({
 			> .left,
 			> .right {
 				> .button {
-					height: var(--height);
-					width: var(--height);
+					block-size: var(--height);
+					inline-size: var(--height);
 
 					&:hover {
 						color: var(--fgHighlighted);
@@ -574,11 +574,11 @@ defineExpose({
 			}
 
 			> .left {
-				margin-right: 16px;
+				margin-inline-end: 16px;
 			}
 
 			> .right {
-				min-width: 16px;
+				min-inline-size: 16px;
 			}
 
 			> .title {
@@ -610,66 +610,66 @@ defineExpose({
 		position: absolute;
 
 		&.top {
-			top: -($size);
-			left: 0;
-			width: 100%;
-			height: $size;
+			inset-block-start: -($size);
+			inset-inline-start: 0;
+			inline-size: 100%;
+			block-size: $size;
 			cursor: ns-resize;
 		}
 
 		&.right {
-			top: 0;
-			right: -($size);
-			width: $size;
-			height: 100%;
+			inset-block-start: 0;
+			inset-inline-end: -($size);
+			inline-size: $size;
+			block-size: 100%;
 			cursor: ew-resize;
 		}
 
 		&.bottom {
-			bottom: -($size);
-			left: 0;
-			width: 100%;
-			height: $size;
+			inset-block-end: -($size);
+			inset-inline-start: 0;
+			inline-size: 100%;
+			block-size: $size;
 			cursor: ns-resize;
 		}
 
 		&.left {
-			top: 0;
-			left: -($size);
-			width: $size;
-			height: 100%;
+			inset-block-start: 0;
+			inset-inline-start: -($size);
+			inline-size: $size;
+			block-size: 100%;
 			cursor: ew-resize;
 		}
 
 		&.top-left {
-			top: -($size);
-			left: -($size);
-			width: $size * 2;
-			height: $size * 2;
+			inset-block-start: -($size);
+			inset-inline-start: -($size);
+			inline-size: $size * 2;
+			block-size: $size * 2;
 			cursor: nwse-resize;
 		}
 
 		&.top-right {
-			top: -($size);
-			right: -($size);
-			width: $size * 2;
-			height: $size * 2;
+			inset-block-start: -($size);
+			inset-inline-end: -($size);
+			inline-size: $size * 2;
+			block-size: $size * 2;
 			cursor: nesw-resize;
 		}
 
 		&.bottom-right {
-			bottom: -($size);
-			right: -($size);
-			width: $size * 2;
-			height: $size * 2;
+			inset-block-end: -($size);
+			inset-inline-end: -($size);
+			inline-size: $size * 2;
+			block-size: $size * 2;
 			cursor: nwse-resize;
 		}
 
 		&.bottom-left {
-			bottom: -($size);
-			left: -($size);
-			width: $size * 2;
-			height: $size * 2;
+			inset-block-end: -($size);
+			inset-inline-start: -($size);
+			inline-size: $size * 2;
+			block-size: $size * 2;
 			cursor: nesw-resize;
 		}
 	}

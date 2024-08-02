@@ -78,7 +78,8 @@ defineExpose<WidgetComponentExpose>({
 	text-align: center;
 
 	&.pad {
-		padding: 16px 0;
+		padding-block: 16px;
+		padding-inline: 0;
 	}
 
 	> .text {

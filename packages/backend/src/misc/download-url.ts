@@ -20,7 +20,7 @@ export async function downloadUrl(url: string, path: string): Promise<void> {
 
 	const timeout = 30 * 1000;
 	const operationTimeout = 60 * 1000;
-	const maxSize = config.maxFileSize || 262144000;
+	const maxSize = config.maxFileSize;
 
 	const req = got
 		.stream(url, {

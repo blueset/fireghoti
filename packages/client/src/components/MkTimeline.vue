@@ -21,7 +21,7 @@
 			"
 		>
 			{{ i18n.ts.newNoteRecived }}
-			<i :class="icon('ph-arrow-up', false)"></i>
+			<i :class="icon('ph-arrow-up ph-dir', false)"></i>
 		</button>
 	</div>
 	<MkPullToRefresh
@@ -340,28 +340,28 @@ defineExpose({
 	position: sticky;
 	display: flex;
 	justify-content: center;
-	top: calc(var(--stickyTop, 0px) - 60px);
-	width: 600px;
-	max-width: 100%;
-	height: 60px;
+	inset-block-start: calc(var(--stickyTop, 0px) - 60px);
+	inline-size: 600px;
+	max-inline-size: 100%;
+	block-size: 60px;
 	pointer-events: none;
 	margin: auto;
-	margin-top: -60px;
+	margin-block-start: -60px;
 	z-index: 1001;
 	box-shadow: 0 24px 24px -20px var(--accentedBg);
 	&::after {
 		content: "";
 		position: absolute;
 		inset: -2px 0;
-		border-bottom: 2px solid var(--accentDarken);
+		border-block-end: 2px solid var(--accentDarken);
 		mask: linear-gradient(
-			to right,
+			var(--gradient-to-inline-end),
 			transparent,
 			black 40% 60%,
 			transparent
 		);
 		-webkit-mask: linear-gradient(
-			to right,
+			var(--gradient-to-inline-end),
 			transparent,
 			black 40% 60%,
 			transparent
@@ -370,10 +370,11 @@ defineExpose({
 	> button {
 		display: flex;
 		position: absolute;
-		top: 120%;
+		inset-block-start: 120%;
 		margin-inline: auto;
 		border-radius: 2em;
-		padding: 0.5em 1.2em;
+		padding-block: 0.5em;
+		padding-inline: 1.2em;
 		background: var(--accentedBg);
 		border: 0;
 		color: var(--accent);
@@ -392,9 +393,9 @@ defineExpose({
 			z-index: -1;
 		}
 		i {
-			margin-left: 0.7em;
-			border-left: 1px solid var(--accentedBg);
-			padding-left: 0.4em;
+			margin-inline-start: 0.7em;
+			border-inline-start: 1px solid var(--accentedBg);
+			padding-inline-start: 0.4em;
 		}
 	}
 }

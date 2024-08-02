@@ -1,9 +1,11 @@
 use crate::{
+    cache,
     config::CONFIG,
-    database::{cache, db_conn},
+    database::db_conn,
     federation::acct::Acct,
     model::entity::{antenna, blocking, following, note, sea_orm_active_enums::*},
 };
+use chrono::Duration;
 use sea_orm::{prelude::*, QuerySelect};
 
 #[macros::errors]
@@ -12,7 +14,7 @@ pub enum AntennaCheckError {
     #[error(transparent)]
     Db(#[from] DbErr),
     #[error("Redis cache operation has failed")]
-    Cache(#[from] cache::Error),
+    Cache(#[from] cache::redis::Error),
 }
 
 fn match_all(space_separated_words: &str, text: &str, case_sensitive: bool) -> bool {
@@ -108,7 +110,13 @@ pub(super) async fn check_hit_antenna(
                 .into_tuple::<String>()
                 .all(db)
                 .await?;
-            cache::set_one(cache::Category::Block, &note.user_id, &blocks, 10 * 60).await?;
+            cache::set_one(
+                cache::Category::Block,
+                &note.user_id,
+                &blocks,
+                Duration::minutes(10),
+            )
+            .await?;
             blocks
         };
 
@@ -137,7 +145,7 @@ pub(super) async fn check_hit_antenna(
                     cache::Category::Follow,
                     &antenna.user_id,
                     &following,
-                    10 * 60,
+                    Duration::minutes(10),
                 )
                 .await?;
                 following

@@ -20,7 +20,11 @@
 						<template #label>{{ i18n.ts.username }}</template>
 						<template #prefix>@</template>
 					</MkInput>
-					<MkInput v-model="host" @update:modelValue="search">
+					<MkInput
+						ref="hostEl"
+						v-model="host"
+						@update:modelValue="search"
+					>
 						<template #label>{{ i18n.ts.host }}</template>
 						<template #prefix>@</template>
 					</MkInput>
@@ -88,7 +92,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch, nextTick } from "vue";
 import type { entities } from "firefish-js";
 import MkInput from "@/components/form/input.vue";
 import FormSplit from "@/components/form/split.vue";
@@ -109,6 +113,7 @@ const users = ref<entities.UserDetailed[]>([]);
 const recentUsers = ref<entities.UserDetailed[]>([]);
 const selected = ref<entities.UserDetailed | null>(null);
 const dialogEl = ref();
+const hostEl = ref();
 
 const search = () => {
 	if (username.value === "" && host.value === "") {
@@ -149,12 +154,28 @@ onMounted(() => {
 		recentUsers.value = users;
 	});
 });
+
+watch(username, (newValue) => {
+	if (newValue.includes("@")) {
+		if (newValue.length !== 1) {
+			hostEl.value.focus();
+		}
+		nextTick(() => {
+			const newUser = username.value.startsWith("@")
+				? username.value.substring(1)
+				: username.value;
+			username.value = newUser.substring(0, newUser.indexOf("@"));
+			host.value = newUser.substring(newUser.indexOf("@") + 1);
+		});
+	}
+});
 </script>
 
 <style lang="scss" scoped>
 .tbhwbxda {
 	> .form {
-		padding: 0 var(--root-margin);
+		padding-block: 0;
+		padding-inline: var(--root-margin);
 	}
 
 	> .result,
@@ -162,7 +183,7 @@ onMounted(() => {
 		display: flex;
 		flex-direction: column;
 		overflow: auto;
-		height: 100%;
+		block-size: 100%;
 
 		&.result.hit {
 			padding: 0;
@@ -175,12 +196,14 @@ onMounted(() => {
 		> .users {
 			flex: 1;
 			overflow: auto;
-			padding: 8px 0;
+			padding-block: 8px;
+			padding-inline: 0;
 
 			> .user {
 				display: flex;
 				align-items: center;
-				padding: 8px var(--root-margin);
+				padding-block: 8px;
+				padding-inline: var(--root-margin);
 				font-size: 14px;
 
 				&:hover {
@@ -198,13 +221,14 @@ onMounted(() => {
 				}
 
 				> .avatar {
-					width: 45px;
-					height: 45px;
+					inline-size: 45px;
+					block-size: 45px;
 				}
 
 				> .body {
-					padding: 0 8px;
-					min-width: 0;
+					padding-block: 0;
+					padding-inline: 8px;
+					min-inline-size: 0;
 
 					> .name {
 						display: block;

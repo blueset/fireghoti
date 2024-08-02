@@ -1,4 +1,6 @@
-use crate::{database::cache, util::http_client};
+use crate::{cache, util::http_client};
+use chrono::Duration;
+use futures_util::AsyncReadExt;
 use image::{ImageError, ImageFormat, ImageReader};
 use isahc::AsyncReadResponseExt;
 use nom_exif::{parse_jpeg_exif, EntryValue, ExifTag};
@@ -8,7 +10,7 @@ use tokio::sync::Mutex;
 #[macros::errors]
 pub enum Error {
     #[error("Redis cache operation has failed")]
-    Cache(#[from] cache::Error),
+    Cache(#[from] cache::redis::Error),
     #[error("failed to acquire an HTTP client")]
     HttpClient(#[from] http_client::Error),
     #[error("HTTP request failed")]
@@ -62,7 +64,7 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
             .is_some();
 
         if !attempted {
-            cache::set_one(cache::Category::FetchUrl, url, &true, 10 * 60).await?;
+            cache::set_one(cache::Category::FetchUrl, url, &true, Duration::minutes(10)).await?;
         }
     }
 
@@ -73,11 +75,10 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
 
     tracing::info!("retrieving image from {}", url);
 
-    let mut response = http_client::client()?.get_async(url).await?;
+    let response = http_client::client()?.get_async(url).await?;
 
     if !response.status().is_success() {
         tracing::info!("status: {}", response.status());
-        tracing::debug!("response body: {:#?}", response.body());
         return Err(Error::BadStatus(format!(
             "{} returned {}",
             url,
@@ -85,7 +86,11 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
         )));
     }
 
-    let image_bytes = response.bytes().await?;
+    // Read up to 8 MiB of the response body
+    let image_bytes = response
+        .map(|body| body.take(8 * 1024 * 1024))
+        .bytes()
+        .await?;
 
     let reader = ImageReader::new(Cursor::new(&image_bytes)).with_guessed_format()?;
 
@@ -130,7 +135,7 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
 #[cfg(test)]
 mod unit_test {
     use super::ImageSize;
-    use crate::database::cache;
+    use crate::cache;
     use pretty_assertions::assert_eq;
 
     #[tokio::test]

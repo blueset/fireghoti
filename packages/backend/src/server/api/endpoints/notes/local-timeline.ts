@@ -74,8 +74,8 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, user) => {
-	const m = await fetchMeta();
-	if (m.disableLocalTimeline) {
+	const instanceMeta = await fetchMeta();
+	if (instanceMeta.disableLocalTimeline) {
 		if (user == null || !(user.isAdmin || user.isModerator)) {
 			throw new ApiError(meta.errors.ltlDisabled);
 		}

@@ -1,7 +1,6 @@
 import define from "@/server/api/define.js";
-import { genIdAt } from "backend-rs";
+import { genIdAt, InternalEvent, publishToInternalStream } from "backend-rs";
 import { Webhooks } from "@/models/index.js";
-import { publishInternalEvent } from "@/services/stream.js";
 import { webhookEventTypes } from "@/models/entities/webhook.js";
 
 export const meta = {
@@ -41,7 +40,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		on: ps.on,
 	}).then((x) => Webhooks.findOneByOrFail(x.identifiers[0]));
 
-	publishInternalEvent("webhookCreated", webhook);
+	publishToInternalStream(InternalEvent.WebhookCreated, webhook);
 
 	return webhook;
 });

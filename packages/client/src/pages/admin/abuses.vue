@@ -60,11 +60,15 @@
 							</MkSelect>
 						</div>
 						<!-- TODO
-			<div class="inputs" style="display: flex; padding-top: 1.2em;">
-				<MkInput v-model="searchUsername" style="margin: 0; flex: 1;" type="text" :spellcheck="false">
+			<div class="inputs" style="display: flex; padding-block-start: 1.2em;">
+				<MkInput v-model="searchUsername" style="margin-block-start: 0;;
+				<MkInput v-model="searchUsername" style="margin-inline: flex:;
+				<MkInput v-model="searchUsername" style="margin-block-end: 1;" type="text" :spellcheck="false">
 					<span>{{ i18n.ts.username }}</span>
 				</MkInput>
-				<MkInput v-model="searchHost" style="margin: 0; flex: 1;" type="text" :spellcheck="false" :disabled="pagination.params().origin === 'local'">
+				<MkInput v-model="searchHost" style="margin-block-start: 0;;
+				<MkInput v-model="searchHost" style="margin-inline: flex:;
+				<MkInput v-model="searchHost" style="margin-block-end: 1;" type="text" :spellcheck="false" :disabled="pagination.params().origin === 'local'">
 					<span>{{ i18n.ts.host }}</span>
 				</MkInput>
 			</div>
@@ -74,7 +78,7 @@
 							v-slot="{ items }"
 							ref="reports"
 							:pagination="pagination"
-							style="margin-top: var(--margin)"
+							style="margin-block-start: var(--margin)"
 						>
 							<XAbuseReport
 								v-for="report in items"

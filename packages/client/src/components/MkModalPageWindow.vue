@@ -4,8 +4,8 @@
 			ref="rootEl"
 			class="hrmcaedk _narrow_"
 			:style="{
-				width: `${width}px`,
-				height: height ? `min(${height}px, 100%)` : '100%',
+				inlineSize: `${width}px`,
+				blockSize: height ? `min(${height}px, 100%)` : '100%',
 			}"
 		>
 			<div class="header" @contextmenu="onContextmenu">
@@ -15,9 +15,9 @@
 					class="_button"
 					@click="back()"
 				>
-					<i :class="icon('ph-caret-left')"></i>
+					<i :class="icon('ph-dir ph-caret-left')"></i>
 				</button>
-				<span v-else style="display: inline-block; width: 20px"></span>
+				<span v-else style="display: inline-block; inline-size: 20px"></span>
 				<span v-if="pageMetadata?.value" class="title">
 					<i
 						v-if="pageMetadata?.value.icon"
@@ -170,7 +170,7 @@ function onContextmenu(ev: MouseEvent) {
 
 	--root-margin: 24px;
 
-	@media (max-width: 500px) {
+	@media (max-inline-size: 500px) {
 		--root-margin: 16px;
 	}
 
@@ -179,7 +179,7 @@ function onContextmenu(ev: MouseEvent) {
 		$height-narrow: 42px;
 		display: flex;
 		flex-shrink: 0;
-		height: $height;
+		block-size: $height;
 		line-height: $height;
 		font-weight: bold;
 		white-space: nowrap;
@@ -190,22 +190,22 @@ function onContextmenu(ev: MouseEvent) {
 		backdrop-filter: var(--blur, blur(15px));
 
 		> button {
-			height: $height;
-			width: $height;
+			block-size: $height;
+			inline-size: $height;
 
 			&:hover {
 				color: var(--fgHighlighted);
 			}
 		}
 
-		@media (max-width: 500px) {
-			height: $height-narrow;
+		@media (max-inline-size: 500px) {
+			block-size: $height-narrow;
 			line-height: $height-narrow;
-			padding-left: 16px;
+			padding-inline-start: 16px;
 
 			> button {
-				height: $height-narrow;
-				width: $height-narrow;
+				block-size: $height-narrow;
+				inline-size: $height-narrow;
 			}
 		}
 
@@ -213,7 +213,7 @@ function onContextmenu(ev: MouseEvent) {
 			flex: 1;
 
 			> .icon {
-				margin-right: 0.5em;
+				margin-inline-end: 0.5em;
 			}
 		}
 	}

@@ -162,7 +162,7 @@
 									v-tooltip.noDelay="i18n.ts.isModerator"
 									style="
 										color: var(--badge);
-										margin-left: 0.5rem;
+										margin-inline-start: 0.5rem;
 									"
 									><i :class="icon('ph-gavel')"></i
 								></span>
@@ -465,12 +465,12 @@ onUnmounted(() => {
 
 				> .banner-container {
 					position: relative;
-					height: 250px;
+					block-size: 250px;
 					overflow: hidden;
 					background-size: cover;
 					background-position: center;
 					> .banner {
-						height: 100%;
+						block-size: 100%;
 						background-color: #26233a;
 						background-size: cover;
 						background-position: center;
@@ -490,10 +490,10 @@ onUnmounted(() => {
 
 					> .fade {
 						position: absolute;
-						bottom: 0;
-						left: 0;
-						width: 100%;
-						height: 78px;
+						inset-block-end: 0;
+						inset-inline-start: 0;
+						inline-size: 100%;
+						block-size: 78px;
 						background: linear-gradient(
 							transparent,
 							rgba(#000, 0.7)
@@ -502,9 +502,10 @@ onUnmounted(() => {
 
 					> .followed {
 						position: absolute;
-						top: 10px;
-						left: 120px;
-						padding: 4px 8px;
+						inset-block-start: 10px;
+						inset-inline-start: 120px;
+						padding-block: 4px;
+						padding-inline: 8px;
 						color: #fff;
 						background: var(--accent);
 						font-size: 1em;
@@ -513,10 +514,13 @@ onUnmounted(() => {
 
 					> .title {
 						position: absolute;
-						bottom: 0;
-						left: 0;
-						width: 100%;
-						padding: 0 0 8px 154px;
+						inset-block-end: 0;
+						inset-inline-start: 0;
+						inline-size: 100%;
+						padding-block-start: 0;
+						padding-inline-end: 0;
+						padding-block-end: 8px;
+						padding-inline-start: 154px;
 						box-sizing: border-box;
 						color: #fff;
 
@@ -532,9 +536,10 @@ onUnmounted(() => {
 
 							> .followed {
 								position: relative;
-								top: -4px;
-								left: 4px;
-								padding: 4px 8px;
+								inset-block-start: -4px;
+								inset-inline-start: 4px;
+								padding-block: 4px;
+								padding-inline: 8px;
 								color: #fff;
 								background: var(--accent);
 								font-size: 1em;
@@ -545,7 +550,7 @@ onUnmounted(() => {
 						> .bottom {
 							> * {
 								display: inline-block;
-								margin-right: 16px;
+								margin-inline-end: 16px;
 								line-height: 20px;
 								opacity: 0.8;
 
@@ -559,7 +564,7 @@ onUnmounted(() => {
 
 				> .follow-container {
 					position: relative;
-					height: 60px;
+					block-size: 60px;
 					overflow: hidden;
 					background-size: cover;
 					background-position: center;
@@ -567,10 +572,10 @@ onUnmounted(() => {
 
 					> .fade {
 						position: absolute;
-						bottom: 0;
-						left: 0;
-						width: 100%;
-						height: 78px;
+						inset-block-end: 0;
+						inset-inline-start: 0;
+						inline-size: 100%;
+						block-size: 78px;
 						background: linear-gradient(
 							transparent,
 							rgba(#000, 0.7)
@@ -579,8 +584,8 @@ onUnmounted(() => {
 
 					> .actions {
 						position: absolute;
-						top: 6px;
-						right: 12px;
+						inset-block-start: 6px;
+						inset-inline-end: 12px;
 						padding: 8px;
 						border-radius: 24px;
 						display: flex;
@@ -590,10 +595,13 @@ onUnmounted(() => {
 
 					> .title {
 						position: absolute;
-						bottom: 0;
-						left: 0;
-						width: 100%;
-						padding: 0 0 8px 154px;
+						inset-block-end: 0;
+						inset-inline-start: 0;
+						inline-size: 100%;
+						padding-block-start: 0;
+						padding-inline-end: 0;
+						padding-block-end: 8px;
+						padding-inline-start: 154px;
 						box-sizing: border-box;
 						color: #fff;
 
@@ -609,7 +617,7 @@ onUnmounted(() => {
 						> .bottom {
 							> * {
 								display: inline-block;
-								margin-right: 16px;
+								margin-inline-end: 16px;
 								line-height: 20px;
 								opacity: 0.8;
 
@@ -624,9 +632,12 @@ onUnmounted(() => {
 				> .title {
 					display: none;
 					text-align: center;
-					padding: 50px 8px 16px 8px;
+					padding-block-start: 50px;
+					padding-inline-end: 8px;
+					padding-block-end: 16px;
+					padding-inline-start: 8px;
 					font-weight: bold;
-					border-bottom: solid 0.5px var(--divider);
+					border-block-end: solid 0.5px var(--divider);
 
 					> .nameColumn {
 						display: block;
@@ -641,9 +652,10 @@ onUnmounted(() => {
 
 						> .followed {
 							position: relative;
-							top: -4px;
-							left: 4px;
-							padding: 4px 8px;
+							inset-block-start: -4px;
+							inset-inline-start: 4px;
+							padding-block: 4px;
+							padding-inline: 8px;
 							color: #fff;
 							background: var(--accent);
 							font-size: 1em;
@@ -653,9 +665,10 @@ onUnmounted(() => {
 
 					> .followedWindow {
 						position: relative;
-						top: -25px;
-						left: 80px;
-						padding: 4px 8px;
+						inset-block-start: -25px;
+						inset-inline-start: 80px;
+						padding-block: 4px;
+						padding-inline: 8px;
 						color: #fff;
 						background: rgba(0, 0, 0, 0.6);
 						font-size: 0.7em;
@@ -665,7 +678,7 @@ onUnmounted(() => {
 					> .bottom {
 						> * {
 							display: inline-block;
-							margin-right: 8px;
+							margin-inline-end: 8px;
 							opacity: 0.8;
 						}
 					}
@@ -674,18 +687,21 @@ onUnmounted(() => {
 				> .avatar {
 					display: block;
 					position: absolute;
-					top: 170px;
-					left: 16px;
+					inset-block-start: 170px;
+					inset-inline-start: 16px;
 					z-index: 2;
-					width: 120px;
-					height: 120px;
+					inline-size: 120px;
+					block-size: 120px;
 					box-shadow: 1px 1px 3px rgba(#000, 0.2);
 				}
 
 				> .description {
-					padding: 72px 12px 2px 24px;
+					padding-block-start: 72px;
+					padding-inline-end: 12px;
+					padding-block-end: 2px;
+					padding-inline-start: 24px;
 					font-size: 0.95em;
-					top: -65px;
+					inset-block-start: -65px;
 					position: relative;
 
 					> .empty {
@@ -697,7 +713,7 @@ onUnmounted(() => {
 				> .fields {
 					padding: 24px;
 					font-size: 0.9em;
-					border-top: solid 0.5px var(--divider);
+					border-block-start: solid 0.5px var(--divider);
 
 					> .field {
 						display: flex;
@@ -706,7 +722,7 @@ onUnmounted(() => {
 						align-items: center;
 
 						&:not(:last-child) {
-							margin-bottom: 8px;
+							margin-block-end: 8px;
 						}
 
 						&.verified {
@@ -716,7 +732,7 @@ onUnmounted(() => {
 						}
 
 						> .name {
-							width: 30%;
+							inline-size: 30%;
 							overflow: hidden;
 							white-space: nowrap;
 							text-overflow: ellipsis;
@@ -725,7 +741,7 @@ onUnmounted(() => {
 						}
 
 						> .value {
-							width: 70%;
+							inline-size: 70%;
 							overflow: hidden;
 							white-space: nowrap;
 							text-overflow: ellipsis;
@@ -737,7 +753,7 @@ onUnmounted(() => {
 				> .status {
 					display: flex;
 					padding: 24px;
-					border-top: solid 0.5px var(--divider);
+					border-block-start: solid 0.5px var(--divider);
 
 					> a {
 						flex: 1;
@@ -766,7 +782,7 @@ onUnmounted(() => {
 
 		> .contents {
 			> .content {
-				margin-bottom: var(--margin);
+				margin-block-end: var(--margin);
 			}
 		}
 	}
@@ -775,7 +791,7 @@ onUnmounted(() => {
 		> .main {
 			> .profile > .main {
 				> .banner-container {
-					height: 140px;
+					block-size: 140px;
 
 					> .fade {
 						display: none;
@@ -788,21 +804,21 @@ onUnmounted(() => {
 
 				> .title {
 					display: block;
-					border-bottom: 0;
-					padding-bottom: 0;
+					border-block-end: 0;
+					padding-block-end: 0;
 					> .bottom {
 						> .username {
-							margin-right: 0;
+							margin-inline-end: 0;
 						}
 					}
 				}
 
 				> .avatar {
-					top: 90px;
-					left: 0;
-					right: 0;
-					width: 92px;
-					height: 92px;
+					inset-block-start: 90px;
+					inset-inline-start: 0;
+					inset-inline-end: 0;
+					inline-size: 92px;
+					block-size: 92px;
 					margin: auto;
 				}
 
@@ -820,7 +836,7 @@ onUnmounted(() => {
 				}
 
 				> .description {
-					top: 0;
+					inset-block-start: 0;
 					position: relative;
 				}
 
@@ -828,9 +844,9 @@ onUnmounted(() => {
 					overflow: visible !important;
 					display: flex;
 					justify-content: center;
-					height: auto;
-					border-bottom: 1px solid var(--divider);
-					padding-bottom: 5px;
+					block-size: auto;
+					border-block-end: 1px solid var(--divider);
+					padding-block-end: 5px;
 					> .actions {
 						position: static;
 					}
@@ -847,17 +863,17 @@ onUnmounted(() => {
 
 	&.wide {
 		display: flex;
-		width: 100%;
+		inline-size: 100%;
 
 		> .main {
-			width: 100%;
-			min-width: 0;
+			inline-size: 100%;
+			min-inline-size: 0;
 		}
 
 		> .sub {
-			max-width: 350px;
-			min-width: 350px;
-			margin-left: var(--margin);
+			max-inline-size: 350px;
+			min-inline-size: 350px;
+			margin-inline-start: var(--margin);
 		}
 	}
 }

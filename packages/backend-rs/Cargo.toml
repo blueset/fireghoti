@@ -27,6 +27,8 @@ bcrypt = { workspace = true, features = ["std"] }
 chrono = { workspace = true }
 cuid2 = { workspace = true }
 emojis = { workspace = true }
+futures-util = { workspace = true, features = ["io"] }
+identicon-rs = { workspace = true }
 idna = { workspace = true, features = ["std", "compiled_data"] }
 image = { workspace = true, features = ["avif", "bmp", "gif", "ico", "jpeg", "png", "tiff", "webp"] }
 isahc = { workspace = true, features = ["http2", "text-decoding", "json"] }
@@ -41,13 +43,14 @@ sea-orm = { workspace = true, features = ["macros", "runtime-tokio-rustls", "sql
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 serde_yaml = { workspace = true }
-sysinfo = { workspace = true }
+sysinfo = { workspace = true, features = ["system", "disk"] }
 thiserror = { workspace = true }
 tokio = { workspace = true, features = ["fs", "io-std", "io-util", "macros", "process", "rt-multi-thread", "signal", "sync", "time"] }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true, features = ["ansi"] }
 url = { workspace = true }
 urlencoding = { workspace = true }
+uuid = { workspace = true, features = ["v4", "fast-rng"] }
 web-push = { workspace = true, features = ["isahc-client"] }
 zhconv = { workspace = true }
 

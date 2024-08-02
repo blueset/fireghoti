@@ -5,8 +5,13 @@ import { v4 as uuid } from "uuid";
 import type S3 from "aws-sdk/clients/s3.js"; // TODO: migrate to SDK v3
 import sharp from "sharp";
 import { IsNull } from "typeorm";
-import { publishMainStream } from "@/services/stream.js";
-import { fetchMeta, genId, publishToDriveFileStream } from "backend-rs";
+import {
+	Event,
+	fetchMeta,
+	genId,
+	publishToDriveFileStream,
+	publishToMainStream,
+} from "backend-rs";
 import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
 import { contentDisposition } from "@/misc/content-disposition.js";
 import { getFileInfo } from "@/misc/get-file-info.js";
@@ -80,9 +85,9 @@ async function save(
 	// thunbnail, webpublic を必要なら生成
 	const alts = await generateAlts(path, type, !file.uri);
 
-	const meta = await fetchMeta();
+	const instanceMeta = await fetchMeta();
 
-	if (meta.useObjectStorage) {
+	if (instanceMeta.useObjectStorage) {
 		//#region ObjectStorage params
 		let [ext] = name.match(/\.([a-zA-Z0-9_-]+)$/) || [""];
 
@@ -102,14 +107,18 @@ async function save(
 		}
 
 		const baseUrl = new URL(
-			meta.objectStorageBaseUrl ?? `/${meta.objectStorageBucket}`,
-			`${meta.objectStorageUseSsl ? "https" : "http"}://${
-				meta.objectStorageEndpoint
-			}${meta.objectStoragePort ? `:${meta.objectStoragePort}` : ""}`,
+			instanceMeta.objectStorageBaseUrl ??
+				`/${instanceMeta.objectStorageBucket}`,
+			`${instanceMeta.objectStorageUseSsl ? "https" : "http"}://${
+				instanceMeta.objectStorageEndpoint
+			}${instanceMeta.objectStoragePort ? `:${instanceMeta.objectStoragePort}` : ""}`,
 		);
 
 		// for original
-		const key = urlPathJoin([meta.objectStoragePrefix, `${uuid()}${ext}`]);
+		const key = urlPathJoin([
+			instanceMeta.objectStoragePrefix,
+			`${uuid()}${ext}`,
+		]);
 		const url = urlPathJoin(baseUrl, [key]);
 
 		// for alts
@@ -125,7 +134,7 @@ async function save(
 
 		if (alts.webpublic) {
 			webpublicKey = urlPathJoin([
-				meta.objectStoragePrefix,
+				instanceMeta.objectStoragePrefix,
 				`webpublic-${uuid()}.${alts.webpublic.ext}`,
 			]);
 			webpublicUrl = urlPathJoin(baseUrl, [webpublicKey]);
@@ -138,7 +147,7 @@ async function save(
 
 		if (alts.thumbnail) {
 			thumbnailKey = urlPathJoin([
-				meta.objectStoragePrefix,
+				instanceMeta.objectStoragePrefix,
 				`thumbnail-${uuid()}.${alts.thumbnail.ext}`,
 			]);
 			thumbnailUrl = urlPathJoin(baseUrl, [thumbnailKey]);
@@ -365,10 +374,10 @@ async function upload(
 	if (type === "image/apng") type = "image/png";
 	if (!FILE_TYPE_BROWSERSAFE.includes(type)) type = "application/octet-stream";
 
-	const meta = await fetchMeta();
+	const instanceMeta = await fetchMeta();
 
 	const params = {
-		Bucket: meta.objectStorageBucket,
+		Bucket: instanceMeta.objectStorageBucket,
 		Key: key,
 		Body: stream,
 		ContentType: type,
@@ -377,9 +386,9 @@ async function upload(
 
 	if (filename)
 		params.ContentDisposition = contentDisposition("inline", filename);
-	if (meta.objectStorageSetPublicRead) params.ACL = "public-read";
+	if (instanceMeta.objectStorageSetPublicRead) params.ACL = "public-read";
 
-	const s3 = getS3(meta);
+	const s3 = getS3(instanceMeta);
 
 	const upload = s3.upload(params, {
 		partSize:
@@ -509,13 +518,13 @@ export async function addFile({
 		const usage = await DriveFiles.calcDriveUsageOf(user);
 		const u = await Users.findOneBy({ id: user.id });
 
-		const instance = await fetchMeta();
+		const instanceMeta = await fetchMeta();
 		let driveCapacity =
 			1024 *
 			1024 *
 			(Users.isLocalUser(user)
-				? instance.localDriveCapacityMb
-				: instance.remoteDriveCapacityMb);
+				? instanceMeta.localDriveCapacityMb
+				: instanceMeta.remoteDriveCapacityMb);
 
 		if (Users.isLocalUser(user) && u?.driveCapacityOverrideMb != null) {
 			driveCapacity = 1024 * 1024 * u.driveCapacityOverrideMb;
@@ -581,7 +590,7 @@ export async function addFile({
 		: null;
 
 	const folder = await fetchFolder();
-	const instance = await fetchMeta();
+	const instanceMeta = await fetchMeta();
 
 	let file = new DriveFile();
 	file.id = genId();
@@ -598,7 +607,7 @@ export async function addFile({
 	file.usageHint = usageHint;
 	file.isSensitive = user
 		? Users.isLocalUser(user) &&
-			(instance!.markLocalFilesNsfwByDefault || profile!.alwaysMarkNsfw)
+			(instanceMeta!.markLocalFilesNsfwByDefault || profile!.alwaysMarkNsfw)
 			? true
 			: sensitive != null
 				? sensitive
@@ -663,7 +672,7 @@ export async function addFile({
 	if (user != null) {
 		DriveFiles.pack(file, { self: true }).then((packedFile) => {
 			// Publish driveFileCreated event
-			publishMainStream(user.id, "driveFileCreated", packedFile);
+			publishToMainStream(user.id, Event.DriveFile, packedFile);
 			publishToDriveFileStream(user.id, "create", toRustObject(file));
 		});
 	}

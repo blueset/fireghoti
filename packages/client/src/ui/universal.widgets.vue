@@ -87,19 +87,20 @@ function updateWidgets(widgets) {
 
 <style lang="scss" scoped>
 .widgets {
-	height: min-content;
-	min-height: 100vh;
-	padding: var(--margin) 0;
+	block-size: min-content;
+	min-block-size: 100vb;
+	padding-block: var(--margin);
+	padding-inline: 0;
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
 
 	> :deep(*) {
-		margin-top: var(--margin);
-		width: 300px;
+		margin-block-start: var(--margin);
+		inline-size: 300px;
 
 		&:first-child {
-			margin-top: 0;
+			margin-block-start: 0;
 		}
 	}
 
@@ -108,7 +109,8 @@ function updateWidgets(widgets) {
 	}
 
 	> .add {
-		margin: 0 auto;
+		margin-block: 0;
+		margin-inline: auto;
 	}
 }
 </style>

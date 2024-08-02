@@ -1,4 +1,4 @@
-import { publishMainStream } from "@/services/stream.js";
+import { Event, publishToMainStream } from "backend-rs";
 import type { Note } from "@/models/entities/note.js";
 import type { User } from "@/models/entities/user.js";
 import { NoteUnreads, Followings, ChannelFollowings } from "@/models/index.js";
@@ -84,7 +84,7 @@ export default async function (
 		}).then((mentionsCount) => {
 			if (mentionsCount === 0) {
 				// 全て既読になったイベントを発行
-				publishMainStream(userId, "readAllUnreadMentions");
+				publishToMainStream(userId, Event.ReadAllMentions, {});
 			}
 		});
 
@@ -94,7 +94,7 @@ export default async function (
 		}).then((specifiedCount) => {
 			if (specifiedCount === 0) {
 				// 全て既読になったイベントを発行
-				publishMainStream(userId, "readAllUnreadSpecifiedNotes");
+				publishToMainStream(userId, Event.ReadAllDms, {});
 			}
 		});
 
@@ -104,7 +104,7 @@ export default async function (
 		}).then((channelNoteCount) => {
 			if (channelNoteCount === 0) {
 				// 全て既読になったイベントを発行
-				publishMainStream(userId, "readAllChannels");
+				publishToMainStream(userId, Event.ReadAllChannelPosts, {});
 			}
 		});
 

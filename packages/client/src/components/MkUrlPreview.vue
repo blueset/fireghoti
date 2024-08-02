@@ -86,8 +86,8 @@
 				frameborder="no"
 				:style="{
 					position: 'relative',
-					width: '100%',
-					height: `${tweetHeight}px`,
+					inlineSize: '100%',
+					blockSize: `${tweetHeight}px`,
 				}"
 				:src="`https://platform.twitter.com/embed/index.html?embedId=${embedId}&amp;hideCard=false&amp;hideThread=false&amp;lang=en&amp;theme=${
 					defaultStore.state.darkMode ? 'dark' : 'light'
@@ -199,7 +199,7 @@ onUnmounted(() => {
 		text-decoration: none;
 		> div:first-child:not(:last-child) {
 			position: relative;
-			width: 90px;
+			inline-size: 90px;
 			overflow: hidden;
 			display: flex;
 			justify-content: center;
@@ -207,15 +207,15 @@ onUnmounted(() => {
 			img {
 				position: absolute;
 				inset: 0;
-				width: 100%;
-				height: 100%;
+				inline-size: 100%;
+				block-size: 100%;
 				object-fit: cover;
 				transition: opacity 0.2s;
 			}
 			button {
 				display: flex;
-				width: 100%;
-				height: 100%;
+				inline-size: 100%;
+				block-size: 100%;
 				i {
 					background: var(--bg);
 					padding: 14px;
@@ -237,8 +237,9 @@ onUnmounted(() => {
 			}
 		}
 		> div:last-child {
-			padding: 14px 16px;
-			width: 0;
+			padding-block: 14px;
+			padding-inline: 16px;
+			inline-size: 0;
 			flex-grow: 1;
 		}
 		h3,
@@ -247,18 +248,18 @@ onUnmounted(() => {
 			margin: 0;
 			overflow: hidden;
 			text-overflow: ellipsis;
-			max-width: 100%;
+			max-inline-size: 100%;
 		}
 		h3 {
 			font-size: 1em;
 			white-space: nowrap;
-			margin-bottom: 0.2em;
+			margin-block-end: 0.2em;
 			text-decoration: underline;
 			text-decoration-color: transparent;
 			transition: text-decoration-color 0.2s;
 		}
 		p {
-			margin-bottom: -0.5em;
+			margin-block-end: -0.5em;
 			> span {
 				display: -webkit-inline-box;
 				font-size: 0.8em;
@@ -267,13 +268,13 @@ onUnmounted(() => {
 				overflow: hidden;
 				> span {
 					font-weight: 600;
-					margin-right: 0.4em;
+					margin-inline-end: 0.4em;
 				}
 			}
 		}
 		.icon {
-			width: 1.2em;
-			height: 1.2em;
+			inline-size: 1.2em;
+			block-size: 1.2em;
 			vertical-align: middle;
 			border-radius: 4px;
 		}
@@ -301,13 +302,22 @@ onUnmounted(() => {
 		}
 	}
 	iframe {
-		border-top: 1px solid var(--divider);
+		border-block-start: 1px solid var(--divider);
 		display: block;
-		width: 100%;
+		inline-size: 100%;
 		overflow-y: auto;
+		overflow-block: auto;
+		
+		@supports not (overflow-block: auto) {
+			.vertical-lr &, .vertical-rl & {
+				overflow-y: visible;
+				overflow-x: auto;
+			}
+		}
+		
 		&:not([src^="https://platform.twitter"])
 		{
-			max-height: 70vh;
+			max-block-size: 70vb;
 		}
 	}
 }

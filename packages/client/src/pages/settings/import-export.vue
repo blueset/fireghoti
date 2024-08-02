@@ -315,6 +315,6 @@ definePageMetadata({
 
 <style module>
 .button {
-	margin-right: 16px;
+	margin-inline-end: 16px;
 }
 </style>

@@ -63,13 +63,13 @@ export default define(meta, paramDef, async (ps, me) => {
 		publickey: ps.publickey,
 	});
 
-	const instance = await fetchMeta();
+	const instanceMeta = await fetchMeta();
 
 	// if already subscribed
 	if (subscription != null) {
 		return {
 			state: "already-subscribed" as const,
-			key: instance.swPublicKey,
+			key: instanceMeta.swPublicKey,
 			userId: me.id,
 			endpoint: subscription.endpoint,
 			sendReadMessage: subscription.sendReadMessage,
@@ -90,7 +90,7 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	return {
 		state: "subscribed" as const,
-		key: instance.swPublicKey,
+		key: instanceMeta.swPublicKey,
 		userId: me.id,
 		endpoint: ps.endpoint,
 		sendReadMessage: ps.sendReadMessage,

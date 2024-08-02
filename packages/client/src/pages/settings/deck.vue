@@ -34,6 +34,6 @@ const columnAlign = computed(deckStore.makeGetterSetter("columnAlign"));
 
 definePageMetadata({
 	title: i18n.ts.deck,
-	icon: `${icon("ph-layout")}`,
+	icon: `${icon("ph-layout ph-dir")}`,
 });
 </script>

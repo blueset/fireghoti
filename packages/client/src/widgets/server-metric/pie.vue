@@ -48,7 +48,7 @@ const strokeDashoffset = computed(
 <style lang="scss" scoped>
 .hsalcinq {
 	display: block;
-	height: 100%;
+	block-size: 100%;
 
 	> circle {
 		transform-origin: center;

@@ -22,7 +22,7 @@
 								.some((c) => c.flexible)
 								? { flex: 1, minWidth: '350px' }
 								: {
-										width:
+										inlineSize:
 											Math.max(
 												...columns
 													.filter((c) =>
@@ -54,7 +54,7 @@
 							columns.find((c) => c.id === ids[0])!.flexible
 								? { flex: 1, minWidth: '350px' }
 								: {
-										width:
+										inlineSize:
 											columns.find(
 												(c) => c.id === ids[0],
 											)!.width + 'px',
@@ -300,7 +300,7 @@ function onWheel(ev: WheelEvent) {
 	}
 }
 
-document.documentElement.style.overflowY = "hidden";
+document.documentElement.style.overflowBlock = "hidden";
 document.documentElement.style.scrollBehavior = "auto";
 
 loadDeck();
@@ -415,18 +415,17 @@ async function deleteProfile() {
 	--deckDividerThickness: 5px;
 
 	display: flex;
-	// ほんとは単に 100vh と書きたいところだが... https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
-	height: calc(var(--vh, 1vh) * 100);
+	block-size: 100dvb;
 	box-sizing: border-box;
 	flex: 1;
 
 	&.isMobile {
-		padding-bottom: 100px;
+		padding-block-end: 100px;
 	}
 
 	> .main {
 		flex: 1;
-		min-width: 0;
+		min-inline-size: 0;
 		display: flex;
 		flex-direction: column;
 
@@ -434,24 +433,33 @@ async function deleteProfile() {
 			flex: 1;
 			display: flex;
 			overflow-x: auto;
+			overflow-inline: auto;
 			overflow-y: clip;
+			overflow-block: clip;
+
+			@supports not (overflow-block: clip) {
+				.vertical-lr &, .vertical-rl & {
+					overflow-y: auto;
+					overflow-x: clip;
+				}
+			}
 
 			&.center {
 				> .column:first-of-type {
-					margin-left: auto;
+					margin-inline-start: auto;
 				}
 
 				> .column:last-of-type {
-					margin-right: auto;
+					margin-inline-end: auto;
 				}
 			}
 
 			> .column {
 				flex-shrink: 0;
-				border-right: solid var(--deckDividerThickness) var(--bg);
+				border-inline-end: solid var(--deckDividerThickness) var(--bg);
 
 				&:first-of-type {
-					border-left: solid var(--deckDividerThickness) var(--bg);
+					border-inline-start: solid var(--deckDividerThickness) var(--bg);
 				}
 
 				&.folder {
@@ -459,7 +467,7 @@ async function deleteProfile() {
 					flex-direction: column;
 
 					> *:not(:last-of-type) {
-						border-bottom: solid var(--deckDividerThickness)
+						border-block-end: solid var(--deckDividerThickness)
 							var(--bg);
 					}
 				}
@@ -467,41 +475,42 @@ async function deleteProfile() {
 
 			> .intro {
 				padding: 32px;
-				height: min-content;
+				block-size: min-content;
 				text-align: center;
 				margin: auto;
 
 				> .add {
-					margin: 1em auto;
+					margin-block: 1em;
+					margin-inline: auto;
 				}
 			}
 
 			> .sideMenu {
 				flex-shrink: 0;
-				margin-right: 0;
-				margin-left: auto;
+				margin-inline-end: 0;
+				margin-inline-start: auto;
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
-				width: 44px;
+				inline-size: 44px;
 
 				> .top,
 				> .middle,
 				> .bottom {
 					> .button {
 						display: block;
-						width: 100%;
+						inline-size: 100%;
 						aspect-ratio: 1;
 					}
 				}
 
 				> .top {
-					margin-bottom: auto;
+					margin-block-end: auto;
 				}
 
 				> .middle {
-					margin-top: auto;
-					margin-bottom: auto;
+					margin-block-start: auto;
+					margin-block-end: auto;
 
 					> .new {
 						font-size: 20px;
@@ -516,7 +525,7 @@ async function deleteProfile() {
 				}
 
 				> .bottom {
-					margin-top: auto;
+					margin-block-start: auto;
 				}
 			}
 		}
@@ -525,11 +534,11 @@ async function deleteProfile() {
 	> .buttons {
 		position: fixed;
 		z-index: 1000;
-		bottom: 0;
-		left: 0;
+		inset-block-end: 0;
+		inset-inline-start: 0;
 		padding: 16px;
 		display: flex;
-		width: 100%;
+		inline-size: 100%;
 		box-sizing: border-box;
 
 		> .button {
@@ -537,20 +546,20 @@ async function deleteProfile() {
 			flex: 1;
 			padding: 0;
 			margin: auto;
-			height: 64px;
+			block-size: 64px;
 			border-radius: 8px;
 			background: var(--panel);
 			color: var(--fg);
 
 			&:not(:last-child) {
-				margin-right: 12px;
+				margin-inline-end: 12px;
 			}
 
-			@media (max-width: 400px) {
-				height: 60px;
+			@media (max-inline-size: 400px) {
+				block-size: 60px;
 
 				&:not(:last-child) {
-					margin-right: 8px;
+					margin-inline-end: 8px;
 				}
 			}
 
@@ -560,8 +569,8 @@ async function deleteProfile() {
 
 			> .indicator {
 				position: absolute;
-				top: 0;
-				left: 0;
+				inset-block-start: 0;
+				inset-inline-start: 0;
 				color: var(--indicator);
 				font-size: 16px;
 			}
@@ -571,11 +580,11 @@ async function deleteProfile() {
 			}
 
 			&:first-child {
-				margin-left: 0;
+				margin-inline-start: 0;
 			}
 
 			&:last-child {
-				margin-right: 0;
+				margin-inline-end: 0;
 			}
 
 			> * {
@@ -598,12 +607,11 @@ async function deleteProfile() {
 
 	> .menu {
 		position: fixed;
-		top: 0;
-		left: 0;
+		inset-block-start: 0;
+		inset-inline-start: 0;
 		z-index: 1001;
-		// ほんとは単に 100vh と書きたいところだが... https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
-		height: calc(var(--vh, 1vh) * 100);
-		width: 240px;
+			block-size: 100dvb;
+		inline-size: 240px;
 		box-sizing: border-box;
 		contain: strict;
 		overflow: auto;

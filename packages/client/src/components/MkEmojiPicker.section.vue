@@ -2,7 +2,7 @@
 	<section>
 		<header class="_acrylic" @click="shown = !shown">
 			<i
-				class="toggle ph-fw ph-lg"
+				class="toggle ph-fw ph-lg ph-dir"
 				:class="
 					icon(shown ? 'ph-caret-down ph-lg' : 'ph-caret-up ph-lg')
 				"

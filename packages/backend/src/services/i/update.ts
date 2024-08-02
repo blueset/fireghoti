@@ -11,7 +11,12 @@ import mfm from "mfm-js";
 import { extractHashtags } from "@/misc/extract-hashtags.js";
 import { normalizeForSearch } from "@/misc/normalize-for-search.js";
 import { updateUsertags } from "@/services/update-hashtag.js";
-import { publishMainStream, publishUserEvent } from "@/services/stream.js";
+import {
+	Event,
+	publishToMainStream,
+	publishToUserStream,
+	UserEvent,
+} from "backend-rs";
 import acceptAllFollowRequests from "@/services/following/requests/accept-all.js";
 import { promiseEarlyReturn } from "@/prelude/promise.js";
 
@@ -79,15 +84,15 @@ export async function updateUserProfileData(
 		includeSecrets: isSecure,
 	});
 
-	publishMainStream(user.id, "meUpdated", iObj);
-	publishUserEvent(
+	await publishToMainStream(user.id, Event.Me, iObj);
+	await publishToUserStream(
 		user.id,
-		"updateUserProfile",
+		UserEvent.UpdateProfile,
 		await UserProfiles.findOneByOrFail({ userId: user.id }),
 	);
 
 	if (user.isLocked && updates.isLocked === false) {
-		acceptAllFollowRequests(user);
+		await acceptAllFollowRequests(user);
 	}
 
 	await promiseEarlyReturn(

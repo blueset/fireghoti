@@ -1,8 +1,7 @@
 import type { Note } from "@/models/entities/note.js";
-import { publishMainStream } from "@/services/stream.js";
 import type { User } from "@/models/entities/user.js";
 import { Mutings, NoteThreadMutings, NoteUnreads } from "@/models/index.js";
-import { genId } from "backend-rs";
+import { Event, genId, publishToMainStream } from "backend-rs";
 
 export async function insertNoteUnread(
 	userId: User["id"],
@@ -47,13 +46,13 @@ export async function insertNoteUnread(
 		if (!exists) return;
 
 		if (params.isMentioned) {
-			publishMainStream(userId, "unreadMention", note.id);
+			publishToMainStream(userId, Event.NewMention, note.id);
 		}
 		if (params.isSpecified) {
-			publishMainStream(userId, "unreadSpecifiedNote", note.id);
+			publishToMainStream(userId, Event.NewDm, note.id);
 		}
 		if (note.channelId) {
-			publishMainStream(userId, "unreadChannel", note.id);
+			publishToMainStream(userId, Event.NewChannelPost, note.id);
 		}
 	}, 2000);
 }

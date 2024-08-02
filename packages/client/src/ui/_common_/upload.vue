@@ -67,10 +67,11 @@ const zIndex = os.claimZIndex("high");
 <style lang="scss" scoped>
 .mk-uploader {
 	position: fixed;
-	right: 16px;
-	width: 260px;
-	top: 32px;
-	padding: 16px 20px;
+	inset-inline-end: 16px;
+	inline-size: 260px;
+	inset-block-start: 32px;
+	padding-block: 16px;
+	padding-inline: 20px;
 	pointer-events: none;
 	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 	border-radius: 8px;
@@ -86,11 +87,14 @@ const zIndex = os.claimZIndex("high");
 }
 .mk-uploader > ol > li {
 	display: grid;
-	margin: 8px 0 0 0;
+	margin-block-start: 8px;
+	margin-inline-end: 0;
+	margin-block-end: 0;
+	margin-inline-start: 0;
 	padding: 0;
-	height: 36px;
-	width: 100%;
-	border-top: solid 8px transparent;
+	block-size: 36px;
+	inline-size: 100%;
+	border-block-start: solid 8px transparent;
 	grid-template-columns: 36px calc(100% - 44px);
 	grid-template-rows: 1fr 8px;
 	column-gap: 8px;
@@ -99,7 +103,7 @@ const zIndex = os.claimZIndex("high");
 .mk-uploader > ol > li:first-child {
 	margin: 0;
 	box-shadow: none;
-	border-top: none;
+	border-block-start: none;
 }
 .mk-uploader > ol > li > .img {
 	position: relative;
@@ -116,7 +120,10 @@ const zIndex = os.claimZIndex("high");
 }
 .mk-uploader > ol > li > .top > .name {
 	display: block;
-	padding: 0 8px 0 0;
+	padding-block-start: 0;
+	padding-inline-end: 8px;
+	padding-block-end: 0;
+	padding-inline-start: 0;
 	margin: 0;
 	font-size: 0.8em;
 	white-space: nowrap;
@@ -125,11 +132,14 @@ const zIndex = os.claimZIndex("high");
 	flex-shrink: 1;
 }
 .mk-uploader > ol > li > .top > .name > i {
-	margin-right: 4px;
+	margin-inline-end: 4px;
 }
 .mk-uploader > ol > li > .top > .status {
 	display: block;
-	margin: 0 0 0 auto;
+	margin-block-start: 0;
+	margin-inline-end: 0;
+	margin-block-end: 0;
+	margin-inline-start: auto;
 	padding: 0;
 	font-size: 0.8em;
 	flex-shrink: 0;
@@ -140,8 +150,8 @@ const zIndex = os.claimZIndex("high");
 }
 .mk-uploader > ol > li > .top > .status > .percentage {
 	display: inline-block;
-	width: 48px;
-	text-align: right;
+	inline-size: 48px;
+	text-align: end;
 }
 .mk-uploader > ol > li > .top > .status > .percentage:after {
 	content: "%";
@@ -155,8 +165,8 @@ const zIndex = os.claimZIndex("high");
 	grid-column: 2/3;
 	grid-row: 2/3;
 	z-index: 2;
-	width: 100%;
-	height: 8px;
+	inline-size: 100%;
+	block-size: 8px;
 }
 .mk-uploader > ol > li > progress::-webkit-progress-value {
 	background: var(--accent);

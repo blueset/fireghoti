@@ -286,7 +286,7 @@ function onContextmenu(ev: MouseEvent) {
 .rghtznwe {
 	position: relative;
 	padding: 8px;
-	height: 64px;
+	block-size: 64px;
 	background: var(--driveFolderBg);
 	border-radius: 4px;
 
@@ -301,10 +301,10 @@ function onContextmenu(ev: MouseEvent) {
 
 	> .checkbox {
 		position: absolute;
-		bottom: 8px;
-		right: 8px;
-		width: 16px;
-		height: 16px;
+		inset-block-end: 8px;
+		inset-inline-end: 8px;
+		inline-size: 16px;
+		block-size: 16px;
 		background: #fff;
 		border: solid 1px #000;
 
@@ -318,10 +318,7 @@ function onContextmenu(ev: MouseEvent) {
 			content: "";
 			pointer-events: none;
 			position: absolute;
-			top: -4px;
-			right: -4px;
-			bottom: -4px;
-			left: -4px;
+			inset: -4px;
 			border: 2px dashed var(--focus);
 			border-radius: 4px;
 		}
@@ -333,16 +330,17 @@ function onContextmenu(ev: MouseEvent) {
 		color: var(--desktopDriveFolderFg);
 
 		> i {
-			margin-right: 4px;
-			margin-left: 2px;
-			text-align: left;
+			margin-inline-end: 4px;
+			margin-inline-start: 2px;
+			text-align: start;
 		}
 	}
 
 	> .upload {
-		margin: 4px 4px;
+		margin-block: 4px;
+		margin-inline: 4px;
 		font-size: 0.8em;
-		text-align: right;
+		text-align: end;
 		color: var(--desktopDriveFolderFg);
 	}
 }

@@ -176,31 +176,31 @@ onBeforeUnmount(() => {
 <style lang="scss" scoped>
 .container {
 	display: flex;
-	width: 100%;
-	height: 100%;
+	inline-size: 100%;
+	block-size: 100%;
 	flex-direction: row;
 	overflow: scroll;
 	position: fixed;
-	left: 0;
-	top: 0;
+	inset-inline-start: 0;
+	inset-block-start: 0;
 }
-@media (max-width: 850px) {
+@media (max-inline-size: 850px) {
 	.container {
 		flex-direction: column;
 	}
 	.top-caption {
-		padding-bottom: 8px;
+		padding-block-end: 8px;
 	}
 }
 .fullwidth {
-	width: 100%;
+	inline-size: 100%;
 	margin: auto;
 }
 .mk-dialog {
 	position: relative;
 	padding: 32px;
-	min-width: 320px;
-	max-width: 480px;
+	min-inline-size: 320px;
+	max-inline-size: 480px;
 	box-sizing: border-box;
 	text-align: center;
 	background: var(--panel);
@@ -208,7 +208,10 @@ onBeforeUnmount(() => {
 	margin: auto;
 
 	> header {
-		margin: 0 0 8px 0;
+		margin-block-start: 0;
+		margin-inline-end: 0;
+		margin-block-end: 8px;
+		margin-inline-start: 0;
 		position: relative;
 
 		> .title {
@@ -219,33 +222,35 @@ onBeforeUnmount(() => {
 		> .text-count {
 			opacity: 0.7;
 			position: absolute;
-			right: 0;
+			inset-inline-end: 0;
 		}
 	}
 
 	> .buttons {
-		margin-top: 16px;
+		margin-block-start: 16px;
 
 		> * {
-			margin: 0 8px;
+			margin-block: 0;
+			margin-inline: 8px;
 		}
 	}
 
 	> textarea {
 		display: block;
 		box-sizing: border-box;
-		padding: 0 24px;
+		padding-block: 0;
+		padding-inline: 24px;
 		margin: 0;
-		width: 100%;
+		inline-size: 100%;
 		font-size: 16px;
 		border: none;
 		border-radius: 0;
 		background: transparent;
 		color: var(--fg);
 		font-family: inherit;
-		max-width: 100%;
-		min-width: 100%;
-		min-height: 90px;
+		max-inline-size: 100%;
+		min-inline-size: 100%;
+		min-block-size: 90px;
 
 		&:focus-visible {
 			outline: none;
@@ -259,13 +264,14 @@ onBeforeUnmount(() => {
 .hdrwpsaf {
 	display: flex;
 	flex-direction: column;
-	height: 100%;
+	block-size: 100%;
 
 	> header,
 	> footer {
 		align-self: center;
 		display: inline-block;
-		padding: 6px 9px;
+		padding-block: 6px;
+		padding-inline: 9px;
 		font-size: 90%;
 		background: rgba(0, 0, 0, 0.5);
 		border-radius: 6px;
@@ -273,28 +279,28 @@ onBeforeUnmount(() => {
 	}
 
 	> header {
-		margin-bottom: 8px;
+		margin-block-end: 8px;
 		opacity: 0.9;
 	}
 
 	> img {
 		display: block;
 		flex: 1;
-		min-height: 0;
+		min-block-size: 0;
 		object-fit: contain;
-		width: 100%;
+		inline-size: 100%;
 		cursor: zoom-out;
 		image-orientation: from-image;
 	}
 
 	> footer {
-		margin-top: 8px;
+		margin-block-start: 8px;
 		opacity: 0.8;
 
 		> span + span {
-			margin-left: 0.5em;
-			padding-left: 0.5em;
-			border-left: solid 1px rgba(255, 255, 255, 0.5);
+			margin-inline-start: 0.5em;
+			padding-inline-start: 0.5em;
+			border-inline-start: solid 1px rgba(255, 255, 255, 0.5);
 		}
 	}
 }

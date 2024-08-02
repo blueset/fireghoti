@@ -74,7 +74,7 @@ const themeColor =
 	instance.themeColor ?? computedStyle.getPropertyValue("--bg");
 
 const bg = {
-	background: `linear-gradient(90deg, ${themeColor}, ${themeColor}55)`,
+	background: `linear-gradient(var(--gradient-to-inline-end), ${themeColor}, ${themeColor}55)`,
 };
 
 function getInstanceIcon(instance): string {
@@ -90,26 +90,27 @@ function getInstanceIcon(instance): string {
 .hpaizdrt {
 	display: flex;
 	align-items: center;
-	height: 1.1em;
+	block-size: 1.1em;
 	justify-self: flex-end;
-	padding: 0.2em 0.4em;
+	padding-block: 0.2em;
+	padding-inline: 0.4em;
 	border-radius: 100px;
 	font-size: 0.8em;
 	text-shadow: 0 2px 2px var(--shadow);
 	overflow: hidden;
 	.header > .body & {
-		width: max-content;
-		max-width: 100%;
+		inline-size: max-content;
+		max-inline-size: 100%;
 	}
 
 	> .icon {
-		height: 100%;
+		block-size: 100%;
 		border-radius: 0.3rem;
 	}
 
 	> .name {
 		display: none;
-		margin-left: 4px;
+		margin-inline-start: 4px;
 		font-size: 0.85em;
 		vertical-align: top;
 		font-weight: bold;

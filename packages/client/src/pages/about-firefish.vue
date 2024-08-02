@@ -178,32 +178,37 @@ definePageMetadata({
 
 		> .icon {
 			display: block;
-			width: 100px;
-			margin: 0 auto;
+			inline-size: 100px;
+			margin-block: 0;
+			margin-inline: auto;
 			border-radius: 3px;
 		}
 
 		> .misskey {
-			margin: 0.75em auto 0 auto;
-			width: max-content;
+			margin-block-start: 0.75em;
+			margin-inline-end: auto;
+			margin-block-end: 0;
+			margin-inline-start: auto;
+			inline-size: max-content;
 		}
 
 		> .version {
-			margin: 0 auto;
-			width: max-content;
+			margin-block: 0;
+			margin-inline: auto;
+			inline-size: max-content;
 			opacity: 0.5;
 		}
 
 		> .emoji {
 			position: absolute;
-			top: 0;
-			left: 0;
+			inset-block-start: 0;
+			inset-inline-start: 0;
 			visibility: hidden;
 
 			> .emoji {
 				pointer-events: none;
 				font-size: 24px;
-				width: 24px;
+				inline-size: 24px;
 			}
 		}
 	}

@@ -1,5 +1,4 @@
 import * as mfm from "mfm-js";
-import { publishMainStream, publishNoteStream } from "@/services/stream.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
 import renderCreate from "@/remote/activitypub/renderer/create.js";
@@ -46,6 +45,10 @@ import {
 	isQuote,
 	isSilencedServer,
 	publishToNotesStream,
+	publishToNoteStream,
+	NoteEvent,
+	publishToMainStream,
+	Event,
 } from "backend-rs";
 import { countSameRenotes } from "@/misc/count-same-renotes.js";
 import { deliverToRelays, getCachedRelays } from "../relay.js";
@@ -59,7 +62,7 @@ import { db } from "@/db/postgre.js";
 import { getActiveWebhooks } from "@/misc/webhook-cache.js";
 import { redisClient } from "@/db/redis.js";
 import { Mutex } from "redis-semaphore";
-import { langmap } from "firefish-js";
+import { bcp47Pattern } from "firefish-js";
 import Logger from "@/services/logger.js";
 import { inspect } from "node:util";
 import { toRustObject } from "@/prelude/undefined-to-null.js";
@@ -270,8 +273,7 @@ export default async (
 		data.text = data.text?.trim() ?? null;
 
 		if (data.lang != null) {
-			if (!Object.keys(langmap).includes(data.lang.toLowerCase()))
-				throw new Error("invalid param");
+			if (!bcp47Pattern.test(data.lang)) rej("Invalid language code");
 			data.lang = data.lang.toLowerCase();
 		} else {
 			data.lang = null;
@@ -314,7 +316,7 @@ export default async (
 		}
 
 		if (!isDraft && data.visibility === "specified") {
-			if (data.visibleUsers == null) throw new Error("invalid param");
+			if (data.visibleUsers == null) rej("invalid param");
 
 			for (const u of data.visibleUsers) {
 				if (!mentionedUsers.some((x) => x.id === u.id)) {
@@ -441,7 +443,7 @@ export default async (
 
 				// 未読通知を作成
 				if (data.visibility === "specified") {
-					if (data.visibleUsers == null) throw new Error("invalid param");
+					if (data.visibleUsers == null) rej("invalid param");
 
 					for (const u of data.visibleUsers) {
 						// ローカルユーザーのみ
@@ -466,7 +468,7 @@ export default async (
 
 				if (note.replyId != null) {
 					// Only provide the reply note id here as the recipient may not be authorized to see the note.
-					publishNoteStream(note.replyId, "replied", {
+					publishToNoteStream(note.replyId, NoteEvent.Reply, {
 						id: note.id,
 					});
 				}
@@ -506,7 +508,7 @@ export default async (
 							const packedReply = await Notes.pack(note, {
 								id: data.reply.userId,
 							});
-							publishMainStream(data.reply.userId, "reply", packedReply);
+							publishToMainStream(data.reply.userId, Event.Reply, packedReply);
 
 							const webhooks = (await getActiveWebhooks()).filter(
 								(x) =>
@@ -546,7 +548,7 @@ export default async (
 						const packedRenote = await Notes.pack(note, {
 							id: data.renote.userId,
 						});
-						publishMainStream(data.renote.userId, "renote", packedRenote);
+						publishToMainStream(data.renote.userId, Event.Renote, packedRenote);
 
 						const renote = data.renote;
 						const webhooks = (await getActiveWebhooks()).filter(
@@ -872,7 +874,7 @@ async function createMentionedEvents(
 				detail: true,
 			});
 
-			publishMainStream(u.id, "mention", detailPackedNote);
+			publishToMainStream(u.id, Event.Mention, detailPackedNote);
 
 			const webhooks = (await getActiveWebhooks()).filter(
 				(x) => x.userId === u.id && x.on.includes("mention"),

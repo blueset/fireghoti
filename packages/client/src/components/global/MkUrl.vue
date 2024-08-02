@@ -82,7 +82,7 @@ const target = self ? null : "_blank";
 	}
 
 	> .icon {
-		padding-left: 2px;
+		padding-inline-start: 2px;
 		font-size: 0.9em;
 	}
 

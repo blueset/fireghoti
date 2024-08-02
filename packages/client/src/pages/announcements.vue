@@ -91,7 +91,7 @@ definePageMetadata({
 .ruryvtyk {
 	> .announcement {
 		&:not(:last-child) {
-			margin-bottom: var(--margin);
+			margin-block-end: var(--margin);
 		}
 
 		> ._title {
@@ -107,10 +107,10 @@ definePageMetadata({
 
 			> img {
 				display: block;
-				max-height: 300px;
-				max-width: 100%;
+				max-block-size: 300px;
+				max-inline-size: 100%;
 				border-radius: 10px;
-				margin-top: 1rem;
+				margin-block-start: 1rem;
 			}
 		}
 	}

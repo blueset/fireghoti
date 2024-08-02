@@ -92,14 +92,17 @@ definePageMetadata({
 	> .icon {
 		display: block;
 		flex-shrink: 0;
-		margin: 0 12px 0 0;
-		width: 50px;
-		height: 50px;
+		margin-block-start: 0;
+		margin-inline-end: 12px;
+		margin-block-end: 0;
+		margin-inline-start: 0;
+		inline-size: 50px;
+		block-size: 50px;
 		border-radius: 8px;
 	}
 
 	> .body {
-		width: calc(100% - 62px);
+		inline-size: calc(100% - 62px);
 		position: relative;
 
 		> .name {

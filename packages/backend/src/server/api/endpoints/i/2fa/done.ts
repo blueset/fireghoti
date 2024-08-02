@@ -1,4 +1,4 @@
-import { publishMainStream } from "@/services/stream.js";
+import { Event, publishToMainStream } from "backend-rs";
 import * as OTPAuth from "otpauth";
 import define from "@/server/api/define.js";
 import { Users, UserProfiles } from "@/models/index.js";
@@ -47,5 +47,5 @@ export default define(meta, paramDef, async (ps, user) => {
 		includeSecrets: true,
 	});
 
-	publishMainStream(user.id, "meUpdated", iObj);
+	publishToMainStream(user.id, Event.Me, iObj);
 });

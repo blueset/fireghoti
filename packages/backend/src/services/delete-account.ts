@@ -1,6 +1,6 @@
 import { Users } from "@/models/index.js";
 import { createDeleteAccountJob } from "@/queue/index.js";
-import { publishUserEvent } from "@/services/stream.js";
+import { publishToUserStream, UserEvent } from "backend-rs";
 import { doPostSuspend } from "@/services/suspend-user.js";
 
 export async function deleteAccount(user: {
@@ -19,5 +19,5 @@ export async function deleteAccount(user: {
 	});
 
 	// Terminate streaming
-	publishUserEvent(user.id, "terminate", {});
+	await publishToUserStream(user.id, UserEvent.Disconnect, {});
 }

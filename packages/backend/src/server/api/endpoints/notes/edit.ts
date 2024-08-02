@@ -18,7 +18,7 @@ import { config } from "@/config.js";
 import { noteVisibilities } from "@/types.js";
 import { ApiError } from "@/server/api/error.js";
 import define from "@/server/api/define.js";
-import { genId } from "backend-rs";
+import { genId, NoteEvent, publishToNoteStream } from "backend-rs";
 import { HOUR } from "@/const.js";
 import { getNote } from "@/server/api/common/getters.js";
 import { Poll } from "@/models/entities/poll.js";
@@ -27,7 +27,6 @@ import { concat } from "@/prelude/array.js";
 import { extractHashtags } from "@/misc/extract-hashtags.js";
 import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
 import { extractMentionedUsers } from "@/services/note/create.js";
-import { publishNoteStream } from "@/services/stream.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
@@ -634,7 +633,7 @@ export default define(meta, paramDef, async (ps, user) => {
 
 	if (publishing && user.isIndexable) {
 		// Publish update event for the updated note details
-		publishNoteStream(note.id, "updated", {
+		publishToNoteStream(note.id, NoteEvent.Update, {
 			updatedAt: update.updatedAt,
 		});
 

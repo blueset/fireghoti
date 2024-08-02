@@ -60,8 +60,8 @@ const gotIt = () => {
 	margin: auto;
 	position: relative;
 	padding: 32px;
-	min-width: 320px;
-	max-width: 480px;
+	min-inline-size: 320px;
+	max-inline-size: 480px;
 	box-sizing: border-box;
 	text-align: center;
 	background: var(--panel);
@@ -69,8 +69,8 @@ const gotIt = () => {
 
 	> img {
 		border-radius: 10px;
-		max-height: 100%;
-		max-width: 100%;
+		max-block-size: 100%;
+		max-inline-size: 100%;
 	}
 }
 
@@ -87,6 +87,9 @@ const gotIt = () => {
 }
 
 .gotIt {
-	margin: 1rem 0 1rem 2rem;
+	margin-block-start: 1rem;
+	margin-inline-end: 0;
+	margin-block-end: 1rem;
+	margin-inline-start: 2rem;
 }
 </style>

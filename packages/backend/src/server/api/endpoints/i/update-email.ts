@@ -1,4 +1,3 @@
-import { publishMainStream } from "@/services/stream.js";
 import define from "@/server/api/define.js";
 import rndstr from "rndstr";
 import { config } from "@/config.js";
@@ -6,7 +5,7 @@ import { Users, UserProfiles } from "@/models/index.js";
 import { sendEmail } from "@/services/send-email.js";
 import { ApiError } from "@/server/api/error.js";
 import { validateEmailForAccount } from "@/services/validate-email-for-account.js";
-import { verifyPassword } from "backend-rs";
+import { Event, publishToMainStream, verifyPassword } from "backend-rs";
 import { HOUR } from "@/const.js";
 
 export const meta = {
@@ -72,7 +71,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	});
 
 	// Publish meUpdated event
-	publishMainStream(user.id, "meUpdated", iObj);
+	publishToMainStream(user.id, Event.Me, iObj);
 
 	if (ps.email != null) {
 		const code = rndstr("a-z0-9", 16);

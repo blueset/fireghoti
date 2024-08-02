@@ -1,8 +1,7 @@
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
-import { genIdAt } from "backend-rs";
+import { Event, genIdAt, publishToMainStream } from "backend-rs";
 import { AnnouncementReads, Announcements, Users } from "@/models/index.js";
-import { publishMainStream } from "@/services/stream.js";
 
 export const meta = {
 	tags: ["account"],
@@ -59,6 +58,6 @@ export default define(meta, paramDef, async (ps, user) => {
 	});
 
 	if (!(await Users.getHasUnreadAnnouncement(user.id))) {
-		publishMainStream(user.id, "readAllAnnouncements");
+		publishToMainStream(user.id, Event.ReadAllAnnouncements, {});
 	}
 });

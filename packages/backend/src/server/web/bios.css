@@ -1,6 +1,6 @@
 main > .tabs {
 	padding: 16px;
-	border-bottom: 4px solid #908caa;
+	border-block-end: 4px solid #908caa;
 }
 #lsEditor > .adder {
 	margin: 16px;
@@ -9,21 +9,21 @@ main > .tabs {
 }
 #lsEditor > .adder > textarea {
 	display: block;
-	width: 100%;
-	min-height: 5em;
+	inline-size: 100%;
+	min-block-size: 5em;
 	box-sizing: border-box;
 }
 #lsEditor > .record {
 	padding: 16px;
-	border-bottom: 1px solid #908caa;
+	border-block-end: 1px solid #908caa;
 }
 #lsEditor > .record > header {
 	font-weight: 700;
 }
 #lsEditor > .record > textarea {
 	display: block;
-	width: 100%;
-	min-height: 5em;
+	inline-size: 100%;
+	min-block-size: 5em;
 	box-sizing: border-box;
 }
 
@@ -36,7 +36,7 @@ main {
 }
 #tl > div {
 	padding: 16px;
-	border-bottom: 1px solid #908caa;
+	border-block-end: 1px solid #908caa;
 }
 #tl > div > header {
 	font-weight: 700;
@@ -59,11 +59,14 @@ html {
 }
 button {
 	border-radius: 999px;
-	padding: 0px 12px 0px 12px;
+	padding-block-start: 0px;
+	padding-inline-end: 12px;
+	padding-block-end: 0px;
+	padding-inline-start: 12px;
 	border: none;
 	cursor: pointer;
-	margin-bottom: 12px;
-	background: linear-gradient(90deg, rgb(156, 207, 216), rgb(49, 116, 143));
+	margin-block-end: 12px;
+	background: linear-gradient(var(--gradient-to-inline-end), rgb(156, 207, 216), rgb(49, 116, 143));
 	line-height: 50px;
 	color: #191724;
 	font-weight: bold;
@@ -72,25 +75,29 @@ button {
 }
 button {
 	border-radius: 999px;
-	padding: 0px 12px 0px 12px;
+	padding-block-start: 0px;
+	padding-inline-end: 12px;
+	padding-block-end: 0px;
+	padding-inline-start: 12px;
 	border: none;
 	cursor: pointer;
-	margin-bottom: 12px;
+	margin-block-end: 12px;
 }
 button {
 	background: #444;
 	line-height: 40px;
 	color: rgb(156, 207, 216);
 	font-size: 16px;
-  padding: 0 20px;
-  margin-right: 5px;
-  margin-left: 5px;
+  padding-block: 0;
+  padding-inline: 20px;
+  margin-inline-end: 5px;
+  margin-inline-start: 5px;
 }
 button:hover {
 	background: #555;
 }
 #ls {
-	background: linear-gradient(90deg, rgb(156, 207, 216), rgb(49, 116, 143));
+	background: linear-gradient(var(--gradient-to-inline-end), rgb(156, 207, 216), rgb(49, 116, 143));
 	line-height: 30px;
 	color: #191724;
 	font-weight: bold;
@@ -120,10 +127,10 @@ textarea {
 	border: solid #aaa;
 	border-radius: 10px;
 	color: #e0def4;
-	margin-top: 1rem;
-	margin-bottom: 1rem;
-	width: 20rem;
-	height: 7.5rem;
+	margin-block-start: 1rem;
+	margin-block-end: 1rem;
+	inline-size: 20rem;
+	block-size: 7.5rem;
 	padding: 0.5rem;
 }
 
@@ -135,10 +142,10 @@ input {
 	border: solid #aaa;
 	border-radius: 10px;
 	color: #e0def4;
-	margin-top: 1rem;
-	margin-bottom: 1rem;
-	width: 10rem;
-	height: 1rem;
+	margin-block-start: 1rem;
+	margin-block-end: 1rem;
+	inline-size: 10rem;
+	block-size: 1rem;
 	padding: 0.5rem;
 }
 

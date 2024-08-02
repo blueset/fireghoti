@@ -104,6 +104,33 @@ export type AntennaSrc =  'all'|
 'list'|
 'users';
 
+export interface ApAccept {
+  id: string
+  type: ApObject
+  actor: string
+  object: ApFollow
+}
+
+export interface ApEmoji {
+  id: string
+  type: ApObject
+  name: string
+  updated: string
+  icon: Icon
+}
+
+export interface ApFollow {
+  id: string
+  type: ApObject
+  actor: string
+  object: string
+}
+
+export type ApObject =  'Accept'|
+'Emoji'|
+'Follow'|
+'Image';
+
 export interface App {
   id: string
   createdAt: DateTimeWithTimeZone
@@ -217,7 +244,7 @@ export interface Config {
   proxySmtp?: string
   proxyBypassHosts?: Array<string>
   allowedPrivateNetworks?: Array<string>
-  maxFileSize?: number
+  maxFileSize: number
   accessLog?: string
   clusterLimits: WorkerConfig
   cuid?: IdConfig
@@ -369,6 +396,40 @@ export interface Emoji {
   height: number | null
 }
 
+export declare enum Event {
+  Notification = 0,
+  NewNotification = 1,
+  Mention = 2,
+  NewMention = 3,
+  Chat = 4,
+  NewChat = 5,
+  NewDm = 6,
+  Reply = 7,
+  Renote = 8,
+  Follow = 9,
+  Followed = 10,
+  Unfollow = 11,
+  NewFollowRequest = 12,
+  Page = 13,
+  ReadAllNotifications = 14,
+  ReadAllMentions = 15,
+  ReadNotifications = 16,
+  ReadAllDms = 17,
+  ReadAllChats = 18,
+  ReadAntenna = 19,
+  ReadAllAntennaPosts = 20,
+  NewAntennaPost = 21,
+  ReadAllAnnouncements = 22,
+  ReadAllChannelPosts = 23,
+  NewChannelPost = 24,
+  DriveFile = 25,
+  UrlUploadFinished = 26,
+  Me = 27,
+  RegenerateMyToken = 28,
+  Signin = 29,
+  Registry = 30
+}
+
 export declare function extractHost(uri: string): string
 
 export declare function fetchMeta(): Promise<Meta>
@@ -444,13 +505,17 @@ export declare function genId(): string
 /** Generate an ID using a specific datetime */
 export declare function genIdAt(date: Date): string
 
+export declare function genIdenticon(id: string): Promise<Buffer>
+
 export declare function getFullApAccount(username: string, host?: string | undefined | null): string
 
 export declare function getImageSizeFromUrl(url: string): Promise<ImageSize>
 
-export declare function getInternalActor(actor: InternalActor): Promise<User>
+export declare function getInstanceActor(): Promise<User>
 
 export declare function getNoteSummary(fileIds: Array<string>, text: string | undefined | null, cw: string | undefined | null, hasPoll: boolean): string
+
+export declare function getRelayActorId(): Promise<string>
 
 export declare function getTimestamp(id: string): number
 
@@ -475,6 +540,12 @@ export interface Hashtag {
   attachedLocalUsersCount: number
   attachedRemoteUserIds: Array<string>
   attachedRemoteUsersCount: number
+}
+
+export interface Icon {
+  type: ApObject
+  mediaType: string
+  url: string
 }
 
 export interface IdConfig {
@@ -529,8 +600,20 @@ export interface Instance {
   faviconUrl: string | null
 }
 
-export type InternalActor =  'instance'|
-'relay';
+export declare enum InternalEvent {
+  Suspend = 0,
+  Silence = 1,
+  Moderator = 2,
+  Token = 3,
+  LocalUser = 4,
+  RemoteUser = 5,
+  WebhookCreated = 6,
+  WebhookUpdated = 7,
+  WebhookDeleted = 8,
+  AntennaCreated = 9,
+  AntennaUpdated = 10,
+  AntennaDeleted = 11
+}
 
 /**
  * Checks if a server is allowlisted.
@@ -832,6 +915,15 @@ export interface NoteEdit {
   emojis: Array<string>
 }
 
+export declare enum NoteEvent {
+  Delete = 0,
+  React = 1,
+  Unreact = 2,
+  Reply = 3,
+  Update = 4,
+  Vote = 5
+}
+
 export interface NoteFavorite {
   id: string
   createdAt: DateTimeWithTimeZone
@@ -1113,11 +1205,19 @@ export declare function publishToDriveFolderStream(userId: string, kind: DriveFo
 
 export declare function publishToGroupChatStream(groupId: string, kind: ChatEvent, object: any): Promise<void>
 
+export declare function publishToInternalStream(kind: InternalEvent, object: any): Promise<void>
+
+export declare function publishToMainStream(userId: string, kind: Event, object: any): Promise<void>
+
 export declare function publishToModerationStream(moderatorId: string, report: AbuseUserReportLike): Promise<void>
 
 export declare function publishToNotesStream(note: Note): Promise<void>
 
+export declare function publishToNoteStream(noteId: string, kind: NoteEvent, object: any): Promise<void>
+
 export declare function publishToNoteUpdatesStream(note: Note): Promise<void>
+
+export declare function publishToUserStream(userId: string, kind: UserEvent, object: any): Promise<void>
 
 export interface PugArgs {
   img: string | null
@@ -1190,6 +1290,14 @@ export type RelayStatus =  'accepted'|
 
 /** Delete all entries in the [attestation_challenge] table created at more than 5 minutes ago */
 export declare function removeOldAttestationChallenges(): Promise<void>
+
+export declare function renderAccept(userId: string, followObject: ApFollow): ApAccept
+
+export declare function renderEmoji(emoji: Emoji): ApEmoji
+
+export declare function renderFollow(follower: UserLike, followee: UserLike, requestId?: string | undefined | null): ApFollow
+
+export declare function renderFollowRelay(relayId: string): Promise<ApFollow>
 
 export interface RenoteMuting {
   id: string
@@ -1347,8 +1455,6 @@ export declare function updateAntennasOnNewNote(note: Note, noteAuthor: Acct, no
 
 export declare function updateMetaCache(): Promise<void>
 
-export declare function updateNodeinfoCache(): Promise<void>
-
 /** Usage statistics for this server. */
 export interface Usage {
   users: Users
@@ -1408,6 +1514,17 @@ export type UserEmojiModPerm =  'add'|
 'mod'|
 'unauthorized';
 
+export declare enum UserEvent {
+  Disconnect = 0,
+  FollowChannel = 1,
+  UnfollowChannel = 2,
+  UpdateProfile = 3,
+  Mute = 4,
+  Unmute = 5,
+  Follow = 6,
+  Unfollow = 7
+}
+
 export interface UserGroup {
   id: string
   createdAt: DateTimeWithTimeZone
@@ -1448,6 +1565,12 @@ export interface UserKeypair {
   userId: string
   publicKey: string
   privateKey: string
+}
+
+export interface UserLike {
+  id: string
+  host: string | null
+  uri: string | null
 }
 
 export interface UserList {

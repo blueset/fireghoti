@@ -247,7 +247,7 @@ defineExpose<WidgetComponentExpose>({
 		padding: 16px;
 
 		&:not(:first-child) {
-			border-top: solid 0.5px var(--divider);
+			border-block-start: solid 0.5px var(--divider);
 		}
 
 		> .label {
@@ -255,7 +255,7 @@ defineExpose<WidgetComponentExpose>({
 
 			> .icon {
 				color: var(--warn);
-				margin-left: auto;
+				margin-inline-start: auto;
 				animation: warnBlink 1s infinite;
 			}
 		}

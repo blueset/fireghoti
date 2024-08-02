@@ -469,6 +469,15 @@ export const defaultStore = markRaw(
 			where: "deviceAccount",
 			default: true,
 		},
+		writingMode: {
+			where: "deviceAccount",
+			default: "horizontal-tb" as
+				| "horizontal-tb"
+				| "vertical-rl"
+				| "vertical-lr"
+				| "vertical-rl-upright"
+				| "vertical-lr-upright",
+		},
 	}),
 );
 

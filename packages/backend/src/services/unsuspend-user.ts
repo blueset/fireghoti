@@ -1,15 +1,15 @@
 import renderDelete from "@/remote/activitypub/renderer/delete.js";
-import renderUndo from "@/remote/activitypub/renderer/undo.js";
+import { renderUndo } from "@/remote/activitypub/renderer/undo.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import { deliver } from "@/queue/index.js";
 import { config } from "@/config.js";
 import type { User } from "@/models/entities/user.js";
 import { Users, Followings } from "@/models/index.js";
 import { Not, IsNull } from "typeorm";
-import { publishInternalEvent } from "@/services/stream.js";
+import { InternalEvent, publishToInternalStream } from "backend-rs";
 
 export async function doPostUnsuspend(user: User) {
-	publishInternalEvent("userChangeSuspendedState", {
+	publishToInternalStream(InternalEvent.Suspend, {
 		id: user.id,
 		isSuspended: false,
 	});
@@ -17,7 +17,7 @@ export async function doPostUnsuspend(user: User) {
 	if (Users.isLocalUser(user)) {
 		// 知り得る全SharedInboxにUndo Delete配信
 		const content = renderActivity(
-			renderUndo(renderDelete(`${config.url}/users/${user.id}`, user), user),
+			renderUndo(renderDelete(`${config.url}/users/${user.id}`, user), user.id),
 		);
 
 		const queue: string[] = [];
@@ -39,7 +39,7 @@ export async function doPostUnsuspend(user: User) {
 		}
 
 		for (const inbox of queue) {
-			deliver(user as any, content, inbox);
+			deliver(user.id, content, inbox);
 		}
 	}
 }

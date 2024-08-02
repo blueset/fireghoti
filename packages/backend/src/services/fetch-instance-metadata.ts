@@ -156,6 +156,7 @@ async function fetchFaviconUrl(
 		// TODO
 		//timeout: 10000,
 		agent: getAgentByUrl,
+		size: 1024 * 1024,
 	});
 
 	if (favicon.ok) {

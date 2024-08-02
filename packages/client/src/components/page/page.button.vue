@@ -64,8 +64,9 @@ export default defineComponent({
 <style lang="scss" scoped>
 .kudkigyw {
 	display: inline-block;
-	min-width: 200px;
-	max-width: 450px;
-	margin: 8px 0;
+	min-inline-size: 200px;
+	max-inline-size: 450px;
+	margin-block: 8px;
+	margin-inline: 0;
 }
 </style>

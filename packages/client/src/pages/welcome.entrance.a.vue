@@ -28,7 +28,7 @@
 					class="icon"
 				/>
 				<button class="_button _acrylic menu" @click="showMenu">
-					<i :class="icon('ph-dots-three-outline')"></i>
+					<i :class="icon('ph-dots-three-outline ph-dir')"></i>
 				</button>
 				<div class="fg">
 					<h1>
@@ -54,7 +54,7 @@
 							rounded
 							gradate
 							data-cy-signup
-							style="margin-right: 12px"
+							style="margin-inline-end: 12px"
 							@click="signup()"
 							>{{ i18n.ts.signup }}</MkButton
 						>
@@ -68,7 +68,7 @@
 						<MkButton
 							inline
 							rounded
-							style="margin-left: 12px; margin-top: 12px"
+							style="margin-inline-start: 12px; margin-block-start: 12px"
 							onclick="window.location.href='/explore'"
 							>{{ i18n.ts.explore }}</MkButton
 						>
@@ -206,62 +206,62 @@ function showMenu(ev) {
 	> .top {
 		display: flex;
 		text-align: center;
-		min-height: 100vh;
+		min-block-size: 100vb;
 		box-sizing: border-box;
 		padding: 16px;
 
 		> .bg {
 			position: absolute;
-			top: 0;
-			right: 0;
-			width: 80%; // 100%からshapeの幅を引いている
-			height: 100%;
+			inset-block-start: 0;
+			inset-inline-end: 0;
+			inline-size: 80%; // 100%からshapeの幅を引いている
+			block-size: 100%;
 		}
 
 		> .tl {
 			position: absolute;
-			top: 0;
-			bottom: 0;
-			right: 64px;
+			inset-block-start: 0;
+			inset-block-end: 0;
+			inset-inline-end: 64px;
 			margin: auto;
-			width: 500px;
-			height: calc(100% - 128px);
+			inline-size: 500px;
+			block-size: calc(100% - 128px);
 			overflow: hidden;
 			-webkit-mask-image: linear-gradient(
-				0deg,
+				var(--gradient-to-block-start),
 				rgba(0, 0, 0, 0) 0%,
 				rgba(0, 0, 0, 1) 128px,
 				rgba(0, 0, 0, 1) calc(100% - 128px),
 				rgba(0, 0, 0, 0) 100%
 			);
 			mask-image: linear-gradient(
-				0deg,
+				var(--gradient-to-block-start),
 				rgba(0, 0, 0, 0) 0%,
 				rgba(0, 0, 0, 1) 128px,
 				rgba(0, 0, 0, 1) calc(100% - 128px),
 				rgba(0, 0, 0, 0) 100%
 			);
 
-			@media (max-width: 1200px) {
+			@media (max-inline-size: 1200px) {
 				display: none;
 			}
 		}
 
 		> .shape1 {
 			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
+			inset-block-start: 0;
+			inset-inline-start: 0;
+			inline-size: 100%;
+			block-size: 100%;
 			background: var(--accent);
 			clip-path: polygon(0% 0%, 45% 0%, 20% 100%, 0% 100%);
 		}
 		> .shape2 {
 			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
+			inset-block-start: 0;
+			inset-inline-start: 0;
+			inline-size: 100%;
+			block-size: 100%;
 			background: var(--accent);
 			clip-path: polygon(0% 0%, 25% 0%, 35% 100%, 0% 100%);
 			opacity: 0.5;
@@ -269,9 +269,9 @@ function showMenu(ev) {
 
 		> .misskey {
 			position: absolute;
-			top: 42px;
-			left: 42px;
-			width: 140px;
+			inset-block-start: 42px;
+			inset-inline-start: 42px;
+			inline-size: 140px;
 			text-align-last: left;
 			color: #fff;
 			> div {
@@ -282,50 +282,53 @@ function showMenu(ev) {
 				}
 			}
 
-			@media (max-width: 450px) {
-				width: 130px;
+			@media (max-inline-size: 450px) {
+				inline-size: 130px;
 			}
 		}
 
 		> .emojis {
 			position: absolute;
-			bottom: 32px;
-			left: 115px;
+			inset-block-end: 32px;
+			inset-inline-start: 115px;
 			transform: scale(1.5);
 
 			> * {
-				margin-right: 8px;
+				margin-inline-end: 8px;
 			}
 
-			@media (max-width: 1200px) {
+			@media (max-inline-size: 1200px) {
 				display: none;
 			}
 		}
 
 		> .main {
 			position: relative;
-			width: min(480px, 100%);
-			margin: auto auto auto 128px;
+			inline-size: min(480px, 100%);
+			margin-block-start: auto;
+			margin-inline-end: auto;
+			margin-block-end: auto;
+			margin-inline-start: 128px;
 			background: var(--panel);
 			border-radius: var(--radius);
 			box-shadow: 0 12px 32px rgb(0 0 0 / 25%);
 
-			@media (max-width: 1200px) {
+			@media (max-inline-size: 1200px) {
 				margin: auto;
 			}
 
 			> .icon {
-				width: 85px;
-				margin-top: -47px;
+				inline-size: 85px;
+				margin-block-start: -47px;
 				vertical-align: bottom;
 			}
 
 			> .menu {
 				position: absolute;
-				top: 16px;
-				right: 16px;
-				width: 32px;
-				height: 32px;
+				inset-block-start: 16px;
+				inset-inline-end: 16px;
+				inline-size: 32px;
+				block-size: 32px;
 				border-radius: 8px;
 				font-size: 18px;
 				z-index: 2;
@@ -338,23 +341,27 @@ function showMenu(ev) {
 				> h1 {
 					display: block;
 					margin: 0;
-					padding: 16px 32px 24px 32px;
+					padding-block-start: 16px;
+					padding-inline-end: 32px;
+					padding-block-end: 24px;
+					padding-inline-start: 32px;
 					font-size: 1.4em;
 
 					> .logo {
 						vertical-align: bottom;
-						max-height: 120px;
-						max-width: min(100%, 300px);
+						max-block-size: 120px;
+						max-inline-size: min(100%, 300px);
 					}
 				}
 
 				> .about {
-					padding: 0 32px;
+					padding-block: 0;
+					padding-inline: 32px;
 				}
 
 				> .action {
 					padding: 32px;
-					padding-top: 22px;
+					padding-block-start: 22px;
 
 					> * {
 						line-height: 28px;
@@ -365,20 +372,21 @@ function showMenu(ev) {
 
 		> .federation {
 			position: absolute;
-			bottom: 16px;
-			left: 0;
-			right: 0;
+			inset-block-end: 16px;
+			inset-inline-start: 0;
+			inset-inline-end: 0;
 			margin: auto;
 			background: var(--acrylicPanel);
 			-webkit-backdrop-filter: var(--blur, blur(15px));
 			backdrop-filter: var(--blur, blur(15px));
 			border-radius: 999px;
 			overflow: clip;
-			width: 35%;
-			left: 50%;
-			padding: 8px 0;
+			inline-size: 35%;
+			inset-inline-start: 50%;
+			padding-block: 8px;
+			padding-inline: 0;
 
-			@media (max-width: 900px) {
+			@media (max-inline-size: 900px) {
 				display: none;
 			}
 		}
@@ -391,16 +399,22 @@ function showMenu(ev) {
 	display: inline-flex;
 	align-items: center;
 	vertical-align: bottom;
-	padding: 6px 12px 6px 6px;
-	margin: 0 10px 0 0;
+	padding-block-start: 6px;
+	padding-inline-end: 12px;
+	padding-block-end: 6px;
+	padding-inline-start: 6px;
+	margin-block-start: 0;
+	margin-inline-end: 10px;
+	margin-block-end: 0;
+	margin-inline-start: 0;
 	background: var(--panel);
 	border-radius: 999px;
 
 	> :global(.icon) {
 		display: inline-block;
-		width: 20px;
-		height: 20px;
-		margin-right: 5px;
+		inline-size: 20px;
+		block-size: 20px;
+		margin-inline-end: 5px;
 		border-radius: 999px;
 	}
 }

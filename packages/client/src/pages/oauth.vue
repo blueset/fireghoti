@@ -90,7 +90,7 @@
 							<i
 								:class="[getIcon(p)]"
 								class="ph-bold ph-xl"
-								style="margin-right: 0.5rem"
+								style="margin-inline-end: 0.5rem"
 							></i>
 							<span class="monospace">{{ p }}</span>
 						</div>
@@ -229,16 +229,17 @@ function openAccountMenu(ev: MouseEvent) {
 
 .permissions {
 	justify-content: center;
-	padding-top: var(--margin);
+	padding-block-start: var(--margin);
 	display: flex;
 	flex-wrap: wrap;
 	gap: 1rem;
-	margin-bottom: 2rem;
+	margin-block-end: 2rem;
 }
 
 .permission {
 	display: inline-flex;
-	padding: 0.5rem 1rem;
+	padding-block: 0.5rem;
+	padding-inline: 1rem;
 	border-radius: var(--radius);
 	background-color: var(--buttonBg);
 	color: var(--fg);
@@ -251,18 +252,19 @@ function openAccountMenu(ev: MouseEvent) {
 }
 
 .account {
-	margin-right: 20px;
+	margin-inline-end: 20px;
 }
 
 .icon {
 	display: inline-block;
-	width: 55px;
+	inline-size: 55px;
 	aspect-ratio: 1;
 }
 
 .section {
 	background: var(--panel);
-	padding: 20px 32px;
+	padding-block: 20px;
+	padding-inline: 32px;
 	border-radius: var(--radius);
 	font-size: 1.05em;
 	text-align: center;
@@ -273,6 +275,6 @@ function openAccountMenu(ev: MouseEvent) {
 }
 
 .left {
-	text-align: left;
+	text-align: start;
 }
 </style>

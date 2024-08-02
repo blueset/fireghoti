@@ -54,25 +54,28 @@ onMounted(() => {
 
 .mk-notification-toast {
 	position: fixed;
-	left: 0;
-	width: 250px;
-	top: 32px;
-	padding: 0 32px;
+	inset-inline-start: 0;
+	inline-size: 250px;
+	inset-block-start: 32px;
+	padding-block: 0;
+	padding-inline: 32px;
 	pointer-events: none;
 
-	@media (max-width: 700px) {
-		top: initial;
-		bottom: 112px;
-		padding: 0 16px;
+	@media (max-inline-size: 700px) {
+		inset-block-start: initial;
+		inset-block-end: 112px;
+		padding-block: 0;
+		padding-inline: 16px;
 	}
 
-	@media (max-width: 500px) {
-		bottom: calc(env(safe-area-inset-bottom, 0px) + 92px);
-		padding: 0 8px;
+	@media (max-inline-size: 500px) {
+		inset-block-end: calc(env(safe-area-inset-bottom, 0px) + 92px);
+		padding-block: 0;
+		padding-inline: 8px;
 	}
 
 	> .notification {
-		height: 100%;
+		block-size: 100%;
 		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 		border-radius: 8px;
 		overflow: hidden;

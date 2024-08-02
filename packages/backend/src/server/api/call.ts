@@ -118,9 +118,9 @@ export default async (
 	}
 
 	// private mode
-	const meta = await fetchMeta();
+	const instanceMeta = await fetchMeta();
 	if (
-		meta.privateMode &&
+		instanceMeta.privateMode &&
 		ep.meta.requireCredentialPrivateMode &&
 		user == null
 	) {

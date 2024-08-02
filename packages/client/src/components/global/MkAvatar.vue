@@ -242,25 +242,22 @@ onMounted(() => {
 
 	> .inner {
 		position: absolute;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		top: 0;
+		inset: 0;
 		border-radius: 100%;
 		z-index: 1;
 		overflow: hidden;
 		object-fit: cover;
-		width: 100%;
-		height: 100%;
+		inline-size: 100%;
+		block-size: 100%;
 	}
 
 	> .indicator {
 		position: absolute;
 		z-index: 1;
-		bottom: 0;
-		left: 0;
-		width: 18%;
-		height: 18%;
+		inset-block-end: 0;
+		inset-inline-start: 0;
+		inline-size: 18%;
+		block-size: 18%;
 	}
 
 	&.square {
@@ -279,18 +276,22 @@ onMounted(() => {
 			box-sizing: border-box;
 			content: "";
 			display: inline-block;
-			height: 50%;
-			width: 50%;
+			block-size: 50%;
+			inline-size: 50%;
+			position: absolute;
+			top: 0;  // Cat ear positions are irrelevant to text flow direction
 		}
 
 		&:before {
 			border-radius: 25% 75% 75%;
 			transform: rotate(37.5deg) skew(30deg);
+			left: 0;  // Cat ear positions are irrelevant to text flow direction
 		}
 
 		&:after {
 			border-radius: 75% 25% 75% 75%;
 			transform: rotate(-37.5deg) skew(-30deg);
+			right: 0;  // Cat ear positions are irrelevant to text flow direction
 		}
 
 		&:hover {

@@ -3,7 +3,7 @@
 		<div
 			v-if="pullStarted"
 			:class="$style.frame"
-			:style="`--frame-min-height: ${
+			:style="`--frame-min-block-size: ${
 				pullDistance /
 				(PULL_BRAKE_BASE + pullDistance / PULL_BRAKE_FACTOR)
 			}px;`"
@@ -11,7 +11,7 @@
 			<div :class="$style.frameContent">
 				<i
 					v-if="!isRefreshing"
-					:class="[$style.icon, icon('ph-arrow-down'), { [$style.refresh]: pullEnded }]"
+					:class="[$style.icon, icon('ph-arrow-down ph-dir'), { [$style.refresh]: pullEnded }]"
 				></i>
 				<div :class="$style.text">
 					<template v-if="pullEnded">{{
@@ -160,12 +160,28 @@ function moving(event: TouchEvent | PointerEvent) {
 	const moveScreenX = getScreenX(event);
 	const moveHeight = moveScreenY - startScreenY!;
 	const moveWidth = moveScreenX - startScreenX!;
-	if (Math.abs(moveWidth / moveHeight) > MAX_PULL_TAN_ANGLE) {
-		if (Math.abs(moveWidth) > 30) pullStarted.value = false;
+	const writingMode = rootEl.value
+		? getComputedStyle(rootEl.value)["writing-mode"]
+		: "horizontal-tb";
+	const moveScreenBlock =
+		writingMode === "vertical-rl"
+			? -moveWidth
+			: writingMode === "vertical-lr"
+				? moveWidth
+				: moveHeight;
+	const moveScreenInline = writingMode.startsWith("vertical")
+		? moveHeight
+		: moveWidth;
+
+	if (Math.abs(moveScreenInline / moveScreenBlock) > MAX_PULL_TAN_ANGLE) {
+		if (Math.abs(moveScreenInline) > 30) pullStarted.value = false;
 		return;
 	}
 
-	pullDistance.value = Math.min(Math.max(moveHeight, 0), MAX_PULL_DISTANCE);
+	pullDistance.value = Math.min(
+		Math.max(moveScreenBlock, 0),
+		MAX_PULL_DISTANCE,
+	);
 
 	if (pullDistance.value > 0) {
 		if (event.cancelable) event.preventDefault();
@@ -244,11 +260,11 @@ defineExpose({
 .frame {
 	position: relative;
 	overflow: clip;
-	width: 100%;
-	min-height: var(--frame-min-height, 0px);
-	mask-image: linear-gradient(90deg, #000 0%, #000 80%, transparent);
+	inline-size: 100%;
+	min-block-size: var(--frame-min-block-size, 0px);
+	mask-image: linear-gradient(var(--gradient-to-inline-end), #000 0%, #000 80%, transparent);
 	-webkit-mask-image: -webkit-linear-gradient(
-		90deg,
+		var(--gradient-to-inline-end),
 		#000 0%,
 		#000 80%,
 		transparent
@@ -257,28 +273,45 @@ defineExpose({
 }
 .frameContent {
 	position: absolute;
-	bottom: 0;
-	width: 100%;
-	margin: 5px 0;
+	inset-block-end: 0;
+	inline-size: 100%;
+	margin-block: 5px;
+	margin-inline: 0;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	font-size: 14px;
 	> .icon,
 	> .loader {
-		margin: 6px 0;
+		margin-block: 6px;
+		margin-inline: 0;
 	}
 	> .icon {
 		transition: transform 0.25s;
 		&.refresh {
 			transform: rotate(180deg);
+			:global(.vertical-rl) & {
+				transform: rotate(-90deg);
+			}
+			:global(.vertical-lr) & {
+				transform: rotate(90deg);
+			}
 		}
 	}
 	> .text {
-		margin: 5px 0;
+		margin-block: 5px;
+		margin-inline: 0;
 	}
 }
 .slotClip {
 	overflow-y: clip;
+	overflow-block: clip;
+
+	@supports not (overflow-block: clip) {
+		.vertical-lr &, .vertical-rl & {
+			overflow-y: visible;
+			overflow-x: clip;
+		}
+	}
 }
 </style>

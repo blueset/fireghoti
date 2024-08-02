@@ -116,17 +116,19 @@ const cancel = () => {
 
 <style lang="scss" scoped>
 .mehkoush {
-	margin: var(--marginFull) 0;
+	margin-block: var(--marginFull);
+	margin-inline: 0;
 
 	> .form {
-		padding: 0 var(--root-margin);
+		padding-block: 0;
+		padding-inline: var(--root-margin);
 	}
 
 	> .result {
 		display: flex;
 		flex-direction: column;
 		overflow: auto;
-		height: 100%;
+		block-size: 100%;
 
 		&.result.hit {
 			padding: 0;
@@ -135,12 +137,14 @@ const cancel = () => {
 		> .instances {
 			flex: 1;
 			overflow: auto;
-			padding: 8px 0;
+			padding-block: 8px;
+			padding-inline: 0;
 
 			> .instance {
 				display: flex;
 				align-items: center;
-				padding: 8px var(--root-margin);
+				padding-block: 8px;
+				padding-inline: var(--root-margin);
 				font-size: 14px;
 
 				&:hover {
@@ -158,8 +162,9 @@ const cancel = () => {
 				}
 
 				> .body {
-					padding: 0 8px;
-					width: 100%;
+					padding-block: 0;
+					padding-inline: 8px;
+					inline-size: 100%;
 
 					> .name {
 						display: block;
@@ -167,10 +172,10 @@ const cancel = () => {
 					}
 
 					> .icon {
-						width: 16px;
-						height: 16px;
-						margin-right: 8px;
-						float: left;
+						inline-size: 16px;
+						block-size: 16px;
+						margin-inline-end: 8px;
+						float: inline-start;
 					}
 				}
 			}

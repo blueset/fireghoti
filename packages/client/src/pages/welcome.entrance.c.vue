@@ -78,7 +78,7 @@
 							</I18n>
 						</div>
 						<button class="_button _acrylic menu" @click="showMenu">
-							<i :class="icon('ph-dots-three-outline')"></i>
+							<i :class="icon('ph-dots-three-outline ph-dir')"></i>
 						</button>
 					</div>
 				</div>
@@ -203,52 +203,52 @@ export default defineComponent({
 	> .top {
 		display: flex;
 		text-align: center;
-		min-height: 100vh;
+		min-block-size: 100vb;
 		box-sizing: border-box;
 		padding: 16px;
 
 		> .bg {
 			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
+			inset-block-start: 0;
+			inset-inline-start: 0;
+			inline-size: 100%;
+			block-size: 100%;
 		}
 
 		> .fade {
 			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
+			inset-block-start: 0;
+			inset-inline-start: 0;
+			inline-size: 100%;
+			block-size: 100%;
 			background: rgba(0, 0, 0, 0.25);
 		}
 
 		> .emojis {
 			position: absolute;
-			bottom: 32px;
-			left: 35px;
+			inset-block-end: 32px;
+			inset-inline-start: 35px;
 
 			> * {
-				margin-right: 8px;
+				margin-inline-end: 8px;
 			}
 
-			@media (max-width: 1200px) {
+			@media (max-inline-size: 1200px) {
 				display: none;
 			}
 		}
 
 		> .main {
 			position: relative;
-			width: min(460px, 100%);
+			inline-size: min(460px, 100%);
 			margin: auto;
 
 			> .misskey {
-				width: 150px;
-				margin-bottom: 16px;
+				inline-size: 150px;
+				margin-block-end: 16px;
 
-				@media (max-width: 450px) {
-					width: 130px;
+				@media (max-inline-size: 450px) {
+					inline-size: 130px;
 				}
 			}
 
@@ -258,22 +258,22 @@ export default defineComponent({
 
 				> .bg {
 					position: absolute;
-					top: 0;
-					left: 0;
-					width: 100%;
-					height: 128px;
+					inset-block-start: 0;
+					inset-inline-start: 0;
+					inline-size: 100%;
+					block-size: 128px;
 					background-position: center;
 					background-size: cover;
 					opacity: 0.75;
 
 					> .fade {
 						position: absolute;
-						bottom: 0;
-						left: 0;
-						width: 100%;
-						height: 128px;
+						inset-block-end: 0;
+						inset-inline-start: 0;
+						inline-size: 100%;
+						block-size: 128px;
 						background: linear-gradient(
-							0deg,
+							var(--gradient-to-block-start),
 							var(--panel),
 							var(--X15)
 						);
@@ -287,16 +287,20 @@ export default defineComponent({
 					> h1 {
 						display: block;
 						margin: 0;
-						padding: 32px 32px 24px 32px;
+						padding-block-start: 32px;
+						padding-inline-end: 32px;
+						padding-block-end: 24px;
+						padding-inline-start: 32px;
 
 						> .logo {
 							vertical-align: bottom;
-							max-height: 120px;
+							max-block-size: 120px;
 						}
 					}
 
 					> .about {
-						padding: 0 32px;
+						padding-block: 0;
+						padding-inline: 32px;
 					}
 
 					> .action {
@@ -308,15 +312,15 @@ export default defineComponent({
 					}
 
 					> .status {
-						border-top: solid 0.5px var(--divider);
+						border-block-start: solid 0.5px var(--divider);
 						padding: 32px;
 						font-size: 90%;
 
 						> div {
 							> span:not(:last-child) {
-								padding-right: 1em;
-								margin-right: 1em;
-								border-right: solid 0.5px var(--divider);
+								padding-inline-end: 1em;
+								margin-inline-end: 1em;
+								border-inline-end: solid 0.5px var(--divider);
 							}
 						}
 
@@ -333,10 +337,10 @@ export default defineComponent({
 
 					> .menu {
 						position: absolute;
-						top: 16px;
-						right: 16px;
-						width: 32px;
-						height: 32px;
+						inset-block-start: 16px;
+						inset-inline-end: 16px;
+						inline-size: 32px;
+						block-size: 32px;
 						border-radius: 8px;
 					}
 				}
@@ -345,13 +349,13 @@ export default defineComponent({
 			> .nav {
 				position: relative;
 				z-index: 2;
-				margin-top: 20px;
+				margin-block-start: 20px;
 				color: #fff;
 				text-shadow: 0 0 8px black;
 				font-size: 0.9em;
 
 				> *:not(:last-child) {
-					margin-right: 1.5em;
+					margin-inline-end: 1.5em;
 				}
 			}
 		}

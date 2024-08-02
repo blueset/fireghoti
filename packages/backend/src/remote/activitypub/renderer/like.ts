@@ -3,7 +3,7 @@ import { config } from "@/config.js";
 import type { NoteReaction } from "@/models/entities/note-reaction.js";
 import type { Note } from "@/models/entities/note.js";
 import { Emojis } from "@/models/index.js";
-import renderEmoji from "./emoji.js";
+import { renderEmoji } from "backend-rs";
 
 export const renderLike = async (noteReaction: NoteReaction, note: Note) => {
 	const reaction = noteReaction.reaction;

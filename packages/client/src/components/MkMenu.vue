@@ -12,8 +12,8 @@
 				class="rrevdjwt _popup _shadow"
 				:class="{ center: align === 'center', asDrawer }"
 				:style="{
-					width: width && !asDrawer ? width + 'px' : '',
-					maxHeight: maxHeight ? maxHeight + 'px' : '',
+					inlineSize: width && !asDrawer ? width + 'px' : '',
+					maxBlockSize: maxHeight ? maxHeight + 'px' : '',
 				}"
 				tabindex="-1"
 				@contextmenu.self="(e) => e.preventDefault()"
@@ -141,7 +141,7 @@
 							item.text
 						}}</span>
 						<span class="caret"
-							><i :class="icon('ph-caret-right ph-fw')"></i
+							><i :class="icon('ph-caret-right ph-fw ph-dir')"></i
 						></span>
 					</button>
 					<button
@@ -350,9 +350,10 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 .rrevdjwt {
-	padding: 8px 0;
+	padding-block: 8px;
+	padding-inline: 0;
 	box-sizing: border-box;
-	min-width: 200px;
+	min-inline-size: 200px;
 	overflow: auto;
 	overscroll-behavior: contain;
 
@@ -366,26 +367,24 @@ onBeforeUnmount(() => {
 		display: flex;
 		align-items: center;
 		position: relative;
-		padding: 6px 16px;
-		width: 100%;
+		padding-block: 6px;
+		padding-inline: 16px;
+		min-inline-size: 100%;
 		box-sizing: border-box;
 		white-space: nowrap;
 		font-size: 0.9em;
 		line-height: 20px;
-		text-align: left;
+		text-align: start;
 		outline: none;
 
 		&:before {
 			content: "";
 			display: block;
 			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
+			inset: 0;
 			margin: auto;
-			width: calc(100% - 16px);
-			margin-bottom: 0.2rem;
-			height: 100%;
+			inline-size: calc(100% - 16px);
+			margin-block-end: 0.2rem;
 			border-radius: 6px;
 		}
 
@@ -462,7 +461,7 @@ onBeforeUnmount(() => {
 		&.label {
 			pointer-events: none;
 			font-size: 0.7em;
-			padding-bottom: 4px;
+			padding-block-end: 4px;
 
 			> span {
 				opacity: 0.7;
@@ -485,7 +484,7 @@ onBeforeUnmount(() => {
 			cursor: default;
 
 			> .caret {
-				margin-left: auto;
+				margin-inline-start: auto;
 			}
 
 			&.childShowing {
@@ -499,20 +498,20 @@ onBeforeUnmount(() => {
 		}
 
 		> i {
-			margin-right: 5px;
-			width: 20px;
+			margin-inline-end: 5px;
+			inline-size: 20px;
 		}
 
 		> .avatar {
-			margin-right: 5px;
-			width: 20px;
-			height: 20px;
+			margin-inline-end: 5px;
+			inline-size: 20px;
+			block-size: 20px;
 		}
 
 		> .indicator {
 			position: absolute;
-			top: 5px;
-			left: 13px;
+			inset-block-start: 5px;
+			inset-inline-start: 13px;
 			color: var(--indicator);
 			font-size: 12px;
 		}
@@ -523,34 +522,37 @@ onBeforeUnmount(() => {
 	}
 
 	> .divider {
-		margin: 8px 0;
-		border-top: solid 0.5px var(--divider);
+		margin-block: 8px;
+		margin-inline: 0;
+		border-block-start: solid 0.5px var(--divider);
 	}
 
 	&.asDrawer {
 		padding: 12px 0 calc(env(safe-area-inset-bottom, 0px) + 12px) 0;
-		width: 100%;
+		inline-size: 100%;
 		border-radius: 24px;
-		border-bottom-right-radius: 0;
-		border-bottom-left-radius: 0;
+		border-end-end-radius: 0;
+		border-end-start-radius: 0;
 
 		> .item {
 			font-size: 1em;
-			padding: 12px 24px;
+			padding-block: 12px;
+			padding-inline: 24px;
 
 			&:before {
-				width: calc(100% - 24px);
+				inline-size: calc(100% - 24px);
 				border-radius: 12px;
 			}
 
 			> i {
-				margin-right: 14px;
-				width: 24px;
+				margin-inline-end: 14px;
+				inline-size: 24px;
 			}
 		}
 
 		> .divider {
-			margin: 12px 0;
+			margin-block: 12px;
+			margin-inline: 0;
 		}
 	}
 }

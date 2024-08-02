@@ -37,15 +37,13 @@ export const paramDef = {
 	required: ["name"],
 } as const;
 
-export default define(meta, paramDef, async (ps, me) => {
-	const emoji = await Emojis.findOne({
-		where: {
-			name: ps.name,
-			host: IsNull(),
-		},
+export default define(meta, paramDef, async (ps) => {
+	const emoji = await Emojis.findOneBy({
+		name: ps.name,
+		host: IsNull(),
 	});
 
-	if (!emoji) {
+	if (emoji == null) {
 		throw new ApiError(meta.errors.noSuchEmoji);
 	}
 

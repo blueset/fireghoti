@@ -53,7 +53,7 @@ export const navbarItemDef = reactive({
 	},
 	lists: {
 		title: "lists",
-		icon: `${icon("ph-list-bullets")}`,
+		icon: `${icon("ph-list-bullets ph-dir")}`,
 		show: computed(() => isSignedIn(me)),
 		to: "/my/lists",
 	},
@@ -71,7 +71,7 @@ export const navbarItemDef = reactive({
 	},
 	pages: {
 		title: "pages",
-		icon: `${icon("ph-file-text")}`,
+		icon: `${icon("ph-file-text ph-dir")}`,
 		to: "/pages",
 	},
 	gallery: {
@@ -97,7 +97,7 @@ export const navbarItemDef = reactive({
 	},
 	ui: {
 		title: "switchUi",
-		icon: `${icon("ph-layout")}`,
+		icon: `${icon("ph-layout ph-dir")}`,
 		action: (ev) => {
 			os.popupMenu(
 				[

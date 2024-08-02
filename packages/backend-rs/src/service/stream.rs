@@ -5,9 +5,13 @@ pub mod chat_index;
 pub mod custom_emoji;
 pub mod drive;
 pub mod group_chat;
+pub mod internal;
+pub mod main;
 pub mod moderation;
+pub mod note;
 pub mod note_edit;
 pub mod notes;
+pub mod user;
 
 use crate::{
     config::CONFIG,
@@ -85,7 +89,7 @@ pub async fn publish_to_stream(
         Stream::User { user_id } => format!("user:{user_id}"),
         Stream::Channel { channel_id } => format!("channelStream:{channel_id}"),
         Stream::Note { note_id } => format!("noteStream:{note_id}"),
-        Stream::NoteEdit => format!("noteUpdatesStream"),
+        Stream::NoteEdit => "noteUpdatesStream".to_owned(),
         Stream::Notes => "notesStream".to_owned(),
         Stream::Main { user_id } => format!("mainStream:{user_id}"),
         Stream::Drive { user_id } => format!("driveStream:{user_id}"),
@@ -108,13 +112,11 @@ pub async fn publish_to_stream(
         value.ok_or(Error::InvalidContent)?
     };
 
-    redis_conn()
+    Ok(redis_conn()
         .await?
         .publish(
             &CONFIG.host,
             format!("{{\"channel\":\"{}\",\"message\":{}}}", channel, message),
         )
-        .await?;
-
-    Ok(())
+        .await?)
 }

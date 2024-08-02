@@ -2,10 +2,11 @@ import { config } from "@/config.js";
 import type { ILocalUser } from "@/models/entities/user.js";
 import {
 	extractHost,
-	getInternalActor,
+	getInstanceActor,
 	isAllowedServer,
 	isBlockedServer,
 	isSelfHost,
+	renderFollow,
 } from "backend-rs";
 import { apGet } from "./request.js";
 import type { IObject, ICollection, IOrderedCollection } from "./type.js";
@@ -24,7 +25,6 @@ import { renderPerson } from "@/remote/activitypub/renderer/person.js";
 import renderQuestion from "@/remote/activitypub/renderer/question.js";
 import renderCreate from "@/remote/activitypub/renderer/create.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import { apLogger } from "@/remote/activitypub/logger.js";
 import { IsNull, Not } from "typeorm";
 
@@ -112,7 +112,7 @@ export default class Resolver {
 		}
 
 		if (!this.user) {
-			this.user = await getInternalActor("instance");
+			this.user = (await getInstanceActor()) as ILocalUser;
 		}
 
 		apLogger.info(

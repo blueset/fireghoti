@@ -158,11 +158,11 @@ export class NotificationConverter {
 		subscription: SwSubscription,
 		ctx: MastoContext,
 	): Promise<MastodonEntity.PushSubscription> {
-		const instance = await fetchMeta();
+		const instanceMeta = await fetchMeta();
 		const result: MastodonEntity.PushSubscription = {
 			id: subscription.id,
 			endpoint: subscription.endpoint,
-			server_key: instance.swPublicKey ?? "",
+			server_key: instanceMeta.swPublicKey ?? "",
 			alerts: {
 				follow: subscription.subscriptionTypes.includes("follow"),
 				favourite: subscription.subscriptionTypes.includes("favourite"),

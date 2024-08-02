@@ -175,10 +175,10 @@ export default defineComponent({
 
 	> .back {
 		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
+		inset-block-start: 0;
+		inset-inline-start: 0;
+		inline-size: 100%;
+		block-size: 100%;
 		background: rgba(0, 0, 0, 0.3);
 
 		&.transparent {
@@ -190,14 +190,16 @@ export default defineComponent({
 	> .contents {
 		position: relative;
 		z-index: 1;
-		height: inherit;
+		block-size: inherit;
 		overflow: auto;
 
 		> .wrapper {
-			max-width: 380px;
-			padding: 0 16px;
+			max-inline-size: 380px;
+			padding-block: 0;
+			padding-inline: 16px;
 			box-sizing: border-box;
-			margin: 0 auto;
+			margin-block: 0;
+			margin-inline: auto;
 
 			> .panel {
 				-webkit-backdrop-filter: var(--blur, blur(8px));
@@ -214,15 +216,21 @@ export default defineComponent({
 			> h1 {
 				display: block;
 				margin: 0;
-				padding: 32px 0 32px 0;
+				padding-block-start: 32px;
+				padding-inline-end: 0;
+				padding-block-end: 32px;
+				padding-inline-start: 0;
 				color: #fff;
 
 				&.full {
-					padding: 64px 0 0 0;
+					padding-block-start: 64px;
+					padding-inline-end: 0;
+					padding-block-end: 0;
+					padding-inline-start: 0;
 
 					> .link {
 						> ::v-deep(.logo) {
-							max-height: 130px;
+							max-block-size: 130px;
 						}
 					}
 				}
@@ -232,14 +240,15 @@ export default defineComponent({
 
 					> ::v-deep(.logo) {
 						vertical-align: bottom;
-						max-height: 100px;
+						max-block-size: 100px;
 					}
 				}
 			}
 
 			> .about {
 				display: block;
-				margin: 24px 0;
+				margin-block: 24px;
+				margin-inline: 0;
 				text-align: center;
 				box-sizing: border-box;
 				text-shadow: 0 0 8px black;
@@ -249,7 +258,7 @@ export default defineComponent({
 			> .action {
 				> button {
 					display: block;
-					width: 100%;
+					inline-size: 100%;
 					padding: 10px;
 					box-sizing: border-box;
 					text-align: center;
@@ -260,29 +269,32 @@ export default defineComponent({
 					}
 
 					&:first-child {
-						margin-bottom: 16px;
+						margin-block-end: 16px;
 					}
 				}
 			}
 
 			> .announcements {
-				margin: 32px 0;
-				text-align: left;
+				margin-block: 32px;
+				margin-inline: 0;
+				text-align: start;
 
 				> header {
-					padding: 12px 16px;
-					border-bottom: solid 1px rgba(255, 255, 255, 0.5);
+					padding-block: 12px;
+					padding-inline: 16px;
+					border-block-end: solid 1px rgba(255, 255, 255, 0.5);
 				}
 
 				> .list {
-					max-height: 300px;
+					max-block-size: 300px;
 					overflow: auto;
 
 					> .item {
-						padding: 12px 16px;
+						padding-block: 12px;
+						padding-inline: 16px;
 
 						& + .item {
-							border-top: solid 1px rgba(255, 255, 255, 0.5);
+							border-block-start: solid 1px rgba(255, 255, 255, 0.5);
 						}
 
 						> .title {
@@ -291,7 +303,7 @@ export default defineComponent({
 
 						> .content {
 							> img {
-								max-width: 100%;
+								max-inline-size: 100%;
 							}
 						}
 					}
@@ -302,12 +314,12 @@ export default defineComponent({
 				padding: 28px;
 				font-size: 14px;
 				text-align: center;
-				border-top: 1px solid rgba(255, 255, 255, 0.5);
+				border-block-start: 1px solid rgba(255, 255, 255, 0.5);
 				color: #fff;
 
 				> small {
 					display: block;
-					margin-top: 8px;
+					margin-block-start: 8px;
 					opacity: 0.5;
 				}
 			}

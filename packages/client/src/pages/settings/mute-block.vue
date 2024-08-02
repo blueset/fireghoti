@@ -1,6 +1,6 @@
 <template>
 	<div class="_formRoot">
-		<MkTab v-model="tab" style="margin-bottom: var(--margin)">
+		<MkTab v-model="tab" style="margin-block-end: var(--margin)">
 			<option value="mute">{{ i18n.ts.mutedUsers }}</option>
 			<option value="block">{{ i18n.ts.blockedUsers }}</option>
 		</MkTab>

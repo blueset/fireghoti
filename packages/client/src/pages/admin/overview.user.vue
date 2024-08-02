@@ -34,9 +34,9 @@ defineProps<{
 
 	> :global(.avatar) {
 		display: block;
-		width: ($bodyTitleHieght + $bodyInfoHieght);
-		height: ($bodyTitleHieght + $bodyInfoHieght);
-		margin-right: 12px;
+		inline-size: ($bodyTitleHieght + $bodyInfoHieght);
+		block-size: ($bodyTitleHieght + $bodyInfoHieght);
+		margin-inline-end: 12px;
 	}
 
 	> :global(.body) {
@@ -44,11 +44,11 @@ defineProps<{
 		overflow: hidden;
 		font-size: 0.9em;
 		color: var(--fg);
-		padding-right: 8px;
+		padding-inline-end: 8px;
 
 		> :global(.name) {
 			display: block;
-			width: 100%;
+			inline-size: 100%;
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
@@ -57,7 +57,7 @@ defineProps<{
 
 		> :global(.sub) {
 			display: block;
-			width: 100%;
+			inline-size: 100%;
 			font-size: 95%;
 			opacity: 0.7;
 			line-height: $bodyInfoHieght;
@@ -68,7 +68,7 @@ defineProps<{
 	}
 
 	> :global(.chart) {
-		height: 30px;
+		block-size: 30px;
 	}
 }
 </style>

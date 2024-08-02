@@ -3,8 +3,7 @@ import type Koa from "koa";
 import { config } from "@/config.js";
 import type { ILocalUser } from "@/models/entities/user.js";
 import { Signins } from "@/models/index.js";
-import { genIdAt } from "backend-rs";
-import { publishMainStream } from "@/services/stream.js";
+import { Event, genIdAt, publishToMainStream } from "backend-rs";
 
 export default function (ctx: Koa.Context, user: ILocalUser, redirect = false) {
 	if (redirect) {
@@ -40,6 +39,6 @@ export default function (ctx: Koa.Context, user: ILocalUser, redirect = false) {
 		}).then((x) => Signins.findOneByOrFail(x.identifiers[0]));
 
 		// Publish signin event
-		publishMainStream(user.id, "signin", await Signins.pack(record));
+		publishToMainStream(user.id, Event.Signin, await Signins.pack(record));
 	})();
 }

@@ -41,7 +41,7 @@ async function postDeleteMessage(message: MessagingMessage) {
 					user,
 				),
 			);
-			deliver(user, activity, recipient.inbox);
+			deliver(user.id, activity, recipient.inbox);
 		}
 	} else if (message.groupId != null) {
 		await publishToGroupChatStream(message.groupId, "deleted", message.id);

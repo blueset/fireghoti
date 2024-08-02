@@ -72,19 +72,19 @@ function close() {
 			margin-inline: auto;
 		}
 		> :deep(:not(:last-child)) {
-			margin-bottom: 20px;
+			margin-block-end: 20px;
 		}
 		> :deep(p) {
-			max-width: 30em;
+			max-inline-size: 30em;
 		}
 	}
 
 	> i {
-		margin-right: 4px;
+		margin-inline-end: 4px;
 	}
 	> .close {
-		margin-left: auto;
-		float: right;
+		margin-inline-start: auto;
+		float: inline-end;
 	}
 }
 </style>

@@ -1,31 +1,28 @@
 //! Server information
 
-use crate::{database::db_conn, model::entity::meta};
+use crate::{cache::Cache, database::db_conn, model::entity::meta};
+use chrono::Duration;
 use sea_orm::{prelude::*, ActiveValue};
-use std::sync::Mutex;
 
 type Meta = meta::Model;
 
-static CACHE: Mutex<Option<Meta>> = Mutex::new(None);
-fn set_cache(meta: &Meta) {
-    let _ = CACHE.lock().map(|mut cache| *cache = Some(meta.clone()));
-}
+static INSTANCE_META_CACHE: Cache<Meta> = Cache::new_with_ttl(Duration::minutes(5));
 
 #[macros::export(js_name = "fetchMeta")]
 pub async fn local_server_info() -> Result<Meta, DbErr> {
-    local_server_info_impl(true).await
+    local_server_info_impl(false).await
 }
 
 #[macros::export(js_name = "updateMetaCache")]
 pub async fn update() -> Result<(), DbErr> {
-    local_server_info_impl(false).await?;
+    local_server_info_impl(true).await?;
     Ok(())
 }
 
-async fn local_server_info_impl(use_cache: bool) -> Result<Meta, DbErr> {
+async fn local_server_info_impl(force_update_cache: bool) -> Result<Meta, DbErr> {
     // try using cache
-    if use_cache {
-        if let Some(cache) = CACHE.lock().ok().and_then(|cache| cache.clone()) {
+    if !force_update_cache {
+        if let Some(cache) = INSTANCE_META_CACHE.get() {
             return Ok(cache);
         }
     }
@@ -34,7 +31,7 @@ async fn local_server_info_impl(use_cache: bool) -> Result<Meta, DbErr> {
     let db = db_conn().await?;
     let meta = meta::Entity::find().one(db).await?;
     if let Some(meta) = meta {
-        set_cache(&meta);
+        INSTANCE_META_CACHE.set(meta.clone());
         return Ok(meta);
     }
 
@@ -45,7 +42,7 @@ async fn local_server_info_impl(use_cache: bool) -> Result<Meta, DbErr> {
     })
     .exec_with_returning(db)
     .await?;
-    set_cache(&meta);
+    INSTANCE_META_CACHE.set(meta.clone());
     Ok(meta)
 }
 

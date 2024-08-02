@@ -1,6 +1,6 @@
 <template>
 	<MkSpacer :content-max="800">
-		<MkTab v-model="tab" style="margin-bottom: var(--margin)">
+		<MkTab v-model="tab" style="margin-block-end: var(--margin)">
 			<option value="local">{{ i18n.ts.local }}</option>
 			<option value="remote">{{ i18n.ts.remote }}</option>
 		</MkTab>

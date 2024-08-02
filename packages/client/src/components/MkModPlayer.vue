@@ -61,8 +61,8 @@
 				@update:modelValue="performSeek()"
 			></FormRange>
 			<button class="mute" @click="toggleMute()">
-				<i v-if="muted" class="ph-speaker-simple-x ph-fill"></i>
-				<i v-else class="ph-speaker-simple-high ph-fill"></i>
+				<i v-if="muted" class="ph-speaker-simple-x ph-fill ph-dir"></i>
+				<i v-else class="ph-speaker-simple-high ph-fill ph-dir"></i>
 			</button>
 			<FormRange
 				v-model="player.context.gain.value"
@@ -382,11 +382,12 @@ onDeactivated(() => {
 		color: var(--accentLighten);
 		font-size: 14px;
 		opacity: 0.5;
-		padding: 3px 6px;
+		padding-block: 3px;
+		padding-inline: 6px;
 		text-align: center;
 		cursor: pointer;
-		top: 12px;
-		right: 12px;
+		inset-block-start: 12px;
+		inset-inline-end: 12px;
 	}
 
 	> .buttons {
@@ -395,22 +396,23 @@ onDeactivated(() => {
 		position: absolute;
 		border-radius: 6px;
 		overflow: hidden;
-		top: 12px;
-		right: 12px;
+		inset-block-start: 12px;
+		inset-inline-end: 12px;
 		> * {
 			background-color: var(--accentedBg);
 			-webkit-backdrop-filter: var(--blur, blur(15px));
 			backdrop-filter: var(--blur, blur(15px));
 			color: var(--accent);
 			font-size: 0.8em;
-			padding: 6px 8px;
+			padding-block: 6px;
+			padding-inline: 8px;
 			text-align: center;
 		}
 	}
 
 	> .pattern-display {
-		width: 100%;
-		height: 100%;
+		inline-size: 100%;
+		block-size: 100%;
 		overflow: hidden;
 		color: var(--fg);
 		background-color: var(--panelHighlight);
@@ -422,10 +424,18 @@ onDeactivated(() => {
 		> .mod-pattern {
 			display: grid;
 			overflow-y: hidden;
-			height: 0;
-			padding-top: calc((56.25% - 48px) / 2);
-			padding-bottom: calc((56.25% - 48px) / 2);
+			overflow-block: hidden;
+			block-size: 0;
+			padding-block-start: calc((56.25% - 48px) / 2);
+			padding-block-end: calc((56.25% - 48px) / 2);
 			content-visibility: auto;
+
+			@supports not (overflow-block: hidden) {
+				.vertical-lr &, .vertical-rl & {
+					overflow-y: visible;
+					overflow-x: hidden;
+				}
+			}
 
 			> .modRowActive {
 				opacity: 1;
@@ -440,7 +450,7 @@ onDeactivated(() => {
 
 				> .mod-row-inner {
 					background: repeating-linear-gradient(
-						to right,
+						var(--gradient-to-inline-end),
 						var(--fg) 0 4ch,
 						var(--codeBoolean) 4ch 6ch,
 						var(--codeNumber) 6ch 9ch,
@@ -457,11 +467,12 @@ onDeactivated(() => {
 
 	> .controls {
 		display: flex;
-		width: 100%;
+		inline-size: 100%;
 		background-color: var(--panelHighlight);
 
 		> * {
-			padding: 4px 8px;
+			padding-block: 4px;
+			padding-inline: 8px;
 		}
 
 		> button,
@@ -480,12 +491,12 @@ onDeactivated(() => {
 
 		> .progress {
 			flex-grow: 1;
-			min-width: 0;
+			min-inline-size: 0;
 		}
 
 		> .volume {
 			flex-shrink: 1;
-			max-width: 128px;
+			max-inline-size: 128px;
 		}
 	}
 }

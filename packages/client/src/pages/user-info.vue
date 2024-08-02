@@ -76,7 +76,7 @@
 							>
 						</MkKeyValue>
 						<!-- 要る？
-					<MkKeyValue v-if="ips.length > 0" :copy="user.id" oneline style="margin: 1em 0;">
+					<MkKeyValue v-if="ips.length > 0" :copy="user.id" oneline style="margin-block: 1em; margin-inline: 0;">
 						<template #key>IP (recent)</template>
 						<template #value><span class="_monospace">{{ ips[0].ip }}</span></template>
 					</MkKeyValue>
@@ -129,7 +129,7 @@
 										class="_link"
 										>{{ user.host }}
 										<i
-											:class="icon('ph-caret-right')"
+											:class="icon('ph-caret-right ph-dir')"
 										></i></MkA
 								></template>
 							</MkKeyValue>
@@ -229,7 +229,7 @@
 						<FormButton
 							v-if="user.host == null && isModerator"
 							inline
-							style="margin-bottom: 0.4rem"
+							style="margin-block-end: 0.4rem"
 							@click="resetPassword"
 							><i :class="icon('ph-password')"></i>
 							{{ i18n.ts.resetPassword }}</FormButton
@@ -665,9 +665,9 @@ definePageMetadata(
 
 	> .avatar {
 		display: block;
-		width: 64px;
-		height: 64px;
-		margin-right: 16px;
+		inline-size: 64px;
+		block-size: 64px;
+		margin-inline-end: 16px;
 	}
 
 	> .body {
@@ -676,7 +676,7 @@ definePageMetadata(
 
 		> .name {
 			display: block;
-			width: 100%;
+			inline-size: 100%;
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
@@ -684,7 +684,7 @@ definePageMetadata(
 
 		> .sub {
 			display: block;
-			width: 100%;
+			inline-size: 100%;
 			font-size: 85%;
 			opacity: 0.7;
 			white-space: nowrap;
@@ -696,7 +696,7 @@ definePageMetadata(
 			display: flex;
 			gap: 8px;
 			flex-wrap: wrap;
-			margin-top: 4px;
+			margin-block-start: 4px;
 
 			&:empty {
 				display: none;
@@ -708,7 +708,8 @@ definePageMetadata(
 				display: inline-block;
 				border: solid 1px;
 				border-radius: 6px;
-				padding: 2px 6px;
+				padding-block: 2px;
+				padding-inline: 6px;
 				font-size: 85%;
 			}
 
@@ -740,7 +741,7 @@ definePageMetadata(
 	}
 
 	> :global(.ip) {
-		margin-left: auto;
+		margin-inline-start: auto;
 	}
 }
 </style>

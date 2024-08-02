@@ -69,7 +69,7 @@ useInterval(tick, Math.max(5000, props.refreshIntervalSec * 1000), {
 .change-enter-active,
 .change-leave-active {
 	position: absolute;
-	top: 0;
+	inset-block-start: 0;
 	transition: all 1s ease;
 }
 .change-enter-from {
@@ -93,9 +93,10 @@ useInterval(tick, Math.max(5000, props.refreshIntervalSec * 1000), {
 
 		> .divider {
 			display: inline-block;
-			width: 0.5px;
-			height: var(--height);
-			margin: 0 3em;
+			inline-size: 0.5px;
+			block-size: var(--height);
+			margin-block: 0;
+			margin-inline: 3em;
 			background: currentColor;
 			opacity: 0.3;
 		}

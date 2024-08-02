@@ -264,6 +264,11 @@ let swiperRef = null;
 function setSwiperRef(swiper) {
 	swiperRef = swiper;
 	syncSlide(tabs.indexOf(tab.value));
+	const styles = getComputedStyle(swiper.el);
+	swiper.changeLanguageDirection(styles.direction as "rtl" | "ltr");
+	if (styles["writing-mode"].startsWith("vertical")) {
+		swiper.changeDirection("vertical");
+	}
 }
 
 function onSlideChange() {
@@ -281,8 +286,8 @@ function syncSlide(index) {
 		display: block;
 
 		> .thumbnail {
-			height: 300px;
-			max-width: 100%;
+			block-size: 300px;
+			max-inline-size: 100%;
 		}
 	}
 

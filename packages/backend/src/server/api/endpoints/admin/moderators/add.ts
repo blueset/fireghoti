@@ -1,6 +1,6 @@
 import define from "@/server/api/define.js";
 import { Users } from "@/models/index.js";
-import { publishInternalEvent } from "@/services/stream.js";
+import { InternalEvent, publishToInternalStream } from "backend-rs";
 
 export const meta = {
 	tags: ["admin"],
@@ -32,7 +32,7 @@ export default define(meta, paramDef, async (ps) => {
 		isModerator: true,
 	});
 
-	publishInternalEvent("userChangeModeratorState", {
+	publishToInternalStream(InternalEvent.Moderator, {
 		id: user.id,
 		isModerator: true,
 	});

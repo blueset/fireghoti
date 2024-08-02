@@ -147,12 +147,12 @@ useInterval(
 	() => {
 		if (prefixEl.value) {
 			if (prefixEl.value.offsetWidth) {
-				inputEl.value!.style.paddingLeft = `${prefixEl.value.offsetWidth}px`;
+				inputEl.value!.style.paddingInlineStart = `${prefixEl.value.offsetWidth}px`;
 			}
 		}
 		if (suffixEl.value) {
 			if (suffixEl.value.offsetWidth) {
-				inputEl.value!.style.paddingRight = `${suffixEl.value.offsetWidth}px`;
+				inputEl.value!.style.paddingInlineEnd = `${suffixEl.value.offsetWidth}px`;
 			}
 		}
 	},
@@ -182,7 +182,10 @@ defineExpose({
 	> label {
 		> .label {
 			font-size: 0.85em;
-			padding: 0 0 8px 0;
+			padding-block-start: 0;
+			padding-inline-end: 0;
+			padding-block-end: 8px;
+			padding-inline-start: 0;
 			user-select: none;
 
 			&:empty {
@@ -192,7 +195,10 @@ defineExpose({
 
 		> .caption {
 			font-size: 0.85em;
-			padding: 8px 0 0 0;
+			padding-block-start: 8px;
+			padding-inline-end: 0;
+			padding-block-end: 0;
+			padding-inline-start: 0;
 			color: var(--fgTransparentWeak);
 
 			&:empty {
@@ -207,10 +213,11 @@ defineExpose({
 				appearance: none;
 				-webkit-appearance: none;
 				display: block;
-				height: v-bind("height + 'px'");
-				width: 100%;
+				block-size: v-bind("height + 'px'");
+				inline-size: 100%;
 				margin: 0;
-				padding: 0 12px;
+				padding-block: 0;
+				padding-inline: 12px;
 				font: inherit;
 				font-weight: normal;
 				font-size: 1em;
@@ -234,10 +241,11 @@ defineExpose({
 				align-items: center;
 				position: absolute;
 				z-index: 1;
-				top: 0;
-				padding: 0 12px;
+				inset-block-start: 0;
+				padding-block: 0;
+				padding-inline: 12px;
 				font-size: 1em;
-				height: v-bind("height + 'px'");
+				block-size: v-bind("height + 'px'");
 				pointer-events: none;
 
 				&:empty {
@@ -246,8 +254,8 @@ defineExpose({
 
 				> * {
 					display: inline-block;
-					min-width: 16px;
-					max-width: 150px;
+					min-inline-size: 16px;
+					max-inline-size: 150px;
 					overflow: hidden;
 					white-space: nowrap;
 					text-overflow: ellipsis;
@@ -258,13 +266,13 @@ defineExpose({
 			}
 
 			> .prefix {
-				left: 0;
-				padding-right: 6px;
+				inset-inline-start: 0;
+				padding-inline-end: 6px;
 			}
 
 			> .suffix {
-				right: 0;
-				padding-left: 6px;
+				inset-inline-end: 0;
+				padding-inline-start: 6px;
 			}
 
 			&.inline {
@@ -291,7 +299,10 @@ defineExpose({
 	}
 
 	> .save {
-		margin: 8px 0 0 0;
+		margin-block-start: 8px;
+		margin-inline-end: 0;
+		margin-block-end: 0;
+		margin-inline-start: 0;
 	}
 }
 </style>

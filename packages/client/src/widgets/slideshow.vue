@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="kvausudm _panel mkw-slideshow"
-		:style="{ height: widgetProps.height + 'px' }"
+		:style="{ blockSize: widgetProps.height + 'px' }"
 	>
 		<div @click="choose">
 			<p v-if="widgetProps.folderId == null">
@@ -135,8 +135,8 @@ defineExpose<WidgetComponentExpose>({
 	position: relative;
 
 	> div {
-		width: 100%;
-		height: 100%;
+		inline-size: 100%;
+		block-size: 100%;
 		cursor: pointer;
 
 		> p {
@@ -152,10 +152,10 @@ defineExpose<WidgetComponentExpose>({
 
 		> .slide {
 			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
+			inset-block-start: 0;
+			inset-inline-start: 0;
+			inline-size: 100%;
+			block-size: 100%;
 			background-size: cover;
 			background-position: center;
 

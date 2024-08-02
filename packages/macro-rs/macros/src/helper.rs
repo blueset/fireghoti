@@ -80,7 +80,10 @@ macro_rules! reexport_proc_macro_attributes {
                 attr: ::proc_macro::TokenStream,
                 item: ::proc_macro::TokenStream,
             ) -> ::proc_macro::TokenStream {
-                $impl_path(attr.into(), item.into()).into()
+                match $impl_path(attr.into(), item.into()) {
+                    ::std::result::Result::Ok(token_stream) => token_stream.into(),
+                    ::std::result::Result::Err(error) => error.to_compile_error().into(),
+                }
             }
         )*
     }

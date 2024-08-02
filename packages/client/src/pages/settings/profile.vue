@@ -76,7 +76,7 @@
 
 		<FormSlot class="_formBlock">
 			<FormFolder>
-				<template #icon><i :class="icon('ph-table')"></i></template>
+				<template #icon><i :class="icon('ph-dir ph-table')"></i></template>
 				<template #label>{{ i18n.ts._profile.metadataEdit }}</template>
 
 				<div class="_formRoot">
@@ -103,7 +103,7 @@
 					<MkButton
 						:disabled="fields.length >= 16"
 						inline
-						style="margin-right: 8px"
+						style="margin-inline-end: 8px"
 						@click="addField"
 						><i :class="icon('ph-plus')"></i>
 						{{ i18n.ts.add }}</MkButton
@@ -304,16 +304,19 @@ definePageMetadata({
 
 		> .avatar {
 			display: inline-block;
-			width: 72px;
-			height: 72px;
-			margin: 0 auto 16px auto;
+			inline-size: 72px;
+			block-size: 72px;
+			margin-block-start: 0;
+			margin-inline-end: auto;
+			margin-block-end: 16px;
+			margin-inline-start: auto;
 		}
 	}
 
 	> .bannerEdit {
 		position: absolute;
-		top: 16px;
-		right: 16px;
+		inset-block-start: 16px;
+		inset-inline-end: 16px;
 	}
 }
 </style>

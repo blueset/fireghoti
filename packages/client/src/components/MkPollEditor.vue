@@ -182,15 +182,19 @@ watch(
 
 <style lang="scss" scoped>
 .zmdxowus {
-	padding: 8px 16px;
+	padding-block: 8px;
+	padding-inline: 16px;
 
 	> .caution {
-		margin: 0 0 8px 0;
+		margin-block-start: 0;
+		margin-inline-end: 0;
+		margin-block-end: 8px;
+		margin-inline-start: 0;
 		font-size: 0.8em;
 		color: #f00;
 
 		> i {
-			margin-right: 4px;
+			margin-inline-end: 4px;
 		}
 	}
 
@@ -202,31 +206,38 @@ watch(
 
 		> li {
 			display: flex;
-			margin: 8px 0;
+			margin-block: 8px;
+			margin-inline: 0;
 			padding: 0;
-			width: 100%;
+			inline-size: 100%;
 
 			> .input {
 				flex: 1;
 			}
 
 			> button {
-				width: 32px;
-				padding: 4px 0;
+				inline-size: 32px;
+				padding-block: 4px;
+				padding-inline: 0;
 			}
 		}
 	}
 
 	> .add {
-		margin: 8px 0;
+		margin-block: 8px;
+		margin-inline: 0;
 		z-index: 1;
 	}
 
 	> section {
-		margin: 16px 0 0 0;
+		margin-block-start: 16px;
+		margin-inline-end: 0;
+		margin-block-end: 0;
+		margin-inline-start: 0;
 
 		> div {
-			margin: 0 8px;
+			margin-block: 0;
+			margin-inline: 8px;
 			display: flex;
 			flex-direction: row;
 			flex-wrap: wrap;

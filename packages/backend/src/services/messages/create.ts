@@ -14,9 +14,10 @@ import {
 	publishToGroupChatStream,
 	publishToChatIndexStream,
 	toPuny,
+	publishToMainStream,
+	Event,
 } from "backend-rs";
 import type { MessagingMessage } from "@/models/entities/messaging-message.js";
-import { publishMainStream } from "@/services/stream.js";
 import { Not } from "typeorm";
 import type { Note } from "@/models/entities/note.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
@@ -62,8 +63,8 @@ export async function createMessage(
 					messageObj,
 				),
 				publishToChatIndexStream(message.userId, "message", messageObj),
+				publishToMainStream(message.userId, Event.Chat, messageObj),
 			]);
-			publishMainStream(message.userId, "messagingMessage", messageObj);
 		}
 
 		if (Users.isLocalUser(recipientUser)) {
@@ -76,8 +77,8 @@ export async function createMessage(
 					messageObj,
 				),
 				publishToChatIndexStream(recipientUser.id, "message", messageObj),
+				publishToMainStream(recipientUser.id, Event.Chat, messageObj),
 			]);
-			publishMainStream(recipientUser.id, "messagingMessage", messageObj);
 		}
 	} else if (recipientGroup != null) {
 		// group's stream
@@ -88,8 +89,10 @@ export async function createMessage(
 			userGroupId: recipientGroup.id,
 		});
 		for await (const joining of joinings) {
-			await publishToChatIndexStream(joining.userId, "message", messageObj);
-			publishMainStream(joining.userId, "messagingMessage", messageObj);
+			await Promise.all([
+				publishToChatIndexStream(joining.userId, "message", messageObj),
+				publishToMainStream(joining.userId, Event.Chat, messageObj),
+			]);
 		}
 	}
 
@@ -108,8 +111,10 @@ export async function createMessage(
 			if (mute.map((m) => m.muteeId).includes(user.id)) return;
 			//#endregion
 
-			publishMainStream(recipientUser.id, "unreadMessagingMessage", messageObj);
-			await sendPushNotification(recipientUser.id, "chat", messageObj);
+			await Promise.all([
+				publishToMainStream(recipientUser.id, Event.NewChat, messageObj),
+				sendPushNotification(recipientUser.id, "chat", messageObj),
+			]);
 		} else if (recipientGroup) {
 			const joinings = await UserGroupJoinings.findBy({
 				userGroupId: recipientGroup.id,
@@ -117,8 +122,10 @@ export async function createMessage(
 			});
 			for await (const joining of joinings) {
 				if (freshMessage.reads.includes(joining.userId)) return; // 既読
-				publishMainStream(joining.userId, "unreadMessagingMessage", messageObj);
-				await sendPushNotification(joining.userId, "chat", messageObj);
+				await Promise.all([
+					publishToMainStream(joining.userId, Event.NewChat, messageObj),
+					sendPushNotification(joining.userId, "chat", messageObj),
+				]);
 			}
 		}
 	}, 2000);
@@ -185,7 +192,7 @@ export async function createMessage(
 
 		const activity = renderActivity(renderCreate(renderedNote, note));
 
-		deliver(user, activity, recipientUser.inbox);
+		deliver(user.id, activity, recipientUser.inbox);
 	}
 	return messageObj;
 }

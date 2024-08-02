@@ -118,21 +118,21 @@ function close() {
 
 <style lang="scss" scoped>
 .szkkfdyq {
-	max-height: 100%;
-	width: min(460px, 100vw);
+	max-block-size: 100%;
+	inline-size: min(460px, 100vi);
 	padding: 24px;
 	box-sizing: border-box;
 	overflow: auto;
 	overscroll-behavior: contain;
-	text-align: left;
+	text-align: start;
 	border-radius: 16px;
 
 	&.asDrawer {
-		width: 100%;
+		inline-size: 100%;
 		padding: 16px 16px calc(env(safe-area-inset-bottom, 0px) + 16px) 16px;
 		border-radius: 24px;
-		border-bottom-right-radius: 0;
-		border-bottom-left-radius: 0;
+		border-end-end-radius: 0;
+		border-end-start-radius: 0;
 		text-align: center;
 	}
 
@@ -148,7 +148,7 @@ function close() {
 			align-items: center;
 			justify-content: center;
 			vertical-align: bottom;
-			height: 100px;
+			block-size: 100px;
 			border-radius: 10px;
 
 			&:hover,
@@ -160,25 +160,25 @@ function close() {
 
 			> .icon {
 				font-size: 24px;
-				height: 24px;
+				block-size: 24px;
 			}
 
 			> .text {
-				margin-top: 12px;
+				margin-block-start: 12px;
 				font-size: 0.8em;
 				line-height: 1.5em;
 			}
 
 			> .indicator {
 				position: absolute;
-				top: 32px;
-				left: 32px;
+				inset-block-start: 32px;
+				inset-inline-start: 32px;
 				color: var(--indicator);
 				font-size: 8px;
 
-				@media (max-width: 500px) {
-					top: 16px;
-					left: 16px;
+				@media (max-inline-size: 500px) {
+					inset-block-start: 16px;
+					inset-inline-start: 16px;
 				}
 			}
 
@@ -189,9 +189,9 @@ function close() {
 	}
 
 	> .sub {
-		margin-top: 8px;
-		padding-top: 8px;
-		border-top: solid 0.5px var(--divider);
+		margin-block-start: 8px;
+		padding-block-start: 8px;
+		border-block-start: solid 0.5px var(--divider);
 	}
 }
 </style>

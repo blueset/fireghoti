@@ -36,8 +36,8 @@ onMounted(async () => {
 		aspect-ratio: 1;
 
 		> .avatar {
-			width: 100%;
-			height: 100%;
+			inline-size: 100%;
+			block-size: 100%;
 			aspect-ratio: 1;
 		}
 	}

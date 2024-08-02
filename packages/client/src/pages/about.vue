@@ -301,6 +301,11 @@ let swiperRef: SwiperType | null = null;
 function setSwiperRef(swiper: SwiperType) {
 	swiperRef = swiper;
 	syncSlide(tabs.indexOf(tab.value));
+	const styles = getComputedStyle(swiper.el);
+	swiper.changeLanguageDirection(styles.direction as "rtl" | "ltr");
+	if (styles["writing-mode"].startsWith("vertical")) {
+		swiper.changeDirection("vertical");
+	}
 }
 
 function onSlideChange() {
@@ -325,8 +330,11 @@ function syncSlide(index: number) {
 
 		> .icon {
 			display: block;
-			margin: 16px auto 0 auto;
-			height: 64px;
+			margin-block-start: 16px;
+			margin-inline-end: auto;
+			margin-block-end: 0;
+			margin-inline-start: auto;
+			block-size: 64px;
 		}
 
 		> .spin {

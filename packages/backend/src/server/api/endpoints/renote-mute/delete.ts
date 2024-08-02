@@ -59,5 +59,5 @@ export default define(meta, paramDef, async (ps, user) => {
 		id: muting.id,
 	});
 
-	// publishUserEvent(user.id, "unmute", mutee);
+	// await publishToUserStream(user.id, UserEvent.RenoteUnMute, mutee);
 });

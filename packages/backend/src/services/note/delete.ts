@@ -1,8 +1,7 @@
 import { Brackets, In } from "typeorm";
-import { publishNoteStream } from "@/services/stream.js";
 import renderDelete from "@/remote/activitypub/renderer/delete.js";
 import renderAnnounce from "@/remote/activitypub/renderer/announce.js";
-import renderUndo from "@/remote/activitypub/renderer/undo.js";
+import { renderUndo } from "@/remote/activitypub/renderer/undo.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderTombstone from "@/remote/activitypub/renderer/tombstone.js";
 import { config } from "@/config.js";
@@ -17,6 +16,7 @@ import { countSameRenotes } from "@/misc/count-same-renotes.js";
 import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
 import { deliverToRelays } from "@/services/relay.js";
 import type { IActivity } from "@/remote/activitypub/type.js";
+import { NoteEvent, publishToNoteStream } from "backend-rs";
 
 async function recalculateNotesCountOfLocalUser(user: {
 	id: User["id"];
@@ -72,7 +72,7 @@ export default async function (
 
 	// Only broadcast "deleted" to local if the note is deleted from db
 	if (deleteFromDb) {
-		publishNoteStream(note.id, "deleted", {
+		publishToNoteStream(note.id, NoteEvent.Delete, {
 			deletedAt: deletedAt,
 		});
 	}
@@ -100,7 +100,7 @@ export default async function (
 							renote.uri || `${config.url}/notes/${renote.id}`,
 							note,
 						),
-						user,
+						user.id,
 					)
 				: renderDelete(renderTombstone(`${config.url}/notes/${note.id}`), user),
 		);
@@ -112,7 +112,7 @@ export default async function (
 	for (const cascadingNote of cascadingNotes) {
 		if (deleteFromDb) {
 			// For other notes, publishNoteStream is also required.
-			publishNoteStream(cascadingNote.id, "deleted", {
+			publishToNoteStream(cascadingNote.id, NoteEvent.Delete, {
 				deletedAt: deletedAt,
 			});
 		}

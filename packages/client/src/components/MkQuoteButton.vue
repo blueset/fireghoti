@@ -90,9 +90,10 @@ function focus(): void {
 <style lang="scss" scoped>
 .eddddedb {
 	display: inline-block;
-	height: 32px;
+	block-size: 32px;
 	margin: 2px;
-	padding: 0 6px;
+	padding-block: 0;
+	padding-inline: 6px;
 	border-radius: 4px;
 
 	&.renoted {
@@ -101,7 +102,7 @@ function focus(): void {
 
 	> .count {
 		display: inline;
-		margin-left: 8px;
+		margin-inline-start: 8px;
 		opacity: 0.7;
 	}
 }

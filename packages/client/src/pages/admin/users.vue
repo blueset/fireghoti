@@ -224,19 +224,19 @@ definePageMetadata(
 		> .inputs {
 			display: flex;
 			gap: 0.4rem;
-			margin-bottom: 16px;
+			margin-block-end: 16px;
 
 			> * {
-				margin-right: 16px;
+				margin-inline-end: 16px;
 
 				&:last-child {
-					margin-right: 0;
+					margin-inline-end: 0;
 				}
 			}
 		}
 
 		> .users {
-			margin-top: var(--margin);
+			margin-block-start: var(--margin);
 			display: grid;
 			grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
 			grid-gap: 12px;

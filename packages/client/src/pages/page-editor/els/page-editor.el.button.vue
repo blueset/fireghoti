@@ -125,6 +125,9 @@ withDefaults(
 
 <style lang="scss" scoped>
 .xfhsjczc {
-	padding: 0 16px 0 16px;
+	padding-block-start: 0;
+	padding-inline-end: 16px;
+	padding-block-end: 0;
+	padding-inline-start: 16px;
 }
 </style>

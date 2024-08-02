@@ -1,6 +1,5 @@
 import define from "@/server/api/define.js";
 import { Users } from "@/models/index.js";
-import { publishInternalEvent } from "@/services/stream.js";
 import type { EmojiModPerm } from "@/models/entities/user.js";
 import { unsafeCast } from "@/prelude/unsafe-cast.js";
 
@@ -35,10 +34,5 @@ export default define(meta, paramDef, async (ps) => {
 
 	await Users.update(user.id, {
 		emojiModPerm: unsafeCast<EmojiModPerm>(ps.emojiModPerm),
-	});
-
-	publishInternalEvent("userChangeModeratorState", {
-		id: user.id,
-		isModerator: true,
 	});
 });

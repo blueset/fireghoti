@@ -1,11 +1,15 @@
-import {
-	publishInternalEvent,
-	publishMainStream,
-	publishUserEvent,
-} from "@/services/stream.js";
 import define from "@/server/api/define.js";
 import { Users, UserProfiles } from "@/models/index.js";
-import { generateUserToken, verifyPassword } from "backend-rs";
+import {
+	Event,
+	generateUserToken,
+	InternalEvent,
+	publishToInternalStream,
+	publishToMainStream,
+	publishToUserStream,
+	UserEvent,
+	verifyPassword,
+} from "backend-rs";
 
 export const meta = {
 	requireCredential: true,
@@ -41,15 +45,15 @@ export default define(meta, paramDef, async (ps, user) => {
 	});
 
 	// Publish event
-	publishInternalEvent("userTokenRegenerated", {
+	publishToInternalStream(InternalEvent.Token, {
 		id: user.id,
 		oldToken,
 		newToken,
 	});
-	publishMainStream(user.id, "myTokenRegenerated");
+	publishToMainStream(user.id, Event.RegenerateMyToken, {});
 
 	// Terminate streaming
 	setTimeout(() => {
-		publishUserEvent(user.id, "terminate", {});
+		publishToUserStream(user.id, UserEvent.Disconnect, {});
 	}, 5000);
 });

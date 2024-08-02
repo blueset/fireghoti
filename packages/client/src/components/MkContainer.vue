@@ -21,10 +21,10 @@
 					@click="() => (showBody = !showBody)"
 				>
 					<template v-if="showBody"
-						><i :class="icon('ph-caret-up')"></i
+						><i :class="icon('ph-caret-up ph-dir')"></i
 					></template>
 					<template v-else
-						><i :class="icon('ph-caret-down')"></i
+						><i :class="icon('ph-caret-down ph-dir')"></i
 					></template>
 				</button>
 			</div>
@@ -171,9 +171,17 @@ defineExpose({
 .container-toggle-enter-active,
 .container-toggle-leave-active {
 	overflow-y: hidden;
+	overflow-block: hidden;
 	transition:
 		opacity 0.5s,
 		height 0.5s !important;
+
+	@supports not (overflow-block: hidden) {
+		.vertical-lr &, .vertical-rl & {
+			overflow-y: visible;
+			overflow-x: hidden;
+		}
+	}
 }
 .container-toggle-enter-from {
 	opacity: 0;
@@ -204,20 +212,21 @@ defineExpose({
 
 	> header {
 		position: sticky;
-		top: var(--stickyTop, 0px);
-		left: 0;
+		inset-block-start: var(--stickyTop, 0px);
+		inset-inline-start: 0;
 		color: var(--panelHeaderFg);
 		background: var(--panelHeaderBg);
-		border-bottom: solid 0.5px var(--panelHeaderDivider);
+		border-block-end: solid 0.5px var(--panelHeaderDivider);
 		z-index: 2;
 		line-height: 1.4em;
 
 		> .title {
 			margin: 0;
-			padding: 12px 16px;
+			padding-block: 12px;
+			padding-inline: 16px;
 
 			> ::v-deep(i) {
-				margin-right: 6px;
+				margin-inline-end: 6px;
 				transform: translateY(0.1em);
 			}
 
@@ -229,13 +238,13 @@ defineExpose({
 		> .sub {
 			position: absolute;
 			z-index: 2;
-			top: 0;
-			right: 0;
-			height: 100%;
+			inset-block-start: 0;
+			inset-inline-end: 0;
+			block-size: 100%;
 
 			> ::v-deep(button) {
-				width: 42px;
-				height: 100%;
+				inline-size: 42px;
+				block-size: 100%;
 			}
 		}
 	}
@@ -245,23 +254,24 @@ defineExpose({
 
 		&.omitted {
 			position: relative;
-			max-height: var(--maxHeight);
+			max-block-size: var(--maxHeight);
 			overflow: hidden;
 
 			> .fade {
 				display: block;
 				position: absolute;
 				z-index: 10;
-				bottom: 0;
-				left: 0;
-				width: 100%;
-				height: 64px;
-				background: linear-gradient(0deg, var(--panel), var(--X15));
+				inset-block-end: 0;
+				inset-inline-start: 0;
+				inline-size: 100%;
+				block-size: 64px;
+				background: linear-gradient(var(--gradient-to-block-start), var(--panel), var(--X15));
 
 				> span {
 					display: inline-block;
 					background: var(--panel);
-					padding: 6px 10px;
+					padding-block: 6px;
+					padding-inline: 10px;
 					font-size: 0.8em;
 					border-radius: 999px;
 					box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
@@ -280,7 +290,8 @@ defineExpose({
 	&.thin {
 		> header {
 			> .title {
-				padding: 8px 10px;
+				padding-block: 8px;
+				padding-inline: 10px;
 				font-size: 0.9em;
 			}
 		}

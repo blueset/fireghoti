@@ -5,7 +5,7 @@
 		class="menu _button"
 		@click.stop="menu"
 	>
-		<i :class="icon('ph-dots-three-outline')"></i>
+		<i :class="icon('ph-dots-three-outline ph-dir')"></i>
 	</button>
 	<button
 		v-if="!hideFollowButton && isSignedIn(me) && me.id != user.id"
@@ -186,8 +186,8 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 .menu {
-	width: 3em;
-	height: 2em;
+	inline-size: 3em;
+	block-size: 2em;
 	vertical-align: middle;
 }
 .follow-button {
@@ -200,26 +200,30 @@ onBeforeUnmount(() => {
 	border: solid 1px var(--accent);
 	padding: 0;
 	font-size: 16px;
-	width: 2em;
-	height: 2em;
+	inline-size: 2em;
+	block-size: 2em;
 	border-radius: 100px;
 	background: var(--bg);
 	vertical-align: middle;
 
 	&.full {
-		padding: 0.2em 0.7em;
-		width: auto;
+		padding-block: 0.2em;
+		padding-inline: 0.7em;
+		inline-size: auto;
 		font-size: 14px;
 	}
 
 	&.large {
 		font-size: 16px;
-		height: 38px;
-		padding: 0 12px 0 16px;
+		block-size: 38px;
+		padding-block-start: 0;
+		padding-inline-end: 12px;
+		padding-block-end: 0;
+		padding-inline-start: 16px;
 	}
 
 	&:not(.full) {
-		width: 31px;
+		inline-size: 31px;
 		span {
 			display: none;
 		}
@@ -230,10 +234,7 @@ onBeforeUnmount(() => {
 			content: "";
 			pointer-events: none;
 			position: absolute;
-			top: -5px;
-			right: -5px;
-			bottom: -5px;
-			left: -5px;
+			inset: -5px;
 			border: 2px solid var(--focus);
 			border-radius: 32px;
 		}
@@ -268,7 +269,7 @@ onBeforeUnmount(() => {
 	}
 
 	> span {
-		margin-right: 6px;
+		margin-inline-end: 6px;
 	}
 }
 

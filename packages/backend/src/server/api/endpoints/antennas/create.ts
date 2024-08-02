@@ -1,8 +1,13 @@
 import define from "@/server/api/define.js";
-import { fetchMeta, genIdAt, updateAntennaCache } from "backend-rs";
+import {
+	fetchMeta,
+	genIdAt,
+	InternalEvent,
+	publishToInternalStream,
+	updateAntennaCache,
+} from "backend-rs";
 import { Antennas, UserLists, UserGroupJoinings } from "@/models/index.js";
 import { ApiError } from "@/server/api/error.js";
-import { publishInternalEvent } from "@/services/stream.js";
 
 export const meta = {
 	tags: ["antennas"],
@@ -123,12 +128,12 @@ export default define(meta, paramDef, async (ps, user) => {
 	let userList;
 	let userGroupJoining;
 
-	const instance = await fetchMeta();
+	const instanceMeta = await fetchMeta();
 
 	const antennas = await Antennas.findBy({
 		userId: user.id,
 	});
-	if (antennas.length >= instance.antennaLimit) {
+	if (antennas.length >= instanceMeta.antennaLimit) {
 		throw new ApiError(meta.errors.tooManyAntennas);
 	}
 
@@ -172,7 +177,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		notify: ps.notify,
 	}).then((x) => Antennas.findOneByOrFail(x.identifiers[0]));
 
-	publishInternalEvent("antennaCreated", antenna);
+	await publishToInternalStream(InternalEvent.AntennaCreated, antenna);
 	await updateAntennaCache();
 
 	return await Antennas.pack(antenna);

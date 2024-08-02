@@ -264,14 +264,15 @@ definePageMetadata(
 		> .file {
 			> img {
 				display: block;
-				max-width: 100%;
-				max-height: 500px;
-				margin: 0 auto;
+				max-inline-size: 100%;
+				max-block-size: 500px;
+				margin-block: 0;
+				margin-inline: auto;
 				border-radius: 10px;
 			}
 
 			& + .file {
-				margin-top: 16px;
+				margin-block-start: 16px;
 			}
 		}
 	}
@@ -282,11 +283,11 @@ definePageMetadata(
 		> .title {
 			font-weight: bold;
 			font-size: 1.2em;
-			margin-bottom: 16px;
+			margin-block-end: 16px;
 		}
 
 		> .info {
-			margin-top: 16px;
+			margin-block-start: 16px;
 			font-size: 90%;
 			opacity: 0.7;
 		}
@@ -294,9 +295,12 @@ definePageMetadata(
 		> .actions {
 			display: flex;
 			align-items: center;
-			margin-top: 16px;
-			padding: 16px 0 0 0;
-			border-top: solid 0.5px var(--divider);
+			margin-block-start: 16px;
+			padding-block-start: 16px;
+			padding-inline-end: 0;
+			padding-block-end: 0;
+			padding-inline-start: 0;
+			border-block-start: solid 0.5px var(--divider);
 
 			> .like {
 				> .button {
@@ -307,17 +311,18 @@ definePageMetadata(
 					color: #eb6f92;
 
 					::v-deep(.count) {
-						margin-left: 0.5em;
+						margin-inline-start: 0.5em;
 					}
 				}
 			}
 
 			> .other {
-				margin-left: auto;
+				margin-inline-start: auto;
 
 				> button {
 					padding: 8px;
-					margin: 0 8px;
+					margin-block: 0;
+					margin-inline: 8px;
 
 					&:hover {
 						color: var(--fgHighlighted);
@@ -327,24 +332,30 @@ definePageMetadata(
 		}
 
 		> .user {
-			margin-top: 16px;
-			padding: 16px 0 0 0;
-			border-top: solid 0.5px var(--divider);
+			margin-block-start: 16px;
+			padding-block-start: 16px;
+			padding-inline-end: 0;
+			padding-block-end: 0;
+			padding-inline-start: 0;
+			border-block-start: solid 0.5px var(--divider);
 			display: flex;
 			align-items: center;
 
 			> .avatar {
-				width: 52px;
-				height: 52px;
+				inline-size: 52px;
+				block-size: 52px;
 			}
 
 			> .name {
-				margin: 0 0 0 12px;
+				margin-block-start: 0;
+				margin-inline-end: 0;
+				margin-block-end: 0;
+				margin-inline-start: 12px;
 				font-size: 90%;
 			}
 
 			> .koudoku {
-				margin-left: auto;
+				margin-inline-start: auto;
 			}
 		}
 	}

@@ -394,13 +394,10 @@ defineExpose({
 			display: block;
 			position: absolute;
 			z-index: 10;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
+			inset: 0;
 			margin: auto;
-			width: calc(100% - 8px);
-			height: calc(100% - 8px);
+			inline-size: calc(100% - 8px);
+			block-size: calc(100% - 8px);
 			border: solid 1px var(--focus);
 			border-radius: var(--radius);
 			box-sizing: border-box;
@@ -421,10 +418,10 @@ defineExpose({
 			.line::before {
 				content: "";
 				display: block;
-				margin-bottom: -4px;
-				margin-top: 16px;
-				border-left: 2px solid currentColor;
-				margin-left: calc((var(--avatarSize) / 2) - 1px);
+				margin-block-end: -4px;
+				margin-block-start: 16px;
+				border-inline-start: 2px solid currentColor;
+				margin-inline-start: calc((var(--avatarSize) / 2) - 1px);
 				opacity: 0.25;
 			}
 		}
@@ -432,15 +429,18 @@ defineExpose({
 
 	.note-context {
 		position: relative;
-		padding: 0 32px 0 32px;
+		padding-block-start: 0;
+		padding-inline-end: 32px;
+		padding-block-end: 0;
+		padding-inline-start: 32px;
 		display: flex;
 		flex-wrap: wrap;
 		z-index: 1;
 		&:first-child {
-			margin-top: 20px;
+			margin-block-start: 20px;
 		}
 		> :not(.line) {
-			width: 0;
+			inline-size: 0;
 			flex-grow: 1;
 			position: relative;
 			line-height: 28px;
@@ -448,16 +448,16 @@ defineExpose({
 		> .line {
 			position: relative;
 			z-index: 2;
-			width: 0;
+			inline-size: 0;
 			display: flex;
-			margin-right: 0;
-			margin-top: 0;
+			margin-inline-end: 0;
+			margin-block-start: 0;
 			flex-grow: 0;
 			pointer-events: none;
 		}
 
 		> div > i {
-			margin-left: -0.5px;
+			margin-inline-start: -0.5px;
 		}
 
 		&.collapsedReply {
@@ -466,13 +466,13 @@ defineExpose({
 				&::after {
 					content: "";
 					position: absolute;
-					border-left: 2px solid currentColor;
-					border-top: 2px solid currentColor;
-					margin-left: calc(var(--avatarSize) / 2 - 1px);
-					width: calc(var(--avatarSize) / 2 + 14px);
-					border-top-left-radius: calc(var(--avatarSize) / 4);
-					top: calc(50% - 1px);
-					height: calc(50% + 5px);
+					border-inline-start: 2px solid currentColor;
+					border-block-start: 2px solid currentColor;
+					margin-inline-start: calc(var(--avatarSize) / 2 - 1px);
+					inline-size: calc(var(--avatarSize) / 2 + 14px);
+					border-start-start-radius: calc(var(--avatarSize) / 4);
+					inset-block-start: calc(50% - 1px);
+					block-size: calc(50% + 5px);
 				}
 			}
 			.info {
@@ -480,17 +480,17 @@ defineExpose({
 				transition: color 0.2s;
 			}
 			.avatar {
-				width: 1.2em;
-				height: 1.2em;
+				inline-size: 1.2em;
+				block-size: 1.2em;
 				border-radius: 2em;
 				overflow: hidden;
-				margin-right: 0.4em;
+				margin-inline-end: 0.4em;
 				background: var(--panelHighlight);
 			}
 			.username {
 				font-weight: 700;
 				flex-shrink: 0;
-				max-width: 30%;
+				max-inline-size: 30%;
 				&::after {
 					content: ": ";
 				}
@@ -507,16 +507,18 @@ defineExpose({
 	> .article {
 		position: relative;
 		overflow: clip;
-		padding: 20px 32px 10px;
-		margin-top: -16px;
+		padding-block-start: 20px;
+		padding-inline: 32px;
+		padding-block-end: 10px;
+		margin-block-start: -16px;
 		&.history {
-			margin-top: -90px !important;
+			margin-block-start: -90px !important;
 		}
 
 		&:first-child,
 		&:nth-child(2) {
-			margin-top: -100px;
-			padding-top: 104px;
+			margin-block-start: -100px;
+			padding-block-start: 104px;
 		}
 
 		@media (pointer: coarse) {
@@ -530,26 +532,29 @@ defineExpose({
 			> .avatar {
 				flex-shrink: 0;
 				display: block;
-				margin: 0 14px 0 0;
-				width: var(--avatarSize);
-				height: var(--avatarSize);
+				margin-block-start: 0;
+				margin-inline-end: 14px;
+				margin-block-end: 0;
+				margin-inline-start: 0;
+				inline-size: var(--avatarSize);
+				block-size: var(--avatarSize);
 				position: relative;
-				top: 0;
-				left: 0;
+				inset-block-start: 0;
+				inset-inline-start: 0;
 			}
 			> .header {
-				width: 0;
+				inline-size: 0;
 				flex-grow: 1;
 			}
 		}
 		> .main {
 			flex: 1;
-			min-width: 0;
+			min-inline-size: 0;
 
 			> .body {
-				margin-top: 0.7em;
+				margin-block-start: 0.7em;
 				> .renote {
-					padding-top: 8px;
+					padding-block-start: 8px;
 					> * {
 						padding: 16px;
 						border: solid 1px var(--renote);
@@ -566,35 +571,37 @@ defineExpose({
 	}
 
 	> .reply {
-		border-top: solid 0.5px var(--divider);
+		border-block-start: solid 0.5px var(--divider);
 	}
 
 	&.max-width_500px {
 		font-size: 0.975em;
 		--avatarSize: 46px;
-		padding-top: 6px;
+		padding-block-start: 6px;
 		> .note-context {
 			padding-inline: 16px;
-			margin-top: 8px;
+			margin-block-start: 8px;
 			> :not(.line) {
-				margin-top: 0px;
+				margin-block-start: 0px;
 			}
 			> .line {
-				margin-right: 0;
+				margin-inline-end: 0;
 				&::before {
-					margin-top: 8px;
+					margin-block-start: 8px;
 				}
 			}
 		}
 		> .article {
-			padding: 18px 16px 8px;
+			padding-block-start: 18px;
+			padding-inline: 16px;
+			padding-block-end: 8px;
 			&:first-child,
 			&:nth-child(2) {
-				padding-top: 104px;
+				padding-block-start: 104px;
 			}
 			> .main > .header-container > .avatar {
-				margin-right: 10px;
-				// top: calc(14px + var(--stickyTop, 0px));
+				margin-inline-end: 10px;
+				// inset-block-start: calc(14px + var(--stickyTop, 0px));
 			}
 		}
 	}
@@ -608,7 +615,7 @@ defineExpose({
 	padding: 8px;
 	text-align: center;
 	opacity: 0.7;
-	width: 100%;
+	inline-size: 100%;
 
 	._blur_text {
 		pointer-events: auto;

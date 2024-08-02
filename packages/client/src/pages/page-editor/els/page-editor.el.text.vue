@@ -35,9 +35,9 @@ withDefaults(
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
-		width: 100%;
-		min-width: 100%;
-		min-height: 150px;
+		inline-size: 100%;
+		min-inline-size: 100%;
+		min-block-size: 150px;
 		border: none;
 		box-shadow: none;
 		padding: 16px;

@@ -129,8 +129,8 @@
 						:class="
 							icon(
 								localOnly
-									? 'ph-toggle-right'
-									: 'ph-toggle-left',
+									? 'ph-toggle-right ph-dir'
+									: 'ph-toggle-left ph-dir',
 							)
 						"
 					></i>
@@ -182,21 +182,24 @@ function choose(visibility: NoteVisibility): void {
 
 <style lang="scss" module>
 .root {
-	width: 240px;
-	padding: 8px 0;
+	inline-size: 240px;
+	padding-block: 8px;
+	padding-inline: 0;
 }
 
 .divider {
-	margin: 8px 0;
-	border-top: solid 0.5px var(--divider);
+	margin-block: 8px;
+	margin-inline: 0;
+	border-block-start: solid 0.5px var(--divider);
 }
 
 .item {
 	display: flex;
-	padding: 8px 14px;
+	padding-block: 8px;
+	padding-inline: 14px;
 	font-size: 12px;
-	text-align: left;
-	width: 100%;
+	text-align: start;
+	inline-size: 100%;
 	box-sizing: border-box;
 
 	&:hover {
@@ -222,12 +225,12 @@ function choose(visibility: NoteVisibility): void {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-right: 10px;
-	width: 16px;
-	top: 0;
-	bottom: 0;
-	margin-top: auto;
-	margin-bottom: auto;
+	margin-inline-end: 10px;
+	inline-size: 16px;
+	inset-block-start: 0;
+	inset-block-end: 0;
+	margin-block-start: auto;
+	margin-block-end: auto;
 }
 
 .body {
@@ -251,11 +254,11 @@ function choose(visibility: NoteVisibility): void {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-left: 10px;
-	width: 16px;
-	top: 0;
-	bottom: 0;
-	margin-top: auto;
-	margin-bottom: auto;
+	margin-inline-start: 10px;
+	inline-size: 16px;
+	inset-block-start: 0;
+	inset-block-end: 0;
+	margin-block-start: auto;
+	margin-block-end: auto;
 }
 </style>

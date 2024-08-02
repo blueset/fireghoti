@@ -107,18 +107,19 @@ withDefaults(
 
 .container {
 	position: relative;
-	width: var(--size);
-	height: var(--size);
-	margin: 0 auto;
+	inline-size: var(--size);
+	block-size: var(--size);
+	margin-block: 0;
+	margin-inline: auto;
 }
 
 .spinner {
 	position: absolute;
-	top: 0;
-	left: 0;
+	inset-block-start: 0;
+	inset-inline-start: 0;
 	z-index: 999;
-	width: var(--size);
-	height: var(--size);
+	inline-size: var(--size);
+	block-size: var(--size);
 	animation: spin 2s linear infinite;
 }
 

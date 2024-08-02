@@ -57,7 +57,6 @@ export async function getResponse(args: {
 	body?: string;
 	headers: Record<string, string>;
 	timeout?: number;
-	size?: number;
 	redirect?: RequestRedirect;
 }) {
 	if (!isSafeUrl(args.url)) {
@@ -76,7 +75,7 @@ export async function getResponse(args: {
 		headers: args.headers,
 		body: args.body,
 		timeout,
-		size: args.size || 10 * 1024 * 1024,
+		size: 10 * 1024 * 1024,
 		agent: getAgentByUrl,
 		signal: controller.signal,
 		redirect: args.redirect,

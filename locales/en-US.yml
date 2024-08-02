@@ -243,7 +243,7 @@ clearCachedFiles: "Clear cache"
 clearCachedFilesConfirm: "Are you sure that you want to delete all cached remote files?"
 blockedInstances: "Blocked Servers"
 blockedInstancesDescription: "List the hostnames of the servers that you want to block.
-  Listed servers will no longer be able to communicate with this servers."
+  Listed servers will no longer be able to communicate with this server."
 silencedInstances: "Silenced Servers"
 silencedInstancesDescription: "List the hostnames of the servers that you want to
   silence. Accounts in the listed servers are treated as \"Silenced\", can only make
@@ -1211,13 +1211,13 @@ searchWordsDescription: "Enter the search term here to search for posts. Separat
   words with a space for an AND search, or 'OR' (without quotes) between words for
   an OR search.\nFor example, 'morning night' will find posts that contain both 'morning'
   and 'night', and 'morning OR night' will find posts that contain either 'morning'
-  or 'night' (or both).\nYou can also filter out certain word(s) from the search results, like
-  'sleepy -morning -breakfast'. Moreover, you can combine these AND/OR/exclude conditions like
-  '(morning OR night) sleepy -breakfast'.\nIf you want to search for a sequence of words (e.g., a sentence),
-  you must put it in double quotes, not to make it an AND search: \"Today I learned\"\
-  \n\nIf you want to go to a specific user page or post page, enter the ID or URL
-  in this field and click the 'Lookup' button. Clicking 'Search' will search for posts
-  that literally contain the ID/URL."
+  or 'night' (or both).\nYou can also filter out certain word(s) from the search results,
+  like 'sleepy -morning -breakfast'. Moreover, you can combine these AND/OR/exclude
+  conditions like '(morning OR night) sleepy -breakfast'.\nIf you want to search for
+  a sequence of words (e.g., a sentence), you must put it in double quotes, not to
+  make it an AND search: \"Today I learned\"\n\nIf you want to go to a specific user
+  page or post page, enter the ID or URL in this field and click the 'Lookup' button.
+  Clicking 'Search' will search for posts that literally contain the ID/URL."
 searchUsers: "Posted by (optional)"
 searchUsersDescription: "To search for posts by a specific user/server, enter the
   ID (@user@example.com, or @user for a local user) or domain name (example.com).\n
@@ -1240,7 +1240,8 @@ noAltTextWarning: "Some attached file(s) have no description. Did you forget to 
 showNoAltTextWarning: "Show a warning if you attempt to post files without a description"
 showAddFileDescriptionAtFirstPost: "Automatically open a form to write a description
   when you attempt to post files without a description"
-addAlt4MeTag: "Automatically append #Alt4Me hashtag to your post if attached file has no description"
+addAlt4MeTag: "Automatically append #Alt4Me hashtag to your post if attached file
+  has no description"
 turnOffCatLanguage: "Turn off cat language conversion"
 
 _emojiModPerm:
@@ -1356,6 +1357,13 @@ _nsfw:
   respect: "Hide NSFW media"
   ignore: "Don't hide NSFW media"
   force: "Hide all media"
+writingMode: "Writing mode"
+_writingMode:
+  horizontalTB: "Horizontal, top to bottom"
+  verticalLR: "Vertical, left to right, sideways"
+  verticalRL: "Vertical, right to left, sideways"
+  verticalLRUpright: "Vertical, left to right, upright"
+  verticalRLUpright: "Vertical, right to left, upright"
 _mfm:
   play: "Play MFM"
   stop: "Stop MFM"
@@ -1672,6 +1680,12 @@ _2fa:
   removeKeyConfirm: "Really delete the {name} key?"
   token: "2FA Token"
 _permissions:
+  read: "Read (read timelines, notifications, reactions, mutes, account information,
+    etc.)"
+  write: "Write (make posts, react to posts, mute users, edit account information,
+    etc.)"
+  push: "Send push notifications"
+  follow: "Follow and unfollow accounts"
   "read:account": "View your account information"
   "write:account": "Edit your account information"
   "read:blocks": "View your list of blocked users"

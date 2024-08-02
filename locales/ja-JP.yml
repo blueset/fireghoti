@@ -1121,6 +1121,13 @@ _nsfw:
   respect: "閲覧注意のメディアは隠す"
   ignore: "閲覧注意のメディアを隠さない"
   force: "常にメディアを隠す"
+writingMode: "組み方向"
+_writingMode:
+  horizontalTB: "横組み、上から下"
+  verticalLR: "縦組み、左から右、英数字90度回転"
+  verticalRL: "縦組み、右から左、英数字90度回転"
+  verticalLRUpright: "縦組み、左から右、英数字1字ずつ配置"
+  verticalRLUpright: "縦組み、右から左、英数字1字ずつ配置"
 _mfm:
   cheatSheet: "MFMチートシート"
   intro: "MFMは、MisskeyやFirefish、Akkomaなどの様々な場所で使用できるマークアップ言語です。ここでは、MFMで使用可能な構文一覧が確認できます。"
@@ -1425,6 +1432,10 @@ _permissions:
   "write:gallery": "ギャラリーを操作する"
   "read:gallery-likes": "ギャラリーのいいねを見る"
   "write:gallery-likes": "ギャラリーのいいねを操作する"
+  read: 読み取り（タイムライン・通知・ミュート・アカウント情報などの読み込み）
+  write: 書き込み（投稿・リアクション・ミュート・アカウント情報など）
+  push: プッシュ通知の送信
+  follow: アカウントのフォローとフォロー解除
 _auth:
   shareAccess: "「{name}」がアカウントにアクセスすることを許可しますか？"
   shareAccessAsk: "アカウントへのアクセスを許可しますか？"

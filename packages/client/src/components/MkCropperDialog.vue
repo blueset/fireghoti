@@ -160,17 +160,17 @@ onMounted(() => {
 .mk-cropper-dialog {
 	display: flex;
 	flex-direction: column;
-	width: var(--vw);
-	height: var(--vh);
+	inline-size: var(--vw);
+	block-size: var(--vh);
 	position: relative;
 
 	> .loading {
 		position: absolute;
 		z-index: 10;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
+		inset-block-start: 0;
+		inset-inline-start: 0;
+		inline-size: 100%;
+		block-size: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -181,12 +181,12 @@ onMounted(() => {
 
 	> .container {
 		flex: 1;
-		width: 100%;
-		height: 100%;
+		inline-size: 100%;
+		block-size: 100%;
 
 		> ::v-deep(cropper-canvas) {
-			width: 100%;
-			height: 100%;
+			inline-size: 100%;
+			block-size: 100%;
 
 			> cropper-selection > cropper-handle[action="move"] {
 				background: transparent;

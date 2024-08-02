@@ -66,7 +66,7 @@ onMounted(() => {
 	ro.observe(root.value!);
 
 	if (props.contentMax) {
-		content.value!.style.maxWidth = `${props.contentMax}px`;
+		content.value!.style.maxInlineSize = `${props.contentMax}px`;
 	}
 });
 
@@ -78,10 +78,11 @@ onUnmounted(() => {
 <style lang="scss" module>
 .root {
 	box-sizing: border-box;
-	width: 100%;
+	inline-size: 100%;
 }
 
 .content {
-	margin: 0 auto;
+	margin-block: 0;
+	margin-inline: auto;
 }
 </style>

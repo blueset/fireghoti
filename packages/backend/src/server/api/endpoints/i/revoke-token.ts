@@ -1,6 +1,6 @@
 import define from "@/server/api/define.js";
 import { AccessTokens } from "@/models/index.js";
-import { publishUserEvent } from "@/services/stream.js";
+import { publishToUserStream, UserEvent } from "backend-rs";
 
 export const meta = {
 	requireCredential: true,
@@ -26,6 +26,6 @@ export default define(meta, paramDef, async (ps, user) => {
 		});
 
 		// Terminate streaming
-		publishUserEvent(user.id, "terminate");
+		await publishToUserStream(user.id, UserEvent.Disconnect, {});
 	}
 });

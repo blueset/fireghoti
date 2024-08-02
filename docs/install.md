@@ -1,8 +1,12 @@
 # Install Firefish
 
+Please check the [v20240206 release note](https://firefish.dev/firefish/firefish/-/releases/v20240206) first. This project is barely maintained for those who really want to keep using Firefish. Please understand this before proceeding.
+
+## Dependencies
+
 Firefish depends on the following software.
 
-## Runtime dependencies
+### Runtime dependencies
 
 - At least [NodeJS](https://nodejs.org/en/) v18.19.0 (v20/v22 recommended)
 - At least [PostgreSQL](https://www.postgresql.org/) v12 (v16 recommended) with [PGroonga](https://pgroonga.github.io/) extension
@@ -17,7 +21,7 @@ Firefish depends on the following software.
   - [KeyDB](https://keydb.dev/)
   - Another [Redis](https://redis.io/) / [Valkey](https://valkey.io/) server
 
-## Build dependencies
+### Build dependencies
 
 - At least [Rust](https://www.rust-lang.org/) v1.74
 - C/C++ compiler & build tools (like [GNU Make](https://www.gnu.org/software/make/))
@@ -35,7 +39,7 @@ We don't test Firefish on non-Linux systems, so please install Firefish on such 
 
 <details>
 
-<summary>Possible setup on FreeBSD (as of version <code>20240630</code>)</summary>
+<summary>Possible setup on FreeBSD (as of version <code>20240725</code>)</summary>
 
 You can install Firefish on FreeBSD by adding these extra steps to the standard instructions:
 
@@ -44,7 +48,7 @@ You can install Firefish on FreeBSD by adding these extra steps to the standard 
     ```json
       "pnpm": {
         "overrides": {
-          "rollup": "npm:@rollup/wasm-node@4.17.2"
+          "rollup": "npm:@rollup/wasm-node
         }
       }
     ```

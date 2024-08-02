@@ -1012,6 +1012,13 @@ _nsfw:
   respect: "隐藏敏感内容"
   ignore: "不隐藏敏感内容"
   force: "总是隐藏内容"
+writingMode: "书写方向"
+_writingMode:
+  horizontalTB: "横排，由上向下"
+  verticalLR: "直排，由左向右，字母旋转90°"
+  verticalRL: "直排，由右向左，字母旋转90°"
+  verticalLRUpright: "直排，由左向右，字母逐个排列"
+  verticalRLUpright: "直排，由右向左，字母逐个排列"
 _mfm:
   cheatSheet: "MFM 代码速查表"
   intro: "MFM 是一种在 Misskey、Firefish、Akkoma 中使用的标记语言，可以在很多地方使用。您可以在此处查看所有可用的 MFM 语法的列表。"

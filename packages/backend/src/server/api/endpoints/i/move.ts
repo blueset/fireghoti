@@ -1,6 +1,6 @@
 import type { User } from "@/models/entities/user.js";
 import { resolveUser } from "@/remote/resolve-user.js";
-import { stringToAcct } from "backend-rs";
+import { Event, publishToMainStream, stringToAcct } from "backend-rs";
 import { DAY } from "@/const.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
@@ -12,7 +12,6 @@ import create from "@/services/following/create.js";
 import { getUser } from "@/server/api/common/getters.js";
 import { Followings, Users } from "@/models/index.js";
 import { config } from "@/config.js";
-import { publishMainStream } from "@/services/stream.js";
 import { inspect } from "node:util";
 
 export const meta = {
@@ -134,7 +133,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	dm.execute();
 
 	// Publish meUpdated event
-	publishMainStream(user.id, "meUpdated", iObj);
+	publishToMainStream(user.id, Event.Me, iObj);
 
 	const followings = await Followings.findBy({
 		followeeId: user.id,

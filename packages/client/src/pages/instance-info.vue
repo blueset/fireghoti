@@ -191,31 +191,31 @@
 							<FormLink
 								:to="`https://${host}/.well-known/host-meta`"
 								external
-								style="margin-bottom: 8px"
+								style="margin-block-end: 8px"
 								>host-meta</FormLink
 							>
 							<FormLink
 								:to="`https://${host}/.well-known/host-meta.json`"
 								external
-								style="margin-bottom: 8px"
+								style="margin-block-end: 8px"
 								>host-meta.json</FormLink
 							>
 							<FormLink
 								:to="`https://${host}/.well-known/nodeinfo`"
 								external
-								style="margin-bottom: 8px"
+								style="margin-block-end: 8px"
 								>nodeinfo</FormLink
 							>
 							<FormLink
 								:to="`https://${host}/robots.txt`"
 								external
-								style="margin-bottom: 8px"
+								style="margin-block-end: 8px"
 								>robots.txt</FormLink
 							>
 							<FormLink
 								:to="`https://${host}/manifest.json`"
 								external
-								style="margin-bottom: 8px"
+								style="margin-block-end: 8px"
 								>manifest.json</FormLink
 							>
 						</FormSection>
@@ -436,6 +436,11 @@ let swiperRef = null;
 function setSwiperRef(swiper) {
 	swiperRef = swiper;
 	syncSlide(tabs.indexOf(tab.value));
+	const styles = getComputedStyle(swiper.el);
+	swiper.changeLanguageDirection(styles.direction as "rtl" | "ltr");
+	if (styles["writing-mode"].startsWith("vertical")) {
+		swiper.changeDirection("vertical");
+	}
 }
 
 function onSlideChange() {
@@ -454,8 +459,11 @@ function syncSlide(index) {
 
 	> .icon {
 		display: block;
-		margin: 0 16px 0 0;
-		height: 64px;
+		margin-block-start: 0;
+		margin-inline-end: 16px;
+		margin-block-end: 0;
+		margin-inline-start: 0;
+		block-size: 64px;
 		border-radius: 8px;
 	}
 
@@ -467,7 +475,10 @@ function syncSlide(index) {
 .cmhjzshl {
 	> .selects {
 		display: flex;
-		margin: 0 0 16px 0;
+		margin-block-start: 0;
+		margin-inline-end: 0;
+		margin-block-end: 16px;
+		margin-inline-start: 0;
 	}
 }
 </style>

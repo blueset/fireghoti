@@ -85,13 +85,14 @@ defineExpose({
 	&.fade {
 		display: block;
 		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 100%;
+		inset-block-end: 0;
+		inset-inline-start: 0;
+		inline-size: 100%;
 		> span {
 			display: inline-block;
 			background: var(--panel);
-			padding: 0.4em 1em;
+			padding-block: 0.4em;
+			padding-inline: 1em;
 			font-size: 0.8em;
 			border-radius: 999px;
 			box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
@@ -103,15 +104,16 @@ defineExpose({
 		}
 	}
 	&.showLess {
-		width: 100%;
+		inline-size: 100%;
 		position: sticky;
-		bottom: calc(var(--stickyBottom) - 1em);
+		inset-block-end: calc(var(--stickyBottom) - 1em);
 		padding: 20px;
 
 		> span {
 			display: inline-block;
 			background: var(--panel);
-			padding: 6px 10px;
+			padding-block: 6px;
+			padding-inline: 10px;
 			font-size: 0.8em;
 			border-radius: 999px;
 			box-shadow: 0 0 7px 7px var(--bg);

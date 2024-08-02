@@ -9,7 +9,7 @@
 				v-if="copy"
 				v-tooltip="i18n.ts.copy"
 				class="_textButton"
-				style="margin-left: 0.5em"
+				style="margin-inline-start: 0.5em"
 				@click="copy_"
 			>
 				<i :class="icon('ph-clipboard-text', false)"></i>
@@ -45,7 +45,10 @@ const copy_ = () => {
 .alqyeyti {
 	> .key {
 		font-size: 0.85em;
-		padding: 0 0 0.25em 0;
+		padding-block-start: 0;
+		padding-inline-end: 0;
+		padding-block-end: 0.25em;
+		padding-inline-start: 0;
 		opacity: 0.75;
 	}
 
@@ -53,13 +56,16 @@ const copy_ = () => {
 		display: flex;
 
 		> .key {
-			width: 30%;
+			inline-size: 30%;
 			font-size: 1em;
-			padding: 0 8px 0 0;
+			padding-block-start: 0;
+			padding-inline-end: 8px;
+			padding-block-end: 0;
+			padding-inline-start: 0;
 		}
 
 		> .value {
-			width: 70%;
+			inline-size: 70%;
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;

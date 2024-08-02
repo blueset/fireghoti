@@ -100,33 +100,33 @@ export default define(meta, paramDef, async (ps, me) => {
 	}
 
 	if (typeof ps.blocked === "boolean") {
-		const meta = await fetchMeta();
+		const instanceMeta = await fetchMeta();
 		if (ps.blocked) {
-			if (meta.blockedHosts.length === 0) {
+			if (instanceMeta.blockedHosts.length === 0) {
 				return [];
 			}
 			query.andWhere("instance.host IN (:...blocks)", {
-				blocks: meta.blockedHosts,
+				blocks: instanceMeta.blockedHosts,
 			});
-		} else if (meta.blockedHosts.length > 0) {
+		} else if (instanceMeta.blockedHosts.length > 0) {
 			query.andWhere("instance.host NOT IN (:...blocks)", {
-				blocks: meta.blockedHosts,
+				blocks: instanceMeta.blockedHosts,
 			});
 		}
 	}
 
 	if (typeof ps.silenced === "boolean") {
-		const meta = await fetchMeta();
+		const instanceMeta = await fetchMeta();
 		if (ps.silenced) {
-			if (meta.silencedHosts.length === 0) {
+			if (instanceMeta.silencedHosts.length === 0) {
 				return [];
 			}
 			query.andWhere("instance.host IN (:...silences)", {
-				silences: meta.silencedHosts,
+				silences: instanceMeta.silencedHosts,
 			});
-		} else if (meta.silencedHosts.length > 0) {
+		} else if (instanceMeta.silencedHosts.length > 0) {
 			query.andWhere("instance.host NOT IN (:...silences)", {
-				silences: meta.silencedHosts,
+				silences: instanceMeta.silencedHosts,
 			});
 		}
 	}

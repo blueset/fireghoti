@@ -35,7 +35,7 @@
 			<a :href="twoFactorData.url"
 				><img :class="$style.qr" :src="twoFactorData.qr"
 			/></a>
-			<div style="max-width: 610px">
+			<div style="max-inline-size: 610px">
 				<MkKeyValue :copy="twoFactorData.url">
 					<template #key>{{ i18n.ts._2fa.step2Url }}</template>
 					<template #value>{{ twoFactorData.url }}</template>
@@ -84,16 +84,16 @@ const ok = () => {
 	position: relative;
 	margin: auto;
 	padding: 32px;
-	min-width: 320px;
-	max-width: calc(100svw - 64px);
+	min-inline-size: 320px;
+	max-inline-size: calc(100svw - 64px);
 	box-sizing: border-box;
 	background: var(--panel);
 	border-radius: var(--radius);
 }
 
 .qr {
-	width: 20em;
-	max-width: 100%;
+	inline-size: 20em;
+	max-inline-size: 100%;
 	border-radius: 10px;
 	border: 3px solid var(--accent);
 }

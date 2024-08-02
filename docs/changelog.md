@@ -2,8 +2,29 @@
 
 Critical security updates are indicated by the :warning: icon.
 
+This changelog is not an exhaustive list. Code refactorings, minor bug fixes, documentation/dependency updates, etc. are usually not listed here. If you want to see all changes, click on the version number and check the commit history.
+
 - Server administrators must check [notice-for-admins.md](https://firefish.dev/firefish/firefish/-/blob/main/docs/notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](https://firefish.dev/firefish/firefish/-/blob/main/docs/api-change.md) as well.
+
+## Unreleased
+
+- Add writing mode (right-to-left, vertical) support (!11222)
+- Fix bugs
+
+### Breaking change
+
+The random icon generator has been changed, so your icon will be changed if you haven't set your icon image and random icon generation is enabled on your server.
+
+## [v20240729](https://firefish.dev/firefish/firefish/-/merge_requests/11214/commits)
+
+- Fix bugs (including a medium severity security issue)
+	- We are very thankful to Laura Hausmann for kindly sharing the information about the security issue.
+
+## [v20240728](https://firefish.dev/firefish/firefish/-/merge_requests/11211/commits)
+
+- Improve `admin/emoji/add` API
+- Fix bugs
 
 ## [v20240725](https://firefish.dev/firefish/firefish/-/merge_requests/11196/commits)
 

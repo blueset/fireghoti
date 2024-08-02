@@ -28,8 +28,9 @@ const parentStickyTop = inject<Ref<number>>(CURRENT_STICKY_TOP, ref(0));
 provide(CURRENT_STICKY_TOP, childStickyTop);
 
 const calc = () => {
-	childStickyTop.value = parentStickyTop.value + (headerEl.value?.offsetHeight ?? 0);
-	headerHeight.value = headerEl.value!.offsetHeight.toString();
+	const property = getComputedStyle(headerEl.value ?? document.body)["writing-mode"].startsWith('vertical') ? 'offsetWidth' : 'offsetHeight';
+	childStickyTop.value = parentStickyTop.value + (headerEl.value?.[property] ?? 0);
+	headerHeight.value = headerEl.value![property].toString();
 };
 
 const observer = new ResizeObserver(() => {
@@ -70,7 +71,7 @@ onUnmounted(() => {
 	flex-direction: column;
 	> div:first-child {
 		position: sticky;
-		top: var(--stickyTop, 0);
+		inset-block-start: var(--stickyTop, 0);
 		z-index: 1000;
 	}
 	> div:last-child {

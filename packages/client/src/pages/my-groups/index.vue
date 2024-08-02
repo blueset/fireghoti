@@ -117,7 +117,7 @@ async function leave(group) {
 }
 
 ._card {
-	margin-bottom: 1rem;
+	margin-block-end: 1rem;
 	._title {
 		font-size: 1.2rem;
 		font-weight: bold;

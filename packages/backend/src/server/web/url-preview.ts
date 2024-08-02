@@ -22,18 +22,18 @@ export const urlPreviewHandler = async (ctx: Koa.Context) => {
 		return;
 	}
 
-	const meta = await fetchMeta();
+	const instanceMeta = await fetchMeta();
 
 	logger.info(
-		meta.summalyProxy
+		instanceMeta.summalyProxy
 			? `(Proxy) Getting preview of ${url}@${lang} ...`
 			: `Getting preview of ${url}@${lang} ...`,
 	);
 
 	try {
-		const summary = meta.summalyProxy
+		const summary = instanceMeta.summalyProxy
 			? await getJson(
-					`${meta.summalyProxy}?${query({
+					`${instanceMeta.summalyProxy}?${query({
 						url: url,
 						lang: lang ?? "en-US",
 					})}`,

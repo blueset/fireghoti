@@ -199,6 +199,7 @@ definePageMetadata({
 
 <style lang="scss" scoped>
 .close {
-	margin: 16px auto;
+	margin-block: 16px;
+	margin-inline: auto;
 }
 </style>

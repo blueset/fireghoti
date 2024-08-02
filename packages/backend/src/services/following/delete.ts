@@ -1,7 +1,12 @@
-import { publishMainStream, publishUserEvent } from "@/services/stream.js";
+import {
+	Event,
+	publishToMainStream,
+	publishToUserStream,
+	UserEvent,
+	renderFollow,
+} from "backend-rs";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderFollow from "@/remote/activitypub/renderer/follow.js";
-import renderUndo from "@/remote/activitypub/renderer/undo.js";
+import { renderUndo } from "@/remote/activitypub/renderer/undo.js";
 import renderReject from "@/remote/activitypub/renderer/reject.js";
 import { deliver, webhookDeliver } from "@/queue/index.js";
 import Logger from "../logger.js";
@@ -50,8 +55,8 @@ export default async function (
 		Users.pack(followee.id, follower, {
 			detail: true,
 		}).then(async (packed) => {
-			publishUserEvent(follower.id, "unfollow", packed);
-			publishMainStream(follower.id, "unfollow", packed);
+			await publishToUserStream(follower.id, UserEvent.Unfollow, packed);
+			await publishToMainStream(follower.id, Event.Unfollow, packed);
 
 			const webhooks = (await getActiveWebhooks()).filter(
 				(x) => x.userId === follower.id && x.on.includes("unfollow"),
@@ -66,9 +71,9 @@ export default async function (
 
 	if (Users.isLocalUser(follower) && Users.isRemoteUser(followee)) {
 		const content = renderActivity(
-			renderUndo(renderFollow(follower, followee), follower),
+			renderUndo(renderFollow(follower, followee), follower.id),
 		);
-		deliver(follower, content, followee.inbox);
+		deliver(follower.id, content, followee.inbox);
 	}
 
 	if (Users.isLocalUser(followee) && Users.isRemoteUser(follower)) {
@@ -76,7 +81,7 @@ export default async function (
 		const content = renderActivity(
 			renderReject(renderFollow(follower, followee), followee),
 		);
-		deliver(followee, content, follower.inbox);
+		deliver(followee.id, content, follower.inbox);
 	}
 }
 

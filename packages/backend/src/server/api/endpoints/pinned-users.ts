@@ -30,10 +30,10 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, me) => {
-	const meta = await fetchMeta();
+	const instanceMeta = await fetchMeta();
 
 	const users = await Promise.all(
-		meta.pinnedUsers
+		instanceMeta.pinnedUsers
 			.map((acct) => stringToAcct(acct))
 			.map((acct) =>
 				Users.findOneBy({

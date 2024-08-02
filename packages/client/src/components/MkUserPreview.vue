@@ -89,7 +89,7 @@ onMounted(() => {
 
 .fxxzrfni {
 	position: absolute;
-	width: 300px;
+	inline-size: 300px;
 	overflow: hidden;
 	transform-origin: center top;
 }

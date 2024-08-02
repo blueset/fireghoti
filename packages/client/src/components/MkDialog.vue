@@ -68,7 +68,7 @@
 				:type="input.type == 'search' ? 'search' : input.type || 'text'"
 				:placeholder="input.placeholder || undefined"
 				:style="{
-					width: input.type === 'search' ? '300px' : null,
+					inlineSize: input.type === 'search' ? '300px' : null,
 				}"
 				@keydown="onInputKeydown"
 			>
@@ -401,8 +401,8 @@ onBeforeUnmount(() => {
 	position: relative;
 	margin: auto;
 	padding: 32px;
-	min-width: 320px;
-	max-width: 480px;
+	min-inline-size: 320px;
+	max-inline-size: 480px;
 	box-sizing: border-box;
 	text-align: center;
 	background: var(--panel);
@@ -413,13 +413,14 @@ onBeforeUnmount(() => {
 	font-size: 24px;
 
 	& + .title {
-		margin-top: 8px;
+		margin-block-start: 8px;
 	}
 }
 
 .iconInner {
 	display: block;
-	margin: 0 auto;
+	margin-block: 0;
+	margin-inline: auto;
 }
 
 .type_info {
@@ -439,21 +440,27 @@ onBeforeUnmount(() => {
 }
 
 .title {
-	margin: 0 0 8px 0;
+	margin-block-start: 0;
+	margin-inline-end: 0;
+	margin-block-end: 8px;
+	margin-inline-start: 0;
 	font-weight: bold;
 	font-size: 1.1em;
 
 	& + .text {
-		margin-top: 8px;
+		margin-block-start: 8px;
 	}
 }
 
 .text {
-	margin: 16px 0 0 0;
+	margin-block-start: 16px;
+	margin-inline-end: 0;
+	margin-block-end: 0;
+	margin-inline-start: 0;
 }
 
 .buttons {
-	margin-top: 16px;
+	margin-block-start: 16px;
 	display: flex;
 	gap: 8px;
 	flex-wrap: wrap;

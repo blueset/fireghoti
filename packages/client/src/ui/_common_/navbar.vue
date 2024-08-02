@@ -109,7 +109,7 @@
 					class="item _button"
 					@click="more"
 				>
-					<i :class="icon('ph-dots-three-outline icon ph-fw')"></i
+					<i :class="icon('ph-dots-three-outline ph-dir icon ph-fw')"></i
 					><span class="text">{{ i18n.ts.more }}</span>
 					<span v-if="otherMenuItemIndicated" class="indicator"
 						><i class="icon ph-circle ph-fill"></i
@@ -183,7 +183,7 @@ const calcViewState = () => {
 
 calcViewState();
 
-matchMedia("(max-width: 1279px)").onchange = (mql) => calcViewState();
+matchMedia("(max-inline-size: 1279px)").onchange = (mql) => calcViewState();
 
 watch(defaultStore.reactiveState.menuDisplay, () => {
 	calcViewState();
@@ -251,46 +251,55 @@ function more(ev: MouseEvent) {
 	$nav-width: 250px;
 	$nav-icon-only-width: 80px;
 	flex: 0 0 $nav-width;
-	width: $nav-width;
+	inline-size: $nav-width;
 	box-sizing: border-box;
 
 	> .body {
 		position: sticky;
-		top: 0;
-		width: $nav-icon-only-width;
-		// ほんとは単に 100vh と書きたいところだが... https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
-		height: calc(var(--vh, 1vh) * 100);
+		inset-block-start: 0;
+		inline-size: $nav-icon-only-width;
+			block-size: 100dvb;
 		box-sizing: border-box;
 		overflow: auto;
 		overflow-x: clip;
+		overflow-inline: clip;
 		contain: strict;
 		display: flex;
 		flex-direction: column;
+		
+		@supports not (overflow-inline: clip) {
+			.vertical-lr &, .vertical-rl & {
+				overflow-x: auto;
+				overflow-y: clip;
+			}
+		}
+
 		#firefish_app > :not(.wallpaper) & {
 			background: var(--navBg);
 		}
 		#firefish_app > .wallpaper:not(.centered) & {
-			border-right: 1px solid var(--divider);
+			border-inline-end: 1px solid var(--divider);
 		}
 	}
 
 	&:not(.iconOnly) {
 		> .body {
-			margin-left: -200px;
-			padding-left: 200px;
+			margin-inline-start: -200px;
+			padding-inline-start: 200px;
 			box-sizing: content-box;
-			width: $nav-width;
+			inline-size: $nav-width;
 
 			> .top {
 				position: relative;
 				z-index: 1;
-				padding: 2rem 0;
+				padding-block: 2rem;
+				padding-inline: 0;
 				> .banner {
 					position: absolute;
-					top: 0;
-					left: 0;
-					width: 100%;
-					height: 100%;
+					inset-block-start: 0;
+					inset-inline-start: 0;
+					inline-size: 100%;
+					block-size: 100%;
 					background-size: cover;
 					background-position: center center;
 					-webkit-mask-image: linear-gradient(var(--gradient));
@@ -301,43 +310,41 @@ function more(ev: MouseEvent) {
 					position: relative;
 					display: block;
 					text-align: center;
-					width: 100%;
+					inline-size: 100%;
 
 					> .icon {
 						display: inline-block;
-						width: 55px;
+						inline-size: 55px;
 						aspect-ratio: 1;
 					}
 				}
 			}
 
 			> .bottom {
-				padding: 20px 0;
+				padding-block: 20px;
+				padding-inline: 0;
 
 				> .post {
 					position: relative;
-					width: 100%;
-					height: 40px;
+					inline-size: 100%;
+					block-size: 40px;
 					color: var(--fgOnAccent);
 					font-weight: bold;
-					text-align: left;
+					text-align: start;
 					display: flex;
 					align-items: center;
 
 					&:before {
 						content: "";
 						display: block;
-						width: calc(100% - 38px);
-						height: 100%;
+						inline-size: calc(100% - 38px);
+						block-size: 100%;
 						margin: auto;
 						position: absolute;
-						top: 0;
-						left: 0;
-						right: 0;
-						bottom: 0;
+						inset: 0;
 						border-radius: 999px;
 						background: linear-gradient(
-							90deg,
+							var(--gradient-to-inline-end),
 							var(--buttonGradateA),
 							var(--buttonGradateB)
 						);
@@ -355,13 +362,13 @@ function more(ev: MouseEvent) {
 					> .icon,
 					> .text {
 						position: relative;
-						left: 3rem;
+						inset-inline-start: 3rem;
 						color: var(--fgOnAccent);
 						transform: translateY(0em);
 					}
 
 					> .text {
-						margin-left: 1rem;
+						margin-inline-start: 1rem;
 					}
 				}
 
@@ -369,13 +376,13 @@ function more(ev: MouseEvent) {
 					position: relative;
 					display: block;
 					text-align: center;
-					width: 100%;
+					inline-size: 100%;
 
 					> .icon {
 						display: inline-block;
-						width: 32px !important;
+						inline-size: 32px !important;
 						aspect-ratio: 1;
-						margin-top: 1rem;
+						margin-block-start: 1rem;
 					}
 				}
 
@@ -383,13 +390,13 @@ function more(ev: MouseEvent) {
 					position: relative;
 					display: block;
 					text-align: center;
-					width: 100%;
-					margin-top: 1rem;
+					inline-size: 100%;
+					margin-block-start: 1rem;
 					color: var(--navFg);
 
 					> .icon {
 						display: inline-block;
-						width: 38px;
+						inline-size: 38px;
 						aspect-ratio: 1;
 					}
 				}
@@ -399,33 +406,34 @@ function more(ev: MouseEvent) {
 				flex: 0.1;
 
 				> .divider {
-					margin: 16px 16px;
-					border-top: solid 0.5px var(--divider);
+					margin-block: 16px;
+					margin-inline: 16px;
+					border-block-start: solid 0.5px var(--divider);
 				}
 
 				> .item {
 					position: relative;
 					display: flex;
 					align-items: center;
-					padding-left: 30px;
+					padding-inline-start: 30px;
 					line-height: 2.85rem;
-					margin-bottom: 0.5rem;
+					margin-block-end: 0.5rem;
 					white-space: nowrap;
-					width: 100%;
-					text-align: left;
+					inline-size: 100%;
+					text-align: start;
 					box-sizing: border-box;
 					color: var(--navFg);
 
 					> .icon {
 						position: relative;
-						width: 32px;
-						margin-right: 8px;
+						inline-size: 32px;
+						margin-inline-end: 8px;
 					}
 
 					> .indicator {
 						position: absolute;
-						top: 0;
-						left: 20px;
+						inset-block-start: 0;
+						inset-inline-start: 20px;
 						color: var(--navIndicator);
 						font-size: 8px;
 						animation: blink 1s infinite;
@@ -458,14 +466,11 @@ function more(ev: MouseEvent) {
 						&:before {
 							content: "";
 							display: block;
-							width: calc(100% - 34px);
-							height: 100%;
+							inline-size: calc(100% - 34px);
+							block-size: 100%;
 							margin: auto;
 							position: absolute;
-							top: 0;
-							left: 0;
-							right: 0;
-							bottom: 0;
+							inset: 0;
 							border-radius: 999px;
 							background: var(--accentedBg);
 						}
@@ -477,22 +482,23 @@ function more(ev: MouseEvent) {
 
 	&.iconOnly {
 		flex: 0 0 $nav-icon-only-width;
-		width: $nav-icon-only-width;
+		inline-size: $nav-icon-only-width;
 
 		> .body {
-			width: $nav-icon-only-width;
+			inline-size: $nav-icon-only-width;
 
 			> .top {
-				padding: 2rem 0;
+				padding-block: 2rem;
+				padding-inline: 0;
 
 				> .account {
 					display: block;
 					text-align: center;
-					width: 100%;
+					inline-size: 100%;
 
 					> .icon {
 						display: inline-block;
-						width: 40px;
+						inline-size: 40px;
 						aspect-ratio: 1;
 						transform: translateY(0em);
 					}
@@ -500,30 +506,28 @@ function more(ev: MouseEvent) {
 			}
 
 			> .bottom {
-				padding: 20px 0;
+				padding-block: 20px;
+				padding-inline: 0;
 
 				> .post {
 					display: block;
 					position: relative;
-					width: 100%;
-					height: 52px;
-					margin-bottom: 16px;
+					inline-size: 100%;
+					block-size: 52px;
+					margin-block-end: 16px;
 					text-align: center;
 
 					&:before {
 						content: "";
 						display: block;
 						position: absolute;
-						top: 0;
-						left: 0;
-						right: 0;
-						bottom: 0;
+						inset: 0;
 						margin: auto;
-						width: 52px;
+						inline-size: 52px;
 						aspect-ratio: 1/1;
 						border-radius: 100%;
 						background: linear-gradient(
-							90deg,
+							var(--gradient-to-inline-end),
 							var(--buttonGradateA),
 							var(--buttonGradateB)
 						);
@@ -552,13 +556,13 @@ function more(ev: MouseEvent) {
 					position: relative;
 					display: block;
 					text-align: center;
-					width: 100%;
-					margin-top: 1rem;
+					inline-size: 100%;
+					margin-block-start: 1rem;
 					color: var(--navFg);
 
 					> .icon {
 						display: inline-block;
-						width: 38px;
+						inline-size: 38px;
 						aspect-ratio: 1;
 					}
 				}
@@ -567,11 +571,11 @@ function more(ev: MouseEvent) {
 					position: relative;
 					display: block;
 					text-align: center;
-					width: 100%;
+					inline-size: 100%;
 
 					> .icon {
 						display: inline-block;
-						width: 32px !important;
+						inline-size: 32px !important;
 						aspect-ratio: 1;
 					}
 				}
@@ -581,22 +585,25 @@ function more(ev: MouseEvent) {
 				flex: 0.1;
 
 				> .divider {
-					margin: 8px auto;
-					width: calc(100% - 32px);
-					border-top: solid 0.5px var(--divider);
+					margin-block: 8px;
+					margin-inline: auto;
+					inline-size: calc(100% - 32px);
+					border-block-start: solid 0.5px var(--divider);
 				}
 
 				> .item {
 					display: block;
 					position: relative;
-					padding: 1.1rem 0;
-					margin-bottom: 0.2rem;
-					width: 100%;
+					padding-block: 1.1rem;
+					padding-inline: 0;
+					margin-block-end: 0.2rem;
+					inline-size: 100%;
 					text-align: center;
 
 					> .icon {
 						display: block;
-						margin: 0 auto;
+						margin-block: 0;
+						margin-inline: auto;
 						opacity: 0.7;
 						transform: translateY(0em);
 					}
@@ -607,8 +614,8 @@ function more(ev: MouseEvent) {
 
 					> .indicator {
 						position: absolute;
-						top: 6px;
-						left: 24px;
+						inset-block-start: 6px;
+						inset-inline-start: 24px;
 						color: var(--navIndicator);
 						font-size: 8px;
 						animation: blink 1s infinite;
@@ -624,14 +631,11 @@ function more(ev: MouseEvent) {
 						&:before {
 							content: "";
 							display: block;
-							height: 100%;
+							block-size: 100%;
 							aspect-ratio: 1;
 							margin: auto;
 							position: absolute;
-							top: 0;
-							left: 0;
-							right: 0;
-							bottom: 0;
+							inset: 0;
 							border-radius: 999px;
 							background: var(--accentedBg);
 						}

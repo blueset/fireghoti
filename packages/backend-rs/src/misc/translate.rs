@@ -96,6 +96,7 @@ pub async fn translate(
 
 mod deepl_translate {
     use crate::util::http_client;
+    use futures_util::AsyncReadExt;
     use isahc::{AsyncReadResponseExt, Request};
     use serde::Deserialize;
     use serde_json::json;
@@ -156,7 +157,13 @@ mod deepl_translate {
             .header("Content-Type", "application/json")
             .body(serde_json::to_string(&body)?)?;
 
-        let response = client.send_async(request).await?.json::<Response>().await?;
+        // Read up to 1 MiB of the response body
+        let response = client
+            .send_async(request)
+            .await?
+            .map(|body| body.take(1024 * 1024))
+            .json::<Response>()
+            .await?;
 
         let result = response
             .translations
@@ -191,6 +198,7 @@ mod deepl_translate {
 
 mod libre_translate {
     use crate::util::http_client;
+    use futures_util::AsyncReadExt;
     use isahc::{AsyncReadResponseExt, Request};
     use serde::Deserialize;
     use serde_json::json;
@@ -248,9 +256,11 @@ mod libre_translate {
             .header("Content-Type", "application/json")
             .body(serde_json::to_string(&body)?)?;
 
+        // Read up to 1 MiB of the response body
         let result = client
             .send_async(request)
             .await?
+            .map(|body| body.take(1024 * 1024))
             .json::<Translation>()
             .await?;
 

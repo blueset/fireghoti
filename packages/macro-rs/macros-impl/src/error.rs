@@ -1,14 +1,48 @@
+//! Automatically generate doc comments for error variants from the error messages
+
 use proc_macro2::TokenStream;
 use quote::quote;
 
-pub fn error_variants(_attr: TokenStream, item: TokenStream) -> TokenStream {
-    match error_variants_impl(item) {
-        Ok(tokens) => tokens,
-        Err(error) => error.to_compile_error(),
-    }
-}
-
-fn error_variants_impl(item: TokenStream) -> syn::Result<TokenStream> {
+/// Generates doc comments for error enums.
+///
+/// # Example
+/// ```
+/// # use macros_impl::error::error_variants as errors;
+/// # macros_impl::macro_doctest!({
+/// #[macros::errors]
+/// pub enum Error {
+///     #[error("config file name is not set")]
+///     NoConfigFileName,
+///     #[error("failed to read the config file")]
+///     ReadConfigFile(#[from] io::Error),
+///     #[error("invalid file content ({0})")]
+///     #[doc = "invalid file content"]
+///     InvalidContent(String),
+///     #[error(transparent)]
+///     #[doc = "database error"]
+///     Db(#[from] sea_orm::DbErr)
+/// }
+///
+/// # }, {
+/// /******* the code above expands to *******/
+///
+/// pub enum Error {
+///     #[error("config file name is not set")]
+///     #[doc = "config file name is not set"]
+///     NoConfigFileName,
+///     #[error("failed to read the config file")]
+///     #[doc = "failed to read the config file"]
+///     ReadConfigFile(#[from] io::Error),
+///     #[error("invalid file content ({0})")]
+///     #[doc = "invalid file content"]
+///     InvalidContent(String),
+///     #[error(transparent)]
+///     #[doc = "database error"]
+///     Db(#[from] sea_orm::DbErr)
+/// }
+/// # });
+/// ```
+pub fn error_variants(_attr: TokenStream, item: TokenStream) -> syn::Result<TokenStream> {
     let mut item: syn::ItemEnum = syn::parse2(item)?;
 
     item.variants = item

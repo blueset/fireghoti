@@ -105,8 +105,8 @@ defineExpose({
 
 	> .tags {
 		position: absolute;
-		top: 999px;
-		left: 999px;
+		inset-block-start: 999px;
+		inset-inline-start: 999px;
 	}
 }
 </style>

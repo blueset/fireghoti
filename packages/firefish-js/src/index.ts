@@ -13,7 +13,7 @@ import * as entities from "./entities.js";
 import type * as SchemaTypes from "./misc/schema.js";
 import * as Schema from "./misc/schema.js";
 
-import { langmap, type PostLanguage } from "./misc/langmap.js";
+import { langmap, bcp47Pattern, type PostLanguage } from "./misc/langmap.js";
 
 export {
 	type Endpoints,
@@ -27,6 +27,7 @@ export {
 	Schema,
 	type SchemaTypes,
 	langmap,
+	bcp47Pattern,
 	type PostLanguage,
 	api,
 	entities,

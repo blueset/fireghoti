@@ -98,7 +98,7 @@ defineExpose<WidgetComponentExpose>({
 
 <style lang="scss" scoped>
 .wbrkwala {
-	height: (62px + 1px) + (62px + 1px) + (62px + 1px) + (62px + 1px) + 62px;
+	block-size: (62px + 1px) + (62px + 1px) + (62px + 1px) + (62px + 1px) + 62px;
 	overflow: hidden;
 
 	> .tags {
@@ -109,8 +109,9 @@ defineExpose<WidgetComponentExpose>({
 		> div {
 			display: flex;
 			align-items: center;
-			padding: 14px 16px;
-			border-bottom: solid 0.5px var(--divider);
+			padding-block: 14px;
+			padding-inline: 16px;
+			border-block-end: solid 0.5px var(--divider);
 
 			> .tag {
 				flex: 1;
@@ -120,7 +121,7 @@ defineExpose<WidgetComponentExpose>({
 
 				> .a {
 					display: block;
-					width: 100%;
+					inline-size: 100%;
 					white-space: nowrap;
 					overflow: hidden;
 					text-overflow: ellipsis;
@@ -136,7 +137,7 @@ defineExpose<WidgetComponentExpose>({
 			}
 
 			> .chart {
-				height: 30px;
+				block-size: 30px;
 			}
 		}
 	}

@@ -155,13 +155,13 @@ webhookDeliverQueue
 		webhookLogger.warn(`stalled ${getJobInfo(job)} to=${job.data.to}`),
 	);
 
-export function deliver(user: ThinUser, content: unknown, to: string | null) {
+export function deliver(userId: string, content: unknown, to: string | null) {
 	if (content == null) return null;
 	if (to == null) return null;
 
 	const data = {
 		user: {
-			id: user.id,
+			id: userId,
 		},
 		content,
 		to,

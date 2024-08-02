@@ -43,7 +43,7 @@ async function add() {
 
 definePageMetadata({
 	title: i18n.ts.statusbar,
-	icon: `${icon("ph-list-bullets")}`,
+	icon: `${icon("ph-list-bullets ph-dir")}`,
 	bg: "var(--bg)",
 });
 </script>

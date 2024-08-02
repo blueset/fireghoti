@@ -195,9 +195,9 @@ export class ListHelpers {
 		if (exclusive !== undefined) {
 			UserListJoinings.findBy({ userListId: list.id }).then((members) => {
 				for (const member of members) {
-					publishUserEvent(
+					await publishToUserStream(
 						list.userId,
-						exclusive ? "userHidden" : "userUnhidden",
+						exclusive ? UserEvent.Hidden : UserEvent.Unhidden,
 						member.userId,
 					);
 				}

@@ -1,13 +1,12 @@
-import { renderFollowRelay } from "@/remote/activitypub/renderer/follow-relay.js";
 import {
 	renderActivity,
 	attachLdSignature,
 } from "@/remote/activitypub/renderer/index.js";
-import renderUndo from "@/remote/activitypub/renderer/undo.js";
+import { renderUndo } from "@/remote/activitypub/renderer/undo.js";
 import { deliver } from "@/queue/index.js";
 import type { User } from "@/models/entities/user.js";
 import { Relays } from "@/models/index.js";
-import { getInternalActor, genId } from "backend-rs";
+import { getRelayActorId, genId, renderFollowRelay } from "backend-rs";
 import { Cache } from "@/misc/cache.js";
 import type { Relay } from "@/models/entities/relay.js";
 
@@ -20,10 +19,10 @@ export async function addRelay(inbox: string) {
 		status: "requesting",
 	}).then((x) => Relays.findOneByOrFail(x.identifiers[0]));
 
-	const relayActor = await getInternalActor("relay");
-	const follow = renderFollowRelay(relay, relayActor);
+	const relayActorId = await getRelayActorId();
+	const follow = await renderFollowRelay(relay.id);
 	const activity = renderActivity(follow);
-	deliver(relayActor, activity, relay.inbox);
+	deliver(relayActorId, activity, relay.inbox);
 
 	return relay;
 }
@@ -37,11 +36,11 @@ export async function removeRelay(inbox: string) {
 		throw new Error("relay not found");
 	}
 
-	const relayActor = await getInternalActor("relay");
-	const follow = renderFollowRelay(relay, relayActor);
-	const undo = renderUndo(follow, relayActor);
+	const relayActorId = await getRelayActorId();
+	const follow = await renderFollowRelay(relay.id);
+	const undo = renderUndo(follow, relayActorId);
 	const activity = renderActivity(undo);
-	deliver(relayActor, activity, relay.inbox);
+	deliver(relayActorId, activity, relay.inbox);
 
 	await Relays.delete(relay.id);
 	await updateRelaysCache();
@@ -102,6 +101,6 @@ export async function deliverToRelays(
 	const signed = await attachLdSignature(copy, user);
 
 	for (const relay of relays) {
-		deliver(user, signed, relay.inbox);
+		deliver(user.id, signed, relay.inbox);
 	}
 }

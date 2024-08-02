@@ -365,19 +365,16 @@ definePageMetadata({
 			> .color {
 				display: inline-block;
 				position: relative;
-				width: 64px;
-				height: 64px;
+				inline-size: 64px;
+				block-size: 64px;
 				border-radius: 8px;
 
 				> .preview {
 					position: absolute;
-					top: 0;
-					left: 0;
-					right: 0;
-					bottom: 0;
+					inset: 0;
 					margin: auto;
-					width: 42px;
-					height: 42px;
+					inline-size: 42px;
+					block-size: 42px;
 					border-radius: 4px;
 					box-shadow: 0 2px 4px rgb(0 0 0 / 30%);
 					transition: transform 0.15s ease;

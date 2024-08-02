@@ -92,11 +92,11 @@ const isThumbnailAvailable = computed(() => {
 
 	> .icon-sub {
 		position: absolute;
-		width: 30%;
-		height: auto;
+		inline-size: 30%;
+		block-size: auto;
 		margin: 0;
-		right: 4%;
-		bottom: 4%;
+		inset-inline-end: 4%;
+		inset-block-end: 4%;
 	}
 
 	> .icon {

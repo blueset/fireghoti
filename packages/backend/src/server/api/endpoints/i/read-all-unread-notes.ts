@@ -1,4 +1,4 @@
-import { publishMainStream } from "@/services/stream.js";
+import { Event, publishToMainStream } from "backend-rs";
 import define from "@/server/api/define.js";
 import { NoteUnreads } from "@/models/index.js";
 
@@ -23,6 +23,6 @@ export default define(meta, paramDef, async (ps, user) => {
 	});
 
 	// 全て既読になったイベントを発行
-	publishMainStream(user.id, "readAllUnreadMentions");
-	publishMainStream(user.id, "readAllUnreadSpecifiedNotes");
+	publishToMainStream(user.id, Event.ReadAllMentions, {});
+	publishToMainStream(user.id, Event.ReadAllDms, {});
 });

@@ -133,8 +133,12 @@ export default defineComponent({
 		> .tags {
 			> .tag {
 				display: inline-block;
-				margin: 8px 8px 0 0;
-				padding: 4px 8px;
+				margin-block-start: 8px;
+				margin-inline-end: 8px;
+				margin-block-end: 0;
+				margin-inline-start: 0;
+				padding-block: 4px;
+				padding-inline: 8px;
 				font-size: 0.9em;
 				background: var(--accentedBg);
 				border-radius: 5px;
@@ -148,13 +152,17 @@ export default defineComponent({
 	}
 
 	> .emojis {
-		--x-padding: 0 16px;
+		--x-padding-block: 0;
+padding-inline: 16px;
 
 		.zuvgdzyt {
 			display: grid;
 			grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
 			grid-gap: 12px;
-			margin: 0 var(--margin) var(--margin) var(--margin);
+			margin-block-start: 0;
+			margin-inline-end: var(--margin);
+			margin-block-end: var(--margin);
+			margin-inline-start: var(--margin);
 		}
 	}
 }

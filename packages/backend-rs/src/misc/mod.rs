@@ -13,6 +13,7 @@ pub mod latest_version;
 pub mod note;
 pub mod nyaify;
 pub mod password;
+pub mod random_icon;
 pub mod reaction;
 pub mod remove_old_attestation_challenges;
 pub mod should_nyaify;

@@ -1,10 +1,9 @@
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { getUser } from "@/server/api/common/getters.js";
-import { genIdAt } from "backend-rs";
+import { genIdAt, publishToUserStream, UserEvent } from "backend-rs";
 import { Mutings, NoteWatchings } from "@/models/index.js";
 import type { Muting } from "@/models/entities/muting.js";
-import { publishUserEvent } from "@/services/stream.js";
 
 export const meta = {
 	tags: ["account"],
@@ -88,7 +87,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		muteeId: mutee.id,
 	} as Muting);
 
-	publishUserEvent(user.id, "mute", mutee);
+	await publishToUserStream(user.id, UserEvent.Mute, mutee);
 
 	NoteWatchings.delete({
 		userId: muter.id,

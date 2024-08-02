@@ -48,7 +48,7 @@
 								display: flex;
 								gap: var(--margin);
 								flex-wrap: wrap;
-								padding-top: 1.2em;
+								padding-block-start: 1.2em;
 							"
 						>
 							<MkInput

@@ -89,9 +89,9 @@ onUnmounted(() => {
 
 	> ._panel {
 		> .pie {
-			height: 82px;
+			block-size: 82px;
 			flex-shrink: 0;
-			margin-right: 16px;
+			margin-inline-end: 16px;
 		}
 
 		> div {
@@ -103,10 +103,10 @@ onUnmounted(() => {
 
 				&:first-child {
 					font-weight: bold;
-					margin-bottom: 4px;
+					margin-block-end: 4px;
 
 					> i {
-						margin-right: 4px;
+						margin-inline-end: 4px;
 					}
 				}
 			}

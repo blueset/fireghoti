@@ -30,10 +30,18 @@ const emit = defineEmits<{
 
 <style lang="scss" scoped>
 .thppypvi {
-	max-height: 70%;
+	max-block-size: 70%;
 	overflow-y: scroll;
+	overflow-block: scroll;
 	-ms-overflow-style: none;
 	scrollbar-width: none;
+	
+	@supports not (overflow-block: scroll) {
+		.vertical-lr &, .vertical-rl & {
+			overflow-y: visible;
+			overflow-x: scroll;
+		}
+	}
 }
 
 .thppypvi::-webkit-scrollbar {
@@ -43,7 +51,9 @@ const emit = defineEmits<{
 .zrgnubda {
 	white-space: pre-wrap;
 	font-size: 1.2em;
-	padding: 5px 20px 10px;
+	padding-block-start: 5px;
+	padding-inline: 20px;
+	padding-block-end: 10px;
 	margin: 5px;
 }
 </style>

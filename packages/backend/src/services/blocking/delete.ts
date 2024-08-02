@@ -1,6 +1,6 @@
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import { renderBlock } from "@/remote/activitypub/renderer/block.js";
-import renderUndo from "@/remote/activitypub/renderer/undo.js";
+import { renderUndo } from "@/remote/activitypub/renderer/undo.js";
 import { deliver } from "@/queue/index.js";
 import Logger from "@/services/logger.js";
 import type { CacheableUser } from "@/models/entities/user.js";
@@ -30,7 +30,9 @@ export default async function (blocker: CacheableUser, blockee: CacheableUser) {
 
 	// deliver if remote bloking
 	if (Users.isLocalUser(blocker) && Users.isRemoteUser(blockee)) {
-		const content = renderActivity(renderUndo(renderBlock(blocking), blocker));
-		deliver(blocker, content, blockee.inbox);
+		const content = renderActivity(
+			renderUndo(renderBlock(blocking), blocker.id),
+		);
+		deliver(blocker.id, content, blockee.inbox);
 	}
 }

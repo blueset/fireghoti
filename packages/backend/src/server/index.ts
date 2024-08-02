@@ -15,8 +15,7 @@ import { IsNull } from "typeorm";
 import { config } from "@/config.js";
 import Logger from "@/services/logger.js";
 import { Users } from "@/models/index.js";
-import { fetchMeta, stringToAcct } from "backend-rs";
-import { genIdenticon } from "@/misc/gen-identicon.js";
+import { fetchMeta, genIdenticon, stringToAcct } from "backend-rs";
 import { createTemp } from "@/misc/create-temp.js";
 import activityPub from "./activitypub.js";
 import nodeinfo from "./nodeinfo.js";
@@ -117,10 +116,10 @@ router.get("/avatar/@:acct", async (ctx) => {
 });
 
 router.get("/identicon/:x", async (ctx) => {
-	const meta = await fetchMeta();
-	if (meta.enableIdenticonGeneration) {
+	const instanceMeta = await fetchMeta();
+	if (instanceMeta.enableIdenticonGeneration) {
 		const [temp, cleanup] = await createTemp();
-		await genIdenticon(ctx.params.x, fs.createWriteStream(temp));
+		fs.writeFileSync(temp, await genIdenticon(ctx.params.x));
 		ctx.set("Content-Type", "image/png");
 		ctx.body = fs.createReadStream(temp).on("close", () => cleanup());
 	} else {

@@ -86,9 +86,9 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .mk-media-banner {
-	width: 100%;
+	inline-size: 100%;
 	border-radius: 4px;
-	margin-top: 4px;
+	margin-block-start: 4px;
 	overflow: hidden;
 	--plyr-color-main: var(--accent);
 	--plyr-audio-controls-background: var(--panelHighlight);
@@ -100,7 +100,8 @@ onMounted(() => {
 		display: flex;
 		align-items: center;
 		font-size: 12px;
-		padding: 8px 12px;
+		padding-block: 8px;
+		padding-inline: 12px;
 		white-space: nowrap;
 
 		> * {
@@ -113,7 +114,7 @@ onMounted(() => {
 		}
 
 		> *:not(:last-child) {
-			margin-right: 0.2em;
+			margin-inline-end: 0.2em;
 		}
 
 		> .icon {
@@ -133,7 +134,7 @@ onMounted(() => {
 	> .audio {
 		.audio {
 			display: block;
-			width: 100%;
+			inline-size: 100%;
 		}
 	}
 }

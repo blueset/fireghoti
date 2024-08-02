@@ -119,6 +119,6 @@ function reset() {
 
 definePageMetadata({
 	title: i18n.ts.sounds,
-	icon: `${icon("ph-speaker-high")}`,
+	icon: `${icon("ph-speaker-high ph-dir")}`,
 });
 </script>

@@ -6,6 +6,5 @@ pub use redis::get_conn as redis_conn;
 pub use redis::key as redis_key;
 pub use redis::RedisConnError;
 
-pub mod cache;
 pub mod postgresql;
 pub mod redis;

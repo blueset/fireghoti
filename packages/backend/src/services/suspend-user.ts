@@ -5,13 +5,13 @@ import { config } from "@/config.js";
 import type { User } from "@/models/entities/user.js";
 import { Users, Followings } from "@/models/index.js";
 import { Not, IsNull } from "typeorm";
-import { publishInternalEvent } from "@/services/stream.js";
+import { InternalEvent, publishToInternalStream } from "backend-rs";
 
 export async function doPostSuspend(user: {
 	id: User["id"];
 	host: User["host"];
 }) {
-	publishInternalEvent("userChangeSuspendedState", {
+	await publishToInternalStream(InternalEvent.Suspend, {
 		id: user.id,
 		isSuspended: true,
 	});
@@ -41,7 +41,7 @@ export async function doPostSuspend(user: {
 		}
 
 		for (const inbox of queue) {
-			deliver(user, content, inbox);
+			deliver(user.id, content, inbox);
 		}
 	}
 }

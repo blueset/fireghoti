@@ -15,11 +15,13 @@ import { apLogger } from "../logger.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import {
 	type ImageSize,
+	NoteEvent,
 	extractHost,
 	genId,
 	getImageSizeFromUrl,
 	isBlockedServer,
 	isSameOrigin,
+	publishToNoteStream,
 	toPuny,
 } from "backend-rs";
 import {
@@ -47,7 +49,6 @@ import { parseAudience } from "../audience.js";
 import { extractApMentions } from "./mention.js";
 import DbResolver from "../db-resolver.js";
 import { StatusError } from "@/misc/fetch.js";
-import { publishNoteStream } from "@/services/stream.js";
 import { extractHashtags } from "@/misc/extract-hashtags.js";
 import { UserProfiles } from "@/models/index.js";
 import { In } from "typeorm";
@@ -795,7 +796,7 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 
 	if (publishing) {
 		// Publish update event for the updated note details
-		publishNoteStream(note.id, "updated", {
+		publishToNoteStream(note.id, NoteEvent.Update, {
 			updatedAt: update.updatedAt,
 		});
 	}

@@ -92,7 +92,7 @@
 					><span class="text">{{ i18n.ts.customEmojis }}</span>
 				</MkA>
 				<button v-click-anime class="item _button" @click="more">
-					<i :class="icon('ph-dots-three-outline icon ph-fw')"></i
+					<i :class="icon('ph-dots-three-outline ph-dir icon ph-fw')"></i
 					><span class="text">{{ i18n.ts.more }}</span>
 					<span
 						v-if="otherMenuItemIndicated"
@@ -187,28 +187,29 @@ function more() {
 
 		> .top {
 			position: sticky;
-			top: 0;
+			inset-block-start: 0;
 			z-index: 1;
-			padding: 2rem 0;
+			padding-block: 2rem;
+			padding-inline: 0;
 			background: var(--X14);
 			-webkit-backdrop-filter: var(--blur, blur(8px));
 			backdrop-filter: var(--blur, blur(8px));
 
 			> .banner {
 				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
+				inset-block-start: 0;
+				inset-inline-start: 0;
+				inline-size: 100%;
+				block-size: 100%;
 				background-size: cover;
 				background-position: center center;
 				-webkit-mask-image: linear-gradient(
-					0deg,
+					var(--gradient-to-block-start),
 					rgba(0, 0, 0, 0) 15%,
 					rgba(0, 0, 0, 0.75) 100%
 				);
 				mask-image: linear-gradient(
-					0deg,
+					var(--gradient-to-block-start),
 					rgba(0, 0, 0, 0) 15%,
 					rgba(0, 0, 0, 0.75) 100%
 				);
@@ -218,11 +219,11 @@ function more() {
 				position: relative;
 				display: block;
 				text-align: center;
-				width: 100%;
+				inline-size: 100%;
 
 				> .icon {
 					display: inline-block;
-					width: 55px;
+					inline-size: 55px;
 					aspect-ratio: 1;
 				}
 			}
@@ -230,8 +231,9 @@ function more() {
 
 		> .bottom {
 			position: sticky;
-			bottom: 0;
-			padding: 20px 0;
+			inset-block-end: 0;
+			padding-block: 20px;
+			padding-inline: 0;
 			background: var(--X14);
 			-webkit-backdrop-filter: var(--blur, blur(8px));
 			backdrop-filter: var(--blur, blur(8px));
@@ -240,26 +242,23 @@ function more() {
 				position: relative;
 				display: flex;
 				align-items: center;
-				width: 100%;
-				height: 40px;
+				inline-size: 100%;
+				block-size: 40px;
 				color: var(--fgOnAccent);
 				font-weight: bold;
-				text-align: left;
+				text-align: start;
 
 				&:before {
 					content: "";
 					display: block;
-					width: calc(100% - 38px);
-					height: 100%;
+					inline-size: calc(100% - 38px);
+					block-size: 100%;
 					margin: auto;
 					position: absolute;
-					top: 0;
-					left: 0;
-					right: 0;
-					bottom: 0;
+					inset: 0;
 					border-radius: 999px;
 					background: linear-gradient(
-						90deg,
+						var(--gradient-to-inline-end),
 						var(--buttonGradateA),
 						var(--buttonGradateB)
 					);
@@ -274,9 +273,9 @@ function more() {
 
 				> .icon {
 					position: relative;
-					margin-left: 30px;
-					margin-right: 8px;
-					width: 32px;
+					margin-inline-start: 30px;
+					margin-inline-end: 8px;
+					inline-size: 32px;
 				}
 
 				> .text {
@@ -288,13 +287,13 @@ function more() {
 				position: relative;
 				display: block;
 				text-align: center;
-				width: 100%;
-				margin-top: 1rem;
+				inline-size: 100%;
+				margin-block-start: 1rem;
 				color: var(--navFg);
 
 				> .icon {
 					display: inline-block;
-					width: 38px;
+					inline-size: 38px;
 					aspect-ratio: 1;
 				}
 			}
@@ -303,21 +302,21 @@ function more() {
 				position: relative;
 				display: flex;
 				align-items: center;
-				padding-left: 30px;
+				padding-inline-start: 30px;
 				text-overflow: ellipsis;
 				overflow: hidden;
 				white-space: nowrap;
-				width: 100%;
-				text-align: left;
+				inline-size: 100%;
+				text-align: start;
 				box-sizing: border-box;
-				margin-top: 16px;
+				margin-block-start: 16px;
 
 				> .icon {
 					position: relative;
-					width: 32px;
+					inline-size: 32px;
 					aspect-ratio: 1;
 					transform: translateX(-100%);
-					left: 50%;
+					inset-inline-start: 50%;
 				}
 			}
 		}
@@ -326,33 +325,34 @@ function more() {
 			flex: 0.1;
 
 			> .divider {
-				margin: 16px 16px;
-				border-top: solid 0.5px var(--divider);
+				margin-block: 16px;
+				margin-inline: 16px;
+				border-block-start: solid 0.5px var(--divider);
 			}
 
 			> .item {
 				position: relative;
 				display: block;
-				padding-left: 24px;
+				padding-inline-start: 24px;
 				line-height: 2.85rem;
 				text-overflow: ellipsis;
 				overflow: hidden;
 				white-space: nowrap;
-				width: 100%;
-				text-align: left;
+				inline-size: 100%;
+				text-align: start;
 				box-sizing: border-box;
 				color: var(--navFg);
 
 				> .icon {
 					position: relative;
-					width: 32px;
-					margin-right: 8px;
+					inline-size: 32px;
+					margin-inline-end: 8px;
 				}
 
 				> .indicator {
 					position: absolute;
-					top: 0;
-					left: 20px;
+					inset-block-start: 0;
+					inset-inline-start: 20px;
 					color: var(--navIndicator);
 					font-size: 8px;
 				}
@@ -380,14 +380,11 @@ function more() {
 					&:before {
 						content: "";
 						display: block;
-						width: calc(100% - 24px);
-						height: 100%;
+						inline-size: calc(100% - 24px);
+						block-size: 100%;
 						margin: auto;
 						position: absolute;
-						top: 0;
-						left: 0;
-						right: 0;
-						bottom: 0;
+						inset: 0;
 						border-radius: 999px;
 						background: var(--accentedBg);
 					}

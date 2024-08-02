@@ -6,14 +6,14 @@ export async function validateEmailForAccount(emailAddress: string): Promise<{
 	available: boolean;
 	reason: null | "used" | "format" | "disposable" | "mx" | "smtp";
 }> {
-	const meta = await fetchMeta();
+	const instanceMeta = await fetchMeta();
 
 	const exist = await UserProfiles.countBy({
 		emailVerified: true,
 		email: emailAddress,
 	});
 
-	const validated = meta.enableActiveEmailValidation
+	const validated = instanceMeta.enableActiveEmailValidation
 		? await validateEmail({
 				email: emailAddress,
 				validateRegex: true,

@@ -40,36 +40,45 @@ defineProps<{
 
 	&.min-width_350px {
 		> .avatar {
-			margin: 0 10px 0 0;
-			width: 44px;
-			height: 44px;
+			margin-block-start: 0;
+			margin-inline-end: 10px;
+			margin-block-end: 0;
+			margin-inline-start: 0;
+			inline-size: 44px;
+			block-size: 44px;
 		}
 	}
 
 	&.min-width_500px {
 		> .avatar {
-			margin: 0 12px 0 0;
-			width: 48px;
-			height: 48px;
+			margin-block-start: 0;
+			margin-inline-end: 12px;
+			margin-block-end: 0;
+			margin-inline-start: 0;
+			inline-size: 48px;
+			block-size: 48px;
 		}
 	}
 
 	> .avatar {
 		flex-shrink: 0;
 		display: block;
-		margin: 0 10px 0 0;
-		width: 40px;
-		height: 40px;
+		margin-block-start: 0;
+		margin-inline-end: 10px;
+		margin-block-end: 0;
+		margin-inline-start: 0;
+		inline-size: 40px;
+		block-size: 40px;
 		border-radius: 8px;
 		pointer-events: none;
 	}
 
 	> .main {
 		flex: 1;
-		min-width: 0;
+		min-inline-size: 0;
 
 		> .header {
-			margin-bottom: 2px;
+			margin-block-end: 2px;
 			font-weight: bold;
 		}
 
@@ -82,7 +91,7 @@ defineProps<{
 				overflow-wrap: break-word;
 
 				> .text {
-					margin-right: 8px;
+					margin-inline-end: 8px;
 				}
 			}
 

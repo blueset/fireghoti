@@ -180,7 +180,7 @@ onMounted(() => {
 .root {
 	&:global {
 		> .item {
-			margin-bottom: 16px;
+			margin-block-end: 16px;
 		}
 	}
 }
@@ -189,7 +189,7 @@ onMounted(() => {
 	&:global {
 		> .selects {
 			display: flex;
-			margin-bottom: 12px;
+			margin-block-end: 12px;
 		}
 
 		> .chart {
@@ -200,12 +200,12 @@ onMounted(() => {
 
 .heatmap {
 	padding: 16px;
-	margin-bottom: 16px;
+	margin-block-end: 16px;
 }
 
 .retention {
 	padding: 16px;
-	margin-bottom: 16px;
+	margin-block-end: 16px;
 }
 
 .federation {
@@ -217,21 +217,21 @@ onMounted(() => {
 			> .sub,
 			> .pub {
 				flex: 1;
-				min-width: 0;
+				min-inline-size: 0;
 				position: relative;
 				background: var(--panel);
 				border-radius: var(--radius);
 				padding: 24px;
-				max-height: 300px;
+				max-block-size: 300px;
 
 				> .title {
 					position: absolute;
-					top: 24px;
-					left: 24px;
+					inset-block-start: 24px;
+					inset-inline-start: 24px;
 				}
 			}
 
-			@media (max-width: 600px) {
+			@media (max-inline-size: 600px) {
 				flex-direction: column;
 			}
 		}

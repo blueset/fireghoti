@@ -10,7 +10,7 @@
 				<div
 					class="backdrop"
 					:style="{
-						width: `${
+						inlineSize: `${
 							showResult ? (choice.votes / total) * 100 : 0
 						}%`,
 					}"
@@ -154,7 +154,8 @@ const vote = async (id) => {
 		> li {
 			display: block;
 			position: relative;
-			margin: 4px 0;
+			margin-block: 4px;
+			margin-inline: 0;
 			padding: 4px;
 			//border: solid 0.5px var(--divider);
 			background: var(--accentedBg);
@@ -164,12 +165,12 @@ const vote = async (id) => {
 
 			> .backdrop {
 				position: absolute;
-				top: 0;
-				left: 0;
-				height: 100%;
+				inset-block-start: 0;
+				inset-inline-start: 0;
+				block-size: 100%;
 				background: var(--accent);
 				background: linear-gradient(
-					90deg,
+					var(--gradient-to-inline-end),
 					var(--buttonGradateA),
 					var(--buttonGradateB)
 				);
@@ -179,17 +180,18 @@ const vote = async (id) => {
 			> span {
 				position: relative;
 				display: inline-block;
-				padding: 3px 5px;
+				padding-block: 3px;
+				padding-inline: 5px;
 				background: var(--panel);
 				border-radius: 3px;
 
 				> i {
-					margin-right: 4px;
+					margin-inline-end: 4px;
 					color: var(--accent);
 				}
 
 				> .votes {
-					margin-left: 4px;
+					margin-inline-start: 4px;
 					opacity: 0.7;
 				}
 			}

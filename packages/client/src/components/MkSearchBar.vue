@@ -33,13 +33,14 @@ const search = () => {
 <style lang="scss" scoped>
 .mk-search {
 	display: flex;
-	margin: 8px 0;
+	margin-block: 8px;
+	margin-inline: 0;
 
 	> input {
 		flex-shrink: 1;
 		padding: 10px;
-		width: 100%;
-		height: 40px;
+		inline-size: 100%;
+		block-size: 40px;
 		font-size: 16px;
 		border: solid 1px var(--divider);
 		border-radius: 4px 0 0 4px;
@@ -50,9 +51,10 @@ const search = () => {
 	> button {
 		flex-shrink: 0;
 		margin: 0;
-		padding: 0 16px;
+		padding-block: 0;
+		padding-inline: 16px;
 		border: solid 1px var(--divider);
-		border-left: none;
+		border-inline-start: none;
 		border-radius: 0 4px 4px 0;
 
 		&:active {
