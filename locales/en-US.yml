@@ -1200,7 +1200,7 @@ privateDescription: "Make visible for you only"
 makePrivate: "Make private"
 makePrivateConfirm: "This operation will send a deletion request to remote servers
   and change the visibility to private. Proceed?"
-enablePullToRefresh: "Enable \"Pull down to refresh\""
+enablePullToRefresh: "Enable “Pull down to reload”"
 pullToRefreshThreshold: "Pull distance for reloading"
 pullDownToReload: "Pull down to reload"
 releaseToReload: "Release to reload"

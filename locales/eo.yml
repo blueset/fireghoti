@@ -9,3 +9,24 @@ notifications: Sciigoj
 username: Uzantnomo
 password: Pasvorto
 forgotPassword: Forgesa pasvorto
+fetchingAsApObject: Kaptante de Federujo
+ok: O kej
+noNotes: Ne afiŝoj
+noNotifications: Ne sciigiloj
+openInWindow: Malfermu en fenestro
+profile: Profilo
+gotIt: Jam estas!
+cancel: Mezfini
+noThankYou: Ne dankon
+renotedBy: Potenci de {user}
+noAccountDescription: Tiu ĉi uzanto eĉ ne skribis ilia biografio.
+enterUsername: Tajpu uzantnomon
+instance: Servilo
+settings: Agordoj
+basicSettings: Bazaj Agordoj
+otherSettings: Aliaj Agordoj
+login: Ensaluti
+loggingIn: Ensalutante
+logout: Elsaluti
+timeline: Templinio
+signup: Registru

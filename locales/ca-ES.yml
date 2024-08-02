@@ -978,7 +978,7 @@ recipient: Destinatari(s)
 annotation: Comentaris
 blockedInstances: Servidors bloquejats
 blockedInstancesDescription: Llista les adreces dels servidors que vols bloquejar.
-  Els servidors de la llista no podrán comunicarse amb aquests servidors.
+  Els servidors de la llista no podrán comunicarse amb aquest servidor.
 hiddenTags: Etiquetes amagades
 hiddenTagsDescription: 'Enumereu les etiquetes (sense el #) que voleu ocultar de tendències
   i explorar. Les etiquetes ocultes encara es poden descobrir per altres mitjans.'
@@ -2234,7 +2234,7 @@ useCdnDescription: Carrega alguns dels recursos estàtics com ara Twemoji des de
 releaseToReload: Deixa anar per actualitzar
 reloading: Actualitzant
 enableTimelineStreaming: Actualitza les línies de temps automàticament
-enablePullToRefresh: Activa "Baixa per actualitzar"
+enablePullToRefresh: Activa "Baixa per recarregar"
 pullDownToReload: Baixa per actualitzar
 pullToRefreshThreshold: Distancia de baixada per actualitzar
 searchWords: Paraules / ID o adreça URL que vols cercar
