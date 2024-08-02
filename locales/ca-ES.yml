@@ -2234,7 +2234,7 @@ useCdnDescription: Carrega alguns dels recursos estàtics com ara Twemoji des de
 releaseToReload: Deixa anar per actualitzar
 reloading: Actualitzant
 enableTimelineStreaming: Actualitza les línies de temps automàticament
-enablePullToRefresh: Activa "Baixa per actualitzar"
+enablePullToRefresh: Activa "Baixa per recarregar"
 pullDownToReload: Baixa per actualitzar
 pullToRefreshThreshold: Distancia de baixada per actualitzar
 searchWords: Paraules / ID o adreça URL que vols cercar
