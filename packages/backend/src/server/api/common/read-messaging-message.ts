@@ -2,6 +2,7 @@ import {
 	publishToChatStream,
 	publishToGroupChatStream,
 	publishToChatIndexStream,
+	renderRead,
 	sendPushNotification,
 	publishToMainStream,
 	Event,
@@ -13,10 +14,10 @@ import { In } from "typeorm";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
 import type { UserGroup } from "@/models/entities/user-group.js";
 import { toArray } from "@/prelude/array.js";
-import { renderReadActivity } from "@/remote/activitypub/renderer/read.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import { deliver } from "@/queue/index.js";
 import orderedCollection from "@/remote/activitypub/renderer/ordered-collection.js";
+import { unsafeCast } from "@/prelude/unsafe-cast";
 
 /**
  * Mark messages as read
@@ -164,7 +165,9 @@ export async function deliverReadActivity(
 	messages: MessagingMessage | MessagingMessage[],
 ) {
 	messages = toArray(messages).filter((x) => x.uri);
-	const contents = messages.map((x) => renderReadActivity(user, x));
+	const contents = messages.map((x) =>
+		unsafeCast<Record<string, unknown>>(renderRead(user.id, x.uri)),
+	);
 
 	if (contents.length > 1) {
 		const collection = orderedCollection(

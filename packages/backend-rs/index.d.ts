@@ -138,6 +138,7 @@ export type ApObject =  'Accept'|
 'Flag'|
 'Follow'|
 'Image'|
+'Read'|
 'Tombstone';
 
 export interface App {
@@ -149,6 +150,12 @@ export interface App {
   description: string
   permission: Array<string>
   callbackUrl: string | null
+}
+
+export interface ApRead {
+  type: ApObject
+  actor: string
+  object: string
 }
 
 export interface ApTombstone {
@@ -1314,6 +1321,8 @@ export declare function renderFlag(targetUserUri: string, comment: string): Prom
 export declare function renderFollow(follower: UserLike, followee: UserLike, requestId?: string | undefined | null): ApFollow
 
 export declare function renderFollowRelay(relayId: string): Promise<ApFollow>
+
+export declare function renderRead(userId: string, messageUri: string): ApRead
 
 export declare function renderTombstone(noteId: string): ApTombstone
 
