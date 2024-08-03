@@ -115,3 +115,78 @@ impl<T: Clone> Cache<T> {
         data.value.to_owned()
     }
 }
+
+#[cfg(test)]
+mod unit_test {
+    use super::Cache;
+    use chrono::Duration;
+    use pretty_assertions::assert_eq;
+
+    #[derive(Clone, Debug, PartialEq)]
+    struct Data {
+        id: u64,
+        name: String,
+    }
+
+    #[test]
+    fn set_and_get() {
+        static CACHE: Cache<Data> = Cache::new();
+        static CACHE_WITH_TTL: Cache<Data> = Cache::new_with_ttl(Duration::seconds(1));
+
+        let data = Data {
+            id: 16,
+            name: "Firefish".to_owned(),
+        };
+
+        assert!(CACHE.get().is_none());
+        assert!(CACHE_WITH_TTL.get().is_none());
+
+        CACHE.set(data.clone());
+        assert_eq!(data, CACHE.get().unwrap());
+
+        CACHE_WITH_TTL.set(data.clone());
+        assert_eq!(data, CACHE_WITH_TTL.get().unwrap());
+    }
+
+    #[test]
+    fn expire() {
+        static CACHE: Cache<Data> = Cache::new_with_ttl(Duration::seconds(1));
+
+        let data = Data {
+            id: 16,
+            name: "Firefish".to_owned(),
+        };
+
+        CACHE.set(data);
+
+        std::thread::sleep(std::time::Duration::from_millis(1100));
+
+        assert!(CACHE.get().is_none());
+    }
+
+    static GLOBAL_CACHE_1: Cache<Data> = Cache::new();
+    static GLOBAL_CACHE_2: Cache<Data> = Cache::new_with_ttl(Duration::milliseconds(2));
+
+    #[tokio::test]
+    async fn use_cache_in_parallel() {
+        let mut tasks = Vec::new();
+
+        async fn f() -> Data {
+            Data {
+                id: rand::random(),
+                name: cuid2::create_id(),
+            }
+        }
+
+        for _ in 0..20 {
+            tasks.push(tokio::spawn(async {
+                GLOBAL_CACHE_1.set(f().await);
+                GLOBAL_CACHE_2.set(f().await);
+                (GLOBAL_CACHE_1.get(), GLOBAL_CACHE_2.get())
+            }))
+        }
+        for task in tasks {
+            task.await.unwrap();
+        }
+    }
+}
