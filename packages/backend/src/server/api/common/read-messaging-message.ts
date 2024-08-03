@@ -17,7 +17,7 @@ import { toArray } from "@/prelude/array.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import { deliver } from "@/queue/index.js";
 import orderedCollection from "@/remote/activitypub/renderer/ordered-collection.js";
-import { unsafeCast } from "@/prelude/unsafe-cast";
+import { unsafeCast } from "@/prelude/unsafe-cast.js";
 
 /**
  * Mark messages as read
