@@ -1,4 +1,4 @@
-image: docker.io/rust:slim-bookworm
+image: docker.io/rust:bookworm
 
 services:
   - name: docker.io/groonga/pgroonga:latest-alpine-12-slim
@@ -205,7 +205,7 @@ build:container:
 
 cargo:check:msrv:
   stage: test
-  image: docker.io/rust:1.74-slim-bookworm
+  image: docker.io/rust:1.74-bookworm
   rules:
     - if: $TEST == 'true'
       when: always
