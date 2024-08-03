@@ -440,6 +440,7 @@ module.exports.RelayStatus = nativeBinding.RelayStatus
 module.exports.removeOldAttestationChallenges = nativeBinding.removeOldAttestationChallenges
 module.exports.renderAccept = nativeBinding.renderAccept
 module.exports.renderEmoji = nativeBinding.renderEmoji
+module.exports.renderFlag = nativeBinding.renderFlag
 module.exports.renderFollow = nativeBinding.renderFollow
 module.exports.renderFollowRelay = nativeBinding.renderFollowRelay
 module.exports.renderTombstone = nativeBinding.renderTombstone

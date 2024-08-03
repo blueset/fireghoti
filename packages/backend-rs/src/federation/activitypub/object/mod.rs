@@ -1,5 +1,6 @@
 pub mod accept;
 pub mod emoji;
+pub mod flag;
 pub mod follow;
 pub mod tombstone;
 
@@ -9,6 +10,7 @@ pub trait ActivityPubObject {}
 pub enum ApObject {
     Accept,
     Emoji,
+    Flag,
     Follow,
     Image,
     Tombstone,

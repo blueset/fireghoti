@@ -119,6 +119,13 @@ export interface ApEmoji {
   icon: Icon
 }
 
+export interface ApFlag {
+  type: ApObject
+  actor: string
+  content: string
+  object: string
+}
+
 export interface ApFollow {
   id: string
   type: ApObject
@@ -128,6 +135,7 @@ export interface ApFollow {
 
 export type ApObject =  'Accept'|
 'Emoji'|
+'Flag'|
 'Follow'|
 'Image'|
 'Tombstone';
@@ -1300,6 +1308,8 @@ export declare function removeOldAttestationChallenges(): Promise<void>
 export declare function renderAccept(userId: string, followObject: ApFollow): ApAccept
 
 export declare function renderEmoji(emoji: Emoji): ApEmoji
+
+export declare function renderFlag(targetUserUri: string, comment: string): Promise<ApFlag>
 
 export declare function renderFollow(follower: UserLike, followee: UserLike, requestId?: string | undefined | null): ApFollow
 
