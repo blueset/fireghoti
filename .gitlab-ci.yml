@@ -47,8 +47,7 @@ variables:
 
 default:
   before_script:
-    - apt-get update && apt-get -y upgrade
-    - apt-get -y --no-install-recommends install curl
+    - apt-get update && apt-get -y --no-install-recommends install curl
     - curl -fsSL 'https://deb.nodesource.com/setup_18.x' | bash -
     - apt-get install -y --no-install-recommends build-essential clang mold python3 perl nodejs postgresql-client
     - corepack enable
@@ -111,8 +110,7 @@ test:build:backend_ts:
           - packages/firefish-js/**/*
       when: always
   before_script:
-    - apt-get update && apt-get -y upgrade
-    - apt-get -y --no-install-recommends install curl
+    - apt-get update && apt-get -y --no-install-recommends install curl
     - curl -fsSL 'https://deb.nodesource.com/setup_18.x' | bash -
     - apt-get install -y --no-install-recommends build-essential clang mold python3 perl nodejs postgresql-client
     - corepack enable
@@ -159,8 +157,7 @@ test:build:client:
       when: always
   services: []
   before_script:
-    - apt-get update && apt-get -y upgrade
-    - apt-get -y --no-install-recommends install curl
+    - apt-get update && apt-get -y --no-install-recommends install curl
     - curl -fsSL 'https://deb.nodesource.com/setup_18.x' | bash -
     - apt-get install -y --no-install-recommends build-essential python3 perl nodejs
     - corepack enable
@@ -179,10 +176,9 @@ build:container:
   variables:
     STORAGE_DRIVER: overlay
   before_script:
-    - apt-get update && apt-get -y upgrade
+    - apt-get update && apt-get install -y --no-install-recommends ca-certificates fuse-overlayfs buildah
     - |-
       sed -i -r 's/"version": "([-0-9]+)",/"version": "\1-dev",/' package.json
-    - apt-get install -y --no-install-recommends ca-certificates fuse-overlayfs buildah
     - echo "${CI_REGISTRY_PASSWORD}" | buildah login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
     - export IMAGE_TAG_1="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production"
     - export IMAGE_TAG_2="${CI_REGISTRY}/${CI_PROJECT_PATH}/develop:not-for-production-$(date +%Y%m%d)"
@@ -221,8 +217,7 @@ cargo:check:msrv:
       when: always
   services: []
   before_script:
-    - apt-get update && apt-get -y upgrade
-    - apt-get install -y --no-install-recommends build-essential clang mold python3 perl nodejs postgresql-client
+    - apt-get update && apt-get install -y --no-install-recommends build-essential clang mold python3 perl nodejs postgresql-client
     - cp ci/cargo/config.toml /usr/local/cargo/config.toml
     - export CARGO_TARGET_DIR='ci/target-msrv'
   script:
@@ -264,8 +259,7 @@ cargo:clippy:
       when: always
   services: []
   before_script:
-    - apt-get update && apt-get -y upgrade
-    - apt-get install -y --no-install-recommends build-essential clang mold perl
+    - apt-get update && apt-get install -y --no-install-recommends build-essential clang mold perl
     - cp ci/cargo/config.toml /usr/local/cargo/config.toml
     - rustup component add clippy
   script:
@@ -289,8 +283,7 @@ cargo:doc:
       when: always
   services: []
   before_script:
-    - apt-get update
-    - apt-get install -y --no-install-recommends build-essential clang mold nodejs npm
+    - apt-get update && apt-get install -y --no-install-recommends build-essential clang mold nodejs npm
     - cp ci/cargo/config.toml /usr/local/cargo/config.toml
   script:
     - cargo doc --document-private-items
@@ -331,8 +324,7 @@ clean:
     - if: $CLEAN && $CI_PIPELINE_SOURCE == 'schedule'
   services: []
   before_script:
-    - apt-get update && apt-get -y upgrade
-    - apt-get -y --no-install-recommends install curl
+    - apt-get update && apt-get -y --no-install-recommends install curl
     - curl -fsSL 'https://deb.nodesource.com/setup_18.x' | bash -
     - apt-get install -y --no-install-recommends nodejs
     - corepack enable
