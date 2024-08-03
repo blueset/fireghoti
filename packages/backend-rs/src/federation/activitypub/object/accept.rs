@@ -1,5 +1,5 @@
 use super::*;
-use crate::config::CONFIG;
+use crate::{config::CONFIG, misc::user};
 use uuid::Uuid;
 
 #[macros::export(object)]
@@ -18,7 +18,7 @@ impl ApAccept {
         Self {
             id: format!("{}/{}", CONFIG.url, Uuid::new_v4()),
             r#type: ApObject::Accept,
-            actor: format!("{}/users/{}", CONFIG.url, user_id),
+            actor: user::local_uri(user_id),
             object: follow_object,
         }
     }

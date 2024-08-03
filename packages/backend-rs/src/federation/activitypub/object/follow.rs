@@ -39,11 +39,11 @@ impl ApFollow {
             }),
             r#type: ApObject::Follow,
             actor: match user::is_local!(follower) {
-                true => format!("{}/users/{}", CONFIG.url, follower.id),
+                true => user::local_uri(follower.id),
                 false => follower.uri.ok_or(Error::MissingFollowerUri)?,
             },
             object: match user::is_local!(followee) {
-                true => format!("{}/users/{}", CONFIG.url, followee.id),
+                true => user::local_uri(followee.id),
                 false => followee.uri.ok_or(Error::MissingFolloweeUri)?,
             },
         })
@@ -54,11 +54,7 @@ impl ApFollow {
         Ok(Self {
             id: format!("{}/activities/follow-relay/{}", CONFIG.url, relay_id),
             r#type: ApObject::Follow,
-            actor: format!(
-                "{}/users/{}",
-                CONFIG.url,
-                internal_actor::relay::get_id().await?
-            ),
+            actor: user::local_uri(internal_actor::relay::get_id().await?),
             object: AS_PUBLIC_URL.to_owned(),
         })
     }

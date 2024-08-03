@@ -1,5 +1,5 @@
 use super::*;
-use crate::{config::CONFIG, federation::internal_actor};
+use crate::{federation::internal_actor, misc::user};
 
 #[macros::export(object)]
 pub struct ApFlag {
@@ -20,11 +20,7 @@ impl ApFlag {
     ) -> Result<Self, internal_actor::instance::Error> {
         Ok(Self {
             r#type: ApObject::Flag,
-            actor: format!(
-                "{}/users/{}",
-                CONFIG.url,
-                internal_actor::instance::get().await?.id
-            ),
+            actor: user::local_uri(&internal_actor::instance::get().await?.id),
             content: comment,
             object: target_user_uri,
         })
