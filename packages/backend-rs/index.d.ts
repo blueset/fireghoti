@@ -133,10 +133,17 @@ export interface ApFollow {
   object: string
 }
 
+export interface ApMention {
+  type: ApObject
+  href: string
+  name: string
+}
+
 export type ApObject =  'Accept'|
 'Emoji'|
 'Flag'|
 'Follow'|
+'Mention'|
 'Image'|
 'Read'|
 'Tombstone';
@@ -1322,6 +1329,8 @@ export declare function renderFollow(follower: UserLike, followee: UserLike, req
 
 export declare function renderFollowRelay(relayId: string): Promise<ApFollow>
 
+export declare function renderMention(user: UserLike): ApMention
+
 export declare function renderRead(userId: string, messageUri: string): ApRead
 
 export declare function renderTombstone(noteId: string): ApTombstone
@@ -1596,6 +1605,7 @@ export interface UserKeypair {
 
 export interface UserLike {
   id: string
+  username: string
   host: string | null
   uri: string | null
 }

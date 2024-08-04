@@ -443,6 +443,7 @@ module.exports.renderEmoji = nativeBinding.renderEmoji
 module.exports.renderFlag = nativeBinding.renderFlag
 module.exports.renderFollow = nativeBinding.renderFollow
 module.exports.renderFollowRelay = nativeBinding.renderFollowRelay
+module.exports.renderMention = nativeBinding.renderMention
 module.exports.renderRead = nativeBinding.renderRead
 module.exports.renderTombstone = nativeBinding.renderTombstone
 module.exports.safeForSql = nativeBinding.safeForSql

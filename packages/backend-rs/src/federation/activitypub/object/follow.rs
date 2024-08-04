@@ -2,13 +2,6 @@ use super::*;
 use crate::{config::CONFIG, federation::internal_actor, misc::user};
 
 #[macros::export(object)]
-pub struct UserLike {
-    pub id: String,
-    pub host: Option<String>,
-    pub uri: Option<String>,
-}
-
-#[macros::export(object)]
 pub struct ApFollow {
     pub id: String,
     pub r#type: ApObject,
