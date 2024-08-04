@@ -1,0 +1,9 @@
+pub mod emoji;
+pub mod reaction;
+
+use crate::config::CONFIG;
+
+/// Returns URI of a local custom emoji.
+pub fn local_uri(emoji_code: impl std::fmt::Display) -> String {
+    format!("{}/emojis/{}", CONFIG.url, emoji_code)
+}

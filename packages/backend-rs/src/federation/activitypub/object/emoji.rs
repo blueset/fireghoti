@@ -1,5 +1,5 @@
 use super::*;
-use crate::{config::CONFIG, model::entity::emoji};
+use crate::{model::entity::emoji, misc};
 use chrono::Utc;
 
 #[macros::export(object)]
@@ -24,7 +24,7 @@ impl ApEmoji {
     #[allow(dead_code)] // TODO: remove this line
     fn new(emoji: emoji::Model) -> Self {
         Self {
-            id: format!("{}/emojis/{}", CONFIG.url, emoji.name),
+            id: misc::emoji::local_uri(&emoji.name),
             r#type: ApObject::Emoji,
             name: format!(":{}:", emoji.name),
             updated: emoji

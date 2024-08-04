@@ -2,6 +2,7 @@ pub mod count;
 
 use crate::config::CONFIG;
 
+/// Returns URI of a local user.
 pub fn local_uri(user_id: impl std::fmt::Display) -> String {
     format!("{}/users/{}", CONFIG.url, user_id)
 }
