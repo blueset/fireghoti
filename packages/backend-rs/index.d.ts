@@ -133,6 +133,12 @@ export interface ApFollow {
   object: string
 }
 
+export interface ApHashtag {
+  id: string
+  type: ApObject
+  name: string
+}
+
 export interface ApMention {
   type: ApObject
   href: string
@@ -143,6 +149,7 @@ export type ApObject =  'Accept'|
 'Emoji'|
 'Flag'|
 'Follow'|
+'Hashtag'|
 'Mention'|
 'Image'|
 'Read'|
@@ -1328,6 +1335,8 @@ export declare function renderFlag(targetUserUri: string, comment: string): Prom
 export declare function renderFollow(follower: UserLike, followee: UserLike, requestId?: string | undefined | null): ApFollow
 
 export declare function renderFollowRelay(relayId: string): Promise<ApFollow>
+
+export declare function renderHashtag(tagName: string): ApHashtag
 
 export declare function renderMention(user: UserLike): ApMention
 
