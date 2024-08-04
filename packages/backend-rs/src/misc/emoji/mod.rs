@@ -1,5 +1,5 @@
-pub mod emoji;
 pub mod reaction;
+pub mod unicode;
 
 use crate::config::CONFIG;
 
