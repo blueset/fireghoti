@@ -73,8 +73,8 @@ importers:
         specifier: 11.2.2
         version: 11.2.2
       adm-zip:
-        specifier: 0.5.14
-        version: 0.5.14
+        specifier: 0.5.15
+        version: 0.5.15
       ajv:
         specifier: 8.17.1
         version: 8.17.1
@@ -2752,8 +2752,8 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
-  adm-zip@0.5.14:
-    resolution: {integrity: sha512-DnyqqifT4Jrcvb8USYjp6FHtBpEIz1mnXu6pTRHZ0RL69LbQYiO+0lDFg5+OKA7U29oWSs3a/i8fhn8ZcceIWg==}
+  adm-zip@0.5.15:
+    resolution: {integrity: sha512-jYPWSeOA8EFoZnucrKCNihqBjoEGQSU4HKgHYQgKNEQ0pQF9a/DYuo/+fAxY76k4qe75LUlLWpAM1QWcBMTOKw==}
     engines: {node: '>=12.0'}
 
   agent-base@7.1.1:
@@ -8910,7 +8910,7 @@ snapshots:
 
   acorn@8.12.1: {}
 
-  adm-zip@0.5.14: {}
+  adm-zip@0.5.15: {}
 
   agent-base@7.1.1:
     dependencies:
