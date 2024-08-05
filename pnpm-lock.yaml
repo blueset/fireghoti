@@ -163,8 +163,8 @@ importers:
         specifier: 4.0.2
         version: 4.0.2
       is-svg:
-        specifier: 5.0.1
-        version: 5.0.1
+        specifier: 5.1.0
+        version: 5.1.0
       jsdom:
         specifier: 24.1.1
         version: 24.1.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
@@ -3952,8 +3952,8 @@ packages:
   fast-uri@3.0.1:
     resolution: {integrity: sha512-MWipKbbYiYI0UC7cl8m/i/IWTqfC8YXsqjzybjddLsFjStroQzsHXkc73JutMvBiXmOvapk+axIl79ig5t55Bw==}
 
-  fast-xml-parser@4.4.0:
-    resolution: {integrity: sha512-kLY3jFlwIYwBNDojclKsNAC12sfD6NwW74QB2CoNGPvtVxjliYehVunB3HYyNi+n4Tt1dAcgwYvmKF/Z18flqg==}
+  fast-xml-parser@4.4.1:
+    resolution: {integrity: sha512-xkjOecfnKGkSsOwtZ5Pz7Us/T6mrbPQrq0nh+aCO5V9nk5NLWmasAHumTKjiPJPWANe+kAZ84Jc8ooJkzZ88Sw==}
     hasBin: true
 
   fastq@1.17.1:
@@ -4479,8 +4479,8 @@ packages:
     resolution: {integrity: sha512-Dnz92NInDqYckGEUJv689RbRiTSEHCQ7wOVeALbkOz999YpqT46yMRIGtSNl2iCL1waAZSx40+h59NV/EwzV/A==}
     engines: {node: '>=18'}
 
-  is-svg@5.0.1:
-    resolution: {integrity: sha512-mLYxDsfisQWdS4+gSblAwhATDoNMS/tx8G7BKA+aBIf7F0m1iUwMvuKAo6mW4WMleQAEE50I1Zqef9yMMfHk3w==}
+  is-svg@5.1.0:
+    resolution: {integrity: sha512-uVg5yifaTxHoefNf5Jcx+i9RZe2OBYd/UStp1umx+EERa4xGRa3LLGXjoEph43qUORC0qkafUgrXZ6zzK89yGA==}
     engines: {node: '>=14.16'}
 
   is-typed-array@1.1.13:
@@ -10061,7 +10061,7 @@ snapshots:
 
   fast-uri@3.0.1: {}
 
-  fast-xml-parser@4.4.0:
+  fast-xml-parser@4.4.1:
     dependencies:
       strnum: 1.0.5
 
@@ -10593,9 +10593,9 @@ snapshots:
 
   is-stream@4.0.1: {}
 
-  is-svg@5.0.1:
+  is-svg@5.1.0:
     dependencies:
-      fast-xml-parser: 4.4.0
+      fast-xml-parser: 4.4.1
 
   is-typed-array@1.1.13:
     dependencies:
