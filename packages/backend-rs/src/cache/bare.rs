@@ -92,14 +92,21 @@ impl<T: Clone> Cache<T> {
     /// ```
     pub fn set(&self, value: T) {
         if self.ttl.is_none() {
-            let _ = self.cache.lock().map(|mut cache| cache.value = Some(value));
+            let mut cache = match self.cache.lock() {
+                Ok(cache) => cache,
+                Err(err) => err.into_inner(),
+            };
+            cache.value = Some(value);
         } else {
-            let _ = self.cache.lock().map(|mut cache| {
-                *cache = TimedData {
-                    value: Some(value),
-                    last_updated: Utc::now(),
-                }
-            });
+            let mut cache = match self.cache.lock() {
+                Ok(cache) => cache,
+                Err(err) => err.into_inner(),
+            };
+
+            *cache = TimedData {
+                value: Some(value),
+                last_updated: Utc::now(),
+            };
         }
     }
 
