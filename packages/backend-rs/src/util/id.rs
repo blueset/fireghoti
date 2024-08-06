@@ -3,11 +3,10 @@
 use crate::config::CONFIG;
 use basen::BASE36;
 use chrono::{DateTime, NaiveDateTime, Utc};
-use once_cell::sync::OnceCell;
-use std::cmp;
+use std::{cmp, sync::OnceLock};
 
-static FINGERPRINT: OnceCell<String> = OnceCell::new();
-static GENERATOR: OnceCell<cuid2::CuidConstructor> = OnceCell::new();
+static FINGERPRINT: OnceLock<String> = OnceLock::new();
+static GENERATOR: OnceLock<cuid2::CuidConstructor> = OnceLock::new();
 
 const TIME_2000: i64 = 946_684_800_000;
 const TIMESTAMP_LENGTH: u8 = 8;
