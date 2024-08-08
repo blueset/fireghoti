@@ -8,10 +8,9 @@
 		"build": "pnpm vite build",
 		"build:debug": "pnpm run build",
 		"lint": "pnpm run lint:ts ; pnpm run lint:vue",
-		"lint:ts": "pnpm biome check **/*.ts --write",
-		"lint:vue": "pnpm biome check **/*.vue --write",
-		"types:check": "pnpm vue-tsc --noEmit",
-		"format": "pnpm biome format * --write"
+		"lint:ts": "pnpm biome check --write src/*.ts src/**/*.ts src/**/**/*.ts",
+		"lint:vue": "pnpm vue-tsc --noEmit",
+		"format": "pnpm biome format --write src"
 	},
 	"devDependencies": {
 		"@phosphor-icons/web": "2.1.1",

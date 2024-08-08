@@ -13,8 +13,8 @@
 		"build": "pnpm tsc --project tsconfig.json ; pnpm tsc-alias --project tsconfig.json",
 		"build:debug": "pnpm tsc --sourceMap --project tsconfig.json ; pnpm tsc-alias --project tsconfig.json",
 		"watch": "pnpm tsc --project tsconfig.json --watch ; pnpm tsc-alias --project tsconfig.json --watch",
-		"lint": "pnpm biome check --write **/*.ts",
-		"format": "pnpm biome format * --write"
+		"lint": "pnpm biome check --write src",
+		"format": "pnpm biome format --write src"
 	},
 	"dependencies": {
 		"@bull-board/api": "5.21.3",

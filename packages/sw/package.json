@@ -6,8 +6,8 @@
 	"scripts": {
 		"build": "pnpm vite build --emptyOutDir",
 		"build:debug": "pnpm run build",
-		"lint": "pnpm biome check *.ts --apply",
-		"format": "pnpm biome format * --write"
+		"lint": "pnpm biome check --write src",
+		"format": "pnpm biome format --write src"
 	},
 	"devDependencies": {
 		"firefish-js": "workspace:*",
