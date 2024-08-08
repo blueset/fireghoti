@@ -5,7 +5,7 @@ import tinycolor from "tinycolor2";
 export class uniformThemecolor1652859567549 implements MigrationInterface {
 	async up(queryRunner: QueryRunner): Promise<void> {
 		const formatColor = (color) => {
-			let tc = new tinycolor(color);
+			const tc = new tinycolor(color);
 			if (tc.isValid()) {
 				return tc.toHexString();
 			} else {

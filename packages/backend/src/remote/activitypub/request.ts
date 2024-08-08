@@ -42,7 +42,7 @@ export default async (user: { id: User["id"] }, url: string, object: any) => {
 export async function apGet(
 	url: string,
 	user?: ILocalUser,
-	redirects: boolean = true,
+	redirects = true,
 ): Promise<{ finalUrl: string; content: IObject }> {
 	if (!isSafeUrl(url)) {
 		throw new StatusError("Invalid URL", 400);

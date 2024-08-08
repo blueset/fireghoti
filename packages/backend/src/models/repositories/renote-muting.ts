@@ -1,7 +1,7 @@
 import { db } from "@/db/postgre.js";
-import { Packed } from "@/misc/schema.js";
+import type { Packed } from "@/misc/schema.js";
 import { RenoteMuting } from "@/models/entities/renote-muting.js";
-import { User } from "@/models/entities/user.js";
+import type { User } from "@/models/entities/user.js";
 import { awaitAll } from "@/prelude/await-all.js";
 import { Users } from "../index.js";
 

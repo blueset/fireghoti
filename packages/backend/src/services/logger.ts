@@ -132,7 +132,7 @@ export default class Logger {
 								? message
 								: null;
 
-		let log = `${l} ${worker}\t[${domains.join(" ")}]\t${m}`;
+		const log = `${l} ${worker}\t[${domains.join(" ")}]\t${m}`;
 
 		console.log(important ? chalk.bold(log) : log);
 

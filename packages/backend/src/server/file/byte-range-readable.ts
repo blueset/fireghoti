@@ -82,7 +82,7 @@ function extractRanges(
 }
 
 function createBoundary(len: number): string {
-	let chars = [];
+	const chars = [];
 	for (let i = 0; i < len; i = i + 1) {
 		chars[i] = BOUNDARY_CHARS.charAt(
 			Math.floor(Math.random() * BOUNDARY_CHARS.length),
