@@ -111,6 +111,13 @@ export interface ApAccept {
   object: ApFollow
 }
 
+export interface ApAdd {
+  type: ApObject
+  actor: string
+  target: string
+  object: string
+}
+
 export interface ApEmoji {
   id: string
   type: ApObject
@@ -146,6 +153,7 @@ export interface ApMention {
 }
 
 export type ApObject =  'Accept'|
+'Add'|
 'Emoji'|
 'Flag'|
 'Follow'|
@@ -153,6 +161,7 @@ export type ApObject =  'Accept'|
 'Mention'|
 'Image'|
 'Read'|
+'Remove'|
 'Tombstone';
 
 export interface App {
@@ -169,6 +178,13 @@ export interface App {
 export interface ApRead {
   type: ApObject
   actor: string
+  object: string
+}
+
+export interface ApRemove {
+  type: ApObject
+  actor: string
+  target: string
   object: string
 }
 
@@ -1328,6 +1344,8 @@ export declare function removeOldAttestationChallenges(): Promise<void>
 
 export declare function renderAccept(userId: string, followObject: ApFollow): ApAccept
 
+export declare function renderAdd(userId: string, noteId: string): ApAdd
+
 export declare function renderEmoji(emoji: Emoji): ApEmoji
 
 export declare function renderFlag(targetUserUri: string, comment: string): Promise<ApFlag>
@@ -1341,6 +1359,8 @@ export declare function renderHashtag(tagName: string): ApHashtag
 export declare function renderMention(user: UserLike): ApMention
 
 export declare function renderRead(userId: string, messageUri: string): ApRead
+
+export declare function renderRemove(userId: string, noteId: string): ApRemove
 
 export declare function renderTombstone(noteId: string): ApTombstone
 
