@@ -8,7 +8,7 @@ Firefish depends on the following software.
 
 ### Runtime dependencies
 
-- At least [NodeJS](https://nodejs.org/en/) v18.19.0 (v20/v22 recommended)
+- At least [NodeJS](https://nodejs.org/en/) v18.20.0 (v20/v22 recommended)
 - At least [PostgreSQL](https://www.postgresql.org/) v12 (v16 recommended) with [PGroonga](https://pgroonga.github.io/) extension
 - At least [Redis](https://redis.io/) v7 or [Valkey](https://valkey.io/) v7
 - Web Proxy (one of the following)

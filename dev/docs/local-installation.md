@@ -15,7 +15,7 @@ sudo apt install build-essential python3 curl wget git lsb-release
 
 ### Node.js
 
-Firefish requires Node.js v18.19.0 or later. While you can choose any versions between v18.19.0 and the latest version (v22.2.0 as of writing), we recommend that you install v18.x so as not to use new features inadvertently and introduce incompatibility issues.
+Firefish requires Node.js v18.20.0 or later. While you can choose any versions between v18.20.0 and the latest version (v22.2.0 as of writing), we recommend that you install v18.x so as not to use new features inadvertently and introduce incompatibility issues.
 
 Instructions can be found at [this repository](https://github.com/nodesource/distributions).
 
