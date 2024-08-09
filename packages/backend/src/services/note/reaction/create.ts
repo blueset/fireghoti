@@ -1,4 +1,3 @@
-import { renderLike } from "@/remote/activitypub/renderer/like.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import type { User, IRemoteUser } from "@/models/entities/user.js";
@@ -17,6 +16,7 @@ import {
 	genIdAt,
 	NoteEvent,
 	publishToNoteStream,
+	renderLike,
 	toDbReaction,
 } from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
@@ -152,7 +152,7 @@ export default async (
 		!note.localOnly &&
 		note.visibility !== "hidden"
 	) {
-		const content = renderActivity(await renderLike(record, note));
+		const content = renderActivity(await renderLike(record));
 		const dm = new DeliverManager(user, content);
 		if (note.userHost != null) {
 			const reactee = await Users.findOneBy({ id: note.userId });

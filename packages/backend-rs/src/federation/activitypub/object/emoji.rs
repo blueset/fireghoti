@@ -21,8 +21,7 @@ pub struct Icon {
 impl ActivityPubObject for ApEmoji {}
 
 impl ApEmoji {
-    #[allow(dead_code)] // TODO: remove this line
-    fn new(emoji: emoji::Model) -> Self {
+    pub fn new(emoji: emoji::Model) -> Self {
         Self {
             id: misc::emoji::local_uri(&emoji.name),
             r#type: ApObject::Emoji,

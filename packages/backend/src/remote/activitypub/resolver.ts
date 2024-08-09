@@ -7,6 +7,7 @@ import {
 	isBlockedServer,
 	isSelfHost,
 	renderFollow,
+	renderLike,
 } from "backend-rs";
 import { apGet } from "./request.js";
 import type { IObject, ICollection, IOrderedCollection } from "./type.js";
@@ -20,7 +21,6 @@ import {
 } from "@/models/index.js";
 import { parseUri } from "./db-resolver.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
-import { renderLike } from "@/remote/activitypub/renderer/like.js";
 import { renderPerson } from "@/remote/activitypub/renderer/person.js";
 import renderQuestion from "@/remote/activitypub/renderer/question.js";
 import renderCreate from "@/remote/activitypub/renderer/create.js";
@@ -181,7 +181,7 @@ export default class Resolver {
 			}
 			case "likes": {
 				const reaction = await NoteReactions.findOneByOrFail({ id: parsed.id });
-				return renderActivity(renderLike(reaction, { uri: null }));
+				return renderActivity(await renderLike(reaction));
 			}
 			case "follows": {
 				// if rest is a <followee id>

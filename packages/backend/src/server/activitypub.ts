@@ -14,6 +14,7 @@ import {
 	isSelfHost,
 	renderEmoji,
 	renderFollow,
+	renderLike,
 } from "backend-rs";
 import {
 	Notes,
@@ -23,7 +24,6 @@ import {
 	FollowRequests,
 } from "@/models/index.js";
 import type { ILocalUser, User } from "@/models/entities/user.js";
-import { renderLike } from "@/remote/activitypub/renderer/like.js";
 import { getUserKeypair } from "@/misc/keypair-store.js";
 import {
 	checkFetch,
@@ -466,7 +466,7 @@ router.get("/likes/:like", async (ctx) => {
 		return;
 	}
 
-	ctx.body = renderActivity(await renderLike(reaction, note));
+	ctx.body = renderActivity(await renderLike(reaction));
 	const instanceMeta = await fetchMeta();
 	if (instanceMeta.secureMode || instanceMeta.privateMode) {
 		ctx.set("Cache-Control", "private, max-age=0, must-revalidate");

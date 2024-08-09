@@ -4,6 +4,7 @@ pub mod emoji;
 pub mod flag;
 pub mod follow;
 pub mod hashtag;
+pub mod like;
 pub mod mention;
 pub mod read;
 pub mod remove;
@@ -19,6 +20,7 @@ pub enum ApObject {
     Flag,
     Follow,
     Hashtag,
+    Like,
     Mention,
     Image,
     Read,
