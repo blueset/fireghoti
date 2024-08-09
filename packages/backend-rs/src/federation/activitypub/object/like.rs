@@ -5,7 +5,7 @@ use crate::{
     misc::{self, user},
     model::entity::{emoji, note, note_reaction},
 };
-use sea_orm::{ColumnTrait, DbErr, EntityTrait, QueryFilter, QuerySelect, SelectColumns};
+use sea_orm::{ColumnTrait, DbErr, EntityTrait, QueryFilter, QuerySelect};
 
 #[macros::errors]
 pub enum Error {
@@ -37,7 +37,7 @@ impl ApLike {
         let note_uri = {
             let note_uri = note::Entity::find()
                 .select_only()
-                .select_column(note::Column::Uri)
+                .column(note::Column::Uri)
                 .filter(note::Column::Id.eq(&reaction.note_id))
                 .into_tuple::<Option<String>>()
                 .one(db)
