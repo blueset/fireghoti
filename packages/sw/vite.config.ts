@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import locales from "../../locales/index.mjs";
-import meta from "../../package.json" assert { type: "json" };
+import meta from "../../package.json" with { type: "json" };
 
 const isProduction = process.env.NODE_ENV === "production";
 import viteCompression from "vite-plugin-compression";

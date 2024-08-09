@@ -6,6 +6,14 @@ You can skip intermediate versions when upgrading from an old version, but pleas
 
 Please take a look at #10947.
 
+## Unreleased
+
+### For systemd/pm2 users
+
+Required Node.js version has been bumped from v18.19.0 to v18.20.0.
+
+As written in the [v20240710 note](https://firefish.dev/firefish/firefish/-/blob/7660050d9938a5a92293bb8acc361a0ef0715912/docs/notice-for-admins.md#v20240710), it is highly recommended that you use an even newer version since v18.20.0 has known vulnerabilities.
+
 ## v20240725
 
 ### For LibreTranslate self-hosters
