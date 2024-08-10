@@ -1,5 +1,4 @@
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderReject from "@/remote/activitypub/renderer/reject.js";
 import { deliver } from "@/queue/index.js";
 import createFollowRequest from "./requests/create.js";
 import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
@@ -23,6 +22,7 @@ import {
 	UserEvent,
 	renderAccept,
 	renderFollow,
+	renderReject,
 } from "backend-rs";
 import { createNotification } from "@/services/create-notification.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
@@ -196,7 +196,7 @@ export default async function (
 	if (Users.isRemoteUser(follower) && Users.isLocalUser(followee) && blocked) {
 		// リモートフォローを受けてブロックしていた場合は、エラーにするのではなくRejectを送り返しておしまい。
 		const content = renderActivity(
-			renderReject(renderFollow(follower, followee, requestId), followee),
+			renderReject(followee.id, renderFollow(follower, followee, requestId)),
 		);
 		deliver(followee.id, content, follower.inbox);
 		return;

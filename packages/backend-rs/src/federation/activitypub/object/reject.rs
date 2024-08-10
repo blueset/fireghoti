@@ -2,16 +2,16 @@ use super::*;
 use crate::misc::user;
 
 #[macros::export(object)]
-pub struct ApAccept {
+pub struct ApReject {
     pub id: String,
     pub r#type: Activity,
     pub actor: String,
     pub object: follow::ApFollow,
 }
 
-impl ApObject for ApAccept {}
+impl ApObject for ApReject {}
 
-impl ApAccept {
+impl ApReject {
     #[allow(dead_code)] // TODO: remove this line by actually using it
     fn new(user_id: String, follow_object: follow::ApFollow) -> Self {
         Self {
@@ -24,6 +24,6 @@ impl ApAccept {
 }
 
 #[macros::ts_export]
-pub fn render_accept(user_id: String, follow_object: follow::ApFollow) -> ApAccept {
-    ApAccept::new(user_id, follow_object)
+pub fn render_reject(user_id: String, follow_object: follow::ApFollow) -> ApReject {
+    ApReject::new(user_id, follow_object)
 }

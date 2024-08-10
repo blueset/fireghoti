@@ -48,6 +48,20 @@ export interface Acct {
 
 export declare function acctToString(acct: Acct): string
 
+export type Activity =  'Accept'|
+'Add'|
+'Emoji'|
+'Flag'|
+'Follow'|
+'Hashtag'|
+'Like'|
+'Mention'|
+'Image'|
+'Read'|
+'Reject'|
+'Remove'|
+'Tombstone';
+
 export interface Ad {
   id: string
   createdAt: DateTimeWithTimeZone
@@ -106,13 +120,13 @@ export type AntennaSrc =  'all'|
 
 export interface ApAccept {
   id: string
-  type: ApObject
+  type: Activity
   actor: string
   object: ApFollow
 }
 
 export interface ApAdd {
-  type: ApObject
+  type: Activity
   actor: string
   target: string
   object: string
@@ -120,14 +134,14 @@ export interface ApAdd {
 
 export interface ApEmoji {
   id: string
-  type: ApObject
+  type: Activity
   name: string
   updated: string
   icon: Icon
 }
 
 export interface ApFlag {
-  type: ApObject
+  type: Activity
   actor: string
   content: string
   object: string
@@ -135,20 +149,20 @@ export interface ApFlag {
 
 export interface ApFollow {
   id: string
-  type: ApObject
+  type: Activity
   actor: string
   object: string
 }
 
 export interface ApHashtag {
   id: string
-  type: ApObject
+  type: Activity
   name: string
 }
 
 export interface ApLike {
   id: string
-  type: ApObject
+  type: Activity
   actor: string
   object: string
   content: string
@@ -156,23 +170,10 @@ export interface ApLike {
 }
 
 export interface ApMention {
-  type: ApObject
+  type: Activity
   href: string
   name: string
 }
-
-export type ApObject =  'Accept'|
-'Add'|
-'Emoji'|
-'Flag'|
-'Follow'|
-'Hashtag'|
-'Like'|
-'Mention'|
-'Image'|
-'Read'|
-'Remove'|
-'Tombstone';
 
 export interface App {
   id: string
@@ -186,13 +187,20 @@ export interface App {
 }
 
 export interface ApRead {
-  type: ApObject
+  type: Activity
   actor: string
   object: string
 }
 
+export interface ApReject {
+  id: string
+  type: Activity
+  actor: string
+  object: ApFollow
+}
+
 export interface ApRemove {
-  type: ApObject
+  type: Activity
   actor: string
   target: string
   object: string
@@ -200,7 +208,7 @@ export interface ApRemove {
 
 export interface ApTombstone {
   id: string
-  type: ApObject
+  type: Activity
 }
 
 export interface AttestationChallenge {
@@ -604,7 +612,7 @@ export interface Hashtag {
 }
 
 export interface Icon {
-  type: ApObject
+  type: Activity
   mediaType: string
   url: string
 }
@@ -1371,6 +1379,8 @@ export declare function renderLike(reaction: Model): Promise<ApLike>
 export declare function renderMention(user: UserLike): ApMention
 
 export declare function renderRead(userId: string, messageUri: string): ApRead
+
+export declare function renderReject(userId: string, followObject: ApFollow): ApReject
 
 export declare function renderRemove(userId: string, noteId: string): ApRemove
 

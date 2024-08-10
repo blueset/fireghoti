@@ -4,10 +4,10 @@ import {
 	publishToUserStream,
 	UserEvent,
 	renderFollow,
+	renderReject,
 } from "backend-rs";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import { renderUndo } from "@/remote/activitypub/renderer/undo.js";
-import renderReject from "@/remote/activitypub/renderer/reject.js";
 import { deliver, webhookDeliver } from "@/queue/index.js";
 import Logger from "../logger.js";
 import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
@@ -22,6 +22,7 @@ export default async function (
 		id: User["id"];
 		host: User["host"];
 		uri: User["host"];
+		username: User["username"];
 		inbox: User["inbox"];
 		sharedInbox: User["sharedInbox"];
 	},
@@ -29,6 +30,7 @@ export default async function (
 		id: User["id"];
 		host: User["host"];
 		uri: User["host"];
+		username: User["username"];
 		inbox: User["inbox"];
 		sharedInbox: User["sharedInbox"];
 	},
@@ -79,7 +81,7 @@ export default async function (
 	if (Users.isLocalUser(followee) && Users.isRemoteUser(follower)) {
 		// local user has null host
 		const content = renderActivity(
-			renderReject(renderFollow(follower, followee), followee),
+			renderReject(followee.id, renderFollow(follower, followee)),
 		);
 		deliver(followee.id, content, follower.inbox);
 	}
