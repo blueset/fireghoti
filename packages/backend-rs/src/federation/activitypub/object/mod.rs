@@ -10,10 +10,10 @@ pub mod read;
 pub mod remove;
 pub mod tombstone;
 
-pub trait ActivityPubObject {}
+pub trait ApObject {}
 
 #[macros::export(string_enum)]
-pub enum ApObject {
+pub enum Activity {
     Accept,
     Add,
     Emoji,

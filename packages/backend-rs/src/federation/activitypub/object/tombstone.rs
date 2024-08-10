@@ -4,17 +4,17 @@ use crate::misc::note;
 #[macros::export(object)]
 pub struct ApTombstone {
     pub id: String,
-    pub r#type: ApObject,
+    pub r#type: Activity,
 }
 
-impl ActivityPubObject for ApTombstone {}
+impl ApObject for ApTombstone {}
 
 impl ApTombstone {
-    #[allow(dead_code)] // TODO: remove this line
+    #[allow(dead_code)] // TODO: remove this line by actually using it
     fn new(note_id: String) -> Self {
         Self {
             id: note::local_uri(note_id),
-            r#type: ApObject::Tombstone,
+            r#type: Activity::Tombstone,
         }
     }
 }

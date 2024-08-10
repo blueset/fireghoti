@@ -20,17 +20,17 @@ pub enum Error {
 #[macros::export(object, use_nullable = false)]
 pub struct ApLike {
     pub id: String,
-    pub r#type: ApObject,
+    pub r#type: Activity,
     pub actor: String,
     pub object: String,
     pub content: String,
     pub tag: Option<Vec<ApEmoji>>,
 }
 
-impl ActivityPubObject for ApLike {}
+impl ApObject for ApLike {}
 
 impl ApLike {
-    #[allow(dead_code)] // TODO: remove this line
+    #[allow(dead_code)] // TODO: remove this line by actually using it
     async fn new(reaction: note_reaction::Model) -> Result<Self, Error> {
         let db = db_conn().await?;
 
@@ -59,7 +59,7 @@ impl ApLike {
 
         Ok(Self {
             id: format!("{}/likes/{}", CONFIG.url, reaction.id),
-            r#type: ApObject::Like,
+            r#type: Activity::Like,
             actor: user::local_uri(reaction.user_id),
             object: note_uri,
             content: reaction.reaction,

@@ -5,19 +5,19 @@ use uuid::Uuid;
 #[macros::export(object)]
 pub struct ApAccept {
     pub id: String,
-    pub r#type: ApObject,
+    pub r#type: Activity,
     pub actor: String,
     pub object: follow::ApFollow,
 }
 
-impl ActivityPubObject for ApAccept {}
+impl ApObject for ApAccept {}
 
 impl ApAccept {
-    #[allow(dead_code)] // TODO: remove this line
+    #[allow(dead_code)] // TODO: remove this line by actually using it
     fn new(user_id: String, follow_object: follow::ApFollow) -> Self {
         Self {
             id: format!("{}/{}", CONFIG.url, Uuid::new_v4()),
-            r#type: ApObject::Accept,
+            r#type: Activity::Accept,
             actor: user::local_uri(user_id),
             object: follow_object,
         }

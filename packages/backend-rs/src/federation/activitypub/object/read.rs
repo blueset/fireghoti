@@ -3,18 +3,18 @@ use crate::misc::user;
 
 #[macros::export(object)]
 pub struct ApRead {
-    pub r#type: ApObject,
+    pub r#type: Activity,
     pub actor: String,
     pub object: String,
 }
 
-impl ActivityPubObject for ApRead {}
+impl ApObject for ApRead {}
 
 impl ApRead {
-    #[allow(dead_code)] // TODO: remove this line
+    #[allow(dead_code)] // TODO: remove this line by actually using it
     fn new(user_id: String, message_uri: String) -> Self {
         Self {
-            r#type: ApObject::Read,
+            r#type: Activity::Read,
             actor: user::local_uri(user_id),
             object: message_uri,
         }

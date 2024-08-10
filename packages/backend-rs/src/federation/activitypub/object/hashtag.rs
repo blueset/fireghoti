@@ -4,18 +4,18 @@ use crate::config::CONFIG;
 #[macros::export(object)]
 pub struct ApHashtag {
     pub id: String,
-    pub r#type: ApObject,
+    pub r#type: Activity,
     pub name: String,
 }
 
-impl ActivityPubObject for ApHashtag {}
+impl ApObject for ApHashtag {}
 
 impl ApHashtag {
-    #[allow(dead_code)] // TODO: remove this line
+    #[allow(dead_code)] // TODO: remove this line by actually using it
     fn new(tag_name: &str) -> Self {
         Self {
             id: format!("{}/tags/{}", CONFIG.url, urlencoding::encode(tag_name)),
-            r#type: ApObject::Hashtag,
+            r#type: Activity::Hashtag,
             name: format!("#{}", tag_name),
         }
     }

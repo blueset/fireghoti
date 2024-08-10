@@ -7,18 +7,18 @@ pub struct MissingRemoteUserUri;
 
 #[macros::export(object)]
 pub struct ApMention {
-    pub r#type: ApObject,
+    pub r#type: Activity,
     pub href: String,
     pub name: String,
 }
 
-impl ActivityPubObject for ApMention {}
+impl ApObject for ApMention {}
 
 impl ApMention {
-    #[allow(dead_code)] // TODO: remove this line
+    #[allow(dead_code)] // TODO: remove this line by actually using it
     fn new(user: UserLike) -> Result<Self, MissingRemoteUserUri> {
         Ok(Self {
-            r#type: ApObject::Mention,
+            r#type: Activity::Mention,
             href: match user::is_local!(user) {
                 true => user::local_uri(user.id),
                 false => user.uri.ok_or(MissingRemoteUserUri)?,
