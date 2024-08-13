@@ -34,7 +34,7 @@
 		"async-lock": "1.4.1",
 		"async-mutex": "0.5.0",
 		"aws-sdk": "2.1673.0",
-		"axios": "1.7.3",
+		"axios": "1.7.4",
 		"backend-rs": "workspace:*",
 		"blurhash": "2.0.5",
 		"bull": "4.16.0",
