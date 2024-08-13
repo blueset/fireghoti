@@ -250,6 +250,9 @@ a {
 	&:hover {
 		text-decoration-color: currentColor;
 	}
+	&[target="_blank"] {
+		-webkit-touch-callout: default;
+	}
 }
 
 // i {
