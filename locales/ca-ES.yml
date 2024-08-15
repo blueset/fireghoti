@@ -1250,8 +1250,8 @@ disablePlayer: Tancar el reproductor de vídeo
 fileIdOrUrl: ID o adreça URL del fitxer
 behavior: Comportament
 regenerateLoginTokenDescription: Regenera la clau que es fa servir de manera interna
-  durant l'inici de sessió. Normalment això no és necessari. Si la clau és torna a
-  generar, es tancarà la sessió a tots els dispositius.
+  durant l'inici de sessió. Usualment aquesta acció no és necessària. Si la clau és
+  torna a generar, es tancarà la sessió a tots els dispositius.
 setMultipleBySeparatingWithSpace: Separa diferents entrades amb espais.
 reportAbuseOf: Informa d'un abús de {name}
 sample: Exemple
