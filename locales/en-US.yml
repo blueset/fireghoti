@@ -128,7 +128,7 @@ pinnedNote: "Pinned post"
 pinned: "Pin to profile"
 you: "You"
 clickToShow: "Click to show"
-sensitive: "NSFW"
+sensitive: "Sensitive"
 add: "Add"
 reaction: "Reaction"
 reactions: "Reactions"
@@ -139,8 +139,8 @@ reactionSetting: "Reactions to show in the reaction picker"
 reactionSettingDescription2: "Drag to reorder, click to delete, press \"+\" to add."
 rememberNoteVisibility: "Remember post visibility settings"
 attachCancel: "Remove attachment"
-markAsSensitive: "Mark as NSFW"
-unmarkAsSensitive: "Unmark as NSFW"
+markAsSensitive: "Mark as sensitive"
+unmarkAsSensitive: "Unmark as sensitive"
 clickToShowPatterns: "Click to show module patterns"
 enterFileName: "Enter filename"
 mute: "Mute"
@@ -176,7 +176,7 @@ cacheRemoteFilesDescription: "When this setting is disabled, remote files are lo
   increase traffic, as thumbnails will not be generated."
 markLocalFilesNsfwByDefault: "Mark all new local file as sensitive by default"
 markLocalFilesNsfwByDefaultDescription: "Regardless of this setting, users can remove
-  the NSFW flag themselves. Existing files are unaffected."
+  the sensitive flag themselves. Existing files are unaffected."
 flagAsBot: "Mark this account as automated"
 flagAsBotDescription: "Enable this option if this account is controlled by a program.
   If enabled, it will act as a flag for other developers to prevent endless interaction
@@ -362,7 +362,7 @@ copyUrl: "Copy URL"
 rename: "Rename"
 avatar: "Avatar"
 banner: "Banner"
-nsfw: "NSFW"
+nsfw: "Sensitive"
 whenServerDisconnected: "When losing connection to the server"
 disconnectedFromServer: "Connection to server has been lost"
 reload: "Refresh"
@@ -792,7 +792,7 @@ noCrawle: "Reject crawler indexing"
 noCrawleDescription: "Ask external search engines to not index your content."
 lockedAccountInfo: "Unless you set your post visiblity to \"Followers only\", your
   posts will be visible to anyone, even if you require followers to be manually approved."
-alwaysMarkSensitive: "Mark as NSFW by default"
+alwaysMarkSensitive: "Mark as sensitive by default"
 loadRawImages: "Load original images instead of showing thumbnails"
 disableShowingAnimatedImages: "Don't play animated images"
 verificationEmailSent: "A verification email has been sent. Please follow the included
@@ -1035,20 +1035,16 @@ type: "Type"
 speed: "Speed"
 slow: "Slow"
 fast: "Fast"
-sensitiveMediaDetection: "Detection of NSFW media"
 localOnly: "Local only"
 remoteOnly: "Remote only"
 failedToUpload: "Upload failed"
 cannotUploadBecauseInappropriate: "This file could not be uploaded because parts of
-  it have been detected as potentially NSFW."
+  it have been detected as potentially sensitive."
 cannotUploadBecauseNoFreeSpace: "Upload failed due to lack of Drive capacity."
 cannotUploadBecauseExceedsFileSizeLimit: "This file could not be uploaded because
   it exceeds the maximum allowed size."
 beta: "Beta"
-enableAutoSensitive: "Automatic NSFW-Marking"
-enableAutoSensitiveDescription: "Allows automatic detection and marking of NSFW media
-  through Machine Learning where possible. Even if this option is disabled, it may
-  be enabled server-wide."
+enableAutoSensitive: "Mark as sensitive automatically"
 activeEmailValidationDescription: "Enables stricter validation of email addresses,
   which includes checking for disposable addresses and by whether it can actually
   be communicated with. When unchecked, only the format of the email is validated."
@@ -1249,19 +1245,6 @@ _emojiModPerm:
   add: "Add"
   mod: "Add and Edit"
   full: "Allow All"
-_sensitiveMediaDetection:
-  description: "Reduces the effort of server moderation through automatically recognizing
-    NSFW media via Machine Learning. This will slightly increase the load on the server."
-  sensitivity: "Detection sensitivity"
-  sensitivityDescription: "Reducing the sensitivity will lead to fewer misdetections
-    (false positives) whereas increasing it will lead to fewer missed detections (false
-    negatives)."
-  setSensitiveFlagAutomatically: "Mark as NSFW"
-  setSensitiveFlagAutomaticallyDescription: "The results of the internal detection
-    will be retained even if this option is turned off."
-  analyzeVideos: "Enable analysis of videos"
-  analyzeVideosDescription: "Analyzes videos in addition to images. This will slightly
-    increase the load on the server."
 _emailUnavailable:
   used: "This email address is already being used"
   format: "The format of this email address is invalid"
@@ -1354,8 +1337,8 @@ _aboutFirefish:
     to help support its operation costs."
   donateHost: "Donate to {host}"
 _nsfw:
-  respect: "Hide NSFW media"
-  ignore: "Don't hide NSFW media"
+  respect: "Hide sensitive media"
+  ignore: "Don't hide sensitive media"
   force: "Hide all media"
 writingMode: "Writing mode"
 _writingMode:
