@@ -26,6 +26,7 @@
 			</div>
 			<div class="right">
 				<span
+					v-if="maxTextLength - textLength < 500"
 					class="text-count"
 					:class="{ over: textLength > maxTextLength }"
 					>{{ maxTextLength - textLength }}</span
