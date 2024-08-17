@@ -6,13 +6,13 @@ use sea_orm::{DbErr, EntityTrait, QuerySelect};
 
 #[macros::errors]
 pub enum Error {
-    #[doc = "database error"]
+    #[doc = "Database error"]
     #[error(transparent)]
     Db(#[from] DbErr),
-    #[doc = "cache error"]
+    #[doc = "Cache error"]
     #[error(transparent)]
     Cache(#[from] cache::redis::Error),
-    #[doc = "user not found"]
+    #[doc = "User not found"]
     #[error("user {0} not found")]
     NotFound(String),
 }

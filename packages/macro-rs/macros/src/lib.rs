@@ -84,11 +84,9 @@ define_wrapper_proc_macro_attributes! {
     /// When applied to enums, this macro implements [`std::error::Error`] trait
     /// and generates a document based on error messages unless there is already a doc comment
     ///
-    /// See [`macros_impl::error::error_variants`] for more details.
-    ///
     /// # Example
     ///
-    /// ```
+    /// ```ignore
     /// # use std::io;
     /// #[macros::errors]
     /// pub enum Error {
@@ -97,13 +95,13 @@ define_wrapper_proc_macro_attributes! {
     ///     #[error("failed to read the config file")]
     ///     ReadConfigFile(#[from] io::Error),
     ///     #[error("invalid file content ({0})")]
-    ///     #[doc = "invalid file content"]
+    ///     #[doc = "Invalid file content"]
     ///     InvalidContent(String),
     /// }
     /// ```
-    errors(attr, item) {
+    errors(_attr, item) {
         #[derive(::thiserror::Error, ::std::fmt::Debug)]
-        #[macros::error_variants(#attr, #item)]
+        #[error_doc::error_doc]
         #item
     }
 }
@@ -112,7 +110,4 @@ reexport_proc_macro_attributes! {
     /// Creates an extra wrapper function for [napi_derive](https://docs.rs/napi-derive/latest/napi_derive/).
     /// See [macros_impl::napi::napi] for details.
     macros_impl::napi::napi as napi
-
-    /// Generates doc comments for error variants from the error messages
-    macros_impl::error::error_variants as error_variants
 }

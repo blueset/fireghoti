@@ -15,7 +15,7 @@ pub enum Error {
     HttpClient(#[from] http_client::Error),
     #[error("HTTP request failed")]
     Isahc(#[from] isahc::Error),
-    #[doc = "bad HTTP status"]
+    #[doc = "Bad HTTP status"]
     #[error("bad HTTP status ({0})")]
     BadStatus(String),
     #[error("failed to decode an image")]
@@ -24,10 +24,10 @@ pub enum Error {
     Io(#[from] std::io::Error),
     #[error("failed to extract the exif data")]
     Exif(#[from] nom_exif::Error),
-    #[doc = "too many fetch attempts"]
+    #[doc = "Too many fetch attempts"]
     #[error("too many fetch attempts for {0}")]
     TooManyAttempts(String),
-    #[doc = "unsupported image type"]
+    #[doc = "Unsupported image type"]
     #[error("unsupported image type ({0})")]
     UnsupportedImage(String),
 }

@@ -12,7 +12,7 @@ pub enum Error {
     #[error("@instance.actor not found")]
     InstanceActorNotFound,
     #[error(transparent)]
-    #[doc = "database error"]
+    #[doc = "Database error"]
     Db(#[from] DbErr),
 }
 

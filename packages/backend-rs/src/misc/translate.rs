@@ -5,7 +5,7 @@ use crate::{
 
 #[macros::errors]
 pub enum Error {
-    #[doc = "database error"]
+    #[doc = "Database error"]
     #[error(transparent)]
     Db(#[from] sea_orm::DbErr),
     #[error("failed to acquire an HTTP client")]

@@ -10,7 +10,7 @@ use sea_orm::{prelude::*, QuerySelect};
 
 #[macros::errors]
 pub enum AntennaCheckError {
-    #[doc = "database error"]
+    #[doc = "Database error"]
     #[error(transparent)]
     Db(#[from] DbErr),
     #[error("Redis cache operation has failed")]

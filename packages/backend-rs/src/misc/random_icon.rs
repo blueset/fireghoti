@@ -4,7 +4,7 @@ use identicon_rs::{error::IdenticonError, Identicon};
 
 #[macros::errors]
 pub enum Error {
-    #[doc = "failed to generate identicon"]
+    #[doc = "Failed to generate identicon"]
     #[error(transparent)]
     Identicon(#[from] IdenticonError),
     #[error("Redis cache operation has failed")]

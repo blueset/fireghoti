@@ -12,7 +12,7 @@ pub enum Error {
     #[error("@relay.actor not found")]
     RelayActorNotFound,
     #[error(transparent)]
-    #[doc = "database error"]
+    #[doc = "Database error"]
     Db(#[from] DbErr),
 }
 

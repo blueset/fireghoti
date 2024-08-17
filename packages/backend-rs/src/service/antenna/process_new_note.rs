@@ -16,7 +16,7 @@ use sea_orm::prelude::*;
 
 #[macros::errors]
 pub enum Error {
-    #[doc = "database error"]
+    #[doc = "Database error"]
     #[error(transparent)]
     Db(#[from] DbErr),
     #[error("Redis cache operation has failed")]
@@ -25,7 +25,7 @@ pub enum Error {
     Redis(#[from] RedisError),
     #[error("bad Redis connection")]
     RedisConn(#[from] RedisConnError),
-    #[doc = "provided string is not a valid Firefish ID"]
+    #[doc = "Provided string is not a valid Firefish ID"]
     #[error(transparent)]
     InvalidId(#[from] InvalidIdError),
     #[error("Redis stream operation has failed")]

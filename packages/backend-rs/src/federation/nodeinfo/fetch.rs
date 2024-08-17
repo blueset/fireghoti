@@ -14,7 +14,7 @@ pub enum Error {
     HttpClient(#[from] http_client::Error),
     #[error("HTTP request failed")]
     Http(#[from] isahc::Error),
-    #[doc = "bad HTTP status"]
+    #[doc = "Bad HTTP status"]
     #[error("bad HTTP status ({0})")]
     BadStatus(String),
     #[error("failed to parse HTTP response body as text")]

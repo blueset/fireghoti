@@ -9,10 +9,10 @@ use sea_orm::{ColumnTrait, DbErr, EntityTrait, QueryFilter, QuerySelect};
 
 #[macros::errors]
 pub enum Error {
-    #[doc = "nonexistent note"]
+    #[doc = "Nonexistent note"]
     #[error("note {0} not found")]
     NoteNotFound(String),
-    #[doc = "database error"]
+    #[doc = "Database error"]
     #[error(transparent)]
     Db(#[from] DbErr),
 }
