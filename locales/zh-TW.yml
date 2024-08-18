@@ -1392,7 +1392,7 @@ _poll:
 _visibility:
   public: "公開"
   publicDescription: "發佈至公開時間軸"
-  home: "不在主頁顯示"
+  home: "悄悄公開"
   homeDescription: "僅發送至首頁的時間軸"
   followers: "追隨者"
   followersDescription: "僅發佈至關注者"
