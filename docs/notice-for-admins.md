@@ -2,10 +2,6 @@
 
 You can skip intermediate versions when upgrading from an old version, but please read the notices and follow the instructions for each intermediate version before [upgrading](https://firefish.dev/firefish/firefish/-/blob/main/docs/upgrade.md).
 
-## Upcoming breaking change (unreleased)
-
-Please take a look at #10947.
-
 ## v20240809
 
 ### For systemd/pm2 users
