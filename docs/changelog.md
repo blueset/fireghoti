@@ -7,6 +7,10 @@ This changelog is not an exhaustive list. Code refactorings, minor bug fixes, do
 - Server administrators must check [notice-for-admins.md](https://firefish.dev/firefish/firefish/-/blob/main/docs/notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](https://firefish.dev/firefish/firefish/-/blob/main/docs/api-change.md) as well.
 
+## Unreleased
+
+- Fix bugs
+
 ## [v20240809](https://firefish.dev/firefish/firefish/-/merge_requests/11262/commits)
 
 - Add writing mode (right-to-left, vertical) support (!11222)
