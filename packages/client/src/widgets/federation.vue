@@ -23,7 +23,7 @@
 					:key="instance.id"
 					class="instance"
 				>
-					<img :src="getInstanceIcon(instance)" alt="" />
+					<img :src="getInstanceIcon(instance)" @error="getInstanceIconErrorEvent($event)" alt="" />
 					<div class="body">
 						<a
 							class="a"
@@ -109,6 +109,10 @@ function getInstanceIcon(instance): string {
 		getProxiedImageUrlNullable(instance.iconUrl, "preview") ??
 		"/client-assets/dummy.png"
 	);
+}
+
+function getInstanceIconErrorEvent($event) {
+	$event.target.src = "/client-assets/dummy.png";
 }
 
 defineExpose<WidgetComponentExpose>({
