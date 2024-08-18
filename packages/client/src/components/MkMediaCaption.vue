@@ -1,5 +1,5 @@
 <template>
-	<MkModal ref="modal" @click="done(true)" @closed="emit('closed')">
+	<MkModal ref="modal">
 		<div class="container">
 			<div class="fullwidth top-caption">
 				<div class="mk-dialog">
@@ -50,7 +50,6 @@
 					:src="image.url"
 					:alt="image.comment || undefined"
 					:title="image.comment || undefined"
-					@click="modal!.close()"
 				/>
 				<footer>
 					<span>{{ image.type }}</span>
@@ -89,13 +88,11 @@ const props = withDefaults(
 		showOkButton?: boolean;
 		showCaptionButton?: boolean;
 		showCancelButton?: boolean;
-		cancelableByBgClick?: boolean;
 	}>(),
 	{
 		showOkButton: true,
 		showCaptionButton: true,
 		showCancelButton: true,
-		cancelableByBgClick: true,
 	},
 );
 
@@ -129,12 +126,6 @@ async function ok() {
 function cancel() {
 	done(true);
 }
-
-// function onBgClick() {
-// 	if (props.cancelableByBgClick) {
-// 		cancel();
-// 	}
-// }
 
 function onKeydown(evt) {
 	if (evt.which === 27) {
