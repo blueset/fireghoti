@@ -184,7 +184,8 @@ onBeforeUnmount(() => {
 	inset-inline-start: 0;
 	inset-block-start: 0;
 }
-@media (max-inline-size: 850px) {
+// TODO: use logical property (max-inline-size doesn't work)
+@media (max-width: 850px) {
 	.container {
 		flex-direction: column;
 	}
