@@ -51,7 +51,7 @@ addToList: "Afegeix a la llista"
 sendMessage: "Envia un missatge"
 copyUsername: "Copia el nom d'usuari"
 searchUser: "Cerca un usuari"
-reply: "Resposta"
+reply: "Respon"
 loadMore: "Carrega'n més"
 showMore: "Mostra'n més"
 youGotNewFollower: "t'ha seguit"
@@ -110,7 +110,7 @@ pinnedNote: "Publicació fixada"
 pinned: "Fixa al perfil"
 you: "Tu"
 clickToShow: "Fes clic per mostrar"
-sensitive: "NSFW"
+sensitive: "Sensible"
 add: "Afegeix"
 reaction: "Reacció"
 reactionSetting: "Reaccions per mostrar al selector de reaccions"
@@ -118,8 +118,8 @@ reactionSettingDescription2: "Arrossega per reordenar, fes clic per suprimir, pr
   \"+\" per afegir."
 rememberNoteVisibility: "Recorda la configuració de visibilitat de les publicacions"
 attachCancel: "Elimina el fitxer adjunt"
-markAsSensitive: "Marca com a NSFW"
-unmarkAsSensitive: "Desmarca com a NSFW"
+markAsSensitive: "Marca com a sensible"
+unmarkAsSensitive: "Desmarca com a sensible"
 enterFileName: "Introdueix un nom de fitxer"
 mute: "Silencia"
 unmute: "Deixar de silenciar"
@@ -129,7 +129,7 @@ suspend: "Suspèn"
 unsuspend: "Treu la suspensió"
 instances: "Servidors"
 remove: "Elimina"
-nsfw: "NSFW"
+nsfw: "Sensible"
 pinnedNotes: "Publicacions fixades"
 userList: "Llistes"
 smtpUser: "Nom d'usuari"
@@ -846,7 +846,7 @@ federating: Federant
 blocked: Bloquejat
 subscribing: Subscrivint
 publishing: Publicant
-notResponding: Sense resposta
+notResponding: Sense respon
 instanceUsers: Usuaris d'aquest servidor
 instanceFollowing: Seguint al servidor
 instanceFollowers: Seguidors del servidor
@@ -1300,7 +1300,7 @@ no: No
 noCrawle: Rebutjar la indexació dels restrejadors
 driveUsage: Espai fet servir al Disk
 noCrawleDescription: Demanar als motors de cerca externs no indexar el teu contingut.
-alwaysMarkSensitive: Marcar per defecte com a NSFW
+alwaysMarkSensitive: Marcar per defecte com a sensible
 lockedAccountInfo: Si has configurat la visibilitat del compte per "Només seguidors"
   les teves publicacions no serien visibles per a ningú més, inclús si has d'aprovar
   els teus seguidors manualment.
@@ -1573,10 +1573,10 @@ sensitiveMediaDetection: Detecció de mitjans NSFW
 remoteOnly: Només remotes
 failedToUpload: S'ha produït un error en la càrrega
 cannotUploadBecauseInappropriate: Aquest fitxer no s'ha pogut carregar perquè s'han
-  detectat parts d'aquest com a potencialment NSFW.
+  detectat parts d'aquest com a potencialment sensibles.
 cannotUploadBecauseNoFreeSpace: La pujada ha fallat a causa de la manca d'espai al
   Disc.
-enableAutoSensitive: Marcatge automàtic NSFW
+enableAutoSensitive: Marca automàticament com a sensible
 moveTo: Mou aquest compte a un compte nou
 customKaTeXMacro: Macros KaTeX personalitzats
 _aboutFirefish:
@@ -1766,8 +1766,8 @@ defaultReaction: Reacció d'emoji predeterminades per a publicacions sortints i 
 enableCustomKaTeXMacro: Activa les macros KaTeX personalitzades
 noteId: ID de la publicació
 _nsfw:
-  respect: Amaga els mitjans NSFW
-  ignore: No amagueu els mitjans NSFW
+  respect: Amaga els mitjans sensibles
+  ignore: No amagueu els mitjans sensibles
   force: Amaga tots els mitjans
 inUse: Utilitzat
 ffVisibilityDescription: Et permet configurar qui pot veure a qui segueixes i qui
@@ -2265,7 +2265,7 @@ publishTimelinesDescription: Si està activat, les línies de temps Global i Loc
 noAltTextWarning: Alguns fitxers adjunts no tenen una descripció. T'has s oblidat
   d'escriure-les?
 showNoAltTextWarning: Mostra un avís si públiques un fitxer sense descripció
-toReply: Resposta
+toReply: Respondre
 toQuote: Citar
 toEdit: Edita
 searchUsersDescription: "Per buscar publicacions concretes d'un usuari/servidor, escriu
@@ -2291,8 +2291,8 @@ incorrectLanguageWarning: "Semblar ser que la teva publicació es troba en {dete
 markLocalFilesNsfwByDefault: Marcar tots els fitxers locals nous com a sensibles per
   defecte
 markLocalFilesNsfwByDefaultDescription: Independentment d'aquest ajust, els usuaris
-  poden treure l'etiqueta NSFW els mateixos. Els fitxers que ja existeixen no es veuen
-  afectats.
+  poden treure els mateixos l'etiqueta de sensible. Els fitxers que ja existeixen
+  no es veuen afectats.
 autocorrectNoteLanguage: Mostra un avís si l'idioma de la publicació no coincideix
   amb el resultat de l'idioma detectat automàticament
 noteEditHistory: Historial d'edicions
