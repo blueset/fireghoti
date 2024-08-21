@@ -2,7 +2,7 @@
 // We may want to (re)implement these functions in the `federation` module
 // in a Rusty way (e.g., traits of actor type) if needed.
 
-#[macros::errors]
+#[error_doc::errors]
 pub enum Error {
     #[doc = "UTS #46 process has failed"]
     #[error(transparent)]

@@ -3,7 +3,7 @@ use crate::{
     util::http_client,
 };
 
-#[macros::errors]
+#[error_doc::errors]
 pub enum Error {
     #[doc = "Database error"]
     #[error(transparent)]

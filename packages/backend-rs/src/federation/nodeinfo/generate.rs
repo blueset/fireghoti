@@ -143,7 +143,7 @@ pub async fn nodeinfo_2_0() -> Result<Nodeinfo20, DbErr> {
 }
 
 #[macros::for_ts]
-#[macros::errors]
+#[error_doc::errors]
 pub enum Error {
     #[doc = "Database error"]
     #[error(transparent)]

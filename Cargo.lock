@@ -950,9 +950,19 @@ dependencies = [
 
 [[package]]
 name = "error-doc"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c6ecb74b1f4f3bbe7256b096a7ae9f7ce8f38558659b6624b7ad04e35919cf2e"
+dependencies = [
+ "error-doc-impl",
+ "thiserror",
+]
+
+[[package]]
+name = "error-doc-impl"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6ffaad84523e0144697672bce3a0d8e300fd43404a630d420f238e2ef2e85b84"
+checksum = "7a10557d7f42ee2e042f39b7bcfac19f1c4fad711e364a5ed9f9d7b6fa71b481"
 dependencies = [
  "proc-macro2",
  "quote",

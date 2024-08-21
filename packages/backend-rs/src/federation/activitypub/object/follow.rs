@@ -11,7 +11,7 @@ pub struct ApFollow {
 
 impl ApObject for ApFollow {}
 
-#[macros::errors]
+#[error_doc::errors]
 pub enum Error {
     #[error("follower uri is missing")]
     MissingFollowerUri,

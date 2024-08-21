@@ -7,7 +7,7 @@ use crate::{
 };
 use sea_orm::{ColumnTrait, DbErr, EntityTrait, QueryFilter, QuerySelect};
 
-#[macros::errors]
+#[error_doc::errors]
 pub enum Error {
     #[doc = "Nonexistent note"]
     #[error("note {0} not found")]

@@ -4,7 +4,7 @@ use crate::{cache, database::db_conn, model::entity::user};
 use chrono::Duration;
 use sea_orm::{DbErr, EntityTrait, QuerySelect};
 
-#[macros::errors]
+#[error_doc::errors]
 pub enum Error {
     #[doc = "Database error"]
     #[error(transparent)]

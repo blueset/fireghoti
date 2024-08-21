@@ -2,7 +2,7 @@ use crate::cache;
 use chrono::Duration;
 use identicon_rs::{error::IdenticonError, Identicon};
 
-#[macros::errors]
+#[error_doc::errors]
 pub enum Error {
     #[doc = "Failed to generate identicon"]
     #[error(transparent)]

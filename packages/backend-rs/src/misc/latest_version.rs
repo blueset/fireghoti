@@ -6,7 +6,7 @@ use futures_util::AsyncReadExt;
 use isahc::AsyncReadResponseExt;
 use serde::Deserialize;
 
-#[macros::errors]
+#[error_doc::errors]
 pub enum Error {
     #[error("HTTP request failed")]
     Isahc(#[from] isahc::Error),

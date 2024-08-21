@@ -7,7 +7,7 @@ use tokio::sync::OnceCell;
 pub const USERNAME: &str = "relay.actor";
 static RELAY_ACTOR_ID: OnceCell<String> = OnceCell::const_new();
 
-#[macros::errors]
+#[error_doc::errors]
 pub enum Error {
     #[error("@relay.actor not found")]
     RelayActorNotFound,
