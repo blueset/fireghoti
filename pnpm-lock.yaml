@@ -229,8 +229,8 @@ importers:
         specifier: 6.9.14
         version: 6.9.14
       otpauth:
-        specifier: 9.3.1
-        version: 9.3.1
+        specifier: 9.3.2
+        version: 9.3.2
       parse5:
         specifier: 7.1.2
         version: 7.1.2
@@ -5286,8 +5286,8 @@ packages:
     resolution: {integrity: sha512-D2FR03Vir7FIu45XBY20mTb+/ZSWB00sjU9jdQXt83gDrI4Ztz5Fs7/yy74g2N5SVQY4xY1qDr4rNddwYRVX0g==}
     engines: {node: '>=0.10.0'}
 
-  otpauth@9.3.1:
-    resolution: {integrity: sha512-E6d2tMxPofHNk4sRFp+kqW7vQ+WJGO9VLI2N/W00DnI+ThskU12Qa10kyNSGklrzhN5c+wRUsN4GijVgCU2N9w==}
+  otpauth@9.3.2:
+    resolution: {integrity: sha512-KixtXWN9RGdS8WHPfDo7qsOYiivCbl+VeLBT+7HBTtJebBO6aXr/bpZXr+TwY2COecdY82VeBghm31mLYQVZlQ==}
 
   p-cancelable@2.1.1:
     resolution: {integrity: sha512-BZOr3nRQHOntUjTrH8+Lh54smKHoHyur8We1V8DSMVrl5A2malOOwuJRnKRDjSnkoeBh4at6BwEnb5I7Jl31wg==}
@@ -11680,7 +11680,7 @@ snapshots:
 
   os-tmpdir@1.0.2: {}
 
-  otpauth@9.3.1:
+  otpauth@9.3.2:
     dependencies:
       '@noble/hashes': 1.4.0
 
