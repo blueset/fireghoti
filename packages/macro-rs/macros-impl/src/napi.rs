@@ -27,7 +27,7 @@ use quote::{quote, ToTokens};
 /// ## Applying the macro to a struct
 /// ```
 /// # use macros_impl::napi::napi;
-/// # macros_impl::macro_doctest!({
+/// # proc_macro_tester::assert_expands!({
 /// #[macros::napi(object)]
 /// struct Person {
 ///     id: i32,
@@ -48,7 +48,7 @@ use quote::{quote, ToTokens};
 /// ## Function with explicitly specified `js_name`
 /// ```
 /// # use macros_impl::napi::napi;
-/// # macros_impl::macro_doctest!({
+/// # proc_macro_tester::assert_expands!({
 /// #[macros::napi(js_name = "add1")]
 /// pub fn add_one(x: i32) -> i32 {
 ///     x + 1
@@ -71,7 +71,7 @@ use quote::{quote, ToTokens};
 /// ## Function with `i32` argument
 /// ```
 /// # use macros_impl::napi::napi;
-/// # macros_impl::macro_doctest!({
+/// # proc_macro_tester::assert_expands!({
 /// #[macros::napi]
 /// pub fn add_one(x: i32) -> i32 {
 ///     x + 1
@@ -93,7 +93,7 @@ use quote::{quote, ToTokens};
 /// ## Function with `&str` argument
 /// ```
 /// # use macros_impl::napi::napi;
-/// # macros_impl::macro_doctest!({
+/// # proc_macro_tester::assert_expands!({
 /// #[macros::napi]
 /// pub fn concatenate_string(str1: &str, str2: &str) -> String {
 ///     str1.to_owned() + str2
@@ -116,7 +116,7 @@ use quote::{quote, ToTokens};
 /// ## Function with `&[String]` argument
 /// ```
 /// # use macros_impl::napi::napi;
-/// # macros_impl::macro_doctest!({
+/// # proc_macro_tester::assert_expands!({
 /// #[macros::napi]
 /// pub fn string_array_length(array: &[String]) -> u32 {
 ///     array.len() as u32
@@ -149,7 +149,7 @@ use quote::{quote, ToTokens};
 /// # };
 ///
 /// # use macros_impl::napi::napi;
-/// # macros_impl::macro_doctest!({
+/// # proc_macro_tester::assert_expands!({
 /// #[macros::napi]
 /// pub fn integer_divide(dividend: i64, divisor: i64) -> Result<i64, IntegerDivisionError> {
 ///     match divisor {
@@ -345,113 +345,157 @@ pub fn napi(macro_attr: TokenStream, item: TokenStream) -> syn::Result<TokenStre
     })
 }
 
-crate::macro_unit_tests! {
-    mut_ref_argument: {
-        #[macros::napi]
-        pub fn append_string_and_clone(
-            base_str: &mut String,
-            appended_str: &str,
-        ) -> String {
-            base_str.push_str(appended_str);
-            base_str.to_owned()
-        }
-    } generates {
-        #[napi_derive::napi(js_name = "appendStringAndClone", )]
-        pub fn append_string_and_clone_napi(
-            mut base_str: String,
-            appended_str: String,
-        ) -> String {
-            append_string_and_clone(&mut base_str, &appended_str)
-        }
-    }
+// prevent cargo fmt from modifying code blocks in assert_*!
+#[rustfmt::skip]
+#[cfg(test)]
+mod unit_test {
+    use super::napi;
+    use proc_macro_tester::*;
 
-    result_return_type: {
-        #[macros::napi]
-        pub fn integer_divide(
-            dividend: i64,
-            divisor: i64,
-        ) -> Result<i64, IntegerDivisionError> {
-            match divisor {
-                0 => Err(IntegerDivisionError::DividedByZero),
-                _ => match dividend % divisor {
-                    0 => Ok(dividend / divisor),
-                    remainder => Err(IntegerDivisionError::NotDivisible(remainder)),
-                },
+    #[test]
+    fn mut_ref_argument() {
+        assert_yields!(
+            {
+                #[macros::napi]
+                pub fn append_string_and_clone(
+                    base_str: &mut String,
+                    appended_str: &str,
+                ) -> String {
+                    base_str.push_str(appended_str);
+                    base_str.to_owned()
+                }
+            },
+            {
+                #[napi_derive::napi(js_name = "appendStringAndClone", )]
+                pub fn append_string_and_clone_napi(
+                    mut base_str: String,
+                    appended_str: String
+                ) -> String {
+                    append_string_and_clone(&mut base_str, &appended_str)
+                }
             }
-        }
-    } generates {
-        #[napi_derive::napi(js_name = "integerDivide", )]
-        pub fn integer_divide_napi(
-            dividend: i64,
-            divisor: i64,
-        ) -> napi::Result<i64> {
-            integer_divide(dividend, divisor)
-                .map_err(|err| napi::Error::from_reason(
-                    format!("\n{}\n", crate::util::error_chain::format_error(&err))
-                ))
-        }
+        );
     }
 
-    async_function: {
-        #[macros::napi]
-        pub async fn async_add_one(x: i32) -> i32 {
-            x + 1
-        }
-    } generates {
-        #[napi_derive::napi(js_name = "asyncAddOne", )]
-        pub async fn async_add_one_napi(x: i32) -> i32 {
-            async_add_one(x)
-                .await
-        }
+    #[test]
+    fn result_return_type() {
+        assert_yields!(
+            {
+                #[macros::napi]
+                pub fn integer_divide(
+                    dividend: i64,
+                    divisor: i64,
+                ) -> Result<i64, IntegerDivisionError> {
+                    match divisor {
+                        0 => Err(IntegerDivisionError::DividedByZero),
+                        _ => match dividend % divisor {
+                            0 => Ok(dividend / divisor),
+                            remainder => Err(IntegerDivisionError::NotDivisible(remainder)),
+                        },
+                    }
+                }
+            },
+            {
+                #[napi_derive::napi(js_name = "integerDivide", )]
+                pub fn integer_divide_napi(dividend: i64, divisor: i64) -> napi::Result<i64> {
+                    integer_divide(dividend, divisor).map_err(|err|
+                        napi::Error::from_reason(format!(
+                            "\n{}\n",
+                            crate::util::error_chain::format_error(&err)
+                        ))
+                    )
+                }
+            }
+        );
     }
 
-    slice_type: {
-        #[macros::napi]
-        pub fn string_array_length(array: &[String]) -> u32 {
-            array.len() as u32
-        }
-    } generates {
-        #[napi_derive::napi(js_name = "stringArrayLength", )]
-        pub fn string_array_length_napi(array: Vec<String>) -> u32 {
-            string_array_length(&array)
-        }
+    #[test]
+    fn async_function() {
+        assert_yields!({
+            #[macros::napi]
+            pub async fn async_add_one(x: i32) -> i32 {
+                x + 1
+            }
+        }, {
+            #[napi_derive::napi(js_name = "asyncAddOne", )]
+            pub async fn async_add_one_napi(x: i32) -> i32 {
+                async_add_one(x)
+                    .await
+            }
+        });
     }
 
-    object_with_explicitly_set_use_nullable: {
-        #[macros::napi(object, use_nullable = false)]
-        struct Person {
-            id: i32,
-            name: Option<String>,
-        }
-    } becomes {
-        #[napi_derive::napi(object, use_nullable = false)]
-        struct Person {
-            id: i32,
-            name: Option<String>,
-        }
+    #[test]
+    fn slice_type() {
+        assert_yields!(
+            {
+                #[macros::napi]
+                pub fn string_array_length(array: &[String]) -> u32 {
+                    array.len() as u32
+                }
+            },
+            {
+                #[napi_derive::napi(js_name = "stringArrayLength", )]
+                pub fn string_array_length_napi(array: Vec<String>) -> u32 {
+                    string_array_length(&array)
+                }
+            }
+        );
     }
 
-    macro_attr: {
-        #[macros::napi(ts_return_type = "number")]
-        pub fn add_one(x: i32) -> i32 {
-            x + 1
-        }
-    } generates {
-        #[napi_derive::napi(js_name = "addOne", ts_return_type = "number")]
-        pub fn add_one_napi(x: i32) -> i32 {
-            add_one(x)
-        }
+    #[test]
+    fn object_with_explicitly_set_use_nullable() {
+        assert_expands!(
+            {
+                #[macros::napi(object, use_nullable = false)]
+                struct Person {
+                    id: i32,
+                    name: Option<String>,
+                }
+            },
+            {
+                #[napi_derive::napi(object, use_nullable = false)]
+                struct Person {
+                    id: i32,
+                    name: Option<String>,
+                }
+            }
+        );
     }
 
-    explicitly_specified_js_name_and_other_macro_attr: {
-        #[macros::napi(ts_return_type = "number", js_name = "add1")]
-        pub fn add_one(x: i32) -> i32 {
-            x + 1
-        }
-    } generates {
-        #[napi_derive::napi(ts_return_type = "number", js_name = "add1")]
-        pub fn add_one_napi(x: i32) -> i32 {
-            add_one(x)
-        }
+    #[test]
+    fn macro_attr() {
+        assert_yields!(
+            {
+                #[macros::napi(ts_return_type = "number")]
+                pub fn add_one(x: i32) -> i32 {
+                    x + 1
+                }
+            },
+            {
+                #[napi_derive::napi(js_name = "addOne", ts_return_type = "number")]
+                pub fn add_one_napi(x: i32) -> i32 {
+                    add_one(x)
+                }
+            }
+        );
+    }
+
+    #[test]
+    fn explicitly_specified_js_name_and_other_macro_attr() {
+        assert_yields!(
+            {
+                #[macros::napi(ts_return_type = "number", js_name = "add1")]
+                pub fn add_one(x: i32) -> i32 {
+                    x + 1
+                }
+            },
+            {
+                #[napi_derive::napi(ts_return_type = "number", js_name = "add1")]
+                pub fn add_one_napi(x: i32) -> i32 {
+                    add_one(x)
+                }
+            }
+        );
     }
 }

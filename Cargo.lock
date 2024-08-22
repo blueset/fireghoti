@@ -1889,6 +1889,7 @@ name = "macros-impl"
 version = "0.0.0"
 dependencies = [
  "convert_case",
+ "proc-macro-tester",
  "proc-macro2",
  "quote",
  "syn 2.0.75",
@@ -2592,6 +2593,16 @@ dependencies = [
  "proc-macro2",
  "quote",
  "version_check",
+]
+
+[[package]]
+name = "proc-macro-tester"
+version = "0.1.0-alpha.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fe34f46c8f3754bfd1f73ec173dbf2e140fa43ece1f96ad81c02524f8c26b92a"
+dependencies = [
+ "proc-macro2",
+ "quote",
 ]
 
 [[package]]
