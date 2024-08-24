@@ -295,8 +295,8 @@ importers:
         specifier: 3.1.7
         version: 3.1.7
       tesseract.js:
-        specifier: 5.1.0
-        version: 5.1.0
+        specifier: 5.1.1
+        version: 5.1.1
       tinycolor2:
         specifier: 1.6.0
         version: 1.6.0
@@ -6199,11 +6199,11 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  tesseract.js-core@5.1.0:
-    resolution: {integrity: sha512-D4gc5ET1DF/sDayF/eVmHgVGo7nqVC2e3d7uVgVOSAk4NOcmUqvJRTj8etqEmI/2390ZkXCRiDMxTD1RFYyp1g==}
+  tesseract.js-core@5.1.1:
+    resolution: {integrity: sha512-KX3bYSU5iGcO1XJa+QGPbi+Zjo2qq6eBhNjSGR5E5q0JtzkoipJKOUQD7ph8kFyteCEfEQ0maWLu8MCXtvX5uQ==}
 
-  tesseract.js@5.1.0:
-    resolution: {integrity: sha512-2fH9pqWdS2C6ue/3OoGg91Wtv7Rt/1atYu/g0Q1SGFrowEW/kIBkG361hLienHsWe4KWEjxOJBrCQYpIBWG6WA==}
+  tesseract.js@5.1.1:
+    resolution: {integrity: sha512-lzVl/Ar3P3zhpUT31NjqeCo1f+D5+YfpZ5J62eo2S14QNVOmHBTtbchHm/YAbOOOzCegFnKf4B3Qih9LuldcYQ==}
 
   test-exclude@6.0.0:
     resolution: {integrity: sha512-cAGWPIyOHU6zlmg88jwm7VRyXnMN7iV68OGAbYDk/Mh/xC/pzVPlQtY6ngoIH/5/tciuhGfvESU8GrHrcxD56w==}
@@ -12614,9 +12614,9 @@ snapshots:
       commander: 2.20.3
       source-map-support: 0.5.21
 
-  tesseract.js-core@5.1.0: {}
+  tesseract.js-core@5.1.1: {}
 
-  tesseract.js@5.1.0:
+  tesseract.js@5.1.1:
     dependencies:
       bmp-js: 0.1.0
       idb-keyval: 6.2.1
@@ -12625,7 +12625,7 @@ snapshots:
       node-fetch: 2.7.0
       opencollective-postinstall: 2.0.3
       regenerator-runtime: 0.13.11
-      tesseract.js-core: 5.1.0
+      tesseract.js-core: 5.1.1
       wasm-feature-detect: 1.6.2
       zlibjs: 0.3.1
     transitivePeerDependencies:
