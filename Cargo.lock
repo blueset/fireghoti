@@ -2034,9 +2034,9 @@ dependencies = [
 
 [[package]]
 name = "nom-exif"
-version = "1.4.0"
+version = "1.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fb423988668d263d1e803885bbc9786e4ffc0dfb0377bc4b184b6ba7a3e4bf1d"
+checksum = "79b4e9e7b1cb787541a316b33b7322f3ed7adc101db6b27b5472677aaa532069"
 dependencies = [
  "chrono",
  "nom",
