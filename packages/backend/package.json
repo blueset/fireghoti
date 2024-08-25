@@ -27,7 +27,7 @@
 		"@ladjs/koa-views": "9.0.0",
 		"@peertube/http-signature": "1.7.0",
 		"@redocly/openapi-core": "1.21.0",
-		"@sinonjs/fake-timers": "11.2.2",
+		"@sinonjs/fake-timers": "11.3.1",
 		"adm-zip": "0.5.15",
 		"ajv": "8.17.1",
 		"archiver": "7.0.1",
