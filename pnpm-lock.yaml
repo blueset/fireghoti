@@ -67,8 +67,8 @@ importers:
         specifier: 1.7.0
         version: 1.7.0
       '@redocly/openapi-core':
-        specifier: 1.21.0
-        version: 1.21.0
+        specifier: 1.21.1
+        version: 1.21.1
       '@sinonjs/fake-timers':
         specifier: 11.3.1
         version: 11.3.1
@@ -2120,11 +2120,11 @@ packages:
   '@redocly/ajv@8.11.0':
     resolution: {integrity: sha512-9GWx27t7xWhDIR02PA18nzBdLcKQRgc46xNQvjFkrYk4UOmvKhJ/dawwiX0cCOeetN5LcaaiqQbVOWYK62SGHw==}
 
-  '@redocly/config@0.9.0':
-    resolution: {integrity: sha512-rRd0pSiPC68AQGud2VbrHqUov1VHospfcYE2pFYmGYfZhzZfHBSiVaeiTY+CZmrhf5RB9aVdOHRCm25Vb6GFkQ==}
+  '@redocly/config@0.10.0':
+    resolution: {integrity: sha512-oFP8SL9qmsJ2QxwvOjI/h87hHMKq8G/RUbTSxF9/r4vbllCxzQ8Tla3xfUO/lGVVO6gZsAIsuJGXhaDagd4msg==}
 
-  '@redocly/openapi-core@1.21.0':
-    resolution: {integrity: sha512-8KwL/0jiQBSJMNp1lSMLM1UeV2FW9DdqcjO0J9s5w7yL7ZN+SNh11MTp0zU4om/pGYExQ64hxLM/+7VdjznHRQ==}
+  '@redocly/openapi-core@1.21.1':
+    resolution: {integrity: sha512-WTsie5b+Ohx2NsmEBVCS5WF24h4XqDpb834ZR4EeE7f+Zjwn34AgaC78HP2xGydi+gFfD4PiqDGgnDPtR5s1OA==}
     engines: {node: '>=14.19.0', npm: '>=7.0.0'}
 
   '@rollup/plugin-alias@5.1.0':
@@ -8202,12 +8202,12 @@ snapshots:
       require-from-string: 2.0.2
       uri-js: 4.4.1
 
-  '@redocly/config@0.9.0': {}
+  '@redocly/config@0.10.0': {}
 
-  '@redocly/openapi-core@1.21.0':
+  '@redocly/openapi-core@1.21.1':
     dependencies:
       '@redocly/ajv': 8.11.0
-      '@redocly/config': 0.9.0
+      '@redocly/config': 0.10.0
       colorette: 1.4.0
       https-proxy-agent: 7.0.5
       js-levenshtein: 1.1.6
