@@ -137,15 +137,18 @@ export default class Resolver {
 			throw new Error("Object has no ID");
 		}
 
-		if (finalUrl === object.id) return object;
+		const finalUrl_ = new URL(finalUrl);
+		const objectId_ = new URL(object.id);
 
-		if (new URL(finalUrl).host !== new URL(object.id).host) {
+		if (finalUrl_.href === objectId_.href) return object;
+
+		if (finalUrl_.host !== objectId_.host) {
 			throw new Error("Object ID host doesn't match final url host");
 		}
 
 		const finalRes = await apGet(object.id, this.user);
 
-		if (finalRes.finalUrl !== finalRes.content.id)
+		if (new URL(finalRes.finalUrl).href !== new URL(finalRes.content.id).href)
 			throw new Error(
 				"Object ID still doesn't match final URL after second fetch attempt",
 			);
