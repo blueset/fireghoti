@@ -398,8 +398,8 @@ importers:
         specifier: 1.0.3
         version: 1.0.3
       '@types/pg':
-        specifier: 8.11.6
-        version: 8.11.6
+        specifier: 8.11.7
+        version: 8.11.7
       '@types/probe-image-size':
         specifier: 7.2.5
         version: 7.2.5
@@ -2495,8 +2495,8 @@ packages:
   '@types/opencc-js@1.0.3':
     resolution: {integrity: sha512-TENp7YkI2hNlc4dplhivSHj0hU4DORCK56VY7rniaSfA5f87uD3uv+kPIRuH9h64TGv976iVFi4gEHZZtS2y8Q==}
 
-  '@types/pg@8.11.6':
-    resolution: {integrity: sha512-/2WmmBXHLsfRqzfHW7BNZ8SbYzE8OSk7i3WjFYvfgRHj7S1xj+16Je5fUKv3lVdVzk/zn9TXOqf+avFCFIE0yQ==}
+  '@types/pg@8.11.7':
+    resolution: {integrity: sha512-k4VGqp1LQzJP5pSK2TR3bJGr9CnErXeRubUEtJu+l1hFGbUwKyMZEjLAlWpfGkrZAatz0O4jP4YPqDepv8CRbQ==}
 
   '@types/prismjs@1.26.4':
     resolution: {integrity: sha512-rlAnzkW2sZOjbqZ743IHUhFcvzaGbqijwOu8QZnZCjfQzBqFE3s4lOTJEsxikImav9uzz/42I+O7YUs1mWgMlg==}
@@ -8590,7 +8590,7 @@ snapshots:
 
   '@types/opencc-js@1.0.3': {}
 
-  '@types/pg@8.11.6':
+  '@types/pg@8.11.7':
     dependencies:
       '@types/node': 20.16.1
       pg-protocol: 1.6.1
