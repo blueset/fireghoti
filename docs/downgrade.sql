@@ -57,6 +57,7 @@ ALTER TABLE "sw_subscription" DROP COLUMN "appAccessTokenId";
 ALTER TABLE "user_profile" DROP COLUMN "mentions";
 
 -- client-credential-support
+DELETE FROM "access_token" WHERE "userId" IS NULL;
 ALTER TABLE "access_token" ALTER COLUMN "userId" SET NOT NULL;
 
 -- turn-off-cat-language
@@ -178,8 +179,7 @@ DROP TYPE "drive_file_usage_hint_enum";
 
 -- convert-cw-varchar-to-text
 DROP INDEX "IDX_8e3bbbeb3df04d1a8105da4c8f";
-ALTER TABLE "note" ALTER COLUMN "cw" TYPE character varying(512);
-CREATE INDEX "IDX_8e3bbbeb3df04d1a8105da4c8f" ON "note" USING "pgroonga" ("cw" pgroonga_varchar_full_text_search_ops_v2);
+ALTER TABLE "note" ALTER COLUMN "cw" TYPE character varying(512) USING SUBSTRING("cw" FOR 512);
 
 -- fix-chat-file-constraint
 ALTER TABLE "messaging_message" DROP CONSTRAINT "FK_535def119223ac05ad3fa9ef64b";
@@ -216,7 +216,6 @@ ALTER TABLE "user_profile" DROP "mutedPatterns";
 
 -- index-alt-text-and-cw
 DROP INDEX "IDX_f4f7b93d05958527300d79ac82";
-DROP INDEX "IDX_8e3bbbeb3df04d1a8105da4c8f";
 
 -- pgroonga
 DROP INDEX "IDX_f27f5d88941e57442be75ba9c8";
