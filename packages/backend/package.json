@@ -28,7 +28,7 @@
 		"@peertube/http-signature": "1.7.0",
 		"@redocly/openapi-core": "1.22.0",
 		"@sinonjs/fake-timers": "13.0.1",
-		"adm-zip": "0.5.15",
+		"adm-zip": "0.5.16",
 		"ajv": "8.17.1",
 		"archiver": "7.0.1",
 		"async-lock": "1.4.1",
