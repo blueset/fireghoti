@@ -1,31 +1,54 @@
-# Downgrading to `v20240206`
+# Downgrade to version `20240206`/`1.0.5-rc`
+
+## :warning: Before proceeding
+
+- **Ensure your Firefish version is up-to-date.**
+- **Ensure you have stopped your Firefish server.**
+- **Ensure you have backups of your database before performing any commands.**
 
 ## systemd/pm2
 
-1. Stop the Firefish service
+1. Go to the local Firefish repo directory
     ```sh
-    sudo systemctl stop your-firefish-service.service
-		# or pm2 stop firefish
+    # Please replace the path according to your environment
+    cd /home/firefish/firefish
     ```
-1. Take a backup
-1. Revert database migrations
+1. Download [`downgrade.sql`](https://firefish.dev/firefish/firefish/-/snippets/13/raw/main/downgrade.sql)
     ```sh
-    sudo --user=postgres psql --file=docs/downgrade.sql --dbname=database_name
+    wget -O /tmp/downgrade.sql https://firefish.dev/firefish/firefish/-/snippets/13/raw/main/downgrade.sql
+    ```
+1. Execute the downgrade queries (this may take a while)
+    ```sh
+    sudo --user=postgres psql --file=/tmp/downgrade.sql --dbname=database_name
     ```
 
     The database name can be found in `.config/default.yml`.
     ```yaml
     db:
       port: 5432
-      db: database_name  # this one
+      db: database_name  # here
       user: firefish
       pass: password
     ```
-1. Switch back to the `v20240206` tag
+1. Remove installed npm/cargo packages and build artifacts
     ```sh
-    git switch --detach v20240206
+    pnpm run clean-all
+    git checkout -- packages
+    ```
+1. Switch back to the `v20240206` or `v1.0.5-rc` tag
+    ```sh
+    git switch --detach v20240206  # or v1.0.5-rc
     ```
 1. Rebuild Firefish
+
+    v20240206/v1.0.5-rc does not compile with Rust 1.80.x. If you are using this version, please use an older one.
+    ```sh
+    # check Rust version
+    cargo version
+    # use Rust 1.79
+    rustup override set 1.79
+    ```
+
     ```sh
     pnpm install --frozen-lockfile
     NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=3072' pnpm run rebuild
@@ -33,21 +56,25 @@
 1. Start the Firefish service and confirm that Firefish is downgraded
     ```sh
     sudo systemctl start your-firefish-service.service
-		# or pm2 start firefish
+    # or pm2 start firefish
     ```
 
 ## Docker/Podman
 
-1. Stop the container
+1. Start the database container
     ```sh
-    docker-compose down
-    # or podman-compose down
+    docker-compose up --detach db
+    # or podman-compose up --detach db
     ```
-1. Take a backup
+1. Download [`downgrade.sql`](https://firefish.dev/firefish/firefish/-/snippets/13/raw/main/downgrade.sql)
+    ```sh
+    docker-compose exec db wget -O /tmp/downgrade.sql https://firefish.dev/firefish/firefish/-/snippets/13/raw/main/downgrade.sql
+    # or podman-compose exec db wget -O /tmp/downgrade.sql https://firefish.dev/firefish/firefish/-/snippets/13/raw/main/downgrade.sql
+    ```
 1. Revert database migrations
     ```sh
-    docker-compose exec db psql --command="$(cat docs/downgrade.sql)" --user=user_name --dbname=database_name
-    # or podman-compose exec db psql --command="$(cat docs/downgrade.sql)" --user=user_name --dbname=database_name
+    docker-compose exec db psql --file=/tmp/downgrade.sql --user=user_name --dbname=database_name
+    # or podman-compose exec db psql --file=/tmp/downgrade.sql --user=user_name --dbname=database_name
     ```
 
     The user and database name can be found in `.config/docker.env`.
@@ -56,7 +83,12 @@
     POSTGRES_USER=user_name    # user name
     POSTGRES_DB=database_name  # database name
     ```
-1. Change Firefish image tag from `latest` to `v20240206`
+1. Stop the database container
+    ```sh
+    docker-compose down db
+    # or podman-compose down db
+    ```
+1. Change Firefish image tag from `latest` to `v20240206` or `v1.0.5-rc`
     ```sh
     vim docker-compose.yml
     ```
@@ -66,7 +98,7 @@
 
     services:
       web:
-        image: registry.firefish.dev/firefish/firefish:v20240206  # here
+        image: registry.firefish.dev/firefish/firefish:v20240206  # or v1.0.5-rc
     ```
 1. Change database image from `docker.io/groonga/pgroonga` to `docker.io/postgres`
 
