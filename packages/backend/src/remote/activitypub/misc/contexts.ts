@@ -529,6 +529,10 @@ export const WellKnownContext = {
 				"@id": "https://www.w3.org/ns/activitystreams#movedTo",
 				"@type": "@id",
 			},
+			alsoKnownAs: {
+				"@id": "https://www.w3.org/ns/activitystreams#alsoKnownAs",
+				"@container": "@set",
+			},
 			movedToUri: "as:movedTo",
 			sensitive: "as:sensitive",
 			Hashtag: "as:Hashtag",
