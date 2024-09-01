@@ -59,6 +59,8 @@
     # or pm2 start firefish
     ```
 
+**Note**: If you are going to migrate your server to another *key variant, you may need to run `pnpm run clean-all` again to clean up Firefish dependencies and build artifacts.
+
 ## Docker/Podman
 
 1. Start the database container
