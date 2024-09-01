@@ -2,7 +2,7 @@
 
 ## :warning: Before proceeding
 
-- **Ensure your Firefish version is up-to-date.**
+- **Ensure your Firefish version is greater than or equal to `20240809`.**
 - **Ensure you have stopped your Firefish server.**
 - **Ensure you have backups of your database before performing any commands.**
 
@@ -71,7 +71,7 @@
     docker-compose exec db wget -O /tmp/downgrade.sql https://firefish.dev/firefish/firefish/-/snippets/13/raw/main/downgrade.sql
     # or podman-compose exec db wget -O /tmp/downgrade.sql https://firefish.dev/firefish/firefish/-/snippets/13/raw/main/downgrade.sql
     ```
-1. Revert database migrations
+1. Revert database migrations (this may take a while)
     ```sh
     docker-compose exec db psql --file=/tmp/downgrade.sql --user=user_name --dbname=database_name
     # or podman-compose exec db psql --file=/tmp/downgrade.sql --user=user_name --dbname=database_name
