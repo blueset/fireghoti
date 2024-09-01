@@ -6,7 +6,7 @@ DELETE FROM "migrations" WHERE name IN (
     'SetAccessTokenName1722134626110',
     'CreateSystemActors1720618854585',
     'AddMastodonSubscriptionType1715181461692',
-    'SwSubscriptionAccessToken1709395223611',
+    'SwSubscriptionAccessToken1709395223612',
     'UserProfileMentions1711075007936',
     'ClientCredentials1713108561474',
     'TurnOffCatLanguage1720107645050',
