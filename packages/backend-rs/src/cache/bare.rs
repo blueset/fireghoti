@@ -6,7 +6,7 @@ use std::sync::Mutex;
 /// Cache stored directly in memory
 pub struct Cache<T: Clone> {
     cache: Mutex<TimedData<T>>,
-    ttl: Option<Duration>,
+    valid_duration: Option<Duration>,
 }
 
 struct TimedData<T: Clone> {
@@ -28,7 +28,7 @@ impl<T: Clone> Cache<T> {
                 value: None,
                 last_updated: DateTime::UNIX_EPOCH,
             }),
-            ttl: None,
+            valid_duration: None,
         }
     }
 
@@ -62,7 +62,7 @@ impl<T: Clone> Cache<T> {
                 value: None,
                 last_updated: DateTime::UNIX_EPOCH,
             }),
-            ttl: Some(ttl),
+            valid_duration: Some(ttl),
         }
     }
 
@@ -91,7 +91,7 @@ impl<T: Clone> Cache<T> {
     /// }
     /// ```
     pub fn set(&self, value: T) {
-        if self.ttl.is_none() {
+        if self.valid_duration.is_none() {
             let mut cache = match self.cache.lock() {
                 Ok(cache) => cache,
                 Err(err) => err.into_inner(),
@@ -114,7 +114,7 @@ impl<T: Clone> Cache<T> {
     pub fn get(&self) -> Option<T> {
         let data = self.cache.lock().ok()?;
 
-        if let Some(ttl) = self.ttl {
+        if let Some(ttl) = self.valid_duration {
             if data.last_updated + ttl < Utc::now() {
                 return None;
             }
