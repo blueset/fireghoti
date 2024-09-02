@@ -113,7 +113,7 @@ pinnedNote: "Angepinnter Beitrag"
 pinned: "An das Profil anheften"
 you: "Du"
 clickToShow: "Zum Anzeigen anklicken"
-sensitive: "NSFW"
+sensitive: ""
 add: "Hinzufügen"
 reaction: "Reaktion"
 reactionSetting: "Reaktionen, die in der Reaktionsauswahl angezeigt werden sollen"
@@ -327,7 +327,7 @@ copyUrl: "URL kopieren"
 rename: "Umbenennen"
 avatar: "Profilbild"
 banner: "Banner"
-nsfw: "NSFW"
+nsfw: ""
 whenServerDisconnected: "Bei Verbindungsverlust zum Server"
 disconnectedFromServer: "Die Verbindung zum Server wurde getrennt"
 reload: "Aktualisieren"
@@ -1441,6 +1441,8 @@ _permissions:
     lesen"
   "write:gallery-likes": "Liste deiner mit \"Gefällt mir\" markierten Bilder-Galerie-Beiträge
     bearbeiten"
+  follow: Konten folgen und entfolgen
+  push: Push-Benachrichtigungen senden
 _auth:
   shareAccess: "Möchtest du „{name}“ authorisieren, auf dieses Nutzerkonto zugreifen
     zu können?"
@@ -2342,3 +2344,4 @@ addAlt4MeTag: 'Automatisch den Hashtag #Alt4Me am Ende deines Beitrags einfügen
   eine angehängte Datei keine Beschreibung hat'
 turnOffCatLanguage: Katzensprache deaktivieren
 strongPassword: Gutes Passwort
+announcement: Ankündigung
