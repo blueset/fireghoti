@@ -59,7 +59,7 @@
     # or pm2 start firefish
     ```
 
-**Note**: If you are going to migrate your server to another *key variant, you may need to run `pnpm run clean-all` again to clean up Firefish dependencies and build artifacts.
+**Note**: If you are going to migrate your server to another *key variant, you may need to run `pnpm run clean-all && git checkout -- packages` again to clean up Firefish dependencies and build artifacts.
 
 ## Docker/Podman
 
