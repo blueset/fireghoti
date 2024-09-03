@@ -19,16 +19,25 @@
     ```
 1. Execute the downgrade queries (this may take a while)
     ```sh
-    sudo --user=postgres psql --file=/tmp/downgrade.sql --dbname=database_name
+    psql --file=/tmp/downgrade.sql --user=your_user_name --dbname=your_database_name
     ```
 
-    The database name can be found in `.config/default.yml`.
+    The user and database name can be found in `.config/default.yml`.
     ```yaml
     db:
       port: 5432
-      db: database_name  # here
-      user: firefish
+      db: your_database_name  # database name
+      user: your_user_name    # user name
       pass: password
+    ```
+
+    If you get the `FATAL: Peer authentication failed` error, you also need to provide the `--host` option:
+    ```sh
+    psql --file=/tmp/downgrade.sql --user=your_user_name --dbname=your_database_name --host=127.0.0.1
+    ```
+1. Remove PGroonga extension
+    ```sh
+    sudo --user=postgres psql --command='DROP EXTENSION pgroonga CASCADE' --dbname=your_database_name
     ```
 1. Remove installed npm/cargo packages and build artifacts
     ```sh
@@ -76,7 +85,11 @@
 1. Revert database migrations (this may take a while)
     ```sh
     docker-compose exec db psql --file=/tmp/downgrade.sql --user=user_name --dbname=database_name
-    # or podman-compose exec db psql --file=/tmp/downgrade.sql --user=user_name --dbname=database_name
+    docker-compose exec db psql --command='DROP EXTENSION pgroonga CASCADE' --user=user_name --dbname=database_name
+
+    # or
+    podman-compose exec db psql --file=/tmp/downgrade.sql --user=user_name --dbname=database_name
+    podman-compose exec db psql --command='DROP EXTENSION pgroonga CASCADE' --user=user_name --dbname=database_name
     ```
 
     The user and database name can be found in `.config/docker.env`.
