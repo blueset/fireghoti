@@ -11,6 +11,8 @@ This changelog is not an exhaustive list. Code refactorings, minor bug fixes, do
 
 - Add fallback images for url preview and instance ticker (!10723)
 - Fix bugs
+- Update documentation
+  - :warning: Firefish is in maintenance mode. [[announcement]](https://info.firefish.dev/notes/9xsukr38m3komd63)
 
 ## [v20240818](https://firefish.dev/firefish/firefish/-/merge_requests/11293/commits)
 

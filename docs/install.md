@@ -1,6 +1,6 @@
 # Install Firefish
 
-Please check the [v20240206 release note](https://firefish.dev/firefish/firefish/-/releases/v20240206) first. This project is barely maintained for those who really want to keep using Firefish. Please understand this before proceeding.
+:warning: **Firefish is in maintenance mode.** [[announcement]](https://info.firefish.dev/notes/9xsukr38m3komd63)
 
 ## Dependencies
 
