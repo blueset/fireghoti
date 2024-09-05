@@ -8,6 +8,16 @@
 
 ## systemd/pm2
 
+:information_source: If you have a dedicated Firefish user, please run the following commands (except for `sudo` operations) as that user:
+
+```sh
+# switch to firefish user
+sudo su --login firefish
+
+# logout from firefish user
+exit
+```
+
 1. Go to the local Firefish repo directory
     ```sh
     # Please replace the path according to your environment
@@ -28,16 +38,12 @@
       port: 5432
       db: your_database_name  # database name
       user: your_user_name    # user name
-      pass: password
+      pass: your_password     # password
     ```
 
-    If you get the `FATAL: Peer authentication failed` error, you also need to provide the `--host` option:
+    If you get the `FATAL: Peer authentication failed` error, you also need to provide the `--host` option (you will be asked the password):
     ```sh
     psql --file=/tmp/downgrade.sql --user=your_user_name --dbname=your_database_name --host=127.0.0.1
-    ```
-1. Remove PGroonga extension
-    ```sh
-    sudo --user=postgres psql --command='DROP EXTENSION pgroonga CASCADE' --dbname=your_database_name
     ```
 1. Remove installed npm/cargo packages and build artifacts
     ```sh
@@ -50,7 +56,7 @@
     ```
 1. Rebuild Firefish
 
-    v20240206/v1.0.5-rc does not compile with Rust 1.80.x. If you are using this version, please use an older one.
+    v20240206/v1.0.5-rc does not compile with Rust 1.80 and up, so please check your Rust version before building.
     ```sh
     # check Rust version
     cargo version
@@ -62,6 +68,10 @@
     pnpm install --frozen-lockfile
     NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=3072' pnpm run rebuild
     ```
+1. Remove PGroonga extension
+    ```sh
+    sudo --user=postgres psql --command='DROP EXTENSION pgroonga CASCADE' --dbname=your_database_name
+    ```
 1. Start the Firefish service and confirm that Firefish is downgraded
     ```sh
     sudo systemctl start your-firefish-service.service
@@ -71,21 +81,22 @@
 **Note**: If you are going to migrate your server to another *key variant, you may need to run `pnpm run clean-all && git checkout -- packages` again to clean up Firefish dependencies and build artifacts.
 
 ## Docker/Podman
+:information_source: Depending on your Docker version, you may need to use the `docker-compose` command instead of `docker compose`.
 
 1. Start the database container
     ```sh
-    docker-compose up --detach db
+    docker compose up --detach db
     # or podman-compose up --detach db
     ```
 1. Download [`downgrade.sql`](https://firefish.dev/firefish/firefish/-/snippets/13/raw/main/downgrade.sql)
     ```sh
-    docker-compose exec db wget -O /tmp/downgrade.sql https://firefish.dev/firefish/firefish/-/snippets/13/raw/main/downgrade.sql
+    docker compose exec db wget -O /tmp/downgrade.sql https://firefish.dev/firefish/firefish/-/snippets/13/raw/main/downgrade.sql
     # or podman-compose exec db wget -O /tmp/downgrade.sql https://firefish.dev/firefish/firefish/-/snippets/13/raw/main/downgrade.sql
     ```
 1. Revert database migrations (this may take a while)
     ```sh
-    docker-compose exec db psql --file=/tmp/downgrade.sql --user=user_name --dbname=database_name
-    docker-compose exec db psql --command='DROP EXTENSION pgroonga CASCADE' --user=user_name --dbname=database_name
+    docker compose exec db psql --file=/tmp/downgrade.sql --user=user_name --dbname=database_name
+    docker compose exec db psql --command='DROP EXTENSION pgroonga CASCADE' --user=user_name --dbname=database_name
 
     # or
     podman-compose exec db psql --file=/tmp/downgrade.sql --user=user_name --dbname=database_name
@@ -98,10 +109,10 @@
     POSTGRES_USER=user_name    # user name
     POSTGRES_DB=database_name  # database name
     ```
-1. Stop the database container
+1. Stop the container
     ```sh
-    docker-compose down db
-    # or podman-compose down db
+    docker compose down
+    # or podman-compose down
     ```
 1. Change Firefish image tag from `latest` to `v20240206` or `v1.0.5-rc`
     ```sh
@@ -120,6 +131,6 @@
     Please make sure to use the same PostgreSQL version. For example, if you are using `docker.io/groonga/pgroonga:3.1.8-alpine-16`, you should change it to `docker.io/postgres:16-alpine`. PGroonga images are tagged as `{PGroonga version}-{alpine or debian}-{PostgreSQL major version}`. PostgreSQL image tags can be found at <https://hub.docker.com/_/postgres/tags>.
 1. Start the container and confirm that Firefish is downgraded
     ```sh
-    docker-compose up --detach
+    docker compose up --detach
     # or podman-compose up --detach
     ```
