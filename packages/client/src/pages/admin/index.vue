@@ -47,6 +47,15 @@
 							>{{ i18n.ts.check }}</a
 						></MkInfo
 					>
+					<MkInfo warn class="info"
+						>Firefish is in maintenance mode.
+						<a
+							href="https://info.firefish.dev/notes/9xsukr38m3komd63"
+							target="_bank"
+							class="_link"
+							>Check announcement</a
+						></MkInfo
+					>
 
 					<MkSuperMenu :def="menuDef" :grid="narrow"></MkSuperMenu>
 				</div>
