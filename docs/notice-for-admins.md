@@ -2,9 +2,9 @@
 
 You can skip intermediate versions when upgrading from an old version, but please read the notices and follow the instructions for each intermediate version before [upgrading](https://firefish.dev/firefish/firefish/-/blob/main/docs/upgrade.md).
 
-## Unreleased
+## v20240905
 
-:warning: **Firefish is in maintenance mode.** [[announcement]](https://info.firefish.dev/notes/9xsukr38m3komd63)
+:warning: **Firefish is in maintenance mode.** [(announcement)](https://info.firefish.dev/notes/9xsukr38m3komd63)
 
 ## v20240809
 

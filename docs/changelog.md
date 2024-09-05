@@ -7,12 +7,12 @@ This changelog is not an exhaustive list. Code refactorings, minor bug fixes, do
 - Server administrators must check [notice-for-admins.md](https://firefish.dev/firefish/firefish/-/blob/main/docs/notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](https://firefish.dev/firefish/firefish/-/blob/main/docs/api-change.md) as well.
 
-## Unreleased
+## [v20240905](https://firefish.dev/firefish/firefish/-/merge_requests/11361/commits)
 
 - Add fallback images for url preview and instance ticker (!10723)
 - Fix bugs
 - Update documentation
-  - :warning: Firefish is in maintenance mode. [[announcement]](https://info.firefish.dev/notes/9xsukr38m3komd63)
+  - :warning: Firefish is in maintenance mode. [(announcement)](https://info.firefish.dev/notes/9xsukr38m3komd63)
 
 ## [v20240818](https://firefish.dev/firefish/firefish/-/merge_requests/11293/commits)
 

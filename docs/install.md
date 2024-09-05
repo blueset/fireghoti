@@ -1,6 +1,6 @@
 # Install Firefish
 
-:warning: **Firefish is in maintenance mode.** [[announcement]](https://info.firefish.dev/notes/9xsukr38m3komd63)
+:warning: **Firefish is in maintenance mode.** [(announcement)](https://info.firefish.dev/notes/9xsukr38m3komd63)
 
 ## Dependencies
 
