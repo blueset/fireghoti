@@ -369,7 +369,7 @@ mod unit_test {
                 #[napi_derive::napi(js_name = "appendStringAndClone", )]
                 pub fn append_string_and_clone_napi(
                     mut base_str: String,
-                    appended_str: String
+                    appended_str: String,
                 ) -> String {
                     append_string_and_clone(&mut base_str, &appended_str)
                 }
@@ -397,7 +397,7 @@ mod unit_test {
             },
             {
                 #[napi_derive::napi(js_name = "integerDivide", )]
-                pub fn integer_divide_napi(dividend: i64, divisor: i64) -> napi::Result<i64> {
+                pub fn integer_divide_napi(dividend: i64, divisor: i64,) -> napi::Result<i64> {
                     integer_divide(dividend, divisor).map_err(|err|
                         napi::Error::from_reason(format!(
                             "\n{}\n",
