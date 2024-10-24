@@ -1,6 +1,6 @@
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
 import type { IUpdate } from "../../type.js";
-import { getApType, isActor } from "../../type.js";
+import { getApId, getApType, isActor } from "../../type.js";
 import { apLogger } from "../../logger.js";
 import { updateNote } from "../../models/note.js";
 import Resolver from "../../resolver.js";
@@ -14,7 +14,7 @@ export default async (
 	actor: CacheableRemoteUser,
 	activity: IUpdate,
 ): Promise<string> => {
-	if ("actor" in activity && actor.uri !== activity.actor) {
+	if (actor.uri == null || actor.uri !== getApId(activity.actor)) {
 		return "skip: invalid actor";
 	}
 
@@ -29,6 +29,10 @@ export default async (
 	});
 
 	if (isActor(object)) {
+		if (actor.uri !== object.id) {
+			return "skip: actor id mismatch";
+		}
+
 		await updatePerson(actor.uri!, resolver, object);
 		return "ok: Person updated";
 	}
@@ -41,7 +45,7 @@ export default async (
 		case "Document":
 		case "Page":
 			let failed = false;
-			await updateNote(object, resolver).catch((e: Error) => {
+			await updateNote(object, actor, resolver).catch((e: Error) => {
 				failed = true;
 			});
 			return failed ? "skip: Note update failed" : "ok: Note updated";

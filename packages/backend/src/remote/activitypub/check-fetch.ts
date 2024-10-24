@@ -39,6 +39,7 @@ export async function checkFetch(req: IncomingMessage): Promise<number> {
 		try {
 			signature = httpSignature.parseRequest(req, {
 				headers: ["(request-target)", "host", "date"],
+				authorizationHeaderName: "signature",
 			});
 		} catch (e) {
 			return 401;

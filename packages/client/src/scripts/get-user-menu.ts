@@ -342,7 +342,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 					type: "a",
 					icon: `${icon("ph-arrow-square-out")}`,
 					text: i18n.ts.showOnRemote,
-					href: user.url,
+					href: user.url ?? user.uri,
 					target: "_blank",
 				}
 			: undefined,

@@ -46,18 +46,8 @@ export async function performActivity(
 	activity: IObject,
 ) {
 	if (isCollectionOrOrderedCollection(activity)) {
-		const resolver = new Resolver();
-		for (const item of toArray(
-			isCollection(activity) ? activity.items : activity.orderedItems,
-		)) {
-			const act = await resolver.resolve(item);
-			try {
-				await performOneActivity(actor, act);
-			} catch (err) {
-				apLogger.info(`Failed to perform activity: ${err}`);
-				apLogger.debug(inspect(err));
-			}
-		}
+		apLogger.debug("Refusing to ingest collection as activity");
+		return;
 	} else {
 		await performOneActivity(actor, activity);
 	}

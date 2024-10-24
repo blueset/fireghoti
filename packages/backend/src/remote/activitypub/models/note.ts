@@ -132,7 +132,13 @@ export async function createNote(
 
 	const note: IPost = object;
 
-	if (note.id && !note.id.startsWith("https://")) {
+	if (note.id == null) {
+		throw new Error("Note must have an id");
+	}
+
+	const idUrl = new URL(note.id);
+
+	if (idUrl.protocol !== "https:") {
 		throw new Error(`unexpected schema of note.id: ${note.id}`);
 	}
 
@@ -142,9 +148,10 @@ export async function createNote(
 		note.url = note.id;
 	}
 
-	const url = getOneApHrefNullable(note.url);
+	let url = getOneApHrefNullable(note.url);
+	const urlUrl = url != null ? new URL(url) : null;
 
-	if (url && !url.startsWith("https://")) {
+	if (urlUrl != null && urlUrl.protocol !== "https:") {
 		throw new Error(`unexpected schema of note url: ${url}`);
 	}
 
@@ -174,6 +181,22 @@ export async function createNote(
 		getOneApId(note.attributedTo),
 		resolver,
 	)) as CacheableRemoteUser;
+
+	if (actor.uri == null) {
+		apLogger.warn("Note actor uri is null, discarding");
+		return null;
+	}
+
+	const actorUri = new URL(actor.uri);
+	if (idUrl.host !== actorUri.host) {
+		apLogger.warn("Note id host doesn't match actor host, discarding");
+		return null;
+	}
+
+	if (urlUrl != null && urlUrl.host !== actorUri.host) {
+		apLogger.debug("Note url host doesn't match actor host, clearing variable");
+		url = undefined;
+	}
 
 	// Skip if author is suspended.
 	if (actor.isSuspended) {
@@ -565,7 +588,11 @@ function notEmpty(partial: Partial<any>) {
 	return Object.keys(partial).length > 0;
 }
 
-export async function updateNote(value: string | IObject, resolver?: Resolver) {
+export async function updateNote(
+	value: string | IObject,
+	actor: CacheableRemoteUser,
+	resolver?: Resolver,
+) {
 	const uri = typeof value === "string" ? value : value.id;
 	if (!uri) throw new Error("Missing note uri");
 
@@ -578,15 +605,19 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 	// Resolve the updated Note object
 	const post = (await resolver.resolve(value)) as IPost;
 
-	const actor = (await resolvePerson(
-		getOneApId(post.attributedTo),
-		resolver,
-	)) as CacheableRemoteUser;
+	if (getOneApId(post.attributedTo) !== actor.uri || actor.uri == null) {
+		throw new Error(
+			"Refusing to ingest update for note with mismatching actor",
+		);
+	}
 
 	// Already registered with this server?
 	const note = await Notes.findOneBy({ uri });
 	if (note == null) {
 		return await createNote(post, resolver);
+	}
+	if (note.userId !== actor.id) {
+		throw new Error("Refusing to ingest update for note of different user");
 	}
 
 	// Whether to tell clients the note has been updated and requires refresh.
@@ -732,6 +763,15 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 
 	if (poll) {
 		const dbPoll = await Polls.findOneBy({ noteId: note.id });
+		if (
+			poll?.votes != null &&
+			poll.votes.find((p) => !Number.isInteger(p) || p < 0) !== undefined
+		) {
+			throw new Error(
+				"Refusing to ingest poll with non-integer or negative vote count",
+			);
+		}
+
 		if (dbPoll == null) {
 			await Polls.insert({
 				noteId: note.id,

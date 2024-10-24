@@ -28,6 +28,8 @@ export default async function (
 			if (extractHost(actor.uri) !== extractHost(note.id)) {
 				return "skip: host in actor.uri !== note.id";
 			}
+		} else {
+			return "skip: note.id is not a string";
 		}
 	}
 

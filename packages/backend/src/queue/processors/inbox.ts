@@ -171,12 +171,13 @@ export default async (job: Bull.Job<InboxJobData>): Promise<string> => {
 	}
 
 	// activity.idがあればホストが署名者のホストであることを確認する
-	if (typeof activity.id === "string") {
-		const signerHost = extractHost(authUser.user.uri!);
-		const activityIdHost = extractHost(activity.id);
-		if (signerHost !== activityIdHost) {
-			return `skip: signerHost(${signerHost}) !== activity.id host(${activityIdHost}`;
-		}
+	if (typeof activity.id !== "string") {
+		return "skip: activity.id is not a string";
+	}
+	const signerHost = extractHost(authUser.user.uri!);
+	const activityIdHost = extractHost(activity.id);
+	if (signerHost !== activityIdHost) {
+		return `skip: signerHost(${signerHost}) !== activity.id host(${activityIdHost})`;
 	}
 
 	// Update stats
