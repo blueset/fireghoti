@@ -45,7 +45,6 @@ async fn fetch_nodeinfo_links(host: &str) -> Result<NodeinfoLinks, Error> {
     let wellknown_response = client.get_async(&wellknown_url).await?;
 
     if !wellknown_response.status().is_success() {
-        tracing::debug!("{:#?}", wellknown_response.body());
         return Err(Error::BadStatus(format!(
             "{} returned {}",
             wellknown_url,
