@@ -27,6 +27,7 @@ bcrypt = { workspace = true, features = ["std"] }
 chrono = { workspace = true }
 cuid2 = { workspace = true }
 emojis = { workspace = true }
+error-doc = { workspace = true }
 futures-util = { workspace = true, features = ["io"] }
 identicon-rs = { workspace = true }
 idna = { workspace = true, features = ["std", "compiled_data"] }

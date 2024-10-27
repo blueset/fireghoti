@@ -1,3 +1,5 @@
+//! Cache handlers
+
 pub mod bare;
 pub mod redis;
 

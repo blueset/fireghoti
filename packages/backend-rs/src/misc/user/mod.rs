@@ -1,5 +1,12 @@
 pub mod count;
 
+use crate::config::CONFIG;
+
+/// Returns URI of a local user.
+pub fn local_uri(user_id: impl std::fmt::Display) -> String {
+    format!("{}/users/{}", CONFIG.url, user_id)
+}
+
 #[doc(hidden)] // hide the macro in the top doc page
 #[macro_export]
 macro_rules! is_local {

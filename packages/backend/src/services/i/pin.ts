@@ -1,13 +1,10 @@
-import { config } from "@/config.js";
-import renderAdd from "@/remote/activitypub/renderer/add.js";
-import renderRemove from "@/remote/activitypub/renderer/remove.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
 import type { User } from "@/models/entities/user.js";
 import type { Note } from "@/models/entities/note.js";
 import { Notes, UserNotePinings, Users } from "@/models/index.js";
 import type { UserNotePining } from "@/models/entities/user-note-pining.js";
-import { genIdAt } from "backend-rs";
+import { genIdAt, renderAdd, renderRemove } from "backend-rs";
 import { deliverToFollowers } from "@/remote/activitypub/deliver-manager.js";
 import { deliverToRelays } from "@/services/relay.js";
 
@@ -115,12 +112,8 @@ export async function deliverPinnedChange(
 
 	if (!Users.isLocalUser(user)) return;
 
-	const target = `${config.url}/users/${user.id}/collections/featured`;
-	const item = `${config.url}/notes/${noteId}`;
 	const content = renderActivity(
-		isAddition
-			? renderAdd(user, target, item)
-			: renderRemove(user, target, item),
+		isAddition ? renderAdd(user.id, noteId) : renderRemove(user.id, noteId),
 	);
 
 	deliverToFollowers(user, content);

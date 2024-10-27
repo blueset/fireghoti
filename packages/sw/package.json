@@ -6,13 +6,13 @@
 	"scripts": {
 		"build": "pnpm vite build --emptyOutDir",
 		"build:debug": "pnpm run build",
-		"lint": "pnpm biome check *.ts --apply",
-		"format": "pnpm biome format * --write"
+		"lint": "pnpm biome check --write src",
+		"format": "pnpm biome format --write src"
 	},
 	"devDependencies": {
 		"firefish-js": "workspace:*",
 		"idb-keyval": "6.2.1",
-		"vite": "5.3.5",
+		"vite": "5.4.2",
 		"vite-plugin-compression": "0.5.1"
 	}
 }

@@ -84,5 +84,6 @@ onUnmounted(() => {
 .content {
 	margin-block: 0;
 	margin-inline: auto;
+	padding-block-end: 80px;
 }
 </style>

@@ -13,19 +13,19 @@ use sea_orm::prelude::*;
 use serde::Deserialize;
 use web_push::*;
 
-#[macros::errors]
+#[error_doc::errors]
 pub enum Error {
-    #[doc = "database error"]
+    #[doc = "Database error"]
     #[error(transparent)]
     Db(#[from] DbErr),
     #[error("web push has failed")]
     WebPush(#[from] WebPushError),
     #[error("failed to (de)serialize an object")]
     Serialize(#[from] serde_json::Error),
-    #[doc = "provided content is invalid"]
+    #[doc = "Provided content is invalid"]
     #[error("invalid content ({0})")]
     InvalidContent(String),
-    #[doc = "found Mastodon subscription is invalid"]
+    #[doc = "Found Mastodon subscription is invalid"]
     #[error("invalid subscription ({0})")]
     InvalidSubscription(String),
     #[error("invalid notification ID")]

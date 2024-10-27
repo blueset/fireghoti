@@ -1,6 +1,6 @@
 # Install Firefish
 
-Please check the [v20240206 release note](https://firefish.dev/firefish/firefish/-/releases/v20240206) first. This project is barely maintained for those who really want to keep using Firefish. Please understand this before proceeding.
+:warning: **Firefish is in maintenance mode.** [(announcement)](https://info.firefish.dev/notes/9xsukr38m3komd63)
 
 ## Dependencies
 
@@ -8,7 +8,7 @@ Firefish depends on the following software.
 
 ### Runtime dependencies
 
-- At least [NodeJS](https://nodejs.org/en/) v18.19.0 (v20/v22 recommended)
+- At least [NodeJS](https://nodejs.org/en/) v18.20.0 (v20/v22 recommended)
 - At least [PostgreSQL](https://www.postgresql.org/) v12 (v16 recommended) with [PGroonga](https://pgroonga.github.io/) extension
 - At least [Redis](https://redis.io/) v7 or [Valkey](https://valkey.io/) v7
 - Web Proxy (one of the following)

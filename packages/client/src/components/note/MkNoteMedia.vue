@@ -55,7 +55,7 @@
 			<button
 				v-if="media.comment"
 				v-tooltip.noLabel="
-					`${i18n.ts.alt}: ${
+					`${
 						media.comment.length > 200
 							? media.comment.trim().slice(0, 200) + '...'
 							: media.comment.trim()

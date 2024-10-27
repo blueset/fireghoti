@@ -1,11 +1,12 @@
 BEGIN;
 
 DELETE FROM "migrations" WHERE name IN (
+    'antennaLimit1712937600000',
     'SetEmojiPublicUrl1722346019160',
     'SetAccessTokenName1722134626110',
     'CreateSystemActors1720618854585',
     'AddMastodonSubscriptionType1715181461692',
-    'SwSubscriptionAccessToken1709395223611',
+    'SwSubscriptionAccessToken1709395223612',
     'UserProfileMentions1711075007936',
     'ClientCredentials1713108561474',
     'TurnOffCatLanguage1720107645050',
@@ -43,6 +44,9 @@ DELETE FROM "migrations" WHERE name IN (
     'SwSubscriptionAccessToken1709395223611'
 );
 
+-- antenna-limit
+ALTER TABLE "meta" DROP COLUMN "antennaLimit";
+
 -- set-emoji-public-url
 ALTER TABLE "emoji" ALTER COLUMN "publicUrl" SET DEFAULT '';
 
@@ -58,41 +62,13 @@ ALTER TABLE "sw_subscription" DROP COLUMN "appAccessTokenId";
 ALTER TABLE "user_profile" DROP COLUMN "mentions";
 
 -- client-credential-support
+DELETE FROM "access_token" WHERE "userId" IS NULL;
 ALTER TABLE "access_token" ALTER COLUMN "userId" SET NOT NULL;
 
 -- turn-off-cat-language
 ALTER TABLE "user" DROP COLUMN "readCatLanguage";
 
 -- refactor-scheduled-post
-CREATE TABLE "scheduled_note" (
-	"id" character varying(32) NOT NULL PRIMARY KEY,
-	"noteId" character varying(32) NOT NULL,
-	"userId" character varying(32) NOT NULL,
-	"scheduledAt" TIMESTAMP WITH TIME ZONE NOT NULL
-);
-COMMENT ON COLUMN "scheduled_note"."noteId" IS 'The ID of the temporarily created note that corresponds to the schedule.';
-CREATE EXTENSION pgcrypto;
-CREATE FUNCTION generate_scheduled_note_id(size int) RETURNS text AS $$	DECLARE
-	characters text := 'abcdefghijklmnopqrstuvwxyz0123456789';
-	bytes bytea := gen_random_bytes(size);
-	l int := length(characters);
-	i int := 0;
-	output text := '';
-	BEGIN
-		WHILE i < size LOOP
-			output := output || substr(characters, get_byte(bytes, i) % l + 1, 1);
-			i := i + 1;
-		END LOOP;
-		RETURN output;
-	END;
-$$ LANGUAGE plpgsql VOLATILE;
-INSERT INTO "scheduled_note" ("id", "noteId", "userId", "scheduledAt") (SELECT generate_scheduled_note_id(16), "id", "userId", "scheduledAt" FROM "note" WHERE "note"."scheduledAt" IS NOT NULL);
-DROP EXTENSION pgcrypto;
-DROP FUNCTION "generate_scheduled_note_id";
-CREATE INDEX "IDX_noteId_ScheduledNote" ON "scheduled_note" ("noteId");
-CREATE INDEX "IDX_userId_ScheduledNote" ON "scheduled_note" ("userId");
-ALTER TABLE "scheduled_note" ADD FOREIGN KEY ("noteId") REFERENCES "note"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
-ALTER TABLE "scheduled_note" ADD FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 ALTER TABLE "note" DROP COLUMN "scheduledAt";
 
 -- remove-enum-typename-suffix
@@ -107,9 +83,6 @@ ALTER TYPE "relay_status" RENAME TO "relay_status_enum";
 ALTER TYPE "user_emoji_mod_perm" RENAME TO "user_emojimodperm_enum";
 ALTER TYPE "user_profile_ffvisibility" RENAME TO "user_profile_ffvisibility_enum";
 ALTER TYPE "user_profile_muting_notification_types" RENAME TO "user_profile_mutingnotificationtypes_enum";
-
--- create-scheduled-note
-DROP TABLE "scheduled_note";
 
 -- userprofile-jsonb-to-array
 ALTER TABLE "user_profile" RENAME COLUMN "mutedInstances" TO "mutedInstances_old";
@@ -179,8 +152,7 @@ DROP TYPE "drive_file_usage_hint_enum";
 
 -- convert-cw-varchar-to-text
 DROP INDEX "IDX_8e3bbbeb3df04d1a8105da4c8f";
-ALTER TABLE "note" ALTER COLUMN "cw" TYPE character varying(512);
-CREATE INDEX "IDX_8e3bbbeb3df04d1a8105da4c8f" ON "note" USING "pgroonga" ("cw" pgroonga_varchar_full_text_search_ops_v2);
+ALTER TABLE "note" ALTER COLUMN "cw" TYPE character varying(512) USING SUBSTRING("cw" FOR 512);
 
 -- fix-chat-file-constraint
 ALTER TABLE "messaging_message" DROP CONSTRAINT "FK_535def119223ac05ad3fa9ef64b";
@@ -217,13 +189,11 @@ ALTER TABLE "user_profile" DROP "mutedPatterns";
 
 -- index-alt-text-and-cw
 DROP INDEX "IDX_f4f7b93d05958527300d79ac82";
-DROP INDEX "IDX_8e3bbbeb3df04d1a8105da4c8f";
 
 -- pgroonga
 DROP INDEX "IDX_f27f5d88941e57442be75ba9c8";
 DROP INDEX "IDX_065d4d8f3b5adb4a08841eae3c";
 DROP INDEX "IDX_fcb770976ff8240af5799e3ffc";
-DROP EXTENSION pgroonga CASCADE;
 
 -- change-default-configs
 ALTER TABLE "user_profile" ALTER COLUMN "noCrawle" SET DEFAULT false;
@@ -234,6 +204,35 @@ ALTER TABLE "meta" ALTER COLUMN "disableRegistration" SET DEFAULT false;
 DROP TABLE "reply_muting";
 
 -- remove-charts
+-- CREATE TABLE public.__chart__active_users (
+--     id integer NOT NULL,
+--     date integer NOT NULL,
+--     "unique_temp___registeredWithinWeek" character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+--     "___registeredWithinWeek" smallint DEFAULT '0'::smallint NOT NULL,
+--     "unique_temp___registeredWithinMonth" character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+--     "___registeredWithinMonth" smallint DEFAULT '0'::smallint NOT NULL,
+--     "unique_temp___registeredWithinYear" character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+--     "___registeredWithinYear" smallint DEFAULT '0'::smallint NOT NULL,
+--     "unique_temp___registeredOutsideWeek" character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+--     "___registeredOutsideWeek" smallint DEFAULT '0'::smallint NOT NULL,
+--     "unique_temp___registeredOutsideMonth" character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+--     "___registeredOutsideMonth" smallint DEFAULT '0'::smallint NOT NULL,
+--     "unique_temp___registeredOutsideYear" character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+--     "___registeredOutsideYear" smallint DEFAULT '0'::smallint NOT NULL,
+--     "___readWrite" smallint DEFAULT '0'::smallint NOT NULL,
+--     unique_temp___read character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+--     ___read smallint DEFAULT '0'::smallint NOT NULL,
+--     unique_temp___write character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+--     ___write smallint DEFAULT '0'::smallint NOT NULL
+-- );
+-- CREATE SEQUENCE public.__chart__active_users_id_seq
+--     AS integer
+--     START WITH 1
+--     INCREMENT BY 1
+--     NO MINVALUE
+--     NO MAXVALUE
+--     CACHE 1;
+-- ALTER SEQUENCE public.__chart__active_users_id_seq OWNED BY public.__chart__active_users.id;
 CREATE TABLE public.__chart__ap_request (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -249,7 +248,6 @@ CREATE SEQUENCE public.__chart__ap_request_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart__ap_request_id_seq OWNED BY public.__chart__ap_request.id;
-
 CREATE TABLE public.__chart__drive (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -270,7 +268,6 @@ CREATE SEQUENCE public.__chart__drive_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart__drive_id_seq OWNED BY public.__chart__drive.id;
-
 CREATE TABLE public.__chart__federation (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -294,7 +291,6 @@ CREATE SEQUENCE public.__chart__federation_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart__federation_id_seq OWNED BY public.__chart__federation.id;
-
 CREATE TABLE public.__chart__hashtag (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -312,7 +308,6 @@ CREATE SEQUENCE public.__chart__hashtag_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart__hashtag_id_seq OWNED BY public.__chart__hashtag.id;
-
 CREATE TABLE public.__chart__instance (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -350,7 +345,6 @@ CREATE SEQUENCE public.__chart__instance_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart__instance_id_seq OWNED BY public.__chart__instance.id;
-
 CREATE TABLE public.__chart__network (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -368,7 +362,6 @@ CREATE SEQUENCE public.__chart__network_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart__network_id_seq OWNED BY public.__chart__network.id;
-
 CREATE TABLE public.__chart__notes (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -395,7 +388,6 @@ CREATE SEQUENCE public.__chart__notes_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart__notes_id_seq OWNED BY public.__chart__notes.id;
-
 CREATE TABLE public.__chart__per_user_drive (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -415,7 +407,6 @@ CREATE SEQUENCE public.__chart__per_user_drive_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart__per_user_drive_id_seq OWNED BY public.__chart__per_user_drive.id;
-
 CREATE TABLE public.__chart__per_user_following (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -441,7 +432,6 @@ CREATE SEQUENCE public.__chart__per_user_following_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart__per_user_following_id_seq OWNED BY public.__chart__per_user_following.id;
-
 CREATE TABLE public.__chart__per_user_notes (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -462,7 +452,6 @@ CREATE SEQUENCE public.__chart__per_user_notes_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart__per_user_notes_id_seq OWNED BY public.__chart__per_user_notes.id;
-
 CREATE TABLE public.__chart__per_user_reaction (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -478,7 +467,6 @@ CREATE SEQUENCE public.__chart__per_user_reaction_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart__per_user_reaction_id_seq OWNED BY public.__chart__per_user_reaction.id;
-
 CREATE TABLE public.__chart__test (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -503,7 +491,6 @@ CREATE SEQUENCE public.__chart__test_grouped_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart__test_grouped_id_seq OWNED BY public.__chart__test_grouped.id;
-
 CREATE SEQUENCE public.__chart__test_id_seq
     AS integer
     START WITH 1
@@ -512,7 +499,6 @@ CREATE SEQUENCE public.__chart__test_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart__test_id_seq OWNED BY public.__chart__test.id;
-
 CREATE TABLE public.__chart__test_unique (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -527,7 +513,6 @@ CREATE SEQUENCE public.__chart__test_unique_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart__test_unique_id_seq OWNED BY public.__chart__test_unique.id;
-
 CREATE TABLE public.__chart__users (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -546,7 +531,35 @@ CREATE SEQUENCE public.__chart__users_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart__users_id_seq OWNED BY public.__chart__users.id;
-
+-- CREATE TABLE public.__chart_day__active_users (
+--     id integer NOT NULL,
+--     date integer NOT NULL,
+--     "unique_temp___registeredWithinWeek" character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+--     "___registeredWithinWeek" smallint DEFAULT '0'::smallint NOT NULL,
+--     "unique_temp___registeredWithinMonth" character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+--     "___registeredWithinMonth" smallint DEFAULT '0'::smallint NOT NULL,
+--     "unique_temp___registeredWithinYear" character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+--     "___registeredWithinYear" smallint DEFAULT '0'::smallint NOT NULL,
+--     "unique_temp___registeredOutsideWeek" character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+--     "___registeredOutsideWeek" smallint DEFAULT '0'::smallint NOT NULL,
+--     "unique_temp___registeredOutsideMonth" character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+--     "___registeredOutsideMonth" smallint DEFAULT '0'::smallint NOT NULL,
+--     "unique_temp___registeredOutsideYear" character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+--     "___registeredOutsideYear" smallint DEFAULT '0'::smallint NOT NULL,
+--     "___readWrite" smallint DEFAULT '0'::smallint NOT NULL,
+--     unique_temp___read character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+--     ___read smallint DEFAULT '0'::smallint NOT NULL,
+--     unique_temp___write character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+--     ___write smallint DEFAULT '0'::smallint NOT NULL
+-- );
+-- CREATE SEQUENCE public.__chart_day__active_users_id_seq
+--     AS integer
+--     START WITH 1
+--     INCREMENT BY 1
+--     NO MINVALUE
+--     NO MAXVALUE
+--     CACHE 1;
+-- ALTER SEQUENCE public.__chart_day__active_users_id_seq OWNED BY public.__chart_day__active_users.id;
 CREATE TABLE public.__chart_day__ap_request (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -562,7 +575,6 @@ CREATE SEQUENCE public.__chart_day__ap_request_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart_day__ap_request_id_seq OWNED BY public.__chart_day__ap_request.id;
-
 CREATE TABLE public.__chart_day__drive (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -583,7 +595,6 @@ CREATE SEQUENCE public.__chart_day__drive_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart_day__drive_id_seq OWNED BY public.__chart_day__drive.id;
-
 CREATE TABLE public.__chart_day__federation (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -607,7 +618,6 @@ CREATE SEQUENCE public.__chart_day__federation_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart_day__federation_id_seq OWNED BY public.__chart_day__federation.id;
-
 CREATE TABLE public.__chart_day__hashtag (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -625,7 +635,6 @@ CREATE SEQUENCE public.__chart_day__hashtag_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart_day__hashtag_id_seq OWNED BY public.__chart_day__hashtag.id;
-
 CREATE TABLE public.__chart_day__instance (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -663,7 +672,6 @@ CREATE SEQUENCE public.__chart_day__instance_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart_day__instance_id_seq OWNED BY public.__chart_day__instance.id;
-
 CREATE TABLE public.__chart_day__network (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -681,7 +689,6 @@ CREATE SEQUENCE public.__chart_day__network_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart_day__network_id_seq OWNED BY public.__chart_day__network.id;
-
 CREATE TABLE public.__chart_day__notes (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -708,7 +715,6 @@ CREATE SEQUENCE public.__chart_day__notes_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart_day__notes_id_seq OWNED BY public.__chart_day__notes.id;
-
 CREATE TABLE public.__chart_day__per_user_drive (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -728,7 +734,6 @@ CREATE SEQUENCE public.__chart_day__per_user_drive_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart_day__per_user_drive_id_seq OWNED BY public.__chart_day__per_user_drive.id;
-
 CREATE TABLE public.__chart_day__per_user_following (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -754,7 +759,6 @@ CREATE SEQUENCE public.__chart_day__per_user_following_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart_day__per_user_following_id_seq OWNED BY public.__chart_day__per_user_following.id;
-
 CREATE TABLE public.__chart_day__per_user_notes (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -775,7 +779,6 @@ CREATE SEQUENCE public.__chart_day__per_user_notes_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart_day__per_user_notes_id_seq OWNED BY public.__chart_day__per_user_notes.id;
-
 CREATE TABLE public.__chart_day__per_user_reaction (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -791,7 +794,6 @@ CREATE SEQUENCE public.__chart_day__per_user_reaction_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart_day__per_user_reaction_id_seq OWNED BY public.__chart_day__per_user_reaction.id;
-
 CREATE TABLE public.__chart_day__users (
     id integer NOT NULL,
     date integer NOT NULL,
@@ -810,6 +812,177 @@ CREATE SEQUENCE public.__chart_day__users_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.__chart_day__users_id_seq OWNED BY public.__chart_day__users.id;
+-- ALTER TABLE ONLY public.__chart__active_users ALTER COLUMN id SET DEFAULT nextval('public.__chart__active_users_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart__ap_request ALTER COLUMN id SET DEFAULT nextval('public.__chart__ap_request_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart__drive ALTER COLUMN id SET DEFAULT nextval('public.__chart__drive_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart__federation ALTER COLUMN id SET DEFAULT nextval('public.__chart__federation_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart__hashtag ALTER COLUMN id SET DEFAULT nextval('public.__chart__hashtag_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart__instance ALTER COLUMN id SET DEFAULT nextval('public.__chart__instance_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart__network ALTER COLUMN id SET DEFAULT nextval('public.__chart__network_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart__notes ALTER COLUMN id SET DEFAULT nextval('public.__chart__notes_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart__per_user_drive ALTER COLUMN id SET DEFAULT nextval('public.__chart__per_user_drive_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart__per_user_following ALTER COLUMN id SET DEFAULT nextval('public.__chart__per_user_following_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart__per_user_notes ALTER COLUMN id SET DEFAULT nextval('public.__chart__per_user_notes_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart__per_user_reaction ALTER COLUMN id SET DEFAULT nextval('public.__chart__per_user_reaction_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart__test ALTER COLUMN id SET DEFAULT nextval('public.__chart__test_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart__test_grouped ALTER COLUMN id SET DEFAULT nextval('public.__chart__test_grouped_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart__test_unique ALTER COLUMN id SET DEFAULT nextval('public.__chart__test_unique_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart__users ALTER COLUMN id SET DEFAULT nextval('public.__chart__users_id_seq'::regclass);
+-- ALTER TABLE ONLY public.__chart_day__active_users ALTER COLUMN id SET DEFAULT nextval('public.__chart_day__active_users_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart_day__ap_request ALTER COLUMN id SET DEFAULT nextval('public.__chart_day__ap_request_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart_day__drive ALTER COLUMN id SET DEFAULT nextval('public.__chart_day__drive_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart_day__federation ALTER COLUMN id SET DEFAULT nextval('public.__chart_day__federation_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart_day__hashtag ALTER COLUMN id SET DEFAULT nextval('public.__chart_day__hashtag_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart_day__instance ALTER COLUMN id SET DEFAULT nextval('public.__chart_day__instance_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart_day__network ALTER COLUMN id SET DEFAULT nextval('public.__chart_day__network_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart_day__notes ALTER COLUMN id SET DEFAULT nextval('public.__chart_day__notes_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart_day__per_user_drive ALTER COLUMN id SET DEFAULT nextval('public.__chart_day__per_user_drive_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart_day__per_user_following ALTER COLUMN id SET DEFAULT nextval('public.__chart_day__per_user_following_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart_day__per_user_notes ALTER COLUMN id SET DEFAULT nextval('public.__chart_day__per_user_notes_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart_day__per_user_reaction ALTER COLUMN id SET DEFAULT nextval('public.__chart_day__per_user_reaction_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart_day__users ALTER COLUMN id SET DEFAULT nextval('public.__chart_day__users_id_seq'::regclass);
+ALTER TABLE ONLY public.__chart__notes
+    ADD CONSTRAINT "PK_0aec823fa85c7f901bdb3863b14" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart__instance
+    ADD CONSTRAINT "PK_1267c67c7c2d47b4903975f2c00" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart_day__hashtag
+    ADD CONSTRAINT "PK_13d5a3b089344e5557f8e0980b4" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart_day__per_user_drive
+    ADD CONSTRAINT "PK_1ae135254c137011645da7f4045" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart_day__notes
+    ADD CONSTRAINT "PK_1fa4139e1f338272b758d05e090" PRIMARY KEY (id);
+-- ALTER TABLE ONLY public.__chart__active_users
+--     ADD CONSTRAINT "PK_317237a9f733b970604a11e314f" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart__per_user_notes
+    ADD CONSTRAINT "PK_334acf6e915af2f29edc11b8e50" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart__test_unique
+    ADD CONSTRAINT "PK_409bac9c97cc612d8500012319d" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart_day__instance
+    ADD CONSTRAINT "PK_479a8ff9d959274981087043023" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart__users
+    ADD CONSTRAINT "PK_4dfcf2c78d03524b9eb2c99d328" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart__ap_request
+    ADD CONSTRAINT "PK_56a25cd447c7ee08876b3baf8d8" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart_day__per_user_notes
+    ADD CONSTRAINT "PK_58bab6b6d3ad9310cbc7460fd28" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart_day__per_user_following
+    ADD CONSTRAINT "PK_68ce6b67da57166da66fc8fb27e" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart_day__federation
+    ADD CONSTRAINT "PK_7ca721c769f31698e0e1331e8e6" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart__per_user_following
+    ADD CONSTRAINT "PK_85bb1b540363a29c2fec83bd907" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart_day__per_user_reaction
+    ADD CONSTRAINT "PK_8af24e2d51ff781a354fe595eda" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart_day__ap_request
+    ADD CONSTRAINT "PK_9318b49daee320194e23f712e69" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart__per_user_reaction
+    ADD CONSTRAINT "PK_984f54dae441e65b633e8d27a7f" PRIMARY KEY (id);
+-- ALTER TABLE ONLY public.__chart_day__active_users
+--     ADD CONSTRAINT "PK_b1790489b14f005ae8f404f5795" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart__federation
+    ADD CONSTRAINT "PK_b39dcd31a0fe1a7757e348e85fd" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart__test
+    ADD CONSTRAINT "PK_b4bc31dffbd1b785276a3ecfc1e" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart__network
+    ADD CONSTRAINT "PK_bc4290c2e27fad14ef0c1ca93f3" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart__hashtag
+    ADD CONSTRAINT "PK_c32f1ea2b44a5d2f7881e37f8f9" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart_day__network
+    ADD CONSTRAINT "PK_cac499d6f471042dfed1e7e0132" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart__per_user_drive
+    ADD CONSTRAINT "PK_d0ef23d24d666e1a44a0cd3d208" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart_day__users
+    ADD CONSTRAINT "PK_d7f7185abb9851f70c4726c54bd" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart_day__drive
+    ADD CONSTRAINT "PK_e7ec0de057c77c40fc8d8b62151" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart__test_grouped
+    ADD CONSTRAINT "PK_f4a2b175d308695af30d4293272" PRIMARY KEY (id);
+ALTER TABLE ONLY public.__chart__drive
+    ADD CONSTRAINT "PK_f96bc548a765cd4b3b354221ce7" PRIMARY KEY (id);
+-- ALTER TABLE ONLY public.__chart__active_users
+--     ADD CONSTRAINT "UQ_0ad37b7ef50f4ddc84363d7ccca" UNIQUE (date);
+ALTER TABLE ONLY public.__chart_day__drive
+    ADD CONSTRAINT "UQ_0b60ebb3aa0065f10b0616c1171" UNIQUE (date);
+ALTER TABLE ONLY public.__chart__drive
+    ADD CONSTRAINT "UQ_13565815f618a1ff53886c5b28a" UNIQUE (date);
+ALTER TABLE ONLY public.__chart_day__notes
+    ADD CONSTRAINT "UQ_1a527b423ad0858a1af5a056d43" UNIQUE (date);
+ALTER TABLE ONLY public.__chart__per_user_reaction
+    ADD CONSTRAINT "UQ_229a41ad465f9205f1f57032910" UNIQUE (date, "group");
+ALTER TABLE ONLY public.__chart__hashtag
+    ADD CONSTRAINT "UQ_25a97c02003338124b2b75fdbc8" UNIQUE (date, "group");
+ALTER TABLE ONLY public.__chart__per_user_drive
+    ADD CONSTRAINT "UQ_30bf67687f483ace115c5ca6429" UNIQUE (date, "group");
+ALTER TABLE ONLY public.__chart__federation
+    ADD CONSTRAINT "UQ_36cb699c49580d4e6c2e6159f97" UNIQUE (date);
+ALTER TABLE ONLY public.__chart__instance
+    ADD CONSTRAINT "UQ_39ee857ab2f23493037c6b66311" UNIQUE (date, "group");
+ALTER TABLE ONLY public.__chart__notes
+    ADD CONSTRAINT "UQ_42eb716a37d381cdf566192b2be" UNIQUE (date);
+ALTER TABLE ONLY public.__chart__per_user_notes
+    ADD CONSTRAINT "UQ_5048e9daccbbbc6d567bb142d34" UNIQUE (date, "group");
+ALTER TABLE ONLY public.__chart_day__federation
+    ADD CONSTRAINT "UQ_617a8fe225a6e701d89e02d2c74" UNIQUE (date);
+ALTER TABLE ONLY public.__chart_day__per_user_drive
+    ADD CONSTRAINT "UQ_62aa5047b5aec92524f24c701d7" UNIQUE (date, "group");
+ALTER TABLE ONLY public.__chart__users
+    ADD CONSTRAINT "UQ_845254b3eaf708ae8a6cac30265" UNIQUE (date);
+ALTER TABLE ONLY public.__chart_day__network
+    ADD CONSTRAINT "UQ_8bfa548c2b31f9e07db113773ee" UNIQUE (date);
+ALTER TABLE ONLY public.__chart_day__hashtag
+    ADD CONSTRAINT "UQ_8f589cf056ff51f09d6096f6450" UNIQUE (date, "group");
+ALTER TABLE ONLY public.__chart__network
+    ADD CONSTRAINT "UQ_a1efd3e0048a5f2793a47360dc6" UNIQUE (date);
+ALTER TABLE ONLY public.__chart_day__ap_request
+    ADD CONSTRAINT "UQ_a848f66d6cec11980a5dd595822" UNIQUE (date);
+ALTER TABLE ONLY public.__chart__per_user_following
+    ADD CONSTRAINT "UQ_b77d4dd9562c3a899d9a286fcd7" UNIQUE (date, "group");
+ALTER TABLE ONLY public.__chart_day__per_user_notes
+    ADD CONSTRAINT "UQ_c5545d4b31cdc684034e33b81c3" UNIQUE (date, "group");
+ALTER TABLE ONLY public.__chart_day__users
+    ADD CONSTRAINT "UQ_cad6e07c20037f31cdba8a350c3" UNIQUE (date);
+ALTER TABLE ONLY public.__chart_day__per_user_reaction
+    ADD CONSTRAINT "UQ_d54b653660d808b118e36c184c0" UNIQUE (date, "group");
+-- ALTER TABLE ONLY public.__chart_day__active_users
+--     ADD CONSTRAINT "UQ_d5954f3df5e5e3bdfc3c03f3906" UNIQUE (date);
+ALTER TABLE ONLY public.__chart_day__per_user_following
+    ADD CONSTRAINT "UQ_e4849a3231f38281280ea4c0eee" UNIQUE (date, "group");
+ALTER TABLE ONLY public.__chart__ap_request
+    ADD CONSTRAINT "UQ_e56f4beac5746d44bc3e19c80d0" UNIQUE (date);
+ALTER TABLE ONLY public.__chart_day__instance
+    ADD CONSTRAINT "UQ_fea7c0278325a1a2492f2d6acbf" UNIQUE (date, "group");
+-- CREATE UNIQUE INDEX "IDX_0ad37b7ef50f4ddc84363d7ccc" ON public.__chart__active_users USING btree (date);
+CREATE UNIQUE INDEX "IDX_0b60ebb3aa0065f10b0616c117" ON public.__chart_day__drive USING btree (date);
+CREATE UNIQUE INDEX "IDX_13565815f618a1ff53886c5b28" ON public.__chart__drive USING btree (date);
+CREATE UNIQUE INDEX "IDX_16effb2e888f6763673b579f80" ON public.__chart__test_unique USING btree (date) WHERE ("group" IS NULL);
+CREATE UNIQUE INDEX "IDX_1a527b423ad0858a1af5a056d4" ON public.__chart_day__notes USING btree (date);
+CREATE UNIQUE INDEX "IDX_229a41ad465f9205f1f5703291" ON public.__chart__per_user_reaction USING btree (date, "group");
+CREATE UNIQUE INDEX "IDX_25a97c02003338124b2b75fdbc" ON public.__chart__hashtag USING btree (date, "group");
+CREATE UNIQUE INDEX "IDX_30bf67687f483ace115c5ca642" ON public.__chart__per_user_drive USING btree (date, "group");
+CREATE UNIQUE INDEX "IDX_36cb699c49580d4e6c2e6159f9" ON public.__chart__federation USING btree (date);
+CREATE UNIQUE INDEX "IDX_39ee857ab2f23493037c6b6631" ON public.__chart__instance USING btree (date, "group");
+CREATE UNIQUE INDEX "IDX_42eb716a37d381cdf566192b2b" ON public.__chart__notes USING btree (date);
+CREATE UNIQUE INDEX "IDX_5048e9daccbbbc6d567bb142d3" ON public.__chart__per_user_notes USING btree (date, "group");
+CREATE UNIQUE INDEX "IDX_617a8fe225a6e701d89e02d2c7" ON public.__chart_day__federation USING btree (date);
+CREATE UNIQUE INDEX "IDX_62aa5047b5aec92524f24c701d" ON public.__chart_day__per_user_drive USING btree (date, "group");
+CREATE UNIQUE INDEX "IDX_845254b3eaf708ae8a6cac3026" ON public.__chart__users USING btree (date);
+CREATE UNIQUE INDEX "IDX_8bfa548c2b31f9e07db113773e" ON public.__chart_day__network USING btree (date);
+CREATE UNIQUE INDEX "IDX_8f589cf056ff51f09d6096f645" ON public.__chart_day__hashtag USING btree (date, "group");
+CREATE UNIQUE INDEX "IDX_a0cd75442dd10d0643a17c4a49" ON public.__chart__test_unique USING btree (date, "group");
+CREATE UNIQUE INDEX "IDX_a1efd3e0048a5f2793a47360dc" ON public.__chart__network USING btree (date);
+CREATE UNIQUE INDEX "IDX_a319e5dbf47e8a17497623beae" ON public.__chart__test USING btree (date, "group");
+CREATE UNIQUE INDEX "IDX_a848f66d6cec11980a5dd59582" ON public.__chart_day__ap_request USING btree (date);
+CREATE UNIQUE INDEX "IDX_b14489029e4b3aaf4bba5fb524" ON public.__chart__test_grouped USING btree (date, "group");
+CREATE UNIQUE INDEX "IDX_b77d4dd9562c3a899d9a286fcd" ON public.__chart__per_user_following USING btree (date, "group");
+CREATE UNIQUE INDEX "IDX_c5545d4b31cdc684034e33b81c" ON public.__chart_day__per_user_notes USING btree (date, "group");
+CREATE UNIQUE INDEX "IDX_cad6e07c20037f31cdba8a350c" ON public.__chart_day__users USING btree (date);
+CREATE UNIQUE INDEX "IDX_d54b653660d808b118e36c184c" ON public.__chart_day__per_user_reaction USING btree (date, "group");
+-- CREATE UNIQUE INDEX "IDX_d5954f3df5e5e3bdfc3c03f390" ON public.__chart_day__active_users USING btree (date);
+CREATE UNIQUE INDEX "IDX_da522b4008a9f5d7743b87ad55" ON public.__chart__test_grouped USING btree (date) WHERE ("group" IS NULL);
+CREATE UNIQUE INDEX "IDX_dab383a36f3c9db4a0c9b02cf3" ON public.__chart__test USING btree (date) WHERE ("group" IS NULL);
+CREATE UNIQUE INDEX "IDX_e4849a3231f38281280ea4c0ee" ON public.__chart_day__per_user_following USING btree (date, "group");
+CREATE UNIQUE INDEX "IDX_e56f4beac5746d44bc3e19c80d" ON public.__chart__ap_request USING btree (date);
+CREATE UNIQUE INDEX "IDX_fea7c0278325a1a2492f2d6acb" ON public.__chart_day__instance USING btree (date, "group");
 
 -- emoji-moderator
 ALTER TABLE "user" DROP COLUMN "emojiModPerm";
@@ -826,6 +999,8 @@ ALTER TABLE "meta" ADD "sensitiveMediaDetection" "public"."meta_sensitivemediade
 ALTER TABLE "drive_file" ADD "maybePorn" boolean NOT NULL DEFAULT false;
 ALTER TABLE "drive_file" ADD "maybeSensitive" boolean NOT NULL DEFAULT false;
 COMMENT ON COLUMN "drive_file"."maybeSensitive" IS 'Whether the DriveFile is NSFW. (predict)';
+CREATE INDEX "IDX_3b33dff77bb64b23c88151d23e" ON "drive_file" ("maybeSensitive");
+CREATE INDEX "IDX_8bdcd3dd2bddb78014999a16ce" ON "drive_file" ("maybePorn");
 
 -- firefish-url-move
 UPDATE "meta" SET "repositoryUrl" = 'https://git.joinfirefish.org/firefish/firefish';

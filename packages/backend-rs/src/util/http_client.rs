@@ -5,7 +5,7 @@ use isahc::{config::*, HttpClient};
 use once_cell::sync::OnceCell;
 use std::time::Duration;
 
-#[macros::errors]
+#[error_doc::errors]
 pub enum Error {
     #[error("HTTP request failed")]
     Isahc(#[from] isahc::Error),

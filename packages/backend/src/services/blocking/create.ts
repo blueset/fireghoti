@@ -2,7 +2,6 @@ import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import { renderUndo } from "@/remote/activitypub/renderer/undo.js";
 import { renderBlock } from "@/remote/activitypub/renderer/block.js";
 import { deliver } from "@/queue/index.js";
-import renderReject from "@/remote/activitypub/renderer/reject.js";
 import type { Blocking } from "@/models/entities/blocking.js";
 import type { User } from "@/models/entities/user.js";
 import {
@@ -20,6 +19,7 @@ import {
 	publishToUserStream,
 	UserEvent,
 	renderFollow,
+	renderReject,
 } from "backend-rs";
 import { getActiveWebhooks } from "@/misc/webhook-cache.js";
 import { webhookDeliver } from "@/queue/index.js";
@@ -103,8 +103,8 @@ async function cancelRequest(follower: User, followee: User) {
 	if (Users.isRemoteUser(follower) && Users.isLocalUser(followee)) {
 		const content = renderActivity(
 			renderReject(
+				followee.id,
 				renderFollow(follower, followee, request.requestId!),
-				followee,
 			),
 		);
 		deliver(followee.id, content, follower.inbox);

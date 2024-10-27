@@ -1,5 +1,4 @@
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderReject from "@/remote/activitypub/renderer/reject.js";
 import { deliver, webhookDeliver } from "@/queue/index.js";
 import {
 	Event,
@@ -7,6 +6,7 @@ import {
 	publishToUserStream,
 	UserEvent,
 	renderFollow,
+	renderReject,
 } from "backend-rs";
 import type { ILocalUser, IRemoteUser } from "@/models/entities/user.js";
 import { Users, FollowRequests, Followings } from "@/models/index.js";
@@ -19,6 +19,7 @@ type Local =
 			id: ILocalUser["id"];
 			host: ILocalUser["host"];
 			uri: ILocalUser["uri"];
+			username: ILocalUser["username"];
 	  };
 type Remote =
 	| IRemoteUser
@@ -26,6 +27,7 @@ type Remote =
 			id: IRemoteUser["id"];
 			host: IRemoteUser["host"];
 			uri: IRemoteUser["uri"];
+			username: IRemoteUser["username"];
 			inbox: IRemoteUser["inbox"];
 	  };
 type Both = Local | Remote;
@@ -109,8 +111,8 @@ async function deliverReject(followee: Local, follower: Remote) {
 
 	const content = renderActivity(
 		renderReject(
+			followee.id,
 			renderFollow(follower, followee, request?.requestId || undefined),
-			followee,
 		),
 	);
 	deliver(followee.id, content, follower.inbox);

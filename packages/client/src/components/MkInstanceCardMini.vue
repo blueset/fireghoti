@@ -10,7 +10,7 @@
 			},
 		]"
 	>
-		<img class="icon" :src="getInstanceIcon(instance)" alt="" />
+		<img class="icon" :src="getInstanceIcon(instance)" @error="getInstanceIconErrorEvent($event)" alt="" />
 		<div class="body">
 			<span class="host">{{ instance.name ?? instance.host }}</span>
 			<span class="sub _monospace"
@@ -36,6 +36,10 @@ function getInstanceIcon(instance: entities.Instance): string {
 		getProxiedImageUrlNullable(instance.iconUrl, "preview") ??
 		"/client-assets/dummy.png"
 	);
+}
+
+function getInstanceIconErrorEvent($event) {
+	$event.target.src = "/client-assets/dummy.png";
 }
 </script>
 

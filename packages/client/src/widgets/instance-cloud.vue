@@ -11,6 +11,7 @@
 						<img
 							style="inline-size: 32px"
 							:src="getInstanceIcon(instance)"
+							@error="getInstanceIconErrorEvent($event)"
 						/>
 					</a>
 				</li>
@@ -86,6 +87,10 @@ function getInstanceIcon(instance): string {
 		getProxiedImageUrlNullable(instance.iconUrl, "preview") ??
 		"/client-assets/dummy.png"
 	);
+}
+
+function getInstanceIconErrorEvent($event) {
+	$event.target.src = "/client-assets/dummy.png";
 }
 
 defineExpose<WidgetComponentExpose>({

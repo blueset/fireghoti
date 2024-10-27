@@ -529,6 +529,10 @@ export const WellKnownContext = {
 				"@id": "https://www.w3.org/ns/activitystreams#movedTo",
 				"@type": "@id",
 			},
+			alsoKnownAs: {
+				"@id": "https://www.w3.org/ns/activitystreams#alsoKnownAs",
+				"@container": "@set",
+			},
 			movedToUri: "as:movedTo",
 			sensitive: "as:sensitive",
 			Hashtag: "as:Hashtag",
@@ -550,7 +554,6 @@ export const WellKnownContext = {
 			// Misskey
 			misskey: "https://misskey-hub.net/ns#",
 			_misskey_talk: "misskey:_misskey_talk",
-			_misskey_reaction: "misskey:_misskey_reaction",
 			_misskey_votes: "misskey:_misskey_votes",
 			_misskey_summary: "misskey:_misskey_summary",
 			isCat: "misskey:isCat",

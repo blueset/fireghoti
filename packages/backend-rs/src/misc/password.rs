@@ -15,7 +15,7 @@ pub fn hash_password(password: &str) -> Result<String, password_hash::errors::Er
         .to_string())
 }
 
-#[macros::errors]
+#[error_doc::errors]
 pub enum Error {
     #[error("failed to verify password against bcrypt hash")]
     Bcrypt(#[from] bcrypt::BcryptError),

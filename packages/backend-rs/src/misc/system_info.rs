@@ -1,9 +1,34 @@
 //! Utilities to check hardware information such as cpu, memory, storage usage
-
-use crate::init::system_info::{system_info, SysinfoPoisonError};
-use sysinfo::{Disks, MemoryRefreshKind};
-
 // TODO: i64 -> u64 (we can't export u64 to Node.js)
+
+use std::sync::{Mutex, OnceLock};
+use sysinfo::{Disks, MemoryRefreshKind, System};
+
+static SYSTEM_INFO: OnceLock<Mutex<System>> = OnceLock::new();
+
+/// Gives you access to the shared static [System] object.
+///
+/// # Example
+///
+/// ```
+/// # use backend_rs::misc::system_info;
+/// let system_info = system_info::get();
+/// println!("The number of CPU threads is {}.", system_info.cpus().len());
+/// println!("The total memory is {} MiB.", system_info.total_memory() / 1048576);
+/// ```
+pub fn get() -> std::sync::MutexGuard<'static, System> {
+    let guard = SYSTEM_INFO
+        .get_or_init(|| Mutex::new(System::new_all()))
+        .lock();
+
+    if let Err(err) = guard {
+        let mut inner = err.into_inner();
+        *inner = System::new_all();
+        inner
+    } else {
+        guard.unwrap()
+    }
+}
 
 #[macros::export(object)]
 pub struct Cpu {
@@ -31,10 +56,10 @@ pub struct Storage {
 }
 
 #[macros::export]
-pub fn cpu_info() -> Result<Cpu, SysinfoPoisonError> {
-    let system_info = system_info().lock()?;
+pub fn cpu_info() -> Cpu {
+    let system_info = get();
 
-    Ok(Cpu {
+    Cpu {
         model: match system_info.cpus() {
             [] => {
                 tracing::debug!("failed to get CPU info");
@@ -43,31 +68,31 @@ pub fn cpu_info() -> Result<Cpu, SysinfoPoisonError> {
             cpus => cpus[0].brand().to_owned(),
         },
         cores: system_info.cpus().len() as u16,
-    })
+    }
 }
 
 #[macros::export]
-pub fn cpu_usage() -> Result<f32, SysinfoPoisonError> {
-    let mut system_info = system_info().lock()?;
+pub fn cpu_usage() -> f32 {
+    let mut system_info = get();
     system_info.refresh_cpu_usage();
 
     let total_cpu_usage: f32 = system_info.cpus().iter().map(|cpu| cpu.cpu_usage()).sum();
     let cpu_threads = system_info.cpus().len();
 
-    Ok(total_cpu_usage / (cpu_threads as f32))
+    total_cpu_usage / (cpu_threads as f32)
 }
 
 #[macros::export]
-pub fn memory_usage() -> Result<Memory, SysinfoPoisonError> {
-    let mut system_info = system_info().lock()?;
+pub fn memory_usage() -> Memory {
+    let mut system_info = get();
 
     system_info.refresh_memory_specifics(MemoryRefreshKind::new().with_ram());
 
-    Ok(Memory {
+    Memory {
         total: system_info.total_memory() as i64,
         used: system_info.used_memory() as i64,
         available: system_info.available_memory() as i64,
-    })
+    }
 }
 
 #[macros::export]

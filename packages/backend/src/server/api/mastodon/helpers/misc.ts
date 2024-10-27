@@ -360,7 +360,6 @@ export class MiscHelpers {
 	): Promise<MastodonEntity.Status[]> {
 		if (limit > 40) limit = 40;
 		const query = Notes.createQueryBuilder("note")
-			.addSelect("note.score")
 			.andWhere("note.score > 0")
 			.andWhere("note.createdAt > :date", {
 				date: new Date(Date.now() - 1000 * 60 * 60 * 24),

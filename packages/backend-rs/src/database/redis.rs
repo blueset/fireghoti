@@ -82,7 +82,7 @@ async fn init_conn_pool() -> Result<(), RedisError> {
     Ok(())
 }
 
-#[macros::errors]
+#[error_doc::errors]
 pub enum RedisConnError {
     #[error("failed to initialize Redis connection pool")]
     Redis(RedisError),

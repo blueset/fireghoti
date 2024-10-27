@@ -1,11 +1,11 @@
 {
 	"name": "firefish",
-	"version": "20240729.fork",
+	"version": "20240909.fork",
 	"repository": {
 		"type": "git",
 		"url": "https://firefish.dev/firefish/firefish.git"
 	},
-	"packageManager": "pnpm@9.6.0",
+	"packageManager": "pnpm@9.9.0",
 	"private": true,
 	"scripts": {
 		"rebuild": "pnpm run clean && pnpm run build",
@@ -47,8 +47,8 @@
 		"@biomejs/cli-darwin-x64": "1.8.3",
 		"@biomejs/cli-linux-arm64": "1.8.3",
 		"@biomejs/cli-linux-x64": "1.8.3",
-		"@types/node": "20.14.13",
-		"execa": "9.3.0",
-		"pnpm": "9.6.0"
+		"@types/node": "20.16.2",
+		"execa": "9.3.1",
+		"pnpm": "9.9.0"
 	}
 }

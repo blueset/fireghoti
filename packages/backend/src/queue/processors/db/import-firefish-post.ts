@@ -39,7 +39,7 @@ export async function importCkPost(
 	*/
 	const urls = (post.files || [])
 		.map((x: any) => x.url)
-		.filter((x: String) => x.startsWith("http"));
+		.filter((x: string) => x.startsWith("http"));
 	const files: DriveFile[] = [];
 	for (const url of urls) {
 		try {

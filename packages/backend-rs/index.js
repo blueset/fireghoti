@@ -362,8 +362,8 @@ if (!nativeBinding) {
 }
 
 module.exports.acctToString = nativeBinding.acctToString
+module.exports.Activity = nativeBinding.Activity
 module.exports.AntennaSrc = nativeBinding.AntennaSrc
-module.exports.ApObject = nativeBinding.ApObject
 module.exports.ChatEvent = nativeBinding.ChatEvent
 module.exports.ChatIndexEvent = nativeBinding.ChatIndexEvent
 module.exports.checkWordMute = nativeBinding.checkWordMute
@@ -439,9 +439,18 @@ module.exports.PushSubscriptionType = nativeBinding.PushSubscriptionType
 module.exports.RelayStatus = nativeBinding.RelayStatus
 module.exports.removeOldAttestationChallenges = nativeBinding.removeOldAttestationChallenges
 module.exports.renderAccept = nativeBinding.renderAccept
+module.exports.renderAdd = nativeBinding.renderAdd
 module.exports.renderEmoji = nativeBinding.renderEmoji
+module.exports.renderFlag = nativeBinding.renderFlag
 module.exports.renderFollow = nativeBinding.renderFollow
 module.exports.renderFollowRelay = nativeBinding.renderFollowRelay
+module.exports.renderHashtag = nativeBinding.renderHashtag
+module.exports.renderLike = nativeBinding.renderLike
+module.exports.renderMention = nativeBinding.renderMention
+module.exports.renderRead = nativeBinding.renderRead
+module.exports.renderReject = nativeBinding.renderReject
+module.exports.renderRemove = nativeBinding.renderRemove
+module.exports.renderTombstone = nativeBinding.renderTombstone
 module.exports.safeForSql = nativeBinding.safeForSql
 module.exports.sendPushNotification = nativeBinding.sendPushNotification
 module.exports.shouldNyaify = nativeBinding.shouldNyaify

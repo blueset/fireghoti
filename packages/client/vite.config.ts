@@ -2,7 +2,7 @@ import pluginVue from "@vitejs/plugin-vue";
 import { defineConfig } from "vite";
 
 import locales from "../../locales/index.mjs";
-import meta from "../../package.json" assert { type: "json" };
+import meta from "../../package.json" with { type: "json" };
 import pluginJson5 from "./vite.json5";
 import viteCompression from "vite-plugin-compression";
 

@@ -1,5 +1,7 @@
 # Running a Firefish server with containers
 
+:warning: **Firefish is in maintenance mode.** [(announcement)](https://info.firefish.dev/notes/9xsukr38m3komd63)
+
 ## Prerequisites
 
 - Latest [Docker](https://docs.docker.com/get-docker/) installation

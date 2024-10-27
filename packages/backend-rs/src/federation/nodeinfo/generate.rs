@@ -143,9 +143,9 @@ pub async fn nodeinfo_2_0() -> Result<Nodeinfo20, DbErr> {
 }
 
 #[macros::for_ts]
-#[macros::errors]
+#[error_doc::errors]
 pub enum Error {
-    #[doc = "database error"]
+    #[doc = "Database error"]
     #[error(transparent)]
     Db(#[from] DbErr),
     #[error("failed to serialize nodeinfo into JSON")]

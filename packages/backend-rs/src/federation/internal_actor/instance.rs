@@ -7,12 +7,12 @@ use tokio::sync::OnceCell;
 pub const USERNAME: &str = "instance.actor";
 static INSTANCE_ACTOR: OnceCell<user::Model> = OnceCell::const_new();
 
-#[macros::errors]
+#[error_doc::errors]
 pub enum Error {
     #[error("@instance.actor not found")]
     InstanceActorNotFound,
     #[error(transparent)]
-    #[doc = "database error"]
+    #[doc = "Database error"]
     Db(#[from] DbErr),
 }
 

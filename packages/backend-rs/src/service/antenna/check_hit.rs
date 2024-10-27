@@ -8,9 +8,9 @@ use crate::{
 use chrono::Duration;
 use sea_orm::{prelude::*, QuerySelect};
 
-#[macros::errors]
+#[error_doc::errors]
 pub enum AntennaCheckError {
-    #[doc = "database error"]
+    #[doc = "Database error"]
     #[error(transparent)]
     Db(#[from] DbErr),
     #[error("Redis cache operation has failed")]

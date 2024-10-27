@@ -242,7 +242,8 @@ function showMenu(ev) {
 				rgba(0, 0, 0, 0) 100%
 			);
 
-			@media (max-inline-size: 1200px) {
+			// TODO: use logical property (max-inline-size doesn't work)
+			@media (max-width: 1200px) {
 				display: none;
 			}
 		}
@@ -282,7 +283,8 @@ function showMenu(ev) {
 				}
 			}
 
-			@media (max-inline-size: 450px) {
+			// TODO: use logical property (max-inline-size doesn't work)
+			@media (max-width: 450px) {
 				inline-size: 130px;
 			}
 		}
@@ -297,7 +299,8 @@ function showMenu(ev) {
 				margin-inline-end: 8px;
 			}
 
-			@media (max-inline-size: 1200px) {
+			// TODO: use logical property (max-inline-size doesn't work)
+			@media (max-width: 1200px) {
 				display: none;
 			}
 		}
@@ -313,7 +316,8 @@ function showMenu(ev) {
 			border-radius: var(--radius);
 			box-shadow: 0 12px 32px rgb(0 0 0 / 25%);
 
-			@media (max-inline-size: 1200px) {
+			// TODO: use logical property (max-inline-size doesn't work)
+			@media (max-width: 1200px) {
 				margin: auto;
 			}
 
@@ -386,7 +390,8 @@ function showMenu(ev) {
 			padding-block: 8px;
 			padding-inline: 0;
 
-			@media (max-inline-size: 900px) {
+			// TODO: use logical property (max-inline-size doesn't work)
+			@media (max-width: 900px) {
 				display: none;
 			}
 		}

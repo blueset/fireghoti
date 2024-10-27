@@ -28,6 +28,7 @@ import icon from "@/scripts/icon";
 .mjndxjcg {
 	padding: 32px;
 	text-align: center;
+	align-items: center;
 
 	> p {
 		margin-block-start: 0;
@@ -43,6 +44,7 @@ import icon from "@/scripts/icon";
 
 	> img {
 		vertical-align: bottom;
+		inline-size: 128px;
 		block-size: 128px;
 		margin-block-end: 16px;
 		border-radius: 16px;

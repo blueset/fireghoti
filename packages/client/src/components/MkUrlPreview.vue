@@ -17,7 +17,11 @@
 				}"
 			>
 				<div v-if="thumbnail" class="thumbnail">
-					<img :src="thumbnail" loading="lazy" />
+					<img
+						:src="thumbnail"
+						loading="lazy"
+						@error="imageErrorEvent($event)"
+					/>
 					<button
 						v-if="tweetId"
 						v-tooltip="
@@ -55,7 +59,12 @@
 					<p :title="description">
 						<span>
 							<span :title="sitename || undefined">
-								<img v-if="icon" class="icon" :src="icon" />
+								<img
+									v-if="icon"
+									class="icon"
+									:src="icon"
+									@error="imageErrorEvent($event)"
+								/>
 								{{ sitename }}
 							</span>
 							{{ description }}
@@ -179,6 +188,10 @@ function adjustTweetHeight(message: any) {
 	if (embed?.id !== embedId) return;
 	const height = embed?.params[0]?.height;
 	if (height) tweetHeight.value = height;
+}
+
+function imageErrorEvent($event) {
+	$event.target.src = "/static-assets/resource-unknown.svg";
 }
 
 window.addEventListener("message", adjustTweetHeight);

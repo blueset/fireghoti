@@ -2,23 +2,16 @@ use super::*;
 use crate::{config::CONFIG, federation::internal_actor, misc::user};
 
 #[macros::export(object)]
-pub struct UserLike {
-    pub id: String,
-    pub host: Option<String>,
-    pub uri: Option<String>,
-}
-
-#[macros::export(object)]
 pub struct ApFollow {
     pub id: String,
-    pub r#type: ApObject,
+    pub r#type: Activity,
     pub actor: String,
     pub object: String,
 }
 
-impl ActivityPubObject for ApFollow {}
+impl ApObject for ApFollow {}
 
-#[macros::errors]
+#[error_doc::errors]
 pub enum Error {
     #[error("follower uri is missing")]
     MissingFollowerUri,
@@ -27,7 +20,7 @@ pub enum Error {
 }
 
 impl ApFollow {
-    #[allow(dead_code)] // TODO: remove this line
+    #[allow(dead_code)] // TODO: remove this line by actually using it
     fn new(
         follower: UserLike,
         followee: UserLike,
@@ -37,28 +30,24 @@ impl ApFollow {
             id: request_id.unwrap_or_else(|| {
                 format!("{}/follows/{}/{}", CONFIG.url, follower.id, followee.id)
             }),
-            r#type: ApObject::Follow,
+            r#type: Activity::Follow,
             actor: match user::is_local!(follower) {
-                true => format!("{}/users/{}", CONFIG.url, follower.id),
+                true => user::local_uri(follower.id),
                 false => follower.uri.ok_or(Error::MissingFollowerUri)?,
             },
             object: match user::is_local!(followee) {
-                true => format!("{}/users/{}", CONFIG.url, followee.id),
+                true => user::local_uri(followee.id),
                 false => followee.uri.ok_or(Error::MissingFolloweeUri)?,
             },
         })
     }
 
-    #[allow(dead_code)] // TODO: remove this line
+    #[allow(dead_code)] // TODO: remove this line by actually using it
     async fn new_relay(relay_id: String) -> Result<Self, internal_actor::relay::Error> {
         Ok(Self {
             id: format!("{}/activities/follow-relay/{}", CONFIG.url, relay_id),
-            r#type: ApObject::Follow,
-            actor: format!(
-                "{}/users/{}",
-                CONFIG.url,
-                internal_actor::relay::get_id().await?
-            ),
+            r#type: Activity::Follow,
+            actor: user::local_uri(internal_actor::relay::get_id().await?),
             object: AS_PUBLIC_URL.to_owned(),
         })
     }

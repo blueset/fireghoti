@@ -939,7 +939,7 @@ cannotUploadBecauseInappropriate: "不適切な内容を含む可能性がある
 cannotUploadBecauseNoFreeSpace: "ドライブの空き容量が無いためアップロードできません。"
 cannotUploadBecauseExceedsFileSizeLimit: "ファイルサイズの制限を超えているためアップロードできません。"
 beta: "ベータ"
-enableAutoSensitive: "自動NSFW判定"
+enableAutoSensitive: "自動で閲覧注意にする"
 enableAutoSensitiveDescription: "利用可能な場合は、機械学習を利用して自動でメディアにNSFWフラグを設定します。この機能をオフにしても、サーバーによっては自動で設定されることがあります。"
 activeEmailValidationDescription: "ユーザーのメールアドレスのバリデーションを、捨てアドかどうかや実際に通信可能かどうかなどを判定しより積極的に行います。オフにすると単に文字列として正しいかどうかのみチェックされます。"
 showAds: "コミュニティバナーを表示する"
@@ -1017,7 +1017,7 @@ searchWordsDescription: "投稿を検索するには、ここに検索語句を�
   (@user@example.com) や投稿のURLを入力し「照会」を押してください。「検索」を押すとそのIDやURLが文字通り含まれる投稿を検索します。"
 searchUsers: "投稿元（省略可）"
 searchUsersDescription: "投稿検索で投稿者を絞りたい場合、@user@example.com（ローカルユーザーなら @user）の形式で投稿者のIDを入力してください。ユーザーIDではなくドメイン名
-  (example.com) を指定すると、そのサーバーの投稿を検索します。\n\nme とだけ入力すると、自分の投稿を検索します。この検索結果には未収載・フォロワー限定・ダイレクト・秘密を含む全ての投稿が含まれます。\n
+  (example.com) を指定すると、そのサーバーの投稿を検索します。\n\nme とだけ入力すると、自分の投稿を検索します。この検索結果には控えめな公開・フォロワー限定・ダイレクト・秘密を含む全ての投稿が含まれます。\n
   \nlocal とだけ入力すると、ローカルサーバーの投稿を検索します。"
 searchRange: "投稿期間（省略可）"
 searchRangeDescription: "投稿検索で投稿期間を絞りたい場合、20220615-20231031 のような形式で投稿期間を入力してください。今年の日付を指定する場合には年の指定を省略できます（0105-0106
@@ -1516,7 +1516,7 @@ _poll:
 _visibility:
   public: "公開"
   publicDescription: "全ての公開タイムラインに配信されます"
-  home: "未収載"
+  home: "控えめな公開"
   homeDescription: "ホームタイムラインのみに公開"
   followers: "フォロワー"
   followersDescription: "フォロワーと会話相手のみに公開"
@@ -2070,7 +2070,7 @@ driveCapacityOverride: ドライブ容量の変更
 autocorrectNoteLanguage: 設定した投稿言語が自動検出されたものと異なる場合に警告する
 incorrectLanguageWarning: "この投稿は{detected}で書かれていると判定されました。\n投稿言語を{current}ではなく{detected}にしますか？"
 markLocalFilesNsfwByDefault: このサーバーの全てのファイルをデフォルトでNSFWに設定する
-markLocalFilesNsfwByDefaultDescription: この設定が有効でも、ユーザーは自分でNSFWのフラグを外すことができます。また、この設定は既存のファイルには影響しません。
+markLocalFilesNsfwByDefaultDescription: この設定が有効でも、ユーザーは自分で閲覧注意のフラグを外すことができます。また、この設定は既存のファイルには影響しません。
 noteEditHistory: 編集履歴
 showAddFileDescriptionAtFirstPost: 説明の無い添付ファイルを投稿しようとした際に説明を書く画面を自動で開く
 antennaLimit: 各ユーザーが作れるアンテナの最大数

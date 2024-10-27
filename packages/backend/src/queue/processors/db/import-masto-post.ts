@@ -68,7 +68,7 @@ export async function importMastoPost(
 	if (!isRenote && files.length == 0) {
 		const urls = post.object.attachment
 			.map((x: any) => x.url)
-			.filter((x: String) => x.startsWith("http"));
+			.filter((x: string) => x.startsWith("http"));
 		files = [];
 		for (const url of urls) {
 			try {

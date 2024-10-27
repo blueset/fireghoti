@@ -478,7 +478,7 @@ existingAccount: "现有的账号"
 regenerate: "重新生成"
 fontSize: "字体大小"
 noFollowRequests: "没有待批准的关注申请"
-noSentFollowRequests: "没有待回应的关注请求"
+noSentFollowRequests: "尚未发送任何关注请求"
 openImageInNewTab: "在新标签页中打开图片"
 dashboard: "管理面板"
 local: "本地"
@@ -1329,6 +1329,10 @@ _permissions:
   "write:gallery": "编辑图库"
   "read:gallery-likes": "读取喜欢的图片"
   "write:gallery-likes": "编辑喜欢的图片"
+  read: 读取（时间线、通知、回应、静音、账户信息等）
+  write: 修改（发表帖子、回应帖子、静音用户、编辑用户信息等）
+  push: 发送推送通知
+  follow: 关注和取消关注账号
 _auth:
   shareAccess: "您要授权允许 \"{name}\" 访问您的账号吗？"
   shareAccessAsk: "您确定要授权此应用访问您的账号吗？"
@@ -1997,7 +2001,7 @@ origin: 起源
 confirm: 确认
 importZip: 导入 ZIP
 exportZip: 导出 ZIP
-getQrCode: "获取二维码"
+getQrCode: "显示二维码"
 remoteFollow: "远程关注"
 copyRemoteFollowUrl: "复制远程关注 URL"
 objectStorageS3ForcePathStyleDesc: 打开此选项可构建格式为 "s3.amazonaws.com/<bucket>/" 而非 "<bucket>.s3.amazonaws.com"
@@ -2034,7 +2038,7 @@ _emojiModPerm:
   unauthorized: 未授权
   full: 全部允许
 moreUrls: 置顶页面
-enablePullToRefresh: 启用 “下拉刷新”
+enablePullToRefresh: 启用“下拉刷新”
 pullToRefreshThreshold: 触发下拉刷新所需的距离
 pullDownToReload: 下拉刷新
 releaseToReload: 释放刷新
@@ -2071,10 +2075,10 @@ searchCwAndAlt: 包括内容警告和文件描述
 publishTimelines: 为访客发布时间线
 publishTimelinesDescription: 如果启用，在用户登出时本地和全局时间线也会显示在 {url} 上。
 searchWordsDescription: "在此处输入搜索词以搜索帖子。交集搜索关键词之间使用空格进行区分，并集搜索关键词之间使用 OR 进行区分。\n例如
-  '早上 晚上' 将查找包含 '早上' 和 '晚上' 的帖子，而 '早上 OR 晚上' 将查找包含 '早上' 或 '晚上' （以及同时包含两者）的帖子。\n您还可以组合交集/并集条件，例如
-  '(早上 OR 晚上) 困了' 。\n如果您想搜索单词序列（例如一个英语句子），您必须将其放在双引号中，例如 \"Today I learned\" 以区分于交集搜索。\n
-  \n如果您想转到特定的用户页面或帖子页面，请在此字段中输入用户 ID 或 URL，然后单击 “查询” 按钮。 单击 “搜索” 将搜索字面包含用户 ID/URL
-  的帖子。"
+  '早上 晚上' 将查找包含 '早上' 和 '晚上' 的帖子，而 '早上 OR 晚上' 将查找包含 '早上' 或 '晚上' （以及同时包含两者）的帖子。\n您也可以从搜索结果中过滤部分关键词，例如
+  '困了 -早上 -早餐'。此外，您还可以组合交集/并集条件，例如 '(早上 OR 晚上) 困了 -早餐' 。\n如果您想搜索单词序列（例如一个英语句子），您必须将其放在双引号中，例如
+  \"Today I learned\" 以区分于交集搜索。\n \n如果您想转到特定的用户页面或帖子页面，请在此字段中输入用户 ID 或 URL，然后单击 “查询”
+  按钮。 单击 “搜索” 将搜索字面包含用户 ID/URL 的帖子。"
 searchRangeDescription: "如果您要过滤时间段，请按以下格式输入：20220615-20231031\n\n如果您省略年份（例如 0105-0106
   或 20231105-0110），它将被解释为当前年份。\n\n您还可以省略开始日期或结束日期。 例如 -0102 将过滤搜索结果以仅显示今年 1 月 2 日之前发布的帖子，而
   20231026- 将过滤结果以仅显示 2023 年 10 月 26 日之后发布的帖子。"
@@ -2083,7 +2087,7 @@ noAltTextWarning: 有些附件没有描述。您是否忘记写描述了？
 showNoAltTextWarning: 当您尝试发布没有描述的帖子附件时显示警告
 showAddFileDescriptionAtFirstPost: 当您首次尝试发布没有描述的帖子附件时自动弹出添加描述页面
 autocorrectNoteLanguage: 当帖子语言不符合自动检测的结果的时候显示警告
-incorrectLanguageWarning: "看上去您帖子使用的语言是{detected}，但您选择的语言是{current}。\n要改为以{detected}发帖吗？"
+incorrectLanguageWarning: "检测到帖子语言可能是{detected}。\n要将发帖语言从{current}更改为{detected}吗？"
 noteEditHistory: "帖子编辑历史"
 media: 媒体
 slashQuote: "斜杠引用"
@@ -2094,3 +2098,6 @@ scheduledPostAt: "帖子将于 {time} 发送"
 scheduledDate: "发送日期"
 mergeThreadInTimeline: "将时间线内的连续回复合并成一串"
 mergeRenotesInTimeline: "合并同一个帖子的转发"
+turnOffCatLanguage: 关闭猫语转换
+strongPassword: 密码强度：良好
+addAlt4MeTag: '当附件没有描述时，自动在帖子中添加 #Alt4Me 标签'

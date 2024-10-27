@@ -48,6 +48,20 @@ export interface Acct {
 
 export declare function acctToString(acct: Acct): string
 
+export type Activity =  'Accept'|
+'Add'|
+'Emoji'|
+'Flag'|
+'Follow'|
+'Hashtag'|
+'Like'|
+'Mention'|
+'Image'|
+'Read'|
+'Reject'|
+'Remove'|
+'Tombstone';
+
 export interface Ad {
   id: string
   createdAt: DateTimeWithTimeZone
@@ -106,30 +120,60 @@ export type AntennaSrc =  'all'|
 
 export interface ApAccept {
   id: string
-  type: ApObject
+  type: Activity
   actor: string
   object: ApFollow
 }
 
+export interface ApAdd {
+  type: Activity
+  actor: string
+  target: string
+  object: string
+}
+
 export interface ApEmoji {
   id: string
-  type: ApObject
+  type: Activity
   name: string
   updated: string
   icon: Icon
 }
 
+export interface ApFlag {
+  type: Activity
+  actor: string
+  content: string
+  object: string
+}
+
 export interface ApFollow {
   id: string
-  type: ApObject
+  type: Activity
   actor: string
   object: string
 }
 
-export type ApObject =  'Accept'|
-'Emoji'|
-'Follow'|
-'Image';
+export interface ApHashtag {
+  id: string
+  type: Activity
+  name: string
+}
+
+export interface ApLike {
+  id: string
+  type: Activity
+  actor: string
+  object: string
+  content: string
+  tag?: Array<ApEmoji>
+}
+
+export interface ApMention {
+  type: Activity
+  href: string
+  name: string
+}
 
 export interface App {
   id: string
@@ -140,6 +184,31 @@ export interface App {
   description: string
   permission: Array<string>
   callbackUrl: string | null
+}
+
+export interface ApRead {
+  type: Activity
+  actor: string
+  object: string
+}
+
+export interface ApReject {
+  id: string
+  type: Activity
+  actor: string
+  object: ApFollow
+}
+
+export interface ApRemove {
+  type: Activity
+  actor: string
+  target: string
+  object: string
+}
+
+export interface ApTombstone {
+  id: string
+  type: Activity
 }
 
 export interface AttestationChallenge {
@@ -543,7 +612,7 @@ export interface Hashtag {
 }
 
 export interface Icon {
-  type: ApObject
+  type: Activity
   mediaType: string
   url: string
 }
@@ -1293,11 +1362,29 @@ export declare function removeOldAttestationChallenges(): Promise<void>
 
 export declare function renderAccept(userId: string, followObject: ApFollow): ApAccept
 
+export declare function renderAdd(userId: string, noteId: string): ApAdd
+
 export declare function renderEmoji(emoji: Emoji): ApEmoji
+
+export declare function renderFlag(targetUserUri: string, comment: string): Promise<ApFlag>
 
 export declare function renderFollow(follower: UserLike, followee: UserLike, requestId?: string | undefined | null): ApFollow
 
 export declare function renderFollowRelay(relayId: string): Promise<ApFollow>
+
+export declare function renderHashtag(tagName: string): ApHashtag
+
+export declare function renderLike(reaction: Model): Promise<ApLike>
+
+export declare function renderMention(user: UserLike): ApMention
+
+export declare function renderRead(userId: string, messageUri: string): ApRead
+
+export declare function renderReject(userId: string, followObject: ApFollow): ApReject
+
+export declare function renderRemove(userId: string, noteId: string): ApRemove
+
+export declare function renderTombstone(noteId: string): ApTombstone
 
 export interface RenoteMuting {
   id: string
@@ -1569,6 +1656,7 @@ export interface UserKeypair {
 
 export interface UserLike {
   id: string
+  username: string
   host: string | null
   uri: string | null
 }

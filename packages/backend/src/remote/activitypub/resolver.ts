@@ -7,6 +7,7 @@ import {
 	isBlockedServer,
 	isSelfHost,
 	renderFollow,
+	renderLike,
 } from "backend-rs";
 import { apGet } from "./request.js";
 import type { IObject, ICollection, IOrderedCollection } from "./type.js";
@@ -20,7 +21,6 @@ import {
 } from "@/models/index.js";
 import { parseUri } from "./db-resolver.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
-import { renderLike } from "@/remote/activitypub/renderer/like.js";
 import { renderPerson } from "@/remote/activitypub/renderer/person.js";
 import renderQuestion from "@/remote/activitypub/renderer/question.js";
 import renderCreate from "@/remote/activitypub/renderer/create.js";
@@ -137,15 +137,18 @@ export default class Resolver {
 			throw new Error("Object has no ID");
 		}
 
-		if (finalUrl === object.id) return object;
+		const finalUrl_ = new URL(finalUrl);
+		const objectId_ = new URL(object.id);
 
-		if (new URL(finalUrl).host !== new URL(object.id).host) {
+		if (finalUrl_.href === objectId_.href) return object;
+
+		if (finalUrl_.host !== objectId_.host) {
 			throw new Error("Object ID host doesn't match final url host");
 		}
 
 		const finalRes = await apGet(object.id, this.user);
 
-		if (finalRes.finalUrl !== finalRes.content.id)
+		if (new URL(finalRes.finalUrl).href !== new URL(finalRes.content.id).href)
 			throw new Error(
 				"Object ID still doesn't match final URL after second fetch attempt",
 			);
@@ -181,7 +184,7 @@ export default class Resolver {
 			}
 			case "likes": {
 				const reaction = await NoteReactions.findOneByOrFail({ id: parsed.id });
-				return renderActivity(renderLike(reaction, { uri: null }));
+				return renderActivity(await renderLike(reaction));
 			}
 			case "follows": {
 				// if rest is a <followee id>

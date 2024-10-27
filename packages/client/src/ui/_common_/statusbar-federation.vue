@@ -19,6 +19,7 @@
 						<img
 							class="icon"
 							:src="getInstanceIcon(instance)"
+							@error="getInstanceIconErrorEvent($event)"
 							alt=""
 						/>
 						<MkA
@@ -81,6 +82,10 @@ function getInstanceIcon(instance): string {
 		getProxiedImageUrlNullable(instance.iconUrl, "preview") ??
 		"/client-assets/dummy.png"
 	);
+}
+
+function getInstanceIconErrorEvent($event) {
+	$event.target.src = "/client-assets/dummy.png";
 }
 </script>
 

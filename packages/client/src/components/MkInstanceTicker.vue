@@ -9,7 +9,7 @@
 		class="hpaizdrt"
 		:style="bg"
 	>
-		<img class="icon" :src="getInstanceIcon(instance)" aria-hidden="true" />
+		<img class="icon" :src="getInstanceIcon(instance)" @error="getInstanceIconErrorEvent($event)" aria-hidden="true" />
 		<span class="name">{{ instance.name }}</span>
 	</div>
 </template>
@@ -83,6 +83,10 @@ function getInstanceIcon(instance): string {
 		getProxiedImageUrlNullable(instance.iconUrl, "preview") ??
 		"/client-assets/dummy.png"
 	);
+}
+
+function getInstanceIconErrorEvent($event) {
+	$event.target.src = "/client-assets/dummy.png";
 }
 </script>
 
