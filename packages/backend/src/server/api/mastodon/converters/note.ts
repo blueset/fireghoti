@@ -543,7 +543,10 @@ export class NoteConverter {
 					oembed: true,
 					follow: 10,
 					compress: true,
-					headers: { "Accept-Language": lang ?? "en-US" },
+					headers: { 
+						"Accept-Language": lang ?? "en-US",
+						...(url.match(/(youtube\.com|youtu\.be)/) ? { "User-Agent": "facebookexternalhit/1.1" } : {})
+					},
 				});
 				if (summary) {
 					return {
