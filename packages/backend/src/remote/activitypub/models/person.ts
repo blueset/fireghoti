@@ -225,6 +225,8 @@ export async function createPerson(
 	uri: string,
 	resolver?: Resolver,
 ): Promise<User> {
+	if (typeof uri !== "string") throw new Error("uri is not string");
+
 	if (isSameOrigin(uri)) {
 		throw new StatusError(
 			"cannot resolve local user",
