@@ -12,6 +12,7 @@ import {
 	Channels,
 	UserProfiles,
 	Notes,
+	Blockings,
 } from "../index.js";
 import type { Packed } from "@/misc/schema.js";
 import {
@@ -146,6 +147,17 @@ export const NoteRepository = db.getRepository(Note).extend({
 				to assume that the users are following each other.
 				*/
 				return following > 0 || (note.userHost != null && user.host != null);
+			}
+		}
+
+		if (meId != null && meId !== note.userId) {
+			const isBlocked = await Blockings.existsBy({
+				blockeeId: meId,
+				blockerId: note.userId,
+			});
+
+			if (isBlocked) {
+				return false;
 			}
 		}
 
