@@ -6,6 +6,7 @@ export const meta = {
 	tags: ["federation"],
 
 	requireCredential: true,
+	requireAdmin: true,
 
 	limit: {
 		duration: HOUR,
