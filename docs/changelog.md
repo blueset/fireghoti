@@ -7,6 +7,12 @@ This changelog is not an exhaustive list. Code refactorings, minor bug fixes, do
 - Server administrators must check [notice-for-admins.md](./notice-for-admins.md) as well.
 - Third-party client/bot developers may want to check [api-change.md](./api-change.md) as well.
 
+## :warning: Unreleased
+
+- Fix multiple security issues
+  - We would like to thank Hazelnoot and Laura Hausmann for helping us fix the security issues.
+- Archive the repository on [Codeberg](https://codeberg.org/firefish/firefish)
+
 ## v20240909
 
 - Update dependencies
