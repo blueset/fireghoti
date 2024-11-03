@@ -17,20 +17,17 @@ Firefish is based off of Misskey, a powerful microblogging server on ActivityPub
 
 # Documents
 
-- [Installation guide](https://firefish.dev/firefish/firefish/-/blob/main/docs/install.md)
+- [Installation guide](https://codeberg.org/firefish/firefish/src/branch/main/docs/install.md)
 - [Contributing guide](./CONTRIBUTING.md)
-- [Changelog](https://firefish.dev/firefish/firefish/-/blob/main/docs/changelog.md)
+- [Changelog](https://codeberg.org/firefish/firefish/src/branch/main/docs/changelog.md)
 
 # Links
 
-- Donations: <https://opencollective.com/firefish>
 - Matrix space: <https://matrix.to/#/#firefish-community:nitro.chat>
-- Official account: <a href="https://info.firefish.dev/@firefish" rel="me">`@firefish@info.firefish.dev`</a>
 - Weblate: <https://hosted.weblate.org/engage/firefish/>
 
 # Want to get involved? Great!
 
 - If you know how to program in TypeScript, Vue, or Rust, please read the [contributing guide](./CONTRIBUTING.md).
-- If you have the means to, [donations](https://opencollective.com/firefish) are a great way to keep us going.
 - If you know a non-English language, translating Firefish on [Weblate](https://hosted.weblate.org/engage/firefish/) help bring Firefish to more people. No technical experience needed!
 

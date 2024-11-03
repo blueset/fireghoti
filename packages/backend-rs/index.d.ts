@@ -1088,7 +1088,7 @@ export type NotificationType =  'app'|
  *
  * refs:
  * * <https://misskey-hub.net/ns#isCat>
- * * <https://firefish.dev/ns#speakAsCat>
+ * * <https://codeberg.org/firefish/firefish/src/branch/develop/docs/activitypub-extensions.md#speakascat>
  *
  * # Arguments
  *

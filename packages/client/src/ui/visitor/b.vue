@@ -19,7 +19,7 @@
 					<small
 						>Powered by
 						<a
-							href="https://firefish.dev/firefish/firefish"
+							href="https://codeberg.org/firefish/firefish"
 							target="_blank"
 							>Firefish</a
 						></small

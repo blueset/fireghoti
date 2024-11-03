@@ -12,8 +12,8 @@ pub enum Error {
     Isahc(#[from] isahc::Error),
     #[error("failed to acquire an HTTP client")]
     HttpClient(#[from] http_client::Error),
-    #[doc = "firefish.dev returned bad HTTP status"]
-    #[error("firefish.dev returned bad HTTP status ({0})")]
+    #[doc = "codeberg.org returned bad HTTP status"]
+    #[error("codeberg.org returned bad HTTP status ({0})")]
     BadStatus(String),
     #[error("failed to parse the HTTP response")]
     Io(#[from] std::io::Error),
@@ -27,7 +27,7 @@ struct PackageJson {
 }
 
 const UPSTREAM_PACKAGE_JSON_URL: &str =
-    "https://firefish.dev/firefish/firefish/-/raw/main/package.json";
+    "https://codeberg.org/firefish/firefish/raw/branch/main/package.json";
 
 static PACKAGE_JSON_CACHE: Cache<PackageJson> = Cache::new_with_ttl(Duration::hours(3));
 
@@ -95,7 +95,7 @@ mod unit_test {
     #[tokio::test]
     #[cfg_attr(miri, ignore)] // can't call foreign function `getaddrinfo` on OS `linux`
     async fn get_latest_version() {
-        // fetch from firefish.dev
+        // fetch from codeberg.org
         let version_1 = latest_version().await.unwrap();
         validate_version(&version_1);
 

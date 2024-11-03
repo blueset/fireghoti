@@ -17,25 +17,25 @@ pub fn is_safe_url(url: &str) -> bool {
 mod unit_test {
     #[test]
     fn is_safe_url() {
-        assert!(super::is_safe_url("http://firefish.dev/firefish/firefish"));
-        assert!(super::is_safe_url("https://firefish.dev/firefish/firefish"));
+        assert!(super::is_safe_url("http://codeberg.org/firefish/firefish"));
+        assert!(super::is_safe_url("https://codeberg.org/firefish/firefish"));
         assert!(super::is_safe_url(
-            "http://firefish.dev:80/firefish/firefish"
+            "http://codeberg.org:80/firefish/firefish"
         ));
         assert!(super::is_safe_url(
-            "https://firefish.dev:80/firefish/firefish"
+            "https://codeberg.org:80/firefish/firefish"
         ));
         assert!(super::is_safe_url(
-            "http://firefish.dev:443/firefish/firefish"
+            "http://codeberg.org:443/firefish/firefish"
         ));
         assert!(super::is_safe_url(
-            "https://firefish.dev:443/firefish/firefish"
+            "https://codeberg.org:443/firefish/firefish"
         ));
         assert!(!super::is_safe_url("https://unix/firefish/firefish"));
         assert!(!super::is_safe_url(
-            "https://firefish.dev:35/firefish/firefish"
+            "https://codeberg.org:35/firefish/firefish"
         ));
-        assert!(!super::is_safe_url("ftp://firefish.dev/firefish/firefish"));
+        assert!(!super::is_safe_url("ftp://codeberg.org/firefish/firefish"));
         assert!(!super::is_safe_url("nyaa"));
         assert!(!super::is_safe_url(""));
     }

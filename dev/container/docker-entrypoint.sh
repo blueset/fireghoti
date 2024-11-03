@@ -29,7 +29,7 @@ if [ ! -f '/.firefish_env_initialized' ]; then
 
 		# Clone Firefish
 		cd /
-		git clone -v https://firefish.dev/firefish/firefish.git
+		git clone -v https://codeberg.org/firefish/firefish.git
 
 		# Configuring a new server
 		cd /firefish

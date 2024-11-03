@@ -2,7 +2,7 @@ version: "3"
 
 services:
   web:
-    image: registry.firefish.dev/firefish/firefish:latest
+    image: codeberg.org/firefish/firefish:latest
     container_name: firefish_web
     restart: unless-stopped
     depends_on:

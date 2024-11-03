@@ -56,7 +56,7 @@ const name = "rssTicker";
 const widgetPropsDef = {
 	url: {
 		type: "string" as const,
-		default: "https://info.firefish.dev/@firefish.rss?noteintitle",
+		default: "",
 	},
 	shuffle: {
 		type: "boolean" as const,

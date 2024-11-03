@@ -192,7 +192,6 @@ async fn encode_mastodon_payload(
 
     // Adding space paddings to the end of JSON payload to prevent
     // `esm` from adding null bytes payload which many Mastodon clients don’t support.
-    // https://firefish.dev/firefish/firefish/-/merge_requests/10905#note_6733
     // not using the padding parameter directly on `res` because we want the padding to be
     // calculated based on the UTF-8 byte size of `res` instead of number of characters.
     let pad_length = match res.len() % 128 {

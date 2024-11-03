@@ -42,14 +42,6 @@
 						/></span>
 					</div>
 					<div class="_formBlock" style="text-align: center">
-						{{ i18n.ts._aboutFirefish.about }}<br /><a
-							href="https://firefish.dev/"
-							target="_blank"
-							class="_link"
-							>{{ i18n.ts.learnMore }}</a
-						>
-					</div>
-					<div class="_formBlock" style="text-align: center">
 						<MkButton primary rounded inline @click="iLoveMisskey"
 							>I <Mfm text="$[jelly ❤]" /> #Firefish</MkButton
 						>
@@ -57,7 +49,7 @@
 					<FormSection>
 						<div class="_formLinks">
 							<FormLink
-								to="https://firefish.dev/firefish/firefish"
+								to="https://codeberg.org/firefish/firefish"
 								external
 							>
 								<template #icon

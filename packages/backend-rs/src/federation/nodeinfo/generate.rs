@@ -102,7 +102,7 @@ async fn generate_nodeinfo_2_1() -> Result<Nodeinfo21, DbErr> {
             name: "firefish".to_owned(),
             version: CONFIG.version.clone(),
             repository: Some(meta.repository_url),
-            homepage: Some("https://firefish.dev/firefish/firefish".to_owned()),
+            homepage: Some("https://codeberg.org/firefish/firefish".to_owned()),
         },
         protocols: vec![Protocol::Activitypub],
         services: Services {

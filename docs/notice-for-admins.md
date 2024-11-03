@@ -1,6 +1,6 @@
 # Notice for server administrators
 
-You can skip intermediate versions when upgrading from an old version, but please read the notices and follow the instructions for each intermediate version before [upgrading](https://firefish.dev/firefish/firefish/-/blob/main/docs/upgrade.md).
+You can skip intermediate versions when upgrading from an old version, but please read the notices and follow the instructions for each intermediate version before [upgrading](./upgrade.md).
 
 ## v20240905
 
@@ -12,7 +12,7 @@ You can skip intermediate versions when upgrading from an old version, but pleas
 
 Required Node.js version has been bumped from v18.19.0 to v18.20.0.
 
-As written in the [v20240710 note](https://firefish.dev/firefish/firefish/-/blob/7660050d9938a5a92293bb8acc361a0ef0715912/docs/notice-for-admins.md#v20240710), it is highly recommended that you use an even newer version since v18.20.0 has known vulnerabilities.
+As written in the [v20240710 note](https://codeberg.org/firefish/firefish/src/commit/7660050d9938a5a92293bb8acc361a0ef0715912/docs/notice-for-admins.md#v20240710), it is highly recommended that you use an even newer version since v18.20.0 has known vulnerabilities.
 
 ## v20240725
 
@@ -36,7 +36,7 @@ rm --recursive --force packages/megalodon
 
 ### For all users
 
-This is not related to the recent changes, but we have added a new section called "[Maintain the server](https://firefish.dev/firefish/firefish/-/blob/v20240710/docs/install.md#maintain-the-server)" in the installation guide. We suggest that you take a look at it (and we welcome your docs contributions)!
+This is not related to the recent changes, but we have added a new section called "[Maintain the server](./install.md#maintain-the-server)" in the installation guide. We suggest that you take a look at it (and we welcome your docs contributions)!
 
 ### For systemd/pm2 users
 
@@ -68,13 +68,13 @@ The following environment variables are deprecated and no longer have any effect
 
 ### For systemd/pm2 users
 
-Required Node.js version has been bumped from v18.17.0 to v18.19.0. Also, as written in the [v20240430 note](https://firefish.dev/firefish/firefish/-/blob/d3394b97f021dea323ec3ae36e39930680242482/docs/notice-for-admins.md#v20240430), it is highly recommended that you use an even newer version since v18.19.0 has known vulnerabilities.
+Required Node.js version has been bumped from v18.17.0 to v18.19.0. Also, as written in the [v20240430 note](https://codeberg.org/firefish/firefish/src/commit/d3394b97f021dea323ec3ae36e39930680242482/docs/notice-for-admins.md#v20240430), it is highly recommended that you use an even newer version since v18.19.0 has known vulnerabilities.
 
 ## v20240523
 
 ### For all users
 
-We regret to inform you that the upgrade may take a long time to fix a regression we have introduced. The time required to upgrade should be the same as [v20240413](<https://firefish.dev/firefish/firefish/-/blob/main/docs/notice-for-admins.md#v20240413>). This is not a security fix, so please upgrade your server when you have enough time. We are sorry for the inconvenience.
+We regret to inform you that the upgrade may take a long time to fix a regression we have introduced. The time required to upgrade should be the same as [v20240413](<./notice-for-admins.md#v20240413>). This is not a security fix, so please upgrade your server when you have enough time. We are sorry for the inconvenience.
 
 <details>
 
@@ -112,7 +112,7 @@ Firefish is now compatible with [Node v22](https://nodejs.org/en/blog/announceme
 
 ### For all users
 
-You can control the verbosity of the server log by adding `maxLogLevel` in `.config/default.yml`. `logLevels` has been deprecated in favor of this setting. (see also: <https://firefish.dev/firefish/firefish/-/blob/eac0c1c47cd23789dcc395ab08b074934409fd96/.config/example.yml#L152>)
+You can control the verbosity of the server log by adding `maxLogLevel` in `.config/default.yml`. `logLevels` has been deprecated in favor of this setting. (see also: <https://codeberg.org/firefish/firefish/src/commit/33c24bd6480eb0ebd92ab3a622d9b16fdedb5201/.config/example.yml#L152>)
 
 ### For systemd/pm2 users
 
@@ -319,15 +319,15 @@ docker-compose up db --detach && sleep 5 && docker-compose exec db sh -c 'psql -
 Once this is done, you can start Firefish as usual.
 
 ```sh
-docker pull registry.firefish.dev/firefish/firefish && docker-compose up --detach
-# or podman pull registry.firefish.dev/firefish/firefish && podman-compose up --detach
+docker pull codeberg.org/firefish/firefish && docker-compose up --detach
+# or podman pull codeberg.org/firefish/firefish && podman-compose up --detach
 ```
 
 ## v20240301
 
 ### For all users
 
-A new setting item has been added to control the log levels, so please consider updating your `.config/default.yml`. ([example settings](https://firefish.dev/firefish/firefish/-/blob/e7689fb302a0eed192b9515162258a39800f838a/.config/example.yml#L170-179))
+A new setting item has been added to control the log levels, so please consider updating your `.config/default.yml`. ([example settings](https://codeberg.org/firefish/firefish/src/commit/e7689fb302a0eed192b9515162258a39800f838a/.config/example.yml#L170-179))
 
 ## v20240225
 
@@ -337,7 +337,7 @@ A new setting item has been added to control the log levels, so please consider 
     ```yaml
     services:
       web:
-        image: registry.firefish.dev/firefish/firefish:latest
+        image: codeberg.org/firefish/firefish:latest
         # and so on ...
 
         volumes:
@@ -401,7 +401,7 @@ A new setting item has been added to control the log levels, so please consider 
 
 - The git repository has been moved, so please update the `git remote` url.
     ```sh
-    git remote set-url origin https://firefish.dev/firefish/firefish.git
+    git remote set-url origin https://codeberg.org/firefish/firefish.git
     ```
 
 ### For systemd/pm2 users
@@ -415,4 +415,4 @@ A new setting item has been added to control the log levels, so please consider 
 
 ### For Docker/Podman users
 
-- The image tag has been changed to `registry.firefish.dev/firefish/firefish:latest`, so please update `docker-compose.yml`.
+- The image tag has been changed to `codeberg.org/firefish/firefish:latest`, so please update `docker-compose.yml`.

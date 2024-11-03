@@ -27,7 +27,7 @@ You can refer to [local-installation.md](./local-installation.md) to install the
 1. Fork the Firefish repository on GitLab
 1. Clone your Firefish repository
     ```sh
-    git clone https://firefish.dev/your-user-name/firefish.git
+    git clone https://codeberg.org/your-user-name/firefish.git
     cd firefish
     ```
 1. Copy example config file

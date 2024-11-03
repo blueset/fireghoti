@@ -2,7 +2,7 @@
 
 ## For systemd/pm2 users
 
-1. Check [`docs/notice-for-admins.md`](https://firefish.dev/firefish/firefish/-/blob/main/docs/notice-for-admins.md)
+1. Check [`docs/notice-for-admins.md`](./notice-for-admins.md)
 1. Stop the server
     ```sh
     sudo systemctl stop your-firefish-service.service
@@ -28,11 +28,11 @@
 
 ## For Docker/Podman users
 
-1. Check [`docs/notice-for-admins.md`](https://firefish.dev/firefish/firefish/-/blob/main/docs/notice-for-admins.md)
+1. Check [`docs/notice-for-admins.md`](./notice-for-admins.md)
 1. Pull the latest container image
     ```sh
-    docker pull registry.firefish.dev/firefish/firefish:latest
-    # or podman pull registry.firefish.dev/firefish/firefish:latest
+    docker pull codeberg.org/firefish/firefish:latest
+    # or podman pull codeberg.org/firefish/firefish:latest
     ```
 1. Start the container
     ```sh

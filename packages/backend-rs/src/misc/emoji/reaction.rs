@@ -66,7 +66,7 @@ pub enum Error {
 pub async fn to_db_reaction(reaction: Option<&str>, host: Option<&str>) -> Result<String, Error> {
     if let Some(reaction) = reaction {
         // FIXME: Is it okay to do this only here?
-        // This was introduced in https://firefish.dev/firefish/firefish/-/commit/af730e75b6fc1a57ca680ce83459d7e433b130cf
+        // This was introduced in https://codeberg.org/firefish/firefish/commit/af730e75b6fc1a57ca680ce83459d7e433b130cf
         if reaction.contains('❤') || reaction.contains("♥️") {
             return Ok("❤️".to_owned());
         }
