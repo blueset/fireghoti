@@ -93,6 +93,7 @@ function openServerInfo() {
 	border-radius: 100px;
 	font-size: 0.8em;
 	text-shadow: 0 2px 2px var(--shadow);
+	width: 100%;
 	> .avatar {
 		inline-size: 3.7em;
 		block-size: 3.7em;
