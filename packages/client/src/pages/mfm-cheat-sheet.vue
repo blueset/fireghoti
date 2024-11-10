@@ -458,7 +458,9 @@ const sampleEmoji = getInstanceInfo().emojis.slice(0, 1);
 
 const preview_mention = ref("@example");
 const preview_hashtag = ref("#test");
-const preview_link = ref(`[${i18n.ts._mfm.dummy}](https://codeberg.org/firefish/firefish)`);
+const preview_link = ref(
+	`[${i18n.ts._mfm.dummy}](https://codeberg.org/firefish/firefish)`,
+);
 const preview_emoji = ref(
 	sampleEmoji.length > 0 ? `:${sampleEmoji[0].name}:` : ":emojiname:",
 );
