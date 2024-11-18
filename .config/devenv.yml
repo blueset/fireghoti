@@ -13,8 +13,4 @@ redis:
   host: firefish_redis
   port: 6379
 
-#allowedPrivateNetworks: [
-#  '10.69.1.0/24'
-#]
-
 maxLogLevel: 'debug'

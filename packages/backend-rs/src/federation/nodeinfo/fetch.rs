@@ -2,7 +2,7 @@
 //!
 //! ref: <https://nodeinfo.diaspora.software/protocol.html>
 
-use crate::{federation::nodeinfo::schema::*, util::http_client};
+use crate::{federation::nodeinfo::schema::*, misc::is_safe_url::is_safe_url, util::http_client};
 use futures_util::io::AsyncReadExt;
 use isahc::AsyncReadResponseExt;
 use serde::Deserialize;
@@ -23,6 +23,8 @@ pub enum Error {
     Json(#[from] serde_json::Error),
     #[error("nodeinfo is missing")]
     MissingNodeinfo,
+    #[error("access to this URL is not allowed")]
+    UnsafeUrl,
 }
 
 /// Represents the schema of `/.well-known/nodeinfo`.
@@ -42,6 +44,11 @@ pub struct NodeinfoLink {
 async fn fetch_nodeinfo_links(host: &str) -> Result<NodeinfoLinks, Error> {
     let client = http_client::client()?;
     let wellknown_url = format!("https://{}/.well-known/nodeinfo", host);
+
+    if !is_safe_url(&wellknown_url) {
+        return Err(Error::UnsafeUrl);
+    }
+
     let wellknown_response = client.get_async(&wellknown_url).await?;
 
     if !wellknown_response.status().is_success() {

@@ -20,6 +20,7 @@ import {
 	extractHost,
 	genIdAt,
 	InternalEvent,
+	isSafeUrl,
 	isSameOrigin,
 	publishToInternalStream,
 	toPuny,
@@ -283,48 +284,51 @@ export async function createPerson(
 		url = undefined;
 	}
 
-	let followersCount: number | undefined;
+	let followersCount: number | undefined = undefined;
 
 	if (typeof person.followers === "string") {
+		
 		try {
-			const data = await fetch(person.followers, {
-				headers: { Accept: "application/json" },
-				size: 1024 * 1024,
-			});
-			const json_data = JSON.parse(await data.text());
+			if (isSafeUrl(person.followers)) {
+				const data = await fetch(person.followers, {
+					headers: { Accept: "application/json" },
+					size: 1024 * 1024,
+				});
+				const json_data = JSON.parse(await data.text());
 
-			followersCount = json_data.totalItems;
-		} catch {
-			followersCount = undefined;
-		}
+				followersCount = json_data.totalItems;
+			}
+		} catch {}
 	}
 
-	let followingCount: number | undefined;
+	let followingCount: number | undefined = undefined;
 
 	if (typeof person.following === "string") {
 		try {
-			const data = await fetch(person.following, {
-				headers: { Accept: "application/json" },
-				size: 1024 * 1024,
-			});
-			const json_data = JSON.parse(await data.text());
-
-			followingCount = json_data.totalItems;
-		} catch (e) {
-			followingCount = undefined;
-		}
+			if (isSafeUrl(person.following)) {
+				const data = await fetch(person.following, {
+					headers: { Accept: "application/json" },
+					size: 1024 * 1024,
+				});
+				const json_data = JSON.parse(await data.text());
+				
+				followingCount = json_data.totalItems;
+			}
+		} catch {}
 	}
 
-	let notesCount: number | undefined;
+	let notesCount: number | undefined = undefined;
 
 	if (typeof person.outbox === "string") {
 		try {
-			const data = await fetch(person.outbox, {
-				headers: { Accept: "application/json" },
-			});
-			const json_data = JSON.parse(await data.text());
-
-			notesCount = json_data.totalItems;
+			if (isSafeUrl(person.outbox)) {
+				const data = await fetch(person.outbox, {
+					headers: { Accept: "application/json" },
+				});
+				const json_data = JSON.parse(await data.text());
+				
+				notesCount = json_data.totalItems;
+			}
 		} catch (e) {
 			notesCount = undefined;
 		}
@@ -568,51 +572,51 @@ export async function updatePerson(
 		throw new Error(`unexpected schema of person url: ${url}`);
 	}
 
-	let followersCount: number | undefined;
+	let followersCount: number | undefined = undefined;
 
 	if (typeof person.followers === "string") {
 		try {
-			const data = await fetch(person.followers, {
-				headers: { Accept: "application/json" },
-				size: 1024 * 1024,
-			});
-			const json_data = JSON.parse(await data.text());
-
-			followersCount = json_data.totalItems;
-		} catch {
-			followersCount = undefined;
-		}
+			if (isSafeUrl(person.followers)) {
+				const data = await fetch(person.followers, {
+					headers: { Accept: "application/json" },
+					size: 1024 * 1024,
+				});
+				const json_data = JSON.parse(await data.text());
+				
+				followersCount = json_data.totalItems;
+			}
+		} catch {}
 	}
 
-	let followingCount: number | undefined;
+	let followingCount: number | undefined = undefined;
 
 	if (typeof person.following === "string") {
 		try {
-			const data = await fetch(person.following, {
-				headers: { Accept: "application/json" },
-				size: 1024 * 1024,
-			});
-			const json_data = JSON.parse(await data.text());
-
-			followingCount = json_data.totalItems;
-		} catch {
-			followingCount = undefined;
-		}
+			if (isSafeUrl(person.following)) {
+				const data = await fetch(person.following, {
+					headers: { Accept: "application/json" },
+					size: 1024 * 1024,
+				});
+				const json_data = JSON.parse(await data.text());
+				
+				followingCount = json_data.totalItems;
+			}
+		} catch {}
 	}
 
-	let notesCount: number | undefined;
+	let notesCount: number | undefined = undefined;
 
 	if (typeof person.outbox === "string") {
 		try {
-			const data = await fetch(person.outbox, {
-				headers: { Accept: "application/json" },
-			});
-			const json_data = JSON.parse(await data.text());
-
-			notesCount = json_data.totalItems;
-		} catch (e) {
-			notesCount = undefined;
-		}
+			if (isSafeUrl(person.outbox)) {
+				const data = await fetch(person.outbox, {
+					headers: { Accept: "application/json" },
+				});
+				const json_data = JSON.parse(await data.text());
+				
+				notesCount = json_data.totalItems;
+			}
+		} catch {}
 	}
 
 	const updates = {

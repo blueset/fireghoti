@@ -2,6 +2,21 @@
 
 You can skip intermediate versions when upgrading from an old version, but please read the notices and follow the instructions for each intermediate version before [upgrading](./upgrade.md).
 
+## Unreleased
+
+### For all users
+
+`allowedPrivateNetworks` config item has been removed.
+
+### For systemd/pm2 users
+
+The minimum supported Rust version has been bumped from v1.74.0 to v1.75.0.
+
+```sh
+cargo version  # check Rust version
+rustup update  # upgrade Rust version
+```
+
 ## v20240905
 
 :warning: **Firefish is in maintenance mode.** [(announcement)](https://info.firefish.dev/notes/9xsukr38m3komd63)

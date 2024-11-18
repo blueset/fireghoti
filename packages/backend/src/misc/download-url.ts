@@ -5,8 +5,6 @@ import { config } from "@/config.js";
 import { getAgentByHostname, StatusError } from "./fetch.js";
 import chalk from "chalk";
 import Logger from "@/services/logger.js";
-import IPCIDR from "ip-cidr";
-import PrivateIp from "private-ip";
 import { isSafeUrl } from "backend-rs";
 
 export async function downloadUrl(url: string, path: string): Promise<void> {
@@ -50,18 +48,6 @@ export async function downloadUrl(url: string, path: string): Promise<void> {
 			}
 		})
 		.on("response", (res: Got.Response) => {
-			if (
-				(process.env.NODE_ENV === "production" ||
-					process.env.NODE_ENV === "test") &&
-				!config.proxy &&
-				res.ip
-			) {
-				if (isPrivateIp(res.ip)) {
-					downloadLogger.warn(`Blocked address: ${res.ip}`);
-					req.destroy();
-				}
-			}
-
 			const contentLength = res.headers["content-length"];
 			if (contentLength != null) {
 				const size = Number(contentLength);
@@ -97,15 +83,4 @@ export async function downloadUrl(url: string, path: string): Promise<void> {
 	}
 
 	downloadLogger.debug(`Download finished: ${chalk.cyan(url)}`);
-}
-
-export function isPrivateIp(ip: string): boolean {
-	for (const net of config.allowedPrivateNetworks || []) {
-		const cidr = new IPCIDR(net);
-		if (cidr.contains(ip)) {
-			return false;
-		}
-	}
-
-	return PrivateIp(ip);
 }

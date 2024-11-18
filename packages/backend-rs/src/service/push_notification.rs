@@ -1,7 +1,7 @@
 use crate::{
     config::local_server_info,
     database::db_conn,
-    misc::note::summarize,
+    misc::{is_safe_url::is_safe_url, note::summarize},
     model::entity::{access_token, app, sw_subscription},
     util::{
         http_client,
@@ -32,6 +32,8 @@ pub enum Error {
     InvalidId(#[from] InvalidIdError),
     #[error("failed to acquire an HTTP client")]
     HttpClient(#[from] http_client::Error),
+    #[error("access to this URL is not allowed")]
+    UnsafeUrl,
 }
 
 static CLIENT: OnceCell<IsahcWebPushClient> = OnceCell::new();
@@ -305,6 +307,11 @@ pub async fn send_push_notification(
     };
 
     for subscription in subscriptions.iter() {
+        if !is_safe_url(&subscription.endpoint) {
+            unsubscribe(db, &subscription.id).await?;
+            continue;
+        }
+
         if !subscription.send_read_message
             && matches!(
                 kind,

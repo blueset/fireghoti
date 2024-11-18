@@ -24,6 +24,8 @@ pub enum Error {
     NoResponse,
     #[error("translator is not set")]
     NoTranslator,
+    #[error("access to this URL is not allowed")]
+    UnsafeUrl,
 }
 
 #[macros::export(object)]
@@ -95,7 +97,7 @@ pub async fn translate(
 }
 
 mod deepl_translate {
-    use crate::util::http_client;
+    use crate::{misc::is_safe_url::is_safe_url, util::http_client};
     use futures_util::AsyncReadExt;
     use isahc::{AsyncReadResponseExt, Request};
     use serde::Deserialize;
@@ -126,6 +128,10 @@ mod deepl_translate {
         } else {
             "https://api-free.deepl.com/v2/translate"
         };
+
+        if !is_safe_url(api_url) {
+            return Err(super::Error::UnsafeUrl);
+        }
 
         let to_zh_hant_tw = super::is_zh_hant_tw(target_lang);
 
@@ -197,7 +203,7 @@ mod deepl_translate {
 }
 
 mod libre_translate {
-    use crate::util::http_client;
+    use crate::{misc::is_safe_url::is_safe_url, util::http_client};
     use futures_util::AsyncReadExt;
     use isahc::{AsyncReadResponseExt, Request};
     use serde::Deserialize;
@@ -222,6 +228,10 @@ mod libre_translate {
         api_url: &str,
         api_key: Option<&str>,
     ) -> Result<super::Translation, super::Error> {
+        if !is_safe_url(api_url) {
+            return Err(super::Error::UnsafeUrl);
+        }
+
         let client = http_client::client()?;
 
         let target_lang = if super::is_zh_hant_tw(target_lang) {

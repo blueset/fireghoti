@@ -312,7 +312,6 @@ export interface Config {
   proxy?: string
   proxySmtp?: string
   proxyBypassHosts?: Array<string>
-  allowedPrivateNetworks?: Array<string>
   maxFileSize: number
   accessLog?: string
   clusterLimits: WorkerConfig
@@ -1088,7 +1087,7 @@ export type NotificationType =  'app'|
  *
  * refs:
  * * <https://misskey-hub.net/ns#isCat>
- * * <https://codeberg.org/firefish/firefish/src/branch/develop/docs/activitypub-extensions.md#speakascat>
+ * * <https://codeberg.org/firefish/firefish/src/branch/main/docs/activitypub-extensions.md#speakascat>
  *
  * # Arguments
  *
@@ -1423,7 +1422,6 @@ export interface ServerConfig {
   proxySmtp?: string
   /** hosts to bypass the proxy */
   proxyBypassHosts?: Array<string>
-  allowedPrivateNetworks?: Array<string>
   /** maximum file size that can be uploaded to the drive (in bytes) */
   maxFileSize?: number
   accessLog?: string

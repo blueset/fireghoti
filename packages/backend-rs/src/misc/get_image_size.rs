@@ -1,4 +1,4 @@
-use crate::{cache, util::http_client};
+use crate::{cache, misc::is_safe_url::is_safe_url, util::http_client};
 use chrono::Duration;
 use futures_util::AsyncReadExt;
 use image::{ImageError, ImageFormat, ImageReader};
@@ -30,6 +30,8 @@ pub enum Error {
     #[doc = "Unsupported image type"]
     #[error("unsupported image type ({0})")]
     UnsupportedImage(String),
+    #[error("access to this URL is not allowed")]
+    UnsafeUrl,
 }
 
 const BROWSER_SAFE_IMAGE_TYPES: [ImageFormat; 8] = [
@@ -54,6 +56,10 @@ pub struct ImageSize {
 
 #[macros::export]
 pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
+    if !is_safe_url(url) {
+        return Err(Error::UnsafeUrl);
+    }
+
     let attempted: bool;
 
     {

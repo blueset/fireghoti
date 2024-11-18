@@ -1,6 +1,6 @@
 //! Fetch latest Firefish version from the Firefish repository
 
-use crate::{cache::Cache, util::http_client};
+use crate::{cache::Cache, misc::is_safe_url::is_safe_url, util::http_client};
 use chrono::Duration;
 use futures_util::AsyncReadExt;
 use isahc::AsyncReadResponseExt;
@@ -19,6 +19,8 @@ pub enum Error {
     Io(#[from] std::io::Error),
     #[error("failed to parse the HTTP response as JSON")]
     Json(#[from] serde_json::Error),
+    #[error("access to this URL is not allowed")]
+    UnsafeUrl,
 }
 
 #[derive(Clone, Deserialize)]
@@ -32,6 +34,10 @@ const UPSTREAM_PACKAGE_JSON_URL: &str =
 static PACKAGE_JSON_CACHE: Cache<PackageJson> = Cache::new_with_ttl(Duration::hours(3));
 
 async fn get_package_json() -> Result<PackageJson, Error> {
+    if !is_safe_url(UPSTREAM_PACKAGE_JSON_URL) {
+        return Err(Error::UnsafeUrl);
+    }
+
     // Read up to 1 MiB of the response body
     let mut response = http_client::client()?
         .get_async(UPSTREAM_PACKAGE_JSON_URL)

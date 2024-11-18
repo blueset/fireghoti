@@ -3,6 +3,7 @@ import jsonld from "jsonld";
 import { CONTEXTS, WellKnownContext } from "./contexts.js";
 import fetch from "node-fetch";
 import { httpAgent, httpsAgent } from "@/misc/fetch.js";
+import { isSafeUrl } from "backend-rs";
 
 // RsaSignature2017 based from https://github.com/transmute-industries/RsaSignature2017
 
@@ -122,6 +123,10 @@ export class LdSignature {
 	}
 
 	private async fetchDocument(url: string) {
+		if (!isSafeUrl(url)) {
+			throw new Error("Access to this URL is not allowed");
+		}
+
 		const json = await fetch(url, {
 			headers: {
 				Accept: "application/ld+json, application/json",

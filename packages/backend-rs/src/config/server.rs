@@ -30,7 +30,6 @@ struct ServerConfig {
     /// hosts to bypass the proxy
     pub proxy_bypass_hosts: Option<Vec<String>>,
 
-    pub allowed_private_networks: Option<Vec<String>>,
     // TODO: i64 -> u64 (NapiValue is not implemented for u64)
     /// maximum file size that can be uploaded to the drive (in bytes)
     pub max_file_size: Option<i64>,
@@ -199,7 +198,6 @@ pub struct Config {
     pub proxy: Option<String>,
     pub proxy_smtp: Option<String>,
     pub proxy_bypass_hosts: Option<Vec<String>>,
-    pub allowed_private_networks: Option<Vec<String>>,
     pub max_file_size: i64,
     pub access_log: Option<String>,
     pub cluster_limits: WorkerConfig,
@@ -308,7 +306,6 @@ pub fn load_config() -> Config {
         proxy: server_config.proxy,
         proxy_smtp: server_config.proxy_smtp,
         proxy_bypass_hosts: server_config.proxy_bypass_hosts,
-        allowed_private_networks: server_config.allowed_private_networks,
         max_file_size: server_config.max_file_size.unwrap_or(262144000),
         access_log: server_config.access_log,
         cluster_limits,
