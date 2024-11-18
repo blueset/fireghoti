@@ -20,6 +20,23 @@ export async function proxyMedia(ctx: Koa.Context) {
 		return;
 	}
 
+	if (ctx.headers["user-agent"]) {
+		const userAgent = ctx.headers["user-agent"].toLowerCase();
+		if (
+			["misskey/", "firefish/", "iceshrimp/", "cherrypick/"].some((s) =>
+				userAgent.includes(s),
+			)
+		) {
+			ctx.status = 403;
+			ctx.message = "Proxy is recursive";
+			return;
+		}
+	} else {
+		ctx.status = 400;
+		ctx.message = "User-Agent is required";
+		return;
+	}
+
 	// Create temp file
 	const [path, cleanup] = await createTemp();
 
