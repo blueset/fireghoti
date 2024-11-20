@@ -7,10 +7,13 @@ import { createTemp } from "@/misc/create-temp.js";
 import { downloadUrl } from "@/misc/download-url.js";
 import { detectType } from "@/misc/get-file-info.js";
 import { StatusError } from "@/misc/fetch.js";
-import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
+import { FILE_TYPE_BROWSERSAFE, MINUTE } from "@/const.js";
 import { serverLogger } from "../index.js";
 import { isMimeImage } from "@/misc/is-mime-image.js";
 import { inspect } from "node:util";
+import type { IEndpointMeta } from "@/server/api/endpoints.js";
+import { getIpHash } from "@/misc/get-ip-hash.js";
+import { limiter } from "@/server/api/limiter.js";
 
 export async function proxyMedia(ctx: Koa.Context) {
 	const url = "url" in ctx.query ? ctx.query.url : `https://${ctx.params.url}`;
@@ -19,6 +22,32 @@ export async function proxyMedia(ctx: Koa.Context) {
 		ctx.status = 400;
 		return;
 	}
+
+	// koa will automatically load the `X-Forwarded-For` header if `proxy: true` is configured in the app.
+	const limitActor = getIpHash(ctx.ip);
+
+	const parsedUrl = new URL(url);
+
+	const limit: IEndpointMeta["limit"] = {
+		key: `media-proxy:${parsedUrl.host}:${parsedUrl.pathname}`,
+		duration: MINUTE * 10,
+		max: 10,
+	};
+
+	// Rate limit
+	await limiter(
+		limit as IEndpointMeta["limit"] & { key: NonNullable<string> },
+		limitActor,
+	).catch((e) => {
+		const remainingTime = e.remainingTime
+			? `Please try again in ${e.remainingTime}.`
+			: "Please try again later.";
+
+		ctx.status = 429;
+		ctx.body = "Rate limit exceeded. " + remainingTime;
+	});
+
+	if (ctx.status === 429) return;
 
 	if (ctx.headers["user-agent"]) {
 		const userAgent = ctx.headers["user-agent"].toLowerCase();
