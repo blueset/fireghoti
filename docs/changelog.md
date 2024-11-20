@@ -11,7 +11,7 @@ This changelog is not an exhaustive list. Code refactorings, minor bug fixes, do
 
 - Fix multiple security issues
   - We would like to thank Hazelnoot and Laura Hausmann for helping us fix the security issues.
-- Archive the repository on [Codeberg](https://codeberg.org/firefish/firefish)
+- Archive the repository on [Codeberg](https://codeberg.org/firefish/firefish) (firefish.dev is also available until the end of February 2025)
 
 ## v20240909
 
