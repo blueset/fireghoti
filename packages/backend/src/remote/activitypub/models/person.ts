@@ -287,7 +287,6 @@ export async function createPerson(
 	let followersCount: number | undefined = undefined;
 
 	if (typeof person.followers === "string") {
-		
 		try {
 			if (isSafeUrl(person.followers)) {
 				const data = await fetch(person.followers, {
@@ -311,7 +310,7 @@ export async function createPerson(
 					size: 1024 * 1024,
 				});
 				const json_data = JSON.parse(await data.text());
-				
+
 				followingCount = json_data.totalItems;
 			}
 		} catch {}
@@ -326,7 +325,7 @@ export async function createPerson(
 					headers: { Accept: "application/json" },
 				});
 				const json_data = JSON.parse(await data.text());
-				
+
 				notesCount = json_data.totalItems;
 			}
 		} catch (e) {
@@ -582,7 +581,7 @@ export async function updatePerson(
 					size: 1024 * 1024,
 				});
 				const json_data = JSON.parse(await data.text());
-				
+
 				followersCount = json_data.totalItems;
 			}
 		} catch {}
@@ -598,7 +597,7 @@ export async function updatePerson(
 					size: 1024 * 1024,
 				});
 				const json_data = JSON.parse(await data.text());
-				
+
 				followingCount = json_data.totalItems;
 			}
 		} catch {}
@@ -613,7 +612,7 @@ export async function updatePerson(
 					headers: { Accept: "application/json" },
 				});
 				const json_data = JSON.parse(await data.text());
-				
+
 				notesCount = json_data.totalItems;
 			}
 		} catch {}
