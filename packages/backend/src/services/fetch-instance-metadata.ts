@@ -10,7 +10,7 @@ import {
 import { Instances } from "@/models/index.js";
 import { getFetchInstanceMetadataLock } from "@/misc/app-lock.js";
 import Logger from "@/services/logger.js";
-import { type Nodeinfo, fetchNodeinfo } from "backend-rs";
+import { type Nodeinfo, fetchNodeinfo, isSafeUrl } from "backend-rs";
 import { inspect } from "node:util";
 
 const logger = new Logger("metadata", "cyan");
@@ -151,6 +151,10 @@ async function fetchFaviconUrl(
 	}
 
 	const faviconUrl = `${url}/favicon.ico`;
+
+	if (!isSafeUrl(faviconUrl)) {
+		return null;
+	}
 
 	const favicon = await fetch(faviconUrl, {
 		// TODO

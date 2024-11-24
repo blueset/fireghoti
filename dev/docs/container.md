@@ -15,7 +15,7 @@
 ## Start up the environment
 
 1. Download the [`dev/container` directory](./dev/container) and execute `chmod +x docker-entrypoint.sh`
-    - Alternatively, you can use `git clone https://firefish.dev/firefish/firefish.git && cd firefish/dev/container`, although this will clone the entire repository.
+    - Alternatively, you can use `git clone https://codeberg.org/firefish/firefish.git && cd firefish/dev/container`, although this will clone the entire repository.
 1. Copy the example config file
     ```sh
     cp config.example.env config.env

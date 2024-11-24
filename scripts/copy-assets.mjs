@@ -10,6 +10,7 @@ await (async () => {
 	await Promise.all([
 		fs.cp(file("packages/backend/src/server/web"), file("packages/backend/built/server/web"), { recursive: true }),
 		fs.cp(file("custom/assets"), file("packages/backend/assets"), { recursive: true }),
+		fs.cp(file("packages/backend/src/server/file/assets"), file("packages/backend/built/server/file/assets"), { recursive: true }),
 		fs.mkdir(file("built/_client_dist_/locales"), { recursive: true }),
 	]);
 

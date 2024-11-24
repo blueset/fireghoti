@@ -60,6 +60,7 @@ function inbox(ctx: Router.RouterContext) {
 	try {
 		signature = httpSignature.parseRequest(ctx.req, {
 			headers: ["(request-target)", "digest", "host", "date"],
+			authorizationHeaderName: "signature",
 		});
 	} catch (e) {
 		ctx.status = 401;

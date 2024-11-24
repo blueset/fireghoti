@@ -15,7 +15,7 @@
 					/>
 					<MkRemoteCaution
 						v-if="user.host != null"
-						:href="user.url"
+						:href="user.url ?? user.uri"
 						class="warn"
 					/>
 

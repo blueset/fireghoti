@@ -7,7 +7,7 @@ use regex::{Captures, Regex};
 ///
 /// refs:
 /// * <https://misskey-hub.net/ns#isCat>
-/// * <https://firefish.dev/ns#speakAsCat>
+/// * <https://codeberg.org/firefish/firefish/src/branch/main/docs/activitypub-extensions.md#speakascat>
 ///
 /// # Arguments
 ///

@@ -1,6 +1,4 @@
 import * as fs from "node:fs";
-import net from "node:net";
-import { promises } from "node:dns";
 import type Koa from "koa";
 import sharp from "sharp";
 import type { IImage } from "@/services/drive/image-processor.js";
@@ -9,52 +7,62 @@ import { createTemp } from "@/misc/create-temp.js";
 import { downloadUrl } from "@/misc/download-url.js";
 import { detectType } from "@/misc/get-file-info.js";
 import { StatusError } from "@/misc/fetch.js";
-import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
+import { FILE_TYPE_BROWSERSAFE, MINUTE } from "@/const.js";
 import { serverLogger } from "../index.js";
 import { isMimeImage } from "@/misc/is-mime-image.js";
 import { inspect } from "node:util";
+import type { IEndpointMeta } from "@/server/api/endpoints.js";
+import { getIpHash } from "@/misc/get-ip-hash.js";
+import { limiter } from "@/server/api/limiter.js";
 
 export async function proxyMedia(ctx: Koa.Context) {
-	let url = "url" in ctx.query ? ctx.query.url : `https://${ctx.params.url}`;
+	const url = "url" in ctx.query ? ctx.query.url : `https://${ctx.params.url}`;
 
 	if (typeof url !== "string") {
 		ctx.status = 400;
 		return;
 	}
 
-	url = url.replace("//", "/");
+	// koa will automatically load the `X-Forwarded-For` header if `proxy: true` is configured in the app.
+	const limitActor = getIpHash(ctx.ip);
 
-	const { hostname } = new URL(url);
-	let resolvedIps;
-	try {
-		resolvedIps = await promises.resolve(hostname);
-	} catch (error) {
-		ctx.status = 400;
-		ctx.body = { message: "Invalid URL" };
-		return;
-	}
+	const parsedUrl = new URL(url);
 
-	const isSSRF = resolvedIps.some((ip) => {
-		if (net.isIPv4(ip)) {
-			const parts = ip.split(".").map(Number);
-			return (
-				parts[0] === 10 ||
-				(parts[0] === 172 && parts[1] >= 16 && parts[1] < 32) ||
-				(parts[0] === 192 && parts[1] === 168) ||
-				parts[0] === 127 ||
-				parts[0] === 0
-			);
-		} else if (net.isIPv6(ip)) {
-			return (
-				ip.startsWith("::") || ip.startsWith("fc00:") || ip.startsWith("fe80:")
-			);
-		}
-		return false;
+	const limit: IEndpointMeta["limit"] = {
+		key: `media-proxy:${parsedUrl.host}:${parsedUrl.pathname}`,
+		duration: MINUTE * 10,
+		max: 10,
+	};
+
+	// Rate limit
+	await limiter(
+		limit as IEndpointMeta["limit"] & { key: NonNullable<string> },
+		limitActor,
+	).catch((e) => {
+		const remainingTime = e.remainingTime
+			? `Please try again in ${e.remainingTime}.`
+			: "Please try again later.";
+
+		ctx.status = 429;
+		ctx.body = "Rate limit exceeded. " + remainingTime;
 	});
 
-	if (isSSRF) {
+	if (ctx.status === 429) return;
+
+	if (ctx.headers["user-agent"]) {
+		const userAgent = ctx.headers["user-agent"].toLowerCase();
+		if (
+			["misskey/", "firefish/", "iceshrimp/", "cherrypick/"].some((s) =>
+				userAgent.includes(s),
+			)
+		) {
+			ctx.status = 403;
+			ctx.message = "Proxy is recursive";
+			return;
+		}
+	} else {
 		ctx.status = 400;
-		ctx.body = { message: "Access to this URL is not allowed" };
+		ctx.message = "User-Agent is required";
 		return;
 	}
 

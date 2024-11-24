@@ -3,6 +3,7 @@ import { URLSearchParams } from "node:url";
 import { getAgentByUrl } from "@/misc/fetch.js";
 import { config } from "@/config.js";
 import { inspect } from "node:util";
+import { isSafeUrl } from "backend-rs";
 
 export async function verifyRecaptcha(secret: string, response: string) {
 	const result = await getCaptchaResponse(
@@ -48,6 +49,10 @@ async function getCaptchaResponse(
 	secret: string,
 	response: string,
 ): Promise<CaptchaResponse> {
+	if (!isSafeUrl(url)) {
+		throw new Error("Access to this URL is not allowed");
+	}
+
 	const params = new URLSearchParams({
 		secret,
 		response,

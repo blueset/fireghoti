@@ -1,7 +1,7 @@
 import { URL } from "node:url";
 import type { User } from "@/models/entities/user.js";
 import { createTemp } from "@/misc/create-temp.js";
-import { downloadUrl, isPrivateIp } from "@/misc/download-url.js";
+import { downloadUrl } from "@/misc/download-url.js";
 import type { DriveFolder } from "@/models/entities/drive-folder.js";
 import type {
 	DriveFile,
@@ -11,6 +11,7 @@ import { DriveFiles } from "@/models/index.js";
 import { driveLogger } from "./logger.js";
 import { addFile } from "./add-file.js";
 import { inspect } from "node:util";
+import { isSafeUrl } from "backend-rs";
 
 const logger = driveLogger.createSubLogger("downloader");
 
@@ -47,13 +48,10 @@ export async function uploadFromUrl({
 	requestHeaders = null,
 	usageHint = null,
 }: Args): Promise<DriveFile> {
-	const parsedUrl = new URL(url);
-	if (
-		process.env.NODE_ENV === "production" &&
-		isPrivateIp(parsedUrl.hostname.replaceAll(/(\[)|(\])/g, ""))
-	) {
-		throw new Error("Private IP is not allowed");
+	if (!isSafeUrl(url)) {
+		throw new Error(`Rejected URL: ${url}`);
 	}
+	const parsedUrl = new URL(url);
 
 	let filename = name ?? parsedUrl.pathname.split("/").pop();
 	if (filename == null || !DriveFiles.validateFileName(filename)) {

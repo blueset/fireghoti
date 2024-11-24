@@ -1,6 +1,6 @@
 import type { ApObject } from "./type.js";
 import { getApIds } from "./type.js";
-import type Resolver from "./resolver.js";
+import Resolver from "./resolver.js";
 import { resolvePerson } from "./models/person.js";
 import { unique, concat } from "@/prelude/array.js";
 import promiseLimit from "promise-limit";
@@ -27,6 +27,8 @@ export async function parseAudience(
 	const ccGroups = groupingAudience(getApIds(cc), actor);
 
 	const others = unique(concat([toGroups.other, ccGroups.other]));
+
+	resolver ??= new Resolver();
 
 	const limit = promiseLimit<CacheableUser | null>(2);
 	const mentionedUsers = (

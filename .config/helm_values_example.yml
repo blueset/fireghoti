@@ -24,7 +24,6 @@ firefish:
     bucket: example-bucket
     endpoint: nyc3.digitaloceanspaces.com:443
     region: nyc3
-  allowedPrivateNetworks: []
 
 ingress:
   enabled: true

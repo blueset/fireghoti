@@ -17,8 +17,10 @@ import { User } from "@/models/entities/user.js";
 import type { Emoji } from "@/models/entities/emoji.js";
 import { UserNotePining } from "@/models/entities/user-note-pining.js";
 import {
+	extractHost,
 	genIdAt,
 	InternalEvent,
+	isSafeUrl,
 	isSameOrigin,
 	publishToInternalStream,
 	toPuny,
@@ -63,7 +65,7 @@ const summaryLength = 2048;
  * @param uri Fetch target URI
  */
 function validateActor(x: IObject, uri: string): IActor {
-	const expectHost = toPuny(new URL(uri).hostname);
+	const expectHost = extractHost(uri);
 
 	if (x == null) {
 		throw new Error("invalid Actor: object is null");
@@ -77,8 +79,65 @@ function validateActor(x: IObject, uri: string): IActor {
 		throw new Error("invalid Actor: wrong id");
 	}
 
-	if (!(typeof x.inbox === "string" && x.inbox.length > 0)) {
+	if (
+		!(
+			typeof x.inbox === "string" &&
+			x.inbox.length > 0 &&
+			extractHost(x.inbox) === expectHost
+		)
+	) {
 		throw new Error("invalid Actor: wrong inbox");
+	}
+
+	if (
+		!(
+			typeof x.outbox === "string" &&
+			x.outbox.length > 0 &&
+			extractHost(getApId(x.outbox)) === expectHost
+		)
+	) {
+		throw new Error("invalid Actor: wrong outbox");
+	}
+
+	const sharedInboxObject =
+		x.sharedInbox ?? (x.endpoints ? x.endpoints.sharedInbox : undefined);
+	if (sharedInboxObject != null) {
+		const sharedInbox = getApId(sharedInboxObject);
+		if (
+			!(
+				typeof sharedInbox === "string" &&
+				sharedInbox.length > 0 &&
+				extractHost(sharedInbox) === expectHost
+			)
+		) {
+			throw new Error("invalid Actor: wrong shared inbox");
+		}
+	}
+
+	if (x.followers != null) {
+		x.followers = getApId(x.followers);
+		if (
+			!(
+				typeof x.followers === "string" &&
+				x.followers.length > 0 &&
+				extractHost(x.followers) === expectHost
+			)
+		) {
+			throw new Error("invalid Actor: wrong followers");
+		}
+	}
+
+	if (x.following != null) {
+		x.following = getApId(x.following);
+		if (
+			!(
+				typeof x.following === "string" &&
+				x.following.length > 0 &&
+				extractHost(x.following) === expectHost
+			)
+		) {
+			throw new Error("invalid Actor: wrong following");
+		}
 	}
 
 	if (
@@ -108,7 +167,7 @@ function validateActor(x: IObject, uri: string): IActor {
 		x.summary = truncate(x.summary, summaryLength);
 	}
 
-	const idHost = toPuny(new URL(x.id!).hostname);
+	const idHost = toPuny(new URL(x.id!).host);
 	if (idHost !== expectHost) {
 		throw new Error("invalid Actor: id has different host");
 	}
@@ -118,7 +177,7 @@ function validateActor(x: IObject, uri: string): IActor {
 			throw new Error("invalid Actor: publicKey.id is not a string");
 		}
 
-		const publicKeyIdHost = toPuny(new URL(x.publicKey.id).hostname);
+		const publicKeyIdHost = toPuny(new URL(x.publicKey.id).host);
 		if (publicKeyIdHost !== expectHost) {
 			throw new Error("invalid Actor: publicKey.id has different host");
 		}
@@ -168,6 +227,8 @@ export async function createPerson(
 	uri: string,
 	resolver?: Resolver,
 ): Promise<User> {
+	if (typeof uri !== "string") throw new Error("uri is not string");
+
 	if (isSameOrigin(uri)) {
 		throw new StatusError(
 			"cannot resolve local user",
@@ -178,9 +239,22 @@ export async function createPerson(
 
 	if (resolver == null) resolver = new Resolver();
 
-	const object = (await resolver.resolve(uri)) as any;
+	let object = (await resolver.resolve(uri)) as any;
 
-	const person = validateActor(object, uri);
+	let person: IActor;
+	try {
+		person = validateActor(object, uri);
+	} catch (e) {
+		// Work around GoToSocial issue #1186 (ref: https://github.com/superseriousbusiness/gotosocial/issues/1186)
+		if (typeof object.publicKey?.owner !== "string" || object.inbox != null)
+			throw e;
+
+		apLogger.info(
+			`Received stub actor, re-resolving with key owner uri: ${object.publicKey.owner}`,
+		);
+		object = (await resolver.resolve(object.publicKey.owner)) as any;
+		person = validateActor(object, uri);
+	}
 
 	apLogger.info(`Creating Person: ${person.id}`);
 
@@ -198,52 +272,65 @@ export async function createPerson(
 
 	const bday = person["vcard:bday"]?.match(/^\d{4}-\d{2}-\d{2}/);
 
-	if (url && !url.startsWith("https://")) {
+	let url = getOneApHrefNullable(person.url);
+	const urlUrl = url != null ? new URL(url) : null;
+	const uriUrl = new URL(uri);
+
+	if (urlUrl != null && urlUrl.protocol !== "https:") {
 		throw new Error(`unexpected schema of person url: ${url}`);
 	}
 
-	let followersCount: number | undefined;
+	if (urlUrl != null && urlUrl.host !== uriUrl.host) {
+		apLogger.debug(
+			"Person url host doesn't match person uri host, clearing variable",
+		);
+		url = undefined;
+	}
+
+	let followersCount: number | undefined = undefined;
 
 	if (typeof person.followers === "string") {
 		try {
-			const data = await fetch(person.followers, {
-				headers: { Accept: "application/json" },
-				size: 1024 * 1024,
-			});
-			const json_data = JSON.parse(await data.text());
+			if (isSafeUrl(person.followers)) {
+				const data = await fetch(person.followers, {
+					headers: { Accept: "application/json" },
+					size: 1024 * 1024,
+				});
+				const json_data = JSON.parse(await data.text());
 
-			followersCount = json_data.totalItems;
-		} catch {
-			followersCount = undefined;
-		}
+				followersCount = json_data.totalItems;
+			}
+		} catch {}
 	}
 
-	let followingCount: number | undefined;
+	let followingCount: number | undefined = undefined;
 
 	if (typeof person.following === "string") {
 		try {
-			const data = await fetch(person.following, {
-				headers: { Accept: "application/json" },
-				size: 1024 * 1024,
-			});
-			const json_data = JSON.parse(await data.text());
+			if (isSafeUrl(person.following)) {
+				const data = await fetch(person.following, {
+					headers: { Accept: "application/json" },
+					size: 1024 * 1024,
+				});
+				const json_data = JSON.parse(await data.text());
 
-			followingCount = json_data.totalItems;
-		} catch (e) {
-			followingCount = undefined;
-		}
+				followingCount = json_data.totalItems;
+			}
+		} catch {}
 	}
 
-	let notesCount: number | undefined;
+	let notesCount: number | undefined = undefined;
 
 	if (typeof person.outbox === "string") {
 		try {
-			const data = await fetch(person.outbox, {
-				headers: { Accept: "application/json" },
-			});
-			const json_data = JSON.parse(await data.text());
+			if (isSafeUrl(person.outbox)) {
+				const data = await fetch(person.outbox, {
+					headers: { Accept: "application/json" },
+				});
+				const json_data = JSON.parse(await data.text());
 
-			notesCount = json_data.totalItems;
+				notesCount = json_data.totalItems;
+			}
 		} catch (e) {
 			notesCount = undefined;
 		}
@@ -487,51 +574,51 @@ export async function updatePerson(
 		throw new Error(`unexpected schema of person url: ${url}`);
 	}
 
-	let followersCount: number | undefined;
+	let followersCount: number | undefined = undefined;
 
 	if (typeof person.followers === "string") {
 		try {
-			const data = await fetch(person.followers, {
-				headers: { Accept: "application/json" },
-				size: 1024 * 1024,
-			});
-			const json_data = JSON.parse(await data.text());
+			if (isSafeUrl(person.followers)) {
+				const data = await fetch(person.followers, {
+					headers: { Accept: "application/json" },
+					size: 1024 * 1024,
+				});
+				const json_data = JSON.parse(await data.text());
 
-			followersCount = json_data.totalItems;
-		} catch {
-			followersCount = undefined;
-		}
+				followersCount = json_data.totalItems;
+			}
+		} catch {}
 	}
 
-	let followingCount: number | undefined;
+	let followingCount: number | undefined = undefined;
 
 	if (typeof person.following === "string") {
 		try {
-			const data = await fetch(person.following, {
-				headers: { Accept: "application/json" },
-				size: 1024 * 1024,
-			});
-			const json_data = JSON.parse(await data.text());
+			if (isSafeUrl(person.following)) {
+				const data = await fetch(person.following, {
+					headers: { Accept: "application/json" },
+					size: 1024 * 1024,
+				});
+				const json_data = JSON.parse(await data.text());
 
-			followingCount = json_data.totalItems;
-		} catch {
-			followingCount = undefined;
-		}
+				followingCount = json_data.totalItems;
+			}
+		} catch {}
 	}
 
-	let notesCount: number | undefined;
+	let notesCount: number | undefined = undefined;
 
 	if (typeof person.outbox === "string") {
 		try {
-			const data = await fetch(person.outbox, {
-				headers: { Accept: "application/json" },
-			});
-			const json_data = JSON.parse(await data.text());
+			if (isSafeUrl(person.outbox)) {
+				const data = await fetch(person.outbox, {
+					headers: { Accept: "application/json" },
+				});
+				const json_data = JSON.parse(await data.text());
 
-			notesCount = json_data.totalItems;
-		} catch (e) {
-			notesCount = undefined;
-		}
+				notesCount = json_data.totalItems;
+			}
+		} catch {}
 	}
 
 	const updates = {

@@ -169,10 +169,10 @@
 							{{ i18n.ts.updateRemoteUser }}</FormButton
 						>
 
-						<FormFolder class="_formBlock">
+						<FormFolder v-if="ap" class="_formBlock">
 							<template #label>Raw</template>
 
-							<MkObjectView v-if="ap" tall :value="ap">
+							<MkObjectView tall :value="ap">
 							</MkObjectView>
 						</FormFolder>
 					</FormSection>
@@ -619,11 +619,13 @@ watch(
 );
 
 watch(user, () => {
-	os.api("ap/get", {
-		uri: user.value.uri ?? `${url}/users/${user.value.id}`,
-	}).then((res) => {
-		ap.value = res;
-	});
+	if (isAdmin) {
+		os.api("ap/get", {
+			uri: user.value.uri ?? `${url}/users/${user.value.id}`,
+		}).then((res) => {
+			ap.value = res;
+		});
+	}
 });
 
 const headerActions = computed(() => []);

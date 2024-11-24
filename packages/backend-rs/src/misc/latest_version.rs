@@ -1,6 +1,6 @@
 //! Fetch latest Firefish version from the Firefish repository
 
-use crate::{cache::Cache, util::http_client};
+use crate::{cache::Cache, misc::is_safe_url::is_safe_url, util::http_client};
 use chrono::Duration;
 use futures_util::AsyncReadExt;
 use isahc::AsyncReadResponseExt;
@@ -12,13 +12,15 @@ pub enum Error {
     Isahc(#[from] isahc::Error),
     #[error("failed to acquire an HTTP client")]
     HttpClient(#[from] http_client::Error),
-    #[doc = "firefish.dev returned bad HTTP status"]
-    #[error("firefish.dev returned bad HTTP status ({0})")]
+    #[doc = "codeberg.org returned bad HTTP status"]
+    #[error("codeberg.org returned bad HTTP status ({0})")]
     BadStatus(String),
     #[error("failed to parse the HTTP response")]
     Io(#[from] std::io::Error),
     #[error("failed to parse the HTTP response as JSON")]
     Json(#[from] serde_json::Error),
+    #[error("access to this URL is not allowed")]
+    UnsafeUrl,
 }
 
 #[derive(Clone, Deserialize)]
@@ -27,11 +29,15 @@ struct PackageJson {
 }
 
 const UPSTREAM_PACKAGE_JSON_URL: &str =
-    "https://firefish.dev/firefish/firefish/-/raw/main/package.json";
+    "https://codeberg.org/firefish/firefish/raw/branch/main/package.json";
 
 static PACKAGE_JSON_CACHE: Cache<PackageJson> = Cache::new_with_ttl(Duration::hours(3));
 
 async fn get_package_json() -> Result<PackageJson, Error> {
+    if !is_safe_url(UPSTREAM_PACKAGE_JSON_URL) {
+        return Err(Error::UnsafeUrl);
+    }
+
     // Read up to 1 MiB of the response body
     let mut response = http_client::client()?
         .get_async(UPSTREAM_PACKAGE_JSON_URL)
@@ -95,7 +101,7 @@ mod unit_test {
     #[tokio::test]
     #[cfg_attr(miri, ignore)] // can't call foreign function `getaddrinfo` on OS `linux`
     async fn get_latest_version() {
-        // fetch from firefish.dev
+        // fetch from codeberg.org
         let version_1 = latest_version().await.unwrap();
         validate_version(&version_1);
 

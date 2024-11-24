@@ -1,4 +1,4 @@
-use crate::{cache, util::http_client};
+use crate::{cache, misc::is_safe_url::is_safe_url, util::http_client};
 use chrono::Duration;
 use futures_util::AsyncReadExt;
 use image::{ImageError, ImageFormat, ImageReader};
@@ -30,6 +30,8 @@ pub enum Error {
     #[doc = "Unsupported image type"]
     #[error("unsupported image type ({0})")]
     UnsupportedImage(String),
+    #[error("access to this URL is not allowed")]
+    UnsafeUrl,
 }
 
 const BROWSER_SAFE_IMAGE_TYPES: [ImageFormat; 8] = [
@@ -54,6 +56,10 @@ pub struct ImageSize {
 
 #[macros::export]
 pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
+    if !is_safe_url(url) {
+        return Err(Error::UnsafeUrl);
+    }
+
     let attempted: bool;
 
     {
@@ -130,111 +136,4 @@ pub async fn get_image_size_from_url(url: &str) -> Result<ImageSize, Error> {
         width: size.1,
         height: size.0,
     })
-}
-
-#[cfg(test)]
-mod unit_test {
-    use super::ImageSize;
-    use crate::cache;
-    use pretty_assertions::assert_eq;
-
-    #[tokio::test]
-    #[cfg_attr(miri, ignore)] // can't call foreign function `getaddrinfo` on OS `linux`
-    async fn get_image_size_from_url() {
-        let png_url_1 = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/splash.png";
-        let png_url_2 = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/notification-badges/at.png";
-        let png_url_3 = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/api-doc.png";
-        let rotated_jpeg_url = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/test/resources/rotate.jpg";
-        let webp_url_1 = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/custom/assets/badges/error.webp";
-        let webp_url_2 = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/screenshots/1.webp";
-        let ico_url = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/favicon.ico";
-        let gif_url = "https://firefish.dev/firefish/firefish/-/raw/b9c3dfbd3d473cb2cee20c467eeae780bc401271/packages/backend/test/resources/anime.gif";
-        let mp3_url = "https://firefish.dev/firefish/firefish/-/blob/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/sounds/aisha/1.mp3";
-
-        // delete caches in case you run this test multiple times
-        cache::delete_all(cache::Category::FetchUrl).await.unwrap();
-
-        let png_size_1 = ImageSize {
-            width: 1024,
-            height: 1024,
-        };
-        let png_size_2 = ImageSize {
-            width: 96,
-            height: 96,
-        };
-        let png_size_3 = ImageSize {
-            width: 1024,
-            height: 354,
-        };
-        let rotated_jpeg_size = ImageSize {
-            width: 256,
-            height: 512,
-        };
-        let webp_size_1 = ImageSize {
-            width: 256,
-            height: 256,
-        };
-        let webp_size_2 = ImageSize {
-            width: 1080,
-            height: 2340,
-        };
-        let ico_size = ImageSize {
-            width: 256,
-            height: 256,
-        };
-        let gif_size = ImageSize {
-            width: 256,
-            height: 256,
-        };
-
-        assert_eq!(
-            png_size_1,
-            super::get_image_size_from_url(png_url_1).await.unwrap()
-        );
-        assert_eq!(
-            png_size_2,
-            super::get_image_size_from_url(png_url_2).await.unwrap()
-        );
-        assert_eq!(
-            png_size_3,
-            super::get_image_size_from_url(png_url_3).await.unwrap()
-        );
-        assert_eq!(
-            rotated_jpeg_size,
-            super::get_image_size_from_url(rotated_jpeg_url)
-                .await
-                .unwrap()
-        );
-        assert_eq!(
-            webp_size_1,
-            super::get_image_size_from_url(webp_url_1).await.unwrap()
-        );
-        assert_eq!(
-            webp_size_2,
-            super::get_image_size_from_url(webp_url_2).await.unwrap()
-        );
-        assert_eq!(
-            ico_size,
-            super::get_image_size_from_url(ico_url).await.unwrap()
-        );
-        assert_eq!(
-            gif_size,
-            super::get_image_size_from_url(gif_url).await.unwrap()
-        );
-        assert!(super::get_image_size_from_url(mp3_url).await.is_err());
-    }
-
-    #[tokio::test]
-    #[cfg_attr(miri, ignore)] // can't call foreign function `getaddrinfo` on OS `linux`
-    async fn too_many_attempts() {
-        let url = "https://firefish.dev/firefish/firefish/-/raw/5891a90f71a8b9d5ea99c683ade7e485c685d642/packages/backend/assets/splash.png";
-
-        // delete caches in case you run this test multiple times
-        cache::delete_one(cache::Category::FetchUrl, url)
-            .await
-            .unwrap();
-
-        assert!(super::get_image_size_from_url(url).await.is_ok());
-        assert!(super::get_image_size_from_url(url).await.is_err());
-    }
 }

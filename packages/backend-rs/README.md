@@ -2,8 +2,6 @@ A work-in-progress Firefish backend written in Rust
 
 Minimum supported Rust version (MSRV): 1.74
 
-Auto-generated documentation is at <https://docs.firefish.dev/backend_rs>
-
 # How to write the code
 
 Currently, there is no entrypoint in this project, and all functions are executed via Node-API.
