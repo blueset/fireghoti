@@ -260,7 +260,9 @@ export async function createPerson(
 
 	const host = toPuny(new URL(object.id).hostname);
 
-	const url = getOneApHrefNullable(person.url);
+	let url = getOneApHrefNullable(person.url);
+	const urlUrl = url != null ? new URL(url) : null;
+	const uriUrl = new URL(uri);
 
 	const fields = await analyzeAttachments(person.attachment || [], url);
 
@@ -271,10 +273,6 @@ export async function createPerson(
 	const isBot = getApType(object) !== "Person";
 
 	const bday = person["vcard:bday"]?.match(/^\d{4}-\d{2}-\d{2}/);
-
-	let url = getOneApHrefNullable(person.url);
-	const urlUrl = url != null ? new URL(url) : null;
-	const uriUrl = new URL(uri);
 
 	if (urlUrl != null && urlUrl.protocol !== "https:") {
 		throw new Error(`unexpected schema of person url: ${url}`);
