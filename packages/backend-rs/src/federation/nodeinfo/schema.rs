@@ -76,9 +76,9 @@ pub struct Software20 {
 }
 
 #[cfg_attr(test, derive(Debug, PartialEq))]
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
-#[macros::derive_clone_and_export]
+#[macros::export]
 pub enum Protocol {
     Activitypub,
     Buddycloud,
@@ -106,9 +106,9 @@ pub struct Services {
 
 /// The third party sites this server can retrieve messages from for combined display with regular traffic.
 #[cfg_attr(test, derive(Debug, PartialEq))]
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
-#[macros::derive_clone_and_export]
+#[macros::export]
 pub enum Inbound {
     #[serde(rename = "atom1.0")]
     Atom1,
@@ -125,9 +125,9 @@ pub enum Inbound {
 
 /// The third party sites this server can publish messages to on the behalf of a user.
 #[cfg_attr(test, derive(Debug, PartialEq))]
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
-#[macros::derive_clone_and_export]
+#[macros::export]
 pub enum Outbound {
     #[serde(rename = "atom1.0")]
     Atom1,

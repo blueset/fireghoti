@@ -3,9 +3,9 @@
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[macros::derive_clone_and_export(string_enum = "camelCase")]
+#[macros::export(string_enum = "camelCase")]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "antenna_src")]
 pub enum AntennaSrc {
     #[sea_orm(string_value = "all")]
@@ -21,9 +21,9 @@ pub enum AntennaSrc {
     #[sea_orm(string_value = "users")]
     Users,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[macros::derive_clone_and_export(string_enum = "camelCase")]
+#[macros::export(string_enum = "camelCase")]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
@@ -35,9 +35,9 @@ pub enum DriveFileUsageHint {
     #[sea_orm(string_value = "userBanner")]
     UserBanner,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[macros::derive_clone_and_export(string_enum = "camelCase")]
+#[macros::export(string_enum = "camelCase")]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "muted_note_reason")]
 pub enum MutedNoteReason {
     #[sea_orm(string_value = "manual")]
@@ -49,9 +49,9 @@ pub enum MutedNoteReason {
     #[sea_orm(string_value = "word")]
     Word,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[macros::derive_clone_and_export(string_enum = "camelCase")]
+#[macros::export(string_enum = "camelCase")]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "note_visibility")]
 pub enum NoteVisibility {
     #[sea_orm(string_value = "followers")]
@@ -65,9 +65,9 @@ pub enum NoteVisibility {
     #[sea_orm(string_value = "specified")]
     Specified,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[macros::derive_clone_and_export(string_enum = "camelCase")]
+#[macros::export(string_enum = "camelCase")]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "notification_type")]
 pub enum NotificationType {
     #[sea_orm(string_value = "app")]
@@ -95,9 +95,9 @@ pub enum NotificationType {
     #[sea_orm(string_value = "reply")]
     Reply,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[macros::derive_clone_and_export(string_enum = "camelCase")]
+#[macros::export(string_enum = "camelCase")]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "page_visibility")]
 pub enum PageVisibility {
     #[sea_orm(string_value = "followers")]
@@ -107,9 +107,9 @@ pub enum PageVisibility {
     #[sea_orm(string_value = "specified")]
     Specified,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[macros::derive_clone_and_export(string_enum = "camelCase")]
+#[macros::export(string_enum = "camelCase")]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
@@ -125,9 +125,9 @@ pub enum PollNoteVisibility {
     #[sea_orm(string_value = "specified")]
     Specified,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[macros::derive_clone_and_export(string_enum = "camelCase")]
+#[macros::export(string_enum = "camelCase")]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
@@ -155,9 +155,9 @@ pub enum PushSubscriptionType {
     #[sea_orm(string_value = "update")]
     Update,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[macros::derive_clone_and_export(string_enum = "camelCase")]
+#[macros::export(string_enum = "camelCase")]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "relay_status")]
 pub enum RelayStatus {
     #[sea_orm(string_value = "accepted")]
@@ -167,9 +167,9 @@ pub enum RelayStatus {
     #[sea_orm(string_value = "requesting")]
     Requesting,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[macros::derive_clone_and_export(string_enum = "camelCase")]
+#[macros::export(string_enum = "camelCase")]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
@@ -185,9 +185,9 @@ pub enum UserEmojiModPerm {
     #[sea_orm(string_value = "unauthorized")]
     Unauthorized,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[macros::derive_clone_and_export(string_enum = "camelCase")]
+#[macros::export(string_enum = "camelCase")]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",
@@ -201,9 +201,9 @@ pub enum UserProfileFfvisibility {
     #[sea_orm(string_value = "public")]
     Public,
 }
-#[derive(Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-#[macros::derive_clone_and_export(string_enum = "camelCase")]
+#[macros::export(string_enum = "camelCase")]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",

@@ -1793,4 +1793,3 @@ export interface WorkerConfigInternal {
   web?: number
   queue?: number
 }
-
