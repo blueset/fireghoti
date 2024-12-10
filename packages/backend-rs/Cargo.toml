@@ -20,7 +20,6 @@ napi = { workspace = true, optional = true, features = ["chrono_date", "napi4", 
 napi-derive = { workspace = true, optional = true }
 
 argon2 = { workspace = true, features = ["std"] }
-async-trait = { workspace = true }
 basen = { workspace = true }
 bb8 = { workspace = true }
 bcrypt = { workspace = true, features = ["std"] }
