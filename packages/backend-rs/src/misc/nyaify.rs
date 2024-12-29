@@ -21,7 +21,7 @@ use regex::{Captures, Regex};
 /// assert_eq!(nyaify("I'll take a nap.", Some("en")), "I'll take a nyap.");
 /// ```
 #[macros::export]
-pub fn nyaify(text: &str, lang: Option<&str>) -> String {
+pub fn nyaify(text: &str, lang: Option<String>) -> String {
     let mut to_return = text.to_owned();
 
     {
@@ -105,23 +105,29 @@ mod unit_test {
     #[test]
     fn nyaify() {
         assert_eq!(
-            super::nyaify("Hello everyone!", Some("en")),
+            super::nyaify("Hello everyone!", Some("en".to_owned())),
             "Hello everynyan!"
         );
         assert_eq!(
             super::nyaify("Nonbinary people", None),
             "Nyanbinyary people"
         );
-        assert_eq!(super::nyaify("1分鐘是60秒", Some("zh-TW")), "1分鐘是60喵");
         assert_eq!(
-            super::nyaify("1分間は60秒です", Some("ja-JP")),
+            super::nyaify("1分鐘是60秒", Some("zh-TW".to_owned())),
+            "1分鐘是60喵"
+        );
+        assert_eq!(
+            super::nyaify("1分間は60秒です", Some("ja-JP".to_owned())),
             "1分間は60秒です"
         );
         assert_eq!(
             super::nyaify("あなたは誰ですか", None),
             "あにゃたは誰ですか"
         );
-        assert_eq!(super::nyaify("Ναυτικός", Some("el-GR")), "Νιαυτικός");
+        assert_eq!(
+            super::nyaify("Ναυτικός", Some("el-GR".to_owned())),
+            "Νιαυτικός"
+        );
         assert_eq!(super::nyaify("일어나다", None), "일어냐다냥");
     }
 }

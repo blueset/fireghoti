@@ -42,7 +42,7 @@ fn is_zh_hant_tw(lang: &str) -> bool {
 #[macros::export]
 pub async fn translate(
     text: &str,
-    source_lang: Option<&str>,
+    source_lang: Option<String>,
     target_lang: &str,
 ) -> Result<Translation, Error> {
     let config = local_server_info().await?;
@@ -50,7 +50,7 @@ pub async fn translate(
     let translation = if let Some(api_key) = config.deepl_auth_key {
         deepl_translate::translate(
             text,
-            source_lang,
+            source_lang.as_deref(),
             target_lang,
             &api_key,
             config.deepl_is_pro,
@@ -59,7 +59,7 @@ pub async fn translate(
     } else if let Some(api_url) = config.libre_translate_api_url {
         libre_translate::translate(
             text,
-            source_lang,
+            source_lang.as_deref(),
             target_lang,
             &api_url,
             config.libre_translate_api_key.as_deref(),
@@ -71,7 +71,7 @@ pub async fn translate(
     {
         deepl_translate::translate(
             text,
-            source_lang,
+            source_lang.as_deref(),
             target_lang,
             auth_key.as_ref().ok_or(Error::MissingApiKey)?,
             is_pro.unwrap_or(false),
@@ -83,7 +83,7 @@ pub async fn translate(
     {
         libre_translate::translate(
             text,
-            source_lang,
+            source_lang.as_deref(),
             target_lang,
             api_url.as_ref().ok_or(Error::MissingApiUrl)?,
             api_key.as_deref(),

@@ -63,7 +63,10 @@ pub enum Error {
 }
 
 #[macros::export]
-pub async fn to_db_reaction(reaction: Option<&str>, host: Option<&str>) -> Result<String, Error> {
+pub async fn to_db_reaction(
+    reaction: Option<String>,
+    host: Option<String>,
+) -> Result<String, Error> {
     if let Some(reaction) = reaction {
         // FIXME: Is it okay to do this only here?
         // This was introduced in https://codeberg.org/firefish/firefish/commit/af730e75b6fc1a57ca680ce83459d7e433b130cf
@@ -72,20 +75,20 @@ pub async fn to_db_reaction(reaction: Option<&str>, host: Option<&str>) -> Resul
         }
 
         // check if the reaction is an Unicode emoji
-        if emojis::get(reaction).is_some() {
+        if emojis::get(&reaction).is_some() {
             return Ok(reaction.to_owned());
         }
 
         static RE: Lazy<Regex> =
             Lazy::new(|| Regex::new(r"^:([0-9A-Za-z_+-]+)(?:@\.)?:$").unwrap());
 
-        if let Some(captures) = RE.captures(reaction) {
+        if let Some(captures) = RE.captures(&reaction) {
             let name = &captures[1];
             let db = db_conn().await?;
 
             if let Some(host) = host {
                 // remote emoji
-                let ascii_host = idna::domain_to_ascii(host)?;
+                let ascii_host = idna::domain_to_ascii(&host)?;
 
                 // TODO: Does SeaORM have the `exists` method?
                 if emoji::Entity::find()

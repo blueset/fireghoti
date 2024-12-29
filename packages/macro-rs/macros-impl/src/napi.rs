@@ -306,6 +306,7 @@ pub fn napi(macro_attr: TokenStream, item: TokenStream) -> syn::Result<TokenStre
                                             "str" => quote! { String },
                                             // &T => T
                                             _ => elem_tokens,
+                                            // TODO: Option<String> => Option<&str>
                                         }
                                     }
                                 });

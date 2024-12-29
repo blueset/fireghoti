@@ -14,17 +14,17 @@ pub enum Error {
 }
 
 #[macros::ts_export]
-pub fn get_full_ap_account(username: &str, host: Option<&str>) -> Result<String, Error> {
+pub fn get_full_ap_account(username: &str, host: Option<String>) -> Result<String, Error> {
     Ok(match host {
-        Some(host) => format!("{}@{}", username, to_puny(host)?),
+        Some(host) => format!("{}@{}", username, to_puny(host.as_ref())?),
         None => format!("{}@{}", username, extract_host(&crate::config::CONFIG.url)?),
     })
 }
 
 #[macros::ts_export]
-pub fn is_self_host(host: Option<&str>) -> Result<bool, Error> {
+pub fn is_self_host(host: Option<String>) -> Result<bool, Error> {
     Ok(match host {
-        Some(host) => extract_host(&crate::config::CONFIG.url)? == to_puny(host)?,
+        Some(host) => extract_host(&crate::config::CONFIG.url)? == to_puny(host.as_ref())?,
         None => true,
     })
 }

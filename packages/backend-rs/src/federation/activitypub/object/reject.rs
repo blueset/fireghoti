@@ -16,7 +16,7 @@ impl ApReject {
     fn new(user_id: String, follow_object: follow::ApFollow) -> Self {
         Self {
             id: random_local_uri(),
-            r#type: Activity::Accept,
+            r#type: Activity::Reject,
             actor: user::local_uri(user_id),
             object: follow_object,
         }

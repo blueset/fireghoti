@@ -198,6 +198,7 @@ export default async function (
 		publishToNoteUpdatesStream(note);
 
 		(async () => {
+			if (note.localOnly) return;
 			const noteActivity = await renderNote(note, false);
 			noteActivity.updated = note.updatedAt?.toISOString();
 			const updateActivity = renderUpdate(noteActivity, user);

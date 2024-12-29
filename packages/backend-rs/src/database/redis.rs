@@ -1,7 +1,6 @@
 //! Redis interface
 
 use crate::config::CONFIG;
-use async_trait::async_trait;
 use bb8::{ManageConnection, Pool, PooledConnection, RunError};
 use redis::{aio::MultiplexedConnection, Client, ErrorKind, IntoConnectionInfo, RedisError};
 use tokio::sync::OnceCell;
@@ -22,7 +21,6 @@ impl RedisConnectionManager {
     }
 }
 
-#[async_trait]
 impl ManageConnection for RedisConnectionManager {
     type Connection = MultiplexedConnection;
     type Error = RedisError;

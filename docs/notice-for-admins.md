@@ -2,6 +2,17 @@
 
 You can skip intermediate versions when upgrading from an old version, but please read the notices and follow the instructions for each intermediate version before [upgrading](./upgrade.md).
 
+## v20241205
+
+### For systemd/pm2 users
+
+The minimum supported Rust version has been bumped from v1.75.0 to v1.80.0.
+
+```sh
+cargo version  # check Rust version
+rustup update  # upgrade Rust version
+```
+
 ## v20241121
 
 ### For all users

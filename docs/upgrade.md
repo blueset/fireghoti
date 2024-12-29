@@ -31,8 +31,8 @@
 1. Check [`docs/notice-for-admins.md`](./notice-for-admins.md)
 1. Pull the latest container image
     ```sh
-    docker pull codeberg.org/firefish/firefish:latest
-    # or podman pull codeberg.org/firefish/firefish:latest
+    docker pull registry.firefish.dev/firefish/firefish:latest
+    # or podman pull registry.firefish.dev/firefish/firefish:latest
     ```
 1. Start the container
     ```sh
