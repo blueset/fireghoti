@@ -1,6 +1,5 @@
 import { Brackets } from "typeorm";
 import { Notes } from "@/models/index.js";
-import { safeForSql } from "backend-rs";
 import { normalizeForSearch } from "@/misc/normalize-for-search.js";
 import define from "@/server/api/define.js";
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
@@ -33,7 +32,7 @@ export const paramDef = {
 		withFiles: {
 			type: "boolean",
 			default: false,
-			description: "Only show notes that have attached files.",
+			description: "Only show notes that have specific hashtags.",
 		},
 		poll: { type: "boolean", nullable: true, default: null },
 		sinceId: { type: "string", format: "misskey:id" },
@@ -93,21 +92,12 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	try {
 		if (ps.tag) {
-			if (!safeForSql(normalizeForSearch(ps.tag))) throw "Injection";
-			query.andWhere(`'{"${normalizeForSearch(ps.tag)}"}' <@ note.tags`);
+			query.andWhere(":tag = ANY(note.tags)", { tag: normalizeForSearch(ps.tag) });
 		} else {
 			query.andWhere(
 				new Brackets((qb) => {
 					for (const tags of ps.query!) {
-						qb.orWhere(
-							new Brackets((qb) => {
-								for (const tag of tags) {
-									if (!safeForSql(normalizeForSearch(ps.tag)))
-										throw "Injection";
-									qb.andWhere(`'{"${normalizeForSearch(tag)}"}' <@ note.tags`);
-								}
-							}),
-						);
+						qb.orWhere("ARRAY[:...tags]::varchar[] <@ note.tags", { tags: tags.map(normalizeForSearch) });
 					}
 				}),
 			);
