@@ -86,5 +86,12 @@ export async function searchNotes(
 	if (params.myId != null) generateMutedUserQuery(query, { id: params.myId });
 	if (params.myId != null) generateBlockedUserQuery(query, { id: params.myId });
 
-	return await query.take(params.limit).getMany();
+	try {
+		return await query.take(params.limit).getMany();
+	} catch (e) {
+		console.error('Failed to execute query.', e, query
+			.take(params.limit)
+			.getQuery());
+		throw e;
+	}
 }

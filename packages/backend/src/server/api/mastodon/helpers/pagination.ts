@@ -45,10 +45,15 @@ export class PaginationHelpers {
 		limit: number,
 		reverse: boolean,
 	): Promise<T[]> {
-		return query
-			.take(limit)
-			.getMany()
-			.then((found) => (reverse ? found.reverse() : found));
+		try {
+			return query
+				.take(limit)
+				.getMany()
+				.then((found) => (reverse ? found.reverse() : found));
+		} catch (e) {
+			console.error('Failed to execute query.', e, query.take(limit).getQuery());
+			throw e;
+		}
 	}
 
 	public static async execQueryLinkPagination<T extends ObjectLiteral>(

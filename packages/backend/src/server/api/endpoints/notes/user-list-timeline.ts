@@ -158,7 +158,14 @@ export default define(meta, paramDef, async (ps, user) => {
 	let skip = 0;
 	try {
 		while (found.length < ps.limit) {
-			const notes = await query.take(take).skip(skip).getMany();
+			try {
+				const notes = await query.take(take).skip(skip).getMany();
+			} catch (e) {
+				console.error('Failed to execute query.', e, query
+					.take(take).skip(skip)
+					.getQuery());
+				throw e;
+			}
 			found.push(...(await Notes.packMany(notes, user)));
 			skip += take;
 			if (notes.length < take) break;

@@ -270,11 +270,19 @@ export class SearchHelpers {
 		// 	.innerJoinAndSelect("note.user", "user")
 		// 	.andWhere("user.isIndexable = TRUE");
 
-		return query
-			.skip(offset ?? 0)
-			.take(limit)
-			.getMany()
-			.then((p) => (minId ? p.reverse() : p));
+		try {
+			return query
+				.skip(offset ?? 0)
+				.take(limit)
+				.getMany()
+				.then((p) => (minId ? p.reverse() : p));
+		} catch (e) {
+			console.error('Failed to execute query.', e, query
+				.skip(offset ?? 0)
+				.take(limit)
+				.getQuery());
+			throw e;
+		}
 	}
 
 	private static async searchTags(
