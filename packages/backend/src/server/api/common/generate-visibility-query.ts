@@ -7,6 +7,8 @@ export function generateVisibilityQuery(
 	q: SelectQueryBuilder<any>,
 	me?: { id: User["id"] } | null,
 ) {
+	return;
+
 	// This code must always be synchronized with the checks in Notes.isVisibleForMe.
 	if (me == null) {
 		q.andWhere(

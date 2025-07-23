@@ -89,7 +89,7 @@ class DbLogger implements Logger {
 	}
 
 	public logQuery(query: string, parameters?: any[]) {
-		sqlLogger.trace(this.highlight(query).substring(0, 100));
+		sqlLogger.trace(this.highlight(query));
 	}
 
 	public logQueryError(error: string, query: string, parameters?: any[]) {
