@@ -89,16 +89,16 @@ class DbLogger implements Logger {
 	}
 
 	public logQuery(query: string, parameters?: any[]) {
-		sqlLogger.trace(this.highlight(query));
+		sqlLogger.trace(`${this.highlight(query)}, parameters: ${JSON.stringify(parameters)}`);
 	}
 
 	public logQueryError(error: string, query: string, parameters?: any[]) {
 		sqlLogger.error(error);
-		sqlLogger.trace(this.highlight(query));
+		sqlLogger.trace(`${this.highlight(query)}, parameters: ${JSON.stringify(parameters)}`);
 	}
 
 	public logQuerySlow(time: number, query: string, parameters?: any[]) {
-		sqlLogger.trace(this.highlight(query));
+		sqlLogger.trace(`${this.highlight(query)}, parameters: ${JSON.stringify(parameters)}`);
 	}
 
 	public logSchemaBuild(message: string) {
@@ -185,7 +185,7 @@ export const entities = [
 	...charts,
 ];
 
-const log = process.env.NODE_ENV !== "production";
+const log = true || process.env.NODE_ENV !== "production";
 
 export const db = new DataSource({
 	type: "postgres",

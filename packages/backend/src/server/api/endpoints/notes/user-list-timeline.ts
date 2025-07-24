@@ -160,17 +160,18 @@ export default define(meta, paramDef, async (ps, user) => {
 		while (found.length < ps.limit) {
 			try {
 				const notes = await query.take(take).skip(skip).getMany();
+				found.push(...(await Notes.packMany(notes, user)));
+				skip += take;
+				if (notes.length < take) break;
 			} catch (e) {
 				console.error('Failed to execute query.', e, query
 					.take(take).skip(skip)
 					.getQuery());
 				throw e;
 			}
-			found.push(...(await Notes.packMany(notes, user)));
-			skip += take;
-			if (notes.length < take) break;
 		}
 	} catch (error) {
+		console.error('Failed to get notes for user list timeline.', error);
 		throw new ApiError(meta.errors.queryError);
 	}
 
