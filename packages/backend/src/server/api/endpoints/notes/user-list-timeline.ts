@@ -1,4 +1,4 @@
-import { Brackets } from "typeorm";
+import { Brackets, In } from "typeorm";
 import { UserLists, UserListJoinings, Notes } from "@/models/index.js";
 import { activeUsersChart } from "@/services/chart/index.js";
 import define from "@/server/api/define.js";
@@ -80,17 +80,17 @@ export default define(meta, paramDef, async (ps, user) => {
 			"userListJoining",
 			"userListJoining.userId = note.userId",
 		)
-		.innerJoinAndSelect("note.user", "user")
-		.leftJoinAndSelect("user.avatar", "avatar")
-		.leftJoinAndSelect("user.banner", "banner")
-		.leftJoinAndSelect("note.reply", "reply")
-		.leftJoinAndSelect("note.renote", "renote")
-		.leftJoinAndSelect("reply.user", "replyUser")
-		.leftJoinAndSelect("replyUser.avatar", "replyUserAvatar")
-		.leftJoinAndSelect("replyUser.banner", "replyUserBanner")
-		.leftJoinAndSelect("renote.user", "renoteUser")
-		.leftJoinAndSelect("renoteUser.avatar", "renoteUserAvatar")
-		.leftJoinAndSelect("renoteUser.banner", "renoteUserBanner")
+		// .innerJoinAndSelect("note.user", "user")
+		// .leftJoinAndSelect("user.avatar", "avatar")
+		// .leftJoinAndSelect("user.banner", "banner")
+		// .leftJoinAndSelect("note.reply", "reply")
+		// .leftJoinAndSelect("note.renote", "renote")
+		// .leftJoinAndSelect("reply.user", "replyUser")
+		// .leftJoinAndSelect("replyUser.avatar", "replyUserAvatar")
+		// .leftJoinAndSelect("replyUser.banner", "replyUserBanner")
+		// .leftJoinAndSelect("renote.user", "renoteUser")
+		// .leftJoinAndSelect("renoteUser.avatar", "renoteUserAvatar")
+		// .leftJoinAndSelect("renoteUser.banner", "renoteUserBanner")
 		.andWhere("userListJoining.userListId = :userListId", {
 			userListId: list.id,
 		});
@@ -160,7 +160,26 @@ export default define(meta, paramDef, async (ps, user) => {
 		while (found.length < ps.limit) {
 			try {
 				const notes = await query.take(take).skip(skip).getMany();
-				found.push(...(await Notes.packMany(notes, user)));
+				const fullNotes = await Notes.createQueryBuilder("note")
+					.where({ id: In(notes.map(note => note.id)) })
+					.innerJoin(
+						UserListJoinings.metadata.targetName,
+						"userListJoining",
+						"userListJoining.userId = note.userId",
+					)
+					.innerJoinAndSelect("note.user", "user")
+					.leftJoinAndSelect("user.avatar", "avatar")
+					.leftJoinAndSelect("user.banner", "banner")
+					.leftJoinAndSelect("note.reply", "reply")
+					.leftJoinAndSelect("note.renote", "renote")
+					.leftJoinAndSelect("reply.user", "replyUser")
+					.leftJoinAndSelect("replyUser.avatar", "replyUserAvatar")
+					.leftJoinAndSelect("replyUser.banner", "replyUserBanner")
+					.leftJoinAndSelect("renote.user", "renoteUser")
+					.leftJoinAndSelect("renoteUser.avatar", "renoteUserAvatar")
+					.leftJoinAndSelect("renoteUser.banner", "renoteUserBanner")
+					.getMany();
+				found.push(...(await Notes.packMany(fullNotes, user)));
 				skip += take;
 				if (notes.length < take) break;
 			} catch (e) {
