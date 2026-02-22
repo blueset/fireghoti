@@ -329,6 +329,31 @@ export class NoteHelpers {
 			return renotes.map((p) => p.user).filter((p) => p) as User[];
 		});
 	}
+	
+	public static async getNoteQuotes(
+		note: Note,
+		maxId: string | undefined,
+		sinceId: string | undefined,
+		minId: string | undefined,
+		limit = 40,
+		ctx: MastoContext,
+	): Promise<Note[]> {
+		const user = ctx.user as ILocalUser | null;
+		const noteId = typeof note === "string" ? note : note.id;
+		const query = makePaginationQuery(
+			Notes.createQueryBuilder("note"),
+		)
+		.andWhere("note.renoteId = :renoteId", { renoteId: note.id })
+		.andWhere("note.text IS NOT NULL");
+
+		generateVisibilityQuery(query, user);
+		if (user) {
+			generateMutedUserQuery(query, user);
+			generateBlockedUserQuery(query, user);
+		}
+
+		return query.getMany().then((p) => p.reverse());
+	}
 
 	public static async getNoteDescendants(
 		note: Note | string,
@@ -390,8 +415,8 @@ export class NoteHelpers {
 		const reply = request.in_reply_to_id
 			? await getNote(request.in_reply_to_id, user)
 			: undefined;
-		const renote = request.quote_id
-			? await getNote(request.quote_id, user)
+		const renote = (request.quote_id || request.quoted_status_id)
+			? await getNote(request.quote_id || request.quoted_status_id, user)
 			: undefined;
 
 		const now = new Date();

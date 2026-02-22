@@ -24,6 +24,7 @@ namespace MastodonEntity {
 		emojis: Emoji[];
 		replies_count: number;
 		reblogs_count: number;
+		quotes_count: number;
 		favourites_count: number;
 		reblogged: boolean | null;
 		favourited: boolean | null;
@@ -45,6 +46,13 @@ namespace MastodonEntity {
 		bookmarked: boolean;
 		edited_at: string | null;
 		filtered: Array<FilterResult> | null;
+		quote_approval: QuoteApproval | null;
+	};
+
+	export type QuoteApproval = {
+		automatic: Array<"public" | "followers" | "following" | "unsupported_policy">;
+		manual: Array<"public" | "followers" | "following" | "unsupported_policy">;
+		current_user: "automatic" | "manual" | "denied" | "unknown";
 	};
 
 	export type StatusCreationRequest = {
@@ -57,6 +65,8 @@ namespace MastodonEntity {
 		};
 		in_reply_to_id?: string;
 		quote_id?: string;
+		quoted_status_id?: string;
+		quote_approval_policy?: "public" | "followers" | "following" | "unsupported_policy";
 		sensitive?: boolean;
 		spoiler_text?: string;
 		visibility?: string;

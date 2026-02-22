@@ -24,6 +24,7 @@ namespace MastodonEntity {
 		fields: Array<Field>;
 		bot: boolean | null;
 		discoverable: boolean;
+		quote_policy: "public" | "followers" | "nobody";
 		source?: Source;
 	};
 

@@ -8,6 +8,7 @@ import { Users } from "@/models/index.js";
 import type { User } from "@/models/entities/user.js";
 import type { FindOptionsWhere } from "typeorm";
 import { IsNull } from "typeorm";
+import { AuthHelpers } from "@/server/api/mastodon/helpers/auth.js";
 
 // Init router
 const router = new Router();
@@ -165,6 +166,20 @@ router.get(webFingerPath, async (ctx) => {
 
 	ctx.vary("Accept");
 	ctx.set("Cache-Control", "public, max-age=180");
+});
+
+router.get("/.well-known/oauth-authorization-server", async (ctx) => {
+	ctx.body = {
+		issuer: `${config.url}/`,
+		authorization_endpoint: `${config.url}/oauth/authorize`,
+		token_endpoint: `${config.url}/oauth/token`,
+		revocation_endpoint: `${config.url}/oauth/revoke`,
+		scopes_supported: AuthHelpers.getAllScopes(),
+		response_types_supported: ["code"],
+		grant_types_supported: ["authorization_code", "client_credentials"],
+		token_endpoint_auth_methods_supported: ["client_secret_post"],
+		app_registration_endpoint: `${config.url}/api/v1/apps`,
+	};
 });
 
 // Return 404 for other .well-known

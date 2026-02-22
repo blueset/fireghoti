@@ -297,7 +297,7 @@ export class NoteConverter {
 			uri: note.uri ?? `https://${config.host}/notes/${note.id}`,
 			url: note.url ?? note.uri ?? `https://${config.host}/notes/${note.id}`,
 			account: Promise.resolve(noteUser).then((p) =>
-				UserConverter.encode(p, ctx),
+				UserConverter.encode(p, ctx)
 			),
 			in_reply_to_id: note.replyId,
 			in_reply_to_account_id: note.replyUserId,
@@ -309,33 +309,35 @@ export class NoteConverter {
 			emojis: noteEmoji,
 			replies_count: reblog.then(
 				(reblog) =>
-					(!isQuote(note) ? reblog?.replies_count : note.repliesCount) ?? 0,
+					(!isQuote(note) ? reblog?.replies_count : note.repliesCount) ?? 0
 			),
 			reblogs_count: reblog.then(
 				(reblog) =>
-					(!isQuote(note) ? reblog?.reblogs_count : note.renoteCount) ?? 0,
+					(!isQuote(note) ? reblog?.reblogs_count : note.renoteCount) ?? 0
+			),
+			quotes_count: reblog.then(
+				(reblog) =>
+					(!isQuote(note) ? reblog?.quotes_count : note.renoteCount) ?? 0
 			),
 			favourites_count: reactionCount,
 			reblogged: isReblogged,
 			favourited: isFavorited,
 			muted: isMuted,
 			sensitive: files.then((files) =>
-				files.length > 0 ? files.some((f) => f.isSensitive) : false,
+				files.length > 0 ? files.some((f) => f.isSensitive) : false
 			),
 			spoiler_text: note.cw ? note.cw : "",
 			visibility: VisibilityConverter.encode(note.visibility),
 			media_attachments: files.then((files) =>
-				files.length > 0 ? files.map((f) => FileConverter.encode(f)) : [],
+				files.length > 0 ? files.map((f) => FileConverter.encode(f)) : []
 			),
 			mentions: mentions,
 			tags: tags,
 			card: card,
 			poll: note.hasPoll
 				? populatePoll(note, user?.id ?? null).then((p) =>
-						noteEmoji.then((emojis) =>
-							PollConverter.encode(p, note.id, emojis),
-						),
-					)
+						noteEmoji.then((emojis) => PollConverter.encode(p, note.id, emojis))
+				  )
 				: null,
 			application: null, //FIXME
 			language: note.lang,
@@ -346,15 +348,20 @@ export class NoteConverter {
 						note.reactions,
 						reaction?.reaction,
 						populated,
-						ctx,
-					),
-				),
+						ctx
+					)
+				)
 			),
 			bookmarked: isBookmarked,
 			quote: reblog.then((reblog) => (isQuote(note) ? reblog : null)),
 			quote_id: isQuote(note) ? note.renoteId : null,
 			edited_at: note.updatedAt?.toISOString() ?? null,
 			filtered: filtered,
+			quote_approval: {
+				automatic: ["public"],
+				manual: [],
+				current_user: "automatic",
+			},
 		});
 	}
 
