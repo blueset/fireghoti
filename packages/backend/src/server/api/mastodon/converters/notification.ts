@@ -121,9 +121,7 @@ export class NotificationConverter {
 		const oldest = members[members.length - 1];
 
 		const sampleAccountIds = unique(
-			members
-				.map((m) => m.notifierId)
-				.filter((id): id is string => id != null),
+			members.map((m) => m.notifierId).filter((id): id is string => id != null),
 		).slice(0, 8);
 
 		return {
@@ -246,8 +244,6 @@ export class NotificationConverter {
 	private static encodeNotificationType(
 		t: NotificationType,
 	): MastodonEntity.NotificationType {
-		// FIXME: Implement custom notification for followRequestAccepted
-		// FIXME: Implement mastodon notification type 'update' on misskey side
 		switch (t) {
 			case "follow":
 				return "follow";
@@ -257,7 +253,7 @@ export class NotificationConverter {
 			case "renote":
 				return "reblog";
 			case "quote":
-				return "reblog";
+				return "quote";
 			case "reaction":
 				return "favourite";
 			case "pollEnded":

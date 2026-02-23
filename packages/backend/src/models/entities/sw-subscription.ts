@@ -25,7 +25,7 @@ const pushSubscriptionTypes = [
 	"admin.report",
 ] as const;
 
-type pushSubscriptionType = (typeof pushSubscriptionTypes)[number];
+export type PushSubscriptionType = (typeof pushSubscriptionTypes)[number];
 
 @Entity()
 export class SwSubscription {
@@ -69,7 +69,7 @@ export class SwSubscription {
 		array: true,
 		default: "{}",
 	})
-	public subscriptionTypes: pushSubscriptionType[];
+	public subscriptionTypes: PushSubscriptionType[];
 
 	/**
 	 * App notification app, used for Mastodon API notifications

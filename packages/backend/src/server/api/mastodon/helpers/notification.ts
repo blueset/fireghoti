@@ -5,7 +5,22 @@ import type { Notification } from "@/models/entities/notification.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import type { MastoContext } from "@/server/api/mastodon/index.js";
 import type { SwSubscription } from "@/models/entities/sw-subscription.js";
+import type { PushSubscriptionType } from "@/models/entities/sw-subscription.js";
 import { In } from "typeorm";
+
+/** Push subscription types supported by the DB schema */
+const VALID_PUSH_TYPES: readonly string[] = [
+	"mention",
+	"status",
+	"reblog",
+	"follow",
+	"follow_request",
+	"favourite",
+	"poll",
+	"update",
+	"admin.sign_up",
+	"admin.report",
+];
 
 /**
  * Normalize object arguments from query string.
@@ -400,9 +415,9 @@ export class NotificationHelpers {
 			appAccessTokenId: tokenId,
 		});
 
-		const types = (
-			Object.keys(alerts) as MastodonEntity.NotificationType[]
-		).filter((k) => alerts[k]);
+		const types = (Object.keys(alerts) as MastodonEntity.NotificationType[])
+			.filter((k) => alerts[k])
+			.filter((t): t is PushSubscriptionType => VALID_PUSH_TYPES.includes(t));
 
 		if (existing) {
 			await SwSubscriptions.update(
@@ -451,12 +466,15 @@ export class NotificationHelpers {
 		for (const type of Object.keys(
 			alerts,
 		) as MastodonEntity.NotificationType[]) {
+			// Skip types not supported by the DB enum
+			if (!VALID_PUSH_TYPES.includes(type)) continue;
+			const validType = type as PushSubscriptionType;
 			if (alerts[type]) {
-				if (!types.includes(type)) {
-					types.push(type);
+				if (!types.includes(validType)) {
+					types.push(validType);
 				}
 			} else {
-				const index = types.indexOf(type);
+				const index = types.indexOf(validType);
 				if (index !== -1) {
 					types.splice(index, 1);
 				}
@@ -486,10 +504,55 @@ export class NotificationHelpers {
 		const result: string[] = [];
 		if (types.includes("follow")) result.push("follow");
 		if (types.includes("mention")) result.push("mention", "reply");
-		if (types.includes("reblog")) result.push("renote", "quote");
+		if (types.includes("reblog")) result.push("renote");
+		if (types.includes("quote")) result.push("quote");
 		if (types.includes("favourite")) result.push("reaction");
 		if (types.includes("poll")) result.push("pollEnded");
 		if (types.includes("follow_request")) result.push("receiveFollowRequest");
 		return result;
+	}
+
+	public static async getUnreadNotificationCount(
+		limit = 100,
+		types: string[] | undefined,
+		excludeTypes: string[] | undefined,
+		accountId: string | undefined,
+		ctx: MastoContext,
+	): Promise<number> {
+		if (limit > 1000) limit = 1000;
+
+		const user = ctx.user as ILocalUser;
+		let requestedTypes = types
+			? this.decodeTypes(types)
+			: [
+					"follow",
+					"mention",
+					"reply",
+					"renote",
+					"quote",
+					"reaction",
+					"pollEnded",
+					"receiveFollowRequest",
+				];
+
+		if (excludeTypes) {
+			const excludedTypes = this.decodeTypes(excludeTypes);
+			requestedTypes = requestedTypes.filter((p) => !excludedTypes.includes(p));
+		}
+		if (!requestedTypes.length) return 0;
+
+		const query = Notifications.createQueryBuilder("notification")
+			.andWhere("notification.notifieeId = :userId", { userId: user.id })
+			.andWhere("notification.type IN (:...types)", { types: requestedTypes })
+			.andWhere("notification.isRead = FALSE");
+
+		if (accountId !== undefined) {
+			query.andWhere("notification.notifierId = :notifierId", {
+				notifierId: accountId,
+			});
+		}
+
+		const count = await query.take(limit).getCount();
+		return Math.min(count, limit);
 	}
 }

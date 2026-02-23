@@ -25,6 +25,7 @@ namespace MastodonEntity {
 
 	export type GroupedNotificationsResults = {
 		accounts: Account[];
+		partial_accounts?: PartialAccountWithAvatar[];
 		statuses: Status[];
 		notification_groups: NotificationGroup[];
 	};
@@ -39,5 +40,31 @@ namespace MastodonEntity {
 		| "poll"
 		| "update"
 		| "admin.sign_up"
-		| "admin.report";
+		| "admin.report"
+		| "severed_relationships"
+		| "moderation_warning"
+		| "quote"
+		| "quoted_update";
+
+	export type PartialAccountWithAvatar = {
+		id: string;
+		acct: string;
+		url: string;
+		avatar: string;
+		avatar_static: string;
+		locked: boolean;
+		bot: boolean;
+	};
+
+	export type NotificationPolicy = {
+		for_not_following: string;
+		for_not_followers: string;
+		for_new_accounts: string;
+		for_private_mentions: string;
+		for_limited_accounts: string;
+		summary: {
+			pending_requests_count: number;
+			pending_notifications_count: number;
+		};
+	};
 }

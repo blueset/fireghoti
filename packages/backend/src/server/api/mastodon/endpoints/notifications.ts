@@ -6,7 +6,24 @@ import { auth } from "@/server/api/mastodon/middleware/auth.js";
 import { filterContext } from "@/server/api/mastodon/middleware/filter-context.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 
+/** Permissive notification policy (accept everything — no filtering implemented) */
+const PERMISSIVE_NOTIFICATION_POLICY: MastodonEntity.NotificationPolicy = {
+	for_not_following: "accept",
+	for_not_followers: "accept",
+	for_new_accounts: "accept",
+	for_private_mentions: "accept",
+	for_limited_accounts: "accept",
+	summary: {
+		pending_requests_count: 0,
+		pending_notifications_count: 0,
+	},
+};
+
 export function setupEndpointsNotifications(router: Router): void {
+	// =====================
+	// v1 notification endpoints
+	// =====================
+
 	router.get(
 		"/v1/notifications",
 		auth(true, ["read:notifications"]),
@@ -27,6 +44,87 @@ export function setupEndpointsNotifications(router: Router): void {
 				ctx,
 			);
 			ctx.body = await NotificationConverter.encodeMany(res, ctx);
+		},
+	);
+
+	router.get(
+		"/v1/notifications/unread_count",
+		auth(true, ["read:notifications"]),
+		async (ctx) => {
+			const args = normalizeUrlQuery(limitToInt(ctx.query), [
+				"types[]",
+				"exclude_types[]",
+			]);
+			const count = await NotificationHelpers.getUnreadNotificationCount(
+				args.limit ?? 100,
+				args["types[]"],
+				args["exclude_types[]"],
+				args.account_id,
+				ctx,
+			);
+			ctx.body = { count };
+		},
+	);
+
+	// Notification requests stubs (no filtering policy → always empty)
+	router.get(
+		"/v1/notifications/requests",
+		auth(true, ["read:notifications"]),
+		async (ctx) => {
+			ctx.body = [];
+		},
+	);
+
+	router.get(
+		"/v1/notifications/requests/merged",
+		auth(true, ["read:notifications"]),
+		async (ctx) => {
+			ctx.body = { merged: true };
+		},
+	);
+
+	router.post(
+		"/v1/notifications/requests/accept",
+		auth(true, ["write:notifications"]),
+		async (ctx) => {
+			ctx.status = 501;
+			ctx.body = { error: "Not implemented" };
+		},
+	);
+
+	router.post(
+		"/v1/notifications/requests/dismiss",
+		auth(true, ["write:notifications"]),
+		async (ctx) => {
+			ctx.status = 501;
+			ctx.body = { error: "Not implemented" };
+		},
+	);
+
+	router.get(
+		"/v1/notifications/requests/:id",
+		auth(true, ["read:notifications"]),
+		async (ctx) => {
+			ctx.status = 404;
+			ctx.body = { error: "Record not found" };
+		},
+	);
+
+	router.post(
+		"/v1/notifications/requests/:id/accept",
+		auth(true, ["write:notifications"]),
+		async (ctx) => {
+			ctx.status = 501;
+			ctx.body = { error: "Not implemented" };
+		},
+	);
+
+	router.post(
+		"/v1/notifications/requests/:id/dismiss",
+		auth(true, ["write:notifications"]),
+		async (ctx) => {
+			ctx.status = 501;
+			ctx.body = { error: "Not implemented" };
 		},
 	);
 
@@ -110,6 +208,24 @@ export function setupEndpointsNotifications(router: Router): void {
 				ctx,
 			);
 			ctx.body = { count };
+		},
+	);
+
+	// Notification policy stubs
+	router.get(
+		"/v2/notifications/policy",
+		auth(true, ["read:notifications"]),
+		async (ctx) => {
+			ctx.body = PERMISSIVE_NOTIFICATION_POLICY;
+		},
+	);
+
+	router.patch(
+		"/v2/notifications/policy",
+		auth(true, ["write:notifications"]),
+		async (ctx) => {
+			ctx.status = 501;
+			ctx.body = { error: "Not implemented" };
 		},
 	);
 
