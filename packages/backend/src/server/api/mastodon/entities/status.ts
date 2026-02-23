@@ -7,6 +7,7 @@
 /// <reference path="card.ts" />
 /// <reference path="poll.ts" />
 /// <reference path="reaction.ts" />
+/// <reference path="quote.ts" />
 
 namespace MastodonEntity {
 	export type Status = {
@@ -41,7 +42,7 @@ namespace MastodonEntity {
 		language: string | null;
 		pinned: boolean | undefined;
 		reactions: Array<Reaction>;
-		quote: Status | null;
+		quote: Quote | null;
 		quote_id: string | null;
 		bookmarked: boolean;
 		edited_at: string | null;
@@ -66,7 +67,7 @@ namespace MastodonEntity {
 		in_reply_to_id?: string;
 		quote_id?: string;
 		quoted_status_id?: string;
-		quote_approval_policy?: "public" | "followers" | "following" | "unsupported_policy";
+		quote_approval_policy?: "public" | "followers" | "nobody";
 		sensitive?: boolean;
 		spoiler_text?: string;
 		visibility?: string;
@@ -83,6 +84,7 @@ namespace MastodonEntity {
 			expires_in: number;
 			multiple: boolean;
 		};
+		quote_approval_policy?: "public" | "followers" | "nobody";
 		sensitive?: boolean;
 		spoiler_text?: string;
 		language?: string;

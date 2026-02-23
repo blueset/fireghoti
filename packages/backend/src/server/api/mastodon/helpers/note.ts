@@ -599,6 +599,7 @@ export class NoteHelpers {
 			result.scheduled_at = new Date(Date.parse(body.scheduled_at));
 		if (body.in_reply_to_id) result.in_reply_to_id = body.in_reply_to_id;
 		if (body.quote_id) result.quote_id = body.quote_id;
+		if (body.quoted_status_id) result.quoted_status_id = body.quoted_status_id;
 		if (body.media_ids)
 			result.media_ids =
 				body.media_ids && body.media_ids.length > 0

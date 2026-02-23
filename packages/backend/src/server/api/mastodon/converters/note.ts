@@ -356,7 +356,13 @@ export class NoteConverter {
 			reactions: reactions,
 			emoji_reactions: reactions,
 			bookmarked: isBookmarked,
-			quote: reblog.then((reblog) => (isQuote(note) ? reblog : null)),
+			quote: reblog.then((reblog) =>
+				isQuote(note)
+					? reblog
+						? { state: "accepted" as const, quoted_status: reblog }
+						: { state: "deleted" as const, quoted_status: null as MastodonEntity.Status | null }
+					: null
+			),
 			quote_id: isQuote(note) ? note.renoteId : null,
 			edited_at: note.updatedAt?.toISOString() ?? null,
 			filtered: filtered,
@@ -659,6 +665,7 @@ export class NoteConverter {
 				spoiler_text: note.cw || "",
 				visibility: VisibilityConverter.encode(note.visibility),
 				in_reply_to_id: note.replyId,
+				quoted_status_id: isQuote(note) ? note.renoteId : undefined,
 				language: note.lang,
 				application_id: 0,
 				idempotency: note.id,

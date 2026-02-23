@@ -461,4 +461,20 @@ export function setupEndpointsStatus(router: Router): void {
 			throw new MastoApiError(501, "Not implemented");
 		},
 	);
+
+	router.put<{ Params: { id: string } }>(
+		"/v1/statuses/:id/interaction_policy",
+		auth(true, ["write:statuses"]),
+		async (ctx) => {
+			throw new MastoApiError(501, "Not implemented");
+		},
+	);
+
+	router.post<{ Params: { id: string; quoting_status_id: string } }>(
+		"/v1/statuses/:id/quotes/:quoting_status_id/revoke",
+		auth(true, ["write:statuses"]),
+		async (ctx) => {
+			throw new MastoApiError(501, "Not implemented");
+		},
+	);
 }
