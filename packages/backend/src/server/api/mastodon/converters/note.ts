@@ -292,6 +292,17 @@ export class NoteConverter {
 			];
 		});
 
+		const reactions = populated.then((populated) =>
+				Promise.resolve(reaction).then((reaction) =>
+					this.encodeReactions(
+						note.reactions,
+						reaction?.reaction,
+						populated,
+						ctx
+					)
+				)
+			);
+
 		return await awaitAll({
 			id: note.id,
 			uri: note.uri ?? `https://${config.host}/notes/${note.id}`,
@@ -342,16 +353,8 @@ export class NoteConverter {
 			application: null, //FIXME
 			language: note.lang,
 			pinned: isPinned,
-			reactions: populated.then((populated) =>
-				Promise.resolve(reaction).then((reaction) =>
-					this.encodeReactions(
-						note.reactions,
-						reaction?.reaction,
-						populated,
-						ctx
-					)
-				)
-			),
+			reactions: reactions,
+			emoji_reactions: reactions,
 			bookmarked: isBookmarked,
 			quote: reblog.then((reblog) => (isQuote(note) ? reblog : null)),
 			quote_id: isQuote(note) ? note.renoteId : null,
