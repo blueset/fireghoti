@@ -125,7 +125,7 @@ export class MiscHelpers {
 			domain: config.host,
 			title: instanceMeta.name || "Firefish",
 			version: `4.6.0 (compatible; Firefish ${config.version}; compatible; Iceshrimp)`,
-			api_version: {
+			api_versions: {
 				mastodon: 7,
 			},
 			source_url: instanceMeta.repositoryUrl,
