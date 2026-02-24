@@ -282,7 +282,7 @@ export async function createNote(
 	// Quote
 	let quote: Note | undefined | null;
 
-	if (note.quoteUrl || note.quoteUri) {
+	if (note.quoteUrl || note.quoteUri || note.quote || note._misskey_quote) {
 		const tryResolveNote = async (
 			uri: string,
 		): Promise<
@@ -319,7 +319,7 @@ export async function createNote(
 		};
 
 		const uris = unique(
-			[note.quoteUrl, note.quoteUri].filter(
+			[note.quoteUrl, note.quoteUri, note.quote, note._misskey_quote].filter(
 				(x): x is string => typeof x === "string",
 			),
 		);

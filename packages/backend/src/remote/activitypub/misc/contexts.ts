@@ -538,6 +538,40 @@ export const WellKnownContext = {
 			Hashtag: "as:Hashtag",
 			quoteUri: "fedibird:quoteUri",
 			quoteUrl: "as:quoteUrl",
+			// FEP-044f: Consent-respecting quotes
+			quote: {
+				"@id": "https://w3id.org/fep/044f#quote",
+				"@type": "@id",
+			},
+			quoteAuthorization: {
+				"@id": "https://w3id.org/fep/044f#quoteAuthorization",
+				"@type": "@id",
+			},
+			QuoteAuthorization: "https://w3id.org/fep/044f#QuoteAuthorization",
+			QuoteRequest: "https://w3id.org/fep/044f#QuoteRequest",
+			_misskey_quote: "misskey:_misskey_quote",
+			// GoToSocial interaction policies
+			gts: "https://gotosocial.org/ns#",
+			interactionPolicy: {
+				"@id": "gts:interactionPolicy",
+				"@type": "@id",
+			},
+			canQuote: {
+				"@id": "gts:canQuote",
+				"@type": "@id",
+			},
+			automaticApproval: {
+				"@id": "gts:automaticApproval",
+				"@type": "@id",
+			},
+			interactingObject: {
+				"@id": "gts:interactingObject",
+				"@type": "@id",
+			},
+			interactionTarget: {
+				"@id": "gts:interactionTarget",
+				"@type": "@id",
+			},
 			// Mastodon
 			toot: "http://joinmastodon.org/ns#",
 			Emoji: "toot:Emoji",

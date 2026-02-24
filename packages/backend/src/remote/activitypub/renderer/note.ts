@@ -161,8 +161,17 @@ export default async function renderNote(
 			content: text,
 			mediaType: "text/x.misskeymarkdown",
 		},
+		quote: quote ?? undefined,
 		quoteUri: quote,
 		quoteUrl: quote,
+		_misskey_quote: quote ?? undefined,
+		interactionPolicy: {
+			canQuote: {
+				automaticApproval: [
+					"https://www.w3.org/ns/activitystreams#Public",
+				],
+			},
+		},
 		published: note.createdAt.toISOString(),
 		to,
 		cc,

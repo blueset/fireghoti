@@ -559,4 +559,58 @@ router.get("/follows/:followRequestId", async (ctx: Router.RouterContext) => {
 	setResponseType(ctx);
 });
 
+// FEP-044f: Stateless QuoteAuthorization stamp
+router.get(
+	"/quote-authorizations/:noteId/:encodedQuoteUri",
+	async (ctx: Router.RouterContext) => {
+		const verify = await checkFetch(ctx.req);
+		if (verify !== 200) {
+			ctx.status = verify;
+			return;
+		}
+
+		const note = await Notes.findOneBy({
+			id: ctx.params.noteId,
+			visibility: In(["public" as const, "home" as const]),
+			localOnly: false,
+		});
+
+		if (note == null || note.userHost != null) {
+			ctx.status = 404;
+			return;
+		}
+
+		let interactingObjectUri: string;
+		try {
+			interactingObjectUri = Buffer.from(
+				ctx.params.encodedQuoteUri,
+				"base64url",
+			).toString("utf-8");
+		} catch {
+			ctx.status = 400;
+			return;
+		}
+
+		const noteUri = `${config.url}/notes/${note.id}`;
+		const authorUri = `${config.url}/users/${note.userId}`;
+		const stampId = `${config.url}/quote-authorizations/${note.id}/${ctx.params.encodedQuoteUri}`;
+
+		ctx.body = renderActivity({
+			type: "QuoteAuthorization",
+			id: stampId,
+			attributedTo: authorUri,
+			interactingObject: interactingObjectUri,
+			interactionTarget: noteUri,
+		});
+
+		const instanceMeta = await fetchMeta();
+		if (instanceMeta.secureMode || instanceMeta.privateMode) {
+			ctx.set("Cache-Control", "private, max-age=0, must-revalidate");
+		} else {
+			ctx.set("Cache-Control", "public, max-age=604800");
+		}
+		setResponseType(ctx);
+	},
+);
+
 export default router;

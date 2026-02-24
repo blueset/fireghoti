@@ -139,7 +139,11 @@ export interface IPost extends IObject {
 	};
 	quoteUrl?: string;
 	quoteUri?: string;
+	quote?: string;
+	_misskey_quote?: string;
 	_misskey_talk: boolean;
+	interactionPolicy?: object;
+	quoteAuthorization?: string;
 }
 
 export interface IQuestion extends IObject {
@@ -287,6 +291,7 @@ export interface IFollow extends IActivity {
 
 export interface IAccept extends IActivity {
 	type: "Accept";
+	result?: string | IObject;
 }
 
 export interface IReject extends IActivity {
@@ -355,3 +360,11 @@ export const isFlag = (object: IObject): object is IFlag =>
 	getApType(object) === "Flag";
 export const isMove = (object: IObject): object is IMove =>
 	getApType(object) === "Move";
+
+export interface IQuoteRequest extends IActivity {
+	type: "QuoteRequest";
+	instrument?: IObject | string;
+}
+
+export const isQuoteRequest = (object: IObject): object is IQuoteRequest =>
+	getApType(object) === "QuoteRequest";

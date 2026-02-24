@@ -18,6 +18,7 @@ import {
 	isCollection,
 	isFlag,
 	isMove,
+	isQuoteRequest,
 	getApId,
 } from "../type.js";
 import { apLogger } from "../logger.js";
@@ -37,6 +38,7 @@ import remove from "./remove/index.js";
 import block from "./block/index.js";
 import flag from "./flag/index.js";
 import move from "./move/index.js";
+import quoteRequest from "./quote-request.js";
 import type { IObject, IActivity } from "../type.js";
 import { extractHost, isBlockedServer } from "backend-rs";
 import { inspect } from "node:util";
@@ -100,6 +102,8 @@ async function performOneActivity(
 		await flag(actor, activity);
 	} else if (isMove(activity)) {
 		await move(actor, activity);
+	} else if (isQuoteRequest(activity)) {
+		await quoteRequest(actor, activity);
 	} else {
 		apLogger.info(
 			`Unrecognized activity type: ${(activity as IActivity).type}`,
