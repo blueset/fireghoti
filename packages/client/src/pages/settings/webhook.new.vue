@@ -25,6 +25,9 @@
 			<FormSwitch v-model="event_note" class="_formBlock"
 				>Posts</FormSwitch
 			>
+			<FormSwitch v-model="event_edit" class="_formBlock"
+				>Edits</FormSwitch
+			>
 			<FormSwitch v-model="event_reply" class="_formBlock"
 				>Replies</FormSwitch
 			>
@@ -70,6 +73,7 @@ const secret = ref("");
 const event_follow = ref(true);
 const event_followed = ref(true);
 const event_note = ref(true);
+const event_edit = ref(true);
 const event_reply = ref(true);
 const event_renote = ref(true);
 const event_reaction = ref(true);
@@ -80,6 +84,7 @@ async function create(): Promise<void> {
 	if (event_follow.value) events.push("follow");
 	if (event_followed.value) events.push("followed");
 	if (event_note.value) events.push("note");
+	if (event_edit.value) events.push("edit");
 	if (event_reply.value) events.push("reply");
 	if (event_renote.value) events.push("renote");
 	if (event_reaction.value) events.push("reaction");

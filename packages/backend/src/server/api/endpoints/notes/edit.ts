@@ -34,6 +34,8 @@ import renderUpdate from "@/remote/activitypub/renderer/update.js";
 import { deliverToRelays } from "@/services/relay.js";
 // import { deliverQuestionUpdate } from "@/services/note/polls/update.js";
 import { langmap } from "firefish-js";
+import { webhookDeliver } from "@/queue/index.js";
+import { getActiveWebhooks } from "@/misc/webhook-cache.js";
 
 export const meta = {
 	tags: ["notes"],
@@ -676,6 +678,16 @@ export default define(meta, paramDef, async (ps, user) => {
 			// GO!
 			dm.execute();
 		})();
+
+		const webhooks = await getActiveWebhooks().then((webhooks) =>
+			webhooks.filter((x) => x.userId === user.id && x.on.includes("edit")),
+		);
+
+		for (const webhook of webhooks) {
+			webhookDeliver(webhook, "edit", {
+				note: await Notes.pack(note, user),
+			});
+		}
 	}
 
 	return {

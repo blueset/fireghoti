@@ -16,6 +16,7 @@ export const webhookEventTypes = [
 	"follow",
 	"followed",
 	"note",
+	"edit",
 	"reply",
 	"renote",
 	"reaction",

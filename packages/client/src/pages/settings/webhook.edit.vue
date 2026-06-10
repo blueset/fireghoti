@@ -25,6 +25,9 @@
 			<FormSwitch v-model="event_note" class="_formBlock"
 				>Note</FormSwitch
 			>
+			<FormSwitch v-model="event_edit" class="_formBlock"
+				>Edit</FormSwitch
+			>
 			<FormSwitch v-model="event_reply" class="_formBlock"
 				>Reply</FormSwitch
 			>
@@ -81,6 +84,7 @@ const active = ref(webhook.active);
 const event_follow = ref(webhook.on.includes("follow"));
 const event_followed = ref(webhook.on.includes("followed"));
 const event_note = ref(webhook.on.includes("note"));
+const event_edit = ref(webhook.on.includes("edit"));
 const event_reply = ref(webhook.on.includes("reply"));
 const event_renote = ref(webhook.on.includes("renote"));
 const event_reaction = ref(webhook.on.includes("reaction"));
@@ -91,6 +95,7 @@ async function save(): Promise<void> {
 	if (event_follow.value) events.push("follow");
 	if (event_followed.value) events.push("followed");
 	if (event_note.value) events.push("note");
+	if (event_edit.value) events.push("edit");
 	if (event_reply.value) events.push("reply");
 	if (event_renote.value) events.push("renote");
 	if (event_reaction.value) events.push("reaction");

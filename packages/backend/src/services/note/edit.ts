@@ -28,6 +28,8 @@ import { deliverToRelays } from "../relay.js";
 import renderUpdate from "@/remote/activitypub/renderer/update.js";
 import { extractMentionedUsers } from "@/services/note/create.js";
 import { normalizeForSearch } from "@/misc/normalize-for-search.js";
+import { webhookDeliver } from "@/queue/index.js";
+import { getActiveWebhooks } from "@/misc/webhook-cache.js";
 
 type Option = {
 	text?: string | null;
@@ -237,6 +239,16 @@ export default async function (
 			// GO!
 			dm.execute();
 		})();
+
+		const webhooks = await getActiveWebhooks().then((webhooks) =>
+			webhooks.filter((x) => x.userId === user.id && x.on.includes("edit")),
+		);
+
+		for (const webhook of webhooks) {
+			webhookDeliver(webhook, "edit", {
+				note: await Notes.pack(note, user),
+			});
+		}
 	}
 
 	return note;
