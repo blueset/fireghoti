@@ -4,6 +4,7 @@ import { NotificationHelpers } from "@/server/api/mastodon/helpers/notification.
 import { NotificationConverter } from "@/server/api/mastodon/converters/notification.js";
 import { auth } from "@/server/api/mastodon/middleware/auth.js";
 import { filterContext } from "@/server/api/mastodon/middleware/filter-context.js";
+import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 
 export function setupEndpointsNotifications(router: Router): void {
 	router.get(
@@ -61,6 +62,96 @@ export function setupEndpointsNotifications(router: Router): void {
 			);
 			await NotificationHelpers.dismissNotification(notification.id, ctx);
 			ctx.body = {};
+		},
+	);
+
+	router.get(
+		"/v2/notifications",
+		auth(true, ["read:notifications"]),
+		filterContext("notifications"),
+		async (ctx) => {
+			const args = normalizeUrlQuery(limitToInt(ctx.query), [
+				"types[]",
+				"exclude_types[]",
+				"grouped_types[]",
+			]);
+			const groups = await NotificationHelpers.getGroupedNotifications(
+				args.max_id,
+				args.since_id,
+				args.min_id,
+				args.limit,
+				args["types[]"],
+				args["exclude_types[]"],
+				args["grouped_types[]"],
+				args.account_id,
+				ctx,
+			);
+			ctx.body = await NotificationConverter.encodeGroupedResults(groups, ctx);
+		},
+	);
+
+	// Must be registered before "/v2/notifications/:group_key" so it is not
+	// shadowed by the group-key route.
+	router.get(
+		"/v2/notifications/unread_count",
+		auth(true, ["read:notifications"]),
+		async (ctx) => {
+			const args = normalizeUrlQuery(limitToInt(ctx.query), [
+				"types[]",
+				"exclude_types[]",
+				"grouped_types[]",
+			]);
+			const count = await NotificationHelpers.getGroupedUnreadCount(
+				args["types[]"],
+				args["exclude_types[]"],
+				args["grouped_types[]"],
+				args.account_id,
+				args.limit,
+				ctx,
+			);
+			ctx.body = { count };
+		},
+	);
+
+	router.get(
+		"/v2/notifications/:group_key/accounts",
+		auth(true, ["read:notifications"]),
+		async (ctx) => {
+			const members = await NotificationHelpers.getNotificationsForGroupKey(
+				ctx.params.group_key,
+				ctx,
+			);
+			ctx.body = await NotificationConverter.encodeGroupAccounts(members, ctx);
+		},
+	);
+
+	router.post(
+		"/v2/notifications/:group_key/dismiss",
+		auth(true, ["write:notifications"]),
+		async (ctx) => {
+			await NotificationHelpers.dismissGroup(ctx.params.group_key, ctx);
+			ctx.body = {};
+		},
+	);
+
+	router.get(
+		"/v2/notifications/:group_key",
+		auth(true, ["read:notifications"]),
+		filterContext("notifications"),
+		async (ctx) => {
+			const members = await NotificationHelpers.getNotificationsForGroupKey(
+				ctx.params.group_key,
+				ctx,
+			);
+			if (members.length === 0) throw new MastoApiError(404);
+			const totalCounts = new Map<string, number>([
+				[ctx.params.group_key, members.length],
+			]);
+			ctx.body = await NotificationConverter.encodeGroupedResults(
+				[{ groupKey: ctx.params.group_key, members }],
+				ctx,
+				totalCounts,
+			);
 		},
 	);
 

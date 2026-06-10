@@ -138,7 +138,23 @@ errorRouter.all("(.*)", async (ctx) => {
 // Register router
 app.use(mastoFileRouter.routes());
 app.use(mastoRouter.routes());
-app.use(mastoRouter.allowedMethods());
+
+// @koa/router@13 pushes each router's matched layers into `ctx.matched` as a
+// nested array instead of spreading them. When multiple routers share the same
+// context, `allowedMethods()` ends up iterating over arrays rather than `Layer`
+// objects and throws `Cannot read properties of undefined (reading 'length')`,
+// turning unmatched Mastodon requests (e.g. GET /api/v2/notifications) into a
+// HTTP 500. Flatten `ctx.matched` before `allowedMethods()` inspects it.
+const mastodonAllowedMethods = mastoRouter.allowedMethods();
+app.use((ctx, next) =>
+	mastodonAllowedMethods(ctx as Parameters<typeof mastodonAllowedMethods>[0], async () => {
+		await next();
+		if (Array.isArray(ctx.matched)) {
+			ctx.matched = ctx.matched.flat(Number.POSITIVE_INFINITY);
+		}
+	}),
+);
+
 app.use(router.routes());
 app.use(errorRouter.routes());
 

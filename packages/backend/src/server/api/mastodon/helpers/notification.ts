@@ -5,6 +5,7 @@ import type { Notification } from "@/models/entities/notification.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import type { MastoContext } from "@/server/api/mastodon/index.js";
 import type { SwSubscription } from "@/models/entities/sw-subscription.js";
+import { In } from "typeorm";
 
 /**
  * Normalize object arguments from query string.
@@ -154,6 +155,206 @@ export class NotificationHelpers {
 			.update()
 			.set({ isRead: true })
 			.execute();
+	}
+
+	/**
+	 * Compute a Mastodon grouped-notification `group_key` for a notification
+	 * without persisting it. The scheme is reversible (see
+	 * {@link getNotificationsForGroupKey}) and treats `group_key` as opaque per
+	 * the Mastodon spec.
+	 *
+	 * Grouped types (favourite, reblog, follow) collapse into a shared key;
+	 * everything else (mentions, polls, follow requests, quotes, ...) becomes
+	 * `ungrouped-{notificationId}`.
+	 *
+	 * @param notification A notification with its `note` relation loaded.
+	 * @param groupedTypes Mastodon types the client wants grouped. When a
+	 *   notification maps to a type not in this list it is returned ungrouped.
+	 */
+	private static computeGroupKey(
+		notification: Notification,
+		groupedTypes?: string[],
+	): string {
+		switch (notification.type) {
+			case "reaction":
+				if (notification.noteId == null) break;
+				if (groupedTypes && !groupedTypes.includes("favourite")) break;
+				return `favourite-${notification.noteId}`;
+			case "renote":
+				if (notification.note?.renoteId == null) break;
+				if (groupedTypes && !groupedTypes.includes("reblog")) break;
+				return `reblog-${notification.note.renoteId}`;
+			case "follow":
+				if (groupedTypes && !groupedTypes.includes("follow")) break;
+				return "follow";
+		}
+		return `ungrouped-${notification.id}`;
+	}
+
+	private static groupNotifications(
+		notifications: Notification[],
+		groupedTypes?: string[],
+	): { groupKey: string; members: Notification[] }[] {
+		const groups = new Map<string, Notification[]>();
+		const order: string[] = [];
+		for (const notification of notifications) {
+			const key = this.computeGroupKey(notification, groupedTypes);
+			const existing = groups.get(key);
+			if (existing) {
+				existing.push(notification);
+			} else {
+				groups.set(key, [notification]);
+				order.push(key);
+			}
+		}
+		return order.map((key) => ({
+			groupKey: key,
+			members: groups.get(key) as Notification[],
+		}));
+	}
+
+	/**
+	 * Fetch a page of notifications and group them in-memory for the Mastodon
+	 * `/api/v2/notifications` endpoint. Pagination (and the `Link` header) is
+	 * driven by the underlying raw notification IDs, so a page may contain fewer
+	 * groups than `limit`.
+	 */
+	public static async getGroupedNotifications(
+		maxId: string | undefined,
+		sinceId: string | undefined,
+		minId: string | undefined,
+		limit = 40,
+		types: string[] | undefined,
+		excludeTypes: string[] | undefined,
+		groupedTypes: string[] | undefined,
+		accountId: string | undefined,
+		ctx: MastoContext,
+	): Promise<{ groupKey: string; members: Notification[] }[]> {
+		const notifications = await this.getNotifications(
+			maxId,
+			sinceId,
+			minId,
+			limit,
+			types,
+			excludeTypes,
+			accountId,
+			ctx,
+		);
+		return this.groupNotifications(notifications, groupedTypes);
+	}
+
+	/**
+	 * Resolve all notifications belonging to a `group_key` produced by
+	 * {@link computeGroupKey}, for the single-group, accounts and dismiss
+	 * endpoints. Returns an empty array for unknown keys.
+	 */
+	public static async getNotificationsForGroupKey(
+		groupKey: string,
+		ctx: MastoContext,
+	): Promise<Notification[]> {
+		const user = ctx.user as ILocalUser;
+		const query = Notifications.createQueryBuilder("notification")
+			.leftJoinAndSelect("notification.note", "note")
+			.leftJoinAndSelect("notification.notifier", "notifier")
+			.leftJoinAndSelect("notification.notifiee", "notifiee")
+			.andWhere("notification.notifieeId = :userId", { userId: user.id })
+			.orderBy("notification.id", "DESC");
+
+		if (groupKey.startsWith("ungrouped-")) {
+			query.andWhere("notification.id = :gkId", {
+				gkId: groupKey.slice("ungrouped-".length),
+			});
+		} else if (groupKey === "follow") {
+			query.andWhere("notification.type = :gkType", { gkType: "follow" });
+		} else if (groupKey.startsWith("favourite-")) {
+			query
+				.andWhere("notification.type = :gkType", { gkType: "reaction" })
+				.andWhere("notification.noteId = :gkNoteId", {
+					gkNoteId: groupKey.slice("favourite-".length),
+				});
+		} else if (groupKey.startsWith("reblog-")) {
+			query
+				.andWhere("notification.type = :gkType", { gkType: "renote" })
+				.andWhere("note.renoteId = :gkNoteId", {
+					gkNoteId: groupKey.slice("reblog-".length),
+				});
+		} else {
+			return [];
+		}
+
+		return query.getMany();
+	}
+
+	public static async dismissGroup(
+		groupKey: string,
+		ctx: MastoContext,
+	): Promise<void> {
+		const user = ctx.user as ILocalUser;
+		const notifications = await this.getNotificationsForGroupKey(groupKey, ctx);
+		const ids = notifications.map((n) => n.id);
+		if (ids.length === 0) return;
+		await Notifications.update(
+			{ id: In(ids), notifieeId: user.id },
+			{ isRead: true },
+		);
+	}
+
+	/**
+	 * Approximate (capped) count of unread notification groups for the Mastodon
+	 * `/api/v2/notifications/unread_count` endpoint. Scans at most 1000 unread
+	 * notifications (newest first) and counts distinct group keys up to `limit`.
+	 */
+	public static async getGroupedUnreadCount(
+		types: string[] | undefined,
+		excludeTypes: string[] | undefined,
+		groupedTypes: string[] | undefined,
+		accountId: string | undefined,
+		limit = 100,
+		ctx: MastoContext,
+	): Promise<number> {
+		if (limit > 1000) limit = 1000;
+
+		const user = ctx.user as ILocalUser;
+		let requestedTypes = types
+			? this.decodeTypes(types)
+			: [
+					"follow",
+					"mention",
+					"reply",
+					"renote",
+					"quote",
+					"reaction",
+					"pollEnded",
+					"receiveFollowRequest",
+				];
+
+		if (excludeTypes) {
+			const excludedTypes = this.decodeTypes(excludeTypes);
+			requestedTypes = requestedTypes.filter((p) => !excludedTypes.includes(p));
+		}
+
+		if (!requestedTypes.length) return 0;
+
+		const query = Notifications.createQueryBuilder("notification")
+			.leftJoinAndSelect("notification.note", "note")
+			.andWhere("notification.notifieeId = :userId", { userId: user.id })
+			.andWhere("notification.isRead = FALSE")
+			.andWhere("notification.type IN (:...types)", { types: requestedTypes })
+			.orderBy("notification.id", "DESC")
+			.take(1000);
+
+		if (accountId !== undefined)
+			query.andWhere("notification.notifierId = :notifierId", {
+				notifierId: accountId,
+			});
+
+		const notifications = await query.getMany();
+		const keys = new Set<string>();
+		for (const notification of notifications) {
+			keys.add(this.computeGroupKey(notification, groupedTypes));
+			if (keys.size >= limit) break;
+		}
+		return keys.size;
 	}
 
 	public static async getPushSubscription(

@@ -105,6 +105,144 @@ export class NotificationConverter {
 		await UserConverter.aggregateData(users, ctx);
 	}
 
+	/**
+	 * Encode the `NotificationGroup` metadata for a set of notifications sharing
+	 * a `group_key`. `notifications_count` and `sample_account_ids` are scoped to
+	 * the supplied `members` unless `totalCount` is provided.
+	 *
+	 * @param members Notifications in the group, ordered newest-first.
+	 */
+	public static encodeGroup(
+		groupKey: string,
+		members: Notification[],
+		totalCount?: number,
+	): MastodonEntity.NotificationGroup {
+		const newest = members[0];
+		const oldest = members[members.length - 1];
+
+		const sampleAccountIds = unique(
+			members
+				.map((m) => m.notifierId)
+				.filter((id): id is string => id != null),
+		).slice(0, 8);
+
+		return {
+			group_key: groupKey,
+			notifications_count: totalCount ?? members.length,
+			type: this.encodeNotificationType(newest.type),
+			most_recent_notification_id: newest.id,
+			page_min_id: oldest.id,
+			page_max_id: newest.id,
+			latest_page_notification_at: newest.createdAt.toISOString(),
+			sample_account_ids: sampleAccountIds,
+		};
+	}
+
+	/**
+	 * Resolve and encode the status referenced by a notification, mirroring the
+	 * single-notification {@link encode} logic (renotes resolve to the boosted
+	 * status). Returns null when there is no status or it cannot be loaded.
+	 */
+	private static async resolveGroupStatus(
+		notification: Notification,
+		ctx: MastoContext,
+		localUser: ILocalUser,
+	): Promise<MastodonEntity.Status | null> {
+		try {
+			const note =
+				notification.note ??
+				(notification.noteId
+					? await getNote(notification.noteId, localUser)
+					: null);
+			if (!note) return null;
+			const target =
+				note.renoteId !== null && !isQuote(note)
+					? await getNote(note.renoteId, localUser)
+					: note;
+			return await NoteConverter.encode(target, ctx);
+		} catch {
+			return null;
+		}
+	}
+
+	/**
+	 * Encode grouped notifications into a `GroupedNotificationsResults` entity,
+	 * deduplicating referenced accounts and statuses into root-level arrays.
+	 *
+	 * @param totalCounts Optional per-group total counts (used by the
+	 *   single-group endpoint for accurate `notifications_count`).
+	 */
+	public static async encodeGroupedResults(
+		groups: { groupKey: string; members: Notification[] }[],
+		ctx: MastoContext,
+		totalCounts?: Map<string, number>,
+	): Promise<MastodonEntity.GroupedNotificationsResults> {
+		const localUser = ctx.user as ILocalUser;
+		const allMembers = groups.flatMap((g) => g.members);
+		await this.aggregateData(allMembers, ctx);
+
+		const accountIds = unique(
+			allMembers
+				.map((m) => m.notifierId)
+				.filter((id): id is string => id != null),
+		);
+		const accounts = await Promise.all(
+			accountIds.map((id) =>
+				UserHelpers.getUserCached(id, ctx).then((u) =>
+					UserConverter.encode(u, ctx),
+				),
+			),
+		);
+
+		const statusMap = new Map<string, MastodonEntity.Status>();
+		const notificationGroups: MastodonEntity.NotificationGroup[] = [];
+
+		for (const group of groups) {
+			const encodedGroup = this.encodeGroup(
+				group.groupKey,
+				group.members,
+				totalCounts?.get(group.groupKey),
+			);
+			const status = await this.resolveGroupStatus(
+				group.members[0],
+				ctx,
+				localUser,
+			);
+			if (status) {
+				statusMap.set(status.id, status);
+				encodedGroup.status_id = status.id;
+			}
+			notificationGroups.push(encodedGroup);
+		}
+
+		return {
+			accounts,
+			statuses: Array.from(statusMap.values()),
+			notification_groups: notificationGroups,
+		};
+	}
+
+	/**
+	 * Encode the deduplicated notifier accounts of a notification group for the
+	 * `/api/v2/notifications/:group_key/accounts` endpoint.
+	 */
+	public static async encodeGroupAccounts(
+		members: Notification[],
+		ctx: MastoContext,
+	): Promise<MastodonEntity.Account[]> {
+		await this.aggregateData(members, ctx);
+		const accountIds = unique(
+			members.map((m) => m.notifierId).filter((id): id is string => id != null),
+		);
+		return Promise.all(
+			accountIds.map((id) =>
+				UserHelpers.getUserCached(id, ctx).then((u) =>
+					UserConverter.encode(u, ctx),
+				),
+			),
+		);
+	}
+
 	private static encodeNotificationType(
 		t: NotificationType,
 	): MastodonEntity.NotificationType {
