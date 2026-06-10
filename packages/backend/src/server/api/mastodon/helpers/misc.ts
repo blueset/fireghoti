@@ -55,7 +55,7 @@ export class MiscHelpers {
 				instanceMeta.description ||
 				"This is a Firefish instance. It doesn’t seem to have a description.",
 			email: instanceMeta.maintainerEmail || "",
-			version: `4.2.8 (compatible; Firefish ${config.version})`,
+			version: `4.2.8 (compatible; Firefish ${config.version}; compatible; Iceshrimp)`,
 			urls: {
 				streaming_api: `${config.url.replace(/^http(?=s?:\/\/)/, "ws")}`,
 			},
@@ -124,7 +124,10 @@ export class MiscHelpers {
 		const res = {
 			domain: config.host,
 			title: instanceMeta.name || "Firefish",
-			version: `4.2.8 (compatible; Firefish ${config.version})`,
+			version: `4.6.0 (compatible; Firefish ${config.version}; compatible; Iceshrimp)`,
+			api_versions: {
+				mastodon: 7,
+			},
 			source_url: instanceMeta.repositoryUrl,
 			description:
 				instanceMeta.description ||
@@ -183,6 +186,18 @@ export class MiscHelpers {
 				account: contact,
 			},
 			rules: [],
+			// Added for moshidon emoji reaction support
+			pleroma: {
+				metadata: {
+					features: [] as string[],
+					fieldsLimits: {
+						maxFields: 99999999,
+						maxRemoteFields: 99999999,
+						nameLength: 99999999,
+						valueLength: 99999999,
+					},
+				},
+			},
 		};
 
 		return awaitAll(res);
@@ -399,6 +414,7 @@ export class MiscHelpers {
 			"posting:default:visibility": privacy,
 			"posting:default:sensitive": sensitive,
 			"posting:default:language": language,
+			"posting:default:quote_policy": "public" as const,
 			"reading:expand:media": "default" as const, // FIXME: see below
 			"reading:expand:spoilers": false, // FIXME: store this on server instead of client
 		};

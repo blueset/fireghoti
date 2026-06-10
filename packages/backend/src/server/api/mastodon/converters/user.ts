@@ -150,6 +150,7 @@ export class UserConverter {
 				fields: fields,
 				bot: u.isBot,
 				discoverable: u.isExplorable,
+				quote_policy: "public",
 			}).then((p) => {
 				UserHelpers.updateUserInBackground(u);
 				cache.accounts.push(p);

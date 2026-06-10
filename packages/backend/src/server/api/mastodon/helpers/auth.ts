@@ -354,4 +354,19 @@ export class AuthHelpers {
 
 		return unique(res);
 	}
+
+	public static getAllScopes(): string[] {
+		return unique([
+			"read",
+			"write",
+			"follow",
+			"admin:read",
+			"admin:write",
+			...this.readScopes,
+			...this.writeScopes,
+			...this.followScopes,
+			...this.adminReadScopes,
+			...this.adminWriteScopes,
+		]);
+	}
 }

@@ -94,6 +94,26 @@ export function setupEndpointsStatus(router: Router): void {
 			};
 		},
 	);
+	
+	router.get<{ Params: { id: string } }>(
+		"/v1/statuses/:id/quotes",
+		auth(false, ["read:statuses"]),
+		filterContext("thread"),
+		async (ctx) => {
+			const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
+			const args = normalizeUrlQuery(limitToInt(ctx.query as any));
+			const quotes = await NoteHelpers.getNoteQuotes(
+				note,
+				args.max_id,
+				args.since_id,
+				args.min_id,
+				args.limit,
+				ctx,
+			).then((n) => NoteConverter.encodeMany(n, ctx));
+			ctx.body = quotes;
+		},
+	);
+
 	router.get<{ Params: { id: string } }>(
 		"/v1/statuses/:id/history",
 		auth(false, ["read:statuses"]),
